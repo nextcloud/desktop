@@ -17,6 +17,7 @@
 namespace OCC {
 
 class DirectEditor;
+struct ServerManagedSettings;
 
 enum PushNotificationType {
     None = 0,
@@ -50,6 +51,7 @@ public:
     [[nodiscard]] int shareRemoteExpireDateDays() const;
     [[nodiscard]] bool shareResharing() const;
     [[nodiscard]] int shareDefaultPermissions() const;
+    [[nodiscard]] bool unifiedSharingAvailable() const;
     [[nodiscard]] bool chunkingNg() const;
     [[nodiscard]] qint64 maxChunkSize() const;
     [[nodiscard]] int maxConcurrentChunkUploads() const;
@@ -170,6 +172,7 @@ public:
 
     [[nodiscard]] bool serverHasValidSubscription() const;
     [[nodiscard]] QString desktopEnterpriseChannel() const;
+    [[nodiscard]] ServerManagedSettings desktopClientManagedSettings() const;
 
     [[nodiscard]] bool serverHasClientIntegration() const;
     [[nodiscard]] QList<QVariantMap> fileActionsByMimeType(const QMimeType &fileMimeType) const;

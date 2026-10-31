@@ -182,6 +182,11 @@ void Folder::setSecurityScopedAccess(std::unique_ptr<Utility::MacSandboxPersiste
     _securityScopedAccess = std::move(access);
 }
 
+bool Folder::hasSecurityScopedAccess() const
+{
+    return _securityScopedAccess != nullptr;
+}
+
 bool Folder::needsSandboxBookmark() const
 {
     return _needsSandboxBookmark;
@@ -357,6 +362,11 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
+#ifdef Q_OS_MACOS
+    if (_needsSandboxBookmark) {
+        return false;
+    }
+#endif
     return !syncPaused() && accountState()->isConnected() && _syncResult.status() != SyncResult::SetupError;
 }
 
@@ -584,6 +594,7 @@ void Folder::startVfs()
     qCDebug(lcFolder) << "Display name for VFS folder will be:" << displayName;
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
+    vfsParams.rootPath = FileSystem::Path{path()};
     vfsParams.displayName = displayName;
     vfsParams.alias = alias();
     vfsParams.navigationPaneClsid = navigationPaneClsid().toString();
@@ -592,6 +603,7 @@ void Folder::startVfs()
     vfsParams.journal = &_journal;
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
+    vfsParams.socketPath = FolderMan::instance()->socketApi()->socketPath();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
     connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
@@ -600,6 +612,14 @@ void Folder::startVfs()
 
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
+
+    connect(_vfs.get(), &Vfs::needSync, this, [this] {
+        if (canSync()) {
+            // the vfs plugin detected that its metadata is out of sync and requests a new sync
+            // the request has a hight priority as it is probably issued after a user request
+            FolderMan::instance()->scheduleFolder(this);
+        }
+    });
 
     _vfs->start(vfsParams);
 

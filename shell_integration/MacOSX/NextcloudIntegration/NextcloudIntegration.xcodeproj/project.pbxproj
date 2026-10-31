@@ -1531,7 +1531,7 @@
 			repositoryURL = "https://github.com/claucambra/SuggestionsTextFieldKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.0.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

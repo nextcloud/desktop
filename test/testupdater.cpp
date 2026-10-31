@@ -51,6 +51,31 @@ private Q_SLOTS:
         QVERIFY(currVersion < highVersion);
     }
 
+    void testUpdateCheckGating_data()
+    {
+        QTest::addColumn<bool>("userInitiated");
+        QTest::addColumn<bool>("skipUpdateCheck");
+        QTest::addColumn<bool>("autoUpdateCheck");
+        QTest::addColumn<bool>("allowed");
+
+        QTest::newRow("skip blocks a user check") << true << true << true << false;
+        QTest::newRow("skip blocks a background check") << false << true << true << false;
+        QTest::newRow("user check allowed with auto off") << true << false << false << true;
+        QTest::newRow("user check allowed with auto on") << true << false << true << true;
+        QTest::newRow("background allowed with auto on") << false << false << true << true;
+        QTest::newRow("background blocked with auto off") << false << false << false << false;
+    }
+
+    void testUpdateCheckGating()
+    {
+        QFETCH(bool, userInitiated);
+        QFETCH(bool, skipUpdateCheck);
+        QFETCH(bool, autoUpdateCheck);
+        QFETCH(bool, allowed);
+
+        QCOMPARE(Updater::updateCheckAllowed(userInitiated, skipUpdateCheck, autoUpdateCheck), allowed);
+    }
+
     // Reproduces #7009: on the first start of a newly installed version the
     // leftover installer must be gone. Application::configVersionMigration()
     // (src/gui/application.cpp:161-164) drops the Updater/* keys before

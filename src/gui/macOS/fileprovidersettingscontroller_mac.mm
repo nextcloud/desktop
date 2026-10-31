@@ -26,9 +26,16 @@
 #import <AppKit/AppKit.h>
 // End of Objective-C imports
 
+static_assert(__has_feature(objc_arc), "fileprovidersettingscontroller_mac requires ARC.");
+
 namespace {
 // NSUserDefaults entries
 constexpr auto enabledAccountsSettingsKey = "enabledAccounts";
+
+bool domainRestorationRequiresXpcReconfiguration(const QString &storedIdentifier, const QString &restoredIdentifier)
+{
+    return !storedIdentifier.isEmpty() && !restoredIdentifier.isEmpty() && storedIdentifier != restoredIdentifier;
+}
 
 } // namespace
 
@@ -137,11 +144,15 @@ public:
             accountManager->setFileProviderDomainIdentifier(userIdAtHost, identifier);
         } else {
             // Check if the extension has dirty user data before removing the domain.
-            const auto xpc = Mac::FileProvider::instance()->xpc();
-
-            if (xpc && xpc->fileProviderDomainHasDirtyUserData(existingDomainId)) {
+            const auto dirtyUserData = Mac::FileProvider::instance()->fileProviderDomainHasDirtyUserData(existingDomainId);
+            if (!dirtyUserData.has_value()) {
+                qCWarning(lcFileProviderSettingsController)
+                    << "Could not determine whether file provider domain has dirty user data; preserving it." << existingDomainId;
+            } else if (*dirtyUserData) {
                 qCWarning(lcFileProviderSettingsController) << "File provider domain" << existingDomainId << "has dirty user data.";
+            }
 
+            if (!dirtyUserData.has_value() || *dirtyUserData) {
                 // Remove the domain and get the URL where preserved user data is located
                 const auto preservedDataUrl = Mac::FileProvider::instance()->domainManager()->removeDomainByAccount(accountState.data());
 
@@ -226,6 +237,12 @@ public:
     {
         ConfigFile cfg;
 
+        // Stay off while enforced off, so lifting the policy does not re-enable File Provider.
+        if (const auto managedVfs = cfg.managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+            cfg.setMacFileProviderModeEnabled(false);
+            return;
+        }
+
         const auto brandingDisablesVfs = Theme::instance()->disableVirtualFilesSyncFolder();
         const auto accounts = AccountManager::instance()->accounts();
 
@@ -265,6 +282,7 @@ public:
         if (modeEnabled) {
             const auto domains = Mac::FileProvider::instance()->domainManager()->getDomains();
             QSet<QString> existingDomainIdentifiers;
+            auto restoredDomain = false;
 
             for (NSFileProviderDomain * const domain : domains) {
                 existingDomainIdentifiers.insert(QString::fromNSString(domain.identifier));
@@ -293,8 +311,14 @@ public:
 
                     if (newIdentifier.isEmpty() == false) {
                         AccountManager::instance()->setFileProviderDomainIdentifier(userIdAtHost, newIdentifier);
+                        restoredDomain |= domainRestorationRequiresXpcReconfiguration(identifier, newIdentifier);
                     }
                 }
+            }
+
+            if (restoredDomain) {
+                // A changed identifier means addDomainForAccount() registered a new domain; rediscover its XPC service.
+                Mac::FileProvider::instance()->configureXPC();
             }
         } else {
             for (const auto &accountState : accountStates) {
@@ -555,6 +579,14 @@ void FileProviderSettingsController::setFileProviderModeEnabled(const bool enabl
         return;
     }
 
+    if (enabled) {
+        if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isEnforced && !managedVfs.enabled) {
+            qCWarning(lcFileProviderSettingsController) << "Cannot enable file provider mode, virtual files are enforced off by policy.";
+            Q_EMIT fileProviderModeEnabledChanged(false);
+            return;
+        }
+    }
+
     // The flag records the user's intent up front. Should anything below fail or the
     // client die mid-way, "mode enabled + classic folders still configured" is picked
     // up by performStartupReconciliation() on the next launch.
@@ -663,11 +695,35 @@ void FileProviderSettingsController::removeAllClassicSyncFolders()
     }
 }
 
+static void notifyVfsEnforcedChanged()
+{
+    ConfigFile config;
+    const auto managedVfs = config.managedVirtualFilesMode();
+    const auto enforcedOff = managedVfs.isEnforced && !managedVfs.enabled;
+    if (config.fileProviderVfsEnforcedOffNotified() == enforcedOff) {
+        return;
+    }
+
+    config.setFileProviderVfsEnforcedOffNotified(enforcedOff);
+
+    const auto headline =
+        enforcedOff ? QObject::tr("Virtual files is disabled by an organization policy") : QObject::tr("Virtual files is enabled by an organization policy");
+    const auto details = enforcedOff ? QObject::tr("You can set up classic sync folders instead.")
+                                     : QObject::tr("You can use it by clicking the File Provider checkbox in the general settings.");
+
+    // macOS does not show the window title, so the headline is the bold message text.
+    QMessageBox messageBox(QMessageBox::Information, headline, headline, QMessageBox::Ok, nullptr);
+    messageBox.setInformativeText(details);
+    messageBox.exec();
+}
+
 void FileProviderSettingsController::performStartupReconciliation()
 {
     if (!Mac::FileProvider::available()) {
         return;
     }
+
+    notifyVfsEnforcedChanged();
 
     if (_isOperationInProgress) {
         qCWarning(lcFileProviderSettingsController) << "Operation already in progress, skipping reconciliation";

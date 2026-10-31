@@ -17,25 +17,39 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
     let logger: FileProviderLogger
     let account: Account
     var suggestions: [Suggestion] = []
-    var inputString: String = "" {
+    var shareType: NKShare.ShareType {
         didSet {
-            Task {
-                await updateSuggestions()
-            }
+            guard shareType != oldValue else { return }
+            inputString = ""
         }
     }
+    var inputString: String = "" {
+        didSet { updateSuggestions() }
+    }
+    private var searchIdentifier = UUID()
 
-    init(account: Account, kit: NextcloudKit, log: any FileProviderLogging) {
+    init(account: Account, kit: NextcloudKit, log: any FileProviderLogging, shareType: NKShare.ShareType) {
         self.account = account
         self.kit = kit
         self.logger = FileProviderLogger(category: "ShareeSuggestionsDataSource", log: log)
+        self.shareType = shareType
     }
 
-    private func updateSuggestions() async {
-        let sharees = await fetchSharees(search: inputString)
-        logger.info("Fetched \(sharees.count) sharees.")
-        suggestions = suggestionsFromSharees(sharees)
+    private func updateSuggestions() {
+        let identifier = UUID()
+        searchIdentifier = identifier
+        let search = inputString
+        let type = shareType
+        suggestions = []
         NotificationCenter.default.post(name: SuggestionsChangedNotificationName, object: self)
+        guard !search.isEmpty, type != .publicLink else { return }
+
+        Task { @MainActor in
+            let sharees = await fetchSharees(search: search)
+            guard searchIdentifier == identifier else { return }
+            suggestions = suggestionsFromSharees(sharees.filter { $0.shareType == type.rawValue })
+            NotificationCenter.default.post(name: SuggestionsChangedNotificationName, object: self)
+        }
     }
 
     private func fetchSharees(search: String) async -> [NKSharee] {
@@ -43,19 +57,17 @@ class ShareeSuggestionsDataSource: SuggestionsDataSource {
 
         return await withCheckedContinuation { continuation in
             kit.searchSharees(
-                search: inputString,
+                search: search,
                 page: 1,
                 perPage: 20,
                 account: account.ncKitAccount,
                 completion: { account, sharees, data, error in
-                    defer {
-                        continuation.resume(returning: sharees ?? [])
-                    }
-
                     guard error == .success else {
                         self.logger.error("Error fetching sharees: \(error.errorDescription)")
+                        continuation.resume(returning: [])
                         return
                     }
+                    continuation.resume(returning: sharees ?? [])
                 }
             )
         }

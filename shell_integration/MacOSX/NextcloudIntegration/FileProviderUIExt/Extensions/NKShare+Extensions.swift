@@ -10,6 +10,10 @@ import AppKit
 import NextcloudKit
 
 extension NKShare {
+    var supportsLabel: Bool {
+        shareType == ShareType.publicLink.rawValue || shareType == ShareType.email.rawValue
+    }
+
     var typeImage: NSImage? {
         var image: NSImage?
         switch shareType {
@@ -68,23 +72,25 @@ extension NKShare {
             return label
         }
 
+        let recipientName = shareWithDisplayname.isEmpty ? shareWith : shareWithDisplayname
+
         switch shareType {
         case ShareType.internalLink.rawValue:
             return String(localized: "Internal share (requires access to file)")
         case ShareType.user.rawValue:
-            return String(format: String(localized: "User share (%@)"), shareWith)
+            return String(format: String(localized: "User share (%@)"), recipientName)
         case ShareType.group.rawValue:
-            return String(format: String(localized: "Group share (%@)"), shareWith)
+            return String(format: String(localized: "Group share (%@)"), recipientName)
         case ShareType.publicLink.rawValue:
             return String(localized: "Public link share")
         case ShareType.email.rawValue:
-            return String(format: String(localized: "Email share (%@)"), shareWith)
+            return String(format: String(localized: "Email share (%@)"), recipientName)
         case ShareType.federatedCloud.rawValue:
-            return String(format: String(localized: "Federated cloud share (%@)"), shareWith)
+            return String(format: String(localized: "Federated cloud share (%@)"), recipientName)
         case ShareType.team.rawValue:
-            return String(format: String(localized: "Team share (%@)"), shareWith)
+            return String(format: String(localized: "Team share (%@)"), recipientName)
         case ShareType.talkConversation.rawValue:
-            return String(format: String(localized: "Talk conversation share (%@)"), shareWith)
+            return String(format: String(localized: "Talk conversation share (%@)"), recipientName)
         default:
             return String(localized: "Unknown share")
         }

@@ -5,21 +5,22 @@
 
 #pragma once
 
-#include <accountfwd.h>
 #include <account.h>
+#include <accountfwd.h>
 
 #include <memory>
 
 #include <QDialog>
 
-namespace OCC {
+namespace OCC
+{
 
 class Folder;
 
-namespace Ui {
-    class InvalidFilenameDialog;
+namespace Ui
+{
+class InvalidFilenameDialog;
 }
-
 
 class InvalidFilenameDialog : public QDialog
 {
@@ -72,6 +73,8 @@ private:
     void onPropfindPermissionSuccess(const QVariantMap &values);
     void onPropfindPermissionError(QNetworkReply *reply = nullptr);
     void allowRenaming();
+    [[nodiscard]] QString remoteFilePath(const QString &filePath) const;
+
 private Q_SLOTS:
     void useInvalidName();
 };

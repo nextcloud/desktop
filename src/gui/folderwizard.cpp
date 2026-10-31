@@ -5,37 +5,42 @@
  */
 
 #include "folderwizard.h"
-#include "folderman.h"
-#include "configfile.h"
-#include "theme.h"
-#include "networkjobs.h"
 #include "account.h"
-#include "selectivesyncdialog.h"
 #include "accountstate.h"
-#include "creds/abstractcredentials.h"
-#include "guiutility.h"
 #include "common/asserts.h"
+#include "configfile.h"
+#include "creds/abstractcredentials.h"
+#include "folderman.h"
+#include "guiutility.h"
+#include "networkjobs.h"
+#include "selectivesyncdialog.h"
+#include "settingspanelstyle.h"
+#include "theme.h"
 
 #ifdef Q_OS_MACOS
+#include "common/macsandboxpersistentaccess.h"
 #include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfolderpicker.h"
 #endif
 
+#include <QCheckBox>
 #include <QDesktopServices>
 #include <QDir>
+#include <QEvent>
 #include <QFileDialog>
-#include <QFileInfo>
 #include <QFileIconProvider>
+#include <QFileInfo>
 #include <QInputDialog>
+#include <QLabel>
 #include <QLoggingCategory>
+#include <QMessageBox>
+#include <QPointer>
+#include <QStandardPaths>
+#include <QTreeWidget>
 #include <QUrl>
+#include <QVBoxLayout>
 #include <QValidator>
 #include <QWizardPage>
-#include <QTreeWidget>
-#include <QVBoxLayout>
-#include <QEvent>
-#include <QCheckBox>
-#include <QMessageBox>
-#include <QStandardPaths>
 
 #include <cstdlib>
 
@@ -141,31 +146,54 @@ bool FolderWizardLocalPath::isComplete() const
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
     const bool isInitialSelection = _initialFolderSelection;
-    QString sf;
 
-    #ifdef Q_OS_MACOS
-        sf = Utility::getRealHomeDirectory();
-    #else
-        sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    #endif
+#ifdef Q_OS_MACOS
+    // QFileDialog gives up the sandbox access to the chosen folder before returning, so only the
+    // native panel can provide a bookmark for it.
+    const QPointer<FolderWizardLocalPath> page(this);
+    Mac::SandboxFolderPicker::select(window()->windowHandle(),
+                                     tr("Select the source folder"),
+                                     Utility::getRealHomeDirectory(),
+                                     [page, isInitialSelection](Mac::SandboxFolderPicker::FolderSelection selection) {
+                                         if (page) {
+                                             page->applyChosenLocalFolder(selection.path, selection.bookmarkData, isInitialSelection);
+                                         }
+                                     });
+#else
+    const auto localFolder = QFileDialog::getExistingDirectory(this,
+                                                               tr("Select the source folder"),
+                                                               QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                                               QFileDialog::ShowDirsOnly);
+    applyChosenLocalFolder(localFolder, {}, isInitialSelection);
+#endif
+}
 
-    QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
-        sf,
-        QFileDialog::ShowDirsOnly);
-    if (!dir.isEmpty()) {
-        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
+void FolderWizardLocalPath::applyChosenLocalFolder(const QString &localFolder, const QByteArray &bookmarkData, bool initialSelection)
+{
+    if (!localFolder.isEmpty()) {
+        _chosenLocalFolder = localFolder;
+        _chosenLocalFolderBookmarkData = bookmarkData;
+#ifdef Q_OS_MACOS
+        // Keeps sandbox access to the chosen folder while the wizard validates and creates it.
+        _chosenLocalFolderAccess = Utility::MacSandboxPersistentAccess::createValidFromBookmarkData(bookmarkData);
+#endif
+        _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(localFolder));
         _initialFolderSelection = false;
-    } else {
-        // If this was the initial folder selection and the user canceled,
-        // emit signal to close the wizard
-        if (isInitialSelection) {
-            Q_EMIT initialFolderSelectionCanceled();
-        }
+    } else if (initialSelection) {
+        // The user cancelled the automatic initial selection, so close the wizard.
+        Q_EMIT initialFolderSelectionCanceled();
     }
     Q_EMIT completeChanged();
 }
 
+QByteArray FolderWizardLocalPath::securityScopedBookmarkData() const
+{
+    const auto enteredFolder = FolderDefinition::prepareLocalPath(QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
+    if (_chosenLocalFolder.isEmpty() || enteredFolder != FolderDefinition::prepareLocalPath(_chosenLocalFolder)) {
+        return {};
+    }
+    return _chosenLocalFolderBookmarkData;
+}
 
 void FolderWizardLocalPath::changeEvent(QEvent *e)
 {
@@ -594,6 +622,10 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
         });
         _virtualFilesCheckBox->setChecked(bestAvailableVfsMode() == Vfs::WindowsCfApi);
         layout->addWidget(_virtualFilesCheckBox);
+        _virtualFilesManagedLabel = new QLabel(this);
+        _virtualFilesManagedLabel->setVisible(false);
+        SettingsPanelStyle::applyManagedLabelStyle(_virtualFilesManagedLabel);
+        layout->addWidget(_virtualFilesManagedLabel);
     }
 }
 
@@ -617,6 +649,7 @@ void FolderWizardSelectiveSync::initializePage()
     _selectiveSync->setFolderInfo(targetPath, alias, initialBlacklist);
 
     if (_virtualFilesCheckBox) {
+        _virtualFilesManagedLabel->setVisible(false);
         // TODO: remove when UX decision is made
         if (Utility::isPathWindowsDrivePartitionRoot(wizard()->field(QStringLiteral("sourceFolder")).toString())) {
             _virtualFilesCheckBox->setChecked(false);
@@ -630,6 +663,13 @@ void FolderWizardSelectiveSync::initializePage()
             if (Theme::instance()->enforceVirtualFilesSyncFolder()) {
                 _virtualFilesCheckBox->setChecked(true);
                 _virtualFilesCheckBox->setDisabled(true);
+            } else if (const auto managedVfs = ConfigFile().managedVirtualFilesMode(); managedVfs.isManaged) {
+                _virtualFilesCheckBox->setChecked(managedVfs.enabled);
+                _virtualFilesCheckBox->setDisabled(managedVfs.isEnforced);
+                if (managedVfs.isEnforced) {
+                    _virtualFilesManagedLabel->setText(ConfigFile().sourceLabel(QStringLiteral("virtualFilesMode")));
+                    _virtualFilesManagedLabel->setVisible(true);
+                }
             }
         }
         //
@@ -717,6 +757,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
 }
 
 FolderWizard::~FolderWizard() = default;
+
+QByteArray FolderWizard::securityScopedBookmarkData() const
+{
+    return _folderWizardSourcePage->securityScopedBookmarkData();
+}
 
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
 {

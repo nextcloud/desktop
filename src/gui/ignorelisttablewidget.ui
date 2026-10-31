@@ -42,7 +42,7 @@
      </property>
      <column>
       <property name="text">
-       <string>Pattern</string>
+       <string extracomment="Ignore-list table column containing filename patterns.">Pattern</string>
       </property>
      </column>
      <column>

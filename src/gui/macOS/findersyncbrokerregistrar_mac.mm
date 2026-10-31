@@ -14,6 +14,8 @@
 
 #include "findersyncbrokeridentity.h"
 
+static_assert(__has_feature(objc_arc), "findersyncbrokerregistrar_mac requires ARC.");
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFinderSyncBrokerRegistrar, "nextcloud.gui.macos.findersync.broker", QtInfoMsg)

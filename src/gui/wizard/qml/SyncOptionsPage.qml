@@ -87,8 +87,10 @@ Item {
             OptionRow {
                 Layout.fillWidth: true
                 visible: root.controller.canUseVirtualFiles
-                title: root.controller.isUsingFileProvider ? qsTr("File Provider") : qsTr("Virtual files")
-                description: qsTr("Download files on-demand")
+                title: root.controller.isUsingFileProvider ? qsTr("File Provider") : (Qt.platform.os === "linux" ? qsTr("Virtual files (beta)") : qsTr("Virtual files"))
+                description: Qt.platform.os === "linux"
+                    ? qsTr("Download files on-demand. This feature is in an early preview. Recommended only for testing.")
+                    : qsTr("Download files on-demand")
                 selected: root.controller.syncMode === AccountWizardController.VirtualFiles
                 onClicked: root.controller.setSyncMode(AccountWizardController.VirtualFiles)
             }
@@ -152,7 +154,7 @@ Item {
 
                 WizardButton {
                     text: qsTr("Choose")
-                    Layout.preferredWidth: 96
+                    Layout.minimumWidth: Style.wizardInlineButtonMinimumWidth
                     Layout.preferredHeight: Style.wizardFooterButtonHeight
                     enabled: root.controller.canUseClassicSync
                     onClicked: root.controller.chooseLocalSyncFolder()

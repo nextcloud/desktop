@@ -13,25 +13,23 @@ extension Enumerator {
     /// ``enumerateTrashChanges(for:anchor:)``) and drained here one capped batch per invocation so a large
     /// permanent-purge cannot exceed the framework's per-batch limit. Intermediate batches use a durable
     /// continuation anchor, while the final batch preserves the incoming anchor. Each delivered orphan is
-    /// soft-deleted (`deleteItemMetadata`) only after its batch finishes, so an interrupted drain keeps its
-    /// row — the reconciliation re-derives it (the row still carries a trash `serverUrl`) rather than
-    /// dropping it.
+    /// soft-deleted only after its batch finishes, so an interrupted drain keeps its row and can replay it
+    /// from the durable delivery session.
     ///
     private func drainTrashDeletions(
         for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor, suggested: Int?
     ) {
-        let batch = changeBuffer.takeBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored deletions stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next trash deletion batch. Finishing the enumeration with an error.")
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
 
         if orphanedIdentifiers.isEmpty == false {
             observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
-        }
-
-        // Soft-delete delivered orphans before finishing the batch: they are already reported
-        // (didDeleteItems above), and writing the DB before finishEnumeratingChanges keeps the local
-        // state consistent with what the observer has been told by the time the batch is acknowledged.
-        for metadata in batch.deleted {
-            dbManager.deleteItemMetadata(ocId: metadata.ocId)
         }
 
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
@@ -43,6 +41,7 @@ extension Enumerator {
         }
 
         observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
+        changeBuffer.acknowledgeBatch(batch.acknowledgement)
 
         logger.debug("Reported trash deletion batch. deleted: \(batch.deleted.count), moreComing: \(batch.moreComing)")
     }
@@ -100,7 +99,15 @@ extension Enumerator {
 
             // Continuation of an in-progress drain: serve the next buffered batch without re-listing the
             // remote trash (re-deriving after per-batch soft-deletes would re-report the wrong subset).
-            if changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if isPrimed {
                 logger.debug("Trash change buffer primed for anchor \(anchorKey); draining next batch without re-listing.", [.account: account.ncKitAccount])
                 drainTrashDeletions(for: observer, anchor: anchor, suggested: observer.suggestedBatchSize)
                 return

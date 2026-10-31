@@ -47,6 +47,7 @@ Flow {
 
         objectName: "typeFilterButton"
         width: root.filterButtonWidth
+        //: Search filter for selecting a result provider type.
         text: qsTr("Type")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)
@@ -98,6 +99,7 @@ Flow {
 
         objectName: "dateFilterButton"
         width: root.filterButtonWidth
+        //: Search filter for restricting results by date.
         text: qsTr("Date")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)
@@ -154,6 +156,7 @@ Flow {
 
         objectName: "peopleFilterButton"
         width: root.filterButtonWidth
+        //: Search filter for restricting results to a person.
         text: qsTr("People")
         trailingIconSource: "image://svgimage-custom-color/caret-down.svg/"
             + (primary ? Style.wizardSelectedText : Style.wizardPrimaryText)

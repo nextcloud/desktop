@@ -7,6 +7,8 @@
 
 #include "trayaccountpopupmetrics.h"
 
+static_assert(__has_feature(objc_arc), "The native tray view utilities require ARC.");
+
 namespace OCC::Mac::TrayPopupViewUtils {
 
 static CGFloat clampedPopupOriginCoordinate(const CGFloat origin, const CGFloat minEdge, const CGFloat maxEdge, const CGFloat size)
@@ -34,7 +36,6 @@ NSPoint clampedPopupOrigin(const NSPoint origin, const NSSize size, const NSRect
 void addOwnedArrangedSubview(NSStackView *stack, NSView *view)
 {
     [stack addArrangedSubview:view];
-    [view release];
 }
 
 static CGFloat textWidth(NSString *text, NSFont *font)
@@ -97,13 +98,13 @@ NSStackView *configurePopupPanel(NSPanel *panel)
     stack.translatesAutoresizingMaskIntoConstraints = NO;
 
     if (@available(macOS 26.0, *)) {
-        auto container = [[[NSView alloc] init] autorelease];
+        auto container = [[NSView alloc] init];
         container.wantsLayer = YES;
         container.layer.cornerRadius = kCornerRadius;
         container.layer.masksToBounds = YES;
         panel.contentView = container;
 
-        auto glassEffectView = [[[NSGlassEffectView alloc] init] autorelease];
+        auto glassEffectView = [[NSGlassEffectView alloc] init];
         glassEffectView.cornerRadius = kCornerRadius;
         glassEffectView.contentView = stack;
         glassEffectView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -116,13 +117,13 @@ NSStackView *configurePopupPanel(NSPanel *panel)
             [glassEffectView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor],
         ]];
     } else {
-        auto container = [[[NSView alloc] init] autorelease];
+        auto container = [[NSView alloc] init];
         container.wantsLayer = YES;
         container.layer.cornerRadius = kCornerRadius;
         container.layer.masksToBounds = YES;
         panel.contentView = container;
 
-        auto visualEffectView = [[[NSVisualEffectView alloc] init] autorelease];
+        auto visualEffectView = [[NSVisualEffectView alloc] init];
         visualEffectView.material = NSVisualEffectMaterialMenu;
         visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
         visualEffectView.state = NSVisualEffectStateActive;
@@ -155,7 +156,6 @@ void clearStack(NSStackView *stack)
         [stack removeArrangedSubview:view];
         [view removeFromSuperview];
     }
-    [arrangedSubviews release];
 }
 
 void positionPopupFromRow(NSPanel *popup, NSView *row)

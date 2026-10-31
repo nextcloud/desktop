@@ -9,10 +9,12 @@
 
 #include <QAbstractItemModelTester>
 #include <QDesktopServices>
+#include <QElapsedTimer>
 #include <QSignalSpy>
 #include <QTest>
 
 using namespace ActivityListModelTestUtils;
+using namespace Qt::StringLiterals;
 
 class TestActivityListModel : public QObject
 {
@@ -381,6 +383,157 @@ private Q_SLOTS:
 
         } while (prevModelRowCount < model->rowCount());
     };
+
+    // Every sync reports the same ignored files again
+    void testAddError_sameErrorTwice_listedOnce()
+    {
+        const auto model = testingALM();
+        const auto ignoredFile = exampleFileIgnoredActivity(accountState->account()->displayName());
+
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->errorsList().size(), 1);
+    }
+
+    void testAddError_differentErrors_allListed()
+    {
+        const auto model = testingALM();
+        const auto ignoredFile = exampleFileIgnoredActivity(accountState->account()->displayName());
+        auto otherFile = ignoredFile;
+        otherFile._id = ignoredFile._id + 1;
+        otherFile._file = u"other.txt"_s;
+        auto sameFileInOtherFolder = ignoredFile;
+        sameFileInOtherFolder._folder = u"otherFolder"_s;
+
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        model->addErrorToActivityList(otherFile, OCC::ActivityListModel::ErrorType::SyncError);
+        model->addErrorToActivityList(sameFileInOtherFolder, OCC::ActivityListModel::ErrorType::SyncError);
+
+        QCOMPARE(model->rowCount(), 3);
+        QCOMPARE(model->errorsList().size(), 3);
+    }
+
+    void testAddError_sameErrorAfterRemoval_listedAgain()
+    {
+        const auto model = testingALM();
+        const auto ignoredFile = exampleFileIgnoredActivity(accountState->account()->displayName());
+
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        model->removeActivityFromActivityList(ignoredFile);
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->errorsList().size(), 1);
+    }
+
+    void testPreviewData_syncIssuesAdded_previewsStillUpdated()
+    {
+        const auto model = testingALM();
+        const auto accountName = accountState->account()->displayName();
+
+        model->addErrorToActivityList(exampleFileIgnoredActivity(accountName), OCC::ActivityListModel::ErrorType::SyncError);
+        QVERIFY(model->recentActivityPreviewData().isEmpty());
+        QVERIFY(model->notificationPreviewData().isEmpty());
+
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        QCOMPARE(model->recentActivityPreviewData().size(), 1);
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->notificationPreviewData().size(), 1);
+
+        auto secondIgnoredFile = exampleFileIgnoredActivity(accountName, {}, 5);
+        secondIgnoredFile._file = u"second.txt"_s;
+        model->addErrorToActivityList(secondIgnoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        QCOMPARE(model->recentActivityPreviewData().size(), 1);
+        QCOMPARE(model->notificationPreviewData().size(), 1);
+    }
+
+    // A first sync can report thousands of ignored files, each added on its own
+    void testAddError_manyIgnoredFiles_benchmark()
+    {
+        constexpr auto ignoredFileCount = 5000;
+        constexpr auto maximumDurationMsecs = 2000;
+
+        const auto model = testingALM();
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        model->addNotificationToActivityList(testNotificationActivity);
+        const auto accountName = accountState->account()->displayName();
+
+        auto timer = QElapsedTimer{};
+        timer.start();
+        for (auto i = 0; i < ignoredFileCount; ++i) {
+            auto ignoredFile = exampleFileIgnoredActivity(accountName, {}, 100 + i);
+            ignoredFile._file = u"file%1.txt"_s.arg(i);
+            model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        }
+        const auto durationMsecs = timer.elapsed();
+        QTest::setBenchmarkResult(static_cast<qreal>(durationMsecs), QTest::WalltimeMilliseconds);
+
+        QCOMPARE(model->rowCount(), ignoredFileCount + 2);
+        QVERIFY2(durationMsecs < maximumDurationMsecs, qPrintable(u"took %1 ms"_s.arg(durationMsecs)));
+    }
+
+    void testRemoveActivities_someListed_removesOnlyThose()
+    {
+        const auto model = testingALM();
+        const auto accountName = accountState->account()->displayName();
+        auto ignoredFiles = OCC::ActivityList{};
+        for (auto i = 0; i < 3; ++i) {
+            auto ignoredFile = exampleFileIgnoredActivity(accountName, {}, 100 + i);
+            ignoredFile._file = u"file%1.txt"_s.arg(i);
+            model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+            ignoredFiles.append(ignoredFile);
+        }
+        auto notListed = exampleFileIgnoredActivity(accountName, {}, 200);
+
+        model->removeActivitiesFromActivityList({ignoredFiles.at(0), ignoredFiles.at(2), notListed});
+
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->errorsList(), OCC::ActivityList{ignoredFiles.at(1)});
+    }
+
+    void testRemoveActivities_rowsBeforePreviewedActivity_previewRowUpdated()
+    {
+        const auto model = testingALM();
+        const auto ignoredFile = exampleFileIgnoredActivity(accountState->account()->displayName());
+        model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        QCOMPARE(model->recentActivityPreviewData().first().toMap().value(u"activityIndex"_s).toInt(), 1);
+
+        model->removeActivitiesFromActivityList({ignoredFile});
+
+        QCOMPARE(model->rowCount(), 1);
+        QCOMPARE(model->recentActivityPreviewData().first().toMap().value(u"activityIndex"_s).toInt(), 0);
+    }
+
+    // The next sync removes the ignored files of the previous sync before reporting them again
+    void testRemoveActivities_manyIgnoredFiles_benchmark()
+    {
+        constexpr auto ignoredFileCount = 5000;
+        constexpr auto maximumDurationMsecs = 2000;
+
+        const auto model = testingALM();
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        const auto accountName = accountState->account()->displayName();
+        auto ignoredFiles = OCC::ActivityList{};
+        for (auto i = 0; i < ignoredFileCount; ++i) {
+            auto ignoredFile = exampleFileIgnoredActivity(accountName, {}, 100 + i);
+            ignoredFile._file = u"file%1.txt"_s.arg(i);
+            model->addErrorToActivityList(ignoredFile, OCC::ActivityListModel::ErrorType::SyncError);
+            ignoredFiles.append(ignoredFile);
+        }
+
+        auto timer = QElapsedTimer{};
+        timer.start();
+        model->removeActivitiesFromActivityList(ignoredFiles);
+        const auto durationMsecs = timer.elapsed();
+        QTest::setBenchmarkResult(static_cast<qreal>(durationMsecs), QTest::WalltimeMilliseconds);
+
+        QCOMPARE(model->rowCount(), 1);
+        QVERIFY(model->errorsList().isEmpty());
+        QVERIFY2(durationMsecs < maximumDurationMsecs, qPrintable(u"took %1 ms"_s.arg(durationMsecs)));
+    }
 };
 
 QTEST_MAIN(TestActivityListModel)

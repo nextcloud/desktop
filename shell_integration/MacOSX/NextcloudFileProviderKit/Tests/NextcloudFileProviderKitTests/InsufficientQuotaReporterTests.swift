@@ -26,6 +26,13 @@ private final class CapturingAppProxy: NSObject, AppProtocol {
         _: String, path _: String, remoteItemPath _: String, withDomainIdentifier _: String
     ) {}
 
+    func presentUnifiedSharing(
+        forItem _: String,
+        localPath _: String,
+        remoteItemPath _: String,
+        forDomainIdentifier _: String
+    ) {}
+
     func openItemInBrowser(_: String, remoteItemPath _: String, forDomainIdentifier _: String) {}
 
     func copyInternalLink(forItem _: String, remoteItemPath _: String, forDomainIdentifier _: String) {}

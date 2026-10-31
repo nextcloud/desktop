@@ -5,7 +5,6 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -14,11 +13,11 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testMetadataContentType() {
@@ -89,6 +88,36 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(itemWithToken.fileSystemFlags.contains(.userWritable))
         XCTAssertNotEqual(itemWithoutToken.itemVersion.metadataVersion, itemWithToken.itemVersion.metadataVersion)
         XCTAssertEqual(itemWithoutToken.itemVersion.contentVersion, itemWithToken.itemVersion.contentVersion)
+    }
+
+    func testSharedFileLockUsesCurrentAccountInsteadOfFileOwner() {
+        var metadata =
+            SendableItemMetadata(ocId: "shared-file-id", fileName: "shared.txt", account: Self.account)
+        metadata.ownerId = "another-user"
+        metadata.permissions = "GW"
+        metadata.lock = true
+        metadata.lockOwnerType = NKLockType.token.rawValue
+        metadata.lockTimeOut = Date().addingTimeInterval(3600)
+
+        for (lockOwner, lockToken, expectedWritable) in [
+            (Self.account.id, Optional("files_lock/local-token"), true),
+            (Self.account.id, nil, false),
+            (metadata.ownerId, Optional("files_lock/other-token"), false)
+        ] {
+            metadata.lockOwner = lockOwner
+            metadata.lockToken = lockToken
+
+            let item = Item(
+                metadata: metadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: MockRemoteInterface(account: Self.account),
+                dbManager: Self.dbManager
+            )
+
+            XCTAssertEqual(item.capabilities.contains(.allowsWriting), expectedWritable)
+            XCTAssertEqual(item.fileSystemFlags.contains(.userWritable), expectedWritable)
+        }
     }
 
     func testMetadataExtensionContentType() {
@@ -317,14 +346,14 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
 
     // Unlike the file cases above (which read `displayEvict` straight off the
     // metadata), directory eviction visibility depends on descendant *file* rows
-    // in the database, so these tests seed the per-test Realm first.
+    // in the database, so these tests seed the per-test database first.
 
     /// Full server path of the folder produced by `makeFolderItem()`.
     private var folderServerPath: String {
         Self.account.davFilesUrl + "/folder"
     }
 
-    /// Seed one metadata row into the per-test Realm.
+    /// Seed one metadata row into the per-test database.
     private func seedMetadataRow(
         ocId: String,
         fileName: String,
@@ -335,18 +364,17 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         deleted: Bool = false,
         keepDownloaded: Bool = false
     ) throws {
-        let row = RealmItemMetadata()
-        row.ocId = ocId
+        var row = SendableItemMetadata.rawRow(ocId: ocId)
         row.account = Self.account.ncKitAccount
-        row.updateLocation(serverUrl: serverUrl, fileName: fileName)
+        row.serverUrl = serverUrl
+        row.fileName = fileName
         row.directory = directory
         row.downloaded = downloaded
         row.visitedDirectory = visitedDirectory
         row.deleted = deleted
         row.keepDownloaded = keepDownloaded
 
-        let realm = Self.dbManager.ncDatabase()
-        try realm.write { realm.add(row) }
+        try Self.dbManager.insertForTesting(row)
     }
 
     /// A directory `Item` at `folderServerPath`; its descendants are whatever
@@ -752,6 +780,28 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
 
+    func testShareActionActivationRequiresSingleSelection() {
+        // Cross-check the activation rule from `FileProviderUIExt/Info.plist` so the
+        // share action is not offered when Finder passes more than one item.
+        let activationPredicate = NSPredicate(
+            format: "fileproviderItems.@count == 1 && SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayShare == true ).@count == 1"
+        )
+        let shareableItem: [String: Any] = ["userInfo": ["displayShare": true]]
+        let nonShareableItem: [String: Any] = ["userInfo": ["displayShare": false]]
+
+        XCTAssertTrue(activationPredicate.evaluate(with: ["fileproviderItems": [shareableItem]]))
+        XCTAssertFalse(
+            activationPredicate.evaluate(
+                with: ["fileproviderItems": [shareableItem, nonShareableItem]]
+            )
+        )
+        XCTAssertFalse(
+            activationPredicate.evaluate(
+                with: ["fileproviderItems": [shareableItem, shareableItem]]
+            )
+        )
+    }
+
     func testItemLockFileUntrashable() {
         let metadata = SendableItemMetadata(
             ocId: "test-id", fileName: ".~lock.test.doc#", account: Self.account
@@ -786,9 +836,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityFalseAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         remoteInterface.capabilities =
@@ -807,9 +854,6 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStoredItemTrashabilityTrueAffectedByCapabilities() async {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let remoteInterface = MockRemoteInterface(account: Self.account)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
         let metadata =

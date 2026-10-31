@@ -53,6 +53,8 @@ public:
     [[nodiscard]] QByteArray numericFileId() const;
     [[nodiscard]] QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
+    SyncJournalFileRecord fromSyncFileItem(const SyncFileItem &syncFile);
+
     [[nodiscard]] bool isDirectory() const { return _type == ItemTypeVirtualDirectory || _type == ItemTypeDirectory; }
     [[nodiscard]] bool isFile() const { return _type == ItemTypeFile || _type == ItemTypeVirtualFileDehydration; }
     [[nodiscard]] bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }

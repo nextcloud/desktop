@@ -582,9 +582,11 @@ void AccountState::slotCheckConnection()
     // Don't check if we're manually signed out or
     // when the error is permanent.
     const auto pushNotifications = account()->pushNotifications();
-    const auto pushNotificationsAvailable = (pushNotifications && pushNotifications->isReady());
-    if (currentState != AccountState::SignedOut && currentState != AccountState::ConfigurationError
-        && currentState != AccountState::AskingCredentials && !pushNotificationsAvailable) {
+    // Push only replaces the check for an account already validated as connected. The account
+    // wizard sets capabilities early, so push can be ready before a new account ever connected.
+    const auto pushKeepsAccountConnected = currentState == AccountState::Connected && pushNotifications && pushNotifications->isReady();
+    if (currentState != AccountState::SignedOut && currentState != AccountState::ConfigurationError && currentState != AccountState::AskingCredentials
+        && !pushKeepsAccountConnected) {
         checkConnectivity();
     } else if (currentState == AccountState::SignedOut && lastConnectionStatus() == AccountState::ConnectionStatus::SslError) {
         qCWarning(lcAccountState()) << "Account is signed out due to SSL Handshake error. Going to perform a sign-in attempt...";

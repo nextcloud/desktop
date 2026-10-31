@@ -48,7 +48,7 @@ An interrupted chunked upload has three related forms of local state:
 | --- | --- | --- |
 | Chunk files | The `RemoteInterface` implementation | The concrete files generated for transfer. |
 | `RemoteFileChunk` rows | The upload layer | The chunks that have not completed, grouped by upload identifier. |
-| `RealmItemMetadata.chunkUploadId` | The item database | Associates an existing file item with its current resumable upload. |
+| `ItemMetadataRecord.chunkUploadId` | The item database | Associates an existing file item with its current resumable upload. |
 
 The protocol deliberately does not require callers to know where an adapter
 stores chunk files. The NextcloudKit adapter currently creates a directory
@@ -83,7 +83,7 @@ are not sent again.
 For content modification, `modifyContents()` takes an item-metadata snapshot
 before calling `upload()`. A failed upload can update the persisted
 `chunkUploadId` while that call is running. Before the modification error path
-writes its snapshot back, it refreshes `chunkUploadId` from Realm so it does
+writes its snapshot back, it refreshes `chunkUploadId` from the database so it does
 not overwrite the resumable identifier with the snapshot's older value.
 
 ## Completion and failure

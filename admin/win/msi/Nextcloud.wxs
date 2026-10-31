@@ -33,8 +33,8 @@
         https://www.firegiant.com/wix/tutorial/upgrades-and-modularization/replacing-ourselves/
         https://www.joyofsetup.com/2010/01/16/major-upgrades-now-easier-than-ever/
     -->
-    <MajorUpgrade Schedule="afterInstallExecute" AllowDowngrades="yes" />
-    <Property Id="REINSTALLMODE" Value="dmus" />
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes" />
+    <Property Id="REINSTALLMODE" Value="omus" />
     <Property Id="MSIRMSHUTDOWN" Value="1" />
     <Property Id="REBOOT" Value="ReallySuppress" />
 

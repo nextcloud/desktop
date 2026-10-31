@@ -204,9 +204,9 @@ public actor FileProviderLog: FileProviderLogging {
     ///
     private static var buildConfigurationDefaultDebugLoggingEnabled: Bool {
         #if DEBUG
-            return true
+            true
         #else
-            return false
+            false
         #endif
     }
 

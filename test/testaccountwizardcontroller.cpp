@@ -4,15 +4,22 @@
  */
 
 #include "account.h"
+#include "accountmanager.h"
+#include "config.h"
 #include "configfile.h"
+#include "folder.h"
 #include "gui/localnetworkpermission.h"
 #include "gui/wizard/accountwizardcontroller.h"
+#include "managedsettingstestutils.h"
+#include "syncenginetestutils.h"
 #include "theme.h"
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
 #include "gui/macOS/fileprovider.h"
 #endif
 
+#include <QDesktopServices>
+#include <QDialog>
 #include <QScopeGuard>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -20,6 +27,7 @@
 #include <QTest>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 namespace OCC {
 
@@ -38,6 +46,51 @@ public:
         controller._account = Account::create();
         controller._account->setUrl(url);
     }
+
+    static void setSyncMode(AccountWizardController &controller, AccountWizardController::SyncMode mode)
+    {
+        controller._syncMode = mode;
+    }
+
+    static void chooseSyncModeAfterCapabilities(AccountWizardController &controller)
+    {
+        controller.chooseSyncModeAfterCapabilities();
+    }
+
+    static void setLocalSyncFolderPicker(AccountWizardController &controller, AccountWizardController::LocalSyncFolderPicker picker)
+    {
+        controller._localSyncFolderPicker = std::move(picker);
+    }
+
+    static FolderDefinition syncFolderDefinition(const AccountWizardController &controller)
+    {
+        return controller.syncFolderDefinition();
+    }
+
+    static void openInitialLocalSyncFolderDialog(AccountWizardController &controller)
+    {
+        controller.openLocalSyncFolderDialog(true);
+    }
+
+    static void setLocalSyncFolderOverride(AccountWizardController &controller, bool localSyncFolderOverride)
+    {
+        controller._localSyncFolderOverride = localSyncFolderOverride;
+    }
+
+    static bool localSyncFolderOverride(const AccountWizardController &controller)
+    {
+        return controller._localSyncFolderOverride;
+    }
+
+    static void setCurrentStep(AccountWizardController &controller, AccountWizardController::Step step)
+    {
+        controller.setCurrentStep(step);
+    }
+
+    static void initialiseLocalSyncFolder(AccountWizardController &controller)
+    {
+        controller.initialiseLocalSyncFolder();
+    }
 };
 
 }
@@ -46,10 +99,205 @@ class TestAccountWizardController : public QObject
 {
     Q_OBJECT
 
+Q_SIGNALS:
+    void signupUrlRequested(const QUrl &url);
+
+private:
+    [[nodiscard]] static auto restoreOverrideState()
+    {
+        ConfigFile().clearOverrideServerUrl();
+        ConfigFile().clearOverrideLocalDir();
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto previousStartLoginFlowAutomatically = theme->startLoginFlowAutomatically();
+        theme->setOverrideServerUrl({});
+        // Builds enable APPLICATION_SERVER_URL_ENFORCE by default.
+        theme->setForceOverrideServerUrl(true);
+        theme->setStartLoginFlowAutomatically(false);
+        return qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl, previousStartLoginFlowAutomatically] {
+            ConfigFile().clearOverrideServerUrl();
+            ConfigFile().clearOverrideLocalDir();
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+            theme->setStartLoginFlowAutomatically(previousStartLoginFlowAutomatically);
+        });
+    }
+
+    static void setManagedOverrideServerUrl(SettingSourceType type, EnforcementState enforcement, int priority)
+    {
+        ConfigFile::setDeviceSourcesFactory([type, enforcement, priority] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(type, enforcement, priority, QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example"_s}}));
+            return sources;
+        });
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory({});
+    }
+
+    void choosingLocalSyncFolderKeepsItsBookmarkForTheSyncFolder()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto bookmarkData = "bookmark"_ba;
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+            completion(dir.path(), bookmarkData);
+        });
+        controller.chooseLocalSyncFolder();
+
+        QCOMPARE(controller.localSyncFolder(), QDir::fromNativeSeparators(dir.path()));
+        const auto definition = AccountWizardControllerTestAccess::syncFolderDefinition(controller);
+        QCOMPARE(definition.localPath, FolderDefinition::prepareLocalPath(dir.path()));
+        QCOMPARE(definition.securityScopedBookmarkData, bookmarkData);
+    }
+
+    void cancellingLocalSyncFolderPickerKeepsTheChosenFolder()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto bookmarkData = "bookmark"_ba;
+        auto cancel = false;
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+            completion(cancel ? QString{} : dir.path(), cancel ? QByteArray{} : bookmarkData);
+        });
+        controller.chooseLocalSyncFolder();
+        cancel = true;
+        controller.chooseLocalSyncFolder();
+
+        QCOMPARE(controller.localSyncFolder(), QDir::fromNativeSeparators(dir.path()));
+        QCOMPARE(AccountWizardControllerTestAccess::syncFolderDefinition(controller).securityScopedBookmarkData, bookmarkData);
+    }
+
+    void choosingLocalSyncFolderWithoutBookmarkDropsThePreviousBookmark()
+    {
+        QTemporaryDir firstDir;
+        QTemporaryDir secondDir;
+        QVERIFY(firstDir.isValid());
+        QVERIFY(secondDir.isValid());
+        auto chosenDir = firstDir.path();
+        auto chosenBookmarkData = "bookmark"_ba;
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+            completion(chosenDir, chosenBookmarkData);
+        });
+        controller.chooseLocalSyncFolder();
+        chosenDir = secondDir.path();
+        chosenBookmarkData.clear();
+        controller.chooseLocalSyncFolder();
+
+        QCOMPARE(controller.localSyncFolder(), QDir::fromNativeSeparators(secondDir.path()));
+        QVERIFY(AccountWizardControllerTestAccess::syncFolderDefinition(controller).securityScopedBookmarkData.isEmpty());
+    }
+
+    void closingReportsAcceptedOnlyAfterSetupCompleted()
+    {
+        AccountWizardController controller;
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Rejected));
+
+        AccountWizardControllerTestAccess::setCurrentStep(controller, AccountWizardController::SyncOptionsStep);
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Rejected));
+
+        AccountWizardControllerTestAccess::setCurrentStep(controller, AccountWizardController::CompletedStep);
+        QCOMPARE(controller.resultOnClose(), static_cast<int>(QDialog::Accepted));
+    }
+
+    void localSyncFolderPickerOpensOnceWhilePending()
+    {
+        auto pickerCalls = 0;
+        std::function<void(const QString &, const QByteArray &)> pendingCompletion;
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+            ++pickerCalls;
+            pendingCompletion = completion;
+        });
+        controller.chooseLocalSyncFolder();
+        controller.chooseLocalSyncFolder();
+        QCOMPARE(pickerCalls, 1);
+
+        pendingCompletion({}, {});
+        controller.chooseLocalSyncFolder();
+        QCOMPARE(pickerCalls, 2);
+    }
+
+    void localSyncFolderPickerCompletionAfterControllerIsGoneIsIgnored()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        std::function<void(const QString &, const QByteArray &)> pendingCompletion;
+
+        {
+            AccountWizardController controller;
+            AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+                pendingCompletion = completion;
+            });
+            controller.chooseLocalSyncFolder();
+        }
+
+        QVERIFY(pendingCompletion);
+        pendingCompletion(dir.path(), "bookmark"_ba);
+    }
+
+    void initialLocalSyncFolderSelectionKeepsTheOverride()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setLocalSyncFolderPicker(controller, [&](const QString &, const QString &, const auto &completion) {
+            completion(dir.path(), {});
+        });
+        AccountWizardControllerTestAccess::setLocalSyncFolderOverride(controller, true);
+        AccountWizardControllerTestAccess::openInitialLocalSyncFolderDialog(controller);
+        QVERIFY(AccountWizardControllerTestAccess::localSyncFolderOverride(controller));
+
+        controller.chooseLocalSyncFolder();
+        QVERIFY(!AccountWizardControllerTestAccess::localSyncFolderOverride(controller));
+    }
+
+    void switchesAwayFromVirtualFilesWhenEnforcedOff()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{QStringLiteral("virtualFilesMode"), QStringLiteral("off")}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(QStringLiteral("https://cloud.example")));
+        AccountWizardControllerTestAccess::setSyncMode(controller, AccountWizardController::VirtualFiles);
+        QCOMPARE(controller.syncMode(), AccountWizardController::VirtualFiles);
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+
+        QVERIFY(controller.syncMode() != AccountWizardController::VirtualFiles);
+        QVERIFY(controller.needsSyncOptions());
+        QVERIFY(controller.localSyncFolderRequired());
     }
 
     void normalizesCommonServerUrlSuffixes()
@@ -206,6 +454,26 @@ private Q_SLOTS:
         QCOMPARE(controller.proxyPort(), 3128);
     }
 
+    void seedsProxySettingsFromManagedDefault()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(
+                SettingSourceType::PlatformDefault,
+                EnforcementState::NotEnforced,
+                20,
+                QVariantMap{{u"proxyType"_s, int(QNetworkProxy::HttpProxy)}, {u"proxyHost"_s, u"proxy.example.com"_s}, {u"proxyPort"_s, 8080}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.proxyMode(), 2);
+        QCOMPARE(controller.manualProxyType(), 0);
+        QCOMPARE(controller.proxyHost(), u"proxy.example.com"_s);
+        QCOMPARE(controller.proxyPort(), 8080);
+    }
+
     void warnsWhenManualProxyTargetsLocalhost_data()
     {
         QTest::addColumn<QString>("serverUrl");
@@ -283,6 +551,24 @@ private Q_SLOTS:
         QCOMPARE(externalSpy.count(), 1);
     }
 
+    void opensConfiguredSignupUrlInBrowser()
+    {
+        QDesktopServices::setUrlHandler(u"http"_s, this, "signupUrlRequested");
+        QDesktopServices::setUrlHandler(u"https"_s, this, "signupUrlRequested");
+        const auto resetUrlHandlers = qScopeGuard([] {
+            QDesktopServices::unsetUrlHandler(u"http"_s);
+            QDesktopServices::unsetUrlHandler(u"https"_s);
+        });
+        QSignalSpy browserSpy(this, &TestAccountWizardController::signupUrlRequested);
+        QVERIFY(browserSpy.isValid());
+
+        AccountWizardController controller;
+        controller.openSignup();
+
+        QCOMPARE(browserSpy.count(), 1);
+        QCOMPARE(browserSpy.constFirst().constFirst().toUrl(), Theme::instance()->wizardSignupUrl());
+    }
+
     void exposesProxySettingsAvailability()
     {
         AccountWizardController controller;
@@ -354,6 +640,118 @@ private Q_SLOTS:
         QVERIFY(!controller.serverUrlEditable());
         QVERIFY(controller.startLoginFlowAutomatically());
     }
+
+    void prefillsServerUrlFromManagedDefault()
+    {
+        const auto restoreConfiguration = restoreOverrideState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformDefault, EnforcementState::NotEnforced, 20);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+#if defined(APPLICATION_SERVER_URL) && defined(APPLICATION_SERVER_URL_ENFORCE)
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(Theme::instance()->forceOverrideServerUrl());
+#else
+        QVERIFY(controller.serverUrlEditable());
+        QVERIFY(!Theme::instance()->forceOverrideServerUrl());
+#endif
+        QVERIFY(!controller.startLoginFlowAutomatically());
+    }
+
+    void locksServerUrlFromManagedPolicy()
+    {
+        const auto restoreConfiguration = restoreOverrideState();
+        setManagedOverrideServerUrl(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200);
+
+        AccountWizardController controller;
+
+        QCOMPARE(controller.serverUrl(), u"https://cloud.example"_s);
+        QVERIFY(!controller.serverUrlEditable());
+        QVERIFY(controller.startLoginFlowAutomatically());
+    }
+
+    void appliesOverrideLocalDirForNewAccount_data()
+    {
+        QTest::addColumn<QString>("source");
+        QTest::addColumn<bool>("existingAccount");
+        QTest::addColumn<bool>("applies");
+        QTest::addColumn<bool>("showsSyncOptions");
+
+        QTest::newRow("policy, first account") << u"policy"_s << false << true << false;
+        QTest::newRow("policy, additional account") << u"policy"_s << true << false << true;
+        QTest::newRow("device default, first account") << u"default"_s << false << true << true;
+        QTest::newRow("device default, additional account") << u"default"_s << true << false << true;
+        QTest::newRow("command line, additional account") << u"commandLine"_s << true << true << false;
+    }
+
+    void appliesOverrideLocalDirForNewAccount()
+    {
+        QFETCH(QString, source);
+        QFETCH(bool, existingAccount);
+        QFETCH(bool, applies);
+        QFETCH(bool, showsSyncOptions);
+
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto restoreConfiguration = restoreOverrideState();
+        ConfigFile::setDeviceSourcesFactory([source, localDir = dir.path()] {
+            auto policyValues = QVariantMap{{u"overrideServerUrl"_s, u"https://cloud.example"_s}};
+            if (source == u"policy"_s) {
+                policyValues.insert(u"overrideLocalDir"_s, localDir);
+            }
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy, EnforcementState::Enforced, 200, policyValues));
+            if (source == u"default"_s) {
+                sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformDefault,
+                                                              EnforcementState::NotEnforced,
+                                                              20,
+                                                              QVariantMap{{u"overrideLocalDir"_s, localDir}}));
+            }
+            return sources;
+        });
+        if (source == u"commandLine"_s) {
+            QVERIFY(ConfigFile().setOverrideLocalDir(dir.path()));
+        }
+
+        AccountState *accountState = nullptr;
+        const auto removeAccount = qScopeGuard([&accountState] {
+            if (accountState) {
+                AccountManager::instance()->removeAccountState(accountState);
+            }
+        });
+        if (existingAccount) {
+            auto account = Account::create();
+            account->setUrl(QUrl(u"https://cloud.example"_s));
+            account->setDavUser(u"first"_s);
+            account->setCredentials(new FakeCredentials{new FakeQNAM({})});
+            accountState = AccountManager::instance()->addAccount(account);
+        }
+
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::initialiseLocalSyncFolder(controller);
+
+        QCOMPARE(AccountWizardControllerTestAccess::localSyncFolderOverride(controller), applies);
+        QCOMPARE(controller.localSyncFolder() == QDir::fromNativeSeparators(dir.path()), applies);
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+        if (!controller.needsSyncOptions()) {
+            QSKIP("This build chooses no sync options, so the wizard always finishes.");
+        }
+        QCOMPARE(controller.currentStep() == AccountWizardController::SyncOptionsStep, showsSyncOptions);
+    }
+
+#ifdef Q_OS_LINUX
+    void defaultSyncModeIsNotVirtualFilesOnLinux()
+    {
+        AccountWizardController controller;
+
+        if (controller.canUseVirtualFiles()) {
+            QCOMPARE(controller.syncMode(), AccountWizardController::SyncEverything);
+        }
+    }
+#endif
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     // Keep this test last: it redirects the configuration directory.

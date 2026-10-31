@@ -95,7 +95,7 @@ docker run \
     nextcloud
 ```
 
-This simple test server already suffices in the most cases. For more advanced server test deployments we also recommend [Nextcloud development environment on Docker Compose](https://juliusknorr.github.io/nextcloud-docker-dev/).
+This simple test server already suffices in the most cases. For more advanced server test deployments we also recommend [Nextcloud development environment on Docker Compose](https://nextcloud.github.io/nextcloud-docker-dev/).
 
 ## Get in touch 💬
 * [📋 Forum](https://help.nextcloud.com)

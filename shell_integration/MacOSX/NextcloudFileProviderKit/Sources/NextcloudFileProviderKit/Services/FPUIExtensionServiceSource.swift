@@ -3,20 +3,19 @@
 
 import FileProvider
 import Foundation
+import NextcloudCapabilitiesKit
 import NextcloudKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {
-    let keychain: Keychain
     let listener = NSXPCListener.anonymous()
     let logger: FileProviderLogger
     let serviceName = fpUiExtensionServiceName
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {
-        keychain = Keychain(log: fpExtension.log)
         logger = FileProviderLogger(category: "FPUIExtensionServiceSource", log: fpExtension.log)
-        logger.debug("Instantiating FPUIExtensionService service")
+        logger.debug("Instantiating service source.")
         self.fpExtension = fpExtension
         super.init()
     }
@@ -40,10 +39,10 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     // MARK: - FPUIExtensionService protocol methods
 
     func authenticate() async -> NSError? {
-        logger.info("Authenticating...")
+        logger.info("Authenticating.")
 
-        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = keychain.getPassword(for: user, on: serverUrl) else {
-            logger.error("Missing account information, cannot authenticate!")
+        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = fpExtension.keychain.getPassword(for: user) else {
+            logger.error("Cannot authenticate because account information is missing.", [.domain: fpExtension.domain.identifier.rawValue])
             return NSError(.missingAccountInformation)
         }
 
@@ -91,5 +90,46 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
 
         let completePath = item.serverUrl + "/" + item.fileName
         return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
+    }
+
+    func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
+        guard let account = fpExtension.ncAccount else {
+            logger.error("Could not present unified sharing because the account is unavailable.", [.item: identifier])
+            return false
+        }
+
+        guard let dbManager = fpExtension.dbManager,
+              let metadata = dbManager.itemMetadata(identifier),
+              !metadata.fileId.isEmpty
+        else {
+            logger.error("Could not present unified sharing because the item metadata or numeric file id is unavailable.", [.item: identifier])
+            return false
+        }
+
+        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        guard error == .success else {
+            logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
+            return false
+        }
+
+        guard capabilities?.sharing != nil else {
+            logger.info("Unified sharing is not supported; using the legacy sharing interface.", [.item: identifier])
+            return false
+        }
+
+        guard let app = fpExtension.app else {
+            logger.error("Could not present unified sharing because the main app connection is unavailable.", [.item: identifier])
+            return false
+        }
+
+        let domainIdentifier = fpExtension.domain.identifier.rawValue
+        app.presentUnifiedSharing(
+            forItem: metadata.fileId,
+            localPath: localPath as String,
+            remoteItemPath: metadata.path,
+            forDomainIdentifier: domainIdentifier
+        )
+        logger.info("Asked the main app to present unified sharing.", [.item: identifier, .domain: fpExtension.domain.identifier])
+        return true
     }
 }

@@ -215,6 +215,7 @@ Page {
 
             NCTabButton {
                 svgCustomColorSource: "image://svgimage-custom-color/activity.svg"
+                //: Name of the Activity feature.
                 text: qsTr("Activity")
                 checked: swipeView.currentIndex === fileActivityView.swipeIndex
                 onClicked: swipeView.currentIndex = fileActivityView.swipeIndex
@@ -224,6 +225,7 @@ Page {
                 width: visible ? implicitWidth : 0
                 height: visible ? implicitHeight : 0
                 svgCustomColorSource: "image://svgimage-custom-color/share.svg"
+                //: Name of the Sharing feature.
                 text: qsTr("Sharing")
                 checked: swipeView.currentIndex === shareViewLoader.swipeIndex
                 onClicked: swipeView.currentIndex = shareViewLoader.swipeIndex

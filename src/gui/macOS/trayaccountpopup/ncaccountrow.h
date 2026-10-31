@@ -26,7 +26,7 @@
 /** @brief Index of the account this row represents in the UserModel. */
 @property (nonatomic, assign) int userIndex;
 /** @brief Delegate notified when the row is clicked or hovered. */
-@property (nonatomic, assign) id<NCAccountRowDelegate> popupDelegate;
+@property (nonatomic, weak) id<NCAccountRowDelegate> popupDelegate;
 /** @brief Keeps the row highlighted even when not hovered (e.g. while its submenu is open). */
 - (void)setPersistentHighlight:(BOOL)persistentHighlight;
 @end

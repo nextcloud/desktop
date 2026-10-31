@@ -29,6 +29,19 @@ else
     exit 1
 fi
 
+# Unset so the Realm package builds: Xcode exports the outer build's index store settings into
+# this script without INDEX_DATA_STORE_DIR, leaving clang a valueless -index-store-path.
+unset COMPILER_INDEX_STORE_ENABLE
+unset INDEX_ENABLE_DATA_STORE
+unset INDEX_DATA_STORE_DIR
+unset INDEX_ENABLE_OPTIMIZATION_LEVEL_OVERRIDE
+unset INDEX_STORE_COMPRESS
+unset INDEX_STORE_ONLY_PROJECT_FILES
+
+# Unset so the nested xcodebuild calls keep their caches out of the source tree: Xcode 27 exports
+# CCHROOT as the project directory, and xcodebuild uses it as its cache root.
+unset CCHROOT
+
 swift run mac-crafter \
     --build-path="$DESKTOP_CLIENT_PROJECT_ROOT/build" \
     --product-path="/Applications" \

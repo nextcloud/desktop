@@ -19,6 +19,8 @@
 @interface NCTrayPopup : NSPanel <NCAccountRowDelegate>
 /** @brief Rebuilds the account list and global action rows and resizes the panel to fit. */
 - (void)populate;
+/** @brief Whether this popup was visible when the given mouse-down began. */
+- (BOOL)wasVisibleAtMouseDownForEvent:(NSEvent *)event;
 /** @brief Closes this popup and the account-actions submenu and marks the systray closed. */
 - (void)closeAllPopups;
 /** @brief Closes only the account-actions submenu and clears the active account row. */

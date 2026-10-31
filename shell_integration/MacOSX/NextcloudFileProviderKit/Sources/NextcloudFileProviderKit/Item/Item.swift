@@ -26,7 +26,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     private var lockStateAllowsModifications: Bool {
         metadata.lock == false || (
             metadata.lockOwnerType == NKLockType.token.rawValue &&
-                metadata.ownerId == metadata.lockOwner &&
+                account.id == metadata.lockOwner &&
                 metadata.lockToken != nil
         )
     }

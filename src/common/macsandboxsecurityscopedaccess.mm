@@ -9,17 +9,21 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "The macOS security-scoped access wrapper requires ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSandbox, "nextcloud.common.mac.sandbox", QtInfoMsg)
 
-namespace OCC {
-namespace Utility {
+namespace OCC
+{
+namespace Utility
+{
 
 class MacSandboxSecurityScopedAccess::Impl
 {
 public:
     explicit Impl(const QUrl &url)
         : _url(url)
-        , _nsUrl(nullptr)
+        , _nsUrl(nil)
         , _hasAccess(false)
     {
         if (!url.isValid() || url.isEmpty()) {
@@ -35,8 +39,8 @@ public:
         }
 
         @autoreleasepool {
-            _nsUrl = [[NSURL fileURLWithPath:localPath.toNSString()] retain];
-            
+            _nsUrl = [NSURL fileURLWithPath:localPath.toNSString()];
+
             if (!_nsUrl) {
                 qCWarning(lcMacSandbox) << "Failed to create NSURL from path:" << localPath;
                 return;
@@ -44,7 +48,7 @@ public:
 
             // Start accessing the security-scoped resource
             _hasAccess = [_nsUrl startAccessingSecurityScopedResource];
-            
+
             if (_hasAccess) {
                 qCDebug(lcMacSandbox) << "Successfully started accessing security-scoped resource:" << localPath;
             } else {
@@ -61,23 +65,23 @@ public:
                 qCDebug(lcMacSandbox) << "Stopped accessing security-scoped resource";
                 _hasAccess = false;
             }
-            
-            if (_nsUrl) {
-                [_nsUrl release];
-                _nsUrl = nullptr;
-            }
+
+            _nsUrl = nil;
         }
     }
 
     // Non-copyable
-    Impl(const Impl&) = delete;
-    Impl& operator=(const Impl&) = delete;
+    Impl(const Impl &) = delete;
+    Impl &operator=(const Impl &) = delete;
 
-    [[nodiscard]] bool hasAccess() const { return _hasAccess; }
+    [[nodiscard]] bool hasAccess() const
+    {
+        return _hasAccess;
+    }
 
 private:
     QUrl _url;
-    NSURL *_nsUrl;
+    NSURL *__strong _nsUrl;
     bool _hasAccess;
 };
 
@@ -88,9 +92,9 @@ MacSandboxSecurityScopedAccess::MacSandboxSecurityScopedAccess(const QUrl &url)
 
 MacSandboxSecurityScopedAccess::~MacSandboxSecurityScopedAccess() = default;
 
-MacSandboxSecurityScopedAccess::MacSandboxSecurityScopedAccess(MacSandboxSecurityScopedAccess&&) noexcept = default;
+MacSandboxSecurityScopedAccess::MacSandboxSecurityScopedAccess(MacSandboxSecurityScopedAccess &&) noexcept = default;
 
-MacSandboxSecurityScopedAccess& MacSandboxSecurityScopedAccess::operator=(MacSandboxSecurityScopedAccess&&) noexcept = default;
+MacSandboxSecurityScopedAccess &MacSandboxSecurityScopedAccess::operator=(MacSandboxSecurityScopedAccess &&) noexcept = default;
 
 std::unique_ptr<MacSandboxSecurityScopedAccess> MacSandboxSecurityScopedAccess::create(const QUrl &url)
 {

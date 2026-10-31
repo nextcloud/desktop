@@ -7,13 +7,13 @@
 
 This is the entry point for contributors who want to work on the Nextcloud desktop client on macOS and submit bug fixes or feature implementations through pull requests.
 
-**tl;dr:** Open "[Nextcloud Desktop Client.xcworkspace](../Nextcloud%20Desktop%20Client.xcworkspace/)", select the "NextcloudDev" scheme and hit `⌘ + R`.
+**tl;dr:** Open "[Nextcloud Desktop Client.xcworkspace](../Nextcloud%20Desktop%20Client.xcworkspace/)", select the "Nextcloud Developer Client" scheme and hit `⌘ + R`.
 
 ## Quick Start
 
 1. Clone the repository.
 2. Replace the Apple Development Team identifier with your own — see [Set Your Apple Development Team](#set-your-apple-development-team).
-3. Open `Nextcloud Desktop Client.xcworkspace`, select the "NextcloudDev" scheme and run.
+3. Open `Nextcloud Desktop Client.xcworkspace`, select the "Nextcloud Developer Client" scheme and run.
 
 ## System Requirements
 
@@ -42,13 +42,38 @@ Two files default the Apple Development Team to Nextcloud GmbH's identifier `NKU
 - [`NEXTCLOUD.cmake`](../NEXTCLOUD.cmake) — the `DEVELOPMENT_TEAM` cache variable
 - [`shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Build.xcconfig`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Build.xcconfig) — the `DEVELOPMENT_TEAM` default
 
-You can find your team ID on the [Apple Developer Account page](https://developer.apple.com/account) under "Membership details". After substitution, `grep -rn 'NKUJUXUJ3B' .` from the repo root should return no results.
+After substitution, `grep -rn 'NKUJUXUJ3B' .` from the repo root should return no results.
 
 Being signed in to Xcode with any Apple developer account is sufficient to generate a personal development signing certificate. The team identifier you substitute above must match the team that issued that certificate.
 
+### Finding Your Apple Developer Team ID
+
+- **Paid Apple Developer Program:**  
+  You can find your team ID directly on the [Apple Developer Account page](https://developer.apple.com/account) under **Membership details**.
+
+- **Free Apple Account (Personal Team):**  
+  If you are not a member of the Apple Developer Program and you are using a free Apple developer account, the "Membership details" section is not available on the website. You can obtain your Team ID via Xcode and Keychain Access instead:
+
+**Make your Apple Account an Apple Developer Account:**
+
+1. Open **Xcode > Settings > Accounts** (or `⌘ + ,`).
+2. Select your Apple account (or click **+** to add it).
+
+**Create your development certificate:**
+
+3. Select your **Personal Team** and click **Manage Certificates…**.
+4. In the bottom-left corner, click **+** and choose **Apple Development** to create a local certificate.
+
+**Find your Personal Team ID in the certificate:**
+
+5. Open the **Keychain Access** app on macOS (not the Passwords app).
+6. Search for `Apple Development` and double-click the certificate (not the private key).
+7. Under **Details**, locate the **Organizational Unit** field — this 10-character code is your Personal Team ID.
+
+
 ### Open the Xcode Workspace
 
-Open [`Nextcloud Desktop Client.xcworkspace`](../Nextcloud%20Desktop%20Client.xcworkspace/) in Xcode. Select the "NextcloudDev" scheme and run (`⌘ + R`).
+Open [`Nextcloud Desktop Client.xcworkspace`](../Nextcloud%20Desktop%20Client.xcworkspace/) in Xcode. Select the "Nextcloud Developer Client" scheme and run (`⌘ + R`).
 
 ## Project Structure
 
@@ -102,7 +127,7 @@ columns 3
 To isolate working environments and simplify cache busting, build artifacts and derived data are stored in unconventional locations. This also helps to resolve KDE Craft build errors caused by overly long file paths.
 
 - **`mac-crafter`:** the tool is invoked with the `build` directory at the repository clone root as its build data location. See [`Craft.sh`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Craft.sh). A top-level location reduces path-length issues that have surfaced in KDE Craft dependencies in the past. You might still encounter that problem, if your repository clone has a too long path prefix.
-- **Built app bundle:** the NextcloudDev build deliberately places the built app at `/Applications` rather than in Xcode's derived data. Derived-data paths would otherwise be absolute and contain the current user name, making the scheme non-portable.
+- **Built app bundle:** the Nextcloud Developer Client build deliberately places the built app at `/Applications` rather than in Xcode's derived data. Derived-data paths would otherwise be absolute and contain the current user name, making the scheme non-portable.
 
 When no build is running, it is safe to remove the `build` directory in the project root. This is sometimes necessary to resolve build errors caused by outdated intermediate artifacts.
 
@@ -110,7 +135,7 @@ When no build is running, it is safe to remove the `build` directory in the proj
 
 ### Build & Run
 
-The "NextcloudDev" scheme integrates `mac-crafter` as an external build system. Selecting it and running (`⌘ + R`) builds, runs, and attaches the debugger.
+The "Nextcloud Developer Client" scheme integrates `mac-crafter` as an external build system. Selecting it and running (`⌘ + R`) builds, runs, and attaches the debugger.
 
 Internally, the scheme runs [`Craft.sh`](../shell_integration/MacOSX/NextcloudIntegration/NextcloudDev/Craft.sh), which invokes `mac-crafter` with the arguments required to produce a debug-friendly bundle. One of the key factors is the `Debug` build type, which flips switches in the CMake build scripts (for example app hardening and the `get-task-allow` entitlement, see [PR #8474](https://github.com/nextcloud/desktop/pull/8474/files)).
 

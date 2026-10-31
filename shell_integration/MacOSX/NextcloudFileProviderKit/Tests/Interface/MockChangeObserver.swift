@@ -5,9 +5,10 @@
 import Foundation
 import NextcloudFileProviderKit
 
-public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
+public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchecked Sendable {
     public var changedItems: [any NSFileProviderItemProtocol] = []
     public var deletedItemIdentifiers: [NSFileProviderItemIdentifier] = []
+    public var didDeleteItemsHandler: (([NSFileProviderItemIdentifier]) -> Void)?
     /// Every `finishEnumeratingChanges` call recorded as `(anchor, moreComing)`, in order, so tests can
     /// assert the batching behaviour (intermediate vs final anchors, batch count).
     public private(set) var finishes: [(anchor: NSFileProviderSyncAnchor, moreComing: Bool)] = []
@@ -15,6 +16,8 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
     /// derive per-batch sizes and assert no batch exceeds the cap. `didUpdate`/`didDeleteItems` for a
     /// batch are delivered before its `finishEnumeratingChanges`, so each entry includes that batch.
     public private(set) var reportedCountsAtFinish: [Int] = []
+    /// Optional synchronous hook invoked immediately before a change batch is finished.
+    public var beforeFinishEnumeratingChanges: (() -> Void)?
     /// Mirrors the system-set `suggestedBatchSize`. `@objc` so the optional protocol requirement is seen
     /// by the production code through the protocol existential; set small to force multi-batch delivery.
     @objc public var suggestedBatchSize: Int = 0
@@ -33,9 +36,11 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
 
     public func didDeleteItems(withIdentifiers deletedItemIdentifiers: [NSFileProviderItemIdentifier]) {
         self.deletedItemIdentifiers.append(contentsOf: deletedItemIdentifiers)
+        didDeleteItemsHandler?(deletedItemIdentifiers)
     }
 
     public func finishEnumeratingChanges(upTo anchor: NSFileProviderSyncAnchor, moreComing: Bool) {
+        beforeFinishEnumeratingChanges?()
         finishes.append((anchor, moreComing))
         reportedCountsAtFinish.append(changedItems.count + deletedItemIdentifiers.count)
         // moreComing: the framework would re-invoke enumerateChanges from this anchor for the next batch.
@@ -49,11 +54,10 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver {
         batchComplete = true
     }
 
-    public func enumerateChanges(from anchor: NSFileProviderSyncAnchor =
-        Enumerator.syncAnchor(at: Date(timeIntervalSince1970: 1))) async throws
-    {
+    public func enumerateChanges(from anchor: NSFileProviderSyncAnchor? = nil) async throws {
         isComplete = false
-        var currentAnchor = anchor
+        // Without an anchor, start from the dawn of time so every stored change is reported.
+        var currentAnchor = anchor ?? (enumerator as! Enumerator).syncAnchor(at: Date(timeIntervalSince1970: 1))
         // Drive the batches the way the framework does: re-invoke enumerateChanges from the anchor the
         // previous batch returned until one finishes with moreComing == false.
         repeat {

@@ -28,20 +28,20 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
 
         // The protocol's completion handlers are not declared `@Sendable`, but
         // `NextcloudFileProviderKit.fetchThumbnails` (which is async-task-based) requires them
-        // to be. Wrap them in unchecked-Sendable boxes — the framework only ever calls these
-        // on a single dispatch queue.
+        // to be. These boxes allow forwarding the framework callbacks to the thumbnail workers.
         let perItemBox = ThumbnailingUncheckedSendable(value: perThumbnailCompletionHandler)
         let finalBox = ThumbnailingUncheckedSendable(value: completionHandler)
 
-        return NextcloudFileProviderKit.fetchThumbnails(
-            for: itemIdentifiers,
-            requestedSize: size,
-            account: ncAccount,
-            usingRemoteInterface: ncKit,
-            andDatabase: dbManager,
-            perThumbnailCompletionHandler: { id, data, error in perItemBox.value(id, data, error) },
-            log: log,
-            completionHandler: { error in finalBox.value(error) }
+        return thumbnailFetcher(
+            itemIdentifiers,
+            size,
+            ncAccount,
+            ncKit,
+            dbManager,
+            domain,
+            { id, data, error in perItemBox.value(id, data, error) },
+            log,
+            { error in finalBox.value(error) }
         )
     }
 }

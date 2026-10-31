@@ -124,6 +124,9 @@ void Utility::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::f
     case Vfs::WindowsCfApi:
         callback(true);
         return;
+    case Vfs::OpenVFS:
+        callback(true);
+        break;
     case Vfs::WithSuffix:
         msgBox = new QMessageBox(
             QMessageBox::Warning,
@@ -149,6 +152,10 @@ void Utility::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::f
     case Vfs::XAttr:
     case Vfs::Off:
         Q_UNREACHABLE();
+    }
+
+    if (!msgBox) {
+        return;
     }
 
     QObject::connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox, acceptButton] {

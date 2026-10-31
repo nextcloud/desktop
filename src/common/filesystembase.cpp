@@ -32,6 +32,33 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileSystem, "nextcloud.sync.filesystem", QtInfoMsg)
 
+std::filesystem::path FileSystem::toFilesystemPath(const QString &path)
+{
+#ifdef Q_OS_WIN
+    return QtPrivate::toFilesystemPath(FileSystem::longWinPath(path));
+#else
+    return QtPrivate::toFilesystemPath(path);
+#endif
+}
+
+QString FileSystem::fromFilesystemPath(const std::filesystem::path &path)
+{
+#ifdef Q_OS_WIN
+    constexpr std::wstring_view prefix = LR"(\\?\)";
+    std::wstring nativePath = path.native();
+    auto view = std::wstring_view(nativePath);
+    if (nativePath.starts_with(prefix)) {
+        view = view.substr(prefix.size());
+    }
+    return QDir::fromNativeSeparators(QString::fromWCharArray(view.data(), view.length()));
+#elif defined(Q_OS_MACOS)
+  // based on QFile::decodeName
+    return QtPrivate::fromFilesystemPath(path).normalized(QString::NormalizationForm_C);
+#else
+    return QtPrivate::fromFilesystemPath(path);
+#endif
+}
+
 QString FileSystem::longWinPath(const QString &inpath)
 {
 #ifdef Q_OS_WIN
@@ -206,25 +233,24 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
-    QString orig = longWinPath(originFileName);
-    QString dest = longWinPath(destinationFileName);
-
-    if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t *)orig.utf16(),
-            (wchar_t *)dest.utf16(),
-            MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
-        if (!success) {
-            error = Utility::formatWinError(GetLastError());
-        }
-    } else
-#endif
+    // Use the extended paths directly so Win32 does not normalize trailing periods or spaces.
+    const auto originPath = longWinPath(originFileName);
+    const auto destinationPath = longWinPath(destinationFileName);
+    success = MoveFileExW(reinterpret_cast<const wchar_t *>(originPath.utf16()),
+                          reinterpret_cast<const wchar_t *>(destinationPath.utf16()),
+                          MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+    if (!success) {
+        error = Utility::formatWinError(GetLastError());
+    }
+#else
     {
-        QFile orig(originFileName);
-        success = orig.rename(destinationFileName);
+        QFile file(originFileName);
+        success = file.rename(destinationFileName);
         if (!success) {
-            error = orig.errorString();
+            error = file.errorString();
         }
     }
+#endif
 
     if (!success) {
         qCWarning(lcFileSystem) << "Error renaming file" << originFileName
@@ -558,24 +584,6 @@ bool FileSystem::isReadable(const QString &filename, const QFileInfo &fileInfo)
     return re;
 }
 
-bool FileSystem::isSymLink(const QString &filename, const QFileInfo &fileInfo)
-{
-#ifdef Q_OS_WIN
-    if (isLnkFile(filename)) {
-        return isJunction(filename);
-    }
-#endif
-    bool re = fileInfo.isSymLink();
-    // if the filename is different from the filename in fileInfo, the fileInfo is
-    // not valid. There needs to be one initialised here. Otherwise the incoming
-    // fileInfo is re-used.
-    if (fileInfo.filePath() != filename) {
-        QFileInfo myFI(filename);
-        re = myFI.isSymLink();
-    }
-    return re;
-}
-
 #ifdef Q_OS_WIN
 QString FileSystem::fileSystemForPath(const QString &path)
 {
@@ -601,6 +609,15 @@ QString FileSystem::fileSystemForPath(const QString &path)
 
 bool FileSystem::remove(const QString &fileName, QString *errorString)
 {
+    if (isSymLink(fileName)) {
+        auto error = std::error_code{};
+        std::filesystem::remove(toFilesystemPath(fileName), error);
+        if (error && errorString) {
+            *errorString = QString::fromStdString(error.message());
+        }
+        return !error;
+    }
+
     const auto &windowsSafeFileName = FileSystem::longWinPath(fileName);
 #ifdef Q_OS_WIN
     // You cannot delete a read-only file on windows, but we want to
@@ -609,7 +626,9 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 #endif
     const auto deletedFileInfo = QFileInfo{windowsSafeFileName};
     if (!deletedFileInfo.exists()) {
-        qCWarning(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        qCInfo(lcFileSystem()) << windowsSafeFileName << "has been already deleted";
+        Q_ASSERT(false);
+        return true;
     }
 
     QFile f(windowsSafeFileName);
@@ -626,15 +645,11 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
                     return (static_cast<bool>(currentPermissions & testedPermission) ? permissionChar : '-');
                 };
 
-                qCInfo(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::owner_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::owner_exec, 'x')
-                                       << unitaryHelper(std::filesystem::perms::group_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::group_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::group_exec, 'x')
-                                       << unitaryHelper(std::filesystem::perms::others_read, 'r')
-                                       << unitaryHelper(std::filesystem::perms::others_write, 'w')
-                                       << unitaryHelper(std::filesystem::perms::others_exec, 'x');
+                qCDebug(lcFileSystem()) << unitaryHelper(std::filesystem::perms::owner_read, 'r') << unitaryHelper(std::filesystem::perms::owner_write, 'w')
+                                        << unitaryHelper(std::filesystem::perms::owner_exec, 'x') << unitaryHelper(std::filesystem::perms::group_read, 'r')
+                                        << unitaryHelper(std::filesystem::perms::group_write, 'w') << unitaryHelper(std::filesystem::perms::group_exec, 'x')
+                                        << unitaryHelper(std::filesystem::perms::others_read, 'r') << unitaryHelper(std::filesystem::perms::others_write, 'w')
+                                        << unitaryHelper(std::filesystem::perms::others_exec, 'x');
             };
 
             const auto unsafeFilePermissions = filePermissionsWin(windowsSafeFileName);
@@ -782,22 +797,74 @@ bool FileSystem::isExcludeFile(const QString &filename)
         || filename.endsWith(QStringLiteral("/exclude.lst"), Qt::CaseInsensitive);
 }
 
-bool FileSystem::isJunction(const QString &filename)
+bool FileSystem::isSymLink(const QString &absolutePath)
 {
 #ifdef Q_OS_WIN
     WIN32_FIND_DATA findData;
-    HANDLE hFind = FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(filename).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
-    if (hFind != INVALID_HANDLE_VALUE) {
-        FindClose(hFind);
+    const auto handle =
+        FindFirstFileEx(reinterpret_cast<const wchar_t *>(longWinPath(absolutePath).utf16()), FindExInfoBasic, &findData, FindExSearchNameMatch, nullptr, 0);
+    if (handle == INVALID_HANDLE_VALUE) {
         return false;
     }
-    return findData.dwFileAttributes != INVALID_FILE_ATTRIBUTES
-        && findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
-        && findData.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT;
+    FindClose(handle);
+    // Windows VFS placeholders carry cloud reparse tags, so they never match.
+    return findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
+        && (findData.dwReserved0 == IO_REPARSE_TAG_SYMLINK || findData.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT);
 #else
-    Q_UNUSED(filename);
-    return false;
+    struct stat statBuffer;
+    return lstat(QFile::encodeName(absolutePath).constData(), &statBuffer) == 0 && S_ISLNK(statBuffer.st_mode);
 #endif
+}
+
+bool FileSystem::pathContainsSymlink(const QString &syncRootPath, const QString &relativePath)
+{
+    auto currentPath = syncRootPath;
+    const auto pathParts = QDir::fromNativeSeparators(relativePath).split(u'/', Qt::SkipEmptyParts);
+    for (const auto &pathPart : pathParts) {
+        currentPath = joinPath(currentPath, pathPart);
+        if (isSymLink(currentPath)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+FileSystem::ChildResults FileSystem::isChildPathOf2(QStringView child, QStringView parent)
+{
+    // if it is a relative path assume a local file, resolve it based on root
+    const auto sensitivity = Utility::fsCaseSensitivity();
+
+           // Fast-path the 3 common cases in this if-else statement:
+    if (parent.isEmpty()) {
+        // The empty parent is often used as the sync root, as (child) items do not start with a `/`
+        return ChildResult::IsChild | ChildResult::IsParentEmpty;
+    }
+    if (child.compare(parent, sensitivity) == 0) {
+        return ChildResult::IsChild | ChildResult::IsEqual;
+    }
+    const auto isSeparator = [](QChar c) { return c == QLatin1Char('/') || (Utility::isWindows() && c == QLatin1Char('\\')); };
+    if (isSeparator(parent.back())) {
+        // Here we can do a normal prefix check, because the parent is "terminated" with a slash,
+        // and we can't walk into the case in the else below.
+        if (child.startsWith(parent, sensitivity)) {
+            return ChildResult::IsChild;
+        }
+        // else: do the `cleanPath` version below
+    }
+
+           // Slow path (`QDir::cleanPath` does lots of string operations):
+    const QString cleanParent = QDir::cleanPath(parent.toString());
+    const QString cleanChild = QDir::cleanPath(child.toString());
+    // both paths are the same /root/foo == /root/foo
+    if (cleanChild.compare(cleanParent, sensitivity) == 0) {
+        return ChildResult::IsChild | ChildResult::IsEqual;
+    }
+    // cleanPath removes trailing slashes, add one to parent to be sure we handle a child path
+    // /root/foo/bar is not a child of /root/fo, therefore, the trailing slash is important
+    if (cleanChild.startsWith(cleanParent + QLatin1Char('/'), sensitivity)) {
+        return ChildResult::IsChild;
+    }
+    return ChildResult::IsNoChild;
 }
 
 #ifdef Q_OS_WIN

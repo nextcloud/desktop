@@ -20,6 +20,8 @@
 #include "findersyncbrokerregistrar.h"
 #include "findersyncservice.h"
 
+static_assert(__has_feature(objc_arc), "FinderSync XPC requires ARC.");
+
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFinderSyncXPC, "nextcloud.gui.macos.findersync.xpc", QtInfoMsg)
@@ -45,7 +47,19 @@ namespace {
 @property (nonatomic, assign) NSUInteger connectionCounter;
 @end
 
-@implementation FinderSyncXPCListenerDelegate
+@implementation FinderSyncXPCListenerDelegate {
+    QPointer<OCC::Mac::FinderSyncService> _service;
+}
+
+- (OCC::Mac::FinderSyncService *)service
+{
+    return _service.data();
+}
+
+- (void)setService:(OCC::Mac::FinderSyncService *)service
+{
+    _service = service;
+}
 
 - (BOOL)listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
 {
@@ -75,20 +89,21 @@ namespace {
     newConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(FinderSyncProtocol)];
 
     // Set up interruption and invalidation handlers
-    // Use __block for MRC - the connection won't be deallocated while blocks are alive
-    __block NSXPCConnection *blockConnection = newConnection;
+    // The connection owns these handlers, so they must not keep the connection alive.
+    __weak NSXPCConnection *blockConnection = newConnection;
+    const auto owner = QPointer<OCC::Mac::FinderSyncXPC>(_finderSyncXPC);
     newConnection.interruptionHandler = ^{
         qCWarning(OCC::Mac::lcFinderSyncXPC) << "FinderSync XPC connection interrupted";
-        if (blockConnection) {
-            [blockConnection invalidate];
-        }
+        const auto connection = blockConnection;
+        [connection invalidate];
     };
 
     newConnection.invalidationHandler = ^{
         qCInfo(OCC::Mac::lcFinderSyncXPC) << "FinderSync XPC connection invalidated";
-        if (_finderSyncXPC && blockConnection) {
+        const auto connection = blockConnection;
+        if (owner && connection) {
             // Clean up the connection from our tracking
-            _finderSyncXPC->removeExtensionProxy((void *)CFBridgingRetain(blockConnection));
+            owner->removeExtensionProxy((__bridge_retained void *)connection);
         }
     };
 
@@ -109,10 +124,8 @@ namespace {
 
         qCInfo(OCC::Mac::lcFinderSyncXPC) << "Storing FinderSync extension proxy with ID:" << connectionId;
 
-        // Store the proxy in the C++ object via public method (retain for manual memory management)
-        // CFBridgingRetain works both with and without ARC
-        // Also pass the connection for reverse mapping
-        _finderSyncXPC->storeExtensionProxy(connectionId, (void *)CFBridgingRetain(proxy), (void *)CFBridgingRetain(newConnection));
+        // The opaque fields each own one reference until removal or teardown.
+        _finderSyncXPC->storeExtensionProxy(connectionId, (__bridge_retained void *)proxy, (__bridge_retained void *)newConnection);
     }
 
     qCInfo(OCC::Mac::lcFinderSyncXPC) << "FinderSync XPC connection accepted and configured";
@@ -133,44 +146,42 @@ FinderSyncXPC::~FinderSyncXPC()
 {
     qCInfo(lcFinderSyncXPC) << "FinderSyncXPC destroying";
 
-    // Clean up proxies and connections (release retained references)
-    // Lock mutex to safely access _extensionProxies and _connectionToId
-    {
-        QMutexLocker locker(&_proxiesMutex);
-
-        // Release all proxies
-        for (auto it = _extensionProxies.begin(); it != _extensionProxies.end(); ++it) {
-            // Manual release for non-ARC code
-            // We stored with CFBridgingRetain (which does +1 retain), so we must release
-            id proxy = (__bridge id)it.value();
-            [proxy release];
-        }
-        _extensionProxies.clear();
-
-        // Release all connection objects from reverse mapping
-        for (auto it = _connectionToId.begin(); it != _connectionToId.end(); ++it) {
-            id connection = (__bridge id)it.key();
-            [connection release];
-        }
-        _connectionToId.clear();
+    if (_listenerDelegate) {
+        auto delegate = (__bridge FinderSyncXPCListenerDelegate *)_listenerDelegate;
+        delegate.finderSyncXPC = nullptr;
+        delegate.service = nullptr;
     }
-
-    // Drop the broker link first: its handler blocks capture `this`, so they must not be able
-    // to fire once the rest of this object is gone.
-    releaseBrokerConnection();
-
-    // Clean up listener
     if (_listener) {
-        NSXPCListener *listener = (__bridge NSXPCListener *)_listener;
+        NSXPCListener *listener = (__bridge_transfer NSXPCListener *)_listener;
+        listener.delegate = nil;
         [listener invalidate];
-        [listener release];
         _listener = nullptr;
     }
 
+    QHash<QString, void *> proxies;
+    QHash<void *, QString> connections;
+    {
+        QMutexLocker locker(&_proxiesMutex);
+        proxies.swap(_extensionProxies);
+        connections.swap(_connectionToId);
+    }
+    // Clear handlers before invalidating; they can otherwise re-enter this object during teardown.
+    for (auto it = connections.constBegin(); it != connections.constEnd(); ++it) {
+        NSXPCConnection *connection = (__bridge_transfer NSXPCConnection *)it.key();
+        connection.interruptionHandler = nil;
+        connection.invalidationHandler = nil;
+        [connection invalidate];
+    }
+    for (auto *proxy : proxies) {
+        (void)CFBridgingRelease(proxy);
+    }
+
+    // Clear broker handlers and invalidate the connection before this owner is destroyed.
+    releaseBrokerConnection();
+
     // Clean up delegate (retained separately because listener holds weak reference)
     if (_listenerDelegate) {
-        id delegate = (__bridge id)_listenerDelegate;
-        [delegate release];
+        (void)CFBridgingRelease(_listenerDelegate);
         _listenerDelegate = nullptr;
     }
 }
@@ -183,7 +194,7 @@ bool FinderSyncXPC::startListener(Mac::FinderSyncService *service)
     // service name; the FinderSyncBroker login item does that for us and hands this endpoint
     // to the extension. An anonymous listener needs no entitlement and cannot fail to
     // activate, because there is no bootstrap name to register.
-    NSXPCListener *listener = [[NSXPCListener anonymousListener] retain];
+    NSXPCListener *listener = [NSXPCListener anonymousListener];
 
     FinderSyncXPCListenerDelegate *delegate = [[FinderSyncXPCListenerDelegate alloc] init];
     delegate.finderSyncXPC = this;
@@ -198,15 +209,11 @@ bool FinderSyncXPC::startListener(Mac::FinderSyncService *service)
 
     [listener resume];
 
-    // Store listener with retained reference (works with and without ARC).
-    // CFBridgingRetain adds +1, so release the original +1 to avoid a leak.
-    _listener = (void *)CFBridgingRetain(listener);
-    [listener release];
+    _listener = (__bridge_retained void *)listener;
 
     // Store delegate with retained reference (NSXPCListener holds weak reference to delegate).
     // Without this, delegate would be deallocated immediately after this method returns.
-    _listenerDelegate = (void *)CFBridgingRetain(delegate);
-    [delegate release];
+    _listenerDelegate = (__bridge_retained void *)delegate;
 
     qCInfo(lcFinderSyncXPC) << "Anonymous FinderSync listener created; publishing endpoint to broker"
                             << Mac::FinderSyncBrokerIdentity::brokerServiceName();
@@ -222,12 +229,11 @@ void FinderSyncXPC::releaseBrokerConnection()
         return;
     }
 
-    NSXPCConnection *connection = (__bridge NSXPCConnection *)_brokerConnection;
+    NSXPCConnection *connection = (__bridge_transfer NSXPCConnection *)_brokerConnection;
+    _brokerConnection = nullptr;
     connection.interruptionHandler = nil;
     connection.invalidationHandler = nil;
     [connection invalidate];
-    [connection release];
-    _brokerConnection = nullptr;
 }
 
 void FinderSyncXPC::publishEndpointToBroker()
@@ -289,9 +295,9 @@ void FinderSyncXPC::publishEndpointToBroker()
     };
 
     [connection resume];
-    _brokerConnection = (void *)connection;
+    _brokerConnection = (__bridge_retained void *)connection;
 
-    NSXPCListener *listener = (__bridge NSXPCListener *)_listener;
+    auto listener = (__bridge NSXPCListener *)_listener;
 
     id<FinderSyncBrokerProtocol> broker = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
         // The overwhelmingly common cause is that the login item is not registered yet, or the
@@ -578,44 +584,39 @@ void FinderSyncXPC::storeExtensionProxy(const QString &connectionId, void *proxy
 
 void FinderSyncXPC::removeExtensionProxy(void *connection)
 {
-    QMutexLocker locker(&_proxiesMutex);
+    // The invalidation callback hands over a temporary reference independently of the map's reference.
+    NSXPCConnection *callbackConnection = (__bridge_transfer NSXPCConnection *)connection;
+    void *storedProxy = nullptr;
+    void *storedConnection = nullptr;
+    {
+        QMutexLocker locker(&_proxiesMutex);
+        const auto it = _connectionToId.find((__bridge void *)callbackConnection);
+        if (it == _connectionToId.end()) {
+            qCWarning(lcFinderSyncXPC) << "Connection not found in reverse mapping, cannot remove proxy";
+            return;
+        }
 
-    // Look up the connection ID from the connection object
-    auto it = _connectionToId.find(connection);
-    if (it == _connectionToId.end()) {
-        qCWarning(lcFinderSyncXPC) << "Connection not found in reverse mapping, cannot remove proxy";
-        // Release the connection we retained in invalidation handler
-        id conn = (__bridge id)connection;
-        [conn release];
-        return;
+        const auto connectionId = it.value();
+        qCInfo(lcFinderSyncXPC) << "Removing extension proxy with ID:" << connectionId;
+        storedProxy = _extensionProxies.take(connectionId);
+        storedConnection = it.key();
+        _connectionToId.erase(it);
+        qCDebug(lcFinderSyncXPC) << "Removed extension proxy. Remaining connections:" << _extensionProxies.size();
     }
-
-    const QString connectionId = it.value();
-    qCInfo(lcFinderSyncXPC) << "Removing extension proxy with ID:" << connectionId;
-
-    // Remove and release the proxy
-    auto proxyIt = _extensionProxies.find(connectionId);
-    if (proxyIt != _extensionProxies.end()) {
-        id proxy = (__bridge id)proxyIt.value();
-        [proxy release];
-        _extensionProxies.erase(proxyIt);
-    }
-
-    // Remove the connection from reverse mapping and release it
-    id conn = (__bridge id)connection;
-    [conn release];
-    _connectionToId.erase(it);
-
-    qCDebug(lcFinderSyncXPC) << "Removed extension proxy. Remaining connections:" << _extensionProxies.size();
+    // Releasing an XPC object can invoke its handlers, so consume map ownership after unlocking.
+    (void)CFBridgingRelease(storedProxy);
+    (void)CFBridgingRelease(storedConnection);
 }
 
-// Helper: snapshot proxy list under the mutex, then release it before making XPC calls.
-// This avoids holding _proxiesMutex during potentially-blocking XPC dispatch, which could
-// deadlock if a proxy call triggers an invalidation handler that also wants the mutex.
+// Keep proxies alive after releasing the mutex, including when a call triggers invalidation.
 QList<void *> FinderSyncXPC::currentProxies() const
 {
     QMutexLocker locker(&_proxiesMutex);
-    return _extensionProxies.values();
+    QList<void *> proxies;
+    for (auto *proxy : _extensionProxies) {
+        proxies.append((__bridge_retained void *)(__bridge id)proxy);
+    }
+    return proxies;
 }
 
 void FinderSyncXPC::registerPath(const QString &path)
@@ -630,7 +631,7 @@ void FinderSyncXPC::registerPath(const QString &path)
     qCDebug(lcFinderSyncXPC) << "Registering path with" << proxies.size() << "FinderSync extensions:" << path;
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy registerPath:nsPath];
     }
 }
@@ -647,7 +648,7 @@ void FinderSyncXPC::unregisterPath(const QString &path)
     qCDebug(lcFinderSyncXPC) << "Unregistering path with" << proxies.size() << "FinderSync extensions:" << path;
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy unregisterPath:nsPath];
     }
 }
@@ -662,7 +663,7 @@ void FinderSyncXPC::updateViewAtPath(const QString &path)
     NSString *nsPath = path.toNSString();
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy updateViewAtPath:nsPath];
     }
 }
@@ -678,7 +679,7 @@ void FinderSyncXPC::setStatusResult(const QString &status, const QString &path)
     NSString *nsPath = path.toNSString();
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy setStatusResult:nsStatus forPath:nsPath];
     }
 }
@@ -695,7 +696,7 @@ void FinderSyncXPC::setLocalizedString(const QString &key, const QString &value)
     NSString *nsValue = value.toNSString();
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy setLocalizedString:nsValue forKey:nsKey];
     }
 }
@@ -708,7 +709,7 @@ void FinderSyncXPC::resetMenuItems()
     }
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy resetMenuItems];
     }
 }
@@ -725,7 +726,7 @@ void FinderSyncXPC::addMenuItem(const QString &command, const QString &flags, co
     NSString *nsText = text.toNSString();
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy addMenuItemWithCommand:nsCommand flags:nsFlags text:nsText];
     }
 }
@@ -738,7 +739,7 @@ void FinderSyncXPC::menuItemsComplete()
     }
 
     for (auto *p : proxies) {
-        NSObject<FinderSyncProtocol> *proxy = (__bridge NSObject<FinderSyncProtocol> *)p;
+        NSObject<FinderSyncProtocol> *proxy = (__bridge_transfer NSObject<FinderSyncProtocol> *)p;
         [proxy menuItemsComplete];
     }
 }

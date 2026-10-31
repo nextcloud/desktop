@@ -14,10 +14,14 @@
 #import "trayaccountpopupviewutils.h"
 
 #include "systray.h"
+#include "tray/trayactivationpolicy.h"
 #include "tray/usermodel.h"
 
 #include <QCoreApplication>
+#include <QCursor>
 #include <QVariantMap>
+
+static_assert(__has_feature(objc_arc), "nctraypopup requires ARC.");
 
 using namespace OCC::Mac::TrayPopupImageUtils;
 using namespace OCC::Mac::TrayPopupViewUtils;
@@ -26,6 +30,8 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     NSStackView *_stack;
     NCAccountActionsPopup *_accountActionsPopup;
     NCAccountRow *_activeAccountRow;
+    id _mouseDownMonitor;
+    OCC::TrayActivationPolicy _activationPolicy;
 }
 
 - (instancetype)init
@@ -36,7 +42,18 @@ using namespace OCC::Mac::TrayPopupViewUtils;
                                 defer:NO];
     if (!self) return nil;
 
+    // AppKit can deactivate the app before Qt reports a status-item click. Keep
+    // the panel visible so resignKeyWindow can leave that click for Qt to close.
+    self.hidesOnDeactivate = NO;
     _stack = configurePopupPanel(self);
+    __unsafe_unretained NCTrayPopup *popup = self;
+    // Capture visibility before AppKit changes the key window for this press.
+    _mouseDownMonitor =
+        [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown
+                                              handler:^NSEvent *(NSEvent *event) {
+                                                  popup->_activationPolicy.recordMouseDown(static_cast<quint64>(event.eventNumber), popup.visible);
+                                                  return event;
+                                              }];
     return self;
 }
 
@@ -44,15 +61,24 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 
 - (void)dealloc
 {
-    [_accountActionsPopup release];
-    [super dealloc];
+    [NSEvent removeMonitor:_mouseDownMonitor];
+}
+
+- (BOOL)wasVisibleAtMouseDownForEvent:(NSEvent *)event
+{
+    return event && _activationPolicy.popupWasVisibleAtMouseDown(static_cast<quint64>(event.eventNumber));
 }
 
 - (void)resignKeyWindow
 {
+    const auto wasVisible = self.visible;
     [super resignKeyWindow];
     [_accountActionsPopup orderOut:nil];
     [self clearActiveAccountRow];
+    // Let the tray activation close the popup when focus moves to the icon.
+    if (OCC::TrayActivationPolicy::keepPopupOpenOnFocusLoss(wasVisible, OCC::Systray::instance()->geometry(), QCursor::pos())) {
+        return;
+    }
     [self orderOut:nil];
     OCC::Systray::instance()->setIsOpen(false);
 }
@@ -101,7 +127,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
                            avatar:(NSImage *)avatar
                   syncStatusImage:(NSImage *)syncStatusImage
 {
-    NSImageView *avatarView = [[[NSImageView alloc] init] autorelease];
+    NSImageView *avatarView = [[NSImageView alloc] init];
     avatarView.image = avatar != nil ? avatar : [NSImage imageWithSystemSymbolName:@"person.circle.fill"
                                                             accessibilityDescription:nil];
     avatarView.wantsLayer = YES;
@@ -122,15 +148,15 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     serverLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     serverLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NCAccountRow *row = [[[NCAccountRow alloc] init] autorelease];
+    NCAccountRow *row = [[NCAccountRow alloc] init];
     row.userIndex = index;
     row.popupDelegate = self;
 
-    NSImageView *statusView = [[[NSImageView alloc] init] autorelease];
+    NSImageView *statusView = [[NSImageView alloc] init];
     statusView.image = syncStatusImage;
     statusView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSImageView *chevron = [[[NSImageView alloc] init] autorelease];
+    NSImageView *chevron = [[NSImageView alloc] init];
     chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
         imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
     chevron.contentTintColor = NSColor.tertiaryLabelColor;
@@ -216,7 +242,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
         sep.translatesAutoresizingMaskIntoConstraints = NO;
         [_stack addArrangedSubview:sep];
         [sep.widthAnchor constraintEqualToConstant:kPopupWidth].active = YES;
-        [sep release];
     }
     addOwnedArrangedSubview(_stack, [[NCSpacerView alloc] initWithHeight:kActionVerticalPadding]);
 

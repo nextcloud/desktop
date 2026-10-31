@@ -24,6 +24,10 @@ if(APPLE)
     # hardcoded default in Build.xcconfig. A branded build signed by a different team would
     # then point the extension at an app group it does not own, while the client — which takes
     # the team from CMake — points at the right one, and the two could never reach each other.
+
+    # COMPILER_INDEX_STORE_ENABLE has to be forced off so the Realm package builds: the scheme
+    # exports its index store settings but not INDEX_DATA_STORE_DIR, so clang gets a valueless
+    # -index-store-path that eats realm-core's include path ('realm/array.hpp' not found).
     add_custom_target( mac_overlayplugin ALL
         xcodebuild
         ARCHS=${CMAKE_OSX_ARCHITECTURES}
@@ -32,6 +36,7 @@ if(APPLE)
         -target FinderSyncExt
         -configuration ${XCODE_TARGET_CONFIGURATION}
         "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        "COMPILER_INDEX_STORE_ENABLE=NO"
         "MARKETING_VERSION=${MIRALL_VERSION}"
         "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
         "OC_OEM_SHARE_ICNS=${OC_OEM_SHARE_ICNS}"
@@ -55,6 +60,7 @@ if(APPLE)
         -target ${OSX_FINDERSYNC_BROKER_TARGET}
         -configuration ${XCODE_TARGET_CONFIGURATION}
         "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+        "COMPILER_INDEX_STORE_ENABLE=NO"
         "MARKETING_VERSION=${MIRALL_VERSION}"
         "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
         "OC_APPLICATION_NAME=${APPLICATION_NAME}"
@@ -72,6 +78,7 @@ if(APPLE)
             -target FileProviderExt 
             -configuration ${XCODE_TARGET_CONFIGURATION}
             "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "COMPILER_INDEX_STORE_ENABLE=NO"
             "MARKETING_VERSION=${MIRALL_VERSION}"
             "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"
@@ -90,6 +97,7 @@ if(APPLE)
             -target FileProviderUIExt
             -configuration ${XCODE_TARGET_CONFIGURATION}
             "SYMROOT=${CMAKE_CURRENT_BINARY_DIR}"
+            "COMPILER_INDEX_STORE_ENABLE=NO"
             "MARKETING_VERSION=${MIRALL_VERSION}"
             "CURRENT_PROJECT_VERSION=${MIRALL_VERSION_BUILD}"
             "OC_APPLICATION_EXECUTABLE_NAME=${APPLICATION_EXECUTABLE}"

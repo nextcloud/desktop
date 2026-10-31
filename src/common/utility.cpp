@@ -712,4 +712,18 @@ QStringList Utility::expandCommandLineOptionValues(const QStringList &arguments)
     return expandedArguments;
 }
 
+#ifdef Q_OS_LINUX
+QString Utility::appImageLocation()
+{
+    Q_ASSERT(Utility::runningInAppImage());
+    static const auto value = qEnvironmentVariable("APPIMAGE");
+    return value;
+}
+
+bool Utility::runningInAppImage()
+{
+    return qEnvironmentVariableIsSet("APPIMAGE");
+}
+#endif
+
 } // namespace OCC

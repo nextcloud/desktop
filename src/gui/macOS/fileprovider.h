@@ -7,6 +7,8 @@
 
 #include <QObject>
 
+#include <optional>
+
 #include "fileproviderdomainmanager.h"
 #include "fileproviderservice.h"
 #include "fileproviderxpc.h"
@@ -38,9 +40,12 @@ public:
     [[nodiscard]] static bool available();
 
     void configureXPC();
+
     [[nodiscard]] FileProviderXPC *xpc() const;
     [[nodiscard]] FileProviderDomainManager *domainManager() const;
     [[nodiscard]] FileProviderService *service() const;
+
+    [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier);
 
 private:
     std::unique_ptr<FileProviderDomainManager> _domainManager;

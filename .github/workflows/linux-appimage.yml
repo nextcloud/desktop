@@ -14,11 +14,14 @@ jobs:
     if: "${{ github.event.action != 'closed' && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'os: :penguin: Linux') }}"
     name: Linux Appimage Package
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el8-6.10.2-4
+    container: ghcr.io/nextcloud/continuous-integration-client-appimage-qt6:client-appimage-el9-6.11.2-4
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
+
+      - name: Test AppImage icon selection
+        run: python3 admin/linux/tests/test_appimage_icon.py
 
       - name: Configure, compile and package
         id: build-appimage
@@ -29,7 +32,7 @@ jobs:
 
       - name: Upload AppImage artifact
         id: upload-appimage
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nextcloud-appimage-pr-${{ github.event.number }}
           path: ${{ steps.build-appimage.outputs.APPIMAGE_NAME }}

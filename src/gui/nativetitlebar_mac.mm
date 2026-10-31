@@ -11,6 +11,8 @@
 
 #import <AppKit/AppKit.h>
 
+static_assert(__has_feature(objc_arc), "nativetitlebar_mac requires ARC.");
+
 namespace OCC {
 
 void styleNativeTitleBar(QWindow *window, bool hideTitleText)
@@ -34,7 +36,7 @@ void styleNativeTitleBar(QWindow *window, bool hideTitleText, const QColor &back
         return;
     }
 
-    auto *const view = reinterpret_cast<NSView *>(viewId);
+    auto *const view = (__bridge NSView *)reinterpret_cast<void *>(viewId);
     NSWindow *const nsWindow = view.window;
     if (!nsWindow) {
         return;

@@ -1437,19 +1437,18 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     auto definition = folderDefinition;
     definition.journalPath = definition.defaultJournalPath(accountState->account());
 
-    if (!ensureJournalGone(definition.absoluteJournalPath())) {
-        return nullptr;
-    }
-
 #ifdef Q_OS_MACOS
-    // macOS sandbox: Create security-scoped bookmark data while we still
-    // have access to the path (the user just selected it via QFileDialog).
-    // This bookmark will be persisted to settings and resolved on next
-    // app launch to regain sandbox access.
+    // macOS sandbox: prefer the bookmark from the folder picker; one made from a bare path only
+    // works while the process still has access. Start access before the journal is touched.
     if (definition.securityScopedBookmarkData.isEmpty()) {
         definition.securityScopedBookmarkData = Utility::createSecurityScopedBookmarkData(definition.localPath);
     }
+    auto securityScopedAccess = Utility::MacSandboxPersistentAccess::createValidFromBookmarkData(definition.securityScopedBookmarkData);
 #endif
+
+    if (!ensureJournalGone(definition.absoluteJournalPath())) {
+        return nullptr;
+    }
 
     auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs) {
@@ -1469,6 +1468,13 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     folder->setSaveBackwardsCompatible(oneAccountOnly);
 
     if (folder) {
+#ifdef Q_OS_MACOS
+        if (securityScopedAccess) {
+            folder->setSecurityScopedAccess(std::move(securityScopedAccess));
+        } else {
+            folder->setNeedsSandboxBookmark(true);
+        }
+#endif
         folder->setSaveBackwardsCompatible(oneAccountOnly);
         folder->saveToSettings();
         Q_EMIT folderSyncStateChange(folder);

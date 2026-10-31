@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Kan ikke åbne browseren, bedes du kopiere linket til din browser.</translation>
+        <translation>Browseren kunne ikke åbnes. Kopiér linket til din browser.</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="138"/>
         <source>Connect to %1?</source>
-        <translation>Forbinder til% 1?</translation>
+        <translation>Opret forbindelse til %1?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="148"/>
@@ -34,7 +34,7 @@
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="248"/>
         <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="20"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="180"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="262"/>
         <source>Set up later</source>
-        <translation>Opsætning senere</translation>
+        <translation>Konfigurer senere</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="273"/>
@@ -62,19 +62,19 @@
         <translation>Avanceret</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="282"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="285"/>
         <source>Sign up</source>
-        <translation>Tilmelding</translation>
+        <translation>Tilmeld dig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="292"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="297"/>
         <source>Self-host</source>
-        <translation>Self- vært</translation>
+        <translation>Host selv</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="307"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="312"/>
         <source>Proxy settings</source>
-        <translation>Proxy- indstillinger</translation>
+        <translation>Proxyindstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BrowserAuthFooter.qml" line="27"/>
@@ -87,17 +87,17 @@
         <translation>Åbn</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="358"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="363"/>
         <source>Connect</source>
         <translation>Forbind</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="360"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="365"/>
         <source>Done</source>
         <translation>Færdig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="362"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="367"/>
         <source>Log in</source>
         <translation>Log ind</translation>
     </message>
@@ -106,7 +106,7 @@
     <name>ActivitiesWindow</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="20"/>
-        <location filename="../src/gui/accountsettings.cpp" line="184"/>
+        <location filename="../src/gui/accountsettings.cpp" line="183"/>
         <source>Activities</source>
         <translation>Aktiviteter</translation>
     </message>
@@ -154,24 +154,9 @@
     <name>ActivityItemContent</name>
     <message>
         <location filename="../src/gui/activity/qml/ActivityItemContent.qml" line="203"/>
-        <location filename="../src/gui/activity/activitydata.cpp" line="314"/>
+        <location filename="../src/gui/activity/activitydata.cpp" line="315"/>
         <source>Dismiss</source>
         <translation>Afvis</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="182"/>
-        <source>Open file details</source>
-        <translation>Åben fildetaljer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
-        <source>File details</source>
-        <translation>Fil detaljer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
-        <source>File actions</source>
-        <translation>Filhandlinger</translation>
     </message>
 </context>
 <context>
@@ -203,22 +188,22 @@
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="44"/>
         <source>Ask before syncing folders larger than</source>
-        <translation>Ask before syncing folders larger than</translation>
+        <translation>Spørg før synkronisering af mapper større end</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="62"/>
         <source>Large folder threshold</source>
-        <translation>Stor mappetærskel</translation>
+        <translation>Grænse for store mapper</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="64"/>
         <source>%1 MB</source>
-        <translation>% 1 MB</translation>
+        <translation>%1 MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="71"/>
         <source>Ask before syncing external storage</source>
-        <translation>Ask before syncing external storage</translation>
+        <translation>Spørg før synkronisering af eksterne lagre</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AdvancedOptionsDialog.qml" line="90"/>
@@ -231,22 +216,22 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="44"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Ny samtale</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="70"/>
         <source>Reload conversations</source>
-        <translation type="unfinished"/>
+        <translation>Genindlæs samtaler</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="100"/>
         <source>Assistant is thinking…</source>
-        <translation type="unfinished"/>
+        <translation>Assistenten tænker …</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="110"/>
         <source>Retry response generation</source>
-        <translation type="unfinished"/>
+        <translation>Prøv at generere svaret igen</translation>
     </message>
 </context>
 <context>
@@ -254,12 +239,12 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="24"/>
         <source>No conversation selected</source>
-        <translation type="unfinished"/>
+        <translation>Ingen samtale valgt</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="27"/>
         <source>Selected conversation</source>
-        <translation type="unfinished"/>
+        <translation>Valgt samtale</translation>
     </message>
 </context>
 <context>
@@ -268,22 +253,22 @@
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="37"/>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="40"/>
         <source>Delete assistant task?</source>
-        <translation type="unfinished"/>
+        <translation>Slet assistentopgaven?</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="49"/>
         <source>This removes the task from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Opgaven fjernes fra serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="66"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Slet</translation>
     </message>
 </context>
 <context>
@@ -291,7 +276,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantMessageList.qml" line="50"/>
         <source>Start a conversation with Nextcloud Assistant.</source>
-        <translation type="unfinished"/>
+        <translation>Start en samtale med Nextcloud Assistant.</translation>
     </message>
 </context>
 <context>
@@ -300,17 +285,17 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="27"/>
         <source>%1 · %2</source>
         <extracomment>%1 is the assistant task status and %2 is the task's date and time in the locale's short format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="60"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Prøv igen</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="67"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Slet</translation>
     </message>
 </context>
 <context>
@@ -318,7 +303,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
         <source>No assistant tasks for this type.</source>
-        <translation type="unfinished"/>
+        <translation>Ingen assistentopgaver af denne type.</translation>
     </message>
 </context>
 <context>
@@ -327,56 +312,57 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="101"/>
         <source>Select assistant task type %1</source>
         <extracomment>%1 is the name of an assistant task type, for example &quot;Chat&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Vælg assistentopgavetypen %1</translation>
     </message>
 </context>
 <context>
     <name>AssistantWindow</name>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="186"/>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="24"/>
+        <location filename="../src/gui/accountsettings.cpp" line="185"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Assistent</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>Skriv en besked</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="66"/>
         <source>Describe the task</source>
-        <translation type="unfinished"/>
+        <translation>Beskriv opgaven</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="138"/>
         <source>AI can make mistakes. Review generated content before using it.</source>
-        <translation type="unfinished"/>
+        <translation>AI kan tage fejl. Gennemgå det genererede indhold, før du bruger det.</translation>
     </message>
     <message>
-        <location filename="../src/gui/AssistantWindow.qml" line="252"/>
+        <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="76"/>
         <source>Send</source>
         <translation>Send</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation>Nextcloud assistent</translation>
+        <translation>Nextcloud Assistant</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
         <location filename="../src/gui/AssistantWindow.qml" line="95"/>
         <source>Start new conversation?</source>
-        <translation>Begynde en ny samtale?</translation>
+        <translation>Start en ny samtale?</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="104"/>
         <source>This will clear the existing conversation.</source>
-        <translation>Dette vil rydde den eksisterende samtale.</translation>
+        <translation>Den nuværende samtale bliver ryddet.</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="119"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
@@ -387,7 +373,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
         <source>Ask Assistant …</source>
-        <translation>Spørg assistent...</translation>
+        <translation>Spørg assistenten …</translation>
     </message>
 </context>
 <context>
@@ -395,17 +381,17 @@
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Connect public share</source>
-        <translation>Forbind offentlig andel</translation>
+        <translation>Opret forbindelse til offentlig deling</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="27"/>
         <source>Enter credentials</source>
-        <translation>Indtast legitimation</translation>
+        <translation>Angiv loginoplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="37"/>
         <source>Enter the share password if the link is password protected.</source>
-        <translation>Indtast del adgangskoden hvis linket er beskyttet med adgangskode.</translation>
+        <translation>Angiv adgangskoden til delingen, hvis linket er beskyttet med adgangskode.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/BasicAuthPage.qml" line="38"/>
@@ -434,24 +420,24 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="165"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="170"/>
         <source>Talk notification caller avatar</source>
-        <translation>Opkalds-avatar til Talk meddelelse</translation>
+        <translation>Opkaldsavatar i Talk-notifikation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="224"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="229"/>
         <source>Answer Talk call notification</source>
-        <translation>Svar Talk opkaldsnotifikation</translation>
+        <translation>Besvar Talk-opkaldsnotifikation</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="231"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="236"/>
         <source>Decline</source>
         <translation>Afvis</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline Talk call notification</source>
-        <translation>Afvis Talk opkaldsnotifikation</translation>
+        <translation>Afvis Talk-opkaldsnotifikation</translation>
     </message>
 </context>
 <context>
@@ -460,12 +446,12 @@
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
         <source>Client certificate</source>
-        <translation>Kundecertifikat</translation>
+        <translation>Klientcertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
-        <translation>Vælg en PKCS # 12 certifikatfil og indtast dens adgangskode.</translation>
+        <translation>Vælg en PKCS#12-certifikatfil, og angiv dens adgangskode.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
@@ -485,7 +471,7 @@
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
@@ -509,7 +495,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="136"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Synkroniserer %1 af %2 (%3 tilbage)</translation>
+        <translation>Synkroniserer %1 af %2  (%3 tilbage)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
@@ -530,12 +516,12 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="172"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="253"/>
         <source>No recently changed files</source>
-        <translation>Ingen filer er ændret for nyligt</translation>
+        <translation>Ingen nyligt ændrede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="192"/>
         <source>Sync paused</source>
-        <translation>Synk. på pause</translation>
+        <translation>Synkronisering sat på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="195"/>
@@ -546,7 +532,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation>Åbn% 1 skrivebord</translation>
+        <translation>Åbn %1 Desktop</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -581,7 +567,22 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="281"/>
         <source>Quit sync client</source>
-        <translation>Afslut synk.-klienten</translation>
+        <translation>Afslut synkroniseringsklienten</translation>
+    </message>
+</context>
+<context>
+    <name>ConfigFile</name>
+    <message>
+        <location filename="../src/libsync/configfile.cpp" line="750"/>
+        <source>Managed by your organization</source>
+        <comment>User label when setting is enforced and cannot be changed.</comment>
+        <translation>Administreres af din organisation</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/configfile.cpp" line="752"/>
+        <source>Managed by your system administrator</source>
+        <comment>User label when setting is enforced and cannot be changed.</comment>
+        <translation>Administreres af din systemadministrator</translation>
     </message>
 </context>
 <context>
@@ -594,15 +595,38 @@
     <message>
         <location filename="../src/gui/ConflictDelegate.qml" line="68"/>
         <source>Server version</source>
-        <translation>Server version</translation>
+        <translation>Serverversion</translation>
+    </message>
+</context>
+<context>
+    <name>DeleteShareConfirmation</name>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
+        <source>Delete share?</source>
+        <translation>Slet deling?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
+        <source>This removes the share and its access for all recipients.</source>
+        <translation>Delingen og adgangen for alle modtagere fjernes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
+        <source>Delete</source>
+        <translation>Slet</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
+        <source>Cancel</source>
+        <translation>Annuller</translation>
     </message>
 </context>
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="83"/>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="85"/>
         <source>Opening file for local editing</source>
-        <translation>Åbner fil for lokal redigering</translation>
+        <translation>Åbner fil til lokal redigering</translation>
     </message>
 </context>
 <context>
@@ -610,7 +634,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation>Søg emoji</translation>
+        <translation>Søg efter emoji</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="200"/>
@@ -626,9 +650,9 @@
 <context>
     <name>EncryptionTokenDiscoveryDialog</name>
     <message>
-        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="88"/>
+        <location filename="../src/gui/tray/EncryptionTokenDiscoveryDialog.qml" line="90"/>
         <source>Discovering the certificates stored on your USB token</source>
-        <translation>Opdagelse af certifikaterne, der er gemt på dit USB token</translation>
+        <translation>Finder certifikaterne, der er gemt på dit USB-token</translation>
     </message>
 </context>
 <context>
@@ -640,23 +664,54 @@
     </message>
 </context>
 <context>
+    <name>FieldDelegate</name>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
+        <source>%1 (required)</source>
+        <translation>%1 (påkrævet)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
+        <source>YYYY-MM-DD</source>
+        <translation>ÅÅÅÅ-MM-DD</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
+        <source>Enter a valid date within the allowed range.</source>
+        <translation>Angiv en gyldig dato inden for det tilladte interval.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
+        <source>This value is shorter than the minimum length.</source>
+        <translation>Værdien er kortere end minimumslængden.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
+        <source>This setting is not supported by this version of the desktop client.</source>
+        <translation>Indstillingen understøttes ikke af denne version af skrivebordsklienten.</translation>
+    </message>
+</context>
+<context>
     <name>FileActionsWindow</name>
     <message>
         <location filename="../src/gui/integration/FileActionsWindow.qml" line="33"/>
         <source>File actions for %1</source>
-        <translation>Filhandlinger for% 1</translation>
+        <translation>Filhandlinger for %1</translation>
     </message>
 </context>
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="218"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="219"/>
         <source>Activity</source>
+        <extracomment>Name of the Activity feature.</extracomment>
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="227"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="229"/>
         <source>Sharing</source>
+        <extracomment>Name of the Sharing feature.</extracomment>
         <translation>Deling</translation>
     </message>
 </context>
@@ -666,7 +721,7 @@
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="29"/>
         <source>File details of %1 · %2</source>
         <extracomment>%1 is the file name. %2 is the application window title, for example &quot;Nextcloud&quot;.</extracomment>
-        <translation>Fildetaljer for of %1 · %2</translation>
+        <translation>Fildetaljer for %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -680,7 +735,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="537"/>
+        <location filename="../src/libsync/filesystem.cpp" line="519"/>
         <source>Error removing &quot;%1&quot;: %2</source>
         <translation>Fejl ved fjernelse af &quot;%1&quot;: %2</translation>
     </message>
@@ -695,7 +750,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Vælg en lokal mappe på din computer der ønskes synkroniseret</translation>
+        <translation>Vælg en lokal mappe på din computer, der skal synkroniseres</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="48"/>
@@ -708,7 +763,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="77"/>
         <source>Select a remote destination folder</source>
-        <translation>Vælg en fjern destinationsmappe</translation>
+        <translation>Vælg en destinationsmappe på serveren</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="89"/>
@@ -731,52 +786,52 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation>Påfør etiketter</translation>
+        <translation>Anvend etiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="196"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
         <source>Assign labels to the file to manage its sensitivity, retention, and legal hold policies.</source>
-        <translation>Tildel etiketter til filen for at styre dens følsomhed, tilbageholdelse og juridiske hold politikker.</translation>
+        <translation>Tildel etiketter til filen for at styre politikker for følsomhed, opbevaring og juridisk tilbageholdelse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="214"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="219"/>
         <source>Sensitivity labels</source>
-        <translation>Følsomhedsmærker</translation>
+        <translation>Følsomhedsetiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="241"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="246"/>
         <source>Retention labels</source>
-        <translation>Tilbageholdelsesmærker</translation>
+        <translation>Opbevaringsetiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="268"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="273"/>
         <source>Legal hold labels</source>
-        <translation>Etiketter til juridisk brug</translation>
+        <translation>Etiketter for juridisk tilbageholdelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="316"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
         <source>Reset</source>
         <translation>Nulstil</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="321"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="326"/>
         <source>Apply</source>
         <translation>Anvend</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="224"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="229"/>
         <source>Select sensitivity label</source>
-        <translation>Vælg sensitivitetsmærkat</translation>
+        <translation>Vælg følsomhedsetiket</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="251"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="256"/>
         <source>Select retention label</source>
         <translation>Vælg opbevaringsetiket</translation>
     </message>
     <message>
-        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="277"/>
+        <location filename="../src/gui/GovernanceLabelsDialog.qml" line="282"/>
         <source>Select legal hold label</source>
-        <translation>Vælg etikette til lovligt hold</translation>
+        <translation>Vælg etiket for juridisk tilbageholdelse</translation>
     </message>
 </context>
 <context>
@@ -784,75 +839,15 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation>Lokal netværksadgang er deaktiveret. Aktivér den til at forbinde til serveren.</translation>
+        <translation>Adgang til lokalt netværk er deaktiveret. Aktivér den for at oprette forbindelse til serveren.</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="795"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="799"/>
         <source>Assistant</source>
-        <translation>Sekretær</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="248"/>
-        <source>Main content</source>
-        <translation>Hovedindhold</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="330"/>
-        <source>Issue with account %1</source>
-        <translation>Udstedelse med konto% 1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="332"/>
-        <source>Issues with several accounts</source>
-        <translation>Spørgsmål med flere konti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="413"/>
-        <source>Start new conversation?</source>
-        <translation>Begynde en ny samtale?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="433"/>
-        <source>New conversation</source>
-        <translation>Ny samtale</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="437"/>
-        <source>Cancel</source>
-        <translation>Annullér </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="458"/>
-        <source>This will clear the existing conversation.</source>
-        <translation>Dette vil rydde den eksisterende samtale.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="503"/>
-        <source>Ask Assistant…</source>
-        <translation>Spørg assistent...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="531"/>
-        <source>Send assistant question</source>
-        <translation>Send assisterende spørgsmål</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="552"/>
-        <source>Start a new assistant chat</source>
-        <translation>Start en ny assisterende chat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="777"/>
-        <source>Unified search results list</source>
-        <translation>Samlet søgeresultatliste</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/MainWindow.qml" line="841"/>
-        <source>New activities</source>
-        <translation>Nye aktiviteter</translation>
+        <translation>Assistent</translation>
     </message>
 </context>
 <context>
@@ -865,7 +860,7 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation>Redo</translation>
+        <translation>Gentag</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
@@ -896,71 +891,71 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="335"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="344"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation>Serveren tog for lang tid at svare. Tjek din forbindelse og prøv at synkronisere igen. Hvis det stadig ikke virker, nå ud til din server administrator.</translation>
+        <translation>Serveren var for længe om at svare. Tjek din forbindelse, og prøv at synkronisere igen. Kontakt din serveradministrator, hvis det stadig ikke virker.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="339"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="350"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation>Der opstod en uventet fejl. Prøv at synkronisere igen eller kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <translation>Der opstod en uventet fejl. Prøv at synkronisere igen, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="619"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="591"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
-        <translation>Serveren håndhæver streng transportsikkerhed og accepterer ikke utroværdige certifikater.</translation>
+        <translation>Serveren håndhæver streng transportsikkerhed og accepterer ikke ikke-betroede certifikater.</translation>
     </message>
 </context>
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="238"/>
+        <location filename="../src/libsync/account.cpp" line="239"/>
         <source>Public Share Link</source>
-        <translation>Offentlig Deling Link</translation>
+        <translation>Offentligt delingslink</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1089"/>
+        <location filename="../src/libsync/account.cpp" line="1092"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>Fil %1 er allerede låst af %2.</translation>
+        <translation>Filen %1 er allerede låst af %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1091"/>
+        <location filename="../src/libsync/account.cpp" line="1094"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation>Låse handling på %1 fejlede med fejlen %2</translation>
+        <translation>Låsning af %1 mislykkedes med fejlen %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1093"/>
+        <location filename="../src/libsync/account.cpp" line="1096"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation>Oplåsnings handlingen på %1 fejlede med fejlen %2</translation>
+        <translation>Oplåsning af %1 mislykkedes med fejlen %2</translation>
     </message>
 </context>
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="255"/>
+        <location filename="../src/gui/accountmanager.cpp" line="215"/>
         <source>An account was detected from a legacy desktop client.
 Should the account be imported?</source>
-        <translation>En konto blev opdaget fra en ældre desktop klient.
+        <translation>Der blev fundet en konto fra en ældre skrivebordsklient.
 Skal kontoen importeres?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="257"/>
-        <location filename="../src/gui/accountmanager.cpp" line="370"/>
+        <location filename="../src/gui/accountmanager.cpp" line="217"/>
+        <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>Legacy import</source>
-        <translation>Legacy import</translation>
+        <translation>Import fra ældre klient</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="258"/>
+        <location filename="../src/gui/accountmanager.cpp" line="218"/>
         <source>Import</source>
         <translation>Importér</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="259"/>
+        <location filename="../src/gui/accountmanager.cpp" line="219"/>
         <source>Skip</source>
         <translation>Spring over</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="371"/>
+        <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>Could not import accounts from legacy client configuration.</source>
         <translation>Kunne ikke importere konti fra ældre klientkonfiguration.</translation>
     </message>
@@ -975,12 +970,12 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation>File Provider er aktiveret, men denne konto har stadig klassiske sync mapper. Den Finder integration forbliver utilgængelig, indtil dette er løst.</translation>
+        <translation>File Provider er slået til, men kontoen har stadig klassiske synkroniseringsmapper. Finder-integrationen er ikke tilgængelig, før det er løst.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation>Resolve...</translation>
+        <translation>Løs …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -995,7 +990,7 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="401"/>
         <source>Synchronize none</source>
-        <translation>Synkroniser ingen</translation>
+        <translation>Synkroniser intet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="408"/>
@@ -1004,37 +999,37 @@ Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
-        <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1379"/>
+        <location filename="../src/gui/accountsettings.cpp" line="198"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1368"/>
         <source>Connection settings</source>
         <translation>Forbindelsesindstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="575"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation>Hvis denne kontos filer vises fanget, mangler, eller ude af sync i Finder, nulstille sin File Provider opbevaring. Usynkroniserede lokale ændringer bevares.</translation>
+        <translation>Hvis kontoens filer ser ud til at sidde fast, mangle eller ikke være synkroniseret i Finder, kan du nulstille dens File Provider-lager. Lokale ændringer, der ikke er synkroniseret, bevares.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2132"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2121"/>
         <source>Reset File Provider Domain</source>
-        <translation>Reset File Provider Domain</translation>
+        <translation>Nulstil File Provider-domæne</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1593"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1582"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation>Log ud, log ind igen eller fjern denne konto fra klienten.</translation>
+        <translation>Log ud, log ind igen, eller fjern kontoen fra klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1589"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
         <source>Log out</source>
         <translation>Log ud</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1590"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove account</source>
         <translation>Fjern konto</translation>
     </message>
@@ -1044,15 +1039,10 @@ Skal kontoen importeres?</translation>
         <translation>Anvend</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
-        <source>Virtual files</source>
-        <translation>Virtuelle filer</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2133"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
@@ -1062,135 +1052,136 @@ Skal kontoen importeres?</translation>
         <translation>Forbundet med &lt;server&gt; som &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="379"/>
+        <location filename="../src/gui/accountsettings.cpp" line="378"/>
         <source>No account configured.</source>
         <translation>Ingen konto konfigureret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>End-to-end-kryptering med Virtuelle Filer</translation>
+        <translation>End-to-end-kryptering med virtuelle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="100"/>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Du ser ud til at have funktionen Virtual Files aktiveret i denne mappe. I øjeblikket er det ikke muligt implicit at downloade virtuelle filer, der er end-til-end-krypteret. For at få den bedste oplevelse med Virtuelle Filer og end-til-end-kryptering skal du sørge for, at den krypterede mappe er markeret med &quot;Gør altid tilgængelig lokalt&quot;.</translation>
+        <translation>Funktionen Virtuelle filer ser ud til at være aktiveret for denne mappe. I øjeblikket er det ikke muligt at hente virtuelle filer, der er end-to-end-krypteret, implicit. For at få den bedste oplevelse med virtuelle filer og end-to-end-kryptering skal du sørge for, at den krypterede mappe er markeret med &quot;Gør altid tilgængelig lokalt&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="108"/>
-        <location filename="../src/gui/accountsettings.cpp" line="130"/>
+        <location filename="../src/gui/accountsettings.cpp" line="107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
         <translation>Krypter ikke mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="111"/>
-        <location filename="../src/gui/accountsettings.cpp" line="133"/>
+        <location filename="../src/gui/accountsettings.cpp" line="110"/>
+        <location filename="../src/gui/accountsettings.cpp" line="132"/>
         <source>Encrypt folder</source>
         <translation>Krypter mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
-        <translation>End-to-end Kryptering</translation>
+        <translation>End-to-end-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="124"/>
+        <location filename="../src/gui/accountsettings.cpp" line="123"/>
         <source>This will encrypt your folder and all files within it. These files will no longer be accessible without your encryption mnemonic key. 
 &lt;b&gt;This process is not reversible. Are you sure you want to proceed?&lt;/b&gt;</source>
-        <translation>Dette vil kryptere din mappe og alle filer i den. Disse filer vil ikke længere være tilgængelige uden din krypterings mnemonisk nøgle. 
-&lt;b&gt;Denne proces er irreversibel. Er du sikker på at du ønsker at fortsætte?&lt;/b&gt;</translation>
+        <translation>Dette krypterer din mappe og alle filer i den. Filerne kan ikke længere tilgås uden din huskesætning til krypteringen. 
+&lt;b&gt;Processen kan ikke fortrydes. Er du sikker på, at du vil fortsætte?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="370"/>
+        <location filename="../src/gui/accountsettings.cpp" line="369"/>
         <source>End-to-end encryption has not been initialized on this account.</source>
-        <translation>Ende- to- end kryptering er ikke blevet initialiseret på denne konto.</translation>
+        <translation>Ende-til-ende-kryptering er ikke initialiseret for denne konto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="397"/>
+        <location filename="../src/gui/accountsettings.cpp" line="396"/>
         <source>Forget encryption setup</source>
-        <translation>Forget encryption setup</translation>
+        <translation>Glem opsætningen af kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="407"/>
+        <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>Display mnemonic</source>
-        <translation>Vis huskeregel</translation>
+        <translation>Vis huskesætning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="413"/>
+        <location filename="../src/gui/accountsettings.cpp" line="412"/>
         <source>Encryption is set-up. Remember to &lt;b&gt;Encrypt&lt;/b&gt; a folder to end-to-end encrypt any new files added to it.</source>
-        <translation>Kryptering er sat op. Husk at &lt; b &gt; Kryptér &lt; / b &gt; en mappe til ende-til-ende kryptere alle nye filer tilføjet til det.</translation>
+        <translation>Kryptering er konfigureret. Husk at vælge &lt;b&gt;Kryptér&lt;/b&gt; på en mappe for at ende-til-ende-kryptere nye filer, der tilføjes til den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="506"/>
         <source>Please wait for the folder to sync before trying to encrypt it.</source>
-        <translation>Vent venligst på at mappen synkroniseres, før du prøver at kryptere den.</translation>
+        <translation>Vent på, at mappen er synkroniseret, før du prøver at kryptere den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>The folder has a minor sync problem. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har et mindre synkroniseringsproblem. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="511"/>
+        <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <source>The folder has a sync error. Encryption of this folder will be possible once it has synced successfully</source>
         <translation>Mappen har en synkroniseringsfejl. Kryptering af denne mappe vil være mulig, når den er synkroniseret</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="522"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>You cannot encrypt this folder because the end-to-end encryption is not set-up yet on this device.
 Would you like to do this now?</source>
-        <translation>Du kan ikke kryptere denne mappe, fordi end-to-end kryptering ikke er set- up endnu på denne enhed.
+        <translation>Du kan ikke kryptere denne mappe, fordi ende-til-ende-kryptering endnu ikke er konfigureret på denne enhed.
 Vil du gøre det nu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="546"/>
+        <location filename="../src/gui/accountsettings.cpp" line="545"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation>Du kan ikke kryptere en mappe med indhold, venligst fjern filerne.
-Vent på en ny synkronisering, og krypter herefter mappen.</translation>
+        <translation>Du kan ikke kryptere en mappe med indhold. Fjern filerne.
+Vent på den nye synkronisering, og krypter derefter mappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Encryption failed</source>
-        <translation>Kryptering fejlede</translation>
+        <translation>Krypteringen mislykkedes</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation>Kunne ikke kryptere mappen da den ikke længere eksisterer</translation>
+        <translation>Kunne ikke kryptere mappen, fordi den ikke længere findes</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="711"/>
+        <location filename="../src/gui/accountsettings.cpp" line="710"/>
         <source>Encrypt</source>
         <translation>Krypter</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="719"/>
+        <location filename="../src/gui/accountsettings.cpp" line="718"/>
         <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>Edit Ignored Files</source>
-        <translation>Redigér ignorerede filer</translation>
+        <translation>Rediger ignorerede filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="722"/>
+        <location filename="../src/gui/accountsettings.cpp" line="721"/>
         <location filename="../src/gui/accountsettings.cpp" line="792"/>
         <source>Create new folder</source>
         <translation>Opret ny mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="728"/>
-        <location filename="../src/gui/accountsettings.cpp" line="818"/>
+        <location filename="../src/gui/accountsettings.cpp" line="819"/>
         <source>Availability</source>
+        <extracomment>Name of the submenu containing virtual-file availability actions.</extracomment>
         <translation>Tilgængelighed</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>Choose what to sync</source>
-        <translation>Vælg hvad der skal synkroniseres</translation>
+        <translation>Vælg, hvad der skal synkroniseres</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
@@ -1208,255 +1199,240 @@ Vent på en ny synkronisering, og krypter herefter mappen.</translation>
         <translation>Fjern mappesynkroniseringsforbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="827"/>
+        <location filename="../src/gui/accountsettings.cpp" line="828"/>
         <source>Disable virtual file support …</source>
-        <translation>Deaktiver virtuel fil-support …</translation>
+        <translation>Deaktiver understøttelse af virtuelle filer …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="840"/>
         <source>Enable virtual file support %1 …</source>
-        <translation>Aktiver virtuel fil-support %1 …</translation>
+        <translation>Aktivér understøttelse af virtuelle filer %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="839"/>
+        <location filename="../src/gui/accountsettings.cpp" line="840"/>
         <source>(experimental)</source>
         <translation>(eksperimentel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="941"/>
-        <location filename="../src/gui/accountsettings.cpp" line="984"/>
+        <location filename="../src/gui/accountsettings.cpp" line="943"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>Folder creation failed</source>
-        <translation>Fejl ved oprettelse af mappe</translation>
+        <translation>Mappen kunne ikke oprettes</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="985"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt; p &gt; Kunne ikke tilføje mappesynkroniseringsforbindelsen for &lt; i &gt;% 1 &lt; / i &gt;. &lt; / p &gt;</translation>
+        <translation>&lt;p&gt;Mappesynkroniseringen for &lt;i&gt;%1&lt;/i&gt; kunne ikke tilføjes.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bekræft Fjern mappesynkroniseringsforbindelse</translation>
+        <translation>Bekræft fjernelse af mappesynkroniseringsforbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1015"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1017"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Fjern mappesynkroniseringsforbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>Grant access to sync folder</source>
         <translation>Giv adgang til synkroniseringsmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
-        <source>Access Error</source>
-        <translation>Adgangsfejl</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
-        <source>Could not acquire access to the selected folder. Please try again.</source>
-        <translation>Kunne ikke få adgang til den valgte mappe. Prøv igen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
         <source>Wrong Folder</source>
         <translation>Forkert mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1065"/>
         <source>Please select the original sync folder: %1</source>
-        <translation>Vælg den originale synkroniseringsmappe:% 1</translation>
+        <translation>Vælg den oprindelige synkroniseringsmappe: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1081"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1090"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>Bookmark Error</source>
         <translation>Fejl ved bogmærke</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1082"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Kunne ikke oprette et sikkerhedsbogmærke for mappen. Prøv igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1091"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
-        <translation>Kunne ikke løse sikkerhedsbogmærket. Prøv igen.</translation>
+        <translation>Kunne ikke åbne sikkerhedsbogmærket. Prøv igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1192"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
         <source>Disable virtual file support?</source>
-        <translation>Deaktiver virtuel fil-support?</translation>
+        <translation>Deaktiver understøttelse af virtuelle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1193"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Denne handling vil deaktivere understøttelse af virtuelle filer. Som konsekvens af dette vil mapper, der i øjeblikket er markeret som &quot;kun tilgængelig online&quot;, blive hentet.
+        <translation>Denne handling deaktiverer understøttelsen af virtuelle filer. Derfor bliver indholdet af mapper, der i øjeblikket er markeret som &quot;kun tilgængelig online&quot;, hentet.
 
-Den eneste fordel ved at deaktivere understøttelse af virtuelle filer er, at funktionen til selektiv synkronisering af filer bliver tilgængelig igen.
+Den eneste fordel ved at deaktivere understøttelsen af virtuelle filer er, at funktionen til selektiv synkronisering bliver tilgængelig igen.
 
-Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</translation>
+Denne handling afbryder alle igangværende synkroniseringer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1200"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1189"/>
         <source>Disable support</source>
         <translation>Deaktiver understøttelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1287"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>End-to-end kryptering mnemonic</translation>
+        <translation>Huskesætning til end-to-end-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1289"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
-        <translation>For at beskytte din kryptografiske identitet krypterer vi den med 12 ordbogsord. Bemærk det ned og hold det sikkert. Du skal bruge det til at set- up synkronisering af krypterede mapper på dine andre enheder.</translation>
+        <translation>For at beskytte din kryptografiske identitet krypterer vi den med en huskesætning på 12 ord fra en ordbog. Skriv den ned, og opbevar den sikkert. Du får brug for den, når du skal konfigurere synkronisering af krypterede mapper på dine andre enheder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1318"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forget the end-to-end encryption on this device</source>
-        <translation>Glem end-to-end kryptering for denne enhed</translation>
+        <translation>Glem end-to-end-krypteringen på denne enhed</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1319"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
-        <translation>Vil du glemme end- to- end krypteringsindstillingerne for% 1 på denne enhed?</translation>
+        <translation>Vil du glemme indstillingerne for ende-til-ende-kryptering for %1 på denne enhed?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1320"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
-        <translation>Forglemmelse af end-to-end kryptering vil fjerne følsomme data og alle de krypterede filer fra denne enhed. &lt; br &gt; Men de krypterede filer vil forblive på serveren og alle dine andre enheder, hvis konfigureret.</translation>
+        <translation>Hvis du glemmer ende-til-ende-krypteringen, fjernes de følsomme data og alle krypterede filer fra denne enhed.&lt;br&gt;De krypterede filer bliver dog på serveren og på dine andre enheder, hvis de er konfigureret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1425"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
         <source>Sync Running</source>
         <translation>Synkronisering i gang</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1426"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Synkroniseringen er i gang.&lt;br/&gt;Ønsker du at afslutte den?</translation>
+        <translation>Synkroniseringen er i gang.&lt;br/&gt;Vil du afslutte den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation>%1 i brug</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1542"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
-        <translation>Forbundet til% 1 (% 2).</translation>
+        <translation>Forbundet til %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="745"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Log in</source>
         <translation>Log ind</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1590"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Leave share</source>
-        <translation>Formueandel</translation>
+        <translation>Forlad deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1592"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1581"/>
         <source>Remove this public share connection from the client.</source>
-        <translation>Fjern denne offentlige aktieforbindelse fra kunden.</translation>
+        <translation>Fjern denne offentlige deling fra klienten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1769"/>
         <source>Migrate certificate to a new one</source>
         <translation>Migrer certifikatet til et nyt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1887"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
-        <translation>Der er mapper som er vokset i størrelse ud over %1MB: %2</translation>
+        <translation>Der er mapper, som er vokset ud over %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1951"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
-        <translation>Ende- to- end kryptering er blevet initialiseret på denne konto med en anden enhed. &lt; br &gt; Indtast den unikke mnemonic for at få de krypterede mapper synkronisere på denne enhed så godt.</translation>
+        <translation>Ende-til-ende-kryptering er initialiseret på kontoen med en anden enhed.&lt;br&gt;Angiv din huskesætning for også at synkronisere de krypterede mapper på denne enhed.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2035"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
-        <translation>Denne konto understøtter end-to-end kryptering, men det skal sættes op først.</translation>
+        <translation>Kontoen understøtter ende-til-ende-kryptering, men den skal konfigureres først.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1859"/>
-        <source>The virtual files integration does not support end-to-end encryption yet.</source>
-        <translation>Den virtuelle filer integration understøtter ikke end- to- end kryptering endnu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation>Dette nulstiller filudbyderen for% 1 til dens oprindelige tilstand. Brug det, når denne kontos filer vises fast, mangler eller ude af sync i Finder.</translation>
+        <translation>Dette nulstiller File Provider for %1 til den oprindelige tilstand. Brug det, når kontoens filer ser ud til at sidde fast, mangle eller ikke være synkroniseret i Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2111"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation>Placeringen vil kort forsvinde fra og dukke op igen i Finder. Eventuelle lokale ændringer, der endnu ikke er uploadet, er bevaret og afsløret i en mappe i Finder.</translation>
+        <translation>Placeringen forsvinder kortvarigt fra Finder og dukker op igen. Lokale ændringer, der endnu ikke er overført, bevares og vises i en mappe i Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2127"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2116"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation>Nulstil File Provider domæne for denne konto?</translation>
+        <translation>Nulstil File Provider-domænet for denne konto?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2030"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2019"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
-        <translation>Filudbyderens udvidelse understøtter endnu ikke end- to- end kryptering.</translation>
+        <translation>File Provider-udvidelsen understøtter endnu ikke ende-til-ende-kryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2037"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2026"/>
         <source>Set up encryption</source>
-        <translation>Opsæt kryptering</translation>
+        <translation>Konfigurer kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1539"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Connected to %1.</source>
         <translation>Forbundet til %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1548"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>Serveren %1 er midlertidig utilgængelig.</translation>
+        <translation>Serveren %1 er midlertidigt utilgængelig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Serveren %1 er i vedligeholdelsestilstand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1557"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
         <source>Signed out from %1.</source>
         <translation>Logget ud fra %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Der er mapper som ikke blev synkroniseret fordi de er for store:</translation>
+        <translation>Der er mapper, som ikke blev synkroniseret, fordi de er for store: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1875"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Der er mapper som ikke blev synkroniseret fordi de er eksterne lagre:</translation>
+        <translation>Der er mapper, som ikke blev synkroniseret, fordi de er eksterne lagre: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1865"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Der er mapper som ikke blev synkroniseret fordi de er for store eller eksterne lagre:</translation>
+        <translation>Der er mapper, som ikke blev synkroniseret, fordi de er for store eller eksterne lagre: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
         <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Open folder</source>
         <translation>Åbn mappe</translation>
@@ -1469,64 +1445,64 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Pause sync</source>
-        <translation>Sæt synk. på pause</translation>
+        <translation>Sæt synkronisering på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="942"/>
+        <location filename="../src/gui/accountsettings.cpp" line="944"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kunne ikke oprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ønsker du virkelig at stoppe synkronisering af mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vil du virkelig stoppe synkroniseringen af mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Bemærk:&lt;/b&gt; Dette sletter &lt;b&gt;ikke&lt;/b&gt; nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1481"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>%1 af %2 er i brug</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1530"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Serverversion %1 er ikke supporteret! Fortsæt på egen risiko.</translation>
+        <translation>Serverversion %1 understøttes ikke! Fortsæt på egen risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1554"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
-        <translation>Server %1 bliver i øjeblikket omdirigeret, eller din forbindelse er bag en captive-portal.</translation>
+        <translation>Serveren %1 bliver i øjeblikket omdirigeret, eller din forbindelse går gennem en captive portal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
         <source>Connecting to %1 …</source>
         <translation>Forbinder til %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
         <source>Unable to connect to %1.</source>
         <translation>Kan ikke oprette forbindelse til %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Serverkonfigurationsfejl: %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1567"/>
         <source>You need to accept the terms of service at %1.</source>
-        <translation>Du skal acceptere servicevilkårene på %1.</translation>
+        <translation>Du skal acceptere tjenestevilkårene på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
         <source>No %1 connection configured.</source>
-        <translation>Ingen %1 forbindelse konfigureret.</translation>
+        <translation>Ingen %1-forbindelse konfigureret.</translation>
     </message>
 </context>
 <context>
@@ -1534,273 +1510,273 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="234"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Den godkendte forespørgsel til serveren blev omdirigeret til  &quot;%1&quot;. URL&apos;en er forkert, serveren er fejlkonfigureret.</translation>
+        <translation>Den godkendte forespørgsel til serveren blev omdirigeret til &quot;%1&quot;. URL&apos;en er forkert, eller serveren er fejlkonfigureret.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="244"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Adgang forbudt til denne server. For at verificere at du har korrekt adgang, &lt;a href=&quot;%1&quot;&gt;klik her&lt;/a&gt; for at tilgå servicen med din browser.</translation>
+        <translation>Serveren nægtede adgang. Du kan bekræfte, at du har den rette adgang, ved at &lt;a href=&quot;%1&quot;&gt;klikke her&lt;/a&gt; og åbne tjenesten i din browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="252"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Der var en ugyldig respons til en godkendt WebDAV forespørgsel</translation>
+        <translation>Der kom et ugyldigt svar på en godkendt WebDAV-forespørgsel</translation>
     </message>
 </context>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="156"/>
+        <location filename="../src/gui/accountstate.cpp" line="157"/>
         <source>Signed out</source>
         <translation>Logget ud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="158"/>
+        <location filename="../src/gui/accountstate.cpp" line="159"/>
         <source>Disconnected</source>
         <translation>Frakoblet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="160"/>
+        <location filename="../src/gui/accountstate.cpp" line="161"/>
         <source>Connected</source>
         <translation>Forbundet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="162"/>
+        <location filename="../src/gui/accountstate.cpp" line="163"/>
         <source>Service unavailable</source>
-        <translation>Service utilgængelig</translation>
+        <translation>Tjenesten er utilgængelig</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="164"/>
+        <location filename="../src/gui/accountstate.cpp" line="165"/>
         <source>Maintenance mode</source>
         <translation>Vedligeholdelsestilstand</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="166"/>
+        <location filename="../src/gui/accountstate.cpp" line="167"/>
         <source>Redirect detected</source>
-        <translation>Omdirigering detekteret</translation>
+        <translation>Omdirigering registreret</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="168"/>
+        <location filename="../src/gui/accountstate.cpp" line="169"/>
         <source>Network error</source>
         <translation>Netværksfejl</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="170"/>
+        <location filename="../src/gui/accountstate.cpp" line="171"/>
         <source>Configuration error</source>
         <translation>Konfigurationsfejl</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="172"/>
+        <location filename="../src/gui/accountstate.cpp" line="173"/>
         <source>Asking Credentials</source>
-        <translation>Forespørger efter legitimationsoplysninger</translation>
+        <translation>Beder om loginoplysninger</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="174"/>
+        <location filename="../src/gui/accountstate.cpp" line="175"/>
         <source>Need the user to accept the terms of service</source>
-        <translation>Brugeren skal accepterer servicebetingelserne</translation>
+        <translation>Brugeren skal acceptere tjenestevilkårene</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="176"/>
+        <location filename="../src/gui/accountstate.cpp" line="177"/>
         <source>Unknown account state</source>
-        <translation>Ukendt konto tilstand</translation>
+        <translation>Ukendt kontotilstand</translation>
     </message>
 </context>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="294"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="326"/>
         <source>Will require local storage</source>
-        <translation>Vil kræve lokal opbevaring</translation>
+        <translation>Kræver lokal lagerplads</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="674"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="736"/>
         <source>Proxy settings are incomplete.</source>
-        <translation>Proxy- indstillinger er ufuldstændige.</translation>
+        <translation>Proxyindstillingerne er ufuldstændige.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="681"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
         <source>Server address does not seem to be valid</source>
-        <translation>Serveradresse synes ikke at være gyldig</translation>
+        <translation>Serveradressen ser ikke ud til at være gyldig</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="702"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="764"/>
         <source>Username must not be empty.</source>
         <translation>Brugernavn må ikke være tomt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="708"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1026"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="770"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1092"/>
         <source>Checking account access</source>
-        <translation>Kontrol af kontoadgang</translation>
+        <translation>Kontrollerer adgang til kontoen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="786"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="848"/>
         <source>Checking server address</source>
-        <translation>Kontrollerer server- adresse</translation>
+        <translation>Kontrollerer serveradresse</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="851"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="917"/>
         <source>Preparing browser login</source>
-        <translation>Klargøring af browser- login</translation>
+        <translation>Forbereder login i browseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="872"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="938"/>
         <source>Invalid URL</source>
         <translation>Ugyldig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="874"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="940"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
-        <translation>Kunne ikke forbinde til% 1 ved% 2:
-% 3</translation>
+        <translation>Kunne ikke oprette forbindelse til %1 på %2:
+%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="890"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="956"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Tidsudløb mens du prøver at forbinde til% 1 ved% 2.</translation>
+        <translation>Tiden løb ud under forsøget på at oprette forbindelse til %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="977"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1043"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Kan ikke åbne browseren, bedes du kopiere linket til din browser.</translation>
+        <translation>Browseren kunne ikke åbnes. Kopiér linket til din browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1002"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1007"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1068"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1073"/>
         <source>Waiting for authorization</source>
-        <translation>Venter på tilladelse</translation>
+        <translation>Venter på godkendelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1012"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1078"/>
         <source>Starting authorization</source>
-        <translation>Starttilladelse</translation>
+        <translation>Starter godkendelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1017"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1083"/>
         <source>Link copied to clipboard.</source>
         <translation>Link kopieret til udklipsholderen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1102"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1168"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Der var et ugyldigt svar på en bekræftet WebDAV anmodning</translation>
+        <translation>Der kom et ugyldigt svar på en godkendt WebDAV-anmodning</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1089"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1155"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Den bekræftede anmodning til serveren blev omdirigeret til &quot;% 1&quot;. URL &apos;en er dårlig, serveren er forkert konfigureret.</translation>
+        <translation>Den godkendte anmodning til serveren blev omdirigeret til &quot;%1&quot;. URL&apos;en er forkert, eller serveren er konfigureret forkert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1097"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1163"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
-        <translation>Adgang forbudt af serveren. For at kontrollere, at du har ordentlig adgang, skal du åbne tjenesten i din browser.</translation>
+        <translation>Serveren nægtede adgang. Åbn tjenesten i din browser for at kontrollere, at du har den rette adgang.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1115"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1181"/>
         <source>Account connected.</source>
-        <translation>Konto tilsluttet.</translation>
+        <translation>Kontoen er forbundet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1190"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
         <source>Will require %1 of storage</source>
-        <translation>Kræver% 1 af lageret</translation>
+        <translation>Kræver %1 lagerplads</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1363"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>% 1 ledig plads</translation>
+        <translation>%1 ledig plads</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1373"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Der er ikke nok ledig plads i den lokale mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1390"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
         <source>Please choose a local sync folder.</source>
         <translation>Vælg en lokal synkroniseringsmappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1395"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Vælg en tom lokal synkroniseringsmappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1460"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
         <source>Could not create local folder %1</source>
-        <translation>Kunne ikke oprette lokal mappe% 1</translation>
+        <translation>Kunne ikke oprette lokal mappe %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1474"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
         <source>Checking remote folder</source>
-        <translation>Kontrollerer fjern mappe</translation>
+        <translation>Kontrollerer fjernmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1520"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
         <source>No remote folder specified!</source>
         <translation>Ingen fjernmappe angivet!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1529"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
         <source>Error: %1</source>
-        <translation>Fejl:% 1</translation>
+        <translation>Fejl: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1534"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
         <source>Creating remote folder</source>
-        <translation>Oprettelse af ekstern mappe</translation>
+        <translation>Opretter fjernmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1553"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Mappen oprettelse resulterede i HTTP fejlkode% 1</translation>
+        <translation>Oprettelsen af mappen gav HTTP-fejlkode %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1555"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
-        <translation>Den fjerne mappe oprettelsen mislykkedes, fordi de givne legitimationsoplysninger er forkerte. Gå tilbage og tjek dine papirer.</translation>
+        <translation>Fjernmappen kunne ikke oprettes, fordi loginoplysningerne er forkerte. Gå tilbage, og tjek dine loginoplysninger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1557"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Oprettelse af fjernmappe% 1 mislykkedes med fejl &lt; tt &gt;% 2 &lt; / tt &gt;.</translation>
+        <translation>Oprettelse af fjernmappen %1 mislykkedes med fejlen &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Kontoopsætning mislykkedes under oprettelse af synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1608"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
         <source>Could not create the sync folder.</source>
         <translation>Kunne ikke oprette synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1698"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
         <source>Local Sync Folder</source>
         <translation>Lokal synkroniseringsmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1960"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
         <source>Select a certificate</source>
         <translation>Vælg et certifikat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1962"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Certifikatfiler (* .p12 * .pfx)</translation>
+        <translation>Certifikatfiler (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1970"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1990"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Kunne ikke få adgang til den valgte certifikatfil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2006"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Kunne ikke indlæse certifikat. Måske forkert adgangskode?</translation>
     </message>
@@ -1810,17 +1786,17 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/activity/activitylistmodel.cpp" line="645"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>For flere aktiviteter åbn Activity app&apos;n.</translation>
+        <translation>Åbn appen Aktivitet for at se flere aktiviteter.</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/activitylistmodel.cpp" line="665"/>
         <source>Fetching activities …</source>
-        <translation>Henter aktiviteter ...</translation>
+        <translation>Henter aktiviteter …</translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/activitylistmodel.cpp" line="773"/>
+        <location filename="../src/gui/activity/activitylistmodel.cpp" line="783"/>
         <source>Network error occurred: client will retry syncing.</source>
-        <translation>Netværksfejl opstod: klient vil forsøge synkronisering igen.</translation>
+        <translation>Der opstod en netværksfejl: Klienten prøver at synkronisere igen.</translation>
     </message>
 </context>
 <context>
@@ -1839,164 +1815,167 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="105"/>
         <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Advisér når synkroniserede mapper vokser større end angivet grænse</translation>
+        <translation>Giv besked, når synkroniserede mapper bliver større end den angivne grænse</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="139"/>
         <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Deaktivér automatisk synkronisering af mapper der overvinder grænse</translation>
+        <translation>Deaktiver automatisk synkronisering af mapper, der overskrider grænsen</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="186"/>
+        <location filename="../src/gui/advancedsettings.ui" line="193"/>
         <source>Server poll interval</source>
-        <translation>Servervalginterval</translation>
+        <translation>Interval for forespørgsler til serveren</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="203"/>
+        <location filename="../src/gui/advancedsettings.ui" line="210"/>
         <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation>sekunder (hvis &lt; a HURF = &quot;https: / / github.com / nextcloud / notification _ push&quot; &gt; Klient Push &lt; / a &gt; er ikke tilgængelig)</translation>
+        <translation>sekunder (hvis &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; ikke er tilgængelig)</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="243"/>
+        <location filename="../src/gui/advancedsettings.ui" line="250"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Bed om bekræftelse før synkronisering af eksterne lagre</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="277"/>
+        <location filename="../src/gui/advancedsettings.ui" line="291"/>
         <source>Move removed files to trash</source>
         <translation>Flyt fjernede filer til papirkurven</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="324"/>
+        <location filename="../src/gui/advancedsettings.ui" line="338"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>Vis synkroniseringsmapper i &amp; Explors navigationskant</translation>
+        <translation>Vis synkroniseringsmapper i &amp;Stifinders navigationsrude</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="363"/>
+        <location filename="../src/gui/advancedsettings.ui" line="377"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Redigér &amp; Ignorerede filer</translation>
+        <translation>Rediger &amp;ignorerede filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="370"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="383"/>
+        <location filename="../src/gui/advancedsettings.ui" line="384"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
         <source>Create Debug Archive</source>
-        <translation>Opret fejlretningsarkiv</translation>
+        <translation>Opret fejlsøgningsarkiv</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="251"/>
+        <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="252"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
+        <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Avanceret</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="385"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="439"/>
         <source>Zip Archives</source>
-        <translation>Zip Archives</translation>
+        <translation>Zip-arkiver</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="452"/>
         <source>Failed to Access File</source>
-        <translation>Kunne ikke få adgang til fil</translation>
+        <translation>Kunne ikke få adgang til filen</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="453"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation>Kunne ikke få adgang til det valgte sted. Prøv igen eller vælg et andet sted.</translation>
+        <translation>Kunne ikke få adgang til den valgte placering. Prøv igen, eller vælg en anden placering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="408"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="462"/>
         <source>Debug Archive Created</source>
         <translation>Fejlsøgningsarkiv oprettet</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="409"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="463"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation>Redact oplysninger anses for følsomme før deling! Fejl i arkiv oprettet på% 1</translation>
+        <translation>Fjern følsomme oplysninger, før du deler arkivet! Fejlsøgningsarkivet er oprettet i %1</translation>
     </message>
 </context>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="201"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;.&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
         <extracomment>%1 is either &quot;newer&quot; or &quot;older&quot;. %2 is either &quot;ignoring&quot; or &quot;deleting&quot;. %3 is a list of configuration backup file paths.</extracomment>
-        <translation>Nogle indstillinger blev konfigureret i %1 versioner af denne klient og anvender funktioner som ikke er tilgængelige i denne version.&lt;br&gt;&lt;br&gt;Hvis du fortsætter vil dette betyde &lt;b&gt;%2 disse indstillinger&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuelle konfigurationsfil blev allerede backet op til &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>Nogle indstillinger blev konfigureret i %1 versioner af denne klient og bruger funktioner, som ikke er tilgængelige i denne version.&lt;br&gt;&lt;br&gt;Hvis du fortsætter, betyder det &lt;b&gt;%2 disse indstillinger&lt;/b&gt;.&lt;br&gt;&lt;br&gt;Den aktuelle konfigurationsfil er allerede sikkerhedskopieret til &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>newer</source>
         <comment>newer software version</comment>
         <translation>nyere</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="207"/>
+        <location filename="../src/gui/application.cpp" line="191"/>
         <source>older</source>
         <comment>older software version</comment>
         <translation>ældre</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>ignoring</source>
-        <translation>ignorerer</translation>
+        <translation>at ignorere</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>deleting</source>
-        <translation>sletter</translation>
+        <translation>at slette</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="210"/>
+        <location filename="../src/gui/application.cpp" line="194"/>
         <source>Quit</source>
         <translation>Afslut</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="211"/>
+        <location filename="../src/gui/application.cpp" line="195"/>
         <source>Continue</source>
         <translation>Fortsæt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="709"/>
+        <location filename="../src/gui/application.cpp" line="705"/>
         <source>%1 accounts</source>
         <comment>number of accounts imported</comment>
         <translation>%1 konti</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="710"/>
+        <location filename="../src/gui/application.cpp" line="706"/>
         <source>1 account</source>
         <translation>1 konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="712"/>
+        <location filename="../src/gui/application.cpp" line="708"/>
         <source>%1 folders</source>
         <comment>number of folders imported</comment>
         <translation>%1 mapper</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="713"/>
+        <location filename="../src/gui/application.cpp" line="709"/>
         <source>1 folder</source>
         <translation>1 mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="715"/>
+        <location filename="../src/gui/application.cpp" line="711"/>
         <source>Legacy import</source>
-        <translation>Bagudkompatibel import</translation>
+        <translation>Import fra ældre klient</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="716"/>
+        <location filename="../src/gui/application.cpp" line="712"/>
         <source>Imported %1 and %2 from a legacy desktop client.
 %3</source>
         <comment>number of accounts and folders imported. list of users.</comment>
-        <translation>Importerede %1 og %2 fra en bagudkompatibel desktop klient.
+        <translation>Importerede %1 og %2 fra en ældre skrivebordsklient.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="838"/>
+        <location filename="../src/gui/application.cpp" line="834"/>
         <source>Error accessing the configuration file</source>
-        <translation>Adgang til konfigurationsfilen fejlede</translation>
+        <translation>Fejl ved adgang til konfigurationsfilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="839"/>
+        <location filename="../src/gui/application.cpp" line="835"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation>Der opstod en fejl under tilgang til konfigurationsfilen på %1. Vær venligst sikker på at filen kan tilgås af din systemkonto.</translation>
+        <translation>Der opstod en fejl ved adgang til konfigurationsfilen %1. Sørg for, at din systemkonto har adgang til filen.</translation>
     </message>
 </context>
 <context>
@@ -2005,39 +1984,39 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>Assistenten er ikke tilgængelig for denne konto.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>Assistenten behandler allerede en anmodning.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Intet svar endnu. Prøv igen senere.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>Der blev ikke returneret nogen understøttede assistentopgavetyper.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
         <source>Assistant task scheduled.</source>
-        <translation type="unfinished"/>
+        <translation>Assistentopgaven er planlagt.</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
         <source>Scheduling assistant task…</source>
-        <translation type="unfinished"/>
+        <translation>Planlægger assistentopgaven …</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="840"/>
         <source>Assistant request failed (%1).</source>
         <extracomment>%1 is the HTTP status code returned by the server.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Anmodningen til assistenten mislykkedes (%1).</translation>
     </message>
 </context>
 <context>
@@ -2045,35 +2024,36 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Ukendt</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
         <source>Scheduled</source>
-        <translation type="unfinished"/>
+        <translation>Planlagt</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
         <source>In progress</source>
-        <translation type="unfinished"/>
+        <translation>I gang</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
         <source>Completed</source>
-        <translation type="unfinished"/>
+        <translation>Fuldført</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
         <source>Failed</source>
-        <translation type="unfinished"/>
+        <translation>Mislykkedes</translation>
     </message>
 </context>
 <context>
     <name>OCC::AssistantTaskTypeModel</name>
     <message>
-        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="97"/>
+        <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <extracomment>Name of the Chat assistant task type.</extracomment>
+        <translation>Chat</translation>
     </message>
 </context>
 <context>
@@ -2086,7 +2066,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="24"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation>Indtast brugernavn og adgangskode til &quot;%1&quot; ved %2.</translation>
+        <translation>Indtast brugernavn og adgangskode til &quot;%1&quot; på %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="29"/>
@@ -2110,31 +2090,31 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/basepropagateremotedeleteencrypted.cpp" line="128"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Forkert HTTP kode returneret af serveren. Forventede 204, men modtog &quot;%1 %2&quot;.</translation>
+        <translation>Forkert HTTP-kode returneret af serveren. Forventede 204, men modtog &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
     <name>OCC::BulkPropagatorDownloadJob</name>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="79"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="94"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Filen% 1 kan ikke downloades på grund af et lokalt filnavns sammenstød!</translation>
+        <translation>Filen %1 kan ikke hentes på grund af en navnekonflikt med en lokal fil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="101"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="116"/>
         <source>Unable to update metadata of new file %1.</source>
         <comment>error with update metadata of new Win VFS file</comment>
-        <translation>Kan ikke opdatere metadata for ny fil% 1.</translation>
+        <translation>Kan ikke opdatere metadata for ny fil %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="124"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="139"/>
         <source>Error updating metadata: %1</source>
-        <translation>Fejl under opdatering af metadata:% 1</translation>
+        <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="127"/>
+        <location filename="../src/libsync/bulkpropagatordownloadjob.cpp" line="142"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen% 1 er i brug</translation>
+        <translation>Filen %1 er i brug</translation>
     </message>
 </context>
 <context>
@@ -2142,7 +2122,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="141"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Filen %1 kan ikke uploades fordi en anden fil med det samme navn, men blot med forskel i store/små bogstaver, eksisterer</translation>
+        <translation>Filen %1 kan ikke overføres, fordi der findes en anden fil med samme navn, der kun adskiller sig ved store og små bogstaver</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="182"/>
@@ -2152,33 +2132,33 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="200"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation>Filen %1 har ugyldig ændret tidspunkt. Upload ikke til serveren.</translation>
+        <translation>Filen %1 har et ugyldigt ændringstidspunkt. Den overføres ikke til serveren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="352"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fil fjernet (start upload) %1</translation>
+        <translation>Fil fjernet (start overførsel) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="371"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Filen %1 har ugyldig ændringstidspunkt. Upload ikke til serveren.</translation>
+        <translation>Filen %1 har et ugyldigt ændringstidspunkt. Den overføres ikke til serveren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="384"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Lokal fil ændret under synkronisering. Den vil blive genoptaget.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen. Den genoptages.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="398"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="734"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokal fil ændret under synkronisering.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="508"/>
         <source>Network error: %1</source>
-        <translation>Netværks fejl: %1</translation>
+        <translation>Netværksfejl: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="554"/>
@@ -2198,7 +2178,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="764"/>
         <source>Restoration failed: %1</source>
-        <translation>Genskabelse fejlede: %1</translation>
+        <translation>Gendannelse mislykkedes: %1</translation>
     </message>
 </context>
 <context>
@@ -2206,37 +2186,37 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="68"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation>Kan ikke omdøbe filen fordi en fil med det samme navn allerede eksisterer på serveren. Vælg venligst et andet navn.</translation>
+        <translation>Kan ikke omdøbe filen, fordi der allerede findes en fil med samme navn på serveren. Vælg et andet navn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="111"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Kunne ikke omdøbe filen. Vær venligst sikker på at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke omdøbe filen. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="162"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Du har ikke tilladelse til at omdøbe denne fil. Bed venligst forfatteren af filen om at omdøbe den.</translation>
+        <translation>Du har ikke tilladelse til at omdøbe denne fil. Bed filens forfatter om at omdøbe den.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="169"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Fejlede i hentning af rettigheder, med fejlen %1</translation>
+        <translation>Kunne ikke hente tilladelser med fejlen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="190"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnavn indeholde foranstillede og efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede og efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="193"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="196"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder efterstillede mellemrum.</translation>
     </message>
 </context>
 <context>
@@ -2244,12 +2224,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Versal konflikt</translation>
+        <translation>Konflikt mellem store og små bogstaver</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Filen kunne ikke synkroniseres da den genererer en versal konflikt med en eksisterende fil på dette system.</translation>
+        <translation>Filen kunne ikke synkroniseres, fordi den giver en konflikt mellem store og små bogstaver med en eksisterende fil på dette system.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -2282,12 +2262,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>Open existing file</source>
-        <translation>Åbner eksisterende fil</translation>
+        <translation>Åbn eksisterende fil</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Versal konfliktende fil</translation>
+        <translation>Fil med konflikt mellem store og små bogstaver</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -2298,12 +2278,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="107"/>
         <source>Open clashing file</source>
-        <translation>Åben konfliktende fil</translation>
+        <translation>Åbn filen i konflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation>Angiv venligst et nyt navn til den konfliktende fil:</translation>
+        <translation>Angiv et nyt navn til filen med konflikten:</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
@@ -2318,27 +2298,27 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="93"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres på grund af en versal konflikt med en eksisterende fil på dette system.</translation>
+        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres på grund af en konflikt mellem store og små bogstaver med en eksisterende fil på dette system.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="94"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation>%1 understøtter ikke ens filnavne, kun med forskelle i versaler.</translation>
+        <translation>%1 understøtter ikke filnavne, der kun adskiller sig ved store og små bogstaver.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="239"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnavn indeholder foranstillede og efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede og efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="242"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="244"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder efterstillede mellemrum.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="249"/>
@@ -2348,13 +2328,13 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="274"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation>Filnavn indeholder ugyldige karakterer: %1</translation>
+        <translation>Filnavnet indeholder ugyldige tegn: %1</translation>
     </message>
 </context>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1794"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1810"/>
         <source>Error writing metadata to the database</source>
         <translation>Fejl ved skrivning af metadata til databasen</translation>
     </message>
@@ -2365,12 +2345,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/libsync/clientsideencryption.cpp" line="1166"/>
         <source>Input PIN code</source>
         <comment>Please keep it short and shorter than &quot;Enter Certificate USB Token PIN:&quot;</comment>
-        <translation>Indtast PIN kode</translation>
+        <translation>Indtast pinkode</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1167"/>
         <source>Enter Certificate USB Token PIN:</source>
-        <translation>Indtast certifikat USB token pinkode:</translation>
+        <translation>Indtast pinkoden til certifikatets USB-token:</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1185"/>
@@ -2380,18 +2360,18 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1186"/>
         <source>Login to the token failed after providing the user PIN. It may be invalid or wrong. Please try again!</source>
-        <translation>Login på tokenet mislykkedes efter at have angivet bruger PIN. Det kan være ugyldigt eller forkert. Prøv venligst igen!</translation>
+        <translation>Login på tokenet mislykkedes efter angivelse af brugerens pinkode. Den kan være ugyldig eller forkert. Prøv igen!</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2262"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <extracomment>%2 is the account username. %3 is the account display name.</extracomment>
-        <translation>Angiv venligst din end-to-end krypterings adgangskodesætning:&lt;br&gt;&lt;br&gt;Brugernavn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Angiv din huskesætning til end-to-end-kryptering:&lt;br&gt;&lt;br&gt;Brugernavn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="2270"/>
         <source>Enter E2E passphrase</source>
-        <translation>Indtast E2E kodeord</translation>
+        <translation>Indtast huskesætning til E2E</translation>
     </message>
 </context>
 <context>
@@ -2405,12 +2385,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="88"/>
         <source>Conflicting versions of %1.</source>
-        <translation>Konfliktende versioner af %1.</translation>
+        <translation>Modstridende versioner af %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation>Hvilken version af filen vil du beholde?&lt;br/&gt;Hvis du vælger begge får den lokale fil tilføjet et tal til dens navn.</translation>
+        <translation>Hvilken version af filen vil du beholde?&lt;br/&gt;Hvis du vælger begge versioner, får den lokale fil tilføjet et tal til sit navn.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -2438,33 +2418,33 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Åben lokal version&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Åbn lokal version&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation>Server version</translation>
+        <translation>Serverversion</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Åben server version&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Åbn serverversion&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="46"/>
         <location filename="../src/gui/conflictdialog.cpp" line="171"/>
         <source>Keep selected version</source>
-        <translation>Behold markerede version</translation>
+        <translation>Behold valgt version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="142"/>
         <source>Open local version</source>
-        <translation>Åben lokal version</translation>
+        <translation>Åbn den lokale version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open server version</source>
-        <translation>Åben server version</translation>
+        <translation>Åbn serverversionen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="168"/>
@@ -2479,7 +2459,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="170"/>
         <source>Keep server version</source>
-        <translation>Behold server version</translation>
+        <translation>Behold serverversion</translation>
     </message>
 </context>
 <context>
@@ -2496,14 +2476,14 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <source>Moving file failed:
 
 %1</source>
-        <translation>Flytning af fil fejlede:
+        <translation>Flytning af filen mislykkedes:
 
 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="198"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>Vil du slette mappen &lt;i&gt;%1&lt;/i&gt; og alt dens indhold permanent?</translation>
+        <translation>Vil du slette mappen &lt;i&gt;%1&lt;/i&gt; og hele dens indhold permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="199"/>
@@ -2522,22 +2502,22 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/connectionvalidator.cpp" line="48"/>
         <source>No %1 account configured</source>
         <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Ingen% 1- konto indstillet</translation>
+        <translation>Ingen %1-konto konfigureret</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="191"/>
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="168"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="175"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Godkendelses fejl: Brugernavn eller kode er forkert.</translation>
+        <translation>Godkendelsesfejl: Brugernavn eller adgangskode er forkert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="233"/>
         <source>The provided credentials are not correct</source>
-        <translation>De angivne legitimationsoplysninger er ikke korrekte</translation>
+        <translation>De angivne loginoplysninger er ikke korrekte</translation>
     </message>
 </context>
 <context>
@@ -2558,23 +2538,23 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Serverfejl: PROPFIND svar er ikke XML formateret!</translation>
+        <translation>Serverfejl: PROPFIND-svaret er ikke i XML-format!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
-        <translation>Serveren returnerede et uventet svar, der ikke kunne læses. Kontakt din server administrator &quot;.</translation>
+        <translation>Serveren returnerede et uventet svar, som ikke kunne læses. Kontakt din serveradministrator.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
         <source>Encrypted metadata setup error!</source>
-        <translation>Krypterede metadata opsætningsfejl!</translation>
+        <translation>Fejl i opsætningen af krypterede metadata!</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
-        <translation>Krypterede metadata opsætningsfejl: startsignatur fra server er tom.</translation>
+        <translation>Fejl i opsætningen af krypterede metadata: Serverens første signatur er tom.</translation>
     </message>
 </context>
 <context>
@@ -2587,17 +2567,17 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Mappe ikke tilgængelig på klient. Tilladelse nægtet</translation>
+        <translation>Mappen er ikke tilgængelig på klienten, tilladelse nægtet</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
         <source>Directory not found: %1</source>
-        <translation>Mappe ikke fundet: %1</translation>
+        <translation>Mappen blev ikke fundet: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation>Filnavnskodning ikke gyldig</translation>
+        <translation>Filnavnets kodning er ugyldig</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
@@ -2623,13 +2603,13 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/editlocallyjob.cpp" line="38"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="314"/>
         <source>An error occurred during setup.</source>
-        <translation>En fejl opstod under opsætning.</translation>
+        <translation>Der opstod en fejl under opsætningen.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="44"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Kunne ikke finde en fil til lokal redigering. Vær sikker på at dens sti er gyldig og at den er synkroniseret lokalt.</translation>
+        <translation>Kunne ikke finde en fil til lokal redigering. Sørg for, at stien er gyldig, og at filen er synkroniseret lokalt.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="59"/>
@@ -2637,30 +2617,30 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/editlocallyjob.cpp" line="74"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="124"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Kunne ikke finde en fil til lokal redigering. Vær sikker på at den ikke er ekskluderet via selektiv synkronisering.</translation>
+        <translation>Kunne ikke finde en fil til lokal redigering. Sørg for, at den ikke er udeladt via selektiv synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="98"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="370"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="379"/>
         <source>An error occurred during data retrieval.</source>
-        <translation>En fejl opstod under datahentning.</translation>
+        <translation>Der opstod en fejl under hentning af data.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="174"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="407"/>
         <source>An error occurred trying to synchronise the file to edit locally.</source>
-        <translation>En fejl opstod under forsøg på synkronisering af filen til redigering lokalt.</translation>
+        <translation>Der opstod en fejl under forsøget på at synkronisere filen til lokal redigering.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="358"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Serverfejl: PROPFIND svar er ikke XML formateret!</translation>
+        <translation>Serverfejl: PROPFIND-svaret er ikke i XML-format!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="360"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation>Kunne ikke finde en fjern fil info til lokal redigering. Vær sikker på at dens sti er gyldig.</translation>
+        <translation>Kunne ikke finde oplysninger om fjernfilen til lokal redigering. Sørg for, at stien er gyldig.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="427"/>
@@ -2675,26 +2655,32 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="437"/>
         <source>Please try again.</source>
-        <translation>Prøv venligst igen.</translation>
+        <translation>Prøv igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="523"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
+        <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
+        <translation>Låsen udløber ikke. Du kan selv låse filen op, når du er færdig med at redigere.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
         <source>File %1 already locked.</source>
         <translation>Filen %1 er allerede låst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="535"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="525"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="539"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>Låsning vil vare i %1 minutter. Du kan også låse denne fil op manuelt når du er færdig med at redigere den.</translation>
+        <translation>Låsen varer i %1 minutter. Du kan også låse filen op manuelt, når du er færdig med at redigere.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="534"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="541"/>
         <source>File %1 now locked.</source>
         <translation>Filen %1 er nu låst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="543"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="549"/>
         <source>File %1 could not be locked.</source>
         <translation>Filen %1 kunne ikke låses.</translation>
     </message>
@@ -2709,7 +2695,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/editlocallymanager.cpp" line="114"/>
         <source>Please try again.</source>
-        <translation>Prøv venligst igen.</translation>
+        <translation>Prøv igen.</translation>
     </message>
 </context>
 <context>
@@ -2724,7 +2710,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="96"/>
         <source>Please try again.</source>
-        <translation>Prøv venligst igen.</translation>
+        <translation>Prøv igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="90"/>
@@ -2744,7 +2730,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     <message>
         <location filename="../src/gui/editlocallyverificationjob.cpp" line="121"/>
         <source>An error occurred trying to verify the request to edit locally.</source>
-        <translation>En fejl opstod under forsøg på at verificere forespørgslen om at redigere lokalt.</translation>
+        <translation>Der opstod en fejl under forsøget på at bekræfte anmodningen om lokal redigering.</translation>
     </message>
 </context>
 <context>
@@ -2753,8 +2739,8 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <location filename="../src/libsync/encryptfolderjob.cpp" line="123"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Kunne ikke generere metadata for kryptering, låser mappen op igen.
-Dette kan være et problem med dine OpenSSL biblioteker.</translation>
+        <translation>Kunne ikke generere metadata til kryptering. Låser mappen op.
+Det kan skyldes et problem med dine OpenSSL-biblioteker.</translation>
     </message>
 </context>
 <context>
@@ -2779,17 +2765,17 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="158"/>
         <source>Error fetching encrypted folder ID.</source>
-        <translation>Fejl under hentning af krypteret mappe ID.</translation>
+        <translation>Fejl under hentning af den krypterede mappes ID.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="200"/>
         <source>Error parsing or decrypting metadata.</source>
-        <translation>Fejl under gengivelse eller dekryptering af metadata.</translation>
+        <translation>Fejl under fortolkning eller dekryptering af metadata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/encryptedfoldermetadatahandler.cpp" line="343"/>
         <source>Failed to upload metadata</source>
-        <translation>Kunne ikke uploade metadata</translation>
+        <translation>Kunne ikke overføre metadata</translation>
     </message>
 </context>
 <context>
@@ -2798,38 +2784,38 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="260"/>
         <source>Your account is offline %1.</source>
         <comment>account url</comment>
-        <translation>Din konto er offline% 1.</translation>
+        <translation>Din konto er offline %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="269"/>
         <source>The file ID is empty for %1.</source>
         <comment>file name</comment>
-        <translation>Fil- id &apos;et er tomt for% 1.</translation>
+        <translation>Fil-id&apos;et er tomt for %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="277"/>
         <source>The file type for %1 is not valid.</source>
         <comment>file name</comment>
-        <translation>Filtypen for% 1 er ikke gyldig.</translation>
+        <translation>Filtypen for %1 er ikke gyldig.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="289"/>
         <source>No file actions were returned by the server for %1 files.</source>
         <comment>file mimetype, e.g text/plain files</comment>
         <extracomment>TRANSLATOR Placeholder contains file MIME type</extracomment>
-        <translation>Ingen fil handlinger blev returneret af serveren for% 1 filer.</translation>
+        <translation>Serveren returnerede ingen filhandlinger for %1 filer.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="372"/>
         <source>%1 did not succeed, please try again later. If you need help, contact your server administrator.</source>
         <comment>file action error message</comment>
-        <translation>% 1 lykkedes ikke, prøv venligst igen senere. Hvis du har brug for hjælp, skal du kontakte din server administrator.</translation>
+        <translation>%1 lykkedes ikke. Prøv igen senere. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
     </message>
     <message>
         <location filename="../src/gui/integration/fileactionsmodel.cpp" line="388"/>
         <source>%1 done.</source>
         <comment>file action success message</comment>
-        <translation>% 1 færdig.</translation>
+        <translation>%1 færdig.</translation>
     </message>
 </context>
 <context>
@@ -2838,37 +2824,37 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="116"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>%1 sekund siden</numerusform><numerusform>for %1 sekunder siden</numerusform></translation>
+        <translation><numerusform>for %1 sekund siden</numerusform><numerusform>for %1 sekunder siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="119"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>%1 minut siden</numerusform><numerusform>for %1 minutter siden</numerusform></translation>
+        <translation><numerusform>for %1 minut siden</numerusform><numerusform>for %1 minutter siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="122"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>%1 time siden</numerusform><numerusform>for %1 timer siden</numerusform></translation>
+        <translation><numerusform>for %1 time siden</numerusform><numerusform>for %1 timer siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="125"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>%1 dag siden</numerusform><numerusform>for %1 dage siden</numerusform></translation>
+        <translation><numerusform>for %1 dag siden</numerusform><numerusform>for %1 dage siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="128"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>%1 måned siden</numerusform><numerusform>%1 måneder siden</numerusform></translation>
+        <translation><numerusform>for %1 måned siden</numerusform><numerusform>for %1 måneder siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="131"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>for %1 år siden</numerusform><numerusform>for %1 år siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="163"/>
@@ -2882,7 +2868,7 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="251"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation>Den returnerede URL starter ikke med HTTPS selvom login URL&apos;en starter med HTTPS. Login vil ikke være muligt fordi dette kan være et sikkerhedsproblem. Kontakt venligst din  administrator.</translation>
+        <translation>Den returnerede server-URL starter ikke med HTTPS, selvom login-URL&apos;en startede med HTTPS. Login er ikke muligt, fordi det kan være et sikkerhedsproblem. Kontakt din administrator.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="262"/>
@@ -2893,188 +2879,188 @@ Dette kan være et problem med dine OpenSSL biblioteker.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="266"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="274"/>
         <source>An unexpected error occurred when trying to access the server. Please try to access it again later or contact your server administrator if the issue continues.</source>
-        <translation>En uventet fejl opstod, når du forsøger at få adgang til serveren. Prøv at få adgang til det igen senere eller kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <translation>Der opstod en uventet fejl under forsøget på at få adgang til serveren. Prøv igen senere, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="279"/>
         <source>We couldn&apos;t parse the server response. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation>Vi kunne ikke tolke serverens respons. Prøv at forbinde igen senere eller kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <translation>Vi kunne ikke tolke serverens svar. Prøv at oprette forbindelse igen senere, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="283"/>
         <source>The server did not reply with the expected data. Please try connecting again later or contact your server administrator if the issue continues.</source>
-        <translation>Serveren svarede ikke med de forventede data. Prøv at forbinde igen senere eller kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <translation>Serveren svarede ikke med de forventede data. Prøv at oprette forbindelse igen senere, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
     </message>
 </context>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="518"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 er fjernet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="532"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 er blevet opdateret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="539"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 er blevet omdøbt til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="546"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 er blevet flyttet til %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="506"/>
+        <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 og %n anden fil er blevet fjernet.</numerusform><numerusform>%1 og %n andre filer er blevet fjernet.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="239"/>
+        <location filename="../src/gui/folder.cpp" line="244"/>
         <source>Please choose a different location. The folder %1 doesn&apos;t exist.</source>
-        <translation>Vælg venligst en anden placering. Mappen %1 eksisterer ikke.</translation>
+        <translation>Vælg en anden placering. Mappen %1 findes ikke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="241"/>
+        <location filename="../src/gui/folder.cpp" line="246"/>
         <source>Please choose a different location. %1 isn&apos;t a valid folder.</source>
-        <translation>Vælg venligst en anden placering. %1 er ikke en gyldig mappe.</translation>
+        <translation>Vælg en anden placering. %1 er ikke en gyldig mappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="243"/>
+        <location filename="../src/gui/folder.cpp" line="248"/>
         <source>Please choose a different location. %1 isn&apos;t a readable folder.</source>
-        <translation>Vælg venligst en anden placering. %1 er ikke en læsbar mappe.</translation>
+        <translation>Vælg en anden placering. %1 er ikke en læsbar mappe.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="513"/>
+        <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 og %n andre fil(er) er blevet tilføjet.</numerusform><numerusform>%1 og %n andre fil(er) er blevet tilføjet.</numerusform></translation>
+        <translation><numerusform>%1 og %n anden fil er blevet tilføjet.</numerusform><numerusform>%1 og %n andre filer er blevet tilføjet.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="525"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 er blevet tilføjet.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="520"/>
+        <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 og %n anden fil er blevet opdateret.</numerusform><numerusform>%1 og %n andre filer er blevet opdateret.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="527"/>
+        <location filename="../src/gui/folder.cpp" line="537"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 er blevet omdømt til %2 og %n anden fil er blevet omdømt.</numerusform><numerusform>%1 er blevet omdømt til %2 og %n andre filer er blevet omdømt.</numerusform></translation>
+        <translation><numerusform>%1 er blevet omdøbt til %2, og %n anden fil er blevet omdøbt.</numerusform><numerusform>%1 er blevet omdøbt til %2, og %n andre filer er blevet omdøbt.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="534"/>
+        <location filename="../src/gui/folder.cpp" line="544"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 er blevet flyttet til %2 og %n anden fil er blevet flyttet.</numerusform><numerusform>%1 er blevet flyttet til %2 og %n andre filer er blevet flyttet.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="541"/>
+        <location filename="../src/gui/folder.cpp" line="551"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 og %n anden fil har synkroniserings konflikter.</numerusform><numerusform>%1 og %n andre filer har synkroniserings konflikter.</numerusform></translation>
+        <translation><numerusform>%1 og %n anden fil har synkroniseringskonflikter.</numerusform><numerusform>%1 og %n andre filer har synkroniseringskonflikter.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="543"/>
+        <location filename="../src/gui/folder.cpp" line="553"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 har synkroniserings konflikt. Venligst check den konflikterende fil!.</translation>
+        <translation>%1 har en synkroniseringskonflikt. Tjek konfliktfilen!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="548"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 og %n anden fil kunne ikke synkroniseres på grund af fejl. Se i loggen efter detaljer.</numerusform><numerusform>%1 og %n andre filer kunne ikke synkroniseres på grund af fejl. Se i loggen efter detaljer.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="550"/>
+        <location filename="../src/gui/folder.cpp" line="560"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 kunne ikke synkroniseres på grund af fejl. Se i loggen efter detaljer.</translation>
+        <translation>%1 kunne ikke synkroniseres på grund af en fejl. Se i loggen efter detaljer.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="555"/>
+        <location filename="../src/gui/folder.cpp" line="565"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 og %n anden fil er låst.</numerusform><numerusform>%1 og %n andre filer er låst.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="557"/>
+        <location filename="../src/gui/folder.cpp" line="567"/>
         <source>%1 is currently locked.</source>
-        <translation>%1 er låst</translation>
+        <translation>%1 er låst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="575"/>
         <source>Sync Activity</source>
         <translation>Synkroniseringsaktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1184"/>
+        <location filename="../src/gui/folder.cpp" line="1204"/>
         <source>Could not read system exclude file</source>
         <translation>Kunne ikke læse systemets udelukkelsesfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1474"/>
+        <location filename="../src/gui/folder.cpp" line="1494"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>En ny mappe med mere end %1M er blevet tilføjet : %2.
+        <translation>En ny mappe på over %1 MB er blevet tilføjet: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1477"/>
+        <location filename="../src/gui/folder.cpp" line="1497"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>En mappe er blevet tilføjet fra eksternt lager.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1478"/>
+        <location filename="../src/gui/folder.cpp" line="1498"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Gå venligst til indstillinger for at vælge om du vil hente den.</translation>
+        <translation>Gå til indstillingerne, og vælg den, hvis du vil hente den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1535"/>
+        <location filename="../src/gui/folder.cpp" line="1555"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
-        <translation>En mappe har overskredet den angivne mappegrænse på %1MB: %2.
+        <translation>En mappe har overskredet den angivne grænse for mappestørrelse på %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1546"/>
+        <location filename="../src/gui/folder.cpp" line="1566"/>
         <source>Keep syncing</source>
         <translation>Fortsæt synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1554"/>
+        <location filename="../src/gui/folder.cpp" line="1574"/>
         <source>Stop syncing</source>
         <translation>Stop synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1565"/>
+        <location filename="../src/gui/folder.cpp" line="1585"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
-        <translation>Mappen %1 har overskredet den angivne mappestørrelses grænse på %2MB.</translation>
+        <translation>Mappen %1 har overskredet den angivne grænse for mappestørrelse på %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1586"/>
         <source>Would you like to stop syncing this folder?</source>
-        <translation>Ønsker du at stoppe synkronisering af denne mappe?</translation>
+        <translation>Vil du stoppe synkroniseringen af denne mappe?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1643"/>
+        <location filename="../src/gui/folder.cpp" line="1663"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Mappen %1 er oprettet men tidligere udelukket fra synkronisering. Data i mappen vil ikke blive synkroniseret.</translation>
+        <translation>Mappen %1 er oprettet, men var tidligere udelukket fra synkronisering. Data i den bliver ikke synkroniseret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1646"/>
+        <location filename="../src/gui/folder.cpp" line="1666"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Filen %1 er oprettet men tidligere udelukket fra synkronisering. Den vil ikke blive synkroniseret.</translation>
+        <translation>Filen %1 er oprettet, men var tidligere udelukket fra synkronisering. Den bliver ikke synkroniseret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1657"/>
+        <location filename="../src/gui/folder.cpp" line="1677"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3082,52 +3068,52 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Ændringer i synkroniserede mapper kunne ikke spores pålideligt.
 
-Dette betyder at synkroniseringsklienten muligvis ikke sender lokale ændringer øjeblikkeligt, og vil i stedet scanne for lokale ændringer og sende dem ved lejlighed (hver anden time som standard).
+Det betyder, at synkroniseringsklienten muligvis ikke overfører lokale ændringer med det samme, men i stedet kun scanner efter lokale ændringer og overfører dem en gang imellem (som standard hver anden time).
 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1695"/>
+        <location filename="../src/gui/folder.cpp" line="1715"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
-        <translation>Virtuel fil download fejlede med koden &quot;%1&quot;, status &quot;%2&quot; og fejlbeskeden &quot;%3&quot;</translation>
+        <translation>Hentning af virtuel fil mislykkedes med koden &quot;%1&quot;, status &quot;%2&quot; og fejlbeskeden &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1791"/>
+        <location filename="../src/gui/folder.cpp" line="1811"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
-        <translation>Et stort antal af filer på denne server er blevet slettet.
-Bekræft venligst at du ønsker at fortsætte med disse filsletninger.
-Alternativt kan du genskabe alle slettede filer ved at uploade fra &apos;%1&apos; mappe til serveren.</translation>
+        <translation>Et stort antal filer på serveren er blevet slettet.
+Bekræft, at du vil fortsætte med disse sletninger.
+Du kan også gendanne alle slettede filer ved at overføre dem fra mappen &apos;%1&apos; til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1792"/>
+        <location filename="../src/gui/folder.cpp" line="1812"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
-        <translation>Et stort antal filer i din lokale &apos;%1&apos; mappe er blevet slettet.
-Bekræft venligst at du ønsker at fortsætte med disse sletninger.
-Alternativt kan du genskabe alle slettede filer ved at downloade dem fra serveren.</translation>
+        <translation>Et stort antal filer i din lokale mappe &apos;%1&apos; er blevet slettet.
+Bekræft, at du vil fortsætte med disse sletninger.
+Du kan også gendanne alle slettede filer ved at hente dem fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1793"/>
+        <location filename="../src/gui/folder.cpp" line="1813"/>
         <source>Remove all files?</source>
         <translation>Slet alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1797"/>
+        <location filename="../src/gui/folder.cpp" line="1817"/>
         <source>Proceed with Deletion</source>
         <translation>Fortsæt med sletning</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1798"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>Restore Files to Server</source>
-        <translation>Genskab filer til serveren</translation>
+        <translation>Gendan filer på serveren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1798"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>Restore Files from Server</source>
-        <translation>Genskab filer fra serveren</translation>
+        <translation>Gendan filer fra serveren</translation>
     </message>
 </context>
 <context>
@@ -3145,7 +3131,7 @@ Alternativt kan du genskabe alle slettede filer ved at downloade dem fra servere
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation>Mappen eksisterer allerede</translation>
+        <translation>Mappen findes allerede</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="71"/>
@@ -3161,160 +3147,150 @@ Alternativt kan du genskabe alle slettede filer ved at downloade dem fra servere
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="517"/>
-        <source>Could not reset folder state</source>
-        <translation>Kunne ikke nulstille oprette mappetilstand</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="518"/>
+        <source>Could not reset folder state</source>
+        <translation>Kunne ikke nulstille mappetilstanden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="519"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>En gammel synkroniseringsjournal &quot;%1&quot; blev fundet, men kunne ikke fjernes. Sørg for, at ingen applikation bruger den i øjeblikket.</translation>
+        <translation>En gammel synkroniseringsjournal &quot;%1&quot; blev fundet, men kunne ikke fjernes. Sørg for, at intet program bruger den i øjeblikket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1613"/>
-        <source> (backup)</source>
-        <translation> (backup)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1618"/>
-        <source> (backup %1)</source>
-        <translation> (backup %1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1900"/>
+        <location filename="../src/gui/folderman.cpp" line="1907"/>
         <source>Undefined state.</source>
         <translation>Udefineret tilstand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1903"/>
+        <location filename="../src/gui/folderman.cpp" line="1910"/>
         <source>Waiting to start syncing.</source>
-        <translation>Venter på at sync starter.</translation>
+        <translation>Venter på at starte synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1906"/>
+        <location filename="../src/gui/folderman.cpp" line="1913"/>
         <source>Preparing for sync.</source>
-        <translation>Forbereder synkronisering</translation>
+        <translation>Forbereder synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1916"/>
+        <location filename="../src/gui/folderman.cpp" line="1923"/>
         <source>Syncing %1 of %2 (A few seconds left)</source>
         <translation>Synkroniserer %1 af %2 (et par sekunder tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1919"/>
+        <location filename="../src/gui/folderman.cpp" line="1926"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synkroniserer %1 af %2 (%3 tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1922"/>
+        <location filename="../src/gui/folderman.cpp" line="1929"/>
         <source>Syncing %1 of %2</source>
         <translation>Synkroniserer %1 af %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1928"/>
+        <location filename="../src/gui/folderman.cpp" line="1935"/>
         <source>Syncing %1 (A few seconds left)</source>
         <translation>Synkroniserer %1 (et par sekunder tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1930"/>
+        <location filename="../src/gui/folderman.cpp" line="1937"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserer %1 (%2 tilbage)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1933"/>
+        <location filename="../src/gui/folderman.cpp" line="1940"/>
         <source>Syncing %1</source>
         <translation>Synkroniserer %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1938"/>
+        <location filename="../src/gui/folderman.cpp" line="1945"/>
         <source>Sync is running.</source>
         <translation>Synkronisering er i gang.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1943"/>
+        <location filename="../src/gui/folderman.cpp" line="1950"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synkronisering afsluttet med uløste konflikter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1945"/>
+        <location filename="../src/gui/folderman.cpp" line="1952"/>
         <source>Last sync was successful.</source>
         <translation>Sidste synkronisering lykkedes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1951"/>
+        <location filename="../src/gui/folderman.cpp" line="1958"/>
         <source>Setup error.</source>
         <translation>Fejl under opsætning.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1954"/>
+        <location filename="../src/gui/folderman.cpp" line="1961"/>
         <source>Sync request was cancelled.</source>
         <translation>Synkroniseringsanmodning blev annulleret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1972"/>
+        <location filename="../src/gui/folderman.cpp" line="1979"/>
         <source>Please choose a different location. The selected folder isn&apos;t valid.</source>
-        <translation>Vælg venligst en anden placering. Den valgte mappe er ikke gyldig.</translation>
+        <translation>Vælg en anden placering. Den valgte mappe er ikke gyldig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1980"/>
-        <location filename="../src/gui/folderman.cpp" line="2059"/>
+        <location filename="../src/gui/folderman.cpp" line="1987"/>
+        <location filename="../src/gui/folderman.cpp" line="2066"/>
         <source>Please choose a different location. %1 is already being used as a sync folder.</source>
-        <translation>Vælg venligst en anden placering. %1 bliver allerede anvendt som en synkroniseringsmappe.</translation>
+        <translation>Vælg en anden placering. %1 bruges allerede som synkroniseringsmappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1989"/>
+        <location filename="../src/gui/folderman.cpp" line="1996"/>
         <source>Please choose a different location. The path %1 doesn&apos;t exist.</source>
-        <translation>Vælg venligst en anden placering. Stien %1 eksisterer ikke.</translation>
+        <translation>Vælg en anden placering. Stien %1 findes ikke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1993"/>
+        <location filename="../src/gui/folderman.cpp" line="2000"/>
         <source>Please choose a different location. The path %1 isn&apos;t a folder.</source>
-        <translation>Vælg venligst en anden placering. Stien %1 er ikke en mappe.</translation>
+        <translation>Vælg en anden placering. Stien %1 er ikke en mappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2001"/>
-        <location filename="../src/gui/folderman.cpp" line="2006"/>
+        <location filename="../src/gui/folderman.cpp" line="2008"/>
+        <location filename="../src/gui/folderman.cpp" line="2013"/>
         <source>Please choose a different location. You don&apos;t have enough permissions to write to %1.</source>
         <comment>folder location</comment>
-        <translation>Vælg venligst en anden placering. Du har ikke tilstrækkelige rettigheder til at skrive til %1.</translation>
+        <translation>Vælg en anden placering. Du har ikke tilladelse til at skrive til %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2066"/>
+        <location filename="../src/gui/folderman.cpp" line="2073"/>
         <source>Please choose a different location. %1 is already contained in a folder used as a sync folder.</source>
-        <translation>Vælg venligst en anden placering. %1 er allerede indeholdt i en mappe der anvendes som synkroniseringsmappe.</translation>
+        <translation>Vælg en anden placering. %1 ligger allerede i en mappe, der bruges som synkroniseringsmappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2081"/>
+        <location filename="../src/gui/folderman.cpp" line="2088"/>
         <source>Please choose a different location. %1 is already being used as a sync folder for %2.</source>
         <comment>folder location, server url</comment>
-        <translation>Vælg venligst en anden placering. %1 anvendes allerede som en synkroniseringsmappe for %2.</translation>
+        <translation>Vælg en anden placering. %1 bruges allerede som synkroniseringsmappe for %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="2239"/>
+        <location filename="../src/gui/folderman.cpp" line="2246"/>
         <source>The folder %1 is linked to multiple accounts.
 This setup can cause data loss and it is no longer supported.
 To resolve this issue: please remove %1 from one of the accounts and create a new sync folder.
 For advanced users: this issue might be related to multiple sync database files found in one folder. Please check %1 for outdated and unused .sync_*.db files and remove them.</source>
-        <translation>Mappen %1 er linket til multiple konti.
-Denne opsætning kan bevirke datatab og understøttes ikke længere.
-For at løse dette problem: fjern venligst %1 fra en af kontiene og opret en ny synkroniseringsmappe.
-For avancerede brugere: dette problem kan være relateret til multiple synkroniserings databasefiler fundet i en mappe. Kontroller venligst %1 for udløbne og ubrugte .sync_*.db filer og fjern dem.</translation>
+        <translation>Mappen %1 er knyttet til flere konti.
+Denne opsætning kan medføre tab af data og understøttes ikke længere.
+Sådan løser du problemet: Fjern %1 fra en af kontiene, og opret en ny synkroniseringsmappe.
+For avancerede brugere: Problemet kan skyldes, at der findes flere synkroniseringsdatabasefiler i samme mappe. Tjek %1 for forældede og ubrugte .sync_*.db-filer, og fjern dem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1957"/>
+        <location filename="../src/gui/folderman.cpp" line="1964"/>
         <source>Sync is paused.</source>
-        <translation>Synkronisering er pauset.</translation>
+        <translation>Synkronisering er sat på pause.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="430"/>
+        <location filename="../src/gui/folderman.cpp" line="431"/>
         <source>Please open the app settings to grant access to the sync folders.</source>
         <translation>Åbn app-indstillingerne for at give adgang til synkroniseringsmapper.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1964"/>
+        <location filename="../src/gui/folderman.cpp" line="1971"/>
         <source>%1 (Sync is paused)</source>
         <extracomment>%1 is the current sync status message, for example &quot;Setup error&quot;.</extracomment>
-        <translation>%1 (Sync er sat på pause)</translation>
+        <translation>%1 (synkronisering er sat på pause)</translation>
     </message>
 </context>
 <context>
@@ -3322,18 +3298,19 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Opret mappesynkroniseringsforbindelse</translation>
+        <translation>Tilføj mappesynkroniseringsforbindelse</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="103"/>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="324"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="466"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="467"/>
         <source>Grant access</source>
-        <translation>Tilskudsadgang</translation>
+        <translation>Giv adgang</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="347"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="348"/>
         <source>File</source>
+        <extracomment>Representative file label used to calculate the height of a file progress row.</extracomment>
         <translation>Fil</translation>
     </message>
 </context>
@@ -3347,7 +3324,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Klik denne knap for at tilføje en mappe at synkronisere.</translation>
+        <translation>Klik på denne knap for at tilføje en mappe, der skal synkroniseres.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -3364,17 +3341,17 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Fejl under indlæsning af listen af mapper fra serveren.</translation>
+        <translation>Fejl under indlæsning af listen over mapper fra serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="256"/>
         <source>Due to recent security improvements, the client no longer has access to the folder. Your approval is required one time to restore access. Please select the synchronization folder root.</source>
-        <translation>På grund af nylige sikkerhedsforbedringer har kunden ikke længere adgang til mappen. Din godkendelse kræves én gang for at genoprette adgangen. Vælg synkroniseringsmapperoden.</translation>
+        <translation>På grund af nylige sikkerhedsforbedringer har klienten ikke længere adgang til mappen. Du skal godkende én gang for at genoprette adgangen. Vælg rodmappen for synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="263"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Virtuel fil understøttelse er ikke aktiveret.</translation>
+        <translation>Understøttelse af virtuelle filer er aktiveret.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="286"/>
@@ -3394,23 +3371,23 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Kontrollerer for ændringer i ekstern &quot;%1&quot;</translation>
+        <translation>Søger efter ændringer i fjernmappen &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1011"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Kontrollerer for ændringer i lokal &quot;%1&quot;</translation>
+        <translation>Søger efter ændringer i den lokale mappe &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
         <source>Syncing local and remote changes</source>
-        <translation>Synkronisering af lokale og eksterne ændringer</translation>
+        <translation>Synkroniserer lokale ændringer og fjernændringer</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>%1 %2 …</source>
         <extracomment>Example text: &quot;Uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot; Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>%1 %2 ...</translation>
+        <translation>%1 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
@@ -3437,7 +3414,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="219"/>
         <source>Fetching folder list from server …</source>
-        <translation>Henter mappelisten fra server …</translation>
+        <translation>Henter mappelisten fra serveren …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
@@ -3448,7 +3425,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>Upload %1/s</source>
         <extracomment>Example text: &quot;Upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Upload %1/s</translation>
+        <translation>Overfør %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1086"/>
@@ -3471,7 +3448,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <location filename="../src/gui/folderstatusmodel.cpp" line="1119"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>Et par sekunder tilbage, %1 ud af %2, fil %3 ud af %4</translation>
+        <translation>Et par sekunder tilbage, %1 af %2, fil %3 af %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1126"/>
@@ -3493,7 +3470,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1195"/>
         <source>About to start syncing</source>
-        <translation>På vej til at starte synkronisering</translation>
+        <translation>Synkroniseringen starter om lidt</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1200"/>
@@ -3504,9 +3481,9 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="171"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="176"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation>Observatøren modtog ikke en testnotifikation.</translation>
+        <translation>Overvågningen modtog ikke en testnotifikation.</translation>
     </message>
 </context>
 <context>
@@ -3514,18 +3491,18 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="81"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Dette forekommer jævnligt når inotify overvågning er fuld. Kontroller FAQ for yderligere detaljer.</translation>
+        <translation>Problemet opstår som regel, når inotify-overvågningerne er brugt op. Se FAQ&apos;en for detaljer.</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="710"/>
+        <location filename="../src/gui/folderwizard.cpp" line="750"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Opret mappesynkroniseringsforbindelse</translation>
+        <translation>Tilføj mappesynkroniseringsforbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="712"/>
+        <location filename="../src/gui/folderwizard.cpp" line="752"/>
         <source>Add Sync Connection</source>
         <translation>Tilføj synkroniseringsforbindelse</translation>
     </message>
@@ -3533,17 +3510,18 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="84"/>
+        <location filename="../src/gui/folderwizard.cpp" line="89"/>
         <source>Click to select a local folder to sync.</source>
         <translation>Klik for at vælge en lokal mappe at synkronisere.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="88"/>
+        <location filename="../src/gui/folderwizard.cpp" line="93"/>
         <source>Enter the path to the local folder.</source>
         <translation>Angiv stien til den lokale mappe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="153"/>
+        <location filename="../src/gui/folderwizard.cpp" line="155"/>
+        <location filename="../src/gui/folderwizard.cpp" line="164"/>
         <source>Select the source folder</source>
         <translation>Vælg kildemappen</translation>
     </message>
@@ -3551,48 +3529,48 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="231"/>
+        <location filename="../src/gui/folderwizard.cpp" line="259"/>
         <source>Create Remote Folder</source>
-        <translation>Opret den afsides mappe</translation>
+        <translation>Opret fjernmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="232"/>
+        <location filename="../src/gui/folderwizard.cpp" line="260"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Indtast navnet på den nye mappe der skal oprettes under &quot;%1&quot;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="262"/>
+        <location filename="../src/gui/folderwizard.cpp" line="290"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Mappe oprettet med succes hos %1</translation>
+        <translation>Mappen blev oprettet på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="272"/>
+        <location filename="../src/gui/folderwizard.cpp" line="300"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Godkendelse fejlet ved adgang til %1</translation>
+        <translation>Godkendelse mislykkedes ved adgang til %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="274"/>
+        <location filename="../src/gui/folderwizard.cpp" line="302"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Fejl ved oprettelse af mappe på %1. Undersøg venligst manuelt.</translation>
+        <translation>Mappen kunne ikke oprettes på %1. Tjek det manuelt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="292"/>
+        <location filename="../src/gui/folderwizard.cpp" line="320"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Fejl ved visning af mappe. Fejl: %1</translation>
+        <translation>Kunne ikke vise indholdet af en mappe. Fejl: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="374"/>
+        <location filename="../src/gui/folderwizard.cpp" line="402"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Vælg dette for sync af hele kontoen</translation>
+        <translation>Vælg dette for at synkronisere hele kontoen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="516"/>
-        <location filename="../src/gui/folderwizard.cpp" line="528"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
+        <location filename="../src/gui/folderwizard.cpp" line="556"/>
         <source>Please choose a different location. %1 is already being synced to %2.</source>
-        <translation>Vælg et andet sted. %1 bliver allerede synkroniseret til %2.</translation>
+        <translation>Vælg en anden placering. %1 synkroniseres allerede til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="523"/>
+        <location filename="../src/gui/folderwizard.cpp" line="551"/>
         <source>You are already syncing the subfolder %1 at %2.</source>
         <translation>Du synkroniserer allerede undermappen %1 på %2.</translation>
     </message>
@@ -3600,24 +3578,24 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="590"/>
-        <location filename="../src/gui/folderwizard.cpp" line="628"/>
+        <location filename="../src/gui/folderwizard.cpp" line="618"/>
+        <location filename="../src/gui/folderwizard.cpp" line="661"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
-        <translation>Brug virtuelle filer i stedet for at downloade indhold med det samme %1</translation>
+        <translation>Brug virtuelle filer i stedet for at hente indholdet med det samme %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="590"/>
-        <location filename="../src/gui/folderwizard.cpp" line="628"/>
+        <location filename="../src/gui/folderwizard.cpp" line="618"/>
+        <location filename="../src/gui/folderwizard.cpp" line="661"/>
         <source>(experimental)</source>
         <translation>(eksperimentel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="624"/>
+        <location filename="../src/gui/folderwizard.cpp" line="657"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuelle filer er ikke understøttet for Windows partitions rødder, som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
+        <translation>Virtuelle filer understøttes ikke i roden af en Windows-partition som lokal mappe. Vælg en gyldig undermappe under drevbogstavet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="649"/>
+        <location filename="../src/gui/folderwizard.cpp" line="689"/>
         <source>Virtual files are not supported at the selected location</source>
         <translation>Virtuelle filer understøttes ikke på den valgte placering</translation>
     </message>
@@ -3627,7 +3605,7 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ingen E-Tag modtaget fra server, kontroller Proxy/Gateway</translation>
+        <translation>Intet E-Tag modtaget fra serveren. Tjek proxy/gateway</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="196"/>
@@ -3637,38 +3615,38 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="207"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Vi modtog en uventet download Content-Length.</translation>
+        <translation>Vi modtog en uventet Content-Length for hentningen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="235"/>
         <source>Server returned wrong content-range</source>
-        <translation>Server returnerede forkert indholdsinterval</translation>
+        <translation>Serveren returnerede et forkert content-range</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
         <source>Connection Timeout</source>
-        <translation>Forbindelse udløbet</translation>
+        <translation>Timeout for forbindelsen</translation>
     </message>
 </context>
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="252"/>
+        <location filename="../src/gui/generalsettings.ui" line="259"/>
         <source>Show Call Notifications</source>
         <translation>Vis opkaldsnotifikationer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="110"/>
         <source>For System Tray</source>
-        <translation>Som Systembakke</translation>
+        <translation>Til systembakken</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="218"/>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Show Chat Notifications</source>
         <translation>Vis chatnotifikationer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="184"/>
+        <location filename="../src/gui/generalsettings.ui" line="191"/>
         <source>Show Server &amp;Notifications</source>
         <translation>Vis server&amp;notifikationer</translation>
     </message>
@@ -3678,352 +3656,273 @@ For avancerede brugere: dette problem kan være relateret til multiple synkronis
         <translation>&amp;Kør ved opstart af systemet</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="46"/>
-        <source>General settings</source>
-        <translation>Generelle indstillinger</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="93"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>Anvend &amp;monokrome ikoner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="112"/>
-        <source>Advanced</source>
-        <translation>Avanceret</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="126"/>
-        <source>Ask for confirmation before synchronizing new folders larger than</source>
-        <translation>Bed om bekræftelse, før du synkroniserer nye mapper større end</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation>Enable &amp;File Provider</translation>
+        <translation>Slå &amp;File Provider til</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="165"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation>Filer vises i Finder under afsnittet &quot;Placeringer&quot; og bruger ikke lokal lagerplads; indhold downloade automatisk, når du åbner en fil. Gælder for alle konti og erstatter klassiske synkroniseringsmapper og deres Finder integration.</translation>
+        <translation>Filer vises i Finder under afsnittet &quot;Lokaliteter&quot; og bruger ikke lokal lagerplads; indholdet hentes automatisk, når du åbner en fil. Gælder alle konti og erstatter klassiske synkroniseringsmapper og deres Finder-integration.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="162"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="189"/>
-        <source>Notify when synchronised folders grow larger than specified limit</source>
-        <translation>Giv besked, når synkroniserede mapper bliver større end den angivne grænse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="216"/>
-        <source>Automatically disable synchronisation of folders that overcome limit</source>
-        <translation>Deaktiver automatisk synkronisering af mapper, der overskrider grænsen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Spørg om bekræftelse inden synkronisering af eksterne lagre</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="240"/>
-        <source>Move removed files to trash</source>
-        <translation>Flyt fjernede filer til papirkurven</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="251"/>
-        <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
-        <translation>Vis synkroniseringsmapper i &amp;Stifinders navigationsrude</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="263"/>
-        <source>Server poll interval</source>
-        <translation>Interval for serverforespørgsler</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="283"/>
-        <source>seconds (if &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Client Push&lt;/a&gt; is unavailable)</source>
-        <translation>sekunder (hvis &lt;a href=&quot;https://github.com/nextcloud/notify_push&quot;&gt;Klient Push&lt;/a&gt; ikke er tilgængelig)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="317"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation>Redigér &amp;Ignorerede Filer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="324"/>
-        <location filename="../src/gui/generalsettings.cpp" line="735"/>
-        <source>Create Debug Archive</source>
-        <translation>Opret fejlfindingsarkiv</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="360"/>
-        <source>Info</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="376"/>
-        <source>Desktop client x.x.x</source>
-        <translation>Desktopklient x.x.x</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="400"/>
-        <source>Update channel</source>
-        <translation>Opdateringskanal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="436"/>
-        <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Genstart &amp;&amp; Opdatér</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="453"/>
-        <source>&amp;Automatically check for updates</source>
-        <translation>&amp;Søg automatisk efter opdateringer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="469"/>
-        <source>Check Now</source>
-        <translation>Kontroller nu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="496"/>
-        <source>Usage Documentation</source>
-        <translation>Anvendelsesdokumentation</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="503"/>
-        <source>Legal Notice</source>
-        <translation>Juridisk notits</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="513"/>
-        <source>Restore &amp;Default</source>
-        <translation>Gendan &amp; standard</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="286"/>
+        <location filename="../src/gui/generalsettings.ui" line="293"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation>Vis &amp; Kvoteadvarselsmeddelelser</translation>
+        <translation>Vis advarsler om &amp;kvote</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="42"/>
         <source>Server notifications that require attention.</source>
-        <translation>Server notifikationer der kræver opmærksomhed.</translation>
+        <translation>Servernotifikationer, der kræver opmærksomhed.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="46"/>
         <source>Show chat notification dialogs.</source>
-        <translation>Vis chat notifikationsdialoger.</translation>
+        <translation>Vis dialoger for chatnotifikationer.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="50"/>
         <source>Show call notification dialogs.</source>
-        <translation>Vis opkaldsnotifikationsdialoger.</translation>
+        <translation>Vis dialoger for opkaldsnotifikationer.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="53"/>
         <source>Show notification when quota usage exceeds 80%.</source>
-        <translation>Vis meddelelse når kvoteanvendelsen overstiger 80%.</translation>
+        <translation>Vis en notifikation, når kvoteforbruget overstiger 80 %.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation>Du kan ikke deaktivere autostart, fordi system-wide autostart er aktiveret.</translation>
+        <translation>Du kan ikke deaktivere autostart, fordi autostart er aktiveret for hele systemet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="174"/>
+        <location filename="../src/gui/generalsettings.cpp" line="181"/>
         <source>Login Item Requires Approval</source>
-        <translation>Login element kræver godkendelse</translation>
+        <translation>Log ind-emne kræver godkendelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="175"/>
+        <location filename="../src/gui/generalsettings.cpp" line="182"/>
         <source>The login item has been registered but needs your approval to become active. Please open System Settings → General → Login Items and enable %1 there.</source>
-        <translation>Indlogningselementet er blevet registreret, men skal godkendes til at blive aktivt. Åbn systemindstillinger → Generelt → Login elementer og aktivér% 1 der.</translation>
+        <translation>Log ind-emnet er registreret, men skal godkendes af dig for at blive aktivt. Åbn Systemindstillinger → Generelt → Log ind-emner, og slå %1 til der.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="245"/>
+        <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>Unknown account</source>
         <translation>Ukendt konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="252"/>
+        <location filename="../src/gui/generalsettings.cpp" line="259"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation>File Provider vil blive aktiveret for alle konti. Dine filer vises i Finder under afsnittet &quot;Placeringer&quot;. Konti tilføjet senere vil også blive oprettet som File Providers.</translation>
+        <translation>File Provider bliver slået til for alle konti. Dine filer vises i Finder under afsnittet &quot;Lokaliteter&quot;. Konti, der tilføjes senere, bliver også konfigureret med File Provider.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="261"/>
+        <location filename="../src/gui/generalsettings.cpp" line="268"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
         <translation>Dette fjerner klassiske synkroniseringsmappeforbindelser fra følgende konti:</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="265"/>
+        <location filename="../src/gui/generalsettings.cpp" line="272"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation>Syndikerede filer forbliver på din computer, men de vil ikke længere blive holdt ajour og indstillinger såsom selektiv sync kasseres.</translation>
+        <translation>Synkroniserede filer bliver på din computer, men holdes ikke længere opdateret, og indstillinger som selektiv synkronisering kasseres.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="269"/>
+        <location filename="../src/gui/generalsettings.cpp" line="276"/>
         <source>Enable File Provider?</source>
-        <translation>Enable File Provider?</translation>
+        <translation>Slå File Provider til?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="274"/>
+        <location filename="../src/gui/generalsettings.cpp" line="281"/>
         <source>Enable File Provider</source>
-        <translation>Enable File Provider</translation>
+        <translation>Slå File Provider til</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="275"/>
-        <location filename="../src/gui/generalsettings.cpp" line="297"/>
+        <location filename="../src/gui/generalsettings.cpp" line="282"/>
+        <location filename="../src/gui/generalsettings.cpp" line="304"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="286"/>
+        <location filename="../src/gui/generalsettings.cpp" line="293"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation>File Provider vil blive slukket for alle konti, og dine filer vil ikke længere være tilgængelige i Finder under &quot;Placeringer&quot; sektionen.</translation>
+        <translation>File Provider bliver slået fra for alle konti, og dine filer er ikke længere tilgængelige i Finder under afsnittet &quot;Lokaliteter&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="288"/>
+        <location filename="../src/gui/generalsettings.cpp" line="295"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation>Genstande, der endnu ikke er uploadet, vil blive bevaret og vist dig. Klassiske sync-mapper er ikke sat op igen automatisk - du kan tilføje mappe sync-forbindelser bagefter i hver kontos indstillinger.</translation>
+        <translation>Elementer, der endnu ikke er overført, bevares og vises for dig. Klassiske synkroniseringsmapper bliver ikke konfigureret igen automatisk — du kan bagefter tilføje mappesynkroniseringer i hver kontos indstillinger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="291"/>
+        <location filename="../src/gui/generalsettings.cpp" line="298"/>
         <source>Disable File Provider?</source>
-        <translation>Disable File Provider?</translation>
+        <translation>Slå File Provider fra?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="296"/>
+        <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Disable File Provider</source>
-        <translation>Disable File Provider</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="409"/>
-        <source>Restore to &amp;%1</source>
-        <translation>Gendan til &amp;% 1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="448"/>
-        <location filename="../src/gui/generalsettings.cpp" line="474"/>
-        <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation>Tilsluttet et virksomhedssystem. Opdatér kanal (% 1) kan ikke ændres.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="505"/>
-        <source>stable</source>
-        <translation>stabil</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="509"/>
-        <source>beta</source>
-        <translation>beta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="513"/>
-        <source>daily</source>
-        <translation>dagligt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="517"/>
-        <source>enterprise</source>
-        <translation>enterprise</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="555"/>
-        <source>- beta: contains versions with new features that may not be tested thoroughly
-- daily: contains versions created daily only for testing and development
-
-Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
-        <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation>- beta: indeholder versioner med nye funktioner, der ikke er testet grundigt
-- dagligt: indeholder versioner, der er skabt dagligt kun til afprøvning og udvikling
-
-Nedgradering af versioner er ikke muligt med det samme: skift fra beta til stabil, betyder at der skal ventes på den nye stabile version.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="560"/>
-        <source>- enterprise: contains stable versions for customers.
-
-Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
-        <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation>- enterprise: indeholder stabile versioner til kunder.
-
-Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til enterprise, betyder at der skal ventes på den nye enterprise version.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="567"/>
-        <source>Changing update channel?</source>
-        <translation>Ændre opdateringskanal?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="568"/>
-        <source>The channel determines which upgrades will be offered to install:
-- stable: contains tested versions considered reliable
-</source>
-        <comment>starts list of available update channels, stable is always available</comment>
-        <translation>Kanalen bestemmer hvilke opgraderinger der vil blive tilbudt at installere:
-- stabil: indeholder testede versioner som anses for pålidelige
-</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="574"/>
-        <source>Change update channel</source>
-        <translation>Ændr opdateringskanal</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="737"/>
-        <source>Zip Archives</source>
-        <translation>Zip arkiver</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="753"/>
-        <source>Failed to Access File</source>
-        <translation>Kunne ikke få adgang til fil</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="754"/>
-        <source>Could not access the selected location. Please try again or choose a different location.</source>
-        <translation>Kunne ikke få adgang til det valgte sted. Prøv igen eller vælg et andet sted.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="763"/>
-        <source>Debug Archive Created</source>
-        <translation>Fejlfindingsarkiv oprettet</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="764"/>
-        <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
-        <translation>Redact oplysninger anses for følsomme før deling! Fejl i arkiv oprettet på% 1</translation>
+        <translation>Slå File Provider fra</translation>
     </message>
 </context>
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="910"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
         <source>Password for share required</source>
         <translation>Adgangskode til deling påkrævet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="911"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Indtast venligst et kodeord til denne linkdeling</translation>
+        <translation>Indtast en adgangskode til din linkdeling:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="937"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
         <source>Sharing error</source>
-        <translation>Delefejl</translation>
+        <translation>Fejl ved deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="938"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Kunne ikke modtage eller operette offentlig link deling. Fejl:
+        <translation>Kunne ikke hente eller oprette det offentlige delingslink. Fejl:
 
 %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Gui::Sharing::Share</name>
+    <message>
+        <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
+        <source>View only</source>
+        <translation>Kun visning</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
+        <source>Can edit</source>
+        <translation>Kan redigere</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Gui::Sharing::SharingController</name>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
+        <source>The server did not generate a valid public-link identifier.</source>
+        <translation>Serveren dannede ikke et gyldigt id til det offentlige link.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
+        <source>Could not create the public link.</source>
+        <translation>Det offentlige link kunne ikke oprettes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
+        <source>Could not retrieve the internal link.</source>
+        <translation>Det interne link kunne ikke hentes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
+        <source>The server returned an invalid share.</source>
+        <translation>Serveren returnerede en ugyldig deling.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
+        <source>Could not create the share.</source>
+        <translation>Delingen kunne ikke oprettes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
+        <source>Could not delete the share.</source>
+        <translation>Delingen kunne ikke slettes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="363"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
+        <source>Could not add the recipient.</source>
+        <translation>Modtageren kunne ikke tilføjes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
+        <source>Could not remove the recipient.</source>
+        <translation>Modtageren kunne ikke fjernes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
+        <source>The server did not generate a valid sharing link.</source>
+        <translation>Serveren dannede ikke et gyldigt delingslink.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
+        <source>Could not update the sharing link.</source>
+        <translation>Delingslinket kunne ikke opdateres.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
+        <source>Could not generate a sharing link.</source>
+        <translation>Der kunne ikke dannes et delingslink.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="479"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
+        <source>Could not update the permissions.</source>
+        <translation>Rettighederne kunne ikke opdateres.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
+        <source>Could not update the recipient permissions.</source>
+        <translation>Modtagerens rettigheder kunne ikke opdateres.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
+        <source>Could not update the sharing setting.</source>
+        <translation>Delingsindstillingen kunne ikke opdateres.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
+        <source>The server did not activate the share.</source>
+        <translation>Serveren aktiverede ikke delingen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
+        <source>Could not send the share.</source>
+        <translation>Delingen kunne ikke sendes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="730"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
+        <source>The newly created share is no longer available.</source>
+        <translation>Den nyoprettede deling er ikke længere tilgængelig.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
+        <source>Could not attach the item to the share.</source>
+        <translation>Elementet kunne ikke knyttes til delingen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
+        <source>Could not save all changes to the share.</source>
+        <translation>Ikke alle ændringer af delingen kunne gemmes.</translation>
     </message>
 </context>
 <context>
@@ -4031,7 +3930,7 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Indtast venligst %1 adgangskode:&lt;br&gt;&lt;br&gt;Brugernavn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Indtast adgangskode til %1:&lt;br&gt;&lt;br&gt;Brugernavn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="67"/>
@@ -4046,7 +3945,21 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Klik her&lt;/a&gt; for at forespørge om kodeord i web tilgang.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klik her&lt;/a&gt; for at anmode om en app-adgangskode i webbrugerfladen.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::HydrationJob</name>
+    <message>
+        <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
+        <source>Failed to find fileId: %1 in db</source>
+        <translation>Kunne ikke finde fileId: %1 i databasen</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
+        <source>Unexpected file size transferred. Expected %1 received %2</source>
+        <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
+        <translation>Uventet filstørrelse overført. Forventede %1, modtog %2</translation>
     </message>
 </context>
 <context>
@@ -4054,12 +3967,12 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Redaktør af ignorerede filer</translation>
+        <translation>Ignorerede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="40"/>
         <source>Global Ignore Settings</source>
-        <translation>Globale Ignorerindstillinger</translation>
+        <translation>Globale indstillinger for ignorering</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="64"/>
@@ -4069,12 +3982,12 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="112"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Filer Ignoreret med mønster</translation>
+        <translation>Filer ignoreret efter mønster</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="62"/>
         <source>This entry is provided by the system at &quot;%1&quot; and cannot be modified in this view.</source>
-        <translation>Denne indgang leveres af systemet ved &quot;%1&quot; og kan ikke ændres i denne visning.</translation>
+        <translation>Denne post leveres af systemet i &quot;%1&quot; og kan ikke ændres i denne visning.</translation>
     </message>
 </context>
 <context>
@@ -4082,6 +3995,7 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="45"/>
         <source>Pattern</source>
+        <extracomment>Ignore-list table column containing filename patterns.</extracomment>
         <translation>Mønster</translation>
     </message>
     <message>
@@ -4109,9 +4023,9 @@ Nedgradering af versioner er ikke muligt med det samme: skift fra stabil til ent
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Filer eller mapper der stemmer med et mønster vil ikke blive synkroniseret.
+        <translation>Filer eller mapper, der matcher et mønster, bliver ikke synkroniseret.
 
-Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fra at blive slettet. Dette er brugbart til metadata.</translation>
+Elementer, hvor sletning er tilladt, bliver slettet, hvis de forhindrer, at en mappe fjernes. Det er nyttigt til metadata.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="108"/>
@@ -4126,7 +4040,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="132"/>
         <source>Add Ignore Pattern</source>
-        <translation>Tilføj Ignorermønster</translation>
+        <translation>Tilføj ignoreringsmønster</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="133"/>
@@ -4139,7 +4053,7 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/infosettings.ui" line="51"/>
         <source>Desktop client x.x.x</source>
-        <translation>Desktopklient x.x.x</translation>
+        <translation>Skrivebordsklient x.x.x</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="74"/>
@@ -4149,27 +4063,27 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
     <message>
         <location filename="../src/gui/infosettings.ui" line="81"/>
         <source>Legal Notice</source>
-        <translation>Retsmeddelelse</translation>
+        <translation>Juridiske oplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="152"/>
         <source>Update channel</source>
-        <translation>Opdatér kanal</translation>
+        <translation>Opdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation>Gendan &amp; standard</translation>
+        <translation>Gendan &amp;standard</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
         <source>&amp;Automatically check for updates</source>
-        <translation>&amp; Kontrollér automatisk for opdateringer</translation>
+        <translation>Søg &amp;automatisk efter opdateringer</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="216"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp; Genstart &amp; &amp; opdatering</translation>
+        <translation>&amp;Genstart &amp;&amp; opdater</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="229"/>
@@ -4177,82 +4091,86 @@ Elementer hvor sletning er tilladt vil blive slettet hvis de hindre en folder fr
         <translation>Tjek nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="110"/>
+        <location filename="../src/gui/infosettings.cpp" line="111"/>
         <source>Restore to &amp;%1</source>
-        <translation>Gendan til &amp;% 1</translation>
+        <translation>Gendan til &amp;%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="151"/>
-        <location filename="../src/gui/infosettings.cpp" line="177"/>
+        <location filename="../src/gui/infosettings.cpp" line="156"/>
+        <location filename="../src/gui/infosettings.cpp" line="182"/>
         <source>Connected to an enterprise system. Update channel (%1) cannot be changed.</source>
-        <translation>Tilsluttet et virksomhedssystem. Opdatér kanal (% 1) kan ikke ændres.</translation>
+        <translation>Forbundet til et virksomhedssystem. Opdateringskanalen (%1) kan ikke ændres.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="208"/>
+        <location filename="../src/gui/infosettings.cpp" line="218"/>
         <source>stable</source>
+        <extracomment>Name of the stable update channel.</extracomment>
         <translation>stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="212"/>
+        <location filename="../src/gui/infosettings.cpp" line="223"/>
         <source>beta</source>
+        <extracomment>Name of the beta update channel.</extracomment>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="216"/>
+        <location filename="../src/gui/infosettings.cpp" line="228"/>
         <source>daily</source>
-        <translation>dagligt</translation>
+        <extracomment>Name of the daily update channel.</extracomment>
+        <translation>daglig</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="220"/>
+        <location filename="../src/gui/infosettings.cpp" line="233"/>
         <source>enterprise</source>
-        <translation>virksomhed</translation>
+        <extracomment>Name of the enterprise update channel.</extracomment>
+        <translation>enterprise</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="255"/>
+        <location filename="../src/gui/infosettings.cpp" line="268"/>
         <source>- beta: contains versions with new features that may not be tested thoroughly
 - daily: contains versions created daily only for testing and development
 
 Downgrading versions is not possible immediately: changing from beta to stable means waiting for the new stable version.</source>
         <comment>list of available update channels to non enterprise users and downgrading warning</comment>
-        <translation>- beta: indeholder versioner med nye funktioner, der ikke kan testes grundigt
-- dagligt: indeholder versioner, der er skabt dagligt kun til afprøvning og udvikling
+        <translation>- beta: indeholder versioner med nye funktioner, som måske ikke er grundigt testet
+- dagligt: indeholder versioner, der dannes hver dag, kun til test og udvikling
 
-Nedgradering versioner er ikke muligt med det samme: skifte fra beta til stabile midler venter på den nye stabile version.</translation>
+Du kan ikke straks gå tilbage til en ældre version: Skifter du fra beta til stabil, skal du vente på den næste stabile version.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="260"/>
+        <location filename="../src/gui/infosettings.cpp" line="273"/>
         <source>- enterprise: contains stable versions for customers.
 
 Downgrading versions is not possible immediately: changing from stable to enterprise means waiting for the new enterprise version.</source>
         <comment>list of available update channels to enterprise users and downgrading warning</comment>
-        <translation>- virksomhed: indeholder stabile versioner til kunder.
+        <translation>- enterprise: indeholder stabile versioner til kunder.
 
-Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virksomhed betyder venter på den nye virksomhed version.</translation>
+Du kan ikke straks gå tilbage til en ældre version: Skifter du fra stabil til enterprise, skal du vente på den næste enterprise-version.</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="267"/>
+        <location filename="../src/gui/infosettings.cpp" line="280"/>
         <source>Changing update channel?</source>
-        <translation>Ændrede opdateringskanal?</translation>
+        <translation>Skift opdateringskanal?</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="268"/>
+        <location filename="../src/gui/infosettings.cpp" line="281"/>
         <source>The channel determines which upgrades will be offered to install:
 - stable: contains tested versions considered reliable
 </source>
         <comment>starts list of available update channels, stable is always available</comment>
-        <translation>Kanalen bestemmer hvilke opgraderinger der vil blive tilbudt at installere:
-- Stabile: indeholder testede versioner anses for pålidelige
+        <translation>Kanalen bestemmer, hvilke opgraderinger der tilbydes:
+- stabil: indeholder testede versioner, der anses for pålidelige
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="274"/>
+        <location filename="../src/gui/infosettings.cpp" line="287"/>
         <source>Change update channel</source>
-        <translation>Ændr opdateringskanal</translation>
+        <translation>Skift opdateringskanal</translation>
     </message>
     <message>
-        <location filename="../src/gui/infosettings.cpp" line="275"/>
+        <location filename="../src/gui/infosettings.cpp" line="288"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
 </context>
 <context>
@@ -4265,7 +4183,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation>Filen kunne ikke synkroniseres fordi den indeholder tegn som ikke er tilladt på dette system.</translation>
+        <translation>Filen kunne ikke synkroniseres, fordi den indeholder tegn, som ikke er tilladt på dette system.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
@@ -4275,7 +4193,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
-        <translation>Angiv venligst et navn til filen:</translation>
+        <translation>Angiv et nyt navn til filen:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
@@ -4288,92 +4206,92 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
         <translation>Omdøb fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
-        <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn som ikke er tilladt på dette system.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="93"/>
+        <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
+        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn, som ikke er tilladt på dette system.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="94"/>
         <source>The following characters are not allowed on the system: \ / : ? * &quot;  &lt; &gt; | leading/trailing spaces</source>
-        <translation>Følgende tegn er ikke tilladt på systemet:\ /:? * &quot;&lt; &gt; Note 124; indledende / afsluttende mellemrum</translation>
+        <translation>Følgende tegn er ikke tilladt på systemet: \ / : ? * &quot;  &lt; &gt; | indledende/afsluttende mellemrum</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="98"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on the server.</source>
-        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn som ikke er tilladt på serveren.</translation>
+        <translation>Filen &quot;%1&quot; kunne ikke synkroniseres, fordi navnet indeholder tegn, som ikke er tilladt på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="107"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="109"/>
         <source>The following characters are not allowed: %1</source>
         <translation>Følgende tegn er ikke tilladt: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="110"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="112"/>
         <source>The following basenames are not allowed: %1</source>
         <translation>Følgende basenavne er ikke tilladt: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="113"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="115"/>
         <source>The following filenames are not allowed: %1</source>
         <translation>Følgende filnavne er ikke tilladt: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="116"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="118"/>
         <source>The following file extensions are not allowed: %1</source>
-        <translation>Følgende filudvidelser er ikke tilladt: %1</translation>
+        <translation>Følgende filendelser er ikke tilladt: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="127"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="128"/>
         <source>Checking rename permissions …</source>
-        <translation>Kontrol af omdøbningstilladelser ..</translation>
+        <translation>Kontrollerer tilladelser til omdøbning …</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="161"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Du har ikke tilladelse til at omdøbe denne fil. Bed venligst filens forfatter omdøbe den.</translation>
+        <translation>Du har ikke tilladelse til at omdøbe denne fil. Bed filens forfatter om at omdøbe den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="166"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="163"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Kunne ikke hente tilladelser med fejl %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="183"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="180"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnavn indeholder indledende og afsluttende mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede og efterstillede mellemrum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="186"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="182"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="188"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="184"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder efterstillede mellemrum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="193"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="189"/>
         <source>Use invalid name</source>
         <translation>Brug ugyldigt navn</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="249"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="245"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation>Filnavn indeholder ulovlige tegn: %1</translation>
+        <translation>Filnavnet indeholder ugyldige tegn: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="262"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="257"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Kunne ikke omdøbe filen. Sørg for at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke omdøbe filen. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="273"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Kan ikke omdøbe fil fordi en fil med samme navn allerede findes på serveren. Vælg et andet navn.</translation>
+        <translation>Kan ikke omdøbe filen, fordi der allerede findes en fil med samme navn på serveren. Vælg et andet navn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="309"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="304"/>
         <source>Could not rename local file. %1</source>
         <translation>Kunne ikke omdøbe lokal fil. %1</translation>
     </message>
@@ -4383,12 +4301,12 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="21"/>
         <source>Legacy import</source>
-        <translation>Legacy import</translation>
+        <translation>Import fra ældre version</translation>
     </message>
     <message>
         <location filename="../src/gui/legacyaccountselectiondialog.cpp" line="24"/>
         <source>Select the accounts to import from the legacy configuration:</source>
-        <translation>Vælg de konti der skal importeres fra den nedarvede konfiguration:</translation>
+        <translation>Vælg de konti, der skal importeres fra den ældre konfiguration:</translation>
     </message>
 </context>
 <context>
@@ -4396,7 +4314,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation>Juridisk notits</translation>
+        <translation>Juridiske oplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -4406,7 +4324,7 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="47"/>
         <source>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt; p &gt; Copyright 2017- 2026 Nextcloud GmbH &lt; br / &gt; Copyright 2012- 2023 ownCloud GmbH &lt; / p &gt;</translation>
+        <translation>&lt;p&gt;Copyright 2017-2026 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="50"/>
@@ -4419,28 +4337,28 @@ Nedgradering versioner er ikke muligt med det samme: skifte fra stabil til virks
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="36"/>
         <source>Log Output</source>
-        <translation>Log Resultat</translation>
+        <translation>Logoutput</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="42"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation>Klienten kan skrive fejlsøgningslogs til en midlertidig mappe. Disse logfiler er meget nyttige til diagnosticering af problemer.
-Da logfiler kan blive store, vil klienten starte en ny for hver synkroniseringskørsel og komprimere ældre filer. Det vil også slette logfiler efter et par timer for at undgå at forbruge for meget diskplads.
-Hvis aktiveret, så vil logfiler blive skrevet til %1</translation>
+        <translation>Klienten kan skrive fejlsøgningslogfiler til en midlertidig mappe. Logfilerne er meget nyttige til at diagnosticere problemer.
+Da logfiler kan blive store, starter klienten en ny for hver synkronisering og komprimerer de ældre. Den sletter også logfiler efter et par timer for ikke at bruge for meget diskplads.
+Hvis funktionen er aktiveret, skrives logfiler til %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="56"/>
         <source>Enable logging to temporary folder</source>
-        <translation>Aktiver logning til midlertidig mappe</translation>
+        <translation>Aktivér logning til midlertidig mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="62"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation>Denne indstilling fortsætter på tværs klient genstarter.
-Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsidesætte denne indstilling.</translation>
+        <translation>Denne indstilling bevares, når klienten genstartes.
+Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indstilling.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="69"/>
@@ -4451,16 +4369,16 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="380"/>
-        <location filename="../src/libsync/logger.cpp" line="414"/>
+        <location filename="../src/libsync/logger.cpp" line="382"/>
+        <location filename="../src/libsync/logger.cpp" line="416"/>
         <source>Error</source>
         <translation>Fejl</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="381"/>
-        <location filename="../src/libsync/logger.cpp" line="415"/>
+        <location filename="../src/libsync/logger.cpp" line="383"/>
+        <location filename="../src/libsync/logger.cpp" line="417"/>
         <source>&lt;nobr&gt;File &quot;%1&quot;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output &lt;b&gt;cannot&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan ikke åbnes for skrivning.&lt;br/&gt;&lt;br/&gt;Log output &lt;b&gt;kan ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Filen &quot;%1&quot;&lt;br/&gt;kan ikke åbnes for skrivning.&lt;br/&gt;&lt;br/&gt;Logoutputtet &lt;b&gt;kan ikke&lt;/b&gt; gemmes!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -4473,17 +4391,17 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="34"/>
         <source>An error occurred during setup.</source>
-        <translation>En fejl opstod under opsætningen.</translation>
+        <translation>Der opstod en fejl under opsætningen.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="40"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Kunne ikke finde en fil til lokal redigering. Sørg for at dens sti er gyldig, og den er synkroniseret lokalt.</translation>
+        <translation>Kunne ikke finde en fil til lokal redigering. Sørg for, at stien er gyldig, og at filen er synkroniseret lokalt.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="69"/>
         <source>Could not get file ID.</source>
-        <translation>Kunne ikke hente fil ID.</translation>
+        <translation>Kunne ikke hente fil-ID.</translation>
     </message>
     <message>
         <location filename="../src/gui/macOS/fileprovidereditlocallyjob.cpp" line="77"/>
@@ -4506,7 +4424,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;En ny version af klienten %1 er til rådighed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;er til rådighed til download. Den installerede version er %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;En ny version af %1-klienten er tilgængelig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; kan hentes. Den installerede version er %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
@@ -4516,7 +4434,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;En ny version af %1 Klienten er tilgængelig, men opdateringsprocessen mislykkedes.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er downloaded. Den installerede version er %3. Hvis du bekræfter genstart og opdatering, genstarter din computer muligvis for at fuldføre installationen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;En ny version af %1-klienten er tilgængelig, men opdateringen mislykkedes.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er hentet. Den installerede version er %3. Hvis du bekræfter genstart og opdatering, genstarter din computer muligvis for at fuldføre installationen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
@@ -4559,34 +4477,35 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/networksettings.ui" line="126"/>
         <source>Host</source>
+        <extracomment>Label for the proxy server hostname field.</extracomment>
         <translation>Vært</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proxy server kræver autentificering</translation>
+        <translation>Proxyserveren kræver godkendelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="310"/>
+        <location filename="../src/gui/networksettings.ui" line="317"/>
         <source>Download Bandwidth</source>
-        <translation>Download båndbredde</translation>
+        <translation>Båndbredde for hentning</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="328"/>
-        <location filename="../src/gui/networksettings.ui" line="438"/>
+        <location filename="../src/gui/networksettings.ui" line="335"/>
+        <location filename="../src/gui/networksettings.ui" line="445"/>
         <source>Limit to</source>
         <translation>Begræns til</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="366"/>
-        <location filename="../src/gui/networksettings.ui" line="429"/>
+        <location filename="../src/gui/networksettings.ui" line="373"/>
+        <location filename="../src/gui/networksettings.ui" line="436"/>
         <source>KBytes/s</source>
         <translation>KBytes/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="258"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Bemærk: proxyindstillinger har ingen virkninger for konti på localhost</translation>
+        <translation>Bemærk: Proxyindstillinger har ingen virkning for konti på localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="283"/>
@@ -4599,40 +4518,40 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <translation>Ingen proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="335"/>
-        <location filename="../src/gui/networksettings.ui" line="445"/>
+        <location filename="../src/gui/networksettings.ui" line="342"/>
+        <location filename="../src/gui/networksettings.ui" line="452"/>
         <source>No limit</source>
         <translation>Ingen begrænsning</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="384"/>
+        <location filename="../src/gui/networksettings.ui" line="391"/>
         <source>Upload Bandwidth</source>
-        <translation>Upload båndbredde</translation>
+        <translation>Båndbredde for overførsel</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.cpp" line="39"/>
+        <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>Hostname of proxy server</source>
-        <translation>Proxyservers værtsnavn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.cpp" line="40"/>
-        <source>Username for proxy server</source>
-        <translation>Brugernavn mod proxyserver</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/networksettings.cpp" line="41"/>
-        <source>Password for proxy server</source>
-        <translation>Kodeord mod proxyserver</translation>
+        <translation>Proxyserverens værtsnavn</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="43"/>
-        <source>HTTP(S) proxy</source>
-        <translation>HTTP(S) proxy</translation>
+        <source>Username for proxy server</source>
+        <translation>Brugernavn til proxyserveren</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="44"/>
+        <source>Password for proxy server</source>
+        <translation>Adgangskode til proxyserveren</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.cpp" line="46"/>
+        <source>HTTP(S) proxy</source>
+        <translation>HTTP(S)-proxy</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.cpp" line="47"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5 proxy</translation>
+        <translation>SOCKS5-proxy</translation>
     </message>
 </context>
 <context>
@@ -4650,17 +4569,17 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="99"/>
         <source>New %1 update ready</source>
-        <translation>Ny opdatering af %1 klar</translation>
+        <translation>Ny opdatering af %1 er klar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="100"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation>En ny opdatering for %1 er ved at blive installeret. Opdater kan bede om yderligere privilegier under processen. Din computer kan genstarte for at fuldføre installationen.</translation>
+        <translation>En ny opdatering af %1 er ved at blive installeret. Opdateringsprogrammet kan bede om yderligere rettigheder undervejs. Din computer genstarter muligvis for at fuldføre installationen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Downloading %1 …</source>
-        <translation>Downloader %1 ...</translation>
+        <translation>Henter %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -4670,32 +4589,32 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation>Kunne ikke downloade opdatering. Åbn venligst &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; for at downloade opdateringen manuelt.</translation>
+        <translation>Kunne ikke hente opdateringen. Åbn &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; for at hente opdateringen manuelt.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
-        <translation>Kunne ikke downloade opdatering. Åbn venligst %1 for at downloade opdateringen manuelt.</translation>
+        <translation>Kunne ikke hente opdateringen. Åbn %1 for at hente opdateringen manuelt.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation>Ny %1 er tilgængelig. Åbn venligst &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; for at downloade opdateringen.</translation>
+        <translation>Ny %1 er tilgængelig. Åbn &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; for at hente opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
-        <translation>Ny %1 er tilgængelig. Åbn venligst %2 for at downloade opdateringen.</translation>
+        <translation>Ny %1 er tilgængelig. Åbn %2 for at hente opdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Opdateringsstatus ukendt. Søgte ikke efter opdateringer.</translation>
+        <translation>Opdateringsstatus er ukendt: Der blev ikke søgt efter nye opdateringer.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
         <source>You are using the %1 update channel. Your installation is the latest version.</source>
-        <translation>Du bruger opdateringskanalen% 1. Din installation er den nyeste version.</translation>
+        <translation>Du bruger opdateringskanalen %1. Din installation er den nyeste version.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
@@ -4709,12 +4628,64 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     </message>
 </context>
 <context>
+    <name>OCC::OpenVFS</name>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
+        <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
+        <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
+        <translation>Kunne ikke reservere synkroniseringsroden til filer efter behov; mappen er allerede reserveret af %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
+        <source>Unable to retrieve registration info. Error: %1</source>
+        <translation>Kunne ikke hente registreringsoplysninger. Fejl: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
+        <source>Cannot dehydrate a placeholder because the file changed</source>
+        <translation>Kan ikke fjerne den lokale kopi bag en pladsholder, fordi filen er ændret</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::OpenVfsPluginFactory</name>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="289"/>
+        <source>Failed to read /proc/self/mountinfo</source>
+        <translation>Kunne ikke læse /proc/self/mountinfo</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
+        <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
+        <translation>Kunne ikke frakoble OpenVFS-tilknytningen %1. Fejl: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
+        <source>The filesystem for %1 does not support xattributes.</source>
+        <translation>Filsystemet for %1 understøtter ikke udvidede attributter (xattr).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
+        <source>The sync path is already claimed by %1</source>
+        <translation>Synkroniseringsstien er allerede reserveret af %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
+        <source>OpenVFS executable not found, please install it</source>
+        <translation>Programmet OpenVFS blev ikke fundet. Installer det.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="324"/>
+        <source>Failed to find the OpenVFS config file, please check your installation.</source>
+        <translation>Kunne ikke finde konfigurationsfilen til OpenVFS. Tjek din installation.</translation>
+    </message>
+</context>
+<context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="978"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1057"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="989"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1068"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>Umuligt at få ændringstid for filen i konflikt %1</translation>
+        <translation>Det er ikke muligt at hente ændringstidspunktet for filen i konflikt %1</translation>
     </message>
 </context>
 <context>
@@ -4722,234 +4693,234 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>Adgangskode for deling kræves</translation>
+        <translation>Adgangskode til deling påkrævet</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation>Indtast en adgangskode for din deling:</translation>
+        <translation>Indtast en adgangskode til din deling:</translation>
     </message>
 </context>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="142"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Ugyldigt JSON svar fra den forespurgte URL</translation>
+        <translation>Ugyldigt JSON-svar fra poll-URL&apos;en</translation>
     </message>
 </context>
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="390"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="898"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symbolske links understøttes ikke i synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="399"/>
+        <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>File is locked by another application.</source>
         <translation>Filen er låst af et andet program.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="402"/>
+        <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>File is listed on the ignore list.</source>
         <translation>Filen er listet på ignoreringslisten.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Filnavne der slutter med et punktum er ikke understøttet på dette filsystem.</translation>
+        <translation>Filnavne, der slutter med et punktum, understøttes ikke på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="418"/>
+        <location filename="../src/libsync/discovery.cpp" line="431"/>
         <source>Folder names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation>Mappenavne som indeholder tegnet &quot;% 1&quot; understøttes ikke på dette filsystem.</translation>
+        <translation>Mappenavne, der indeholder tegnet &quot;%1&quot;, understøttes ikke på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="419"/>
+        <location filename="../src/libsync/discovery.cpp" line="432"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <comment>%1: the invalid character</comment>
-        <translation>Filnavne som indeholder tegnet &quot;% 1&quot; understøttes ikke på dette filsystem.</translation>
+        <translation>Filnavne, der indeholder tegnet &quot;%1&quot;, understøttes ikke på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="422"/>
+        <location filename="../src/libsync/discovery.cpp" line="435"/>
         <source>Folder name contains at least one invalid character</source>
-        <translation>Mappenavn indeholder mindst et ugyldigt tegn</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="423"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Filnavn indeholder mindst ét ugyldigt tegn</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="426"/>
-        <source>Folder name is a reserved name on this file system.</source>
-        <translation>Mappenavn er et reserveret navn på dette filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="427"/>
-        <source>File name is a reserved name on this file system.</source>
-        <translation>Filnavn er et reserveret navn på dette filsystem.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="433"/>
-        <source>Filename contains trailing spaces.</source>
-        <translation>Filnavn indeholder efterstillede mellemrum.</translation>
+        <translation>Mappenavnet indeholder mindst ét ugyldigt tegn</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="436"/>
-        <location filename="../src/libsync/discovery.cpp" line="443"/>
-        <location filename="../src/libsync/discovery.cpp" line="450"/>
-        <location filename="../src/libsync/discovery.cpp" line="492"/>
-        <source>Cannot be renamed or uploaded.</source>
-        <translation>Kan ikke omdøbes eller uploades.</translation>
+        <source>File name contains at least one invalid character</source>
+        <translation>Filnavnet indeholder mindst ét ugyldigt tegn</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="439"/>
+        <source>Folder name is a reserved name on this file system.</source>
+        <translation>Mappenavnet er et reserveret navn på dette filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="440"/>
+        <source>File name is a reserved name on this file system.</source>
+        <translation>Filnavnet er et reserveret navn på dette filsystem.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="446"/>
+        <source>Filename contains trailing spaces.</source>
+        <translation>Filnavnet indeholder efterstillede mellemrum.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="449"/>
+        <location filename="../src/libsync/discovery.cpp" line="456"/>
+        <location filename="../src/libsync/discovery.cpp" line="463"/>
+        <location filename="../src/libsync/discovery.cpp" line="505"/>
+        <source>Cannot be renamed or uploaded.</source>
+        <translation>Kan ikke omdøbes eller overføres.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="453"/>
         <source>Filename contains leading spaces.</source>
-        <translation>Filnavn indeholder foranstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede mellemrum.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="447"/>
+        <location filename="../src/libsync/discovery.cpp" line="460"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>Filnavn indeholder foranstillede og efterstillede mellemrum.</translation>
+        <translation>Filnavnet indeholder foranstillede og efterstillede mellemrum.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="454"/>
+        <location filename="../src/libsync/discovery.cpp" line="467"/>
         <source>Filename is too long.</source>
-        <translation>Filnavn er for langt.</translation>
+        <translation>Filnavnet er for langt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="458"/>
+        <location filename="../src/libsync/discovery.cpp" line="471"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Fil/mappe ignoreres, fordi den er skjult.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="461"/>
+        <location filename="../src/libsync/discovery.cpp" line="474"/>
         <source>Stat failed.</source>
-        <translation>Statistik mislykkedes.</translation>
+        <translation>Stat mislykkedes.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="464"/>
+        <location filename="../src/libsync/discovery.cpp" line="477"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Konflikt: Serverversion downloadet, lokal kopi omdøbt og ikke uploadet.</translation>
+        <translation>Konflikt: Serverversionen er hentet, den lokale kopi er omdøbt og ikke overført.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="468"/>
+        <location filename="../src/libsync/discovery.cpp" line="481"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Case Clash Conflict: Server fil downloadet og omdøbt for at undgå sammenstød.</translation>
+        <translation>Konflikt mellem store og små bogstaver: Serverfilen er hentet og omdøbt for at undgå konflikten.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="472"/>
+        <location filename="../src/libsync/discovery.cpp" line="485"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Filnavnet kan ikke kodes på dit filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="475"/>
+        <location filename="../src/libsync/discovery.cpp" line="488"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Filnavnet er sortlistet på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="478"/>
+        <location filename="../src/libsync/discovery.cpp" line="491"/>
         <source>Reason: the entire filename is forbidden.</source>
-        <translation>Årsag: hele filnavnet er forbudt.</translation>
+        <translation>Årsag: Hele filnavnet er forbudt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="481"/>
+        <location filename="../src/libsync/discovery.cpp" line="494"/>
         <source>Reason: the filename has a forbidden base name (filename start).</source>
-        <translation>Årsag: Filnavnet har et forbudt basisnavn (filnavn starter).</translation>
+        <translation>Årsag: Filnavnet har et forbudt basisnavn (filnavnets begyndelse).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="484"/>
+        <location filename="../src/libsync/discovery.cpp" line="497"/>
         <source>Reason: the file has a forbidden extension (.%1).</source>
-        <translation>Årsag: Filen har en forbudt udvidelse (.%1).</translation>
+        <translation>Årsag: Filen har en forbudt filendelse (.%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="487"/>
+        <location filename="../src/libsync/discovery.cpp" line="500"/>
         <source>Reason: the filename contains a forbidden character (%1).</source>
-        <translation>Årsag: Filnavnet indeholder en forbudt karakter (%1).</translation>
+        <translation>Årsag: Filnavnet indeholder et forbudt tegn (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="634"/>
+        <location filename="../src/libsync/discovery.cpp" line="656"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Filen har en endelse der er forbeholdt virtuelle filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="806"/>
+        <location filename="../src/libsync/discovery.cpp" line="859"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Mappen er ikke tilgængelig på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="807"/>
+        <location filename="../src/libsync/discovery.cpp" line="860"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Filen er ikke tilgængelig på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1248"/>
+        <location filename="../src/libsync/discovery.cpp" line="1321"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Kan ikke synkronisere på grund af ugyldigt ændringstidspunkt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1264"/>
+        <location filename="../src/libsync/discovery.cpp" line="1337"/>
         <source>Upload of %1 exceeds %2 of space left in personal files.</source>
-        <translation>Upload af% 1 overstiger% 2 af plads tilbage i personlige filer.</translation>
+        <translation>Overførsel af %1 overstiger de %2, der er tilbage i personlige filer.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1267"/>
+        <location filename="../src/libsync/discovery.cpp" line="1340"/>
         <source>Upload of %1 exceeds %2 of space left in folder %3.</source>
-        <translation>Upload af% 1 overstiger% 2 af plads tilbage i mappen% 3.</translation>
+        <translation>Overførsel af %1 overstiger de %2, der er tilbage i mappen %3.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1283"/>
+        <location filename="../src/libsync/discovery.cpp" line="1356"/>
         <source>Could not upload file, because it is open in &quot;%1&quot;.</source>
-        <translation>Kunne ikke uploade filen, fordi den er åben i &quot;%1&quot;.</translation>
+        <translation>Kunne ikke overføre filen, fordi den er åben i &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1336"/>
+        <location filename="../src/libsync/discovery.cpp" line="1412"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fejl under sletning af filposten %1 fra databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1624"/>
-        <location filename="../src/libsync/discovery.cpp" line="2122"/>
+        <location filename="../src/libsync/discovery.cpp" line="1721"/>
+        <location filename="../src/libsync/discovery.cpp" line="2240"/>
         <source>Moved to invalid target, restoring</source>
-        <translation>Flyttet til ugyldigt mål, genopretter</translation>
+        <translation>Flyttet til ugyldigt mål, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1973"/>
+        <location filename="../src/libsync/discovery.cpp" line="2091"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Kan ikke ændre krypteret element, fordi det valgte certifikat ikke er gyldigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2043"/>
+        <location filename="../src/libsync/discovery.cpp" line="2161"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignoreret på grund af &quot;vælg hvad der skal synkroniseres&quot; blackliste</translation>
+        <translation>Ignoreret på grund af blokeringslisten &quot;vælg, hvad der skal synkroniseres&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2077"/>
+        <location filename="../src/libsync/discovery.cpp" line="2195"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje undermapper til denne mappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2084"/>
+        <location filename="../src/libsync/discovery.cpp" line="2202"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje filer i denne mappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2099"/>
+        <location filename="../src/libsync/discovery.cpp" line="2217"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Ikke tilladt at uploade denne fil, fordi det er læs kun på serveren, genopretter</translation>
+        <translation>Det er ikke tilladt at overføre denne fil, fordi den er skrivebeskyttet på serveren, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2136"/>
+        <location filename="../src/libsync/discovery.cpp" line="2254"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Ikke tilladt at fjerne, genopretter</translation>
+        <translation>Det er ikke tilladt at fjerne, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2309"/>
+        <location filename="../src/libsync/discovery.cpp" line="2427"/>
         <source>Error while reading the database</source>
         <translation>Fejl under læsning af databasen</translation>
     </message>
@@ -4957,38 +4928,38 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1493"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1504"/>
         <source>Could not delete file %1 from local DB</source>
-        <translation>Kunne ikke slette filen %1 fra lokal DB</translation>
+        <translation>Kunne ikke slette filen %1 fra den lokale database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1507"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1524"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstidspunkt</translation>
+        <translation>Fejl ved opdatering af metadata på grund af et ugyldigt ændringstidspunkt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1539"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1545"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1551"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1576"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1582"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1588"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1555"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1561"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1592"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1598"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1604"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan ikke sættes som skrivebeskyttet: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1551"/>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1588"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1567"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1604"/>
         <source>unknown exception</source>
         <translation>ukendt undtagelse</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1595"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1611"/>
         <source>Error updating metadata: %1</source>
         <translation>Fejl ved opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1599"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1615"/>
         <source>File is currently in use</source>
         <translation>Filen er aktuelt i brug</translation>
     </message>
@@ -4996,201 +4967,196 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="468"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Kunne ikke få filen %1 fra lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
-        <translation>Filen %1 kan ikke downloades fordi krypteringsinformation mangler.</translation>
+        <translation>Filen %1 kan ikke hentes, fordi krypteringsoplysningerne mangler.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1317"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="525"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1345"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunne ikke slette filen record% 1 fra lokalt DB</translation>
+        <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="712"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>Nedlagringen ville reducere ledig disk plads på lokalt lager under grænsen</translation>
+        <translation>Hentningen ville reducere den ledige lokale diskplads til under grænsen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="706"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
         <source>Free space on disk is less than %1</source>
-        <translation>Ledig disk plads er under %1</translation>
+        <translation>Den ledige diskplads er under %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="867"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="877"/>
         <source>File was deleted from server</source>
-        <translation>Fil var slettet fra server</translation>
+        <translation>Filen blev slettet fra serveren</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="939"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="949"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Filen kunne ikke hentes helt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="946"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="956"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
-        <translation>Den downloadede fil er tom, men serveren sagde at den skulle have været% 1.</translation>
+        <translation>Den hentede fil er tom, men serveren angav, at den skulle have været %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1150"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1164"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1178"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1192"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation>Filen% 1 har ugyldig ændret tid rapporteret af serveren. Gem den ikke.</translation>
+        <translation>Filen %1 har et ugyldigt ændringstidspunkt fra serveren. Gem den ikke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1237"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1265"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Filen% 1 downloades, men det resulterede i et lokalt filnavnesammenstød!</translation>
+        <translation>Filen %1 er hentet, men gav en navnekonflikt med en lokal fil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1350"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1378"/>
         <source>Error updating metadata: %1</source>
-        <translation>Fejl under opdatering af metadata:% 1</translation>
+        <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1353"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1381"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen% 1 er i brug</translation>
+        <translation>Filen %1 er i brug</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1266"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="504"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1294"/>
         <source>File has changed since discovery</source>
-        <translation>Fil er ændret siden opdagelse</translation>
+        <translation>Filen er ændret siden registreringen</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="233"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Genetablering Fejlet: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="236"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="237"/>
         <source>%1. Restoration failed: %2</source>
         <comment>%1 is the generic error string, the file restoration error (%2) will be appended here</comment>
-        <translation>% 1. Genoprettelse mislykkedes:% 2</translation>
+        <translation>%1. Gendannelse mislykkedes: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="303"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="304"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>En fil eller mappe blev fjernet fra en skrivebeskyttet deling, men genskabelse fejlede: %1</translation>
+        <translation>En fil eller mappe blev fjernet fra en skrivebeskyttet deling, men gendannelsen mislykkedes: %1</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>could not delete file %1, error: %2</source>
         <translation>kunne ikke slette fil %1, fejl: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation>Mappe% 1 kan ikke oprettes på grund af en lokal fil eller mappenavn sammenstød!</translation>
+        <translation>Mappen %1 kan ikke oprettes på grund af en navnekonflikt med en lokal fil eller mappe!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="304"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
         <source>Could not create folder %1</source>
-        <translation>Kunne ikke oprette mappen% 1</translation>
+        <translation>Kunne ikke oprette mappen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="316"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="322"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="332"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>The folder %1 cannot be made read-only: %2</source>
-        <translation>Mappen% 1 kan ikke læses - kun:% 2</translation>
+        <translation>Mappen %1 kan ikke gøres skrivebeskyttet: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
         <source>unknown exception</source>
-        <translation>ukendt undtagelse</translation>
+        <translation>ukendt fejl</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="361"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="377"/>
         <source>Error updating metadata: %1</source>
-        <translation>Fejl under opdatering af metadata:% 1</translation>
+        <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="364"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="380"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen% 1 er i brug</translation>
+        <translation>Filen %1 er i brug</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="156"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Kunne ikke fjerne %1 på grund af lokal filnavnskonflikt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="196"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="205"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="215"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="225"/>
         <source>Temporary error when removing local item removed from server.</source>
-        <translation>Midlertidig fejl ved fjernelse af lokalt element fjernet fra serveren.</translation>
+        <translation>Midlertidig fejl ved fjernelse af et lokalt element, der er fjernet fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="224"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="234"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunne ikke slette filen record% 1 fra lokalt DB</translation>
+        <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="425"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="451"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
-        <translation>Mappe% 1 kan ikke omdøbes på grund af en lokal fil eller mappenavn sammenstød!</translation>
+        <translation>Mappen %1 kan ikke omdøbes på grund af en navnekonflikt med en lokal fil eller mappe!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="433"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="459"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Filen% 1 downloades, men det resulterede i et lokalt filnavnesammenstød!</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="533"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="622"/>
-        <source>Could not get file %1 from local DB</source>
-        <translation>Kunne ikke få filen% 1 fra lokalt DB</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="546"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="609"/>
-        <source>Error setting pin state</source>
-        <translation>Fejlindstilling af pintilstand</translation>
+        <translation>Filen %1 er hentet, men gav en navnekonflikt med en lokal fil!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
-        <source>Error updating metadata: %1</source>
-        <translation>Fejl under opdatering af metadata:% 1</translation>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="648"/>
+        <source>Could not get file %1 from local DB</source>
+        <translation>Kunne ikke hente filen %1 fra den lokale database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="562"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="572"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="635"/>
+        <source>Error setting pin state</source>
+        <translation>Fejl ved angivelse af pin-status</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="585"/>
+        <source>Error updating metadata: %1</source>
+        <translation>Fejl under opdatering af metadata: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="588"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er aktuelt i brug</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="599"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="625"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation>Kunne ikke formatere mappenavn i hierarkiet</translation>
+        <translation>Kunne ikke føre omdøbningen af mappen videre i hierarkiet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="604"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="630"/>
         <source>Failed to rename file</source>
         <translation>Kunne ikke omdøbe fil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="627"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="653"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunne ikke slette filposten %1 fra lokal DB</translation>
+        <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
 </context>
 <context>
@@ -5198,12 +5164,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Forkert HTTP kode returneret fra server. Forventet 204, men modtog &quot;%1 %2&quot;.</translation>
+        <translation>Forkert HTTP-kode returneret af serveren. Forventede 204, men modtog &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="126"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunne ikke slette filposten %1 fra lokal DB</translation>
+        <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
 </context>
 <context>
@@ -5211,7 +5177,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="149"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Forkert HTTP-kode returneret af server. Forventede 204, men modtog &quot;% 1% 2&quot;.</translation>
+        <translation>Forkert HTTP-kode returneret af serveren. Forventede 204, men modtog &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -5219,7 +5185,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="131"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Forkert HTTP kode returneret fra server. Forventet 201, men modtog &quot;%1 %2&quot;.</translation>
+        <translation>Forkert HTTP-kode returneret af serveren. Forventede 201, men modtog &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="220"/>
@@ -5264,22 +5230,22 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="240"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Forkert HTTP kode returneret fra server. Forventet 201, men modtog &quot;%1 %2&quot;.</translation>
+        <translation>Forkert HTTP-kode returneret af serveren. Forventede 201, men modtog &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="259"/>
         <source>Could not get file %1 from local DB</source>
-        <translation>Kunne ikke hente filen %1 fra lokal DB</translation>
+        <translation>Kunne ikke hente filen %1 fra den lokale database</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="271"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation>Kunne ikke slette filen record% 1 fra lokalt DB</translation>
+        <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="304"/>
         <source>Error setting pin state</source>
-        <translation>Fejlindstilling af pintilstand</translation>
+        <translation>Fejl ved angivelse af pin-status</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="311"/>
@@ -5290,62 +5256,62 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="289"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Fil %1 kan ikke sendes fordi en anden fil med samme navn eksisterer kun med forskel i store/små bogstaver.</translation>
+        <translation>Filen %1 kan ikke overføres, fordi der findes en anden fil med samme navn, der kun adskiller sig ved store og små bogstaver</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="336"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="425"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="344"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="420"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation>Filen% 1 har ugyldig ændringstid. Du må ikke uploade til serveren.</translation>
+        <translation>Filen %1 har et ugyldigt ændringstidspunkt. Overfør den ikke til serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="435"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="443"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Lokal fil ændret under sync. Den vil blive genoptaget.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen. Den genoptages.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="462"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="470"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokal fil ændret under sync.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="472"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="480"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Kunne ikke låse krypteret mappe op.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="760"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="768"/>
         <source>Unable to upload an item with invalid characters</source>
-        <translation>Kan ikke uploade et element med ugyldige tegn</translation>
+        <translation>Et element med ugyldige tegn kan ikke overføres</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="854"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="862"/>
         <source>Error updating metadata: %1</source>
-        <translation>Fejl under opdatering af metadata:% 1</translation>
+        <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="857"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="865"/>
         <source>The file %1 is currently in use</source>
-        <translation>Filen% 1 er i brug</translation>
+        <translation>Filen %1 er i brug</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="754"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="300"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="762"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Forsendelse af %1 overskriver mappens kvota</translation>
+        <translation>Overførsel af %1 overskrider mappens kvote</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="246"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="254"/>
         <source>Failed to upload encrypted file.</source>
-        <translation>Kunne ikke uploade krypteret fil.</translation>
+        <translation>Den krypterede fil kunne ikke overføres.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="409"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="417"/>
         <source>File Removed (start upload) %1</source>
-        <translation>Fil fjernet (start forsendelse) %1</translation>
+        <translation>Fil fjernet (start overførsel) %1</translation>
     </message>
 </context>
 <context>
@@ -5354,32 +5320,32 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation>Filen er låst og forhindrer synkronisering</translation>
+        <translation>Filen er låst, hvilket forhindrer synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
         <source>The local file was removed during sync.</source>
-        <translation>Lokal fil fjernet under sync.</translation>
+        <translation>Den lokale fil blev fjernet under synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokal fil ændret under sync.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
         <source>Poll URL missing</source>
-        <translation>Poll URL mangler</translation>
+        <translation>Poll-URL mangler</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>Uventet retur kode fra server (%1)</translation>
+        <translation>Uventet returkode fra serveren (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
         <source>Missing File ID from server</source>
-        <translation>Manglende fil ID fra server</translation>
+        <translation>Fil-ID mangler fra serveren</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
@@ -5400,27 +5366,27 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <location filename="../src/libsync/propagateuploadv1.cpp" line="142"/>
         <source>File is locked preventing syncing it</source>
         <comment>Generic warning message when a locked file cannot be synced</comment>
-        <translation>Filen er låst og forhindrer synkronisering</translation>
+        <translation>Filen er låst, hvilket forhindrer synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="235"/>
         <source>Poll URL missing</source>
-        <translation>ForespørgselsURL mangler</translation>
+        <translation>Poll-URL mangler</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
         <source>The local file was removed during sync.</source>
-        <translation>Lokal fil fjernet under sync.</translation>
+        <translation>Den lokale fil blev fjernet under synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="274"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokal fil ændret under sync.</translation>
+        <translation>Den lokale fil blev ændret under synkroniseringen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="288"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>Serveren godkendte ikke de seneste luns. (Ingen e-tag fundet)</translation>
+        <translation>Serveren bekræftede ikke den sidste del. (Der var intet E-Tag)</translation>
     </message>
 </context>
 <context>
@@ -5428,7 +5394,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Proxy autentificering påkrævet</translation>
+        <translation>Proxygodkendelse påkrævet</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -5443,7 +5409,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Proxy server behøver brugernavn og adgangskode</translation>
+        <translation>Proxyserveren kræver et brugernavn og en adgangskode.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -5456,7 +5422,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="504"/>
         <source>Choose What to Sync</source>
-        <translation>Vælg Hvad der skal Synkroniseres</translation>
+        <translation>Vælg, hvad der skal synkroniseres</translation>
     </message>
 </context>
 <context>
@@ -5464,12 +5430,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="65"/>
         <source>Loading …</source>
-        <translation>Indlæser…</translation>
+        <translation>Indlæser …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Fravælg afsides mapper du ikke ønsker at synkronisere.</translation>
+        <translation>Fravælg fjernmapper, som du ikke vil synkronisere.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="87"/>
@@ -5485,12 +5451,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <location filename="../src/gui/selectivesyncdialog.cpp" line="226"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="305"/>
         <source>No subfolders currently on the server.</source>
-        <translation>Ingen undermapper på serveren.</translation>
+        <translation>Der er ingen undermapper på serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="307"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Der opstod en fejl ved indlæsning af listen af undermappe.</translation>
+        <translation>Der opstod en fejl ved indlæsning af listen over undermapper.</translation>
     </message>
 </context>
 <context>
@@ -5509,7 +5475,7 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="708"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="712"/>
         <source>Settings</source>
         <translation>Indstillinger</translation>
     </message>
@@ -5517,11 +5483,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <location filename="../src/gui/settingsdialog.cpp" line="152"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation>%1 Indstillinger</translation>
+        <translation>Indstillinger for %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="185"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>General</source>
+        <extracomment>Name of the General settings page.</extracomment>
         <translation>Generelt</translation>
     </message>
     <message>
@@ -5530,13 +5497,15 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <translation>Avanceret</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="190"/>
         <source>Info</source>
+        <extracomment>Name of the Info settings page.</extracomment>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="379"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="383"/>
         <source>Account</source>
+        <extracomment>Name of the account settings entry shown when only one account is allowed.</extracomment>
         <translation>Konto</translation>
     </message>
 </context>
@@ -5553,12 +5522,12 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
         <source>%1 days</source>
-        <translation>% 1 dage</translation>
+        <translation>%1 dage</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
         <source>%1 day</source>
-        <translation>% 1 dag</translation>
+        <translation>%1 dag</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
@@ -5566,39 +5535,35 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
         <translation>I dag</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="573"/>
-        <source>1 day</source>
-        <translation>1 dag</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
         <source>Secure file drop link</source>
-        <translation>Sikker fildrop- link</translation>
+        <translation>Link til sikker fil-aflevering</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="744"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
         <source>Share link</source>
-        <translation>Deling link</translation>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
+        <translation>Delingslink</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="752"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
         <source>Link share</source>
-        <translation>Link-aktie</translation>
+        <translation>Linkdeling</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="754"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
         <source>Internal link</source>
-        <translation>Intern forbindelse</translation>
+        <translation>Internt link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="756"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
         <source>Secure file drop</source>
-        <translation>Sikker fildråbe</translation>
+        <translation>Sikker fil-aflevering</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="945"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
         <source>Could not find local folder for %1</source>
-        <translation>Kunne ikke finde lokal mappe for% 1</translation>
+        <translation>Kunne ikke finde lokal mappe for %1</translation>
     </message>
 </context>
 <context>
@@ -5629,166 +5594,162 @@ Bemærk at ved brug af enhver form for logning, så vil kommandolinjeflag tilsid
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="877"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
         <source>Context menu share</source>
-        <translation>Deling af kontekst menu</translation>
+        <translation>Deling via genvejsmenuen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1171"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
         <source>I shared something with you</source>
         <translation>Jeg delte noget med dig</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1184"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1223"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
         <source>Share options</source>
-        <translation>Dele muligheder</translation>
+        <translation>Delingsmuligheder</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1189"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
         <source>Send private link by email …</source>
         <translation>Send privat link via e-mail …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1188"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
         <source>Copy private link to clipboard</source>
-        <translation>Kopier privat link til udklipsholderen</translation>
+        <translation>Kopiér privat link til udklipsholderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="594"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Kunne ikke kryptere mappen på &quot;% 1&quot;</translation>
+        <translation>Kunne ikke kryptere mappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="595"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>Kontoen% 1 har ikke end- to- end kryptering indstillet. Indstil dette i dine kontoindstillinger for at aktivere mappekryptering.</translation>
+        <translation>Kontoen %1 har ikke konfigureret ende-til-ende-kryptering. Konfigurer det i dine kontoindstillinger for at aktivere mappekryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="614"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
         <source>Failed to encrypt folder</source>
         <translation>Kunne ikke kryptere mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="615"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation>Kunne ikke kryptere følgende mappe: &quot;% 1&quot;.
+        <translation>Kunne ikke kryptere følgende mappe: &quot;%1&quot;.
 
-Serveren svarede med fejl:% 2</translation>
+Serveren svarede med fejl: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="622"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
         <source>Folder encrypted successfully</source>
-        <translation>Mappe krypteret med succes</translation>
+        <translation>Mappen er krypteret</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="623"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>Følgende mappe blev krypteret med succes: &quot;% 1&quot;</translation>
+        <translation>Følgende mappe blev krypteret: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1036"/>
-        <source>Select new location …</source>
-        <translation>Vælg ny placering...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1185"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
         <source>File actions</source>
         <translation>Filhandlinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1186"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1434"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
         <source>Activity</source>
+        <extracomment>Name of the Activity file action.</extracomment>
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1215"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
         <source>Leave this share</source>
-        <translation>Efterlad denne andel</translation>
+        <translation>Forlad denne deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1221"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Resharing this file is not allowed</source>
-        <translation>Videredeling af denne fil ikke tilladt</translation>
+        <translation>Videredeling af denne fil er ikke tilladt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1221"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Resharing this folder is not allowed</source>
-        <translation>Gendannelse af denne mappe er ikke tilladt</translation>
+        <translation>Videredeling af denne mappe er ikke tilladt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1344"/>
         <source>Encrypt</source>
         <translation>Kryptér</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1293"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
         <source>Lock file</source>
         <translation>Lås fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1296"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Unlock file</source>
         <translation>Lås fil op</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1312"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1374"/>
         <source>Locked by %1</source>
-        <translation>Låst af% 1</translation>
+        <translation>Låst af %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1316"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Udløber om %1 minut</numerusform><numerusform>Udløber om %1 minutter</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1325"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
         <source>Apply labels</source>
-        <translation>Påfør etiketter</translation>
+        <translation>Anvend etiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1471"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
         <source>Resolve conflict …</source>
-        <translation>Løs konflikter...</translation>
+        <translation>Løs konflikt …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1475"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
         <source>Move and rename …</source>
-        <translation>Flyt og omdøb...</translation>
+        <translation>Flyt og omdøb …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1478"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
         <source>Move, rename and upload …</source>
-        <translation>Flyt, omdøb og upload...</translation>
+        <translation>Flyt, omdøb og overfør …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1480"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1543"/>
         <source>Delete local changes</source>
         <translation>Slet lokale ændringer</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1486"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1549"/>
         <source>Move and upload …</source>
-        <translation>Flyt og upload...</translation>
+        <translation>Flyt og overfør …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1487"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1550"/>
         <source>Delete</source>
         <translation>Slet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1227"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
         <source>Copy internal link</source>
-        <translation>Kopier internt link</translation>
+        <translation>Kopiér internt link</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1440"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1442"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Open in browser</source>
         <translation>Åbn i browser</translation>
     </message>
@@ -5823,7 +5784,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="89"/>
         <source>State/Province:</source>
-        <translation>Stat/provins</translation>
+        <translation>Stat/provins:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="90"/>
@@ -5873,13 +5834,13 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; Dette certifikat blev manuelt godkendt&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Bemærk:&lt;/b&gt; Dette certifikat blev godkendt manuelt&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="132"/>
         <source>%1 (self-signed)</source>
         <extracomment>%1 is the certificate identifier, taken from its common name or organizational unit.</extracomment>
-        <translation>%1 (self-signed)</translation>
+        <translation>%1 (selvsigneret)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="135"/>
@@ -5891,34 +5852,34 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/sslbutton.cpp" line="170"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Denne forbindelsen er krypteret med %1 bit %2.
+        <translation>Denne forbindelse er krypteret med %1-bit %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="187"/>
         <source>Server version: %1</source>
-        <translation>Server version: %1</translation>
+        <translation>Serverversion: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="201"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>Ingen understøttelse af SSL session tickets/identifiers</translation>
+        <translation>Ingen understøttelse af SSL-sessionsbilletter/-id&apos;er</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="211"/>
         <source>Certificate information:</source>
-        <translation>Certifikat information:</translation>
+        <translation>Certifikatoplysninger:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="241"/>
         <source>The connection is not secure</source>
-        <translation>Forbindelsen er ikke sikret</translation>
+        <translation>Forbindelsen er ikke sikker</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="173"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Forbindelsen er IKKE sikret da den ikke er krypteret.
+        <translation>Denne forbindelse er IKKE sikker, da den ikke er krypteret.
 </translation>
     </message>
 </context>
@@ -5927,17 +5888,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Stol på dette certifikatet alligevel?</translation>
+        <translation>Stol på dette certifikat alligevel</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="79"/>
         <source>Untrusted Certificate</source>
-        <translation>Ubetroet Certifikat</translation>
+        <translation>Ikke-betroet certifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="152"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>Kan ikke sikret forbinde til &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>Kan ikke oprette en sikker forbindelse til &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
@@ -5947,7 +5908,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>with Certificate %1</source>
-        <translation>med Certifikat %1</translation>
+        <translation>med certifikatet %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
@@ -5992,7 +5953,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="231"/>
         <source>Effective Date: %1</source>
-        <translation>Ikrafttrædningsdato: %1</translation>
+        <translation>Gyldig fra: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="232"/>
@@ -6010,81 +5971,81 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="189"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (droppet på grund af tidligere fejl, prøver igen om %2)</translation>
+        <translation>%1 (sprunget over på grund af en tidligere fejl, prøver igen om %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="559"/>
+        <location filename="../src/libsync/syncengine.cpp" line="561"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Kun %1 til rådighed, behøver mindst %2 for at starte</translation>
+        <translation>Kun %1 er tilgængelige, mindst %2 kræves for at starte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="592"/>
+        <location filename="../src/libsync/syncengine.cpp" line="594"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ikke i stand til at oprette en lokal sync database. Verificer at du har skriveadgang til sync mappen.</translation>
+        <translation>Kan ikke åbne eller oprette den lokale synkroniseringsdatabase. Sørg for, at du har skriveadgang til synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1492"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Diskplads begrænset: Downloads der bringer ledig plads under %1 ignoreres.</translation>
+        <translation>Lav diskplads: Hentninger, der ville reducere den ledige plads til under %1, blev sprunget over.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1499"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Der er utilstrækkelig plads på serveren til visse uploads.</translation>
+        <translation>Der er ikke nok plads på serveren til nogle overførsler.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="457"/>
+        <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Unresolved conflict.</source>
-        <translation>Uafgjort konflikt.</translation>
+        <translation>Uløst konflikt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="379"/>
+        <location filename="../src/libsync/syncengine.cpp" line="381"/>
         <source>Could not update file: %1</source>
-        <translation>Kunne ikke opdatere filen:% 1</translation>
+        <translation>Kunne ikke opdatere filen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="408"/>
+        <location filename="../src/libsync/syncengine.cpp" line="410"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation>Kunne ikke opdatere virtuelle filmetadata:% 1</translation>
+        <translation>Kunne ikke opdatere metadata for virtuel fil: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="415"/>
+        <location filename="../src/libsync/syncengine.cpp" line="417"/>
         <source>Could not update file metadata: %1</source>
-        <translation>Kunne ikke opdatere filmetadata:% 1</translation>
+        <translation>Kunne ikke opdatere filmetadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="427"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation>Kunne ikke indstille fil rekord til lokalt DB:% 1</translation>
+        <translation>Kunne ikke gemme filposten i den lokale database: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="608"/>
+        <location filename="../src/libsync/syncengine.cpp" line="610"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Brug virtuelle filer med suffiks, men suffiks er ikke indstillet</translation>
+        <translation>Bruger virtuelle filer med suffiks, men suffikset er ikke angivet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="620"/>
+        <location filename="../src/libsync/syncengine.cpp" line="622"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Kunne ikke læse blacklist fra den lokale database</translation>
+        <translation>Kunne ikke læse blokeringslisten fra den lokale database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="661"/>
+        <location filename="../src/libsync/syncengine.cpp" line="663"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Kunne ikke læse fra synkroniserings loggen.</translation>
+        <translation>Kunne ikke læse fra synkroniseringsjournalen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="831"/>
+        <location filename="../src/libsync/syncengine.cpp" line="833"/>
         <source>Cannot open the sync journal</source>
-        <translation>Kunne ikke åbne synkroniserings loggen</translation>
+        <translation>Kan ikke åbne synkroniseringsjournalen</translation>
     </message>
 </context>
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1072"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="1078"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke oprette forbindelse til databasen.</translation>
     </message>
 </context>
 <context>
@@ -6093,92 +6054,92 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="161"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="211"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="479"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
         <source>Offline</source>
         <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1660"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
         <source>You need to accept the terms of service</source>
-        <translation>Du skal acceptere servicevilkårene</translation>
+        <translation>Du skal acceptere tjenestevilkårene</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1652"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
         <source>Reauthorization required</source>
-        <translation>Gentilladelse påkrævet</translation>
+        <translation>Ny godkendelse påkrævet</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="176"/>
         <source>Please grant access to your sync folders</source>
-        <translation>Giv venligst adgang til dine synkroniseringsmapper</translation>
+        <translation>Giv adgang til dine synkroniseringsmapper</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="237"/>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="485"/>
         <location filename="../src/gui/activity/syncstatussummary.h" line="105"/>
         <source>All synced!</source>
-        <translation>Alle synkroniseret!</translation>
+        <translation>Alt er synkroniseret!</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1671"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Nogle filer kunne ikke synkroniseres!</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="247"/>
         <source>See below for errors</source>
-        <translation>Se nedenfor for fejl</translation>
+        <translation>Se fejlene nedenfor</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="254"/>
         <source>Checking folder changes</source>
-        <translation>Markering af mappeændringer</translation>
+        <translation>Kontrollerer mappeændringer</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="256"/>
         <source>Syncing changes</source>
-        <translation>Synkronisering af ændringer</translation>
+        <translation>Synkroniserer ændringer</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="265"/>
         <source>Sync paused</source>
-        <translation>Synkronisér pause</translation>
+        <translation>Synkronisering er sat på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1672"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files could not be synced!</source>
         <translation>Nogle filer kunne ikke synkroniseres!</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="273"/>
         <source>See below for warnings</source>
-        <translation>Se nedenstående for advarsler</translation>
+        <translation>Se advarslerne nedenfor</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="355"/>
         <source>Syncing</source>
-        <translation>Synkronisering</translation>
+        <translation>Synkroniserer</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="369"/>
         <source>%1 of %2 · %3 left</source>
         <extracomment>%1 is the completed data size. %2 is the total data size. %3 is the remaining duration.</extracomment>
-        <translation>% 1 af% 2 ·% 3 tilbage</translation>
+        <translation>%1 af %2 · %3 tilbage</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="374"/>
         <source>%1 of %2</source>
         <extracomment>%1 is the completed data size. %2 is the total data size.</extracomment>
-        <translation>% 1 af% 2</translation>
+        <translation>%1 af %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="379"/>
         <source>Syncing file %1 of %2</source>
-        <translation>Synkronisér filen% 1 af% 2</translation>
+        <translation>Synkroniserer fil %1 af %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="482"/>
@@ -6189,65 +6150,66 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="146"/>
+        <location filename="../src/gui/systray.cpp" line="152"/>
         <source>Download</source>
+        <extracomment>Name of the macOS notification category for file downloads.</extracomment>
         <translation>Hent</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="589"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="871"/>
+        <location filename="../src/gui/systray.cpp" line="574"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation>Tilføj konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="591"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
-        <translation>Åbn% 1 skrivebord</translation>
+        <translation>Åbn %1 Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="594"/>
-        <location filename="../src/gui/systray.cpp" line="604"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <source>Pause sync</source>
-        <translation>Pause sync</translation>
+        <translation>Sæt synkronisering på pause</translation>
     </message>
     <message>
+        <location filename="../src/gui/systray.cpp" line="580"/>
         <location filename="../src/gui/systray.cpp" line="595"/>
-        <location filename="../src/gui/systray.cpp" line="610"/>
         <source>Resume sync</source>
-        <translation>Genoptag sync</translation>
+        <translation>Genoptag synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="596"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="909"/>
+        <location filename="../src/gui/systray.cpp" line="581"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation>Indstillinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="597"/>
+        <location filename="../src/gui/systray.cpp" line="582"/>
         <source>Help</source>
         <translation>Hjælp</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="598"/>
+        <location filename="../src/gui/systray.cpp" line="583"/>
         <source>Exit %1</source>
         <translation>Afslut %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="604"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation>Sæt alle synkroniseringer på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="610"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="883"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation>Genoptag synkronisering for alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="923"/>
         <source>Quit</source>
         <translation>Afslut</translation>
     </message>
@@ -6258,17 +6220,17 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation>% 1 skrivebordsklientversion% 2</translation>
+        <translation>%1 skrivebordsklient, version %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="657"/>
+        <location filename="../src/libsync/theme.cpp" line="688"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Bruger plugin til virtuelle filer: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="675"/>
+        <location filename="../src/libsync/theme.cpp" line="706"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation>&lt; p &gt; Denne udgivelse blev leveret af% 1. &lt; / p &gt;</translation>
+        <translation>&lt;p&gt;Denne udgivelse er leveret af %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6279,128 +6241,130 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Søgning efter personer er ikke tilgængelig.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>Personerne kunne ikke indlæses. Prøv igen.</translation>
     </message>
 </context>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="228"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="242"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="537"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="237"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="251"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="300"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="320"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="617"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="533"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="580"/>
-        <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="657"/>
-        <source>No search providers are available.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="691"/>
-        <source>Search cleared</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="731"/>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1234"/>
-        <source>Searching</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="953"/>
-        <source>Partial matches</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1222"/>
-        <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1245"/>
-        <source>%1 results in %2</source>
-        <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1247"/>
-        <source>No matching results</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1250"/>
-        <source>%1 results. Some sources are unavailable.</source>
-        <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1253"/>
-        <source>%1 results</source>
-        <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1427"/>
-        <source>Today</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1430"/>
-        <source>Last 7 days</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1433"/>
-        <source>Last 30 days</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1437"/>
-        <source>This year</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1441"/>
-        <source>Last year</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1462"/>
-        <source>%1 – %2</source>
-        <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Søgning er ikke tilgængelig, mens kontoen er offline.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
         <source>Failed to fetch providers.</source>
-        <translation>Kunne ikke hente udbydere.</translation>
+        <translation>Kunne ikke hente søgekilderne.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="468"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation>Kunne ikke hente søgeleverandører for &quot;% 1&quot;. Fejl:% 2</translation>
+        <translation>Kunne ikke hente søgekilder for &apos;%1&apos;. Fejl: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="502"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation>Søgning mislykkedes for &apos;% 2&apos;.</translation>
+        <translation>Søgningen efter &apos;%2&apos; mislykkedes.</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="531"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation>Søgning mislykkedes for &quot;% 1&quot;. Fejl:% 2</translation>
+        <translation>Søgningen efter &apos;%1&apos; mislykkedes. Fejl: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="613"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="660"/>
+        <source>Failed to fetch search providers.</source>
+        <translation>Kunne ikke hente søgekilderne.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="737"/>
+        <source>No search providers are available.</source>
+        <translation>Der er ingen tilgængelige søgekilder.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="771"/>
+        <source>Search cleared</source>
+        <translation>Søgningen er ryddet</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="811"/>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1314"/>
+        <source>Searching</source>
+        <translation>Søger</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1033"/>
+        <source>Partial matches</source>
+        <translation>Delvise match</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1302"/>
+        <source>Search failed for all available sources. Please try again.</source>
+        <translation>Søgningen mislykkedes i alle tilgængelige kilder. Prøv igen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1325"/>
+        <source>%1 results in %2</source>
+        <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
+        <translation>%1 resultater i %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1327"/>
+        <source>No matching results</source>
+        <translation>Ingen matchende resultater</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1330"/>
+        <source>%1 results. Some sources are unavailable.</source>
+        <extracomment>%1 is the number of search results.</extracomment>
+        <translation>%1 resultater. Nogle kilder er ikke tilgængelige.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1333"/>
+        <source>%1 results</source>
+        <extracomment>%1 is the number of search results.</extracomment>
+        <translation>%1 resultater</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1507"/>
+        <source>Today</source>
+        <translation>I dag</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1510"/>
+        <source>Last 7 days</source>
+        <translation>Seneste 7 dage</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1513"/>
+        <source>Last 30 days</source>
+        <translation>Seneste 30 dage</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1517"/>
+        <source>This year</source>
+        <translation>I år</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1521"/>
+        <source>Last year</source>
+        <translation>Sidste år</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1542"/>
+        <source>%1 – %2</source>
+        <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
+        <translation>%1 – %2</translation>
     </message>
 </context>
 <context>
@@ -6408,7 +6372,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="123"/>
         <source>Failed to update folder metadata.</source>
-        <translation>Failed to update folder metadata.</translation>
+        <translation>Kunne ikke opdatere mappens metadata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefoldermetadatajob.cpp" line="146"/>
@@ -6434,22 +6398,22 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="194"/>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="253"/>
         <source>Error updating metadata for a folder %1</source>
-        <translation>Error updating metadata for a folder %1</translation>
+        <translation>Fejl ved opdatering af metadata for mappen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="83"/>
         <source>Could not fetch public key for user %1</source>
-        <translation>Kunne ikke hente offentlig nøgle for brugeren% 1</translation>
+        <translation>Kunne ikke hente den offentlige nøgle for brugeren %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="90"/>
         <source>Could not find root encrypted folder for folder %1</source>
-        <translation>Could not find root encrypted folder for folder %1</translation>
+        <translation>Kunne ikke finde den krypterede rodmappe for mappen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="111"/>
         <source>Could not add or remove user %1 to access folder %2</source>
-        <translation>Kunne ikke tilføje eller fjerne brugeren% 1 for at få adgang til mappen% 2</translation>
+        <translation>Kunne ikke tilføje eller fjerne brugeren %1 for at få adgang til mappen %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/updatee2eefolderusersmetadatajob.cpp" line="231"/>
@@ -6460,98 +6424,97 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="525"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
-        <translation>End-to-end certifikat skal migreres til et nyt</translation>
+        <translation>End-to-end-certifikatet skal migreres til et nyt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="527"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
         <source>Trigger the migration</source>
         <translation>Start migreringen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="628"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
         <source>%n notification(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notifikation</numerusform><numerusform>%n notifikationer</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="871"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="910"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
         <source>“%1” was not synchronized</source>
-        <translation>&quot;% 1&quot; blev ikke synkroniseret</translation>
+        <translation>&quot;%1&quot; blev ikke synkroniseret</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="912"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
-        <translation>Utilstrækkelig opbevaring på serveren. Filen kræver% 1, men kun% 2 er tilgængelige.</translation>
+        <translation>Der er ikke nok lagerplads på serveren. Filen kræver %1, men der er kun %2 tilgængelig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="915"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
-        <translation>Utilstrækkelig opbevaring på serveren. Filen kræver% 1.</translation>
+        <translation>Der er ikke nok lagerplads på serveren. Filen kræver %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="918"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
         <source>Insufficient storage on the server.</source>
-        <translation>Utilstrækkelig opbevaring på serveren.</translation>
+        <translation>Der er ikke nok lagerplads på serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="954"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>Der er ikke tilstrækkelig plads på serveren til nogle uploads.</translation>
+        <translation>Der er ikke nok plads på serveren til nogle af overførslerne.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="970"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1333"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
         <source>Retry all uploads</source>
-        <translation>Prøv alle uploads igen</translation>
+        <translation>Prøv alle overførsler igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1546"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
         <source>Resolve conflict</source>
         <translation>Løs konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1536"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
         <source>Rename file</source>
         <translation>Omdøb fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
-        <source>Sending your request …</source>
-        <translation>Send din anmodning...</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <source>Sync conflicts</source>
+        <translation>Synkroniseringskonflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1357"/>
-        <source>Open %1 Assistant</source>
-        <comment>The placeholder will be the application name. Please keep it</comment>
-        <translation>Åbn% 1 assistent</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <source>Public Share Link</source>
+        <translation>Offentligt delingslink</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <source>Quota is updated; %1 percent of the total space is used.</source>
+        <translation>Kvoten er opdateret; %1 procent af den samlede plads er brugt.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <source>Quota Warning - %1 percent or more storage in use</source>
+        <translation>Kvoteadvarsel – %1 procent eller mere af lagerpladsen er i brug</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
         <source>Assistant is not available for this account.</source>
-        <translation>Assistent er ikke tilgængelig for denne konto.</translation>
+        <translation>Assistenten er ikke tilgængelig for denne konto.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
         <source>Assistant is already processing a request.</source>
-        <translation>Assistent behandler allerede en anmodning.</translation>
+        <translation>Assistenten behandler allerede en anmodning.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1507"/>
-        <source>Sending your request…</source>
-        <translation>Send din anmodning...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1644"/>
-        <source>Sync conflicts</source>
-        <translation>Synkronisér konflikter</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1787"/>
-        <source>Public Share Link</source>
-        <translation>Offentlig Deling Link</translation>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <source>Sending your request …</source>
+        <translation>Sender din anmodning …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
@@ -6561,58 +6524,48 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
         <source>No supported assistant task types were returned.</source>
-        <translation>Ingen understøttede assisterende opgavetyper blev returneret.</translation>
+        <translation>Der blev ikke returneret nogen understøttede assistentopgavetyper.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
         <source>Waiting for the assistant response…</source>
-        <translation>Venter på assisterende svar...</translation>
+        <translation>Venter på svar fra assistenten …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
         <source>Assistant request failed (%1).</source>
-        <translation>Assisterende forespørgsel mislykkedes (% 1).</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2281"/>
-        <source>Quota is updated; %1 percent of the total space is used.</source>
-        <translation>Kvoten opdateres;% 1 procent af den totale plads bruges.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
-        <source>Quota Warning - %1 percent or more storage in use</source>
-        <translation>Kvoteadvarsel -% 1 procent eller mere opbevaring i brug</translation>
+        <translation>Anmodningen til assistenten mislykkedes (%1).</translation>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2663"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
         <source>Confirm Account Removal</source>
-        <translation>Bekræft sletning af konto</translation>
+        <translation>Bekræft fjernelse af konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2664"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ønsker du virkelig at fjerne forbindelse til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Vil du virkelig fjerne forbindelsen til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Bemærk:&lt;/b&gt; Dette sletter &lt;b&gt;ikke&lt;/b&gt; nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2668"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
         <source>Remove connection</source>
         <translation>Fjern forbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2669"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
         <source>Leave share</source>
-        <translation>Formueandel</translation>
+        <translation>Forlad deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2753"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
         <source>Remove account</source>
         <translation>Fjern konto</translation>
     </message>
@@ -6622,17 +6575,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation>Kunne ikke hente foruddefinerede tilstande. Sørg for at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke hente foruddefinerede statusser. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Kunne ikke hente status. Sørg for at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke hente status. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="183"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Status funktion er ikke understøttet. Du vil ikke kunne indstille din status.</translation>
+        <translation>Statusfunktionen understøttes ikke. Du kan ikke angive din status.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="187"/>
@@ -6642,12 +6595,12 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="194"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Kunne ikke angive status. Sørg for at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke angive status. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="198"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Kunne ikke rydde statusmeddelelsen. Sørg for at du er forbundet til serveren.</translation>
+        <translation>Kunne ikke rydde statusbeskeden. Sørg for, at du er forbundet til serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="441"/>
@@ -6690,35 +6643,35 @@ Serveren svarede med fejl:% 2</translation>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="506"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut</numerusform><numerusform>%n minutter</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="509"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n time</numerusform><numerusform>%n timer</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/userstatusselectormodel.cpp" line="512"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dag</numerusform><numerusform>%n dage</numerusform></translation>
     </message>
 </context>
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="64"/>
+        <location filename="../src/common/vfs.cpp" line="70"/>
         <source>Please choose a different location. %1 is a drive. It doesn&apos;t support virtual files.</source>
-        <translation>Vælg et andet sted.% 1 er et drev. Det understøtter ikke virtuelle filer.</translation>
+        <translation>Vælg en anden placering. %1 er et drev. Det understøtter ikke virtuelle filer.</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="68"/>
+        <location filename="../src/common/vfs.cpp" line="74"/>
         <source>Please choose a different location. %1 isn&apos;t a NTFS file system. It doesn&apos;t support virtual files.</source>
-        <translation>Vælg et andet sted.% 1 er ikke et NTFS filsystem. Det understøtter ikke virtuelle filer.</translation>
+        <translation>Vælg en anden placering. %1 er ikke et NTFS-filsystem. Det understøtter ikke virtuelle filer.</translation>
     </message>
     <message>
-        <location filename="../src/common/vfs.cpp" line="72"/>
+        <location filename="../src/common/vfs.cpp" line="78"/>
         <source>Please choose a different location. %1 is a network drive. It doesn&apos;t support virtual files.</source>
-        <translation>Vælg venligst en anden placering. %1 er et netværksdrev. Det understøtter ikke virtuelle filer.</translation>
+        <translation>Vælg en anden placering. %1 er et netværksdrev. Det understøtter ikke virtuelle filer.</translation>
     </message>
 </context>
 <context>
@@ -6726,17 +6679,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="14"/>
         <source>Download error</source>
-        <translation>Download fejl</translation>
+        <translation>Fejl ved hentning</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="23"/>
         <source>Error downloading</source>
-        <translation>Fejl ved download</translation>
+        <translation>Fejl ved hentning</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="39"/>
         <source>Could not be downloaded</source>
-        <translation>Kunne ikke downloades</translation>
+        <translation>Kunne ikke hentes</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.ui" line="61"/>
@@ -6751,12 +6704,12 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="17"/>
         <source>Error downloading %1</source>
-        <translation>Fejl ved downloading af% 1</translation>
+        <translation>Fejl ved hentning af %1</translation>
     </message>
     <message>
         <location filename="../src/gui/vfsdownloaderrordialog.cpp" line="18"/>
         <source>%1 could not be downloaded.</source>
-        <translation>% 1 kunne ikke downloades.</translation>
+        <translation>%1 kunne ikke hentes.</translation>
     </message>
 </context>
 <context>
@@ -6765,7 +6718,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="86"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstid</translation>
+        <translation>Fejl ved opdatering af metadata på grund af et ugyldigt ændringstidspunkt</translation>
     </message>
 </context>
 <context>
@@ -6774,7 +6727,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="68"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="79"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation>Fejl ved opdatering af metadata på grund af ugyldig ændringstid</translation>
+        <translation>Fejl ved opdatering af metadata på grund af et ugyldigt ændringstidspunkt</translation>
     </message>
 </context>
 <context>
@@ -6782,115 +6735,115 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="152"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation>Du er logget ud af din konto% 1 ved% 2. Log ind igen.</translation>
+        <translation>Du er blevet logget ud af din konto %1 på %2. Log ind igen.</translation>
     </message>
 </context>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="432"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
         <source>Please sign in</source>
-        <translation>Log venligst ind</translation>
+        <translation>Log ind</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>There are no sync folders configured.</source>
-        <translation>Ingen synk.-mapper konfigureret.</translation>
+        <translation>Der er ikke konfigureret nogen synkroniseringsmapper.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="412"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
         <source>Disconnected from %1</source>
         <translation>Frakoblet fra %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Unsupported Server Version</source>
-        <translation>Serverversion uden support</translation>
+        <translation>Serverversionen understøttes ikke</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Serveren for konto %1 kører den ikke-supporterede version %2. Brug af denne klient med en serverversion, der ikke har support er ikke testet og kan muligvis føre til alvorlige problemer. Fortsæt på egen risiko.</translation>
+        <translation>Serveren for kontoen %1 kører version %2, som ikke understøttes. Brug af denne klient med serverversioner, der ikke understøttes, er ikke testet og kan være farlig. Fortsæt på egen risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
         <source>Terms of service</source>
         <translation>Tjenestevilkår</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
-        <translation>Din konto% 1 kræver at du accepterer vilkårene for tjenesten på din server. Du vil blive omdirigeret til% 2 for at anerkende at du har læst den og er enig i den.</translation>
+        <translation>Din konto %1 kræver, at du accepterer serverens tjenestevilkår. Du bliver sendt videre til %2 for at bekræfte, at du har læst og accepterer dem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
-        <source>macOS VFS for %1: Sync is running.</source>
-        <translation>macOS VFS for% 1: Sync kører.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
-        <source>macOS VFS for %1: Last sync was successful.</source>
-        <translation>macOS VFS for% 1: Sidste synkronisering var vellykket.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
-        <source>macOS VFS for %1: A problem was encountered.</source>
-        <translation>macOS VFS for% 1: Der opstod et problem.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <source>macOS VFS for %1: Sync is running.</source>
+        <translation>macOS VFS for %1: Synkronisering kører.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
+        <source>macOS VFS for %1: Last sync was successful.</source>
+        <translation>macOS VFS for %1: Sidste synkronisering lykkedes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <source>macOS VFS for %1: A problem was encountered.</source>
+        <translation>macOS VFS for %1: Der opstod et problem.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>macOS VFS for %1: An error was encountered.</source>
-        <translation>macOS VFS for% 1: Der opstod en fejl.</translation>
+        <translation>macOS VFS for %1: Der opstod en fejl.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="591"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Kontrol af ændringer i ekstern &quot;% 1&quot;</translation>
+        <translation>Kontrollerer ændringer i fjernmappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="585"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation>Kontrol af ændringer i lokal &quot;% 1&quot;</translation>
+        <translation>Kontrollerer ændringer i den lokale mappe &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="836"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
-        <translation>Vælg ny placering...</translation>
+        <translation>Vælg ny placering …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="924"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
         <source>Internal link copied</source>
-        <translation>Intern link kopieret</translation>
+        <translation>Internt link kopieret</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="925"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Det interne link er kopieret til udklipsholderen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Disconnected from accounts:</source>
         <translation>Frakoblet fra konti:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Account %1: %2</source>
         <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="436"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Account synchronization is disabled</source>
         <translation>Kontosynkronisering er deaktiveret</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="603"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="612"/>
         <source>%1 (%2, %3)</source>
         <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation>%1 (%2, %3)</translation>
@@ -6902,7 +6855,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="77"/>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="80"/>
         <source>Proxy settings</source>
-        <translation>Proxy- indstillinger</translation>
+        <translation>Proxyindstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="88"/>
@@ -6917,17 +6870,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="108"/>
         <source>Manually specify proxy</source>
-        <translation>Manuel angivelse af proxy</translation>
+        <translation>Angiv proxy manuelt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>HTTP(S) proxy</source>
-        <translation>HTTP- (S) - proxy</translation>
+        <translation>HTTP(S)-proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="123"/>
         <source>SOCKS5 proxy</source>
-        <translation>SOCKS5- proxy</translation>
+        <translation>SOCKS5-proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="127"/>
@@ -6937,37 +6890,37 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="138"/>
         <source>Hostname of proxy server</source>
-        <translation>Hovednavn på proxy- server</translation>
+        <translation>Værtsnavn på proxyserveren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="150"/>
         <source>Proxy port</source>
-        <translation>Proxy- port</translation>
+        <translation>Proxyport</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="159"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proxy- server kræver godkendelse</translation>
+        <translation>Proxyserveren kræver godkendelse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="175"/>
         <source>Username for proxy server</source>
-        <translation>Brugernavn for proxy- server</translation>
+        <translation>Brugernavn til proxyserveren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="182"/>
         <source>Password for proxy server</source>
-        <translation>Adgangskode for proxy- server</translation>
+        <translation>Adgangskode til proxyserveren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="191"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Bemærk: Proxy- indstillinger har ingen effekt på konti på localhost</translation>
+        <translation>Bemærk: Proxyindstillinger har ingen effekt for konti på localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="208"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ProxySettingsDialog.qml" line="215"/>
@@ -6981,7 +6934,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/common/utility.cpp" line="401"/>
         <source>%nd</source>
         <comment>delay in days after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nd</numerusform><numerusform>%nd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="405"/>
@@ -6992,7 +6945,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/common/utility.cpp" line="410"/>
         <source>%nh</source>
         <comment>delay in hours after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nt</numerusform><numerusform>%nt</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="416"/>
@@ -7009,7 +6962,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/common/utility.cpp" line="421"/>
         <source>%nmin</source>
         <comment>delay in minutes after an activity</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%nmin</numerusform><numerusform>%nmin</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="425"/>
@@ -7033,17 +6986,17 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/advancedsettings.cpp" line="203"/>
         <location filename="../src/gui/advancedsettings.cpp" line="215"/>
         <source>Failed to create debug archive</source>
-        <translation>Fejl ved oprettelse af fejlfindingsarkiv</translation>
+        <translation>Fejlsøgningsarkivet kunne ikke oprettes</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="143"/>
         <source>Could not create debug archive in selected location!</source>
-        <translation>Kunne ikke oprette fejlfindingsarkiv på den valgte lokation!</translation>
+        <translation>Kunne ikke oprette fejlsøgningsarkiv på den valgte placering!</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="192"/>
         <source>Could not create debug archive in temporary location!</source>
-        <translation>Kunne ikke oprette fejlretningsarkiv i midlertidig placering!</translation>
+        <translation>Kunne ikke oprette fejlsøgningsarkiv på den midlertidige placering!</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="204"/>
@@ -7053,37 +7006,38 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/advancedsettings.cpp" line="216"/>
         <source>Could not move debug archive to selected location!</source>
-        <translation>Kunne ikke flytte fejlretningsarkiv til valgt placering!</translation>
+        <translation>Kunne ikke flytte fejlsøgningsarkivet til den valgte placering!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="445"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
         <source>Answer</source>
+        <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation>Svar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1465"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
         <source>You renamed %1</source>
-        <translation>Du omdøbte% 1</translation>
+        <translation>Du omdøbte %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1467"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
         <source>You deleted %1</source>
-        <translation>Du slettede% 1</translation>
+        <translation>Du slettede %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1469"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
         <source>You created %1</source>
-        <translation>Du oprettede% 1</translation>
+        <translation>Du oprettede %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1471"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
         <source>You changed %1</source>
-        <translation>Du ændrede% 1</translation>
+        <translation>Du ændrede %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1495"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
         <source>Synced %1</source>
-        <translation>Synkroniseret% 1</translation>
+        <translation>Synkroniserede %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="576"/>
@@ -7091,139 +7045,170 @@ Serveren svarede med fejl:% 2</translation>
         <translation>Fejl ved sletning af filen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="64"/>
+        <location filename="../src/libsync/vfs/cfapi/cfapiwrapper.cpp" line="62"/>
         <source>Paths beginning with &apos;#&apos; character are not supported in VFS mode.</source>
-        <translation>Stier, der begynder med &apos;#&apos; tegn, understøttes ikke i VFS-tilstand.</translation>
+        <translation>Stier, der begynder med tegnet &apos;#&apos;, understøttes ikke i VFS-tilstand.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
+        <translation>Vi kunne ikke behandle din anmodning. Prøv at synkronisere igen senere. Kontakt din serveradministrator for at få hjælp, hvis det bliver ved.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
+        <translation>Du skal logge ind for at fortsætte. Kontakt din serveradministrator, hvis du har problemer med dine loginoplysninger.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
+        <translation>Du har ikke adgang til denne ressource. Kontakt din serveradministrator, hvis du mener, at det er en fejl.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
+        <translation>Vi kunne ikke finde det, du ledte efter. Det kan være flyttet eller slettet. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
+        <translation>Det ser ud til, at du bruger en proxy, der kræver godkendelse. Tjek dine proxyindstillinger og loginoplysninger. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
+        <translation>Anmodningen tager længere tid end normalt. Prøv at synkronisere igen. Kontakt din serveradministrator, hvis det stadig ikke virker.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
+        <translation>Filer på serveren blev ændret, mens du arbejdede. Prøv at synkronisere igen. Kontakt din serveradministrator, hvis problemet fortsætter.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
+        <translation>Denne mappe eller fil er ikke længere tilgængelig. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
+        <translation>Anmodningen kunne ikke fuldføres, fordi visse betingelser ikke var opfyldt. Prøv at synkronisere igen senere. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
-        <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
-        <translation>Vi kunne ikke behandle din anmodning. Prøv at synkronisere igen senere. Hvis dette fortsætter med at ske, kontakt din server administrator for hjælp.</translation>
+        <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
+        <translation>Filen er for stor til at blive overført. Du kan vælge en mindre fil eller kontakte din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
-        <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
-        <translation>Du skal logge på for at fortsætte. Hvis du har problemer med dine akkreditiver, bedes du kontakte din server administrator.</translation>
+        <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
+        <translation>Adressen i anmodningen er for lang til, at serveren kan håndtere den. Prøv at forkorte oplysningerne, du sender, eller kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
-        <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
-        <translation>Du har ikke adgang til denne ressource. Hvis du mener, at dette er en fejl, bedes du kontakte din server administrator.</translation>
+        <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
+        <translation>Denne filtype understøttes ikke. Kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
-        <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
-        <translation>Vi kunne ikke finde det, du ledte efter. Det kunne være blevet flyttet eller slettet. Hvis du har brug for hjælp, skal du kontakte din server administrator.</translation>
+        <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
+        <translation>Serveren kunne ikke behandle din anmodning, fordi nogle oplysninger var forkerte eller ufuldstændige. Prøv at synkronisere igen senere, eller kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
-        <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
-        <translation>Det ser ud til, at du bruger en proxy, der krævede godkendelse. Tjek venligst dine proxyindstillinger og legitimationer. Hvis du har brug for hjælp, skal du kontakte din server administrator.</translation>
+        <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
+        <translation>Den ressource, du forsøger at få adgang til, er låst og kan ikke ændres. Prøv igen senere, eller kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
-        <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
-        <translation>Anmodningen tager længere tid end normalt. Prøv at synkronisere igen. Hvis det stadig ikke virker, nå ud til din server administrator.</translation>
+        <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
+        <translation>Anmodningen kunne ikke fuldføres, fordi nogle nødvendige betingelser mangler. Prøv igen senere, eller kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
-        <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
-        <translation>Serverfiler ændret, mens du arbejdede. Prøv at synkronisere igen. Kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
+        <translation>Du har sendt for mange anmodninger. Vent lidt, og prøv igen. Din serveradministrator kan hjælpe, hvis du bliver ved med at se denne besked.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
-        <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
-        <translation>Denne mappe eller fil er ikke tilgængelig længere. Hvis du har brug for hjælp, bedes du kontakte din server administrator.</translation>
+        <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
+        <translation>Noget gik galt på serveren. Prøv at synkronisere igen senere, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
-        <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
-        <translation>Anmodningen kunne ikke fuldføres, fordi visse betingelser ikke var opfyldt. Prøv at synkronisere igen senere. Hvis du har brug for hjælp, bedes du kontakte din server administrator.</translation>
+        <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
+        <translation>Serveren genkender ikke anmodningsmetoden. Kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
-        <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
-        <translation>Filen er for stor til at uploade. Du kan være nødt til at vælge en mindre fil eller kontakte din server administrator for hjælp.</translation>
+        <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
+        <translation>Vi har problemer med at oprette forbindelse til serveren. Prøv igen om lidt. Din serveradministrator kan hjælpe, hvis problemet fortsætter.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
-        <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
-        <translation>Adressen bruges til at gøre anmodningen er for lang for serveren til at håndtere. Prøv at afkorte de oplysninger, du sender eller kontakte din server administrator for at få hjælp.</translation>
+        <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
+        <translation>Serveren har travlt lige nu. Prøv at oprette forbindelse igen om et par minutter, eller kontakt din serveradministrator, hvis det haster.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
-        <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
-        <translation>Denne filtype er ikke understøttet. Kontakt din server administrator for hjælp.</translation>
+        <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
+        <translation>Det tager for lang tid at oprette forbindelse til serveren. Prøv igen senere. Kontakt din serveradministrator, hvis du har brug for hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
-        <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
-        <translation>Serveren kunne ikke behandle din anmodning, fordi nogle oplysninger var forkerte eller ufuldstændige. Prøv at synkronisere igen senere, eller kontakt din server administrator for hjælp.</translation>
+        <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
+        <translation>Serveren understøtter ikke den version af forbindelsen, der bruges. Kontakt din serveradministrator for at få hjælp.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
-        <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
-        <translation>Den ressource, du forsøger at få adgang til, er i øjeblikket låst og kan ikke ændres. Prøv at ændre det senere, eller kontakt din server administrator for hjælp.</translation>
+        <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
+        <translation>Serveren har ikke plads nok til at fuldføre din anmodning. Kontakt din serveradministrator for at høre, hvor stor en kvote din bruger har.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
-        <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
-        <translation>Denne anmodning kunne ikke udfyldes, fordi den mangler nogle nødvendige betingelser. Prøv igen senere, eller kontakt din server administrator for hjælp.</translation>
+        <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
+        <translation>Dit netværk kræver ekstra godkendelse. Tjek din forbindelse. Kontakt din serveradministrator for at få hjælp, hvis problemet fortsætter.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
-        <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
-        <translation>Du kom med for mange anmodninger. Vent venligst og prøv igen. Hvis du bliver ved med at se dette, kan din server administrator hjælpe.</translation>
+        <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
+        <translation>Du har ikke rettighed til at få adgang til denne ressource. Kontakt din serveradministrator for at få hjælp, hvis du mener, at det er en fejl.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
-        <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
-        <translation>Noget gik galt på serveren. Prøv at synkronisere igen senere, eller kontakt din server administrator, hvis problemet fortsætter.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="554"/>
-        <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
-        <translation>Serveren genkender ikke forespørgselsmetoden. Kontakt din server administrator for hjælp.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="557"/>
-        <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
-        <translation>Vi har problemer med forbindelsen til serveren. Prøv igen snart. Hvis problemet fortsætter, kan din server administrator hjælpe dig.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="560"/>
-        <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
-        <translation>Serveren har travlt lige nu. Prøv at forbinde igen i et par minutter eller kontakt din server administrator, hvis det haster.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="563"/>
-        <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
-        <translation>Det tager for lang tid at forbinde til serveren. Prøv igen senere. Hvis du har brug for hjælp, skal du kontakte din server administrator.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="566"/>
-        <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
-        <translation>Serveren understøtter ikke den version af forbindelsen der bruges. Kontakt din server administrator for hjælp.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="569"/>
-        <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
-        <translation>Serveren har ikke plads nok til at fuldføre din anmodning. Tjek hvor meget kvote din bruger har ved at kontakte din server administrator.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="572"/>
-        <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
-        <translation>Dit netværk har brug for ekstra godkendelse. Tjek forbindelsen. Kontakt din server administrator for hjælp, hvis problemet fortsætter.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="575"/>
-        <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
-        <translation>Du har ikke tilladelse til at få adgang til denne ressource. Hvis du mener, at dette er en fejl, skal du kontakte din server administrator for at bede om hjælp.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="578"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
-        <translation>Der opstod en uventet fejl. Prøv at synkronisere igen eller kontakt din server administrator, hvis problemet fortsætter.</translation>
+        <translation>Der opstod en uventet fejl. Prøv at synkronisere igen, eller kontakt din serveradministrator, hvis problemet fortsætter.</translation>
+    </message>
+</context>
+<context>
+    <name>RecipientPermissionDialog</name>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
+        <source>Permissions for %1</source>
+        <translation>Rettigheder for %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
+        <source>Recipient permissions</source>
+        <translation>Modtagerens rettigheder</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
+        <source>Close</source>
+        <translation>Luk</translation>
+    </message>
+</context>
+<context>
+    <name>RecipientSearchField</name>
+    <message>
+        <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
+        <source>Search for recipients</source>
+        <translation>Søg efter modtagere</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
+        <source>Sharing is not available for this folder</source>
+        <translation>Deling er ikke tilgængelig for denne mappe</translation>
     </message>
 </context>
 <context>
@@ -7234,54 +7219,56 @@ Serveren svarede med fejl:% 2</translation>
         <translation>Løs synkroniseringskonflikter</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="48"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="53"/>
         <source>%1 files in conflict</source>
         <comment>indicate the number of conflicts to resolve</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 fil i konflikt</numerusform><numerusform>%1 filer i konflikt</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="55"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="60"/>
         <source>Choose if you want to keep the local version, server version, or both. If you choose both, the local file will have a number added to its name.</source>
-        <translation>Vælg om du vil beholde den lokale version, serverversionen eller begge dele. Hvis du vælger begge, vil den lokale fil have et nummer tilføjet til sit navn.</translation>
+        <translation>Vælg, om du vil beholde den lokale version, serverversionen eller begge dele. Hvis du vælger begge, får den lokale fil tilføjet et tal til sit navn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="71"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="76"/>
         <source>All local versions</source>
         <translation>Alle lokale versioner</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="89"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="94"/>
         <source>All server versions</source>
         <translation>Alle serverversioner</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="144"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="149"/>
         <source>Resolve conflicts</source>
-        <translation>Løse konflikter</translation>
+        <translation>Løs konflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/ResolveConflictsDialog.qml" line="148"/>
+        <location filename="../src/gui/ResolveConflictsDialog.qml" line="153"/>
         <source>Cancel</source>
-        <translation>Annullér</translation>
+        <translation>Annuller</translation>
     </message>
 </context>
 <context>
     <name>SearchWindow</name>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="19"/>
-        <location filename="../src/gui/accountsettings.cpp" line="187"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="26"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="109"/>
+        <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Search</source>
+        <extracomment>Name of the Search feature.</extracomment>
         <translation>Søg</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="74"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="125"/>
         <source>Search is available when this account is connected</source>
-        <translation>Søg er tilgængelig, når denne konto er tilsluttet</translation>
+        <translation>Søgning er tilgængelig, når kontoen er forbundet</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="75"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="126"/>
         <source>Search files, messages, events …</source>
-        <translation>Søg i filer, beskeder, begivenheder...</translation>
+        <translation>Søg i filer, beskeder, begivenheder …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
@@ -7289,36 +7276,36 @@ Serveren svarede med fejl:% 2</translation>
         <translation>Søgeresultatliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="159"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Fjern filteret %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="183"/>
-        <location filename="../src/gui/search/SearchWindow.qml" line="252"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Prøv igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="216"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>Søgeresultater</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="251"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Nogle kilder er ikke tilgængelige</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Mindre fra tilknyttede tjenester</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/SearchWindow.qml" line="259"/>
+        <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>Mere fra tilknyttede tjenester</translation>
     </message>
 </context>
 <context>
@@ -7326,12 +7313,12 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="29"/>
         <source>Log in to %1</source>
-        <translation>Log ind til% 1</translation>
+        <translation>Log ind på %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="38"/>
         <source>Enter the link to your %1 web interface from the browser or the link to a folder shared with you.</source>
-        <translation>Indtast linket til din netgrænseflade% 1 fra browseren eller linket til en mappe delt med dig.</translation>
+        <translation>Angiv linket til din %1-webgrænseflade fra browseren eller linket til en mappe, der er delt med dig.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/ServerPage.qml" line="181"/>
@@ -7345,6 +7332,14 @@ Serveren svarede med fejl:% 2</translation>
     </message>
 </context>
 <context>
+    <name>ShareAdvancedSettingsPage</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
+        <source>No advanced settings are available for this share.</source>
+        <translation>Der er ingen avancerede indstillinger for denne deling.</translation>
+    </message>
+</context>
+<context>
     <name>ShareDelegate</name>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="182"/>
@@ -7353,42 +7348,80 @@ Serveren svarede med fejl:% 2</translation>
     </message>
 </context>
 <context>
+    <name>ShareDetailsFrame</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
+        <source>Changes to this share are applied immediately.</source>
+        <translation>Ændringer af denne deling træder i kraft med det samme.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
+        <source>Delete share</source>
+        <translation>Slet deling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
+        <source>Close</source>
+        <translation>Luk</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
+        <source>Cancelling…</source>
+        <translation>Annullerer …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
+        <source>Cancel</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
+        <source>Saving…</source>
+        <translation>Gemmer …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
+        <source>Save</source>
+        <translation>Gem</translation>
+    </message>
+</context>
+<context>
     <name>ShareDetailsPage</name>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="90"/>
         <source>An error occurred setting the share password.</source>
-        <translation>En fejl opstod ved indstilling af aktie- kodeordet.</translation>
+        <translation>Der opstod en fejl under angivelse af adgangskoden til delingen.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="208"/>
         <source>Edit share</source>
-        <translation>Redigér del</translation>
+        <translation>Rediger deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="282"/>
         <source>Share label</source>
-        <translation>Deling etiket</translation>
+        <translation>Etiket for deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="314"/>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="360"/>
         <source>Allow upload and editing</source>
-        <translation>Tillad upload og redigering</translation>
+        <translation>Tillad overførsel og redigering</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="347"/>
         <source>View only</source>
-        <translation>Vis kun</translation>
+        <translation>Kun visning</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="373"/>
         <source>File drop (upload only)</source>
-        <translation>Filslip (kun upload)</translation>
+        <translation>Fil-aflevering (kun overførsel)</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="393"/>
         <source>Allow resharing</source>
-        <translation>Tillad gendeling</translation>
+        <translation>Tillad videredeling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="432"/>
@@ -7408,7 +7441,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="654"/>
         <source>Note to recipient</source>
-        <translation>Bemærk til modtageren</translation>
+        <translation>Note til modtageren</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="700"/>
@@ -7418,22 +7451,200 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation>Unshare</translation>
+        <translation>Fjern deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="729"/>
         <source>Add another link</source>
-        <translation>Tilføj et andet link</translation>
+        <translation>Tilføj endnu et link</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Share link copied!</source>
-        <translation>Deling link kopieret!</translation>
+        <translation>Delingslink kopieret!</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="772"/>
         <source>Copy share link</source>
-        <translation>Kopiér aktielink</translation>
+        <translation>Kopiér delingslink</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
+        <source>Added by %1</source>
+        <translation>Tilføjet af %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
+        <source>Configure recipient permissions</source>
+        <translation>Konfigurer modtagerens rettigheder</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
+        <source>Copy recipient link</source>
+        <translation>Kopiér modtagerens link</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
+        <source>Regenerate recipient link</source>
+        <translation>Dan modtagerens link igen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
+        <source>Generate recipient link</source>
+        <translation>Dan link til modtageren</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
+        <source>Remove recipient</source>
+        <translation>Fjern modtager</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
+        <source>Can view</source>
+        <translation>Kan se</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
+        <source>Can edit</source>
+        <translation>Kan redigere</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
+        <source>Custom permissions</source>
+        <translation>Brugerdefinerede rettigheder</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
+        <source>Sharing settings</source>
+        <translation>Delingsindstillinger</translation>
+    </message>
+</context>
+<context>
+    <name>ShareDialog</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
+        <source>Share &quot;%1&quot;</source>
+        <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Del &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
+        <source>File</source>
+        <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
+        <translation>Fil</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
+        <source>Share settings</source>
+        <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
+        <translation>Indstillinger for delingen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
+        <source>Share with %1</source>
+        <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
+        <translation>Del med %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
+        <source>New share</source>
+        <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
+        <translation>Ny deling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
+        <source>Back to share details</source>
+        <translation>Tilbage til detaljer om delingen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
+        <source>Back to shares</source>
+        <translation>Tilbage til delinger</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
+        <source>Sharing settings</source>
+        <translation>Delingsindstillinger</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
+        <source>Advanced sharing settings</source>
+        <translation>Avancerede delingsindstillinger</translation>
+    </message>
+</context>
+<context>
+    <name>ShareListPage</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
+        <source>Creating share…</source>
+        <translation>Opretter deling …</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
+        <source>Internal link</source>
+        <translation>Internt link</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
+        <source>For people who already have access</source>
+        <translation>Til personer, der allerede har adgang</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
+        <source>Copy internal link</source>
+        <translation>Kopiér internt link</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
+        <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
+        <source>Create public link</source>
+        <translation>Opret offentligt link</translation>
+    </message>
+</context>
+<context>
+    <name>ShareRow</name>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
+        <source>Share link</source>
+        <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
+        <translation>Delingslink</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
+        <source>Unfinished share</source>
+        <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
+        <translation>Ufærdig deling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
+        <source>Share</source>
+        <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
+        <translation>Deling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
+        <source>Not active — select to finish</source>
+        <translation>Ikke aktiv — vælg for at gøre færdig</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
+        <source>%n recipient(s)</source>
+        <translation><numerusform>%n modtager</numerusform><numerusform>%n modtagere</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
+        <source>Copy public link</source>
+        <translation>Kopiér offentligt link</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
+        <source>Configure share</source>
+        <translation>Konfigurer deling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
+        <source>Delete share</source>
+        <translation>Slet deling</translation>
     </message>
 </context>
 <context>
@@ -7441,22 +7652,22 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="84"/>
         <source>Password required for new share</source>
-        <translation>Adgangskode for ny aktie</translation>
+        <translation>Adgangskode påkrævet for ny deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="112"/>
         <source>Share password</source>
-        <translation>Deling adgangskode</translation>
+        <translation>Adgangskode til deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="148"/>
         <source>Shared with you by %1</source>
-        <translation>Del med dig af% 1</translation>
+        <translation>Delt med dig af %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="154"/>
         <source>Expires in %1</source>
-        <translation>Udløber i% 1</translation>
+        <translation>Udløber om %1</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="304"/>
@@ -7466,7 +7677,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="311"/>
         <source>This item cannot be shared.</source>
-        <translation>Dette punkt kan ikke deles.</translation>
+        <translation>Dette element kan ikke deles.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="319"/>
@@ -7479,7 +7690,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
         <source>Search for users or groups…</source>
-        <translation>Søg efter brugere eller grupper...</translation>
+        <translation>Søg efter brugere eller grupper …</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="40"/>
@@ -7497,30 +7708,40 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>File Provider</source>
-        <translation>Filudbyder</translation>
+        <translation>File Provider</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="91"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
+        <source>Virtual files (beta)</source>
+        <translation>Virtuelle filer (beta)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
+        <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
+        <translation>Hent filer efter behov. Funktionen er en tidlig prøveudgave og anbefales kun til test.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="93"/>
         <source>Download files on-demand</source>
-        <translation>Download filer on- demand</translation>
+        <translation>Hent filer efter behov</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="99"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="101"/>
         <source>Synchronize everything</source>
         <translation>Synkroniser alt</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="108"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="110"/>
         <source>Choose what to sync</source>
-        <translation>Vælg hvad du skal synkronisere</translation>
+        <translation>Vælg, hvad der skal synkroniseres</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="122"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="124"/>
         <source>Local sync folder</source>
         <translation>Lokal synkroniseringsmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="154"/>
+        <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="156"/>
         <source>Choose</source>
         <translation>Vælg</translation>
     </message>
@@ -7530,12 +7751,12 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="103"/>
         <source>Sync now</source>
-        <translation>Synkronisér nu</translation>
+        <translation>Synkroniser nu</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="126"/>
         <source>Resolve conflicts</source>
-        <translation>Løse konflikter</translation>
+        <translation>Løs konflikter</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/SyncStatus.qml" line="141"/>
@@ -7553,58 +7774,58 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/activity/qml/TalkReplyTextField.qml" line="23"/>
         <source>Reply to …</source>
-        <translation>Svar til...</translation>
+        <translation>Svar til …</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/qml/TalkReplyTextField.qml" line="59"/>
         <source>Send reply to chat message</source>
-        <translation>Send svar på chatmeddelelsen</translation>
+        <translation>Send svar på chatbeskeden</translation>
     </message>
 </context>
 <context>
     <name>TrayAccountPopup</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="594"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="596"/>
         <source>No apps available</source>
         <translation>Ingen apps tilgængelige</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="634"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="636"/>
         <source>Notifications</source>
-        <translation>Meddelelser</translation>
+        <translation>Notifikationer</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="658"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
         <source>Open</source>
         <translation>Åbn</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="671"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="673"/>
         <source>Recent activity</source>
         <translation>Nylig aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="678"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="680"/>
         <source>No recent activity</source>
-        <translation>Ingen nyere aktivitet</translation>
+        <translation>Ingen nylig aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="696"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="698"/>
         <source>More activity…</source>
-        <translation>Mere aktivitet...</translation>
+        <translation>Mere aktivitet …</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="763"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>Resolve: %1</source>
-        <translation>Resolve:% 1</translation>
+        <translation>Løs: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="770"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="774"/>
         <source>User status</source>
         <translation>Brugerstatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="803"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Search</source>
         <translation>Søg</translation>
     </message>
@@ -7612,63 +7833,18 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>TrayFoldersMenuButton</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="733"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="786"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="737"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="790"/>
         <source>Local folder</source>
         <translation>Lokal mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local folder</source>
-        <translation>Åbn lokal mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="58"/>
-        <source>Open local or team folders</source>
-        <translation>Åbn lokale mapper eller teammapper</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
-        <source>Open local folder &quot;%1&quot;</source>
-        <translation>Åbn lokal mappe &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="172"/>
-        <source>Open team folder &quot;%1&quot;</source>
-        <translation>Åbn holdmappe &quot;% 1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="187"/>
-        <source>Open %1 in file explorer</source>
-        <translation>Åbn %1 i stifinder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayFoldersMenuButton.qml" line="192"/>
-        <source>User group and local folders menu</source>
-        <translation>Brugergruppe og lokale mapper menu</translation>
     </message>
 </context>
 <context>
     <name>TrayWindowHeader</name>
     <message>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="810"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="814"/>
         <source>Apps</source>
         <translation>Apps</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="68"/>
-        <source>Open local or team folders</source>
-        <translation>Åbn lokale mapper eller teammapper</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="103"/>
-        <source>More apps</source>
-        <translation>Flere apps</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/TrayWindowHeader.qml" line="126"/>
-        <source>Open %1 in browser</source>
-        <translation>Åbn% 1 i browser</translation>
     </message>
 </context>
 <context>
@@ -7676,38 +7852,38 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>Brugerdefineret datointerval</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Anvend</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Startdato (ÅÅÅÅ-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>ÅÅÅÅ-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>Slutdato (ÅÅÅÅ-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>Angiv gyldige datoer, hvor startdatoen ligger før slutdatoen.</translation>
     </message>
 </context>
 <context>
@@ -7715,108 +7891,111 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>Tilbage</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>Tilbage til alle søgeresultater</translation>
     </message>
 </context>
 <context>
     <name>UnifiedSearchFilterBar</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="50"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <extracomment>Search filter for selecting a result provider type.</extracomment>
+        <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="57"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>Filtrer efter type</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="101"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <extracomment>Search filter for restricting results by date.</extracomment>
+        <translation>Dato</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="109"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>Filtrer efter dato</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="110"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>Ingen søgekilde understøtter filtrering efter dato</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="121"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>I dag</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="125"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>Seneste 7 dage</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="129"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>Seneste 30 dage</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="133"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>I år</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="137"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>Sidste år</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="142"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>Brugerdefineret interval …</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="146"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>Ryd dato</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="157"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
-        <translation type="unfinished"/>
+        <extracomment>Search filter for restricting results to a person.</extracomment>
+        <translation>Personer</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="165"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>Filtrer efter person</translation>
     </message>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="166"/>
+        <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>Ingen søgekilde understøtter filtrering efter personer</translation>
     </message>
 </context>
 <context>
     <name>UnifiedSearchInputContainer</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="36"/>
+        <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="30"/>
         <source>Search files, messages, events …</source>
-        <translation>Søg i filer, beskeder, begivenheder...</translation>
+        <translation>Søg i filer, beskeder, begivenheder …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>Ryd søgning</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>Beholder de aktive filtre</translation>
     </message>
 </context>
 <context>
@@ -7824,12 +8003,12 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>Søg efter personer</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>Prøv igen</translation>
     </message>
 </context>
 <context>
@@ -7837,7 +8016,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPlaceholderView.qml" line="31"/>
         <source>Start typing to search</source>
-        <translation>Begynd at skrive til søgning</translation>
+        <translation>Begynd at skrive for at søge</translation>
     </message>
 </context>
 <context>
@@ -7846,27 +8025,27 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
         <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Mere fra %1  →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>Delvise match</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="194"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>Indlæser flere resultater …</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>Prøv at indlæse flere resultater igen</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Indlæs flere resultater</translation>
     </message>
 </context>
 <context>
@@ -7882,7 +8061,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultItemSkeleton.qml" line="20"/>
         <source>Search result skeleton.</source>
-        <translation>Søgeresultat skelet.</translation>
+        <translation>Pladsholder for søgeresultat.</translation>
     </message>
 </context>
 <context>
@@ -7896,7 +8075,7 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>UnifiedSearchResultNothingFound</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="32"/>
+        <location filename="../src/gui/search/UnifiedSearchResultNothingFound.qml" line="42"/>
         <source>No results for</source>
         <translation>Ingen resultater for</translation>
     </message>
@@ -7904,20 +8083,21 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>UnifiedSearchResultSectionItem</name>
     <message>
-        <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="25"/>
+        <location filename="../src/gui/search/UnifiedSearchResultSectionItem.qml" line="26"/>
         <source>Search results section %1</source>
-        <translation>Søgeresultatsektionen% 1</translation>
+        <extracomment>%1 is the search results section heading, for example &quot;Partial matches&quot;.</extracomment>
+        <translation>Søgeresultater, sektion %1</translation>
     </message>
 </context>
 <context>
     <name>UriSchemeHandler</name>
     <message>
-        <location filename="../src/gui/urischemehandler.cpp" line="123"/>
+        <location filename="../src/gui/urischemehandler.cpp" line="124"/>
         <source>Could not handle link</source>
         <translation>Kunne ikke håndtere link</translation>
     </message>
     <message>
-        <location filename="../src/gui/urischemehandler.cpp" line="191"/>
+        <location filename="../src/gui/urischemehandler.cpp" line="192"/>
         <source>Adding another account is not allowed in this client.</source>
         <translation>Tilføjelse af en anden konto er ikke tilladt i denne klient.</translation>
     </message>
@@ -7926,55 +8106,55 @@ Serveren svarede med fejl:% 2</translation>
     <name>UserStatusWindow</name>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
-        <location filename="../src/gui/accountsettings.cpp" line="185"/>
+        <location filename="../src/gui/accountsettings.cpp" line="184"/>
         <source>Online status</source>
-        <translation>Online status</translation>
+        <translation>Onlinestatus</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="211"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="223"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="225"/>
         <source>Online</source>
         <translation>Online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Away</source>
-        <translation>Væk</translation>
+        <translation>Ikke til stede</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Busy</source>
-        <translation>Travl</translation>
+        <translation>Optaget</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Do not disturb</source>
-        <translation>Må ikke forstyrres</translation>
+        <translation>Forstyr ikke</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation>Slå alle meddelelser fra</translation>
+        <translation>Slå alle notifikationer fra</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
-        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
+        <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Invisible</source>
         <translation>Usynlig</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation>Søg offline</translation>
+        <translation>Vis som offline</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation>Statusmeddelelse</translation>
+        <translation>Statusbesked</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
@@ -7990,17 +8170,17 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation>Klar status efter</translation>
+        <translation>Ryd status efter</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation>Ryd statusmeddelelse</translation>
+        <translation>Ryd statusbesked</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation>Sæt statusmeddelelse</translation>
+        <translation>Angiv statusmeddelelse</translation>
     </message>
 </context>
 <context>
@@ -8009,7 +8189,7 @@ Serveren svarede med fejl:% 2</translation>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation>% 1, nulstilles efter% 2</translation>
+        <translation>%1, nulstilles efter %2</translation>
     </message>
 </context>
 <context>
@@ -8042,32 +8222,32 @@ Serveren svarede med fejl:% 2</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="289"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n år</numerusform><numerusform>%n år</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="290"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n måned</numerusform><numerusform>%n måneder</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="291"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dag</numerusform><numerusform>%n dage</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="292"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n time</numerusform><numerusform>%n timer</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="293"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut</numerusform><numerusform>%n minutter</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="294"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekund</numerusform><numerusform>%n sekunder</numerusform></translation>
     </message>
 </context>
 <context>
@@ -8075,18 +8255,18 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="260"/>
         <source>The checksum header is malformed.</source>
-        <translation>Kontrolsum-hovedet er misdannet.</translation>
+        <translation>Kontrolsumheaderen har et ugyldigt format.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="295"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation>Checksum- headeren indeholdt en ukendt checksum- type &quot;% 1&quot;</translation>
+        <translation>Kontrolsum-headeren indeholdt en ukendt kontrolsumtype &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="301"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
         <extracomment>%1 is the checksum expected from the server. %2 is the checksum calculated from the downloaded file.</extracomment>
-        <translation>Den downloadede fil matcher ikke checksum, den vil blive genoptaget. &quot;% 1&quot;! = &quot;% 2&quot;</translation>
+        <translation>Den hentede fil passer ikke med kontrolsummen og vil blive genoptaget. &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -8100,23 +8280,23 @@ Serveren svarede med fejl:% 2</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="42"/>
+        <location filename="../src/gui/main.cpp" line="46"/>
         <source>System Tray not available</source>
         <translation>Systembakken er ikke tilgængelig</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="43"/>
+        <location filename="../src/gui/main.cpp" line="47"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
-        <translation>%1 kræver en fungerende systembakke. Hvis du bruger Xfce, følg venligst &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;disse instruktioner&lt;/a&gt;. Ellers installer venligst et program til håndtering af systembakken såsom &quot;trayer&quot; og prøv igen.</translation>
+        <translation>%1 kræver en fungerende systembakke. Hvis du bruger Xfce, så følg &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;disse instruktioner&lt;/a&gt;. Ellers skal du installere et program til systembakken, fx &quot;trayer&quot;, og prøve igen.</translation>
     </message>
 </context>
 <context>
     <name>nextcloudTheme::aboutInfo()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="638"/>
+        <location filename="../src/libsync/theme.cpp" line="669"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <extracomment>%1 is the full Git commit URL. %2 is the abbreviated Git revision. %3 is the build date. %4 is the build time. %5 is the Qt version. %6 is the TLS library version.</extracomment>
-        <translation>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Bygget fra Git-revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; den %3, %4 med Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -8139,17 +8319,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Uploaded</source>
-        <translation>Sendt</translation>
+        <translation>Overført</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Versionen på serveren hentet, kopierede den ændrede lokale fil til filen med konflikt</translation>
+        <translation>Serverversionen er hentet, den ændrede lokale fil er kopieret til konfliktfilen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Server version downloadet, kopieret ændret lokal fil i tilfælde konflikt konfliktfil</translation>
+        <translation>Serverversionen er hentet; den ændrede lokale fil er kopieret til en konfliktfil for store og små bogstaver</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -8180,17 +8360,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation>Lokale metadata sendt</translation>
+        <translation>Lokale metadata opdateret</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local virtual files metadata</source>
-        <translation>Opdaterede lokale virtuelle filer metadata</translation>
+        <translation>Metadata for lokale virtuelle filer er opdateret</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated end-to-end encryption metadata</source>
-        <translation>Opdaterede end-to-end krypteringsmetadata</translation>
+        <translation>Opdaterede metadata for end-to-end-kryptering</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
@@ -8201,42 +8381,42 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
         <source>Downloading</source>
-        <translation>Downloader</translation>
+        <translation>Henter</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Uploading</source>
-        <translation>Uploader</translation>
+        <translation>Overfører</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>Deleting</source>
-        <translation>Sletning</translation>
+        <translation>Sletter</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>Moving</source>
-        <translation>Flytning</translation>
+        <translation>Flytter</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Ignoring</source>
-        <translation>Ignorering</translation>
+        <translation>Ignorerer</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Updating local metadata</source>
-        <translation>Opdatering af lokale metadata</translation>
+        <translation>Opdaterer lokale metadata</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local virtual files metadata</source>
-        <translation>Opdatering af lokale virtuelle filer metadata</translation>
+        <translation>Opdaterer metadata for lokale virtuelle filer</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating end-to-end encryption metadata</source>
-        <translation>Opdatering af end-to-end krypteringsmetadata</translation>
+        <translation>Opdaterer metadata for end-to-end-kryptering</translation>
     </message>
 </context>
 <context>
@@ -8244,7 +8424,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync status is unknown</source>
-        <translation>Synkronisér status er ukendt</translation>
+        <translation>Synkroniseringsstatus er ukendt</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="117"/>
@@ -8259,27 +8439,27 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Sync was successful</source>
-        <translation>Sync var vellykket</translation>
+        <translation>Synkroniseringen lykkedes</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync was successful but some files were ignored</source>
-        <translation>Sync var vellykket, men nogle filer blev ignoreret</translation>
+        <translation>Synkroniseringen lykkedes, men nogle filer blev ignoreret</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="129"/>
         <source>Error occurred during sync</source>
-        <translation>Fejl opstod under synkronisering</translation>
+        <translation>Der opstod en fejl under synkroniseringen</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="132"/>
         <source>Error occurred during setup</source>
-        <translation>Fejl opstod under opsætning</translation>
+        <translation>Der opstod en fejl under opsætningen</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="138"/>
         <source>Stopping sync</source>
-        <translation>Standser synkronisering</translation>
+        <translation>Stopper synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="135"/>
@@ -8289,7 +8469,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="141"/>
         <source>Sync is paused</source>
-        <translation>Synk. er på pause</translation>
+        <translation>Synkronisering er sat på pause</translation>
     </message>
 </context>
 <context>
@@ -8302,17 +8482,17 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="52"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Der skete en fejl ved start af browseren med URL %1. Måske er der ikke valgt en standardbrowser?</translation>
+        <translation>Der opstod en fejl, da browseren skulle åbne URL&apos;en %1. Måske er der ikke angivet en standardbrowser?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="75"/>
         <source>Could not open email client</source>
-        <translation>Kunne ikke åbne email-klient</translation>
+        <translation>Kunne ikke åbne e-mailklient</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Der skete en fejl ved start af email-klienten til oprettelse af en ny besked. Måske er der ikke valgt en standard email-klient?</translation>
+        <translation>Der opstod en fejl, da e-mailklienten skulle oprette en ny besked. Måske er der ikke angivet en standard-e-mailklient?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
@@ -8327,7 +8507,7 @@ Serveren svarede med fejl:% 2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Some available online only</source>
-        <translation>Delvist kun tilgængelig online</translation>
+        <translation>Nogle kun tilgængelige online</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="98"/>
@@ -8345,12 +8525,12 @@ Serveren svarede med fejl:% 2</translation>
         <translation>Frigør lokal lagerplads</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="130"/>
+        <location filename="../src/gui/guiutility.cpp" line="133"/>
         <source>Enable experimental feature?</source>
         <translation>Aktivér eksperimentel funktion?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="131"/>
+        <location filename="../src/gui/guiutility.cpp" line="134"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8358,993 +8538,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Når &quot;virtuelle filer&quot; tilstand er aktiveret ingen filer vil blive downloadet i første omgang. I stedet vil en lille &quot;% 1&quot; fil blive oprettet for hver fil der findes på serveren. Indholdet kan downloades ved at køre disse filer eller ved at bruge deres sammenhængsmenu.
+        <translation>Når tilstanden &quot;virtuelle filer&quot; er aktiveret, hentes der i første omgang ingen filer. I stedet oprettes en lille &quot;%1&quot;-fil for hver fil, der findes på serveren. Indholdet kan hentes ved at åbne filerne eller via deres genvejsmenu.
 
-Den virtuelle filer tilstand er gensidigt eksklusivt med selektiv synkronisering. I øjeblikket vil unselected mapper blive oversat til online- only mapper og dine selektive synkroniseringsindstillinger vil blive nulstillet.
+Tilstanden virtuelle filer kan ikke bruges sammen med selektiv synkronisering. Mapper, der ikke er valgt, bliver til mapper, der kun findes online, og dine indstillinger for selektiv synkronisering nulstilles.
 
-Skift til denne tilstand vil afbryde enhver igangværende synkronisering.
+Skifter du til denne tilstand, afbrydes al igangværende synkronisering.
 
-Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du rapportere eventuelle spørgsmål, der kommer op.</translation>
+Dette er en ny, eksperimentel tilstand. Hvis du bruger den, så meld de problemer, du støder på.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="146"/>
-        <source>Enable experimental placeholder mode</source>
-        <translation>Enable experimental placeholder mode</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/guiutility.cpp" line="147"/>
-        <source>Stay safe</source>
-        <translation>Pas på dig selv.</translation>
-    </message>
-</context>
-<context>
-    <name>CurrentAccountHeaderButton</name>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="28"/>
-        <source>Current account</source>
-        <translation>Nuværende konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
-        <source>Resume sync for all</source>
-        <translation>Genoptag synkronisering for alle</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="41"/>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="162"/>
-        <source>Pause sync for all</source>
-        <translation>Sæt synkronisering på pause for alle</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="143"/>
-        <source>Add account</source>
-        <translation>Tilføj konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="147"/>
-        <source>Add new account</source>
-        <translation>Tilføj ny konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="181"/>
-        <source>Settings</source>
-        <translation>Indstillinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="205"/>
-        <source>Exit</source>
-        <translation>Afslut</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="246"/>
-        <source>Current account avatar</source>
-        <translation>Aktuel kontoavatar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
-        <source>Current account status is online</source>
-        <translation>Aktuel kontostatus er online</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="275"/>
-        <source>Current account status is do not disturb</source>
-        <translation>Aktuel kontostatus er forstyr ikke</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/CurrentAccountHeaderButton.qml" line="350"/>
-        <source>Account switcher and settings menu</source>
-        <translation>Kontoomskifter og indstillingsmenu</translation>
-    </message>
-</context>
-<context>
-    <name>FileProviderSettings</name>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="23"/>
-        <source>Virtual files settings</source>
-        <translation>Indstilling for virtuelle filer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/macOS/ui/FileProviderSettings.qml" line="52"/>
-        <source>Virtual files appear like regular files, but they do not use local storage space. The content downloads automatically when you open the file. Virtual files and classic sync can not be used at the same time.</source>
-        <translation>Virtuelle filer vises som almindelige filer, men de bruger ikke lokal lagerplads. Indholdet downloads automatisk, når du åbner filen. Virtuelle filer og klassisk synkronisering kan ikke bruges på samme tid.</translation>
-    </message>
-</context>
-<context>
-    <name>Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
-        <source>Browser Authentication</source>
-        <translation>Godkendelse i browseren</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>Logo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="76"/>
-        <source>Switch to your browser to connect your account</source>
-        <translation>Skift til din browser for at forbinde din konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.ui" line="229"/>
-        <source>An error occurred while connecting. Please try again.</source>
-        <translation>Der opstod en fejl under forsøget på at oprette forbindelse. Prøv venligst igen.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::AddCertificateDialog</name>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
-        <source>SSL client certificate authentication</source>
-        <translation>SSL klient certifikat autentifikation</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
-        <source>This server probably requires a SSL client certificate.</source>
-        <translation>Denne server kræver sandsynligvis et SSL klient certifikat.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
-        <source>Certificate &amp; Key (pkcs12):</source>
-        <translation>Certifikat og nøgle (pkcs12):</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse …</source>
-        <translation>Browse ...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password:</source>
-        <translation>Certifikat kodeord :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
-        <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>En krypteret pkcs12-pakke anbefales på det kraftigste da en kopi vil blive opbevaret i konfigurationsfilen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="33"/>
-        <source>Select a certificate</source>
-        <translation>Vælg et certifikat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="33"/>
-        <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Certifikat filer (*.p12 *.pfx)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/addcertificatedialog.cpp" line="44"/>
-        <source>Could not access the selected certificate file.</source>
-        <translation>Kunne ikke få adgang til den valgte certifikatfil.</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::Flow2AuthWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="91"/>
-        <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Kunne ikke åbne browseren, venligst kopier linket og åben i en browser.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
-        <source>Waiting for authorization</source>
-        <translation>Venter på godkendelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="159"/>
-        <source>Polling for authorization</source>
-        <translation>Forespørger godkendelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="164"/>
-        <source>Starting authorization</source>
-        <translation>Påbegynder godkendelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="168"/>
-        <source>Link copied to clipboard.</source>
-        <translation>Link kopieret til udklipsholder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="215"/>
-        <source>Open Browser</source>
-        <translation>Åben browser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="217"/>
-        <source>Copy Link</source>
-        <translation>Kopiér link</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudAdvancedSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="69"/>
-        <source>Connect</source>
-        <translation>Forbind</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="106"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
-        <source>(experimental)</source>
-        <translation>(eksperimentel)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="121"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
-        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
-        <translation>Brug &amp;virtuel filer i stedet for at downloade indhold med det samme %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="280"/>
-        <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
-        <translation>Virtuelle filer er ikke understøttet til Windows partition roden som lokal mappe. Vælg en gyldig undermappe under drevbogstav.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="321"/>
-        <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
-        <translation>%1 mappe &quot;%2&quot; er synkroniseret til lokal mappe &quot;%3&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
-        <source>Sync the folder &quot;%1&quot;</source>
-        <translation>Synkronisér mappen &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="329"/>
-        <source>Warning: The local folder is not empty. Pick a resolution!</source>
-        <translation>Advarsel: Den lokale mappe er ikke tom. Vælg en løsning!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="342"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="667"/>
-        <source>%1 free space</source>
-        <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation>%1 ledig plads</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="430"/>
-        <source>Virtual files are not supported at the selected location</source>
-        <translation>Virtuelle filer understøttes ikke på den valgte placering</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="499"/>
-        <source>Local Sync Folder</source>
-        <translation>Lokal Sync mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="542"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="583"/>
-        <source>(%1)</source>
-        <translation>(%1)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="614"/>
-        <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>Der er ikke nok ledig plads i den lokale mappe!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="665"/>
-        <source>In Finder&apos;s &quot;Locations&quot; sidebar section</source>
-        <translation>I sidebjælkesektionen &quot;Placeringer&quot; i Finder</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudConnectionMethodDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
-        <source>Connection failed</source>
-        <translation>Forbindelse fejlet</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fejl ved forbindelse til den sikrede serveradresse angivet. Hvordan vil du fortsætte?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
-        <source>Select a different URL</source>
-        <translation>Vælg en anden URL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
-        <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Prøv igen over ukrypteret HTTP (ikke sikret)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
-        <source>Configure client-side TLS certificate</source>
-        <translation>Konfigurer klientsidens TLS certifikat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="24"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fejl ved forbindelse til den sikrede serveradresse &lt;em&gt;%1&lt;/em&gt;. Hvordan vil du fortsætte?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="39"/>
-        <source>&amp;Email</source>
-        <translation>&amp;Email</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
-        <source>Connect to %1</source>
-        <translation>Forbind til %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="50"/>
-        <source>Enter user credentials</source>
-        <translation>Angiv bruger legitimationsoplysninger</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="94"/>
-        <source>The link to your %1 web interface when you open it in the browser.</source>
-        <comment>%1 will be replaced with the application name</comment>
-        <translation>Linket til din webinterface %1 når du åbner det i browseren.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="254"/>
-        <source>&amp;Next &gt;</source>
-        <translation>&amp;Næste &gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="314"/>
-        <source>Server address does not seem to be valid</source>
-        <translation>Serveradressen synes ikke at være gyldig</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="429"/>
-        <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Kunne ikke indlæse certifikat. Forkert kodeord?</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudSetupWizard</name>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="299"/>
-        <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Forbundet til %1: %2 version %3 (%4) med succes&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
-        <source>Invalid URL</source>
-        <translation>Ugyldig URL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
-        <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Fejl ved forbindelse til %1 hos %2: &lt;br/&gt;%3</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="349"/>
-        <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Timeout ved forsøg på forbindelse til %1 hos %2.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
-        <source>Trying to connect to %1 at %2 …</source>
-        <translation>Prøver at forbinde til %1 hos %2 …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
-        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Den bekræftede anmodning til serveren blev omdirigeret til &quot;%1&quot;. URL&apos;en er dårlig, serveren er forkert konfigureret.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
-        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Adgang forbudt fra serveren. For at kontrollere din adgang, &lt;a href=&quot;%1&quot;&gt;Klik her&lt;/a&gt; for tilgang til servicen fra din browser.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
-        <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Modtog ugyldigt svar på autentificeret WebDAV forespørgsel</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
-        <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Lokal sync mappe %1 findes allerede. Forbinder til synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
-        <source>Creating local sync folder %1 …</source>
-        <translation>Opretter lokal sync mappe %1 …</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="550"/>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="552"/>
-        <source>failed.</source>
-        <translation>mislykkedes.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="554"/>
-        <source>Could not create local folder %1</source>
-        <translation>Kunne ikke oprette lokal mappe %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="614"/>
-        <source>No remote folder specified!</source>
-        <translation>Ingen afsides mappe angivet!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
-        <source>Error: %1</source>
-        <translation>Fejl: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="633"/>
-        <source>creating folder on Nextcloud: %1</source>
-        <translation>opretter mappe hos Nextcloud: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="638"/>
-        <source>Remote folder %1 created successfully.</source>
-        <translation>Afsides mappe %1 oprettet med succes.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="653"/>
-        <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Den afsides mappe %1 findes allerede. Forbinder til den for synkronisering.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="655"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="657"/>
-        <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Mappeoprettelsen resulterede i HTTP fejlkode %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="659"/>
-        <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Oprettelse af fjernmappen fejlede da de angivne legitimationsoplysninger er forkerte!&lt;br/&gt;Gå venligst tilbage og kontroller dine legitimationsoplysninger .&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="663"/>
-        <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Fjernmappeoprettelse fejlede sandsynligvis på grund af forkert angivne legitimationsoplysninger.&lt;/font&gt;&lt;br/&gt;Gå venligst tilbage og kontroller dine legitimationsoplysninger.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="668"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="669"/>
-        <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Oprettelse af afsides mappe %1 fejlet med fejl &lt;tt&gt;%2&lt;/tt&gt;.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="683"/>
-        <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation>En sync forbindelse fra %1 til afsides mappe %2 blev oprettet.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="688"/>
-        <source>Successfully connected to %1!</source>
-        <translation>Forbundet til %1 med succes!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="695"/>
-        <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Forbindelse til %1 kunne ikke etableres. Kontroller venligst igen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="708"/>
-        <source>Folder rename failed</source>
-        <translation>Fejl ved omdøbning af mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="709"/>
-        <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Kan ikke fjerne og sikkerhedskopiere mappen, fordi mappen eller en fil i den er åben i et andet program. Luk mappen eller filen og tryk igen eller aflys opsætningen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="738"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;File Provider-based account %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Filudbyderbaseret konto %1 er oprettet!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="780"/>
-        <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal sync mappe %1 oprette med succes!&lt;/b&gt;&lt;/font&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::OwncloudWizard</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="99"/>
-        <source>Add %1 account</source>
-        <translation>Tilføj %1 konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
-        <source>Skip folders configuration</source>
-        <translation>Spring mappe konfiguration over</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="104"/>
-        <source>Cancel</source>
-        <translation>Annullér</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="105"/>
-        <source>Proxy Settings</source>
-        <comment>Proxy Settings button text in new account wizard</comment>
-        <translation>Proxy- indstillinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="107"/>
-        <source>Next</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>Næste</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="108"/>
-        <source>Back</source>
-        <comment>Next button text in new account wizard</comment>
-        <translation>Tilbage</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="512"/>
-        <source>Enable experimental feature?</source>
-        <translation>Aktivér eksperimentel funktion?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="513"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Når tilstanden &quot;virtuelle filer&quot; er aktiveret så vil ingen filer blive downloadet i første omgang. I stedet oprettes en lille &quot;%1&quot; fil for hver fil der findes på serveren. Indholdet kan downloades ved at køre disse filer eller ved hjælp af deres kontekstmenu.
-
-Den virtuelle fil tilstand er gensidig eksklusiv med selektiv synkronisering. Aktuelt vil ikke markerede mapper blive oversat til kun online mapper og dine selektive synkroniseringsindstillinger vil blive nulstillet.
-
-Skift til denne tilstand vil afbryde enhver igangværende synkronisering.
-
-Dette er en ny, eksperimentel tilstand. Hvis du beslutter at bruge det, bedes du rapportere eventuelle spørgsmål, der opstår.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="527"/>
+        <location filename="../src/gui/guiutility.cpp" line="149"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Aktivér eksperimentel pladsholdertilstand</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="528"/>
+        <location filename="../src/gui/guiutility.cpp" line="150"/>
         <source>Stay safe</source>
         <translation>Pas på dig selv</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="125"/>
-        <source>Waiting for terms to be accepted</source>
-        <translation>Venter på, at vilkårene bliver accepteret</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="131"/>
-        <source>Polling</source>
-        <translation>Afstemning</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="137"/>
-        <source>Link copied to clipboard.</source>
-        <translation>Linket kopieret til udklipsholderen.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="178"/>
-        <source>Open Browser</source>
-        <translation>Åbn browser</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.cpp" line="180"/>
-        <source>Copy Link</source>
-        <translation>Kopiér link</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::WebEnginePage</name>
-    <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="239"/>
-        <source>Invalid certificate detected</source>
-        <translation>Ugyldigt certifikat opfanget</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="240"/>
-        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>Værten &quot;%1&quot; sendte et ugyldigt certifikat. Fortsæt?</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::WelcomePage</name>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
-        <source>Log in</source>
-        <translation>Log ind</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
-        <source>Sign up with provider</source>
-        <translation>Tilmeld dig udbyder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="59"/>
-        <source>Keep your data secure and under your control</source>
-        <translation>Hold dine data sikre og under din kontrol</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="60"/>
-        <source>Secure collaboration &amp; file exchange</source>
-        <translation>Sikker samarbejde &amp; fildeling</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="61"/>
-        <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Brugervenlig webmail, kalender &amp; kontakter</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="62"/>
-        <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Skærmdeling, onlinemøder &amp; webkonference</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/welcomepage.cpp" line="102"/>
-        <source>Host your own server</source>
-        <translation>Kør din egen server</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::WizardProxySettingsDialog</name>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="23"/>
-        <source>Proxy Settings</source>
-        <comment>Dialog window title for proxy settings</comment>
-        <translation>Proxy- indstillinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="25"/>
-        <source>Hostname of proxy server</source>
-        <translation>Hovednavn på proxy- server</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="26"/>
-        <source>Username for proxy server</source>
-        <translation>Brugernavn for proxy- server</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="27"/>
-        <source>Password for proxy server</source>
-        <translation>Adgangskode for proxy- server</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="29"/>
-        <source>HTTP(S) proxy</source>
-        <translation>HTTP- (S) - proxy</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/wizardproxysettingsdialog.cpp" line="30"/>
-        <source>SOCKS5 proxy</source>
-        <translation>SOCKS5- proxy</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudAdvancedSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
-        <source>&amp;Local Folder</source>
-        <translation>&amp;Lokal mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
-        <source>Username</source>
-        <translation>Brugernavn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
-        <source>Local Folder</source>
-        <translation>Lokal mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
-        <source>Choose different folder</source>
-        <translation>Vælg anden mappe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
-        <source>Server address</source>
-        <translation>Serveradresse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
-        <source>Sync Logo</source>
-        <translation>Synkronisér Logo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
-        <source>Synchronize everything from server</source>
-        <translation>Synkroniser alt fra serveren</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
-        <source>Ask before syncing folders larger than</source>
-        <translation>Spørg før synk. af mapper større end</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
-        <source>MB</source>
-        <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation>MB</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
-        <source>Ask before syncing external storages</source>
-        <translation>Spørg før synk. af eksterne lagerenheder</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
-        <source>Choose what to sync</source>
-        <translation>Vælg hvad der skal synkroniseres</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
-        <source>Keep local data</source>
-        <translation>Behold lokale data</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If dette felt er tilvalgt, vil eksisterende indhold i den lokale mappe blive slettet for at starte en ny hel sync fra serveren.&lt;/p&gt;&lt;p&gt;Fravælg dette hvis det lokale indhold skal sendes til serverfolderen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
-        <source>Erase local folder and start a clean sync</source>
-        <translation>Slet den lokale mappe og start et rent synk.</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudHttpCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
-        <source>&amp;Username</source>
-        <translation>&amp;Brugernavn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
-        <source>&amp;Password</source>
-        <translation>&amp;Adgangskode</translation>
-    </message>
-</context>
-<context>
-    <name>OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
-        <source>Logo</source>
-        <translation>Logo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="182"/>
-        <source>Server address</source>
-        <translation>Serveradresse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="261"/>
-        <source>This is the link to your %1 web interface when you open it in the browser.</source>
-        <translation>Dette er linket til webgrænsefladen til din %1, når du åbner den i browseren.</translation>
-    </message>
-</context>
-<context>
-    <name>ProxySettings</name>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="29"/>
-        <source>Proxy Settings</source>
-        <translation>Proxy- indstillinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="35"/>
-        <source>Manually specify proxy</source>
-        <translation>Manuel angivelse af proxy</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="91"/>
-        <source>Host</source>
-        <translation>Vært</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="142"/>
-        <source>Proxy server requires authentication</source>
-        <translation>Proxy- server kræver godkendelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="205"/>
-        <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation>Bemærk: Proxy- indstillinger har ingen effekt på konti på localhost</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="230"/>
-        <source>Use system proxy</source>
-        <translation>Brug systemproxy</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/proxysettings.ui" line="237"/>
-        <source>No proxy</source>
-        <translation>Ingen proxy</translation>
-    </message>
-</context>
-<context>
-    <name>SyncJournalDb</name>
-    <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="1061"/>
-        <source>Failed to connect database.</source>
-        <translation>Kunne ikke forbinde database.</translation>
-    </message>
-</context>
-<context>
-    <name>TermsOfServiceCheckWidget</name>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="26"/>
-        <source>Terms of Service</source>
-        <translation>Servicevilkår</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="47"/>
-        <source>Logo</source>
-        <translation>Logo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/termsofservicecheckwidget.ui" line="76"/>
-        <source>Switch to your browser to accept the terms of service</source>
-        <translation>Skift til din browser for at acceptere servicevilkårene</translation>
-    </message>
-</context>
-<context>
-    <name>UserLine</name>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="24"/>
-        <source>Switch to account</source>
-        <translation>Skift til konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
-        <source>Current account status is online</source>
-        <translation>Status for løbende konti er online</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="67"/>
-        <source>Current account status is do not disturb</source>
-        <translation>Status for løbende poster forstyrrer ikke</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="166"/>
-        <source>Account sync status requires attention</source>
-        <translation>Kontosync status kræver opmærksomhed</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="177"/>
-        <source>Account actions</source>
-        <translation>Kontohandlinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="197"/>
-        <source>Set status</source>
-        <translation>Angiv status</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="211"/>
-        <source>Status message</source>
-        <translation>Statusmeddelelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
-        <source>Log out</source>
-        <translation>Log ud</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="225"/>
-        <source>Log in</source>
-        <translation>Log ind</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusMessageView</name>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="40"/>
-        <source>Status message</source>
-        <translation>Statusmeddelelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="116"/>
-        <source>What is your status?</source>
-        <translation>Hvad er din status?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="168"/>
-        <source>Clear status message after</source>
-        <translation>Clear status message after</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="205"/>
-        <source>Cancel</source>
-        <translation>Annullér</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="212"/>
-        <source>Clear</source>
-        <translation>Ryd</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusMessageView.qml" line="221"/>
-        <source>Apply</source>
-        <translation>Anvend</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSetStatusView</name>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="42"/>
-        <source>Online status</source>
-        <translation>Online status</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="51"/>
-        <source>Online</source>
-        <translation>Online</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="61"/>
-        <source>Away</source>
-        <translation>Væk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="72"/>
-        <source>Busy</source>
-        <translation>Travl</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="82"/>
-        <source>Do not disturb</source>
-        <translation>Må ikke forstyrres</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="83"/>
-        <source>Mute all notifications</source>
-        <translation>Slå alle meddelelser fra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="94"/>
-        <source>Invisible</source>
-        <translation>Usynlig</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="95"/>
-        <source>Appear offline</source>
-        <translation>Søg offline</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/UserStatusSetStatusView.qml" line="106"/>
-        <source>Status message</source>
-        <translation>Statusmeddelelse</translation>
     </message>
 </context>
 </TS>

@@ -12,15 +12,17 @@
 #include <QJsonValue>
 #include <QPointer>
 #include <QSet>
+#include <QtCore>
 #include <QTimer>
 #include <QUrlQuery>
+#include <QtQmlIntegration>
 
 #include <limits>
 
-#include "accountstate.h"
 #include "unifiedsearchresult.h"
 
 namespace OCC {
+class AccountState;
 
 /**
  * @brief Account-scoped presentation model for Nextcloud Unified Search.
@@ -33,6 +35,9 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
 {
     Q_OBJECT
 
+    QML_ELEMENT
+
+    Q_PROPERTY(int accountId READ accountId WRITE setAccountId NOTIFY accountIdChanged)
     Q_PROPERTY(bool isSearchInProgress READ isSearchInProgress NOTIFY isSearchInProgressChanged)
     Q_PROPERTY(QString currentFetchMoreInProgressProviderId READ currentFetchMoreInProgressProviderId NOTIFY currentFetchMoreInProgressProviderIdChanged)
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
@@ -126,6 +131,7 @@ public:
         LoadingRole,
     };
 
+    explicit UnifiedSearchResultsListModel(QObject *parent = nullptr);
     explicit UnifiedSearchResultsListModel(AccountState *accountState,
                                             int debounceInterval = 300,
                                             int revealInterval = 1000,
@@ -136,6 +142,7 @@ public:
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    [[nodiscard]] int accountId() const;
     [[nodiscard]] bool isSearchInProgress() const;
     [[nodiscard]] QString currentFetchMoreInProgressProviderId() const;
     [[nodiscard]] QString searchTerm() const;
@@ -165,6 +172,7 @@ public:
     Q_INVOKABLE bool setCustomDateRange(const QString &sinceDate, const QString &untilDate);
 
 public Q_SLOTS:
+    void setAccountId(int id);
     void setSearchTerm(const QString &term);
     void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     void fetchMoreTriggerClicked(const QString &providerId);
@@ -186,6 +194,7 @@ public Q_SLOTS:
     void activateSelected() const;
 
 Q_SIGNALS:
+    void accountIdChanged();
     void currentFetchMoreInProgressProviderIdChanged();
     void isSearchInProgressChanged();
     void errorStringChanged();
@@ -211,6 +220,7 @@ private:
         Loaded,
         Failed,
     };
+    void setAccountState(AccountState *accountState);
 
     struct UnifiedSearchProvider
     {
@@ -316,5 +326,6 @@ private:
     QTimer _debounceTimer;
     QTimer _revealTimer;
     AccountState *_accountState = nullptr;
+    int _accountId = -1;
 };
 }

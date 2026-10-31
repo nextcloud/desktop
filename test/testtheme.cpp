@@ -5,12 +5,16 @@
 
 #include <QTest>
 
-#include "theme.h"
-#include "themeutils.h"
+#include "config.h"
 #include "iconutils.h"
 #include "logger.h"
+#include "theme.h"
+#include "themeutils.h"
 
 #include <QStandardPaths>
+#include <QUrl>
+
+using namespace Qt::StringLiterals;
 
 class TestTheme : public QObject
 {
@@ -30,6 +34,66 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void testWizardHideSelfHostButtonMatchesBranding()
+    {
+        const auto theme = OCC::Theme::instance();
+        const auto hidden = static_cast<bool>(WIZARD_HIDE_SELF_HOST_BUTTON);
+
+        QCOMPARE(theme->wizardHideSelfHostButton(), hidden);
+        QCOMPARE(theme->property("wizardHideSelfHostButton").toBool(), hidden);
+    }
+
+    void testWizardSignupMatchesBranding()
+    {
+        const auto theme = OCC::Theme::instance();
+        const auto hidden = static_cast<bool>(WIZARD_HIDE_SIGNUP_BUTTON);
+
+        QCOMPARE(theme->wizardHideSignupButton(), hidden);
+        QCOMPARE(theme->property("wizardHideSignupButton").toBool(), hidden);
+#ifdef APPLICATION_SIGNUP_URL
+        const auto configured = QString::fromUtf8(APPLICATION_SIGNUP_URL);
+#else
+        const auto configured = QString();
+#endif
+        QCOMPARE(theme->wizardSignupUrl(), OCC::Theme::signupUrlForBranding(configured));
+    }
+
+    void testSignupUrlForBranding_data()
+    {
+        QTest::addColumn<QString>("configured");
+        QTest::addColumn<QUrl>("expected");
+
+        const auto defaultUrl = QUrl(u"https://nextcloud.com/sign-up/?flow=V3"_s);
+        const auto custom = u"https://signup.example.com/register?plan=business&source=desktop"_s;
+        const auto http = u"http://signup.example.com:8080/register"_s;
+        const auto encoded = u"https://signup.example.com/register?next=%2Ffiles&offer=$monthly#plans"_s;
+        const auto encodedBraces = u"https://signup.example.com/register?offer=$%7Bcloud%7D;trial=1"_s;
+        QTest::newRow("empty uses default") << QString() << defaultUrl;
+        QTest::newRow("custom HTTPS") << custom << QUrl(custom);
+        QTest::newRow("custom HTTP") << http << QUrl(http);
+        QTest::newRow("query and fragment preserved") << encoded << QUrl(encoded);
+        QTest::newRow("encoded query characters") << encodedBraces << QUrl(encodedBraces);
+        QTest::newRow("relative URL") << u"/register"_s << defaultUrl;
+        QTest::newRow("missing host") << u"https:///register"_s << defaultUrl;
+        QTest::newRow("file URL") << u"file:///tmp/register"_s << defaultUrl;
+        QTest::newRow("javascript URL") << u"javascript:alert(1)"_s << defaultUrl;
+        QTest::newRow("invalid escape") << u"https://signup.example.com/%zz"_s << defaultUrl;
+        QTest::newRow("unencoded braces") << u"https://signup.example.com/register?offer=${cloud}"_s << defaultUrl;
+        QTest::newRow("credentials") << u"https://user:password@signup.example.com/register"_s << defaultUrl;
+        QTest::newRow("empty credentials") << u"https://@signup.example.com/register"_s << defaultUrl;
+        QTest::newRow("leading whitespace") << u" https://signup.example.com/register"_s << defaultUrl;
+        QTest::newRow("trailing whitespace") << u"https://signup.example.com/register "_s << defaultUrl;
+        QTest::newRow("line break") << u"https://signup.example.com/reg\nister"_s << defaultUrl;
+    }
+
+    void testSignupUrlForBranding()
+    {
+        QFETCH(QString, configured);
+        QFETCH(QUrl, expected);
+
+        QCOMPARE(OCC::Theme::signupUrlForBranding(configured), expected);
     }
 
     void testHidpiFileName_darkBackground_returnPathToWhiteIcon()

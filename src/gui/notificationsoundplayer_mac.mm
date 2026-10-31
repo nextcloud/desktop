@@ -12,6 +12,8 @@
 #include <QLoggingCategory>
 #include <QString>
 
+static_assert(__has_feature(objc_arc), "notificationsoundplayer_mac requires ARC.");
+
 @interface NCNotificationSoundPlayerDelegate : NSObject <AVAudioPlayerDelegate>
 @property (nonatomic, copy) void(^onFinished)(void);
 @end
@@ -25,12 +27,6 @@
     if (self.onFinished) {
         self.onFinished();
     }
-}
-
-- (void)dealloc
-{
-    [_onFinished release];
-    [super dealloc];
 }
 
 @end
@@ -64,10 +60,8 @@ public:
             if (_player) {
                 [_player stop];
                 [_player setDelegate:nil];
-                [_player release];
                 _player = nil;
             }
-            [_delegate release];
             _delegate = nil;
         }
     }
@@ -78,7 +72,6 @@ public:
             if (_player) {
                 [_player stop];
                 [_player setDelegate:nil];
-                [_player release];
                 _player = nil;
             }
 

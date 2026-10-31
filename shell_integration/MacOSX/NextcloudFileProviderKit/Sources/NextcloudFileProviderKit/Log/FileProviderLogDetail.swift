@@ -9,7 +9,7 @@ import NextcloudKit
 /// An enum that can represent any JSON value and is `Encodable`.
 ///
 /// > To Do: Add custom encodings for:
-/// > - `RealmItemMetadata`
+/// > - `ItemMetadataRecord`
 ///
 public enum FileProviderLogDetail: Encodable {
     ///

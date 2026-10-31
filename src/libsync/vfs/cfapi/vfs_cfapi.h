@@ -10,6 +10,8 @@
 #include "common/vfs.h"
 #include "common/plugin.h"
 
+#include <ntstatus.h>
+
 namespace OCC {
 class HydrationJob;
 class VfsCfApiPrivate;
@@ -47,6 +49,7 @@ public:
     bool needsMetadataUpdate(const SyncFileItem &) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *statData) override;
+    [[nodiscard]] HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) override;
 
     bool setPinState(const QString &folderPath, PinState state) override;
     Optional<PinState> pinState(const QString &folderPath) override;
@@ -97,6 +100,14 @@ class CfApiVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsCfA
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory" FILE "vfspluginmetadata.json")
     Q_INTERFACES(OCC::PluginFactory)
+
+public:
+    /**
+     * @param path The path for which the plugin should be prepared
+     * @param accountUuid The UUID of the account for which the plugin should be prepared (might be null during account setup)
+     * @return Nothing or an error string
+     */
+    [[nodiscard]] Result<void, QString> prepare(const QString &path, const QUuid &accountUuid) const override;
 };
 
 } // namespace OCC

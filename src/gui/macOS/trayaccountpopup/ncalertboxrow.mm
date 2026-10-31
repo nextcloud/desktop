@@ -10,6 +10,8 @@
 
 #include <QCoreApplication>
 
+static_assert(__has_feature(objc_arc), "ncalertboxrow requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 @implementation NCAlertBoxRow {
@@ -34,7 +36,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:label];
 
-    auto resolveButton = [[[NCPointingHandButton alloc] init] autorelease];
+    auto resolveButton = [[NCPointingHandButton alloc] init];
     resolveButton.title = QCoreApplication::translate("TrayAccountPopup", "Resolve").toNSString();
     resolveButton.target = self;
     resolveButton.action = @selector(resolveButtonClicked:);
@@ -66,13 +68,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     return self;
 }
 
-- (void)dealloc
-{
-    [_action release];
-    [_hoverAction release];
-    [super dealloc];
-}
-
 - (void)updateTrackingAreas
 {
     [super updateTrackingAreas];
@@ -80,14 +75,12 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     for (NSTrackingArea *area in trackingAreas) {
         [self removeTrackingArea:area];
     }
-    [trackingAreas release];
 
     auto trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
                                                      options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
                                                        owner:self
                                                     userInfo:nil];
     [self addTrackingArea:trackingArea];
-    [trackingArea release];
 }
 
 - (void)mouseEntered:(NSEvent *)event

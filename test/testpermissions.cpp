@@ -8,10 +8,11 @@
  * any purpose.
  */
 
+#include "common/ownsql.h"
 #include "syncenginetestutils.h"
 #include <syncengine.h>
-#include "common/ownsql.h"
 
+#include <QScopeGuard>
 #include <QtTest>
 
 #include <filesystem>
@@ -98,6 +99,114 @@ private Q_SLOTS:
         Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void testOverlappingDownloads_data()
+    {
+        QTest::addColumn<bool>("readOnly");
+        QTest::addColumn<bool>("replaceExisting");
+        QTest::addColumn<bool>("cancelSecond");
+
+        QTest::newRow("read-only new files") << true << false << false;
+        QTest::newRow("read-only replacements") << true << true << false;
+        QTest::newRow("writable new files") << false << false << false;
+        QTest::newRow("writable replacements") << false << true << false;
+        QTest::newRow("read-only cancelled new file") << true << false << true;
+        QTest::newRow("read-only cancelled replacement") << true << true << true;
+        QTest::newRow("writable cancelled new file") << false << false << true;
+        QTest::newRow("writable cancelled replacement") << false << true << true;
+    }
+
+    void testOverlappingDownloads()
+    {
+        QFETCH(bool, readOnly);
+        QFETCH(bool, replaceExisting);
+        QFETCH(bool, cancelSecond);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        auto &remote = fakeFolder.remoteModifier();
+        const auto parent = u"folder"_s;
+        const auto firstPath = QString{parent + u"/a"_s};
+        const auto secondPath = QString{parent + u"/b"_s};
+        constexpr auto fileSize = 100;
+        constexpr auto parallelNetworkJobs = 4;
+
+        remote.mkdir(parent);
+        const auto localParent = QString{fakeFolder.localPath() + parent};
+        const auto makeWritableForCleanup = qScopeGuard([&] {
+            if (QFileInfo::exists(localParent)) {
+                FileSystem::setFolderPermissions(localParent, FileSystem::FolderPermissions::ReadWrite);
+            }
+        });
+        remote.find(parent)->permissions = RemotePermissions::fromServerString(readOnly ? u"MG"_s : u"GCKWDNVRSM"_s);
+        if (replaceExisting) {
+            remote.insert(secondPath, fileSize, 'Y');
+        }
+        QVERIFY(fakeFolder.syncOnce());
+
+        const auto parentPath = FileSystem::toFilesystemPath(localParent);
+        QCOMPARE(FileSystem::isFolderReadOnly(parentPath), readOnly);
+
+        remote.insert(firstPath, fileSize + 1, 'A');
+        remote.insert(secondPath, fileSize + 1, 'B');
+        auto options = fakeFolder.syncEngine().syncOptions();
+        options._parallelNetworkJobs = parallelNetworkJobs;
+        fakeFolder.syncEngine().setSyncOptions(options);
+
+        QMap<QString, QPointer<FakeGetReply>> replies;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op != QNetworkAccessManager::GetOperation) {
+                return nullptr;
+            }
+            const auto path = getFilePathFromUrl(request.url());
+            if (path != firstPath && path != secondPath) {
+                return nullptr;
+            }
+            auto reply = new FakeGetReply(remote, op, request, fakeFolder.networkAccessManager(), false);
+            replies.insert(path, reply);
+            return reply;
+        });
+
+        ItemCompletedSpy completed(fakeFolder);
+        QSignalSpy finished(&fakeFolder.syncEngine(), &SyncEngine::finished);
+        fakeFolder.scheduleSync();
+        QTRY_COMPARE(replies.size(), 2);
+        QVERIFY(!FileSystem::isFolderReadOnly(parentPath));
+
+        // Finish one download while its sibling still holds an open temporary file.
+        QVERIFY(replies.value(firstPath));
+        replies.value(firstPath)->respond();
+        QTRY_COMPARE(completed.findItem(firstPath)->_status, SyncFileItem::Success);
+        QCOMPARE(FileSystem::isFolderReadOnly(parentPath), readOnly);
+
+        QVERIFY(replies.value(secondPath));
+        if (cancelSecond) {
+            replies.value(secondPath)->abort();
+        }
+        replies.value(secondPath)->respond();
+        QTRY_COMPARE(finished.size(), 1);
+        QCOMPARE(finished.at(0).at(0).toBool(), !cancelSecond);
+        QCOMPARE(FileSystem::isFolderReadOnly(parentPath), readOnly);
+
+        if (cancelSecond) {
+            QCOMPARE(completed.findItem(secondPath)->_status, SyncFileItem::FatalError);
+            auto local = fakeFolder.currentLocalState();
+            if (replaceExisting) {
+                QVERIFY(local.find(secondPath));
+                QCOMPARE(local.find(secondPath)->size, fileSize);
+                QCOMPARE(local.find(secondPath)->contentChar, 'Y');
+            } else {
+                QVERIFY(!local.find(secondPath));
+            }
+            fakeFolder.setServerOverride({});
+            fakeFolder.syncJournal().wipeErrorBlacklistEntry(secondPath);
+            QVERIFY(fakeFolder.syncOnce());
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QCOMPARE(FileSystem::isFolderReadOnly(parentPath), readOnly);
+        } else {
+            QCOMPARE(completed.findItem(secondPath)->_status, SyncFileItem::Success);
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void t7pl_data()

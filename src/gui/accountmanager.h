@@ -141,11 +141,13 @@ private:
     // update config serverHasValidSubscription when accounts list changes
     void updateServerHasValidSubscriptionConfig();
     void updateServerDesktopEnterpriseUpdateChannel();
+    void updateServerManagedSettings();
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;
     /// Account ids from settings that weren't read
     QSet<QString> _additionalBlockedAccountIds;
     bool _forceLegacyImport = false;
+    bool _serverCapabilitiesEverLoaded = false;
 };
 }

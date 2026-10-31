@@ -180,9 +180,8 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         const QString p = *watchPathIt + '/' + fileName;
         _parent->changeDetected(p);
 
-        if ((event->mask & (IN_MOVED_TO | IN_CREATE))
-            && QFileInfo(p).isDir()
-            && !_parent->pathIsIgnored(p)) {
+        const auto fileInfo = QFileInfo{p};
+        if ((event->mask & (IN_MOVED_TO | IN_CREATE)) && fileInfo.isDir() && !fileInfo.isSymLink() && !_parent->pathIsIgnored(p)) {
             slotAddFolderRecursive(p);
         }
         if (event->mask & (IN_MOVED_FROM | IN_DELETE)) {

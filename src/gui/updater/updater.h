@@ -31,6 +31,9 @@ public:
     static Updater *instance();
     static QUrl updateUrl();
 
+    // A user requested check is allowed unless updates are skipped. Background checks also need autoUpdateCheck.
+    [[nodiscard]] static bool updateCheckAllowed(bool userInitiated, bool skipUpdateCheck, bool autoUpdateCheck);
+
     virtual void checkForUpdate() = 0;
     virtual void backgroundCheckForUpdate() = 0;
     virtual bool handleStartup() = 0;

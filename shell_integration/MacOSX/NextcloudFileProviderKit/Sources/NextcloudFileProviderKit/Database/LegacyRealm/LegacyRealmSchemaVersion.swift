@@ -1,0 +1,19 @@
+//  SPDX-FileCopyrightText: 2025 Nextcloud GmbH and Nextcloud contributors
+//  SPDX-License-Identifier: LGPL-3.0-or-later
+
+///
+/// Schema versions of the Realm database written before the switch to SQLite, kept for importing such a database.
+///
+enum LegacyRealmSchemaVersion: UInt64 {
+    case initial = 100
+    case deletedLocalFileMetadata = 200
+    case addedLockTokenPropertyToRealmItemMetadata = 201
+    case addedIsLockFileOfLocalOriginToRealmItemMetadata = 202
+    case addedCanonicalPathKeysToRealmItemMetadata = 203
+    case addedNormalizedFileNameIndexToRealmItemMetadata = 204
+    case addedExcludedFromSyncItems = 205
+    case addedPendingChunkUploadCleanup = 206
+    case addedChangeDeliverySessions = 207
+    case addedFileProviderContentVersion = 208
+    case addedChangeDeliveryAcknowledgementState = 209
+}

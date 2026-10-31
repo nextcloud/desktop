@@ -3,9 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import NextcloudCapabilitiesKit
 import NextcloudKit
-import RealmSwift
 
 public extension Item {
     /// > Note: The trashing parameter does not affect whether the server will trash this or not.
@@ -26,7 +24,7 @@ public extension Item {
             return NSFileProviderError(.directoryNotEmpty)
         }
 
-        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard()
+        let chunkUploadOwnerIdentifiersToDiscard = chunkUploadItemIdentifiersToDiscard(dbManager: dbManager)
         var deletionCompleted = false
         defer {
             if deletionCompleted {
@@ -40,13 +38,24 @@ public extension Item {
         }
 
         let ocId = itemIdentifier.rawValue
-        let relativePath = (metadata.remotePath()).replacingOccurrences(of: metadata.urlBase, with: "")
+        let relativePath = account.filesRootRelativePath(for: metadata.remotePath())
+        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
         guard metadata.isLockFileOfLocalOrigin == false else {
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
-        if dbManager.isItemExcludedFromSync(ocId: ocId) {
+        let isExcludedFromSync: Bool
+
+        do {
+            isExcludedFromSync = try dbManager.excludedFromSyncMarkerExists(ocId: ocId)
+        } catch {
+            // Without the marker it is unknown whether this deletion must stay local, so it is not forwarded to the server.
+            logger.error("Could not look up whether the item is excluded from sync. Not deleting.", [.item: itemIdentifier, .name: filename, .error: error])
+            return NSFileProviderError(.cannotSynchronize)
+        }
+
+        if isExcludedFromSync {
             logger.info("Item deletion follows an exclusion from sync. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
 
             guard handleMetadataDeletion() else {
@@ -61,7 +70,7 @@ public extension Item {
             return nil
         }
 
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+        guard !isExcluded else {
             logger.info("File is in the ignore list. Will delete from local database with no remote effect.", [.item: itemIdentifier, .name: filename])
             deletionCompleted = true
             dbManager.deleteItemMetadata(ocId: ocId)
@@ -150,27 +159,18 @@ public extension Item {
         return handleMetadataTrashModification()
     }
 
-    private func chunkUploadItemIdentifiersToDiscard() -> [String] {
+    internal func chunkUploadItemIdentifiersToDiscard(dbManager: FilesDatabaseManager) -> [String] {
         guard metadata.directory else {
             return [metadata.ocId]
         }
 
-        let directoryRemotePath = metadata.remotePath()
-        let itemAccount = metadata.account
-        return dbManager.itemMetadatas
-            .where {
-                $0.directory == false &&
-                    $0.account == itemAccount &&
-                    // Keep chunks for in-progress or failed uploads that recursive metadata deletion
-                    // deliberately preserves.
-                    $0.status < Status.inUpload.rawValue &&
-                    RealmItemMetadata.hasServerUrl(
-                        $0,
-                        equalTo: directoryRemotePath,
-                        includingDescendants: true
-                    )
-            }
-            .map(\.ocId)
+        // Keep chunks for in-progress or failed uploads that recursive metadata deletion
+        // deliberately preserves.
+        return dbManager.descendantFileOcIds(
+            underRemotePath: metadata.remotePath(),
+            account: metadata.account,
+            statusBelow: .inUpload
+        )
     }
 
     @discardableResult

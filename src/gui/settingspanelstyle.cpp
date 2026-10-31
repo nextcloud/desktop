@@ -7,9 +7,11 @@
 
 #include "settingsswitch.h"
 
+#include <QApplication>
 #include <QFrame>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QLayout>
 #include <QSizePolicy>
 #include <QSpinBox>
@@ -24,6 +26,7 @@ constexpr auto rowRightMargin = 12;
 constexpr auto rowBottomMargin = 12;
 constexpr auto rowSpacing = 8;
 constexpr auto compactControlHeight = 20;
+constexpr auto managedLabelFontScale = 0.9;
 
 bool isSeparator(const QWidget *widget)
 {
@@ -110,6 +113,19 @@ void apply(QWidget *root)
             settingsSwitch->setFixedSize(settingsSwitch->sizeHint());
         }
     }
+}
+
+void applyManagedLabelStyle(QLabel *label)
+{
+    // Scale the inherited font, not the current one, so repeated calls do not keep shrinking the label.
+    auto font = label->parentWidget() ? label->parentWidget()->font() : QApplication::font();
+    font.setItalic(true);
+    font.setPointSizeF(font.pointSizeF() * managedLabelFontScale);
+    label->setFont(font);
+
+    label->setContentsMargins(0, 0, rowRightMargin, 0);
+    label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 }
 
 } // namespace OCC::SettingsPanelStyle

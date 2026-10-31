@@ -1,0 +1,48 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#pragma once
+
+#include "sharedetailslistmodel.h"
+
+#include <QtQmlIntegration>
+
+namespace OCC::Gui::Sharing
+{
+
+class RecipientModel : public ShareDetailsListModel
+{
+    Q_OBJECT
+    QML_ELEMENT
+
+public:
+    enum Roles {
+        LabelRole = Qt::UserRole,
+        ClassNameRole,
+        ValueRole,
+        InstanceRole,
+        IconSvgUrlRole,
+        IconLightRole,
+        IconDarkRole,
+        SecretUpdatableRole,
+        SecretValueRole,
+        SecretUrlRole,
+        InitiatorDisplayNameRole,
+        RecipientRole,
+    };
+
+    explicit RecipientModel(QObject *parent = nullptr);
+
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+
+    void setShare(Share *share) override;
+
+private:
+    QMetaObject::Connection _recipientsChangedConnection;
+};
+
+}

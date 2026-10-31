@@ -9,6 +9,8 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "The macOS sandbox utilities require ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSandboxUtility, "nextcloud.common.mac.sandbox.utility", QtInfoMsg)
 
 namespace OCC {

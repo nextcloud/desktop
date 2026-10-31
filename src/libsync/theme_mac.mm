@@ -11,9 +11,13 @@
 
 #import <AppKit/AppKit.h>
 
-namespace OCC {
+static_assert(__has_feature(objc_arc), "The macOS app icon loader requires ARC.");
 
-namespace {
+namespace OCC
+{
+
+namespace
+{
 
 QPixmap pixmapFromNSImage(NSImage *image, int side)
 {
@@ -23,12 +27,7 @@ QPixmap pixmapFromNSImage(NSImage *image, int side)
 
     NSImage *resized = [[NSImage alloc] initWithSize:NSMakeSize(side, side)];
     [resized lockFocus];
-    [image drawInRect:NSMakeRect(0, 0, side, side)
-            fromRect:NSZeroRect
-           operation:NSCompositingOperationCopy
-            fraction:1.0
-      respectFlipped:YES
-               hints:nil];
+    [image drawInRect:NSMakeRect(0, 0, side, side) fromRect:NSZeroRect operation:NSCompositingOperationCopy fraction:1.0 respectFlipped:YES hints:nil];
     [resized unlockFocus];
 
     NSData *tiff = [resized TIFFRepresentation];

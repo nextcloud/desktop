@@ -179,13 +179,8 @@ class LockViewController: NSViewController {
             let kit = NextcloudKit.shared
 
             kit.appendSession(
-                account: account.ncKitAccount,
-                urlBase: account.serverUrl,
-                user: account.username,
-                userId: account.id,
-                password: account.password,
-                userAgent: "Nextcloud-macOS/FileProviderUIExt",
-                groupIdentifier: ""
+                account: account,
+                userAgent: "Nextcloud-macOS/FileProviderUIExt"
             )
 
             guard let capabilities = await fetchCapabilities(account: account, kit: kit), capabilities.files?.locking != nil else {

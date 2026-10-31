@@ -15,6 +15,8 @@
 
 #include "accountmanager.h"
 
+static_assert(__has_feature(objc_arc), "File Provider service requires ARC.");
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservice", QtInfoMsg)
@@ -51,6 +53,32 @@ Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservi
     QMetaObject::invokeMethod(_service, "showFileActionsDialog", Qt::QueuedConnection,
                               Q_ARG(QString, qFileId),
                               Q_ARG(QString, localPath),
+                              Q_ARG(QString, qRemoteItemPath),
+                              Q_ARG(QString, domainId));
+}
+
+- (void)presentUnifiedSharingForItem:(NSString *)fileId
+                           localPath:(NSString *)localPath
+                      remoteItemPath:(NSString *)remoteItemPath
+                 forDomainIdentifier:(NSString *)domainIdentifier
+{
+    qCDebug(OCC::lcMacFileProviderService) << "Should present unified sharing for item with fileId:"
+                                           << fileId
+                                           << "and path:"
+                                           << localPath
+                                           << "remote item path:"
+                                           << remoteItemPath
+                                           << "domain identifier:"
+                                           << domainIdentifier;
+
+    const auto qFileId = QString::fromNSString(fileId);
+    const auto qLocalPath = QString::fromNSString(localPath);
+    const auto qRemoteItemPath = QString::fromNSString(remoteItemPath);
+    const auto domainId = QString::fromNSString(domainIdentifier);
+
+    QMetaObject::invokeMethod(_service, "showUnifiedSharingDialog", Qt::QueuedConnection,
+                              Q_ARG(QString, qFileId),
+                              Q_ARG(QString, qLocalPath),
                               Q_ARG(QString, qRemoteItemPath),
                               Q_ARG(QString, domainId));
 }
@@ -236,7 +264,7 @@ public:
     
     ~MacImplementation()
     {
-        [delegate release];
+        delegate.service = nullptr;
         delegate = nil;
     }
 };
@@ -258,7 +286,7 @@ FileProviderService::~FileProviderService()
 
 void *FileProviderService::delegate() const
 {
-    return d ? d->delegate : nullptr;
+    return d ? (__bridge void *)d->delegate : nullptr;
 }
 
 SyncResult::Status FileProviderService::latestReceivedSyncStatusForAccount(const AccountPtr &account) const
@@ -277,4 +305,3 @@ void FileProviderService::setLatestReceivedSyncStatus(const QString &userId, Syn
 } // namespace Mac
 
 } // namespace OCC
-

@@ -171,6 +171,7 @@ bool OwncloudSetupWizard::startQmlWizard()
     }
 
     _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+    _qmlController->setWindow(_qmlWizardWindow);
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);
@@ -180,12 +181,10 @@ bool OwncloudSetupWizard::startQmlWizard()
     connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);
     connect(_qmlWizardWindow, &QQuickWindow::visibleChanged, this, [this](bool visible) {
         if (!visible) {
-            finish(QDialog::Rejected);
+            finishForClosedWindow();
         }
     });
-    connect(_qmlWizardWindow, &QObject::destroyed, this, [this] {
-        finish(QDialog::Rejected);
-    });
+    connect(_qmlWizardWindow, &QObject::destroyed, this, &OwncloudSetupWizard::finishForClosedWindow);
 
     _qmlWizardWindow->show();
     _qmlWizardWindow->raise();
@@ -241,6 +240,7 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
     }
 
     _qmlWizardWindow->setIcon(Theme::instance()->applicationIcon());
+    _qmlController->setWindow(_qmlWizardWindow);
 
 #ifdef Q_OS_MACOS
     auto *fgbg = new ForegroundBackground(this);
@@ -250,12 +250,10 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
     connect(_qmlController, &AccountWizardController::finished, this, &OwncloudSetupWizard::finish);
     connect(_qmlWizardWindow, &QQuickWindow::visibleChanged, this, [this](bool visible) {
         if (!visible) {
-            finish(QDialog::Rejected);
+            finishForClosedWindow();
         }
     });
-    connect(_qmlWizardWindow, &QObject::destroyed, this, [this] {
-        finish(QDialog::Rejected);
-    });
+    connect(_qmlWizardWindow, &QObject::destroyed, this, &OwncloudSetupWizard::finishForClosedWindow);
 
     _qmlWizardWindow->show();
     _qmlWizardWindow->raise();
@@ -269,6 +267,13 @@ bool OwncloudSetupWizard::startQmlWizardForLoginFlow(const QUrl &serverUrl)
 #endif
 
     return true;
+}
+
+void OwncloudSetupWizard::finishForClosedWindow()
+{
+    // The QML window closes itself on the controller's finished signal before finish() receives
+    // that result, so take the outcome from the controller instead of assuming a cancellation.
+    finish(_qmlController ? _qmlController->resultOnClose() : QDialog::Rejected);
 }
 
 void OwncloudSetupWizard::finish(int result)

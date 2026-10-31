@@ -152,7 +152,7 @@ private Q_SLOTS:
 
         _fm.reset(new FolderMan{});
 
-        Systray::instance()->setTrayEngine(new QQmlApplicationEngine(QCoreApplication::instance()));
+        Systray::instance()->createTrayEngine();
     }
 
     void cleanup()

@@ -43,11 +43,15 @@ BasicControls.Button {
             visible: root.iconSource !== "" && root.iconBeforeText
             Layout.preferredWidth: visible ? Style.smallIconSize : 0
             Layout.preferredHeight: Style.smallIconSize
+            Layout.fillWidth: root.text === "" && root.textSuffix === ""
 
             Image {
                 id: leadingIconImage
+                objectName: "wizardButtonLeadingIcon"
 
-                anchors.fill: parent
+                anchors.centerIn: parent
+                width: Style.smallIconSize
+                height: Style.smallIconSize
                 visible: !root.tintIcon
                 source: root.iconSource !== "" && root.iconBeforeText ? root.iconSource : ""
                 sourceSize.width: Style.smallIconSize
@@ -69,7 +73,8 @@ BasicControls.Button {
 
         Text {
             objectName: "wizardButtonText"
-            Layout.fillWidth: true
+            Layout.fillWidth: visible
+            visible: root.text.length > 0 || root.textSuffix.length > 0
             text: root.textSuffix === "" ? root.text : root.text + " " + root.textSuffix
             font: root.font
             color: {
@@ -87,13 +92,18 @@ BasicControls.Button {
         }
 
         Image {
+            objectName: "wizardButtonFollowingIcon"
             visible: root.iconSource !== "" && !root.iconBeforeText
             source: root.iconSource !== "" && !root.iconBeforeText ? root.iconSource : ""
             sourceSize.width: Style.smallIconSize
             sourceSize.height: Style.smallIconSize
+            Layout.fillWidth: visible && !root.text.length && !root.textSuffix.length
+            Layout.minimumWidth: visible ? Style.smallIconSize : 0
             Layout.preferredWidth: visible ? Style.smallIconSize : 0
             Layout.preferredHeight: Style.smallIconSize
             fillMode: Image.PreserveAspectFit
+            horizontalAlignment: Image.AlignHCenter
+            verticalAlignment: Image.AlignVCenter
             Accessible.ignored: true
         }
 

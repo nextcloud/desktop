@@ -430,6 +430,11 @@ time_t FileSystem::getModTime(const QString &filename)
 
 bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
+    if (FileSystem::isSymLink(filename)) {
+        qCWarning(lcFileSystem) << "Do not set mtime through a symlink" << filename;
+        return false;
+    }
+
 #ifdef Q_OS_WINDOWS
     // the access denied ACEs also prevents us from changing the modtime -> make it writable if needed
     FilePermissionsRestore restore(filename, FileSystem::FolderPermissions::ReadWrite);
@@ -499,6 +504,31 @@ bool FileSystem::removeRecursively(const QString &path,
                                    const std::function<void(const QString &path, bool isDir)> &onError,
                                    const std::function<bool (const QString &, QString*)> &customDeleteFunction)
 {
+    const auto removeEntry = [&](const QString &entryPath) {
+        const auto parentPermissionsHandler =
+            FileSystem::FilePermissionsRestore{QFileInfo{entryPath}.dir().absolutePath(), FileSystem::FolderPermissions::ReadWrite};
+        QString removeError;
+        const auto removed = customDeleteFunction ? customDeleteFunction(entryPath, &removeError) : FileSystem::remove(entryPath, &removeError);
+        if (removed) {
+            if (onDeleted) {
+                onDeleted(entryPath, false);
+            }
+            return true;
+        }
+        if (errors) {
+            errors->append(QCoreApplication::translate("FileSystem", "Error removing \"%1\": %2").arg(QDir::toNativeSeparators(entryPath), removeError));
+        }
+        if (onError) {
+            onError(entryPath, false);
+        }
+        qCWarning(lcFileSystem) << "Error removing " << entryPath << ':' << removeError;
+        return false;
+    };
+
+    if (FileSystem::isSymLink(path)) {
+        return removeEntry(path);
+    }
+
     if (!FileSystem::setFolderPermissions(path, FileSystem::FolderPermissions::ReadWrite)) {
         if (onError) {
             onError(path, true);
@@ -510,39 +540,9 @@ bool FileSystem::removeRecursively(const QString &path,
 
     while (di.hasNext()) {
         di.next();
-        const QFileInfo &fi = di.fileInfo();
-        bool removeOk = false;
-        // The use of isSymLink here is okay:
-        // we never want to go into this branch for .lnk files
-        bool isDir = FileSystem::isDir(fi.absoluteFilePath()) && !FileSystem::isSymLink(fi.absoluteFilePath()) && !FileSystem::isJunction(fi.absoluteFilePath());
-        if (isDir) {
-            removeOk = removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError, customDeleteFunction); // recursive
-        } else {
-            QString removeError;
-
-            const auto fileInfo = QFileInfo{di.filePath()};
-            const auto parentFolderPath = fileInfo.dir().absolutePath();
-            const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
-            if (customDeleteFunction) {
-                removeOk = customDeleteFunction(di.filePath(), &removeError);
-            } else {
-                removeOk = FileSystem::remove(di.filePath(), &removeError);
-            }
-            if (removeOk) {
-                if (onDeleted) {
-                    onDeleted(di.filePath(), false);
-                }
-            } else {
-                if (errors) {
-                    errors->append(QCoreApplication::translate("FileSystem", "Error removing \"%1\": %2")
-                                       .arg(QDir::toNativeSeparators(di.filePath()), removeError));
-                }
-                if (onError) {
-                    onError(di.filePath(), false);
-                }
-                qCWarning(lcFileSystem) << "Error removing " << di.filePath() << ':' << removeError;
-            }
-        }
+        const auto isDir = FileSystem::isDir(di.filePath()) && !FileSystem::isSymLink(di.filePath());
+        const auto removeOk =
+            isDir ? removeRecursively(joinPath(path, di.fileName()), onDeleted, errors, onError, customDeleteFunction) : removeEntry(di.filePath());
         if (!removeOk) {
             allRemoved = false;
         }
@@ -614,6 +614,11 @@ bool FileSystem::setFolderPermissions(const QString &path,
 
     if (permissionsChanged) {
         *permissionsChanged = false;
+    }
+
+    if (FileSystem::isSymLink(path)) {
+        qCWarning(lcFileSystem) << "Do not change permissions through a symlink" << path;
+        return false;
     }
 
 #ifdef Q_OS_WIN
@@ -786,12 +791,12 @@ bool FileSystem::isFolderReadOnly(const std::filesystem::path &path) noexcept
     }
     catch (const std::system_error &e)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path:" << path;
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions" << e.what() << "- path:" << path.string();
         return false;
     }
     catch (...)
     {
-        qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path;
+        qCWarning(lcFileSystem()) << "exception when checking folder permissions -  path:" << path.string();
         return false;
     }
 #endif
@@ -876,6 +881,47 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName, const QSt
         return false;
     }
 #endif
+    return true;
+}
+
+time_t FileSystem::fileTimeToTime_t(std::filesystem::file_time_type fileTime)
+{
+#ifdef HAS_CLOCK_CAST
+    return std::chrono::system_clock::to_time_t(std::chrono::clock_cast<std::chrono::system_clock>(fileTime));
+#else
+    const auto systemTime = std::chrono::time_point_cast<std::chrono::system_clock::duration>(std::chrono::file_clock::to_sys(fileTime));
+    return std::chrono::system_clock::to_time_t(systemTime);
+#endif
+}
+
+std::filesystem::file_time_type FileSystem::time_tToFileTime(time_t fileTime)
+{
+#ifdef HAS_CLOCK_CAST
+    return std::chrono::clock_cast<std::chrono::file_clock>(std::chrono::system_clock::from_time_t(fileTime));
+#else
+    return std::chrono::file_clock::from_sys(std::chrono::system_clock::from_time_t(fileTime));
+#endif
+}
+
+bool FileSystem::setModTime(const std::filesystem::path &filename, time_t modTime)
+{
+    if (const auto path = FileSystem::fromFilesystemPath(filename); FileSystem::isSymLink(path)) {
+        qCWarning(lcFileSystem) << "Do not set mtime through a symlink" << path;
+        return false;
+    }
+
+#ifdef Q_OS_WINDOWS
+    // the access denied ACEs also prevents us from changing the modtime -> make it writable if needed
+    FilePermissionsRestore restore(QString::fromStdWString(filename.wstring()), FileSystem::FolderPermissions::ReadWrite);
+#endif
+
+    std::error_code rc;
+    std::filesystem::last_write_time(filename, time_tToFileTime(modTime), rc);
+    if (rc) {
+        qCWarning(lcFileSystem) << u"Error setting mtime for" << filename.string() << u"failed: rc" << rc.value() << u", error message:" << rc.message();
+        Q_ASSERT(!rc);
+        return false;
+    }
     return true;
 }
 

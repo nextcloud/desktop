@@ -6,12 +6,84 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
 
+private final class ExclusionMarkerRecorder: @unchecked Sendable {
+    private let lock = NSLock()
+    private var markerWasPresent = false
+
+    func recordMarkerPresence(_ isPresent: Bool) {
+        lock.lock()
+        defer { lock.unlock() }
+        markerWasPresent = isPresent
+    }
+
+    var wasPresent: Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        return markerWasPresent
+    }
+}
+
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
+    private func assertFailedContentModificationRemainsUnuploaded(
+        errorCode: Int,
+        chunkSize: Int?
+    ) async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let uploadError = NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        remoteInterface.uploadError = uploadError
+        let originalRemoteData = remoteItem.data
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data("Updated content".utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        var targetMetadata = itemMetadata
+        targetMetadata.size = Int64(newContents.count)
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertNotNil(error)
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertFalse(storedMetadata.uploaded)
+        XCTAssertTrue(storedMetadata.downloaded)
+        XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
+        XCTAssertEqual(storedMetadata.sessionError, uploadError.errorDescription)
+        XCTAssertEqual(storedMetadata.etag, itemMetadata.etag)
+        XCTAssertEqual(remoteItem.data, originalRemoteData)
+    }
+
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -25,11 +97,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -95,6 +167,16 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteFolder.parent = rootItem
         remoteTrashFolder.children = [remoteTrashFolderChildItem]
         remoteTrashFolderChildItem.parent = remoteTrashFolder
+    }
+
+    func testFailedContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: 2)
+    }
+
+    func testCancelledContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2)
     }
 
     func testModifyFile() async throws {
@@ -236,7 +318,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-report-modify")
         try newContents.write(to: newContentsUrl)
@@ -294,7 +376,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let originalRemoteData = remoteItem.data
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-blocked-modify")
         try newContents.write(to: newContentsUrl)
@@ -774,9 +856,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
     func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
@@ -840,6 +919,449 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
     }
 
+    func testModifyIntoIgnoredDestinationKeepsExclusionMarkerAfterRemoteDelete() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+        let markerRecorder = ExclusionMarkerRecorder()
+        remoteInterface.deleteCallHandler = {
+            markerRecorder.recordMarkerPresence(Self.dbManager.isItemExcludedFromSync(ocId: "item"))
+        }
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(modifiedItem?.filename, "item.blend1")
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, itemMetadata.remotePath())
+        XCTAssertTrue(markerRecorder.wasPresent)
+        XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
+    func testModifyIntoIgnoredDestinationRemovesExclusionMarkerWhenRemoteDeleteFails() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = .urlError
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
+    func testModifyIntoIgnoredFolderDeletesRemoteFileAfterPersistingExclusionMarker() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["ignored-folder/*"], log: FileProviderLogMock())
+        let domain = NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier("test-domain-ignored-destination"),
+            displayName: "test"
+        )
+        let proxy = ExclusionCapturingAppProxy()
+        let ignoredFolder = MockRemoteItem(
+            identifier: "ignored-folder",
+            name: "ignored-folder",
+            remotePath: Self.account.davFilesUrl + "/ignored-folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteItem, ignoredFolder]
+        remoteItem.parent = rootItem
+        ignoredFolder.parent = rootItem
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        let ignoredFolderMetadata = ignoredFolder.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+        Self.dbManager.addItemMetadata(ignoredFolderMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .init(ignoredFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            domain: domain,
+            dbManager: Self.dbManager,
+            appProxy: proxy
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(modifiedItem?.parentItemIdentifier, .init(ignoredFolder.identifier))
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+        XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == itemMetadata.ocId + trashedItemIdSuffix })
+        XCTAssertEqual(proxy.captured.count, 1)
+        XCTAssertEqual(proxy.captured.first?.relativePath, "ignored-folder/item.txt")
+        XCTAssertEqual(proxy.captured.first?.fileName, "item.txt")
+        XCTAssertEqual(proxy.captured.first?.domainIdentifier, domain.identifier.rawValue)
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .excludedDestination))
+    }
+
+    func testModifyDirectoryIntoIgnoredFolderDeletesRemoteDirectoryAfterPersistingExclusionMarker() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["ignored-folder/*"], log: FileProviderLogMock())
+        let ignoredFolder = MockRemoteItem(
+            identifier: "ignored-folder",
+            name: "ignored-folder",
+            remotePath: Self.account.davFilesUrl + "/ignored-folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [remoteFolder, ignoredFolder]
+        remoteFolder.parent = rootItem
+        ignoredFolder.parent = rootItem
+        remoteFolder.children = [remoteItem]
+        remoteItem.parent = remoteFolder
+        remoteItem.remotePath = remoteFolder.remotePath + "/" + remoteItem.name
+
+        let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        let ignoredFolderMetadata = ignoredFolder.toItemMetadata(account: Self.account)
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(folderMetadata)
+        Self.dbManager.addItemMetadata(ignoredFolderMetadata)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let chunkUploadId = chunkUploadIdentifier(
+            forItemWithIdentifier: itemMetadata.ocId,
+            fileSize: 8,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000)
+        )
+        let chunksDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("excluded-directory-chunks-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: chunksDirectory, withIntermediateDirectories: true)
+        try Data([1]).write(to: chunksDirectory.appendingPathComponent("2"))
+        remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: "2",
+                size: 3,
+                remoteChunkStoreFolderName: chunkUploadId
+            )
+        ])
+
+        var targetMetadata = SendableItemMetadata(value: folderMetadata)
+        targetMetadata.apply(fileName: "renamed-folder")
+        targetMetadata.serverUrl = ignoredFolder.remotePath
+
+        let folderItem = Item(
+            metadata: folderMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .init(ignoredFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await folderItem.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(modifiedItem?.filename, targetMetadata.fileName)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: folderMetadata.ocId))
+        XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteFolder.identifier })
+        XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertEqual(
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
+            0
+        )
+    }
+
+    func testModifyIntoIgnoredDestinationFailsWhenExclusionMarkerCannotBeWritten() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager,
+            exclusionMarkerWriter: { _ in false }
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+    }
+
+    func testModifyUnuploadedItemIntoIgnoredFolderPersistsExclusionMarker() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["ignored-folder/*"], log: FileProviderLogMock())
+        let ignoredFolder = MockRemoteItem(
+            identifier: "ignored-folder",
+            name: "ignored-folder",
+            remotePath: Self.account.davFilesUrl + "/ignored-folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children.append(ignoredFolder)
+        ignoredFolder.parent = rootItem
+
+        var itemMetadata = SendableItemMetadata(
+            ocId: "unuploaded-item",
+            fileName: "item.txt",
+            account: Self.account
+        )
+        itemMetadata.downloaded = true
+        itemMetadata.uploaded = false
+        itemMetadata.serverUrl = Self.account.davFilesUrl
+        Self.dbManager.addItemMetadata(itemMetadata)
+        Self.dbManager.addItemMetadata(ignoredFolder.toItemMetadata(account: Self.account))
+
+        let targetMetadata = SendableItemMetadata(value: itemMetadata)
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .init(ignoredFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(modifiedItem?.parentItemIdentifier, .init(ignoredFolder.identifier))
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+        XCTAssertFalse(rootItem.children.contains { $0.identifier == itemMetadata.ocId })
+    }
+
+    func testModifyTrashedItemIntoIgnoredDestinationPersistsExclusionMarker() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = .urlError
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let rootMetadata = rootItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(rootMetadata)
+
+        let itemMetadata = remoteTrashItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "trashItem.blend1"
+        targetMetadata.fileNameView = "trashItem.blend1"
+        targetMetadata.trashbinFileName = ""
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
+        XCTAssertEqual(modifiedItem?.filename, "trashItem.blend1")
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == remoteTrashItem.identifier })
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        let storedItem = Item(
+            metadata: storedMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let deletionError = await storedItem.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(deletionError)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
+    func testDestinationWithSimilarFilesRootPrefixIsNotExcluded() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var similarFilesRootMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        similarFilesRootMetadata.ocId = "similar-files-root-parent"
+        similarFilesRootMetadata.serverUrl = Self.account.davFilesUrl + "-backup"
+        Self.dbManager.addItemMetadata(similarFilesRootMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .init(similarFilesRootMetadata.ocId),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNotEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(modifiedItem)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
     func testMoveFileToTrash() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
 
@@ -887,6 +1409,47 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
                 .replacingOccurrences(of: Self.account.davFilesUrl + "/", with: "")
         )
         XCTAssertEqual(trashedItem.parentItemIdentifier, .trashContainer)
+    }
+
+    func testMoveFileIntoTrashDoesNotApplySyncExclusions() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.name = "item.blend1"
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let trashItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (trashedItem, error) = await item.modify(
+            itemTarget: trashItem,
+            changedFields: [.filename, .parentItemIdentifier],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(error)
+        XCTAssertEqual(trashedItem?.metadata.isTrashed, true)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, targetMetadata.remotePath())
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
 
     func testRenameMoveFileToTrash() async throws {
@@ -1229,7 +1792,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let newContents = "I've changed!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("I've changed!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
@@ -1622,21 +2185,18 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            )
+        ])
 
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = modificationDate
@@ -1703,6 +2263,131 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertNotNil(resultItem)
         XCTAssertEqual(resultItem?.metadata.fileName, "error.bak")
+    }
+
+    func testDeleteAfterExcludedDestinationIsLocalOnly() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+        XCTAssertTrue(Self.dbManager.markItemAsExcludedFromSync(ocId: itemMetadata.ocId))
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let deletionError = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(deletionError)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
+    func testModifyIntoIgnoredDestinationKeepsRemoteItemWhenCleanupFails() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = .urlError
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.name = "item.blend1"
+        targetMetadata.fileName = "item.blend1"
+        targetMetadata.fileNameView = "item.blend1"
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+    }
+
+    func testModifyIntoIgnoredDestinationKeepsExclusionAfterPermanentRemoteDeleteFailure() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        remoteInterface.deleteError = NKError(statusCode: 403, fallbackDescription: "Forbidden")
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+        let domain = NSFileProviderDomain(
+            identifier: NSFileProviderDomainIdentifier("test-domain-permanent-delete-failure"),
+            displayName: "test"
+        )
+        let proxy = ExclusionCapturingAppProxy()
+
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.apply(fileName: "item.blend1")
+
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.filename],
+            contents: nil,
+            ignoredFiles: ignoredMatcher,
+            domain: domain,
+            dbManager: Self.dbManager,
+            appProxy: proxy
+        )
+
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertEqual(modifiedItem?.filename, "item.blend1")
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .remoteDeletionFailed))
+
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        let storedItem = Item(
+            metadata: storedMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let deletionError = await storedItem.delete(dbManager: Self.dbManager)
+        XCTAssertNil(deletionError)
+        XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
+        XCTAssertTrue(rootItem.children.contains { $0.identifier == remoteItem.identifier })
     }
 
     func testModifyCreatesFileThatWasPreviouslyIgnoredWithContentsUrlProvided() async throws {

@@ -8,6 +8,8 @@
 
 #include "application.h"
 
+static_assert(__has_feature(objc_arc), "socketapi_mac requires ARC.");
+
 namespace OCC
 {
 

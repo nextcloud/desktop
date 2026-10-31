@@ -36,6 +36,14 @@ Updater *Updater::instance()
     return _instance;
 }
 
+bool Updater::updateCheckAllowed(bool userInitiated, bool skipUpdateCheck, bool autoUpdateCheck)
+{
+    if (skipUpdateCheck) {
+        return false;
+    }
+    return userInitiated || autoUpdateCheck;
+}
+
 QUrl Updater::updateUrl()
 {
     QUrl updateBaseUrl;

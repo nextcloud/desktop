@@ -156,6 +156,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="folderLimitEnforcedLabel">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="remotePollIntervalSeparator">
         <property name="frameShape">
          <enum>QFrame::Shape::HLine</enum>
@@ -253,6 +260,13 @@
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="externalStorageEnforcedLabel">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="OCC::SettingsSwitch" name="newExternalStorage"/>

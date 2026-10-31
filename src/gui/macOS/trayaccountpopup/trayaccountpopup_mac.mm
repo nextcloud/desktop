@@ -5,6 +5,7 @@
 
 #import "nctraypopup.h"
 
+#include "trayaccountpopupgeometry.h"
 #import "trayaccountpopuppresentation.h"
 #import "trayaccountpopupmetrics.h"
 #import "trayaccountpopupviewutils.h"
@@ -14,6 +15,8 @@
 #include <QGuiApplication>
 #include <QRect>
 #include <QScreen>
+
+static_assert(__has_feature(objc_arc), "trayaccountpopup_mac requires ARC.");
 
 using namespace OCC::Mac::TrayPopupViewUtils;
 
@@ -63,17 +66,16 @@ bool showMacOSTrayPopup(const QRect &iconRect)
     const CGFloat popupH  = s_popup.frame.size.height;
     const NSRect visibleFrame = screen.visibleFrame;
 
-    CGFloat x, y;
+    CGFloat x;
     if (iconRect.isValid() && !iconRect.isNull() && qtScreen) {
         const auto qtScreenGeometry = qtScreen->geometry();
         x = NSMinX(screen.frame) + iconRect.x() - qtScreenGeometry.x() - kStatusItemLeadingOffset;
-        y = NSMaxY(screen.frame) - (iconRect.y() + iconRect.height() - qtScreenGeometry.y()) - popupH;
     } else {
         x = NSMaxX(visibleFrame) - popupW - kScreenEdgePadding;
-        y = NSMaxY(visibleFrame) - popupH;
     }
 
-    const auto popupOrigin = clampedPopupOrigin(NSMakePoint(x, y), NSMakeSize(popupW, popupH), visibleFrame);
+    auto popupOrigin = clampedPopupOrigin(NSMakePoint(x, NSMaxY(visibleFrame) - popupH), NSMakeSize(popupW, popupH), visibleFrame);
+    popupOrigin.y = Mac::TrayPopupGeometry::topAlignedPopupY(NSMinY(visibleFrame), NSMaxY(visibleFrame), popupH, kScreenEdgePadding);
 
     [s_popup setFrameOrigin:popupOrigin];
     Mac::TrayAccountPopupPresentation::present(
@@ -96,6 +98,11 @@ bool showMacOSTrayPopup(const QRect &iconRect)
 void hideMacOSTrayPopup()
 {
     [s_popup orderOut:nil];
+}
+
+bool macOSTrayPopupWasVisibleAtCurrentMouseDown()
+{
+    return s_popup && [s_popup wasVisibleAtMouseDownForEvent:NSApp.currentEvent];
 }
 
 } // namespace OCC

@@ -50,6 +50,18 @@ bool ClientProxy::isUsingSystemDefault()
     return true;
 }
 
+ClientProxy::AccountProxyMode ClientProxy::accountProxyMode(const Account &account)
+{
+    if (account.proxyType() != QNetworkProxy::DefaultProxy) {
+        // The account has its own proxy; do not overwrite it with a system lookup.
+        return AccountProxyMode::AccountProxy;
+    }
+    if (account.proxySettingsAreManaged() || isUsingSystemDefault()) {
+        return AccountProxyMode::SystemProxy;
+    }
+    return AccountProxyMode::ApplicationProxy;
+}
+
 const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {
@@ -85,6 +97,18 @@ void ClientProxy::setupQtProxyFromConfig()
     if (cfg.exists()) {
         proxyType = cfg.proxyType();
         proxy = proxyFromConfig(cfg);
+    }
+
+    const auto managedProxy = cfg.managedProxySettings();
+    const auto followsSystemProxy = proxyType == QNetworkProxy::DefaultProxy;
+    if (managedProxy.typeEnforced || (managedProxy.typeManaged && followsSystemProxy)) {
+        proxyType = managedProxy.proxyType;
+    }
+    if (managedProxy.hostEnforced || (managedProxy.hostManaged && followsSystemProxy)) {
+        proxy.setHostName(managedProxy.proxyHostName);
+    }
+    if (managedProxy.portEnforced || (managedProxy.portManaged && followsSystemProxy)) {
+        proxy.setPort(managedProxy.proxyPort);
     }
 
     switch (proxyType) {

@@ -5,6 +5,8 @@
 
 #import "progressobserver.h"
 
+_Static_assert(__has_feature(objc_arc), "progressobserver requires ARC.");
+
 @implementation ProgressObserver
 
 - (instancetype)initWithProgress:(NSProgress *)progress
@@ -12,7 +14,6 @@
     self = [super init];
     if (self) {
         _progress = progress;
-        [_progress retain];
         [_progress addObserver:self forKeyPath:@"totalUnitCount" options:NSKeyValueObservingOptionNew context:nil];
         [_progress addObserver:self forKeyPath:@"completedUnitCount" options:NSKeyValueObservingOptionNew context:nil];
         [_progress addObserver:self forKeyPath:@"cancelled" options:NSKeyValueObservingOptionNew context:nil];
@@ -31,8 +32,6 @@
     [_progress removeObserver:self forKeyPath:@"paused"];
     [_progress removeObserver:self forKeyPath:@"fileTotalCount"];
     [_progress removeObserver:self forKeyPath:@"fileCompletedCount"];
-    [_progress release];
-    [super dealloc];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

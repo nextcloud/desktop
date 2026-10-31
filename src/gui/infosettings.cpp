@@ -57,6 +57,7 @@ InfoSettings::InfoSettings(QWidget *parent)
     _ui->autoCheckForUpdatesLabel->setWordWrap(true);
     _ui->autoCheckForUpdatesLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     _ui->updateControlsRow->setStretch(0, 1);
+    SettingsPanelStyle::applyManagedLabelStyle(_ui->adminEnforcedLabel);
 #endif
 
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &InfoSettings::slotShowLegalNotice);
@@ -116,7 +117,7 @@ void InfoSettings::slotUpdateInfo()
 {
     ConfigFile config;
     const auto updater = Updater::instance();
-    if (config.skipUpdateCheck() || !updater) {
+    if (!updater) {
         _ui->updatesContainer->setVisible(false);
         _ui->updatesGroupBox->setVisible(false);
         return;
@@ -125,15 +126,19 @@ void InfoSettings::slotUpdateInfo()
     _ui->updatesGroupBox->setVisible(true);
     _ui->updatesContainer->setVisible(true);
 
-    if (updater) {
-        connect(_ui->updateButton,
-                &QAbstractButton::clicked,
-                this,
-                &InfoSettings::slotUpdateCheckNow,
-                Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
-                &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
-        _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck());
+    connect(_ui->updateButton, &QAbstractButton::clicked, this, &InfoSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+
+    // Keep the section visible with a managed label when a policy disables updates, like the other settings.
+    const auto updatesSkipped = config.skipUpdateCheck();
+    const auto autoCheckManaged = updatesSkipped || config.isEnforced(QLatin1String(ConfigFile::autoUpdateCheckC));
+    _ui->autoCheckForUpdatesCheckBox->setChecked(config.autoUpdateCheck() && !updatesSkipped);
+    _ui->autoCheckForUpdatesCheckBox->setEnabled(!autoCheckManaged);
+    _ui->adminEnforcedLabel->setVisible(autoCheckManaged);
+    if (autoCheckManaged) {
+        _ui->adminEnforcedLabel->setText(config.sourceLabel(updatesSkipped ? ConfigFile::skipUpdateCheckC : ConfigFile::autoUpdateCheckC));
+    } else {
+        // clicked fires only on user interaction, so repopulating the control never writes a user value.
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::clicked, this, &InfoSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
     }
 
     const auto ocupdater = qobject_cast<OCUpdater *>(updater);
@@ -186,6 +191,10 @@ void InfoSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
+
+    if (updatesSkipped) {
+        _ui->updateButton->setEnabled(false);
+    }
 }
 
 void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
@@ -205,18 +214,22 @@ void InfoSettings::setAndCheckNewUpdateChannel(const QString &newChannel) {
 QString InfoSettings::updateChannelToLocalized(const QString &channel) const
 {
     if (channel == QStringLiteral("stable")) {
+        //: Name of the stable update channel.
         return tr("stable");
     }
 
     if (channel == QStringLiteral("beta")) {
+        //: Name of the beta update channel.
         return tr("beta");
     }
 
     if (channel == QStringLiteral("daily")) {
+        //: Name of the daily update channel.
         return tr("daily");
     }
 
     if (channel == QStringLiteral("enterprise")) {
+        //: Name of the enterprise update channel.
         return tr("enterprise");
     }
 
@@ -303,7 +316,8 @@ void InfoSettings::slotUpdateCheckNow()
 
 void InfoSettings::slotToggleAutoUpdateCheck()
 {
-    ConfigFile().setAutoUpdateCheck(_ui->autoCheckForUpdatesCheckBox->isChecked(), QString());
+    // setConfig refuses to overwrite an enforced value.
+    ConfigFile().setConfig(QLatin1String(ConfigFile::autoUpdateCheckC), _ui->autoCheckForUpdatesCheckBox->isChecked());
 }
 
 void InfoSettings::restoreUpdateChannel()

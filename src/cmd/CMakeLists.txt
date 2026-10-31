@@ -36,9 +36,17 @@ if(NOT BUILD_LIBRARIES_ONLY)
   ecm_mark_nongui_executable(nextcloudcmd)
   set_target_properties(nextcloudcmd PROPERTIES RUNTIME_OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
 
-  target_link_libraries(nextcloudcmd cmdCore nextcloudCore)
+  target_link_libraries(nextcloudcmd cmdCore)
 
   target_compile_definitions(nextcloudcmd PRIVATE QT_NO_KEYWORDS)
+
+  if(BUILD_GUI)
+    # Account provisioning mode (--userid/--serverurl/...) reuses
+    # AccountManager/FolderMan/AccountSetupCommandLineManager from the GUI
+    # library, so it is only available in GUI builds.
+    target_link_libraries(nextcloudcmd nextcloudCore)
+    target_compile_definitions(nextcloudcmd PRIVATE BUILD_GUI)
+  endif()
 
   if(BUILD_OWNCLOUD_OSX_BUNDLE)
     set_target_properties(nextcloudcmd PROPERTIES

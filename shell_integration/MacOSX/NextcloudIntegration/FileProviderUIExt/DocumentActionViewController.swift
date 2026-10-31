@@ -65,7 +65,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
 
         switch (actionIdentifier) {
             case "com.nextcloud.desktopclient.FileProviderUIExt.ShareAction":
-                prepare(childViewController: ShareViewController(itemIdentifiers, serviceResolver: serviceResolver, log: log))
+                prepareSharingAction(itemIdentifiers: itemIdentifiers)
             case "com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction":
                 prepare(childViewController: LockViewController(itemIdentifiers, locking: true, serviceResolver: serviceResolver, log: log))
             case "com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction":
@@ -92,6 +92,52 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
 
     override public func loadView() {
         self.view = NSView()
+    }
+
+    // MARK: - Sharing
+
+    private func prepareSharingAction(itemIdentifiers: [NSFileProviderItemIdentifier]) {
+        guard itemIdentifiers.count == 1, let itemIdentifier = itemIdentifiers.first else {
+            logger.error(
+                "Sharing action requires exactly one selected item.",
+                [.item: itemIdentifiers.map { $0.rawValue }.joined(separator: ", ")]
+            )
+            extensionContext.completeRequest()
+            return
+        }
+
+        guard let manager = NSFileProviderManager(for: domain) else {
+            logger.error(
+                "Could not get the file provider domain manager; falling back to legacy sharing.",
+                [.domain: domain.identifier.rawValue]
+            )
+            prepareLegacySharingAction(itemIdentifiers: itemIdentifiers)
+            return
+        }
+
+        Task { @MainActor in
+            do {
+                let localUrl = try await manager.getUserVisibleURL(for: itemIdentifier)
+                let service = try await serviceResolver.getService(at: localUrl)
+                let presented = await service.presentUnifiedSharingDialog(
+                    identifier: itemIdentifier,
+                    localPath: localUrl.path as NSString
+                )
+
+                if presented {
+                    extensionContext.completeRequest()
+                    return
+                }
+            } catch {
+                logger.error("Could not route the sharing action to unified sharing.", [.item: itemIdentifier, .error: error])
+            }
+
+            prepareLegacySharingAction(itemIdentifiers: itemIdentifiers)
+        }
+    }
+
+    private func prepareLegacySharingAction(itemIdentifiers: [NSFileProviderItemIdentifier]) {
+        prepare(childViewController: ShareViewController(itemIdentifiers, serviceResolver: serviceResolver, log: log))
     }
 
     // MARK: - Eviction

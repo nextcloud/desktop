@@ -2,6 +2,8 @@
 # SPDX-FileCopyrightText: 2014 ownCloud GmbH
 # SPDX-License-Identifier: GPL-2.0-or-later
 project(gui)
+include(CheckQmlWindowCloseShortcuts)
+
 find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF6Archive REQUIRED)
 find_package(KF6GuiAddons)
@@ -287,20 +289,27 @@ IF(BUILD_UPDATER)
 endif()
 
 add_subdirectory(search)
+add_subdirectory(sharing)
 include(assistant/CMakeLists.txt)
 list(APPEND client_SRCS ${assistant_SRCS})
 qt_add_resources(client_UI_SRCS ${assistant_QRC})
 
 IF( APPLE )
-    list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS systray_mac_common.mm)
-    list(APPEND client_SRCS notificationsoundplayer_mac.mm)
     list(APPEND client_SRCS
-        macOS/localnetworkpermission.mm)
-    list(APPEND client_SRCS
+        cocoainitializer_mac.mm
+        systray_mac_common.mm
+        notificationsoundplayer_mac.mm
+        macOS/singleinstancemanager_mac.mm
+        systray_mac_usernotifications.mm
+        macOS/localnetworkpermission.mm
+        macOS/lowpowergpu_mac.h
+        macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfolderpicker.h
+        macOS/macsandboxfolderpicker.mm
         # macOS tray account popup: one type per header/implementation pair.
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
+        macOS/trayaccountpopup/trayaccountpopupgeometry.h
         macOS/trayaccountpopup/trayaccountpopupmetrics.h
         macOS/trayaccountpopup/trayaccountpopuppresentation.h
         macOS/trayaccountpopup/trayaccountpopupimageutils.h
@@ -331,13 +340,8 @@ IF( APPLE )
         macOS/trayaccountpopup/ncaccountactionspopup.mm
         macOS/trayaccountpopup/nctraypopup.h
         macOS/trayaccountpopup/nctraypopup.mm
-        macOS/trayaccountpopup/trayaccountpopup_mac.mm)
-    list(APPEND client_SRCS macOS/singleinstancemanager_mac.mm)
-
-    list(APPEND client_SRCS systray_mac_usernotifications.mm)
-
-    # FinderSync XPC is independent of File Provider — always built on macOS
-    list(APPEND client_SRCS
+        macOS/trayaccountpopup/trayaccountpopup_mac.mm
+        # FinderSync XPC is independent of File Provider — always built on macOS
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncProtocol.h
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncAppProtocol.h
         ../../shell_integration/MacOSX/NextcloudIntegration/FinderSyncExt/Services/FinderSyncBrokerProtocol.h
@@ -349,8 +353,57 @@ IF( APPLE )
         macOS/findersyncxpc.h
         macOS/findersyncxpc_mac.mm
         macOS/findersyncservice.h
-        macOS/findersyncservice.mm)
-
+        macOS/findersyncservice.mm
+        foregroundbackground_interface.h
+        foregroundbackground_mac.mm
+        foregroundbackground_cocoa.mm
+        nativetitlebar_mac.h
+        nativetitlebar_mac.mm
+        folderwatcher_mac.cpp)
+    set_property(SOURCE
+        cocoainitializer_mac.mm
+        macOS/localnetworkpermission.mm
+        macOS/findersyncxpc_mac.mm
+        macOS/findersyncservice.mm
+        macOS/fileproviderservice.mm
+        updater/sparkleupdater_mac.mm
+        macOS/trayaccountpopup/trayaccountpopupimageutils.mm
+        macOS/trayaccountpopup/trayaccountpopupviewutils.mm
+        macOS/trayaccountpopup/nchoverview.mm
+        macOS/trayaccountpopup/ncaccountrow.mm
+        macOS/trayaccountpopup/ncstaticinforow.mm
+        macOS/trayaccountpopup/ncsectionheaderrow.mm
+        systray_mac_common.mm
+        notificationsoundplayer_mac.mm
+        macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfolderpicker.mm
+        macOS/trayaccountpopup/ncactionrow.mm
+        macOS/trayaccountpopup/ncpointinghandbutton.mm
+        macOS/trayaccountpopup/ncalertboxrow.mm
+        macOS/trayaccountpopup/ncspacerview.mm
+        macOS/trayaccountpopup/ncappspopup.mm
+        macOS/trayaccountpopup/ncnotificationactionspopup.mm
+        macOS/trayaccountpopup/ncaccountactionspopup.mm
+        macOS/trayaccountpopup/nctraypopup.mm
+        macOS/trayaccountpopup/trayaccountpopup_mac.mm
+        macOS/singleinstancemanager_mac.mm
+        systray_mac_usernotifications.mm
+        macOS/findersyncbrokerregistrar_mac.mm
+        macOS/fileprovider_mac.mm
+        macOS/fileproviderdomainmanager.mm
+        macOS/fileprovidereditlocallyjob_mac.mm
+        macOS/fileprovideritemmetadata_mac.mm
+        macOS/fileprovidersettingscontroller_mac.mm
+        macOS/fileproviderutils_mac.mm
+        macOS/fileproviderxpc_mac.mm
+        macOS/fileproviderxpc_mac_utils.mm
+        macOS/progressobserver.m
+        foregroundbackground_mac.mm
+        foregroundbackground_cocoa.mm
+        nativetitlebar_mac.mm
+        socketapi/socketapi_mac.mm
+        APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
+    )
     if (BUILD_FILE_PROVIDER_MODULE)
         list(APPEND client_SRCS
             # XPC Protocol files from shell_integration/MacOSX/NextcloudIntegration/
@@ -373,19 +426,13 @@ IF( APPLE )
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.mm
             macOS/fileproviderxpc.h
+            macOS/fileproviderxpcconnection.h
             macOS/fileproviderxpc_mac.mm
             macOS/fileproviderxpc_mac_utils.h
             macOS/fileproviderxpc_mac_utils.mm
             macOS/progressobserver.h
             macOS/progressobserver.m)
     endif()
-
-    list(APPEND client_SRCS foregroundbackground_interface.h)
-    list(APPEND client_SRCS foregroundbackground_mac.mm)
-    list(APPEND client_SRCS foregroundbackground_cocoa.mm)
-
-    list(APPEND client_SRCS nativetitlebar_mac.h)
-    list(APPEND client_SRCS nativetitlebar_mac.mm)
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
@@ -416,9 +463,6 @@ IF( WIN32 )
         navigationpanehelper.cpp
         shellextensionsserver.cpp
         ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp)
-ENDIF()
-IF( APPLE )
-    list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC
@@ -571,6 +615,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
 endif()
 
 add_library(nextcloudCore STATIC ${final_src})
+add_qml_window_close_shortcut_check("${CMAKE_CURRENT_SOURCE_DIR}" nextcloudCore)
 
 target_link_libraries(nextcloudCore
   PUBLIC
@@ -585,9 +630,6 @@ target_link_libraries(nextcloudCore
   Qt::QuickWidgets
   KF6::Archive
   KDAB::kdsingleapplication
-
-  nextcloudGuiSearch
-  nextcloudGuiSearchplugin
   )
 
 if(KF6GuiAddons_FOUND)
@@ -701,7 +743,13 @@ set_target_properties(nextcloud PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries(nextcloud PRIVATE nextcloudCore)
+target_link_libraries(nextcloud PRIVATE
+    nextcloudCore
+    nextcloudGuiSearch
+    nextcloudGuiSearchplugin
+    nextcloudGuiSharing
+    nextcloudGuiSharingplugin
+)
 target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
 if(TARGET PkgConfig::CLOUDPROVIDERS)
@@ -762,7 +810,7 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
-    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework Foundation" "-framework Network")
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework AppKit" "-framework Foundation" "-framework Metal" "-framework Network")
     # ServiceManagement for SMAppService, used to register the FinderSync broker login item.
     # src/csync links it too, for utility_mac.mm, but PRIVATE — so it does not propagate here.
     target_link_libraries(nextcloudCore PRIVATE "-framework ServiceManagement")

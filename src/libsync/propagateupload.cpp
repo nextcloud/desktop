@@ -103,7 +103,6 @@ void PollJob::start()
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") + accountUrl.authority()
         + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
     sendRequest("GET", finalUrl);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout, Qt::UniqueConnection);
     AbstractNetworkJob::start();
 }
 
@@ -205,6 +204,15 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
+    for (const auto &path : {_item->_file, propagator()->adjustRenamedPath(_item->_originalFile), _item->_renameTarget}) {
+        if (!propagator()->localPathContainsSymlink(path)) {
+            continue;
+        }
+        qCWarning(lcPropagateUpload) << "Do not upload through a symlink" << path;
+        done(SyncFileItem::FileIgnored, OwncloudPropagator::symlinkNotSupportedMessage(), ErrorCategory::NoError);
+        return;
+    }
+
     if (!_item->_originalFile.isEmpty() && !_item->_renameTarget.isEmpty() && _item->_renameTarget != _item->_originalFile) {
         const auto existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_originalFile));
         const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);

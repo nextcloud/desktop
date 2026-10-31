@@ -68,7 +68,7 @@ QWebSocket *FakeWebSocketServer::authenticateAccount(const OCC::AccountPtr accou
     }
 
     // Wait for notify_file_id opt-in
-    if (!waitForTextMessages()) {
+    if (textMessagesCount() < 3 && !waitForTextMessages()) {
         return nullptr;
     }
 

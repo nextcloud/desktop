@@ -87,8 +87,9 @@ constexpr auto loginServerPathPrefix = "/server:";
 
 [[nodiscard]] bool isAllowedByConfiguredServerOverride(const QUrl &serverUrl)
 {
-    const auto configuredOverrideServerUrl = ConfigFile{}.overrideServerUrl();
-    if (!configuredOverrideServerUrl.isEmpty()) {
+    ConfigFile cfg;
+    if (cfg.isOverrideServerUrlLocked()) {
+        const auto configuredOverrideServerUrl = cfg.overrideServerUrl();
         const auto normalizedServerUrl = normalizedServerUrlForComparison(serverUrl);
         const auto allowedServerUrls = configuredOverrideServerUrls(configuredOverrideServerUrl);
         for (const auto &allowedServerUrl : allowedServerUrls) {

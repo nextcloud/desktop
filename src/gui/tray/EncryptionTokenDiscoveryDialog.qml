@@ -12,6 +12,8 @@ import QtQuick.Controls 2.15
 
 ApplicationWindow {
     id: root
+
+    // QML_WINDOW_CLOSE_EXCEPTION: This transient dialog represents an active token-discovery operation.
     flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     color: "transparent"

@@ -15,6 +15,8 @@
 
 #import <FileProvider/FileProvider.h>
 
+static_assert(__has_feature(objc_arc), "fileproviderutils_mac requires ARC.");
+
 namespace OCC {
 
 namespace Mac {
@@ -92,7 +94,7 @@ NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifie
 
         for (NSFileProviderDomain * const candidate in domains) {
             if (domainIdentifier == QString::fromNSString(candidate.identifier)) {
-                domain = [candidate retain];
+                domain = candidate;
                 break;
             }
         }
@@ -115,7 +117,6 @@ NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifie
                                           << domainIdentifier;
     }
 
-    [domain release];
     return manager;
 }
 

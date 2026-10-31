@@ -145,6 +145,82 @@ private Q_SLOTS:
         QVERIFY(_db.hasDefaultValue(quotaBytesAvailable));
     }
 
+    void testUniqueInodeIndexRemoval_data()
+    {
+        QTest::addColumn<bool>("hasUniqueInodeIndex");
+
+        QTest::newRow("existing-index") << true;
+        QTest::newRow("already-removed") << false;
+    }
+
+    void testUniqueInodeIndexRemoval()
+    {
+        QFETCH(bool, hasUniqueInodeIndex);
+
+        SyncJournalDb journal(_tempDir.filePath(u"inode-index-%1.db"_s.arg(hasUniqueInodeIndex)));
+        auto records = QList<SyncJournalFileRecord>{};
+        for (const auto &path : QByteArrayList{"existing", "unknown", "folder"}) {
+            SyncJournalFileRecord record;
+            record._path = path;
+            record._inode = path == "unknown" ? 0 : 100 + records.size();
+            record._modtime = 123456789;
+            record._type = path == "folder" ? ItemTypeDirectory : ItemTypeFile;
+            record._etag = "etag-" + path;
+            record._fileId = "id-" + path;
+            record._fileSize = 123;
+            record._remotePerm = RemotePermissions::fromDbValue("RW");
+            record._checksumHeader = "MD5:checksum-" + path;
+            QVERIFY(journal.setFileRecord(record));
+            records.append(record);
+        }
+        journal.close();
+
+        {
+            SqlDatabase legacyDb;
+            QVERIFY(legacyDb.openOrCreateReadWrite(journal.databaseFilePath()));
+            SqlQuery query(legacyDb);
+            query.prepare("UPDATE metadata SET inode=NULL WHERE path='unknown';");
+            QVERIFY(query.exec());
+            if (hasUniqueInodeIndex) {
+                query.prepare("CREATE UNIQUE INDEX metadata_unique_inode ON metadata(inode);");
+                QVERIFY(query.exec());
+            }
+        }
+
+        for (auto openCount = 0; openCount < 2; ++openCount) {
+            QVERIFY(journal.checkConnect());
+            {
+                SqlQuery query(journal._db);
+                query.prepare("SELECT COUNT(*) FROM sqlite_master WHERE type='index' AND name='metadata_unique_inode';");
+                QVERIFY(query.exec());
+                QVERIFY(query.next().hasData);
+                QCOMPARE(query.intValue(0), 0);
+            }
+
+            if (openCount == 0) {
+                for (const auto &path : QByteArrayList{"duplicate1", "duplicate2", "zero1", "zero2"}) {
+                    auto record = records.first();
+                    record._path = path;
+                    record._inode = path.startsWith("zero") ? 0 : records.first()._inode;
+                    QVERIFY(journal.setFileRecord(record));
+                    if (path == "duplicate1") {
+                        record._inode = 0;
+                    }
+                    QVERIFY(journal.updateLocalMetadata(record.path(), record._modtime, record._fileSize, record._inode, {}));
+                    records.append(record);
+                }
+            }
+
+            QCOMPARE(journal.getFileRecordCount(), records.size());
+            for (const auto &expected : records) {
+                SyncJournalFileRecord actual;
+                QVERIFY(journal.getFileRecord(expected._path, &actual));
+                QVERIFY2(actual == expected, expected._path.constData());
+            }
+            journal.close();
+        }
+    }
+
     void testFileRecordChecksum()
     {
         // Try with and without a checksum

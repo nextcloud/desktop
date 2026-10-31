@@ -12,6 +12,8 @@
 #include "configfile.h"
 #include "updater/sparkleupdater.h"
 
+static_assert(__has_feature(objc_arc), "Sparkle updater requires ARC.");
+
 @class NCSparkleUpdaterDelegate;
 
 class Q_DECL_HIDDEN OCC::SparkleUpdater::SparkleInterface
@@ -22,11 +24,7 @@ public:
     {
     }
 
-    ~SparkleInterface()
-    {
-        [updaterController release];
-        [delegate release];
-    }
+    ~SparkleInterface();
 
     void statusChanged(const OCC::SparkleUpdater::State state, const QString &statusString = {})
     {
@@ -35,8 +33,8 @@ public:
         Q_EMIT q->statusChanged();
     }
 
-    SPUStandardUpdaterController *updaterController;
-    NCSparkleUpdaterDelegate *delegate;
+    SPUStandardUpdaterController *updaterController = nil;
+    NCSparkleUpdaterDelegate *delegate = nil;
 
 private:
     SparkleUpdater * const q;
@@ -63,25 +61,24 @@ private:
     return self;
 }
 
-- (BOOL)backgroundUpdateChecksAllowed
-{
-    const OCC::ConfigFile config;
-    const BOOL allowUpdateCheck = (!config.skipUpdateCheck() && config.autoUpdateCheck()) ? YES : NO;
-    qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
-    return allowUpdateCheck;
-}
-
 - (BOOL)updater:(nonnull SPUUpdater *)updater mayPerformUpdateCheck:(SPUUpdateCheck)updateCheck error:(NSError **)error
 {
     Q_UNUSED(updater)
-    Q_UNUSED(updateCheck)
-    return [self backgroundUpdateChecksAllowed];
+
+    const OCC::ConfigFile config;
+    // A user initiated check stays allowed even when automatic checks are off.
+    const auto userInitiated = updateCheck == SPUUpdateCheckUpdates;
+    const BOOL allowed = OCC::Updater::updateCheckAllowed(userInitiated, config.skipUpdateCheck(), config.autoUpdateCheck()) ? YES : NO;
+    qCInfo(OCC::lcUpdater) << "Updater may check for updates:" << (allowed ? "YES" : "NO");
+    return allowed;
 }
 
 - (void)notifyStateChange:(const OCC::SparkleUpdater::State)state displayStatus:(const QString&)statusString
 {
     qCInfo(OCC::lcUpdater) << statusString;
-    _owner->statusChanged(state, statusString);
+    if (_owner != nullptr) {
+        _owner->statusChanged(state, statusString);
+    }
 }
 
 // Sent when a valid update is found by the update driver.
@@ -233,6 +230,11 @@ userDidMakeChoice:(SPUUserUpdateChoice)choice
 
 
 namespace OCC {
+
+SparkleUpdater::SparkleInterface::~SparkleInterface()
+{
+    delegate.owner = nullptr;
+}
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)

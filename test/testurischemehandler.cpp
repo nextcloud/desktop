@@ -10,10 +10,12 @@
 #include <QUrl>
 
 #include "configfile.h"
+#include "managedsettingstestutils.h"
 #include "theme.h"
 #include "urischemehandler.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 Q_DECLARE_METATYPE(OCC::UriSchemeHandler::Action)
 
@@ -25,6 +27,19 @@ private Q_SLOTS:
     void initTestCase()
     {
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    // Keeps tests off the device policy of the machine running them.
+    void init()
+    {
+        ConfigFile::setDeviceSourcesFactory([] {
+            return std::vector<std::unique_ptr<SettingSource>>{};
+        });
+    }
+
+    void cleanup()
+    {
+        ConfigFile::setDeviceSourcesFactory({});
     }
 
     void parseUri_data()
@@ -168,6 +183,46 @@ private Q_SLOTS:
         const auto rejectedResult = UriSchemeHandler::parseUri(QUrl(QStringLiteral("nc://login/server:https://unconfigured.example.com")));
         QCOMPARE(rejectedResult.action, UriSchemeHandler::Action::Invalid);
         QVERIFY(!rejectedResult.error.isEmpty());
+    }
+
+    void parseUriRestrictsOnlyForLockedManagedServerOverride_data()
+    {
+        QTest::addColumn<bool>("enforced");
+
+        QTest::newRow("device default") << false;
+        QTest::newRow("device policy") << true;
+    }
+
+    void parseUriRestrictsOnlyForLockedManagedServerOverride()
+    {
+        QFETCH(bool, enforced);
+
+        ConfigFile cfg;
+        auto theme = Theme::instance();
+        const auto previousOverrideServerUrl = theme->overrideServerUrl();
+        const auto previousForceOverrideServerUrl = theme->forceOverrideServerUrl();
+        const auto restoreTheme = qScopeGuard([theme, previousOverrideServerUrl, previousForceOverrideServerUrl] {
+            theme->setOverrideServerUrl(previousOverrideServerUrl);
+            theme->setForceOverrideServerUrl(previousForceOverrideServerUrl);
+        });
+
+        cfg.clearOverrideServerUrl();
+        theme->setOverrideServerUrl(QString{});
+        theme->setForceOverrideServerUrl(false);
+        ConfigFile::setDeviceSourcesFactory([enforced] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(enforced ? SettingSourceType::PlatformPolicy : SettingSourceType::PlatformDefault,
+                                                          enforced ? EnforcementState::Enforced : EnforcementState::NotEnforced,
+                                                          enforced ? 200 : 20,
+                                                          QVariantMap{{u"overrideServerUrl"_s, u"https://configured.example.com"_s}}));
+            return sources;
+        });
+
+        const auto configuredResult = UriSchemeHandler::parseUri(QUrl(u"nc://login/server:https://configured.example.com"_s));
+        QCOMPARE(configuredResult.action, UriSchemeHandler::Action::Login);
+
+        const auto otherResult = UriSchemeHandler::parseUri(QUrl(u"nc://login/server:https://unconfigured.example.com"_s));
+        QCOMPARE(otherResult.action, enforced ? UriSchemeHandler::Action::Invalid : UriSchemeHandler::Action::Login);
     }
 
     void parseUriHonoursMultipleServerOverrides()

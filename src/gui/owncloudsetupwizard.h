@@ -41,6 +41,7 @@ private:
     bool startQmlWizard();
     bool startQmlWizardForLoginFlow(const QUrl &serverUrl);
     void finish(int result);
+    void finishForClosedWindow();
 
     AccountWizardController *_qmlController = nullptr;
     QPointer<QQuickWindow> _qmlWizardWindow;
