@@ -720,6 +720,21 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    /// Persist several metadata rows in a **single** write transaction, semantically identical to
+    /// calling ``addItemMetadata(_:durability:)`` per element.
+    ///
+    /// - Parameter durability: ``WriteDurability/full`` unless the rows only mirror the server.
+    ///
+    public func addItemMetadatas(_ metadatas: [SendableItemMetadata], durability: WriteDurability = .full) {
+        guard !metadatas.isEmpty else { return }
+
+        write("Failed to add item metadata records in one transaction.", durability: durability) { db in
+            for metadata in metadatas {
+                try insertItemMetadata(metadata, in: db)
+            }
+        }
+    }
+
     /// Records that the provider returned `.excludedFromSync` for an item.
     ///
     /// The marker is stored separately from item metadata so remote enumeration and
