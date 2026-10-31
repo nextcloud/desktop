@@ -70,6 +70,25 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Reject metadata inserts and updates while keeping reads and change delivery available.
+    func setItemMetadataWriteFailureForTesting(_ enabled: Bool) throws {
+        try writer.write { db in
+            for operation in ["INSERT", "UPDATE"] {
+                let trigger = "fail_item_metadata_\(operation)"
+                if enabled {
+                    try db.execute(sql: """
+                    CREATE TRIGGER \(trigger) BEFORE \(operation) ON itemMetadata
+                    BEGIN
+                        SELECT RAISE(ABORT, 'Injected metadata write failure');
+                    END
+                    """)
+                } else {
+                    try db.execute(sql: "DROP TRIGGER IF EXISTS \(trigger)")
+                }
+            }
+        }
+    }
+
     ///
     /// Recreate the schema after ``breakTableForTesting(_:)`` on a manager shared by several tests.
     ///

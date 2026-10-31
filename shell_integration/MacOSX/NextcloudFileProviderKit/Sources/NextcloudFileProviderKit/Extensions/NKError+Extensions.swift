@@ -13,6 +13,9 @@ extension NKError {
     /// The metadata database could not be read, so the operation must not proceed on a guess. Unlisted below, so it maps to `cannotSynchronize`.
     static let metadataDatabaseUnreadable = NKError(errorCode: -2000, errorDescription: "The metadata database could not be read.")
 
+    /// Local persistence failed. Maps to `cannotSynchronize`, not a server or quota error.
+    static let metadataDatabaseWriteFailed = NKError(errorCode: -2001, errorDescription: "The metadata database could not be updated.")
+
     var isCouldntConnectError: Bool {
         errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
             || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202

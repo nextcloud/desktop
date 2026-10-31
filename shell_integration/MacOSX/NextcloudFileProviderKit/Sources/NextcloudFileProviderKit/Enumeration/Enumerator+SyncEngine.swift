@@ -164,6 +164,11 @@ extension Enumerator {
             [.url: serverUrl]
         )
 
+        guard let changes else {
+            logger.error("Could not persist directory metadata.", [.url: serverUrl])
+            return (nil, nil, .metadataDatabaseWriteFailed)
+        }
+
         return (files, changes, nil)
     }
 
