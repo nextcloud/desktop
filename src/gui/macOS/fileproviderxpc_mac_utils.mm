@@ -25,6 +25,29 @@ namespace OCC::Mac::FileProviderXPCUtils {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
 
+QString serverUrlForFileProvider(const QUrl &url)
+{
+    using namespace Qt::StringLiterals;
+
+    auto serverUrl = url.toString();
+    const auto host = url.host();
+    const auto aceHost = url.host(QUrl::FullyEncoded);
+
+    if (host == aceHost) {
+        return serverUrl;
+    }
+
+    const QString authorityPrefix = url.scheme() + u"://"_s + url.authority();
+    const auto hostOffset = authorityPrefix.lastIndexOf(host);
+    if (hostOffset < 0 || !serverUrl.startsWith(authorityPrefix)) {
+        return serverUrl;
+    }
+
+    // NextcloudKit encodes the whole URL again, so leave paths and escapes as they were.
+    serverUrl.replace(hostOffset, host.size(), aceHost);
+    return serverUrl;
+}
+
 NSArray<NSFileProviderManager *> *getDomainManagers()
 {
     const auto domains = FileProviderUtils::fileProviderDomains();

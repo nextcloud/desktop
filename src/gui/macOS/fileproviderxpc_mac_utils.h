@@ -7,6 +7,7 @@
 
 #include <QHash>
 #include <QLoggingCategory>
+#include <QUrl>
 
 #include <chrono>
 #include <optional>
@@ -20,6 +21,8 @@
 #import "fileproviderservice.h"
 
 namespace OCC::Mac::FileProviderXPCUtils {
+
+QString serverUrlForFileProvider(const QUrl &url);
 
 NSArray<NSFileProviderManager *> *getDomainManagers();
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers);

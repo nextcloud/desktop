@@ -1375,6 +1375,41 @@ private Q_SLOTS:
         QVERIFY(unrelatedService.pendingConnectionReply == nil);
     }
 
+    void fileProviderServerUrlUsesAceHostname()
+    {
+        const auto url =
+            QUrl(QString::fromUtf8("https://b\xC3\xBC"
+                                   "cher.com"));
+
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url), u"https://xn--bcher-kva.com"_s);
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(QUrl(u"https://xn--bcher-kva.com/nextcloud"_s)),
+                 u"https://xn--bcher-kva.com/nextcloud"_s);
+    }
+
+    void fileProviderServerUrlPreservesOtherComponents()
+    {
+        const auto url =
+            QUrl(QString::fromUtf8("https://user@b\xC3\xBC"
+                                   "cher.com:8443/nextcloud/space%20name/%25/"
+                                   "\xC3\xBC"
+                                   "?q=%25#section"));
+        const auto original = url.toString();
+        const QString originalAuthority = url.scheme() + u"://"_s + url.authority();
+
+        QVERIFY(original.startsWith(originalAuthority));
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url),
+                 u"https://user@xn--bcher-kva.com:8443"_s + original.mid(originalAuthority.size()));
+    }
+
+    void fileProviderServerUrlLeavesAsciiHostsUntouched()
+    {
+        for (const auto &urlString :
+             {u"https://example.com/path%20name"_s, u"https://192.0.2.10:8443/nextcloud"_s, u"https://[2001:db8::10]:8443/nextcloud"_s}) {
+            const auto url = QUrl(urlString);
+            QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url), url.toString());
+        }
+    }
+
     void concurrentServiceLookupsCanBeCollected()
     {
         constexpr auto managerCount = 128;
