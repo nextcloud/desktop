@@ -98,7 +98,7 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
     const auto credentials = account->credentials();
     NSString *const user = credentials->user().toNSString();
     NSString *const userId = account->davUser().toNSString();
-    NSString *const serverUrl = account->url().toString().toNSString();
+    NSString *const serverUrl = FileProviderXPCUtils::serverUrlForFileProvider(account->url()).toNSString();
     NSString *const password = credentials->password().toNSString();
     NSString *const passwordDescription = password.length > 0 ? @"SOME PASSWORD" : @"EMPTY PASSWORD";
     NSString *const userAgent = QString::fromUtf8(Utility::userAgentString()).toNSString();
