@@ -361,7 +361,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         progressBarOpt.state = option.state | QStyle::State_Horizontal;
         progressBarOpt.minimum = 0;
-        progressBarOpt.maximum = 100;
+        progressBarOpt.maximum = overallPercent < 0 ? 0 : 100;
         progressBarOpt.progress = overallPercent;
         progressBarOpt.state = QStyle::StateFlag::State_Horizontal;
         progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
@@ -373,7 +373,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // itemString is e.g. Syncing fileName1, filename2
         // syncText is Synchronizing files in local folders or Synchronizing virtual files in local folder
-        const auto generalSyncStatus = !itemString.isEmpty() ? itemString : syncText;
+        const auto generalSyncStatus = overallPercent < 0 ? overallString : (!itemString.isEmpty() ? itemString : syncText);
         QRect generalSyncStatusRect;
         generalSyncStatusRect.setTop(progressBarRect.bottom() + margin);
         generalSyncStatusRect.setHeight(fileNameTextHeight);

@@ -64,6 +64,14 @@ public:
 
     [[nodiscard]] Status status() const;
 
+    static constexpr auto DiscoveryProgressIntervalMs = 500;
+
+    /** Counts examined items and requests a throttled discovery UI update. */
+    [[nodiscard]] bool recordDiscoveredItem(const SyncFileItem &item);
+    [[nodiscard]] qint64 discoveredFolders() const;
+    [[nodiscard]] qint64 discoveredFiles() const;
+    [[nodiscard]] QString preparationStatusString() const;
+
     /**
      * Called when propagation starts.
      *
@@ -216,6 +224,10 @@ private:
 
     // Triggers the update() slot every second once propagation started.
     QTimer _updateEstimatesTimer;
+
+    QElapsedTimer _discoveryProgressTimer;
+    qint64 _discoveredFolders = 0;
+    qint64 _discoveredFiles = 0;
 
     Progress _sizeProgress;
     Progress _fileProgress;
