@@ -75,12 +75,15 @@ extension FilesDatabaseManager {
     ///
     func recreateTablesForTesting() {
         try? writer.write { db in
-            for table in DatabaseSchema.tableNames where try db.tableExists(table) {
-                try db.execute(sql: "DROP TABLE \(table)")
+            for table in DatabaseSchema.tableNames {
+                try db.execute(sql: "DROP TABLE IF EXISTS \(table)")
             }
             try db.execute(sql: "DELETE FROM grdb_migrations")
         }
         try? DatabaseSchema.migrator.migrate(writer)
+        try? writer.write { db in
+            try StoreIdentityRecord(identity: storeIdentity).insert(db)
+        }
     }
 
     ///
@@ -91,11 +94,11 @@ extension FilesDatabaseManager {
     }
 
     ///
-    /// Remove every row of every table.
+    /// Clear domain data while retaining the database file's identity.
     ///
     func removeAllRowsForTesting() throws {
         try writer.write { db in
-            for table in DatabaseSchema.tableNames {
+            for table in DatabaseSchema.tableNames where table != StoreIdentityRecord.databaseTableName {
                 try db.execute(sql: "DELETE FROM \(table)")
             }
         }

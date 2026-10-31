@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import os
 
 ///
 /// The file provider domain's metadata database.
@@ -67,6 +68,8 @@ public final class FilesDatabaseManager: Sendable {
 
     let logger: FileProviderLogger
     let account: Account
+    /// Share download ownership across FilesDatabaseManager instances accessing the same database.
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: DownloadOperation]]())
 
     /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
     let writer: any DatabaseWriter
@@ -489,7 +492,9 @@ public final class FilesDatabaseManager: Sendable {
                     updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
                 }
 
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+                if existingMetadata.status == Status.normal.rawValue,
+                   !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -936,8 +941,10 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierWithRemoteFallback(
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
-        account: Account
+        account: Account,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> NSFileProviderItemIdentifier? {
+        guard !Task.isCancelled else { return nil }
         if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
             return parentItemIdentifier
         }
@@ -948,8 +955,11 @@ public final class FilesDatabaseManager: Sendable {
             remoteInterface: remoteInterface,
             dbManager: self,
             depth: .target,
+            taskHandler: taskHandler,
             log: logger.log
         )
+
+        guard !Task.isCancelled else { return nil }
 
         guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [

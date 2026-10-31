@@ -13,6 +13,15 @@ extension NKError {
     /// The metadata database could not be read, so the operation must not proceed on a guess. Unlisted below, so it maps to `cannotSynchronize`.
     static let metadataDatabaseUnreadable = NKError(errorCode: -2000, errorDescription: "The metadata database could not be read.")
 
+    var isCancelledError: Bool {
+        errorCode == NSURLErrorCancelled
+    }
+
+    var hasChunkingCancellationCode: Bool {
+        // NextcloudKit also uses this code for empty chunks; confirm cancellation from the operation.
+        errorCode == -5
+    }
+
     var isCouldntConnectError: Bool {
         errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
             || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202
@@ -75,6 +84,9 @@ extension NKError {
     func fileProviderError(
         handlingNoSuchItemErrorUsingItemIdentifier identifier: NSFileProviderItemIdentifier
     ) -> Error? {
+        if isCancelledError {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .noSuchItem else {
             return fileProviderError as Error?
         }
@@ -87,6 +99,9 @@ extension NKError {
         remoteInterface: RemoteInterface,
         log: any FileProviderLogging
     ) async -> Error? {
+        if isCancelledError {
+            return CocoaError(.userCancelled)
+        }
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }

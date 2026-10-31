@@ -190,25 +190,9 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         options: NKRequestOptions = .init(),
         taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> FetchResult {
-        let ncKitAccount = account.ncKitAccount
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: ncKitAccount, ongoing: true
-        )
-        var response: FetchResult
-        if let handler = fetchCapabilitiesHandler {
-            response = await handler(account, options, taskHandler)
-            if let caps = response.capabilities {
-                await RetrievedCapabilitiesActor.shared.setCapabilities(
-                    forAccount: ncKitAccount, capabilities: caps, retrievedAt: Date()
-                )
-            }
-        } else {
-            print("Error: fetchCapabilitiesHandler not set in TestableRemoteInterface")
-            response = (account.ncKitAccount, nil, nil, .invalidResponseError)
+        guard let handler = fetchCapabilitiesHandler else {
+            return (account.ncKitAccount, nil, nil, .invalidResponseError)
         }
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(
-            forAccount: account.ncKitAccount, ongoing: false
-        )
-        return response
+        return await handler(account, options, taskHandler)
     }
 }
