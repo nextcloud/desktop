@@ -645,9 +645,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testItemUserInfoDisplayOpenInBrowserUploadedItem() {
-        // An uploaded item with a numeric fileId is the canonical case the
-        // "Open in browser" action targets: PROPFIND for the private link can
-        // resolve to a web URL the main app opens via QDesktopServices.
+        // An uploaded item has the numeric file ID needed to build its browser URL.
         var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.fileId = "42"
         metadata.uploaded = true
@@ -711,9 +709,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
     }
 
     func testItemUserInfoDisplayCopyInternalLinkUploadedItem() {
-        // An uploaded item with a numeric fileId is the canonical case the
-        // "Copy internal link" action targets: PROPFIND for the private link
-        // can resolve to the URL the main app writes to the clipboard.
+        // An uploaded item has the numeric file ID needed to build its internal link.
         var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
         metadata.fileId = "42"
         metadata.uploaded = true
