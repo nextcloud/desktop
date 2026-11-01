@@ -668,7 +668,7 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation>%1 (påkrævet)</translation>
+        <translation>%1 (obligatorisk)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
@@ -2061,7 +2061,7 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="22"/>
         <source>Authentication Required</source>
-        <translation>Godkendelse påkrævet</translation>
+        <translation>Godkendelse kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="24"/>
@@ -3772,7 +3772,7 @@ For avancerede brugere: Problemet kan skyldes, at der findes flere synkroniserin
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
         <source>Password for share required</source>
-        <translation>Adgangskode til deling påkrævet</translation>
+        <translation>Adgangskode til deling kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
@@ -4693,7 +4693,7 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation>Adgangskode til deling påkrævet</translation>
+        <translation>Adgangskode til deling kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
@@ -5394,7 +5394,7 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Proxygodkendelse påkrævet</translation>
+        <translation>Proxygodkendelse kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -6068,7 +6068,7 @@ Serveren svarede med fejl: %2</translation>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
         <source>Reauthorization required</source>
-        <translation>Ny godkendelse påkrævet</translation>
+        <translation>Ny godkendelse kræves</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="176"/>
@@ -7652,7 +7652,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="84"/>
         <source>Password required for new share</source>
-        <translation>Adgangskode påkrævet for ny deling</translation>
+        <translation>Adgangskode kræves for ny deling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="112"/>

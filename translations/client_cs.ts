@@ -113,7 +113,7 @@
     <message>
         <location filename="../src/gui/activity/qml/ActivitiesWindow.qml" line="136"/>
         <source>New activities</source>
-        <translation type="unfinished"/>
+        <translation>Nové aktivity</translation>
     </message>
 </context>
 <context>
@@ -346,7 +346,7 @@
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="19"/>
         <source>Nextcloud Assistant</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Asistent</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="91"/>
@@ -368,7 +368,7 @@
         <location filename="../src/gui/AssistantWindow.qml" line="125"/>
         <location filename="../src/gui/AssistantWindow.qml" line="245"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>Nová konverzace</translation>
     </message>
     <message>
         <location filename="../src/gui/AssistantWindow.qml" line="236"/>
@@ -634,7 +634,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="71"/>
         <source>Search emoji</source>
-        <translation type="unfinished"/>
+        <translation>Hledat emotionu</translation>
     </message>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="200"/>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="49"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Uplatnit jmenovky</translation>
     </message>
     <message>
         <location filename="../src/gui/GovernanceLabelsDialog.qml" line="201"/>
@@ -3711,7 +3711,7 @@ Pro pokročilé uživatele: tento problém může souviset s vícero databázov�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>Neznámý účet</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="259"/>
@@ -5701,7 +5701,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>Uplatnit jmenovky</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
@@ -6475,7 +6475,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Konflikty synchronizace</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
@@ -7793,7 +7793,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="673"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>Nedávná aktivita</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="680"/>
@@ -7803,17 +7803,17 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="698"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>Další aktivita…</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>Vyřešit: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="774"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>Stav uživatele</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
@@ -7827,7 +7827,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="737"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="790"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>Místní složka</translation>
     </message>
 </context>
 <context>
@@ -8099,7 +8099,7 @@ Server odpověděl chybou: %2</translation>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <location filename="../src/gui/accountsettings.cpp" line="184"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Stav online</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
@@ -8140,17 +8140,17 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Jevit se offline</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Stavová zpráva</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte emotikonu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
@@ -8265,7 +8265,7 @@ Server odpověděl chybou: %2</translation>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Zástupný obrázek účtu</translation>
     </message>
 </context>
 <context>
