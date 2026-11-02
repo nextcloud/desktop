@@ -51,6 +51,8 @@ Item {
                 wizard = null
                 wait(0)
             }
+            Theme.wizardHideSelfHostButton = false
+            Theme.wizardHideSignupButton = false
         }
 
         function findVisibleButton(item, text) {
@@ -81,6 +83,55 @@ Item {
             verify(button, "no visible button labelled " + text)
             button.text = newText
             return button
+        }
+
+        function test_selfHostVisibility_data() {
+            return [
+                { tag: "default", hidden: false, step: AccountWizardController.ServerStep, expected: true },
+                { tag: "hidden by branding", hidden: true, step: AccountWizardController.ServerStep, expected: false },
+                { tag: "other step", hidden: false, step: AccountWizardController.BasicAuthStep, expected: false },
+                { tag: "hidden on other step", hidden: true, step: AccountWizardController.BasicAuthStep, expected: false }
+            ]
+        }
+
+        function test_selfHostVisibility(data) {
+            Theme.wizardHideSelfHostButton = data.hidden
+            const wizard = createWizard(data.step)
+            compare(findVisibleButton(wizard.contentItem, "Self-host") !== null, data.expected)
+            if (data.step === AccountWizardController.ServerStep) {
+                verify(findVisibleButton(wizard.contentItem, "Sign up"))
+                verify(findVisibleButton(wizard.contentItem, "Log in"))
+            }
+        }
+
+        function test_signupVisibility_data() {
+            const cases = []
+            for (const hideSelfHost of [false, true]) {
+                for (const hideSignup of [false, true]) {
+                    for (const step of [AccountWizardController.ServerStep, AccountWizardController.BasicAuthStep]) {
+                        cases.push({
+                            tag: "self-host hidden " + hideSelfHost + ", signup hidden " + hideSignup + ", step " + step,
+                            hideSelfHost: hideSelfHost,
+                            hideSignup: hideSignup,
+                            step: step,
+                            signupVisible: step === AccountWizardController.ServerStep && !hideSignup,
+                            selfHostVisible: step === AccountWizardController.ServerStep && !hideSelfHost
+                        })
+                    }
+                }
+            }
+            return cases
+        }
+
+        function test_signupVisibility(data) {
+            Theme.wizardHideSelfHostButton = data.hideSelfHost
+            Theme.wizardHideSignupButton = data.hideSignup
+            const wizard = createWizard(data.step)
+            compare(findVisibleButton(wizard.contentItem, "Sign up") !== null, data.signupVisible)
+            compare(findVisibleButton(wizard.contentItem, "Self-host") !== null, data.selfHostVisible)
+            if (data.step === AccountWizardController.ServerStep) {
+                verify(findVisibleButton(wizard.contentItem, "Log in"))
+            }
         }
 
         function test_widthIsConstantAcrossSteps() {

@@ -5,17 +5,16 @@
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import XCTest
 
 final class UploadTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "user", id: "id", serverUrl: "test.cloud.com", password: "1234")
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
     }
 
     func testStandardUpload() async throws {
@@ -98,12 +97,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(chunkDirectoryExistedDuringUpload)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()?
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
         )
@@ -143,15 +138,42 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         let storedChunks = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path)
         XCTAssertEqual(storedChunks.count, Int(ceil(Double(data.count) / Double(chunkSize))))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()?
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             2
         )
+    }
+
+    func testChunkedUploadIsNotStartedWhenTheRecordedChunksCannotBeRead() async throws {
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: MockRemoteItem.rootItem(account: Self.account))
+        let chunkDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("mock-chunks-\(UUID().uuidString)", isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunkDirectory
+        defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+
+        // Starting from scratch would overwrite the chunks recorded for a resumable upload.
+        try Self.dbManager.breakTableForTesting(RemoteFileChunkRecord.databaseTableName)
+        defer { Self.dbManager.recreateTablesForTesting() }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileUrl.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: "unreadable-chunks-\(UUID().uuidString)",
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError, .metadataDatabaseUnreadable)
+        XCTAssertNil(result.ocId)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path), "No chunk was uploaded.")
     }
 
     func testFailedChunkedUploadWithoutRemainingChunksRemovesTemporaryDirectory() async throws {
@@ -186,12 +208,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.remoteError.errorCode, 500)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
-            Self.dbManager.ncDatabase().objects(RemoteFileChunk.self)
-                .where {
-                    $0.remoteChunkStoreFolderName.starts(
-                        with: chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
-                    )
-                }
+            Self.dbManager.remoteChunkStoreFolderNames()?
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)) }
                 .count,
             0
         )
@@ -225,21 +243,18 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.currentChunks = [uploadId: [previousUploadedChunk]]
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: uploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
-                    remoteChunkStoreFolderName: uploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: uploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(data.count - (chunkSize * (previousUploadedChunkNum + 1))),
+                remoteChunkStoreFolderName: uploadId
+            )
+        ])
 
         let remotePath = Self.account.davFilesUrl + "/file.txt"
         var uploadedChunks = [RemoteFileChunk]()

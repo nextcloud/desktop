@@ -18,6 +18,9 @@ import OSLog
     ///
     let domain: NSFileProviderDomain
 
+    ///
+    /// The password of the account, cached for when the main app cannot hand it over.
+    ///
     let keychain: Keychain
     let log: any FileProviderLogging
     let logger: FileProviderLogger
@@ -57,6 +60,7 @@ import OSLog
     /// NextcloudKit instance used by this file provider extension object.
     ///
     let ncKit: NextcloudKit
+    var thumbnailFetcher = NextcloudFileProviderKit.fetchThumbnails
 
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
@@ -71,6 +75,11 @@ import OSLog
     private let setupLock = NSLock()
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
+
+    ///
+    /// Incremented by ``removeAccount()``, so setups queued or running before it neither store nor publish their account.
+    ///
+    private(set) var setupGeneration = 0
 
     // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
     private let accountReadyLock = NSLock()
@@ -89,6 +98,15 @@ import OSLog
     /// enumeration if they want for safety.
     lazy var config = FileProviderDomainDefaults(identifier: domain.identifier, log: log)
 
+    /// NextcloudKit's logger is configured once per process. Its configuration is not thread-safe, and a process hosts one extension per domain, so instances created concurrently, as the tests do, must not configure it again. The static initialiser runs once, before the first instance logs through it.
+    private static let nextcloudKitLoggingConfiguration: Void = {
+        #if DEBUG
+            NKLogFileManager.configure(logLevel: .verbose)
+        #else
+            NKLogFileManager.configure(logLevel: .normal)
+        #endif
+    }()
+
     public required init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
@@ -104,15 +122,9 @@ import OSLog
 
         // Set up NextcloudKit.
         ncKit = NextcloudKit.shared
-
-        #if DEBUG
-            NKLogFileManager.configure(logLevel: .verbose)
-        #else
-            NKLogFileManager.configure(logLevel: .normal)
-        #endif
-
+        _ = Self.nextcloudKitLoggingConfiguration
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
-        keychain = Keychain(log: log)
+        keychain = Keychain(domain: domain, log: log)
         super.init()
         observeBlockSync()
     }
@@ -121,6 +133,7 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+        dbManager?.checkpointForShutdown()
     }
 
     func insertSyncAction(_ actionId: UUID) {
@@ -702,7 +715,7 @@ import OSLog
     /// setup is already in flight (tracked via ``pendingAccount``) or already completed (tracked
     /// via ``ncAccount``) are dropped silently. This prevents concurrent XPC callers from each
     /// opening their own NextcloudKit session and spinning up their own `FilesDatabaseManager`
-    /// (and hence their own Realm) for the same credentials.
+    /// (and hence their own database) for the same credentials.
     ///
     /// - Parameters:
     ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
@@ -754,6 +767,7 @@ import OSLog
 
         pendingAccount = account
         let previous = setupChain
+        let generation = setupGeneration
 
         let next = Task { [weak self] in
             _ = await previous.value
@@ -762,7 +776,7 @@ import OSLog
                 return
             }
 
-            await performSetup(account: account, userAgent: userAgent, completionHandler: completionHandler)
+            await performSetup(account: account, generation: generation, userAgent: userAgent, completionHandler: completionHandler)
             clearPendingAccount(matching: account)
         }
 
@@ -788,6 +802,58 @@ import OSLog
     }
 
     ///
+    /// Store the account for later access, unless ``removeAccount()`` superseded the setup started at `generation`.
+    ///
+    func storeAccount(_ account: Account, generation: Int) -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        guard generation == setupGeneration else {
+            return false
+        }
+
+        config.serverUrl = account.serverUrl
+        config.user = account.username
+        config.userId = account.id
+        keychain.savePassword(account.password, for: account.username)
+
+        return true
+    }
+
+    ///
+    /// Publish the authenticated account, unless ``removeAccount()`` superseded the setup started at `generation`.
+    ///
+    func publishAccount(_ account: Account, generation: Int) -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        guard generation == setupGeneration else {
+            return false
+        }
+
+        ncAccount = account
+
+        return true
+    }
+
+    ///
+    /// Forget the account and delete its stored password, superseding every setup queued or running until now.
+    ///
+    /// - Returns: `true` if no password of the domain is left in the keychain.
+    ///
+    @discardableResult
+    func removeAccount() -> Bool {
+        setupLock.lock()
+        defer { setupLock.unlock() }
+
+        setupGeneration += 1
+        pendingAccount = nil
+        ncAccount = nil
+
+        return keychain.deletePassword()
+    }
+
+    ///
     /// Runs the actual account setup work for one ``Account``.
     ///
     /// Must only be invoked from the ``setupChain`` serialization queue established by
@@ -795,25 +861,18 @@ import OSLog
     ///
     private func performSetup(
         account: Account,
+        generation: Int,
         userAgent: String,
         completionHandler: (@Sendable (NSError?) -> Void)?
     ) async {
         // Store account information independently from the main app for later access.
-        config.serverUrl = account.serverUrl
-        config.user = account.username
-        config.userId = account.id
-        keychain.savePassword(account.password, for: account.username, on: account.serverUrl)
-        NextcloudKit.clearAccountErrorState(for: account.ncKitAccount)
+        guard storeAccount(account, generation: generation) else {
+            logger.info("Cancelling domain account setup because the account was removed meanwhile.")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
 
-        ncKit.appendSession(
-            account: account.ncKitAccount,
-            urlBase: account.serverUrl,
-            user: account.username,
-            userId: account.id,
-            password: account.password,
-            userAgent: userAgent,
-            groupIdentifier: ""
-        )
+        ncKit.appendSession(account: account, userAgent: userAgent)
 
         var authAttemptState = AuthenticationAttemptResultState.connectionError // default
 
@@ -846,13 +905,29 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
-        await MainActor.run {
-            ncAccount = account
-            let databaseManager = FilesDatabaseManager(
+        // Opening the database may import or migrate it, so it happens off the main actor.
+        let databaseManager: FilesDatabaseManager
+
+        do {
+            databaseManager = try FilesDatabaseManager(
                 account: account,
                 fileProviderDomainIdentifier: domain.identifier,
                 log: log
             )
+        } catch {
+            // Without its database the domain stays unavailable; every request keeps failing until a later setup succeeds.
+            logger.fault("Could not open the metadata database. The domain is not set up.", [.error: error])
+            completionHandler?(NSError(.databaseUnavailable))
+            return
+        }
+
+        await MainActor.run {
+            guard publishAccount(account, generation: generation) else {
+                logger.info("Not publishing the authenticated account because it was removed meanwhile.")
+                completionHandler?(NSError(.missingAccountInformation))
+                return
+            }
+
             // TODO: Initial file creation does not persist item metadata until the upload succeeds.
             // If the extension restarts while that upload is still in progress, startup cleanup
             // cannot distinguish its chunks from an abandoned upload and may remove them.

@@ -15,6 +15,8 @@
 
 #include "accountmanager.h"
 
+static_assert(__has_feature(objc_arc), "File Provider service requires ARC.");
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderService, "nextcloud.gui.macfileproviderservice", QtInfoMsg)
@@ -262,7 +264,7 @@ public:
     
     ~MacImplementation()
     {
-        [delegate release];
+        delegate.service = nullptr;
         delegate = nil;
     }
 };
@@ -284,7 +286,7 @@ FileProviderService::~FileProviderService()
 
 void *FileProviderService::delegate() const
 {
-    return d ? d->delegate : nullptr;
+    return d ? (__bridge void *)d->delegate : nullptr;
 }
 
 SyncResult::Status FileProviderService::latestReceivedSyncStatusForAccount(const AccountPtr &account) const

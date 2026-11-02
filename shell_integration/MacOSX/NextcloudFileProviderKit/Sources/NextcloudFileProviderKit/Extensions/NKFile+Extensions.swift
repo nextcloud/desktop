@@ -4,7 +4,6 @@
 @preconcurrency import FileProvider
 import Foundation
 import NextcloudKit
-import RealmSwift
 
 extension NKFile {
     func fullUrlMatches(_ urlString: String) -> Bool {

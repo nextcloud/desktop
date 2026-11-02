@@ -16,6 +16,7 @@ namespace OCC::ManagedSettingsSchema {
 
 [[nodiscard]] OWNCLOUDSYNC_EXPORT const QList<SettingDefinition> &all();
 [[nodiscard]] OWNCLOUDSYNC_EXPORT std::optional<SettingDefinition> find(const QString &key);
+[[nodiscard]] OWNCLOUDSYNC_EXPORT bool isValidOverrideLocalDir(const QVariant &value);
 }
 
 #endif // MANAGEDSETTINGSSCHEMA_H

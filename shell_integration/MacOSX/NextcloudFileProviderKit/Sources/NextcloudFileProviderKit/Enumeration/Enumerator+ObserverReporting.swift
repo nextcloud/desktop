@@ -76,6 +76,21 @@ extension Enumerator {
     }
 
     ///
+    /// Run a lookup of the stored change-delivery state.
+    ///
+    /// When the state cannot be read, the enumeration is finished with `cannotSynchronize` and `nil` is returned. Nothing is reset or acknowledged, so the framework asks again from the same anchor and the stored changes are neither re-derived nor discarded.
+    ///
+    func readDeliveryState<T>(reportingTo observer: NSFileProviderChangeObserver, _ lookup: () throws -> T) -> T? {
+        do {
+            return try lookup()
+        } catch {
+            logger.error("Could not read the stored change delivery session. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier, .error: error])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return nil
+        }
+    }
+
+    ///
     /// Pop the next batch from ``changeBuffer`` and report it.
     ///
     /// Intermediate batches (`moreComing == true`) return a durable continuation anchor. Only the final
@@ -87,7 +102,13 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
-        let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested))
+        guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
+            // The stored changes stay put; the framework asks again later with the same anchor.
+            logger.error("Could not prepare the next change batch. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier])
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
@@ -105,6 +126,7 @@ extension Enumerator {
             deleted: batch.deleted,
             anchor: reportedAnchor,
             moreComing: batch.moreComing,
+            acknowledgement: batch.acknowledgement,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager
@@ -113,13 +135,15 @@ extension Enumerator {
 
     /// Report one batch of changes and acknowledge it after the observer finishes.
     /// The caller keeps the batch within the framework's size limit and orders updates parents-first.
-    /// Deletions remain available for replay until acknowledgement.
+    /// Deletions remain available for replay until acknowledgement. A `nil` acknowledgement means the batch was not
+    /// prepared from the change buffer and has nothing to acknowledge.
     func completeChangesBatch(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
         deleted: [SendableItemMetadata],
         anchor: NSFileProviderSyncAnchor,
         moreComing: Bool,
+        acknowledgement: (sessionId: String, endSequence: Int)?,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
@@ -144,9 +168,9 @@ extension Enumerator {
         reportBatchUpdates(
             observer,
             updated: updated,
-            deletedToRemove: deleted,
             anchor: anchor,
             moreComing: moreComing,
+            acknowledgement: acknowledgement,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager
@@ -160,15 +184,15 @@ extension Enumerator {
     private func reportBatchUpdates(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
-        deletedToRemove: [SendableItemMetadata],
         anchor: NSFileProviderSyncAnchor,
         moreComing: Bool,
+        acknowledgement: (sessionId: String, endSequence: Int)?,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         handleInvalidParent: Bool = true
     ) {
-        Task { [updated, deletedToRemove] in
+        Task { [updated] in
             do {
                 let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
@@ -178,7 +202,7 @@ extension Enumerator {
                     }
 
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: moreComing)
-                    changeBuffer.acknowledgeBatch(deletedOcIds: deletedToRemove.map(\.ocId))
+                    changeBuffer.acknowledgeBatch(acknowledgement)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 guard handleInvalidParent else {
@@ -202,9 +226,9 @@ extension Enumerator {
                     reportBatchUpdates(
                         observer,
                         updated: [metadata] + updated,
-                        deletedToRemove: deletedToRemove,
                         anchor: anchor,
                         moreComing: moreComing,
+                        acknowledgement: acknowledgement,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager,

@@ -626,6 +626,37 @@ bool Theme::wizardHideFolderSizeLimitCheckbox() const
     return false;
 }
 
+bool Theme::wizardHideSelfHostButton() const
+{
+    return WIZARD_HIDE_SELF_HOST_BUTTON;
+}
+
+bool Theme::wizardHideSignupButton() const
+{
+    return WIZARD_HIDE_SIGNUP_BUTTON;
+}
+
+QUrl Theme::wizardSignupUrl() const
+{
+#ifdef APPLICATION_SIGNUP_URL
+    return signupUrlForBranding(QString::fromUtf8(APPLICATION_SIGNUP_URL));
+#else
+    return signupUrlForBranding({});
+#endif
+}
+
+QUrl Theme::signupUrlForBranding(const QString &configuredUrl)
+{
+    using namespace Qt::StringLiterals;
+
+    const auto url = QUrl(configuredUrl, QUrl::StrictMode);
+    if (configuredUrl == configuredUrl.trimmed() && url.isValid() && !url.host().isEmpty() && !url.authority().contains(u'@')
+        && (url.scheme() == u"http"_s || url.scheme() == u"https"_s)) {
+        return url;
+    }
+    return QUrl(u"https://nextcloud.com/sign-up/?flow=V3"_s);
+}
+
 QString Theme::gitSHA1() const
 {
     QString devString;

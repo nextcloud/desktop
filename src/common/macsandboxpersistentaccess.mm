@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+static_assert(__has_feature(objc_arc), "The macOS persistent access wrapper requires ARC.");
+
 Q_LOGGING_CATEGORY(lcMacSandboxPersistent, "nextcloud.common.mac.sandbox.persistent", QtInfoMsg)
 
 namespace OCC {
@@ -19,7 +21,7 @@ class MacSandboxPersistentAccess::Impl
 {
 public:
     explicit Impl(const QByteArray &bookmarkData)
-        : _nsUrl(nullptr)
+        : _nsUrl(nil)
         , _hasAccess(false)
         , _isStale(false)
     {
@@ -38,11 +40,11 @@ public:
 
             BOOL isStale = NO;
             NSError *error = nil;
-            _nsUrl = [[NSURL URLByResolvingBookmarkData:nsBookmarkData
-                                                options:NSURLBookmarkResolutionWithSecurityScope
-                                          relativeToURL:nil
-                                    bookmarkDataIsStale:&isStale
-                                                  error:&error] retain];
+            _nsUrl = [NSURL URLByResolvingBookmarkData:nsBookmarkData
+                                               options:NSURLBookmarkResolutionWithSecurityScope
+                                         relativeToURL:nil
+                                   bookmarkDataIsStale:&isStale
+                                                 error:&error];
 
             if (error) {
                 qCWarning(lcMacSandboxPersistent) << "Failed to resolve bookmark data:"
@@ -83,10 +85,7 @@ public:
                 _hasAccess = false;
             }
 
-            if (_nsUrl) {
-                [_nsUrl release];
-                _nsUrl = nullptr;
-            }
+            _nsUrl = nil;
         }
     }
 
@@ -98,7 +97,7 @@ public:
     [[nodiscard]] bool isStale() const { return _isStale; }
 
 private:
-    NSURL *_nsUrl;
+    NSURL *__strong _nsUrl;
     bool _hasAccess;
     bool _isStale;
 };

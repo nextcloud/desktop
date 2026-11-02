@@ -13,6 +13,8 @@
 #import <Foundation/NSUserDefaults.h>
 #import <ServiceManagement/SMAppService.h>
 
+static_assert(__has_feature(objc_arc), "The native macOS utilities require ARC.");
+
 namespace OCC {
 
 QVector<Utility::ProcessInfosForOpenFile> Utility::queryProcessInfosKeepingFileOpen(const QString &filePath)

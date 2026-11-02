@@ -8,6 +8,7 @@ import QtTest
 
 import Style
 import "qrc:/qml/src/gui/assistant/qml" as Assistant
+import "qrc:/qml/src/gui/wizard/qml" as Wizard
 
 Item {
     id: testRoot
@@ -27,6 +28,17 @@ Item {
         Assistant.AssistantChatView {
             width: 700
             height: 500
+        }
+    }
+
+    Component {
+        id: wizardButtonComponent
+
+        Wizard.WizardButton {
+            width: Style.wizardFooterButtonHeight
+            iconSource: "qrc:/client/theme/add.svg"
+            leftPadding: 0
+            rightPadding: 0
         }
     }
 
@@ -129,6 +141,23 @@ Item {
             return createdObject
         }
 
+        function buttonIcon(button) {
+            if (!button.iconBeforeText) {
+                return findChild(button, "wizardButtonFollowingIcon")
+            }
+            return findChild(button, button.tintIcon ? "wizardButtonLeadingIconTint" : "wizardButtonLeadingIcon")
+        }
+
+        function verifyIconCentered(button) {
+            waitForPolish(button.contentItem)
+            const icon = buttonIcon(button)
+            verify(icon !== null)
+            verify(icon.visible)
+            const center = icon.mapToItem(button, icon.width / 2, icon.height / 2)
+            fuzzyCompare(center.x, button.width / 2, 1)
+            fuzzyCompare(center.y, button.height / 2, 1)
+        }
+
         function test_windowHeadlineIsBrandNeutral() {
             const window = createAssistantWindow()
             compare(window.headline, "Assistant")
@@ -182,6 +211,85 @@ Item {
             mouseClick(newConversationButton)
             compare(assistantTestSetup.controller.selectedChatConversationId, -1)
             compare(messageList.count, 0)
+        }
+
+        function test_chatActionIconsAreCentered() {
+            const chatView = createChatView()
+            waitForPolish(chatView)
+            for (const buttonName of ["assistantNewConversationButton", "assistantReloadConversationsButton"]) {
+                const button = findChild(chatView, buttonName)
+                verify(button !== null)
+                verifyIconCentered(button)
+            }
+        }
+
+        function test_iconOnlyWizardButtonIsCentered_data() {
+            return [
+                { tag: "leading", before: true, tinted: false, enabled: true },
+                { tag: "leadingDisabled", before: true, tinted: false, enabled: false },
+                { tag: "leadingTinted", before: true, tinted: true, enabled: true },
+                { tag: "leadingTintedDisabled", before: true, tinted: true, enabled: false },
+                { tag: "following", before: false, tinted: false, enabled: true },
+                { tag: "followingDisabled", before: false, tinted: false, enabled: false }
+            ]
+        }
+
+        function test_iconOnlyWizardButtonIsCentered(data) {
+            const button = createTemporaryObject(wizardButtonComponent, testRoot, {
+                iconBeforeText: data.before,
+                tintIcon: data.tinted,
+                enabled: data.enabled
+            })
+            verify(button !== null)
+            const image = findChild(button, data.before ? "wizardButtonLeadingIcon" : "wizardButtonFollowingIcon")
+            verify(image !== null)
+            tryCompare(image, "status", Image.Ready)
+            verifyIconCentered(button)
+
+            button.width = Style.wizardInlineButtonMinimumWidth
+            verifyIconCentered(button)
+            const icon = buttonIcon(button)
+            compare(icon.height, Style.smallIconSize)
+            if (data.before) {
+                compare(icon.width, Style.smallIconSize)
+            }
+        }
+
+        function test_wizardButtonLabelChanges_data() {
+            return [{ tag: "leading", before: true }, { tag: "following", before: false }]
+        }
+
+        function test_wizardButtonLabelChanges(data) {
+            const button = createTemporaryObject(wizardButtonComponent, testRoot, {
+                width: Style.wizardInlineButtonMinimumWidth,
+                iconBeforeText: data.before
+            })
+            verify(button !== null)
+            const label = findChild(button, "wizardButtonText")
+            verify(label !== null)
+            compare(label.visible, false)
+            verifyIconCentered(button)
+
+            for (const properties of [{ text: "Action", suffix: "" }, { text: "", suffix: "Suffix" }]) {
+                button.text = properties.text
+                button.textSuffix = properties.suffix
+                waitForPolish(button.contentItem)
+                compare(label.visible, true)
+                const icon = buttonIcon(button)
+                compare(icon.width, Style.smallIconSize)
+                const iconLeft = icon.mapToItem(button, 0, 0).x
+                const labelLeft = label.mapToItem(button, 0, 0).x
+                if (data.before) {
+                    verify(iconLeft + icon.width <= labelLeft)
+                } else {
+                    verify(labelLeft + label.width <= iconLeft)
+                }
+            }
+
+            button.text = ""
+            button.textSuffix = ""
+            compare(label.visible, false)
+            verifyIconCentered(button)
         }
 
         function test_chatViewShowsThinkingState() {

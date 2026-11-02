@@ -14,7 +14,7 @@ For example, the name `prêt` can be encoded as either:
 - NFD: `e` (`U+0065`) followed by a combining circumflex (`U+0302`)
 
 These representations render the same way, but they are different Swift
-strings. Realm equality predicates compare their stored values, so NFC and
+strings. Database equality predicates compare the stored bytes, so NFC and
 NFD values do not match unless the application normalizes them first.
 
 This matters particularly on macOS. The server, NextcloudKit, File Provider,
@@ -30,7 +30,7 @@ https://eclecticlight.co/2021/05/08/explainer-unicode-normalization-and-apfs/
 
 ## The data model
 
-`RealmItemMetadata` stores both the original values and comparison values:
+`ItemMetadataRecord` stores both the original values and comparison values:
 
 - `serverUrl` and `fileName` retain the spelling received from the server or
   operating-system boundary.
@@ -41,19 +41,18 @@ The original values must not be replaced globally. They are used for server
 requests, downloads, uploads, deletes, logging, and user-visible metadata.
 The normalized values are local identity keys only.
 
-New objects populate both forms. Realm schema migration version 203 backfills
-the normalized properties for rows created by earlier versions, and
+New rows populate both forms. Rows imported from a Realm database written
+before its schema version 203 were backfilled by Realm during the import, and
 `FilesDatabaseManager.repairPersistedLogicalAddresses()` runs at every open to
 repair any row whose keys have drifted from its raw columns.
 
 Drift is a mismatch between a stored key and the normalization of the raw
-column it is derived from, so it cannot be expressed as a Realm query: an
+column it is derived from, so it cannot be expressed as a database query: an
 index can only be probed for a value, and the value a drifted key should hold
 is whatever `precomposedStringWithCanonicalMapping` returns for that row. The
-repair therefore walks the whole table once per open and normalizes both raw
-columns of every row. Rows are collected into arrays rather than left as lazy
-`Results`, which is also what makes the subsequent rewrite safe, because
-mutating the columns a live query reads would let it skip rows.
+repair therefore walks the whole table once per open, reading only the location
+columns, and normalizes both raw columns of every row. Rows are collected before
+anything is rewritten.
 
 Deleted rows, lock files of local origin, and the synthetic root container are
 repaired alongside everything else. The exclusions applied further down decide
@@ -74,14 +73,14 @@ items refer to the same location:
 - recursively deleting or renaming directory contents;
 - finding trash items and propagating working-set changes.
 
-Realm query closures cannot call ordinary Swift methods because Realm
-translates them into database queries. The reusable query expressions in
-`RealmItemMetadata+Queries.swift` centralize the persisted-field predicates:
-`hasLocation` compares an account, normalized parent URL, and normalized file
-name; `hasServerUrl` compares an exact URL or a slash-delimited descendant
-path. Both helpers compare the normalized properties alone; the exact-match
-forms are answered from their indexes, while the descendant form stays a prefix
-disjunction that Realm cannot drive off an index.
+SQL predicates cannot call Swift methods, so the input is normalized in Swift
+before it is bound. The reusable query expressions in
+`ItemMetadataRecord+Queries.swift` centralize the persisted-field predicates:
+`hasLocation` compares the normalized parent URL and normalized file name;
+`hasServerUrl` compares an exact URL or a slash-delimited descendant path. Both
+helpers compare the normalized columns alone and are answered from the location
+index; the descendant form is a byte-wise range over that index, which keeps it
+case-sensitive and free of pattern characters.
 
 For ordinary in-memory values, `ItemMetadata.hasSameLocation(as:)` provides the
 corresponding comparison without exposing normalization details at each call
@@ -114,7 +113,7 @@ server spelling of the surviving row is preserved.
 
 ## Relationship to server deletion
 
-A failed local Realm lookup does not by itself issue a server-side delete.
+A failed local database lookup does not by itself issue a server-side delete.
 The explicit File Provider deletion path is responsible for remote deletion
 and ultimately calls the remote interface's delete operation. Normalization
 prevents local identity and reconciliation errors, but it is not a claim that

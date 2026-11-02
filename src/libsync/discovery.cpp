@@ -26,6 +26,8 @@
 #include "csync_exclude.h"
 #include "csync.h"
 
+#include "owncloudpropagator.h"
+
 namespace
 {
 constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
@@ -232,6 +234,10 @@ void ProcessDirectoryJob::process()
 
         const auto isBlacklisted = _queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup;
 
+        if (_queryLocal == ParentNotChanged && FileSystem::isSymLink(_discoveryData->_localDir + path._local)) {
+            e.localEntry.isSymLink = true;
+        }
+
         const auto willBeExcluded = handleExcluded(path._target, e, entries, isHidden, isBlacklisted);
 
         if (willBeExcluded) {
@@ -387,7 +393,14 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     if (entries.localEntry.isSymLink) {
         /* Symbolic links are ignored. */
-        item->_errorString = tr("Symbolic links are not supported in syncing.");
+        item->_errorString = OwncloudPropagator::symlinkNotSupportedMessage();
+        if (entries.dbEntry.isValid() && !_discoveryData->_statedb->deleteFileRecord(entries.dbEntry.path(), true)) {
+            qCWarning(lcDisco) << "Failed to drop stale record for symlinked path" << entries.dbEntry.path();
+        }
+        // Keep the parent etags invalid, so the server folder behind the link is listed again.
+        if (entries.serverEntry.isValid() || entries.dbEntry.isValid()) {
+            _discoveryData->_statedb->schedulePathForRemoteDiscovery(path);
+        }
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
@@ -610,6 +623,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
     }
 
@@ -618,11 +634,17 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // either in processFileAnalyzeRemoteInfo() or further down here.
     if (item->_type == ItemTypeVirtualFileDownload) {
         item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
     // Similarly db entries with a dehydration request denote a regular file
     // until the request is processed.
     if (item->_type == ItemTypeVirtualFileDehydration) {
         item->_type = ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
     }
 
@@ -656,6 +678,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_SYNC;
         item->_type = ItemTypeVirtualFileDownload;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
@@ -693,6 +718,9 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
             !FileSystem::isExcludeFile(item->_file) &&
             !item->isEncrypted()) {
             item->_type = ItemTypeVirtualDirectory;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         }
 
         _pendingAsyncJobs++;
@@ -716,6 +744,9 @@ void ProcessDirectoryJob::postProcessServerNew(const SyncFileItemPtr &item,
 
         if (item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         }
         if (isVfsWithSuffix()) {
             addVirtualFileSuffix(path._original);
@@ -746,7 +777,29 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
     item->_isShared = serverEntry.remotePerm.hasPermission(RemotePermissions::IsShared) || serverEntry.sharedByMe;
     item->_sharedByMe = serverEntry.sharedByMe;
     item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
-    item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+    if (localEntry.isValid()) {
+        item->_type = serverEntry.isDirectory ? (localEntry.type == ItemTypeVirtualDirectory ? ItemTypeVirtualDirectory : ItemTypeDirectory)
+                                              : (localEntry.type == ItemTypeVirtualFile ? ItemTypeVirtualFile : ItemTypeFile);
+
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
+    } else if (dbEntry.isValid()) {
+        if (serverEntry.isDirectory) {
+            item->_type = dbEntry._type == ItemTypeVirtualDirectory ? ItemTypeVirtualDirectory : ItemTypeDirectory;
+        } else {
+            item->_type = dbEntry._type == ItemTypeVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+        }
+
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
+    } else {
+        item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
+    }
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
@@ -854,6 +907,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         } else if (serverEntry.isValid() && !serverEntry.remotePerm.isNull() && !serverEntry.remotePerm.hasPermission(RemotePermissions::CanRead)) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
@@ -994,6 +1050,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         if (base._type == ItemTypeVirtualFileDownload) {
             // We just consider this NEW but mark it for download.
             item->_type = ItemTypeVirtualFileDownload;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             done = true;
             return;
         }
@@ -1038,6 +1097,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
 
         const auto originalPathAdjusted = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
 
+        if (FileSystem::pathContainsSymlink(_discoveryData->_localDir, originalPathAdjusted)) {
+            qCInfo(lcDisco) << "Local source is a symlink, not a rename." << originalPathAdjusted;
+            return;
+        }
+
         if (!base.isDirectory()) {
             csync_file_stat_t buf;
             if (csync_vio_local_stat(_discoveryData->_localDir + originalPathAdjusted, &buf, true)) {
@@ -1060,6 +1124,9 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(const SyncFileItemPtr &it
         // Renames of virtuals are possible
         if (base.isVirtualFile()) {
             item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         }
 
         const auto wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
@@ -1218,10 +1285,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         serverModified = false;
         item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     if (dbEntry.isVirtualFile() && (!localEntry.isValid() || localEntry.isVirtualFile) && !virtualFileDownload && !isTypeChange) {
         item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     _childModified |= serverModified;
@@ -1325,6 +1398,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDehydration;
+#if defined NEXTCLOUD_DEV
+                qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
@@ -1377,6 +1453,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     item->_direction = SyncFileItem::Down;
                     item->_instruction = CSYNC_INSTRUCTION_SYNC;
                     item->_type = ItemTypeVirtualFileDehydration;
+#if defined NEXTCLOUD_DEV
+                    qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
                     addVirtualFileSuffix(item->_file);
                     item->_renameTarget = item->_file;
                 } else {
@@ -1397,6 +1476,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 const auto pinState = _discoveryData->_syncOptions._vfs->pinState(path._local);
                 item->_type = ItemTypeVirtualFileDehydration;
+#if defined NEXTCLOUD_DEV
+                qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             } else if (!serverModified
                 && (dbEntry._inode != localEntry.inode
                     || (localEntry.isMetadataMissing && item->_type == ItemTypeFile && !FileSystem::isLnkFile(item->_file))
@@ -1415,9 +1497,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_type = ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+                qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDownload;
+#if defined NEXTCLOUD_DEV
+                qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
                 item->_previousSize = 1;
             }
         } else if (serverModified
@@ -1435,6 +1523,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             _childModified = true;
         } else if (dbEntry._modtime > 0 && (localEntry.modtime <= 0 || localEntry.modtime >= 0xFFFFFFFF) && dbEntry._fileSize == localEntry.size) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -1443,6 +1534,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_modtime = dbEntry._modtime;
             item->_previousModtime = dbEntry._modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (dbEntry._modtime > 0 && localEntry.modtime <= 0)"
                              << "dbEntry._modtime:" << dbEntry._modtime
                              << "localEntry.modtime:" << localEntry.modtime;
@@ -1517,6 +1611,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_size = localEntry.size;
     item->_modtime = localEntry.modtime;
     item->_type = localEntry.isDirectory && !localEntry.isVirtualFile ? ItemTypeDirectory : localEntry.isDirectory ? ItemTypeVirtualDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+    qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     _childModified = true;
 
     if (!localEntry.caseClashConflictingName.isEmpty()) {
@@ -1647,6 +1744,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
             item->_type = ItemTypeVirtualDirectory;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         } else {
             postProcessLocalNew();
         }
@@ -1729,15 +1829,24 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_lastShareStateFetchedTimestamp = base._lastShareStateFetchedTimestamp;
         item->_etag = base._etag;
         item->_type = base._type;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
 
         // Discard any download/dehydrate tags on the base file.
         // They could be preserved and honored in a follow-up sync,
         // but it complicates handling a lot and will happen rarely.
         if (item->_type == ItemTypeVirtualFileDownload) {
             item->_type = ItemTypeVirtualFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
         }
         if (item->_type == ItemTypeVirtualFileDehydration) {
             item->_type = ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+            qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
             qCInfo(lcDisco) << "Changing item type from virtual to normal file" << item->_file;
         }
 
@@ -1796,6 +1905,9 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
     // A conflict with a virtual should lead to virtual file download
     if (dbEntry.isVirtualFile() || localEntry.isVirtualFile) {
         item->_type = ItemTypeVirtualFileDownload;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     // If there's no content hash, use heuristics
@@ -1929,6 +2041,9 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_SYNC;
         item->_direction = SyncFileItem::Down;
         item->_type = CSyncEnums::ItemTypeVirtualFileDehydration;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     if (item->_instruction == CSyncEnums::CSYNC_INSTRUCTION_NONE &&
@@ -1941,6 +2056,9 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_UPDATE_METADATA;
         item->_direction = SyncFileItem::Down;
         item->_type = CSyncEnums::ItemTypeFile;
+#if defined NEXTCLOUD_DEV
+        qCDebug(lcDisco()) << "type:" << item->_type << "name:" << item->_file;
+#endif
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_VFS_METADATA || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {

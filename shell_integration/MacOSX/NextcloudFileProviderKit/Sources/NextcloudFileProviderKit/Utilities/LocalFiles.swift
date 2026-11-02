@@ -188,11 +188,7 @@ func adobeLockFileTargetName(lockFilename: String, parentServerUrl: String, dbMa
     for documentExtension in documentExtensions {
         let candidate = baseName + "." + documentExtension
 
-        if dbManager.itemMetadatas
-            .where({ $0.serverUrl.equals(parentServerUrl) })
-            .where({ $0.fileName.equals(candidate) })
-            .first != nil
-        {
+        if dbManager.itemMetadata(rawServerUrl: parentServerUrl, rawFileName: candidate) != nil {
             return candidate
         }
     }
@@ -242,11 +238,8 @@ func autoCADSiblingLockFileExists(lockFilename: String, parentServerUrl: String,
     let otherLockExtensions = autoCADLockFileExtensions.subtracting([(lockFilename as NSString).pathExtension.lowercased()])
     for ext in otherLockExtensions {
         let siblingName = baseName + "." + ext
-        if let sibling = dbManager.itemMetadatas
-            .where({ $0.serverUrl.equals(parentServerUrl) })
-            .where({ $0.fileName.equals(siblingName) })
-            .first,
-            !sibling.deleted
+        if let sibling = dbManager.itemMetadata(rawServerUrl: parentServerUrl, rawFileName: siblingName),
+           !sibling.deleted
         {
             return true
         }

@@ -94,6 +94,7 @@ nextcloud_add_test(LockedFiles)
 if (NOT WIN32)
     nextcloud_add_test(FolderWatcher)
 endif()
+nextcloud_add_test(FolderWatcherChangeDetection)
 
 nextcloud_add_test(InvalidFilenameDialog)
 nextcloud_add_test(Capabilities)
@@ -115,6 +116,15 @@ target_link_libraries(CustomStateIconsTest PRIVATE Qt::Gui)
 nextcloud_add_test(NotificationSoundPlayer)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(TrayAccountMenuPolicy)
+if(NOT APPLE)
+    nextcloud_add_test(TrayAccountMenuQt)
+    set_tests_properties(TrayAccountMenuQtTest PROPERTIES ENVIRONMENT
+        "QT_QPA_PLATFORM=offscreen;QT_SCALE_FACTOR=1;QT_SCREEN_SCALE_FACTORS=1;QT_FONT_DPI=96;QT_FORCE_STDERR_LOGGING=1")
+    if(WIN32)
+        file(TO_CMAKE_PATH "$ENV{WINDIR}/Fonts" tray_menu_font_dir)
+        set_property(TEST TrayAccountMenuQtTest APPEND PROPERTY ENVIRONMENT "QT_QPA_FONTDIR=${tray_menu_font_dir}")
+    endif()
+endif()
 nextcloud_add_test(TrayActivationPolicy)
 nextcloud_add_test(TrayAccountPopupPresentation)
 if(NOT APPLE)
@@ -140,6 +150,19 @@ add_test(NAME AssistantQmlTest
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 set_tests_properties(AssistantQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+add_executable(WindowCloseQmlTest
+    qml/windowclose/windowcloseqmltestrunner.cpp
+)
+target_link_libraries(WindowCloseQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+set_target_properties(WindowCloseQmlTest PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
+    FOLDER Tests
+)
+add_test(NAME WindowCloseQmlTest
+    COMMAND WindowCloseQmlTest -input "${CMAKE_CURRENT_SOURCE_DIR}/qml/windowclose/testwindowclose.qml"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+set_tests_properties(WindowCloseQmlTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(UnifiedSearchPeopleModel)
 target_link_libraries(UnifiedSearchListmodelTest PRIVATE nextcloudGuiSearch)
 target_link_libraries(UnifiedSearchPeopleModelTest PRIVATE nextcloudGuiSearch)
@@ -237,6 +260,7 @@ if (WIN32)
     )
 
     nextcloud_add_test(SyncCfApi)
+    target_link_libraries(SyncCfApiTest PRIVATE cldapi)
 	nextcloud_add_test(CfApiShellExtensionsIPC)
     target_sources(CfApiShellExtensionsIPCTest PRIVATE "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/thumbnailprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/customstateprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/ipccommon.cpp")
 elseif(LINUX) # elseif(LINUX OR APPLE)

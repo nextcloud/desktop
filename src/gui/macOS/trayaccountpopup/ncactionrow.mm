@@ -7,6 +7,8 @@
 
 #import "trayaccountpopupviewutils.h"
 
+static_assert(__has_feature(objc_arc), "ncactionrow requires ARC.");
+
 using namespace OCC::Mac::TrayPopupViewUtils;
 
 @implementation NCActionRow {
@@ -157,7 +159,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     _actionEnabled = enabled;
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
 
-    _hoverView = [[[NSView alloc] init] autorelease];
+    _hoverView = [[NSView alloc] init];
     _hoverView.wantsLayer = YES;
     _hoverView.layer.backgroundColor = hoverColor().CGColor;
     _hoverView.layer.cornerRadius = kHoverRadius;
@@ -177,7 +179,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     NSTextField *subtitleLabel = nil;
     NSTextField *dateTimeLabel = nil;
     if (isPreviewRow) {
-        textContainer = [[[NSView alloc] init] autorelease];
+        textContainer = [[NSView alloc] init];
         textContainer.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:textContainer];
         [textContainer addSubview:_label];
@@ -236,7 +238,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     }
 
     if (showsSubmenuIndicator) {
-        NSImageView *chevron = [[[NSImageView alloc] init] autorelease];
+        NSImageView *chevron = [[NSImageView alloc] init];
         chevron.image = [[NSImage imageWithSystemSymbolName:@"chevron.right" accessibilityDescription:nil]
             imageWithSymbolConfiguration:[NSImageSymbolConfiguration configurationWithPointSize:11 weight:NSFontWeightMedium]];
         chevron.contentTintColor = enabled ? NSColor.tertiaryLabelColor : NSColor.quaternaryLabelColor;
@@ -262,7 +264,7 @@ using namespace OCC::Mac::TrayPopupViewUtils;
     }
 
     if (icon) {
-        _iconView = [[[NSImageView alloc] init] autorelease];
+        _iconView = [[NSImageView alloc] init];
         _iconView.image = icon;
         _iconView.imageScaling = NSImageScaleProportionallyUpOrDown;
         _iconView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -327,7 +329,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
             [templateIcon setTemplate:YES];
             _iconView.contentTintColor = NSColor.labelColor;
             _iconView.image = templateIcon;
-            [templateIcon release];
         } else {
             _iconView.contentTintColor = nil;
             _iconView.image = icon;
@@ -376,13 +377,6 @@ using namespace OCC::Mac::TrayPopupViewUtils;
 - (void)mouseUp:(NSEvent *)event
 {
     if (_actionEnabled && _action) _action();
-}
-
-- (void)dealloc
-{
-    [_action release];
-    [_hoverAction release];
-    [super dealloc];
 }
 
 @end

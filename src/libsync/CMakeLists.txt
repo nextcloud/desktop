@@ -197,6 +197,11 @@ if(APPLE)
         theme_mac.mm
         settings/settingsources_mac.mm
     )
+    set_property(SOURCE
+        theme_mac.mm
+        settings/settingsources_mac.mm
+        APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc
+    )
 endif()
 
 if(TOKEN_AUTH_ONLY)

@@ -6,6 +6,8 @@
 #include "foregroundbackground_interface.h"
 #include "foregroundbackground_cocoa.h"
 
+static_assert(__has_feature(objc_arc), "foregroundbackground_mac requires ARC.");
+
 bool ForegroundBackground::eventFilter(QObject * /*obj*/, QEvent *event)
 {
     if (event->type() == QEvent::Show) {

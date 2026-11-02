@@ -7,6 +7,8 @@
 
 #import "trayaccountpopupmetrics.h"
 
+static_assert(__has_feature(objc_arc), "ncspacerview requires ARC.");
+
 @implementation NCSpacerView
 
 - (instancetype)initWithHeight:(CGFloat)height

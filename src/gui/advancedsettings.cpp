@@ -156,7 +156,10 @@ bool createDebugArchive(const QString &filename)
     const auto fileProviderDomainsSupportDirectory = OCC::Mac::FileProviderUtils::fileProviderDomainsSupportDirectory();
 
     if (fileProviderDomainsSupportDirectory.exists()) {
-        QDirIterator it(fileProviderDomainsSupportDirectory.path(), QStringList() << "*.jsonl" << "*.realm", QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+        QDirIterator it(fileProviderDomainsSupportDirectory.path(),
+                        QStringList() << "*.jsonl" << "*.sqlite" << "*.sqlite-wal" << "*.realm" << "*.realm.import-failed",
+                        QDir::Files | QDir::NoDotAndDotDot,
+                        QDirIterator::Subdirectories);
 
         while (it.hasNext()) {
             const auto filePath = it.next();

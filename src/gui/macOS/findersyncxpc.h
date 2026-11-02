@@ -137,19 +137,19 @@ public Q_SLOTS:
     /**
      * @brief Store an extension proxy (called by listener delegate).
      * @param connectionId Unique identifier for this connection.
-     * @param proxy The retained proxy object (void* to NSObject<FinderSyncProtocol>*).
-     * @param connection The NSXPCConnection object (void* to NSXPCConnection*).
+     * @param proxy The owned proxy reference transferred to this object (void* to NSObject<FinderSyncProtocol>*).
+     * @param connection The owned connection reference transferred to this object (void* to NSXPCConnection*).
      */
     void storeExtensionProxy(const QString &connectionId, void *proxy, void *connection);
 
     /**
      * @brief Remove an extension proxy when connection is invalidated (called by listener delegate).
-     * @param connection The NSXPCConnection object (void* to NSXPCConnection*).
+     * @param connection An additional owned NSXPCConnection reference, consumed even if the connection is no longer tracked.
      */
     void removeExtensionProxy(void *connection);
 
 private:
-    //! Snapshot current proxy list under the mutex for safe iteration without holding the lock.
+    //! Retain a snapshot under the mutex. Callers consume each reference with __bridge_transfer.
     [[nodiscard]] QList<void *> currentProxies() const;
 
     //! Connect to the broker login item and hand it our listener endpoint.

@@ -6,7 +6,8 @@
 #include "cfapishellintegrationclassfactory.h"
 #include "customstateprovider.h"
 #include "thumbnailprovider.h"
-#include <comdef.h>
+
+#include <ntstatus.h>
 
 long dllReferenceCount = 0;
 long dllObjectsCount = 0;

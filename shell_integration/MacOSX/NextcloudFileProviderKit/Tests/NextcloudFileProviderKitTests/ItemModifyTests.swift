@@ -6,7 +6,6 @@
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
 import NextcloudKit
-import RealmSwift
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -29,6 +28,62 @@ private final class ExclusionMarkerRecorder: @unchecked Sendable {
 }
 
 final class ItemModifyTests: NextcloudFileProviderKitTestCase {
+    private func assertFailedContentModificationRemainsUnuploaded(
+        errorCode: Int,
+        chunkSize: Int?
+    ) async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let uploadError = NKError(errorCode: errorCode, errorDescription: "Upload did not complete")
+        remoteInterface.uploadError = uploadError
+        let originalRemoteData = remoteItem.data
+
+        var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        itemMetadata.uploaded = true
+        itemMetadata.downloaded = true
+        Self.dbManager.addItemMetadata(itemMetadata)
+
+        let newContents = Data("Updated content".utf8)
+        let newContentsUrl = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+        try newContents.write(to: newContentsUrl)
+        defer { try? FileManager.default.removeItem(at: newContentsUrl) }
+
+        var targetMetadata = itemMetadata
+        targetMetadata.size = Int64(newContents.count)
+        let item = Item(
+            metadata: itemMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: targetItem,
+            changedFields: [.contents],
+            contents: newContentsUrl,
+            forcedChunkSize: chunkSize,
+            dbManager: Self.dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertNotNil(error)
+        let storedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
+        XCTAssertFalse(storedMetadata.uploaded)
+        XCTAssertTrue(storedMetadata.downloaded)
+        XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
+        XCTAssertEqual(storedMetadata.sessionError, uploadError.errorDescription)
+        XCTAssertEqual(storedMetadata.etag, itemMetadata.etag)
+        XCTAssertEqual(remoteItem.data, originalRemoteData)
+    }
+
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
@@ -42,11 +97,11 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     var remoteTrashFolder: MockRemoteItem!
     var remoteTrashFolderChildItem: MockRemoteItem!
 
-    static let dbManager = FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
+    static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
 
     override func setUp() {
         super.setUp()
-        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = name
+        try! Self.dbManager.removeAllRowsForTesting()
 
         remoteItem = MockRemoteItem(
             identifier: "item",
@@ -112,6 +167,16 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteFolder.parent = rootItem
         remoteTrashFolder.children = [remoteTrashFolderChildItem]
         remoteTrashFolderChildItem.parent = remoteTrashFolder
+    }
+
+    func testFailedContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: 500, chunkSize: 2)
+    }
+
+    func testCancelledContentModificationRemainsUnuploaded() async throws {
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil)
+        try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2)
     }
 
     func testModifyFile() async throws {
@@ -253,7 +318,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-report-modify")
         try newContents.write(to: newContentsUrl)
@@ -311,7 +376,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let originalRemoteData = remoteItem.data
-        let newContents = "Hello, much bigger New World!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("Hello, much bigger New World!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory
             .appendingPathComponent("quota-blocked-modify")
         try newContents.write(to: newContentsUrl)
@@ -791,9 +856,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
     func testModifyRemoteBundleExclusionDoesNotDeleteRemoteBundle() async throws {
-        let db = Self.dbManager.ncDatabase()
-        debugPrint(db)
-
         let bundleFilename = "test.key"
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let remoteBundle = MockRemoteItem(
@@ -1047,14 +1109,13 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         remoteInterface.chunkUploadDirectories[chunkUploadId] = chunksDirectory
         defer { try? FileManager.default.removeItem(at: chunksDirectory) }
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add(RemoteFileChunk(
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
                 fileName: "2",
                 size: 3,
                 remoteChunkStoreFolderName: chunkUploadId
-            ))
-        }
+            )
+        ])
 
         var targetMetadata = SendableItemMetadata(value: folderMetadata)
         targetMetadata.apply(fileName: "renamed-folder")
@@ -1090,9 +1151,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(rootTrashItem.children.contains { $0.identifier == folderMetadata.ocId + trashedItemIdSuffix })
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
-            db.objects(RemoteFileChunk.self)
-                .where { $0.remoteChunkStoreFolderName == chunkUploadId }
-                .count,
+            Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
             0
         )
     }
@@ -1733,7 +1792,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(folderMetadata)
 
-        let newContents = "I've changed!".data(using: .utf8)!
+        let newContents = try XCTUnwrap("I've changed!".data(using: .utf8))
         let newContentsUrl = FileManager.default.temporaryDirectory.appendingPathComponent("test")
         try newContents.write(to: newContentsUrl)
 
@@ -2126,21 +2185,18 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         )
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
 
-        let db = Self.dbManager.ncDatabase()
-        try db.write {
-            db.add([
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 1),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                ),
-                RemoteFileChunk(
-                    fileName: String(previousUploadedChunkNum + 2),
-                    size: Int64(chunkSize),
-                    remoteChunkStoreFolderName: chunkUploadId
-                )
-            ])
-        }
+        Self.dbManager.addRemoteFileChunks([
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 1),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            ),
+            RemoteFileChunk(
+                fileName: String(previousUploadedChunkNum + 2),
+                size: Int64(chunkSize),
+                remoteChunkStoreFolderName: chunkUploadId
+            )
+        ])
 
         var targetItemMetadata = SendableItemMetadata(value: itemMetadata)
         targetItemMetadata.date = modificationDate

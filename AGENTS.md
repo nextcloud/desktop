@@ -37,10 +37,8 @@ All contributions generated or assisted by this agent must fully comply with:
 
 ### What this agent must never do
 
-- Open issues, submit pull requests, post review comments, or send security reports autonomously. Every contribution must be reviewed and submitted by a human.
-- Add `Signed-off-by` tags to commits. Only the human contributor can certify the Developer Certificate of Origin.
+- Open issues, submit pull requests or send security reports autonomously. Every contribution must be reviewed and submitted by a human.
 - Generate or submit security reports without independent human verification. Report verified vulnerabilities via [HackerOne](https://hackerone.com/nextcloud), not as GitHub issues.
-- Write PR descriptions, review comments, or issue reports on behalf of the contributor. These must be in the contributor's own words.
 - Fully automate the resolution of issues labeled [`good first issue`](https://github.com/issues?q=org%3Anextcloud+label%3A%22good+first+issue%22) or similar beginner-friendly labels.
 - Submit code that has not been reviewed and cleaned up by the contributor. Dead code, redundant logic, excessive comments, and unrelated changes must be removed before submission.
 
@@ -217,7 +215,7 @@ The following details are important and only relevant when working on the deskto
 - The PIMPL pattern is an established convention in the Objective-C++ source code files under `src/gui/macOS`.
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
-- Manage memory explicitly and manually when writing or updating code located under `./src`. For example, do not use features like `__weak` from automatic reference counting in Objective-C because ARC is not used in this project.
+- All Objective-C (`.m`) and Objective-C++ (`.mm`) files must be compiled with Automatic Reference Counting (ARC). Ensure ARC is enabled for every such source file in the build configuration (`-fobjc-arc` in CMake or `CLANG_ENABLE_OBJC_ARC = YES` in Xcode), and follow ARC ownership rules.
 
 #### Code organization
 

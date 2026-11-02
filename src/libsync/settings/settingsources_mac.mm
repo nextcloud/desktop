@@ -12,6 +12,8 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
+static_assert(__has_feature(objc_arc), "settingsources_mac requires ARC.");
+
 namespace OCC {
 
 namespace {

@@ -294,6 +294,7 @@ private:
     void fetchRootFolderSize();
     AccountState *applyAccountChanges();
     void clearOneShotOverrides();
+    [[nodiscard]] QString applicableOverrideLocalDir() const;
     void initialiseLocalSyncFolder();
     void setLocalSyncFolder(const QString &localSyncFolder, bool selectedByUser = false, const QByteArray &bookmarkData = {});
     void promptForInitialLocalSyncFolderIfNeeded();

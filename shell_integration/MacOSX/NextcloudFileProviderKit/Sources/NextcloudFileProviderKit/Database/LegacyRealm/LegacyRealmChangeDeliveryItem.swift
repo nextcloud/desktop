@@ -5,7 +5,8 @@ import Foundation
 import RealmSwift
 
 /// One durably stored item in a multi-batch File Provider change enumeration.
-final class RealmChangeDeliveryItem: Object {
+@objc(RealmChangeDeliveryItem)
+final class LegacyRealmChangeDeliveryItem: Object {
     @Persisted(primaryKey: true) var primaryKey = ""
     @Persisted(indexed: true) var sessionId = ""
     @Persisted var sequence = 0

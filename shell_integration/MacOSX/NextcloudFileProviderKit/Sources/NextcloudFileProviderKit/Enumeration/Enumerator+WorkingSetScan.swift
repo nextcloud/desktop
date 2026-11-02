@@ -31,14 +31,25 @@ extension Enumerator {
             // discoveries to the database as it recurses — so on the framework's moreComing
             // re-invocations we must drain the buffer rather than re-derive, or every change beyond the
             // first batch is silently dropped.
-            if !changeBuffer.isPrimed(forKey: anchorKey) {
+            let isPrimed = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimed(forKey: anchorKey)
+            }
+
+            guard let isPrimed else {
+                return
+            }
+
+            if !isPrimed {
                 // A re-invocation under a *different* anchor is a fresh enumeration; drop any stale
                 // remainder before deriving anew.
                 changeBuffer.reset()
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
-                let pendingLocalChanges = dbManager.pendingWorkingSetChanges(since: date)
+                // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
+                let localChanges = dbManager.pendingWorkingSetChanges(since: date)
+                let pendingLocalChanges = localChanges ?? ([], [])
+                let hadFailure = serverChanges.hadFailure || localChanges == nil
 
                 let changes = ChangeSet(
                     mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
@@ -53,19 +64,27 @@ extension Enumerator {
                 let sortedUpdated = changes.createdAndUpdated
                     .sorted { $0.remotePath().count < $1.remotePath().count }
 
-                let finalAnchor = serverChanges.hadFailure ? anchor : currentAnchor
+                let finalAnchor = hadFailure ? anchor : currentAnchor
                 changeBuffer.prime(
                     key: anchorKey,
                     finalAnchorRawValue: finalAnchor.rawValue,
                     updated: sortedUpdated,
                     deleted: changes.deleted,
-                    incomplete: serverChanges.hadFailure
+                    incomplete: hadFailure
                 )
             }
 
             // Intermediate batches use continuation anchors. If the scan was incomplete, keep the
             // incoming anchor for the final batch so missed changes are retried on the next signal.
-            let finalAnchor = changeBuffer.isPrimedIncomplete() ? anchor : currentAnchor
+            let incomplete = readDeliveryState(reportingTo: observer) {
+                try changeBuffer.isPrimedIncomplete()
+            }
+
+            guard let incomplete else {
+                return
+            }
+
+            let finalAnchor = incomplete ? anchor : currentAnchor
             drainChangeBuffer(
                 for: observer,
                 finalAnchor: finalAnchor,
@@ -103,8 +122,9 @@ extension Enumerator {
         // wait to see which items are truly deleted and which have just been moved elsewhere.
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
-        let materialisedItems = dbManager
-            .materialisedItemMetadatas(account: account.ncKitAccount)
+        // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
+        let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        let materialisedItems = (storedMaterialisedItems ?? [])
             .filter { !$0.deleted && !$0.isTrashed }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
@@ -115,7 +135,7 @@ extension Enumerator {
         // Track read failures so one unreadable folder no longer aborts the whole scan (see the
         // read-error branch below). `hadReadFailure` is returned to the caller so it can avoid
         // advancing the working-set sync point past changes this pass could not discover.
-        var hadReadFailure = false
+        var hadReadFailure = storedMaterialisedItems == nil
         var failedItemIds = Set<String>()
 
         // Work queue seeded with the materialised items. A changed child directory discovered while

@@ -50,6 +50,7 @@ class ShareController: ObservableObject {
             path: itemServerRelativePath,
             shareType: shareType.rawValue,
             shareWith: sharee,
+            note: note,
             hideDownload: hideDownload,
             password: password,
             permissions: permissions.rawValue,

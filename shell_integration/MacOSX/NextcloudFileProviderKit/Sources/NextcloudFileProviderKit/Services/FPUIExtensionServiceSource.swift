@@ -8,16 +8,14 @@ import NextcloudKit
 import OSLog
 
 class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCListenerDelegate, FPUIExtensionService {
-    let keychain: Keychain
     let listener = NSXPCListener.anonymous()
     let logger: FileProviderLogger
     let serviceName = fpUiExtensionServiceName
     let fpExtension: FileProviderExtension
 
     init(fpExtension: FileProviderExtension) {
-        keychain = Keychain(log: fpExtension.log)
         logger = FileProviderLogger(category: "FPUIExtensionServiceSource", log: fpExtension.log)
-        logger.debug("Instantiating FPUIExtensionService service")
+        logger.debug("Instantiating service source.")
         self.fpExtension = fpExtension
         super.init()
     }
@@ -41,10 +39,10 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     // MARK: - FPUIExtensionService protocol methods
 
     func authenticate() async -> NSError? {
-        logger.info("Authenticating...")
+        logger.info("Authenticating.")
 
-        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = keychain.getPassword(for: user, on: serverUrl) else {
-            logger.error("Missing account information, cannot authenticate!")
+        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = fpExtension.keychain.getPassword(for: user) else {
+            logger.error("Cannot authenticate because account information is missing.", [.domain: fpExtension.domain.identifier.rawValue])
             return NSError(.missingAccountInformation)
         }
 

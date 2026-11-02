@@ -137,6 +137,7 @@ public Q_SLOTS:
     void addSyncFileItemToActivityList(const OCC::Activity &activity);
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(const OCC::Activity &activity);
+    void removeActivitiesFromActivityList(const OCC::ActivityList &activities);
 
     void removeOutdatedNotifications(const OCC::ActivityList &receivedNotifications);
 

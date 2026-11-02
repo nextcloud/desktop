@@ -25,6 +25,8 @@
 #include <QVariantList>
 #include <QVariantMap>
 
+static_assert(__has_feature(objc_arc), "ncaccountactionspopup requires ARC.");
+
 using namespace OCC::Mac::TrayPopupImageUtils;
 using namespace OCC::Mac::TrayPopupViewUtils;
 
@@ -55,7 +57,7 @@ static QString statusMenuText(OCC::UserStatus::OnlineStatus status, const QStrin
 
 static NSView *accountActionsSeparator(const CGFloat verticalMargin)
 {
-    auto separator = [[[NSBox alloc] init] autorelease];
+    auto separator = [[NSBox alloc] init];
     separator.boxType = NSBoxSeparator;
     separator.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -71,7 +73,7 @@ static NSView *accountActionsSeparator(const CGFloat verticalMargin)
         [separator.centerYAnchor constraintEqualToAnchor:container.centerYAnchor],
         [separator.heightAnchor constraintEqualToConstant:1.0],
     ]];
-    return [container autorelease];
+    return container;
 }
 
 static NSView *accountActionsSeparator()
@@ -111,12 +113,9 @@ static NSView *compactAccountActionsSeparator()
 
 - (void)dealloc
 {
-    [_appsPopup release];
-    [_notificationActionsPopup release];
     if (_accountMenuDataConnection) {
         QObject::disconnect(_accountMenuDataConnection);
     }
-    [super dealloc];
 }
 
 - (BOOL)isShowingUserIndex:(int)userIndex

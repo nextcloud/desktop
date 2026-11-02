@@ -54,11 +54,10 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
         batchComplete = true
     }
 
-    public func enumerateChanges(from anchor: NSFileProviderSyncAnchor =
-        Enumerator.syncAnchor(at: Date(timeIntervalSince1970: 1))) async throws
-    {
+    public func enumerateChanges(from anchor: NSFileProviderSyncAnchor? = nil) async throws {
         isComplete = false
-        var currentAnchor = anchor
+        // Without an anchor, start from the dawn of time so every stored change is reported.
+        var currentAnchor = anchor ?? (enumerator as! Enumerator).syncAnchor(at: Date(timeIntervalSince1970: 1))
         // Drive the batches the way the framework does: re-invoke enumerateChanges from the anchor the
         // previous batch returned until one finishes with moreComing == false.
         repeat {

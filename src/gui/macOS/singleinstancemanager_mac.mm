@@ -10,6 +10,8 @@
 #include <QLocalSocket>
 #include <QLoggingCategory>
 
+static_assert(__has_feature(objc_arc), "singleinstancemanager_mac requires ARC.");
+
 namespace {
 Q_LOGGING_CATEGORY(lcSingleInstance, "nextcloud.gui.singleinstance", QtInfoMsg)
 }

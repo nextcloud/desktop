@@ -1173,6 +1173,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         }
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
+        auto outdatedErrors = ActivityList{};
         for (const auto errorsList = _activityModel->errorsList(); const auto &activity : errorsList) {
             if (activity._expireAtMsecs != -1) {
                 // we process expired activities in a different slot
@@ -1183,12 +1184,12 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             }
 
             if (style == LocalDiscoveryStyle::FilesystemOnly) {
-                _activityModel->removeActivityFromActivityList(activity);
+                outdatedErrors.append(activity);
                 continue;
             }
 
             if (const auto filePath = QString{f->path() + activity._file}; !FileSystem::fileExists(filePath)) {
-                _activityModel->removeActivityFromActivityList(activity);
+                outdatedErrors.append(activity);
                 continue;
             }
 
@@ -1198,9 +1199,10 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             }
 
             if (engine.shouldDiscoverLocally(path)) {
-                _activityModel->removeActivityFromActivityList(activity);
+                outdatedErrors.append(activity);
             }
         }
+        _activityModel->removeActivitiesFromActivityList(outdatedErrors);
     }
 
     if (progress.status() == ProgressInfo::Done) {
