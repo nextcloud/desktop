@@ -221,6 +221,151 @@ private Q_SLOTS:
         }
     }
 
+    void testOpenStopsAfterMigrationFailure()
+    {
+        SyncJournalDb journal(_tempDir.filePath(u"open-migration-failure.db"_s));
+        QVERIFY(journal.open());
+        journal.close();
+
+        journal.autotestFailCounter = 1;
+        QVERIFY(!journal.open());
+        QVERIFY(!journal.isOpen());
+
+        journal.autotestFailCounter = -1;
+        QVERIFY(journal.open());
+    }
+
+    void testOpenStopsAfterDiscoverySqlFailure()
+    {
+#if !defined(QT_NO_DEBUG) || defined(QT_FORCE_ASSERTS)
+        QSKIP("sqlFail intentionally aborts when assertions are enabled.");
+#endif
+        SyncJournalDb journal(_tempDir.filePath(u"open-discovery-failure.db"_s));
+        QVERIFY(journal.open());
+        QCOMPARE(sqlite3_exec(journal._db.sqliteDb(),
+                              "DELETE FROM version;"
+                              "INSERT INTO metadata(phash,path,type) VALUES(1,'folder',2);"
+                              "CREATE TRIGGER fail_discovery BEFORE UPDATE OF md5 ON metadata "
+                              "BEGIN SELECT RAISE(ABORT,'injected discovery failure'); END;",
+                              nullptr,
+                              nullptr,
+                              nullptr),
+                 SQLITE_OK);
+        journal.close();
+
+        QVERIFY(!journal.open());
+        QVERIFY(!journal.isOpen());
+    }
+
+    void testMigrationSqlFailure_data()
+    {
+        QTest::addColumn<bool>("metadata");
+        QTest::addColumn<QByteArray>("setupSql");
+        QTest::addColumn<QByteArray>("failedStatement");
+
+        QTest::newRow("metadata-up-to-date") << true << QByteArray{} << QByteArray{};
+        QTest::newRow("metadata-column") << true << QByteArray("ALTER TABLE metadata DROP COLUMN remotePerm;")
+                                         << QByteArray("ALTER TABLE metadata ADD COLUMN remotePerm");
+        QTest::newRow("metadata-column-index") << true << QByteArray("DROP INDEX metadata_fileid; ALTER TABLE metadata DROP COLUMN fileid;")
+                                               << QByteArray("CREATE INDEX metadata_fileid");
+        QTest::newRow("metadata-inode-index") << true << QByteArray("DROP INDEX metadata_inode;") << QByteArray("CREATE INDEX IF NOT EXISTS metadata_inode");
+        QTest::newRow("metadata-path-index") << true << QByteArray("DROP INDEX metadata_path;") << QByteArray("CREATE INDEX IF NOT EXISTS metadata_path");
+        QTest::newRow("metadata-parent-index") << true << QByteArray("DROP INDEX metadata_parent;") << QByteArray("CREATE INDEX IF NOT EXISTS metadata_parent");
+        QTest::newRow("upload-checksum-column") << true << QByteArray("ALTER TABLE uploadinfo DROP COLUMN contentChecksum;")
+                                                << QByteArray("ALTER TABLE uploadinfo ADD COLUMN contentChecksum");
+        QTest::newRow("conflict-base-path-column") << true << QByteArray("ALTER TABLE conflicts DROP COLUMN basePath;")
+                                                   << QByteArray("ALTER TABLE conflicts ADD COLUMN basePath");
+        QTest::newRow("metadata-encryption-id-index") << true << QByteArray("DROP INDEX metadata_e2e_id;")
+                                                      << QByteArray("CREATE INDEX IF NOT EXISTS metadata_e2e_id");
+        QTest::newRow("metadata-encryption-status-index")
+            << true << QByteArray("DROP INDEX metadata_e2e_status;") << QByteArray("CREATE INDEX IF NOT EXISTS metadata_e2e_status");
+        QTest::newRow("case-conflict-base-path-index")
+            << true << QByteArray("DROP INDEX caseconflicts_basePath;") << QByteArray("CREATE INDEX IF NOT EXISTS caseconflicts_basePath");
+        QTest::newRow("quota-used-removal") << true
+                                            << QByteArray(
+                                                   "ALTER TABLE metadata DROP COLUMN quotaBytesUsed; ALTER TABLE metadata ADD COLUMN quotaBytesUsed BIGINT;")
+                                            << QByteArray("ALTER TABLE metadata DROP COLUMN quotaBytesUsed");
+        QTest::newRow("quota-available-removal")
+            << true << QByteArray("ALTER TABLE metadata DROP COLUMN quotaBytesAvailable; ALTER TABLE metadata ADD COLUMN quotaBytesAvailable BIGINT;")
+            << QByteArray("ALTER TABLE metadata DROP COLUMN quotaBytesAvailable");
+        QTest::newRow("blacklist-up-to-date") << false << QByteArray{} << QByteArray{};
+        QTest::newRow("blacklist-last-try-column") << false
+                                                   << QByteArray(
+                                                          "ALTER TABLE blacklist DROP COLUMN lastTryTime; ALTER TABLE blacklist DROP COLUMN ignoreDuration;")
+                                                   << QByteArray("ALTER TABLE blacklist ADD COLUMN lastTryTime");
+        QTest::newRow("blacklist-ignore-duration-column")
+            << false << QByteArray("ALTER TABLE blacklist DROP COLUMN lastTryTime; ALTER TABLE blacklist DROP COLUMN ignoreDuration;")
+            << QByteArray("ALTER TABLE blacklist ADD COLUMN ignoreDuration");
+        QTest::newRow("blacklist-rename-column") << false << QByteArray("ALTER TABLE blacklist DROP COLUMN renameTarget;")
+                                                 << QByteArray("ALTER TABLE blacklist ADD COLUMN renameTarget");
+        QTest::newRow("blacklist-category-column") << false << QByteArray("ALTER TABLE blacklist DROP COLUMN errorCategory;")
+                                                   << QByteArray("ALTER TABLE blacklist ADD COLUMN errorCategory");
+        QTest::newRow("blacklist-request-column") << false << QByteArray("ALTER TABLE blacklist DROP COLUMN requestId;")
+                                                  << QByteArray("ALTER TABLE blacklist ADD COLUMN requestId");
+        QTest::newRow("blacklist-index") << false << QByteArray("DROP INDEX blacklist_index;") << QByteArray("CREATE INDEX IF NOT EXISTS blacklist_index");
+    }
+
+    void testMigrationSqlFailure()
+    {
+#if !defined(QT_NO_DEBUG) || defined(QT_FORCE_ASSERTS)
+        QSKIP("sqlFail intentionally aborts when assertions are enabled.");
+#endif
+        QFETCH(bool, metadata);
+        QFETCH(QByteArray, setupSql);
+        QFETCH(QByteArray, failedStatement);
+
+        SyncJournalDb journal(_tempDir.filePath(u"migration-failure-%1.db"_s.arg(QString::fromLatin1(QTest::currentDataTag()))));
+        QVERIFY(journal.open());
+        QCOMPARE(sqlite3_exec(journal._db.sqliteDb(), setupSql.constData(), nullptr, nullptr, nullptr), SQLITE_OK);
+        auto failure = qMakePair(failedStatement, false);
+        QCOMPARE(interruptStatement(journal, failure), SQLITE_OK);
+
+        const auto result = metadata ? journal.updateMetadataTableStructure() : journal.updateErrorBlacklistTableStructure();
+        const auto isOpen = journal.isOpen();
+        if (isOpen) {
+            sqlite3_trace_v2(journal._db.sqliteDb(), 0, nullptr, nullptr);
+        }
+        QCOMPARE(failure.second, !failedStatement.isEmpty());
+        QCOMPARE(result, failedStatement.isEmpty());
+        QCOMPARE(isOpen, failedStatement.isEmpty());
+    }
+
+    void testSqlFailureStopsUpdates_data()
+    {
+        QTest::addColumn<QByteArray>("failedStatement");
+        QTest::newRow("virtual-file-update") << QByteArray("UPDATE metadata SET type=5");
+        QTest::newRow("avoid-renames") << QByteArray("UPDATE metadata SET fileid = ''");
+        QTest::newRow("schedule-discovery") << QByteArray("UPDATE metadata SET md5='_invalid_'");
+    }
+
+    void testSqlFailureStopsUpdates()
+    {
+#if !defined(QT_NO_DEBUG) || defined(QT_FORCE_ASSERTS)
+        QSKIP("sqlFail intentionally aborts when assertions are enabled.");
+#endif
+        QFETCH(QByteArray, failedStatement);
+        SyncJournalDb journal(_tempDir.filePath(u"update-failure-%1.db"_s.arg(QString::fromLatin1(QTest::currentDataTag()))));
+        QVERIFY(journal.open());
+        auto failure = qMakePair(failedStatement, false);
+        QCOMPARE(interruptStatement(journal, failure), SQLITE_OK);
+
+        const auto row = QByteArray(QTest::currentDataTag());
+        if (row == "virtual-file-update") {
+            journal.markVirtualFileForDownloadRecursively("");
+        } else if (row == "avoid-renames") {
+            journal.avoidRenamesOnNextSync(QByteArray("folder"));
+        } else {
+            journal.schedulePathForRemoteDiscovery(QByteArray("folder"));
+        }
+        const auto isOpen = journal.isOpen();
+        if (isOpen) {
+            sqlite3_trace_v2(journal._db.sqliteDb(), 0, nullptr, nullptr);
+        }
+        QVERIFY(failure.second);
+        QVERIFY(!isOpen);
+        QVERIFY(journal._etagStorageFilter.isEmpty());
+    }
+
     void testFileRecordChecksum()
     {
         // Try with and without a checksum
@@ -654,6 +799,23 @@ private Q_SLOTS:
     }
 
 private:
+    static int interruptStatement(SyncJournalDb &journal, QPair<QByteArray, bool> &failure)
+    {
+        return sqlite3_trace_v2(
+            journal._db.sqliteDb(),
+            SQLITE_TRACE_STMT,
+            [](unsigned, void *context, void *statement, void *) {
+                auto &failure = *static_cast<QPair<QByteArray, bool> *>(context);
+                const auto query = static_cast<sqlite3_stmt *>(statement);
+                if (!failure.first.isEmpty() && QByteArray(sqlite3_sql(query)).startsWith(failure.first)) {
+                    failure.second = true;
+                    sqlite3_interrupt(sqlite3_db_handle(query));
+                }
+                return 0;
+            },
+            &failure);
+    }
+
     SyncJournalDb _db;
 };
 
