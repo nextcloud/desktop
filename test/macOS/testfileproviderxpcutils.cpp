@@ -1381,8 +1381,8 @@ private Q_SLOTS:
             QUrl(QString::fromUtf8("https://b\xC3\xBC"
                                    "cher.com"));
 
-        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url), u"https://xn--bcher-kva.com"_s);
-        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(QUrl(u"https://xn--bcher-kva.com/nextcloud"_s)),
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), u"https://xn--bcher-kva.com"_s);
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(QUrl(u"https://xn--bcher-kva.com/nextcloud"_s)),
                  u"https://xn--bcher-kva.com/nextcloud"_s);
     }
 
@@ -1397,8 +1397,7 @@ private Q_SLOTS:
         const QString originalAuthority = url.scheme() + u"://"_s + url.authority();
 
         QVERIFY(original.startsWith(originalAuthority));
-        QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url),
-                 u"https://user@xn--bcher-kva.com:8443"_s + original.mid(originalAuthority.size()));
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), u"https://user@xn--bcher-kva.com:8443"_s + original.mid(originalAuthority.size()));
     }
 
     void fileProviderServerUrlLeavesAsciiHostsUntouched()
@@ -1406,7 +1405,7 @@ private Q_SLOTS:
         for (const auto &urlString :
              {u"https://example.com/path%20name"_s, u"https://192.0.2.10:8443/nextcloud"_s, u"https://[2001:db8::10]:8443/nextcloud"_s}) {
             const auto url = QUrl(urlString);
-            QCOMPARE(OCC::Mac::FileProviderXPCUtils::serverUrlForFileProvider(url), url.toString());
+            QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), url.toString());
         }
     }
 

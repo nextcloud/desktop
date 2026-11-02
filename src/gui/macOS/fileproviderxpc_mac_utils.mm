@@ -25,7 +25,7 @@ namespace OCC::Mac::FileProviderXPCUtils {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc.utils", QtInfoMsg)
 
-QString serverUrlForFileProvider(const QUrl &url)
+QString urlForFileProviderXPC(const QUrl &url)
 {
     using namespace Qt::StringLiterals;
 
