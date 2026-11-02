@@ -6,8 +6,8 @@ import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
-@testable import TestInterface
 import Testing
+@testable import TestInterface
 
 @Suite("Enumerator metadata persistence")
 struct EnumeratorPersistenceTests {
@@ -69,7 +69,7 @@ struct EnumeratorPersistenceTests {
         file.versionIdentifier = "file-v2"
         try manager.setItemMetadataWriteFailureForTesting(true)
         let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
-        let failed = MockChangeObserver(enumerator: try makeEnumerator(.workingSet))
+        let failed = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
 
         try await failed.enumerateChanges(from: anchor)
 
@@ -80,7 +80,7 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
 
         try manager.setItemMetadataWriteFailureForTesting(false)
-        let recovered = MockChangeObserver(enumerator: try makeEnumerator(.workingSet))
+        let recovered = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
         try await recovered.enumerateChanges(from: anchor)
 
         #expect(recovered.error == nil)
@@ -94,7 +94,7 @@ struct EnumeratorPersistenceTests {
     @Test func containerChangeEnumerationReportsThePersistenceError() async throws {
         file.versionIdentifier = "file-v2"
         try manager.setItemMetadataWriteFailureForTesting(true)
-        let observer = MockChangeObserver(enumerator: try makeEnumerator(.init(folder.identifier)))
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
 
         await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
             try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
