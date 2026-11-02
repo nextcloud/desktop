@@ -648,6 +648,8 @@ bool SyncJournalDb::checkConnect()
     bool rc = updateDatabaseStructure();
     if (!rc) {
         qCWarning(lcDb) << "Failed to update the database structure!";
+        close();
+        return false;
     }
 
     /*
@@ -658,8 +660,8 @@ bool SyncJournalDb::checkConnect()
      *  to get back the files that were gone.
      *  In 1.8.1 we had a fix to re-get the data, but this one here is better
      */
-    if (forceRemoteDiscovery) {
-        forceRemoteDiscoveryNextSyncLocked();
+    if (forceRemoteDiscovery && !forceRemoteDiscoveryNextSyncLocked()) {
+        return false;
     }
     const auto deleteDownloadInfo = _queryManager.get(PreparedSqlQueryManager::DeleteDownloadInfoQuery, QByteArrayLiteral("DELETE FROM downloadinfo WHERE path=?1"), _db);
     if (!deleteDownloadInfo) {
@@ -762,7 +764,6 @@ bool SyncJournalDb::removeColumn(const QString &columnName)
 bool SyncJournalDb::updateMetadataTableStructure()
 {
     auto columns = tableColumns("metadata");
-    bool re = true;
 
     // check if the file_id column is there and create it if not
     if (columns.isEmpty()) {
@@ -773,34 +774,35 @@ bool SyncJournalDb::updateMetadataTableStructure()
         return columns.indexOf(columnName.toLatin1()) > -1;
     };
 
-    const auto addColumn = [this, &re, &columnExists] (const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
-        if (!columnExists(columnName)) {
-            SqlQuery query(_db);
-            auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName).arg(dataType);
-            if (!defaultCommand.isEmpty()) {
-                request.append(QStringLiteral(" ") + defaultCommand);
-            }
-            request.append(QStringLiteral(";"));
-            query.prepare(request.toLatin1());
-            if (!query.exec()) {
-                sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);
-                re = false;
-            }
-
-            if (withIndex) {
-                query.prepare(QStringLiteral("CREATE INDEX metadata_%1 ON metadata(%1);").arg(columnName).toLatin1());
-                if (!query.exec()) {
-                    sqlFail(QStringLiteral("updateMetadataTableStructure: create index %1").arg(columnName), query);
-                    re = false;
+    const auto addColumn =
+        [this, &columnExists](const QString &columnName, const QString &dataType, const bool withIndex = false, const QString defaultCommand = {}) {
+            if (!columnExists(columnName)) {
+                SqlQuery query(_db);
+                auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2").arg(columnName).arg(dataType);
+                if (!defaultCommand.isEmpty()) {
+                    request.append(QStringLiteral(" ") + defaultCommand);
                 }
-            }
-            commitInternal(QStringLiteral("update database structure: add %1 column").arg(columnName));
-        }
-    };
+                request.append(QStringLiteral(";"));
+                query.prepare(request.toLatin1());
+                if (!query.exec()) {
+                    return sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);
+                }
 
-    addColumn(QStringLiteral("fileid"), QStringLiteral("VARCHAR(128)"), true);
-    addColumn(QStringLiteral("remotePerm"), QStringLiteral("VARCHAR(128)"));
-    addColumn(QStringLiteral("filesize"), QStringLiteral("BIGINT"));
+                if (withIndex) {
+                    query.prepare(QStringLiteral("CREATE INDEX metadata_%1 ON metadata(%1);").arg(columnName).toLatin1());
+                    if (!query.exec()) {
+                        return sqlFail(QStringLiteral("updateMetadataTableStructure: create index %1").arg(columnName), query);
+                    }
+                }
+                commitInternal(QStringLiteral("update database structure: add %1 column").arg(columnName));
+            }
+            return true;
+        };
+
+    if (!addColumn(QStringLiteral("fileid"), QStringLiteral("VARCHAR(128)"), true) || !addColumn(QStringLiteral("remotePerm"), QStringLiteral("VARCHAR(128)"))
+        || !addColumn(QStringLiteral("filesize"), QStringLiteral("BIGINT"))) {
+        return false;
+    }
 
     if (true) {
         SqlQuery query(_db);
@@ -810,8 +812,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index inode"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: create index inode"), query);
         }
         commitInternal(u"update database structure: update inode indexes"_s);
     }
@@ -820,8 +821,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_path ON metadata(path);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index path"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: create index path"), query);
         }
         commitInternal(QStringLiteral("update database structure: add path index"));
     }
@@ -830,21 +830,19 @@ bool SyncJournalDb::updateMetadataTableStructure()
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_parent ON metadata(parent_hash(path));");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index parent"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: create index parent"), query);
         }
         commitInternal(QStringLiteral("update database structure: add parent index"));
     }
 
-    addColumn(QStringLiteral("ignoredChildrenRemote"), QStringLiteral("INT"));
-    addColumn(QStringLiteral("contentChecksum"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("contentChecksumTypeId"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("e2eMangledName"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("isE2eEncrypted"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("e2eCertificateFingerprint"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("isShared"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("lastShareStateFetchedTimestmap"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("sharedByMe"), QStringLiteral("INTEGER"));
+    if (!addColumn(QStringLiteral("ignoredChildrenRemote"), QStringLiteral("INT")) || !addColumn(QStringLiteral("contentChecksum"), QStringLiteral("TEXT"))
+        || !addColumn(QStringLiteral("contentChecksumTypeId"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("e2eMangledName"), QStringLiteral("TEXT")) || !addColumn(QStringLiteral("isE2eEncrypted"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("e2eCertificateFingerprint"), QStringLiteral("TEXT")) || !addColumn(QStringLiteral("isShared"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("lastShareStateFetchedTimestmap"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("sharedByMe"), QStringLiteral("INTEGER"))) {
+        return false;
+    }
 
     auto uploadInfoColumns = tableColumns("uploadinfo");
     if (uploadInfoColumns.isEmpty()) {
@@ -854,8 +852,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE uploadinfo ADD COLUMN contentChecksum TEXT;");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add contentChecksum column"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: add contentChecksum column"), query);
         }
         commitInternal(QStringLiteral("update database structure: add contentChecksum col for uploadinfo"));
     }
@@ -868,8 +865,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE conflicts ADD COLUMN basePath TEXT;");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add basePath column"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: add basePath column"), query);
         }
     }
 
@@ -878,38 +874,34 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_e2e_id ON metadata(e2eMangledName);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index e2eMangledName"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: create index e2eMangledName"), query);
         }
 
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_e2e_status ON metadata (path, phash, type, isE2eEncrypted)");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index metadata_e2e_status"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateMetadataTableStructure: create index metadata_e2e_status"), query);
         }
 
         commitInternal(QStringLiteral("update database structure: add e2eMangledName index"));
     }
 
-    addColumn(QStringLiteral("lock"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("lockType"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("lockOwnerDisplayName"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("lockOwnerId"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("lockOwnerEditor"), QStringLiteral("TEXT"));
-    addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("lockToken"), QStringLiteral("TEXT"));
+    if (!addColumn(QStringLiteral("lock"), QStringLiteral("INTEGER")) || !addColumn(QStringLiteral("lockType"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("lockOwnerDisplayName"), QStringLiteral("TEXT")) || !addColumn(QStringLiteral("lockOwnerId"), QStringLiteral("TEXT"))
+        || !addColumn(QStringLiteral("lockOwnerEditor"), QStringLiteral("TEXT")) || !addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"))
+        || !addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER")) || !addColumn(QStringLiteral("lockToken"), QStringLiteral("TEXT"))) {
+        return false;
+    }
 
     SqlQuery query(_db);
     query.prepare("CREATE INDEX IF NOT EXISTS caseconflicts_basePath ON caseconflicts(basePath);");
     if (!query.exec()) {
-        sqlFail(QStringLiteral("caseconflictsTableStructure: create index basePath"), query);
-        return re = false;
+        return sqlFail(QStringLiteral("caseconflictsTableStructure: create index basePath"), query);
     }
     commitInternal(QStringLiteral("update database structure: add basePath index"));
 
-    addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER"));
-    addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"));
+    if (!addColumn(QStringLiteral("isLivePhoto"), QStringLiteral("INTEGER")) || !addColumn(QStringLiteral("livePhotoFile"), QStringLiteral("TEXT"))) {
+        return false;
+    }
 
     {
         const auto quotaBytesUsed =  QStringLiteral("quotaBytesUsed");
@@ -919,28 +911,40 @@ bool SyncJournalDb::updateMetadataTableStructure()
         auto result = false;
 
         if (columnExists(quotaBytesUsed) && !hasDefaultValue(quotaBytesUsed)) {
+            if (!_db.isOpen()) {
+                return false;
+            }
             result = removeColumn(quotaBytesUsed);
+            if (!result) {
+                return false;
+            }
         }
 
         if (columnExists(quotaBytesAvailable) && !hasDefaultValue(quotaBytesAvailable)) {
+            if (!_db.isOpen()) {
+                return false;
+            }
             result = removeColumn(quotaBytesAvailable);
+            if (!result) {
+                return false;
+            }
         }
 
         if (result) {
             columns = tableColumns("metadata");
         }
 
-        addColumn(quotaBytesUsed, bigInt, false, defaultCommand);
-        addColumn(quotaBytesAvailable, bigInt, false, defaultCommand);
+        if (!addColumn(quotaBytesUsed, bigInt, false, defaultCommand) || !addColumn(quotaBytesAvailable, bigInt, false, defaultCommand)) {
+            return false;
+        }
     }
 
-    return re;
+    return true;
 }
 
 bool SyncJournalDb::updateErrorBlacklistTableStructure()
 {
     auto columns = tableColumns("blacklist");
-    bool re = true;
 
     if (columns.isEmpty()) {
         return false;
@@ -950,13 +954,11 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN lastTryTime INTEGER(8);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateBlacklistTableStructure: Add lastTryTime fileid"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateBlacklistTableStructure: Add lastTryTime fileid"), query);
         }
         query.prepare("ALTER TABLE blacklist ADD COLUMN ignoreDuration INTEGER(8);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateBlacklistTableStructure: Add ignoreDuration fileid"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateBlacklistTableStructure: Add ignoreDuration fileid"), query);
         }
         commitInternal(QStringLiteral("update database structure: add lastTryTime, ignoreDuration cols"));
     }
@@ -964,8 +966,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN renameTarget VARCHAR(4096);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateBlacklistTableStructure: Add renameTarget"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateBlacklistTableStructure: Add renameTarget"), query);
         }
         commitInternal(QStringLiteral("update database structure: add renameTarget col"));
     }
@@ -974,8 +975,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN errorCategory INTEGER(8);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateBlacklistTableStructure: Add errorCategory"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateBlacklistTableStructure: Add errorCategory"), query);
         }
         commitInternal(QStringLiteral("update database structure: add errorCategory col"));
     }
@@ -984,8 +984,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN requestId VARCHAR(36);");
         if (!query.exec()) {
-            sqlFail(QStringLiteral("updateBlacklistTableStructure: Add requestId"), query);
-            re = false;
+            return sqlFail(QStringLiteral("updateBlacklistTableStructure: Add requestId"), query);
         }
         commitInternal(QStringLiteral("update database structure: add errorCategory col"));
     }
@@ -993,11 +992,10 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
     SqlQuery query(_db);
     query.prepare("CREATE INDEX IF NOT EXISTS blacklist_index ON blacklist(path collate nocase);");
     if (!query.exec()) {
-        sqlFail(QStringLiteral("updateErrorBlacklistTableStructure: create index blacklit"), query);
-        re = false;
+        return sqlFail(QStringLiteral("updateErrorBlacklistTableStructure: create index blacklit"), query);
     }
 
-    return re;
+    return true;
 }
 
 QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
@@ -2038,6 +2036,7 @@ int SyncJournalDb::downloadInfoCount()
 
         if (!query.exec()) {
             sqlFail(QStringLiteral("Count number of downloadinfo entries failed"), query);
+            return -1;
         }
         if (query.next().hasData) {
             re = query.intValue(0);
@@ -2249,6 +2248,7 @@ int SyncJournalDb::errorBlackListEntryCount()
 
         if (!query.exec()) {
             sqlFail(QStringLiteral("Count number of blacklist entries failed"), query);
+            return -1;
         }
         if (query.next().hasData) {
             re = query.intValue(0);
@@ -2519,6 +2519,7 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 
     if (!query.exec()) {
         sqlFail(QStringLiteral("avoidRenamesOnNextSync path: %1").arg(QString::fromUtf8(path)), query);
+        return;
     }
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
@@ -2548,6 +2549,7 @@ void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
 
     if (!query.exec()) {
         sqlFail(QStringLiteral("schedulePathForRemoteDiscovery path: %1").arg(QString::fromUtf8(fileName)), query);
+        return;
     }
 
     // Prevent future overwrite of the etags of this folder and all
@@ -2569,18 +2571,21 @@ void SyncJournalDb::forceRemoteDiscoveryNextSync()
         return;
     }
 
-    forceRemoteDiscoveryNextSyncLocked();
+    if (!forceRemoteDiscoveryNextSyncLocked()) {
+        return;
+    }
 }
 
-void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
+bool SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
 {
     qCInfo(lcDb) << "Forcing remote re-discovery by deleting folder Etags";
     SqlQuery deleteRemoteFolderEtagsQuery(_db);
     deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
 
     if (!deleteRemoteFolderEtagsQuery.exec()) {
-        sqlFail(QStringLiteral("forceRemoteDiscoveryNextSyncLocked"), deleteRemoteFolderEtagsQuery);
+        return sqlFail(QStringLiteral("forceRemoteDiscoveryNextSyncLocked"), deleteRemoteFolderEtagsQuery);
     }
+    return true;
 }
 
 
@@ -2985,6 +2990,7 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     if (!query.exec()) {
         qCWarning(lcDb) << "database error:" << query.error();
         sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET type=5 path: %1").arg(QString::fromUtf8(path)), query);
+        return;
     }
 
     // We also must make sure we do not read the files from the database (same logic as in schedulePathForRemoteDiscovery)
@@ -3268,6 +3274,7 @@ SyncJournalDb::PinStateInterface::rawList()
         qCWarning(lcDb) << "SQL Error" << "PinStateInterface::rawList" << query.error();
         _db->close();
         ASSERT(false);
+        return {};
     }
 
     QVector<QPair<QByteArray, PinState>> result;
