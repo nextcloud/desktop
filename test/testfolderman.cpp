@@ -41,7 +41,7 @@ class TestFolderMan: public QObject
 {
     Q_OBJECT
 
-    std::unique_ptr<FolderMan> _fm;
+    QPointer<FolderMan> _fm;
 
 signals:
     void incomingShareDeleted();
@@ -57,8 +57,8 @@ private slots:
 
     void testDeleteEncryptedFiles()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 4);
@@ -162,8 +162,8 @@ private slots:
 
     void testLeaveShare()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
@@ -265,8 +265,8 @@ private slots:
 
     void testCheckPathValidityForNewFolder()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
 #ifdef Q_OS_WIN
         Utility::NtfsPermissionLookupRAII ntfs_perm;
@@ -398,8 +398,8 @@ private slots:
 
     void testFindGoodPathForNewSyncFolder()
     {
-        _fm.reset({});
-        _fm.reset(new FolderMan{});
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
 
         // SETUP
 

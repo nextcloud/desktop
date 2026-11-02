@@ -21,7 +21,7 @@ class TestFolderStatusModel : public QObject
 {
     Q_OBJECT
 
-    std::unique_ptr<FolderMan> _folderMan;
+    QPointer<FolderMan> _folderMan;
 
 public:
 
@@ -33,7 +33,7 @@ private Q_SLOTS:
 
         QStandardPaths::setTestModeEnabled(true);
 
-        _folderMan.reset(new FolderMan{});
+        _folderMan = FolderMan::instance();
     }
 
     void startModel()

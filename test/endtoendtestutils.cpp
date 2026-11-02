@@ -158,7 +158,7 @@ void EndToEndTestHelper::setupFolderMan()
         return;
     }
 
-    auto folderMan = new OCC::FolderMan;
+    auto folderMan = OCC::FolderMan::instance();
     Q_ASSERT(folderMan);
     folderMan->setSyncEnabled(true);
     _folderMan.reset(folderMan);

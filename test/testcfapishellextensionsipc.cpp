@@ -42,8 +42,6 @@ class TestCfApiShellExtensionsIPC : public QObject
 {
     Q_OBJECT
 
-    FolderMan _fm;
-
     FakeFolder fakeFolder{FileInfo()};
 
     QScopedPointer<FakeQNAM> fakeQnam;
@@ -131,7 +129,7 @@ private slots:
         OCC::AccountManager::instance()->addAccount(account);
 
         FolderMan *folderman = FolderMan::instance();
-        QCOMPARE(folderman, &_fm);
+        QVERIFY(folderman);
         QVERIFY(folderman->addFolder(accountState, folderDefinition(fakeFolder.localPath())));
 
         fakeQnam->setOverride(

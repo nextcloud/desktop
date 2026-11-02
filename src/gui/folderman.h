@@ -79,7 +79,9 @@ public:
     };
 
     ~FolderMan() override;
+
     static FolderMan *instance();
+    static void resetInstance();
 
     int setupFolders();
     int setupFoldersMigration();
@@ -289,6 +291,8 @@ public slots:
 
     void removeE2eFiles(const OCC::AccountPtr &account) const;
 
+    void slotServerVersionChanged(const OCC::AccountPtr &account);
+
 private slots:
     void slotFolderSyncPaused(OCC::Folder *, bool paused);
     void slotFolderCanSyncChanged();
@@ -309,8 +313,6 @@ private slots:
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
-
-    void slotServerVersionChanged(const OCC::AccountPtr &account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -404,17 +406,11 @@ private:
 
     bool _appRestartRequired = false;
 
-    static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
-    friend class OCC::Application;
+
+    static std::unique_ptr<FolderMan> _instance;
+
     friend class ::TestFolderMan;
-    friend class ::TestSyncConflictsModel;
-    friend class ::TestCfApiShellExtensionsIPC;
-    friend class ::ShareTestHelper;
-    friend class ::EndToEndTestHelper;
-    friend class ::TestFolderStatusModel;
-    friend class ::TestRemoteWipe;
-    friend class ::FolderManTestHelper;
 };
 
 } // namespace OCC

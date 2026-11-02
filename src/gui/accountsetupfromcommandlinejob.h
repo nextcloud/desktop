@@ -29,7 +29,7 @@ public:
                                    QObject *parent = nullptr);
 
 public slots:
-    void handleAccountSetupFromCommandLine();
+    [[nodiscard]] bool handleAccountSetupFromCommandLine();
 
 private slots:
     void checkLastModifiedWithPropfind();
