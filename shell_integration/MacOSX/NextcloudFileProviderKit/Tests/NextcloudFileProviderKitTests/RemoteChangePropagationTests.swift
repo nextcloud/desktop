@@ -95,11 +95,13 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         _ item: MockRemoteItem,
         downloaded: Bool = false,
         visitedDirectory: Bool = false,
+        keepDownloaded: Bool = false,
         syncTime: Date? = nil
     ) -> SendableItemMetadata {
         var metadata = item.toItemMetadata(account: Self.account)
         metadata.downloaded = downloaded
         metadata.visitedDirectory = visitedDirectory
+        metadata.keepDownloaded = keepDownloaded
         metadata.syncTime = syncTime ?? oldSyncTime
         Self.dbManager.addItemMetadata(metadata)
         return metadata
@@ -495,6 +497,63 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(
             reportedIds(observer).contains(siblingFolder.identifier),
             "The changed (known) sibling directory's own update should still be reported."
+        )
+    }
+
+    /// Run one working-set scan after a folder with a file in it was created on the server inside a visited folder, pinned or not.
+    private func scanAfterNewFolder(underPinnedParent parentIsPinned: Bool) async throws -> (observer: MockChangeObserver, enumeratedPaths: [String], newFolder: MockRemoteItem, newLeaf: MockRemoteItem) {
+        let parentFolder = makeFolder(name: "parentFolder", parent: rootItem, etag: "parent-v1")
+
+        // Brand new on the server, so nothing inside it is materialised to justify descending.
+        let newFolder = makeFolder(name: "NewFolder", parent: parentFolder, etag: "newfolder-v1")
+        let newLeaf = makeFile(name: "newLeaf", parent: newFolder, etag: "newleaf-v1")
+
+        seed(parentFolder, visitedDirectory: true, keepDownloaded: parentIsPinned)
+
+        parentFolder.versionIdentifier = "parent-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        return (observer, recorder.paths, newFolder, newLeaf)
+    }
+
+    /// A folder created on the server inside a pinned folder should be read in the same working-set scan.
+    func testNewFolderUnderAPinnedFolderIsCrawled() async throws {
+        let (observer, enumeratedPaths, _, newLeaf) = try await scanAfterNewFolder(underPinnedParent: true)
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(
+            enumeratedPaths.contains { $0.hasSuffix("/NewFolder") },
+            "A new directory inside a pinned folder should be read in the same working-set scan."
+        )
+        XCTAssertTrue(
+            reportedIds(observer).contains(newLeaf.identifier),
+            "A file created on the server inside a new folder under a pinned folder should surface."
+        )
+    }
+
+    /// A folder created on the server inside an unpinned folder is reported but not read, because nothing inside it is part of the working set.
+    func testNewFolderUnderAnUnpinnedFolderIsNotCrawled() async throws {
+        let (observer, enumeratedPaths, newFolder, newLeaf) = try await scanAfterNewFolder(underPinnedParent: false)
+
+        XCTAssertNil(observer.error)
+        XCTAssertFalse(
+            enumeratedPaths.contains { $0.hasSuffix("/NewFolder") },
+            "A new directory inside an unpinned folder should not be read by the working-set scan."
+        )
+        XCTAssertFalse(
+            reportedIds(observer).contains(newLeaf.identifier),
+            "A file inside a new folder under an unpinned folder should not be reported by the working-set scan."
+        )
+        XCTAssertTrue(
+            reportedIds(observer).contains(newFolder.identifier),
+            "The new folder itself should still be reported."
         )
     }
 
