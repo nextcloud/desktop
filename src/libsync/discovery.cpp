@@ -2193,15 +2193,19 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add subfolders to that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
-            // Do NOT schedule the new local folder for deletion: it may contain data the user just
-            // created and that exists nowhere else. (see read-only folder regression, issues #7797/#10099).
+            // The new local folder is kept, never deleted: it may contain data that exists
+            // nowhere else (issues #7797/#10099). The flag lets the UI show why it does not
+            // sync, while other ignored items (ignore list, "choose what to sync") stay silent.
+            item->_isUploadForbiddenItemKept = true;
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: Not allowed because you don't have permission to add files in that folder:" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
-            // Do NOT schedule the new local file for deletion: it may be data the user just created
-            // and that exists nowhere else. (see read-only folder regression, issues #7797/#10099).
+            // The new local file is kept, never deleted: it may be data that exists nowhere
+            // else (issues #7797/#10099). The flag lets the UI show why it does not sync,
+            // while other ignored items (ignore list, "choose what to sync") stay silent.
+            item->_isUploadForbiddenItemKept = true;
             return false;
         }
         break;
