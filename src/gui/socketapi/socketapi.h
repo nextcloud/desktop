@@ -156,8 +156,8 @@ private:
 
     void setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const;
 
-    // Fetch the private link and call targetFun
-    void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
+    // Build the internal link and call targetFun.
+    void internalLinkUrlHelper(const QString &localFile, void (*targetFun)(const QString &url)) const;
 
     /** Sends translated/branded strings that may be useful to the integration */
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, OCC::SocketListener *listener);

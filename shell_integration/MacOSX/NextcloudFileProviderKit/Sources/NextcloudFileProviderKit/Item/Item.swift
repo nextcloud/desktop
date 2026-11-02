@@ -311,21 +311,14 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         // - ignored items and freshly-created items that have not been
         //   uploaded yet (`uploaded == false` ⇒ no server-side record).
         // The numeric `fileId` check is defensive — a successfully uploaded
-        // item should always carry one, and `fetchPrivateLinkUrl` requires it
-        // for the deprecated fallback URL. See nextcloud/desktop#10025.
+        // item should always carry one, and internal links require it.
+        // See nextcloud/desktop#10025.
         userInfoDict["displayOpenInBrowser"] = ![.rootContainer, .trashContainer].contains(itemIdentifier)
             && !metadata.isLockFileOfLocalOrigin
             && metadata.uploaded
             && !metadata.fileId.isEmpty
 
-        // Gate the "Copy internal link" context menu action on the same
-        // preconditions as "Open in browser": both actions resolve the same
-        // per-item private link via PROPFIND (with the deprecated
-        // `/index.php/f/<fileId>` URL as fallback), so they share server-side
-        // requirements. A dedicated flag — rather than reusing
-        // `displayOpenInBrowser` — keeps future divergence (e.g. excluding
-        // certain item types from the clipboard but not the browser, or vice
-        // versa) a one-line change. See nextcloud/desktop#10024.
+        // Copying and opening an internal link require the same server file ID.
         userInfoDict["displayCopyInternalLink"] = ![.rootContainer, .trashContainer].contains(itemIdentifier)
             && !metadata.isLockFileOfLocalOrigin
             && metadata.uploaded
