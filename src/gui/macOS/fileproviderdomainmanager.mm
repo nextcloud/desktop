@@ -9,6 +9,7 @@
 #import <FileProvider/FileProvider.h>
 
 #include <QDir>
+#include <QHash>
 #include <QLatin1StringView>
 #include <QList>
 #include <QLoggingCategory>
@@ -19,6 +20,7 @@
 #include "fileproviderdomainmanager.h"
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
+#include "fileproviderutils_mac.h"
 #include "fileproviderxpc_mac_utils.h"
 
 #include "gui/accountmanager.h"
@@ -46,32 +48,14 @@ public:
 
     /**
      * @brief Synchronous and logging wrapper for `[NSFileProviderManager addDomain:]`.
-     * @return true when the domain was added, false when the system reported an error.
+     * @return Whether the system confirmed that the domain was added before the wait ended.
      */
     bool addDomain(NSFileProviderDomain *domain)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Adding domain" << domain.identifier;
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-
-        __block bool addSucceeded = false;
-
-        [NSFileProviderManager addDomain:domain completionHandler:^(NSError * const error) {
-            if(error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error adding domain:"
-                                                          << error.code
-                                                          << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            qCDebug(lcMacFileProviderDomainManager) << "Added domain with identifier" << domain.identifier;
-            addSucceeded = true;
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-        return addSucceeded;
+        return FileProviderUtils::waitForFileProviderRequest("adding domain", ^(FileProviderUtils::RequestReplyHandler reply) {
+            [NSFileProviderManager addDomain:domain completionHandler:^(NSError *error) { reply(nil, error); }];
+        });
     }
 
     /**
@@ -80,70 +64,32 @@ public:
     void disconnect(NSFileProviderDomain *domain, const QString &message)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Disconnecting domain" << domain.identifier;
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
         NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
+        if (!manager) {
+            return;
+        }
 
-        [manager disconnectWithReason:message.toNSString() options:NSFileProviderManagerDisconnectionOptionsTemporary completionHandler:^(NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error disconnecting domain"
-                                                          << domain.displayName
-                                                          << error.code
-                                                          << error.localizedDescription;
-
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            qCInfo(lcMacFileProviderDomainManager) << "Successfully disconnected domain"
-                                                   << domain.displayName;
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        NSString *const reason = message.toNSString();
+        FileProviderUtils::waitForFileProviderRequest("disconnecting domain", ^(FileProviderUtils::RequestReplyHandler reply) {
+            [manager disconnectWithReason:reason
+                                  options:NSFileProviderManagerDisconnectionOptionsTemporary
+                        completionHandler:^(NSError *error) { reply(nil, error); }];
+        });
     }
 
     /**
      * @brief Synchronous and logging wrapper for `[NSFileProviderManager getDomainsWithCompletionHandler:]`.
      */
-    QList<NSFileProviderDomain *> getDomains()
+    QList<NSFileProviderDomain *> getDomains(bool *success = nullptr)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Getting all existing domains...";
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-
-        __block NSArray<NSFileProviderDomain *> *returnValue = [NSArray array];
-
-        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> * const domains, NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Could not get existing domains because of error:"
-                << error.code
-                << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            if (domains.count > 0) {
-                for (NSFileProviderDomain * const domain in domains) {
-                    qCInfo(lcMacFileProviderDomainManager) << "Found domain:" << domain.identifier;
-                }
-            } else {
-                qCInfo(lcMacFileProviderDomainManager) << "Found no existing domains.";
-            }
-
-            // Ensure the array (and contained domains) stay retained after the completion block returns.
-            returnValue = [domains copy];
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        const auto domains = FileProviderUtils::fileProviderDomains(success);
 
         QList<NSFileProviderDomain *> domainsList;
-
-        for (NSFileProviderDomain * const domain in returnValue) {
+        for (NSFileProviderDomain *const domain in domains) {
+            qCInfo(lcMacFileProviderDomainManager) << "Found domain:" << domain.identifier;
             domainsList.append(domain);
         }
-
         return domainsList;
     }
 
@@ -152,32 +98,18 @@ public:
      */
     void reconnect(NSFileProviderDomain *domain)
     {
-        qCInfo(lcMacFileProviderDomainManager) << "Attempt to reconnect domain"
-                                               << domain.identifier;
+        qCInfo(lcMacFileProviderDomainManager) << "Attempt to reconnect domain" << domain.identifier;
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        if (!manager) {
+            return;
+        }
 
-        NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-
-        [manager reconnectWithCompletionHandler:^(NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error reconnecting domain"
-                                                          << domain.identifier
-                                                          << "because of error:"
-                                                          << error.code
-                                                          << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            qCInfo(lcMacFileProviderDomainManager) << "Successfully reconnected domain"
-                                                   << domain.identifier;
-
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-        signalEnumerator(domain);
+        const auto reconnected = FileProviderUtils::waitForFileProviderRequest("reconnecting domain", ^(FileProviderUtils::RequestReplyHandler reply) {
+            [manager reconnectWithCompletionHandler:^(NSError *error) { reply(nil, error); }];
+        });
+        if (reconnected) {
+            signalEnumerator(domain);
+        }
     }
 
     /**
@@ -195,74 +127,52 @@ public:
     }
 
     /**
-     * @brief Synchronous and logging wrapper for `[NSFileProviderManager removeDomain:]`.
-     *
-     * Implicitly calls `removeFileProviderDomainData`, too.
-     * 
-     * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
+     * @brief Remove a domain and its local support data after confirmed success.
+     * @return The preserved-data path, empty for no data, or nullopt if removal was not confirmed.
      */
-    QString removeDomain(NSFileProviderDomain *domain)
+    std::optional<QString> removeDomain(NSFileProviderDomain *domain)
     {
-        qCInfo(lcMacFileProviderDomainManager) << "Removing domain"
-                                               << domain.identifier;
-
+        qCInfo(lcMacFileProviderDomainManager) << "Removing domain" << domain.identifier;
         deletePassword(domain);
 
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-        
-        __block NSURL *preservedDataURL = nil;
-
-        [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModePreserveDirtyUserData completionHandler:^(NSURL * const dataURL, NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error removing domain"
-                                                          << error.code
-                                                          << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            if (dataURL) {
-                preservedDataURL = [dataURL copy];
-                qCInfo(lcMacFileProviderDomainManager) << "Domain removed with preserved data at:" << dataURL.path;
-            } else {
-                qCInfo(lcMacFileProviderDomainManager) << "Domain removed with no preserved data";
-            }
-
-            removeFileProviderDomainData(domain.identifier);
-            qCInfo(lcMacFileProviderDomainManager) << "Removed domain"
-                                                   << domain.identifier;
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-        
-        if (preservedDataURL) {
-            return QString::fromNSString(preservedDataURL.path);
+        id result = nil;
+        const auto removed = FileProviderUtils::waitForFileProviderRequest(
+            "removing domain",
+            ^(FileProviderUtils::RequestReplyHandler reply) {
+                [NSFileProviderManager removeDomain:domain
+                                               mode:NSFileProviderDomainRemovalModePreserveDirtyUserData
+                                  completionHandler:^(NSURL *dataURL, NSError *error) {
+                                      if (!reply(dataURL, error) && !error && dataURL) {
+                                          qCWarning(lcMacFileProviderDomainManager) << "Late domain removal preserved data at:" << dataURL.path;
+                                      }
+                                  }];
+            },
+            &result);
+        if (!removed) {
+            return std::nullopt;
         }
-        
-        return {};
+
+        NSURL *const preservedDataURL = result;
+        if (preservedDataURL) {
+            qCInfo(lcMacFileProviderDomainManager) << "Domain removed with preserved data at:" << preservedDataURL.path;
+        }
+        removeFileProviderDomainData(domain.identifier);
+        qCInfo(lcMacFileProviderDomainManager) << "Removed domain" << domain.identifier;
+        return QString::fromNSString(preservedDataURL.path);
     }
 
     void signalEnumerator(NSFileProviderDomain *domain)
     {
         qCInfo(lcMacFileProviderDomainManager) << "Signaling enumerator for domain" << domain.identifier;
         NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
+        if (!manager) {
+            return;
+        }
 
-        [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier completionHandler:^(NSError * const error) {
-            if (error != nil) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error signalling" << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            dispatch_group_leave(dispatchGroup);
-            qCInfo(lcMacFileProviderDomainManager) << "Signaled enumerator for domain" << domain.identifier;
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        FileProviderUtils::waitForFileProviderRequest("signalling enumerator", ^(FileProviderUtils::RequestReplyHandler reply) {
+            [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier
+                                              completionHandler:^(NSError *error) { reply(nil, error); }];
+        });
     }
 
     /**
@@ -271,49 +181,15 @@ public:
     QString getUserVisibleUrlForDomain(NSFileProviderDomain *domain)
     {
         if (!domain) {
-            qCWarning(lcMacFileProviderDomainManager) << "Cannot get user-visible URL for nil domain";
+            return {};
+        }
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        if (!manager) {
             return {};
         }
 
-        qCInfo(lcMacFileProviderDomainManager) << "Getting user-visible URL for domain" << domain.identifier;
-        
-        NSFileProviderManager * const manager = [NSFileProviderManager managerForDomain:domain];
-        dispatch_group_t dispatchGroup = dispatch_group_create();
-        dispatch_group_enter(dispatchGroup);
-
-        __block NSURL *resultURL = nil;
-
-        [manager getUserVisibleURLForItemIdentifier:NSFileProviderRootContainerItemIdentifier completionHandler:^(NSURL * const url, NSError * const error) {
-            if (error) {
-                qCWarning(lcMacFileProviderDomainManager) << "Error getting user-visible URL for domain"
-                                                          << domain.identifier
-                                                          << ":"
-                                                          << error.code
-                                                          << error.localizedDescription;
-                dispatch_group_leave(dispatchGroup);
-                return;
-            }
-
-            if (url) {
-                resultURL = [url copy];
-                qCInfo(lcMacFileProviderDomainManager) << "Got user-visible URL for domain"
-                                                       << domain.identifier
-                                                       << ":"
-                                                       << url.path;
-            } else {
-                qCWarning(lcMacFileProviderDomainManager) << "No user-visible URL returned for domain" << domain.identifier;
-            }
-
-            dispatch_group_leave(dispatchGroup);
-        }];
-
-        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
-
-        if (resultURL) {
-            return QString::fromNSString(resultURL.path);
-        }
-
-        return {};
+        const auto url = FileProviderUtils::userVisibleURLForItem(manager, NSFileProviderRootContainerItemIdentifier);
+        return QString::fromNSString(url.path);
     }
 
     // MARK: - Higher Level Domain Management
@@ -381,16 +257,20 @@ public:
     /**
      * @brief Remove all file provider domains one by one and also their associated data.
      */
-    void removeAllDomains()
+    bool removeAllDomains()
     {
         qCInfo(lcMacFileProviderDomainManager) << "Removing and wiping all domains...";
-        const auto domains = getDomains();
-
-        for (NSFileProviderDomain * const domain : domains) {
-            removeDomain(domain);
+        auto success = false;
+        const auto domains = getDomains(&success);
+        if (!success) {
+            return false;
         }
-
-        qCInfo(lcMacFileProviderDomainManager) << "Completed wipe of all domains.";
+        for (NSFileProviderDomain * const domain : domains) {
+            if (!removeDomain(domain).has_value()) {
+                success = false;
+            }
+        }
+        return success;
     }
 
     // MARK: - Legacy
@@ -411,22 +291,31 @@ public:
         // `reconcileDomainDisplayNames()`.
         const auto domainDisplayName = account->shortcutName();
 
-        if (!existingDomainId.isEmpty()) {
-            const auto domains = getDomains();
-
-            for (NSFileProviderDomain * const domain : domains) {
-                if (existingDomainId == QString::fromNSString(domain.identifier)) {
-                    qCDebug(lcMacFileProviderDomainManager) << "Domain already exists for account"
-                                                            << accountId
-                                                            << "with identifier"
-                                                            << existingDomainId;
-
-                    return existingDomainId;
+        const auto pendingDomainId = _pendingAddIdentifiers.value(accountId);
+        auto discoverySucceeded = false;
+        const auto domains = getDomains(&discoverySucceeded);
+        if (!discoverySucceeded) {
+            return {};
+        }
+        for (const auto &identifier : {existingDomainId, pendingDomainId}) {
+            if (identifier.isEmpty()) {
+                continue;
+            }
+            for (NSFileProviderDomain *const domain : domains) {
+                if (identifier == QString::fromNSString(domain.identifier)) {
+                    AccountManager::instance()->setFileProviderDomainIdentifier(accountId, identifier);
+                    _pendingAddIdentifiers.remove(accountId);
+                    return identifier;
                 }
             }
         }
 
-        const auto domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        auto domainId = pendingDomainId;
+        if (domainId.isEmpty()) {
+            domainId = QUuid::createUuid().toString(QUuid::WithoutBraces);
+        }
+        // Keep retries on the same identifier: a timed-out add may still succeed later.
+        _pendingAddIdentifiers.insert(accountId, domainId);
         NSFileProviderDomain * const domain = [[NSFileProviderDomain alloc] initWithIdentifier:domainId.toNSString() displayName:domainDisplayName.toNSString()];
         domain.supportsSyncingTrash = YES;
 
@@ -438,6 +327,7 @@ public:
         }
 
         AccountManager::instance()->setFileProviderDomainIdentifier(accountId, domainId);
+        _pendingAddIdentifiers.remove(accountId);
 
         return domainId;
     }
@@ -468,6 +358,9 @@ public:
             qCInfo(lcMacFileProviderDomainManager) << "Due to lack of existence, not removing support directory at" << supportDirectory.path();
         }
     }
+
+private:
+    QHash<QString, QString> _pendingAddIdentifiers;
 };
 
 // MARK: -
@@ -530,22 +423,21 @@ void FileProviderDomainManager::start()
     qCDebug(lcMacFileProviderDomainManager) << "Completed start.";
 }
 
-QList<NSFileProviderDomain *> FileProviderDomainManager::getDomains() const
+QList<NSFileProviderDomain *> FileProviderDomainManager::getDomains(bool *success) const
 {
     if (!d) {
+        if (success) {
+            *success = false;
+        }
         return {};
     }
 
-    return d->getDomains();
+    return d->getDomains(success);
 }
 
-void FileProviderDomainManager::removeAllDomains()
+bool FileProviderDomainManager::removeAllDomains()
 {
-    if (!d) {
-        return;
-    }
-
-    d->removeAllDomains();
+    return d && d->removeAllDomains();
 }
 
 void FileProviderDomainManager::reconnectAll()
@@ -566,7 +458,7 @@ void FileProviderDomainManager::reconcileDomainDisplayNames()
     d->reconcileDomainDisplayNames();
 }
 
-QString FileProviderDomainManager::removeDomain(NSFileProviderDomain *domain)
+std::optional<QString> FileProviderDomainManager::removeDomain(NSFileProviderDomain *domain)
 {
     if (!d || !domain) {
         return {};
@@ -737,7 +629,7 @@ void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * co
     d->signalEnumerator(domain);
 }
 
-QString FileProviderDomainManager::removeDomainByAccount(const AccountState * const accountState)
+std::optional<QString> FileProviderDomainManager::removeDomainByAccount(const AccountState *const accountState)
 {
     if (!d) {
         return {};
@@ -750,13 +642,21 @@ QString FileProviderDomainManager::removeDomainByAccount(const AccountState * co
         return {};
     }
 
-    NSFileProviderDomain * const domain = domainForAccount(account.data());
-
-    if (!domain) {
-        return {};
+    if (account->fileProviderDomainIdentifier().isEmpty()) {
+        return QString{};
     }
 
-    return d->removeDomain(domain);
+    auto success = false;
+    const auto domains = d->getDomains(&success);
+    if (!success) {
+        return std::nullopt;
+    }
+    for (NSFileProviderDomain *const domain : domains) {
+        if (account->fileProviderDomainIdentifier() == QString::fromNSString(domain.identifier)) {
+            return d->removeDomain(domain);
+        }
+    }
+    return QString{};
 }
 
 void FileProviderDomainManager::disconnectFileProviderDomainForAccount(const AccountState * const accountState, const QString &reason)

@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <QObject>
 #include <QList>
+#include <QObject>
+#include <optional>
 
 #include "accountstate.h"
 
@@ -38,8 +39,9 @@ public:
 
     /**
      * @brief Remove all file provider domains managed by this application.
+     * @return Whether discovery and every removal completed successfully.
      */
-    void removeAllDomains();
+    bool removeAllDomains();
 
     /**
      * @brief Reconnect all file provider domains.
@@ -59,19 +61,22 @@ public:
 
     /**
      * @brief Remove a file provider domain independent from an account.
-     * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
+     * @return The preserved-data path, empty for no data, or nullopt on error or timeout.
      */
-    QString removeDomain(NSFileProviderDomain *domain);
+    std::optional<QString> removeDomain(NSFileProviderDomain *domain);
 
     /**
      * @brief Remove the file provider domain for the given account.
-     * @return The path to the location where preserved dirty user data is stored, or an empty QString if none.
+     * @return The preserved-data path, empty for no data, or nullopt on error or timeout.
      */
-    QString removeDomainByAccount(const OCC::AccountState * const accountState);
+    std::optional<QString> removeDomainByAccount(const OCC::AccountState *const accountState);
 
     void start();
 
-    [[nodiscard]] QList<NSFileProviderDomain *> getDomains() const;
+    /**
+     * @brief Get registered domains, setting success to false on error or timeout when provided.
+     */
+    [[nodiscard]] QList<NSFileProviderDomain *> getDomains(bool *success = nullptr) const;
 
     NSFileProviderDomain *domainForAccount(const OCC::Account *account) const;
 
