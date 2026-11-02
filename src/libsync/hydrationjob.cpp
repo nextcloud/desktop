@@ -74,6 +74,14 @@ void HydrationJob::start()
             return;
         }
 
+        // Close the device before signalling completion: the receiver updates the
+        // placeholder (including the modification time) in slotHydrateJobFinished().
+        // While the QFile is still open, closing it afterwards would push mtime to
+        // "now" again and the server mtime would be lost.
+        if (_device && _device->isOpen()) {
+            _device->close();
+        }
+
         Q_EMIT finished();
     });
     _job->start();
