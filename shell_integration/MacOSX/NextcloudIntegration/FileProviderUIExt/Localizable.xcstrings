@@ -4278,7 +4278,7 @@
         }
       }
     },
-    "Free up space" : {
+    "Free Up Space" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -4309,13 +4309,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free up space"
+            "value" : "Free Up Space"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free up space"
+            "value" : "Free Up Space"
           }
         },
         "et_EE" : {
@@ -5324,7 +5324,7 @@
         }
       }
     },
-    "Lock file" : {
+    "Lock File" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -5349,13 +5349,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lock file"
+            "value" : "Lock File"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lock file"
+            "value" : "Lock File"
           }
         },
         "et_EE" : {
@@ -6926,7 +6926,7 @@
         }
       }
     },
-    "Share options" : {
+    "Share Options" : {
       "comment" : "Text label; Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -6951,13 +6951,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share options"
+            "value" : "Share Options"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Share options"
+            "value" : "Share Options"
           }
         },
         "es" : {
@@ -8664,7 +8664,7 @@
         }
       }
     },
-    "Unlock file" : {
+    "Unlock File" : {
       "comment" : "Context menu item label",
       "extractionState" : "manual",
       "localizations" : {
@@ -8689,13 +8689,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock file"
+            "value" : "Unlock File"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock file"
+            "value" : "Unlock File"
           }
         },
         "es" : {

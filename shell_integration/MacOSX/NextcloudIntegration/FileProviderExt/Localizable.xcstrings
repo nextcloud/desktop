@@ -1,7 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Allow automatic freeing up space" : {
+    "Allow Automatic Freeing Up Space" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -26,13 +26,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Allow automatic freeing up space"
+            "value" : "Allow Automatic Freeing Up Space"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Allow automatic freeing up space"
+            "value" : "Allow Automatic Freeing Up Space"
           }
         },
         "es" : {
@@ -139,7 +139,7 @@
         }
       }
     },
-    "Always keep downloaded" : {
+    "Always Keep Downloaded" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -164,13 +164,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Always keep downloaded"
+            "value" : "Always Keep Downloaded"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Always keep downloaded"
+            "value" : "Always Keep Downloaded"
           }
         },
         "es" : {
@@ -415,7 +415,7 @@
         }
       }
     },
-    "Copy internal link" : {
+    "Copy Internal Link" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -476,13 +476,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy internal link"
+            "value" : "Copy Internal Link"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copy internal link"
+            "value" : "Copy Internal Link"
           }
         },
         "es" : {
@@ -775,7 +775,7 @@
         }
       }
     },
-    "File actions" : {
+    "File Actions" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -836,13 +836,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "File actions"
+            "value" : "File Actions"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "File actions"
+            "value" : "File Actions"
           }
         },
         "es" : {
@@ -1063,7 +1063,7 @@
         }
       }
     },
-    "Open in browser" : {
+    "Open in Browser" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -1142,13 +1142,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open in browser"
+            "value" : "Open in Browser"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open in browser"
+            "value" : "Open in Browser"
           }
         },
         "eo" : {
@@ -1477,7 +1477,7 @@
         }
       }
     },
-    "Remove download" : {
+    "Remove Download" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -1496,13 +1496,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove download"
+            "value" : "Remove Download"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove download"
+            "value" : "Remove Download"
           }
         },
         "et_EE" : {
@@ -1555,7 +1555,7 @@
         }
       }
     },
-    "Remove downloaded items" : {
+    "Remove Downloaded Items" : {
       "comment" : "Context menu item label.",
       "extractionState" : "manual",
       "localizations" : {
@@ -1574,13 +1574,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove downloaded items"
+            "value" : "Remove Downloaded Items"
           }
         },
         "en_GB" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remove downloaded items"
+            "value" : "Remove Downloaded Items"
           }
         },
         "et_EE" : {
