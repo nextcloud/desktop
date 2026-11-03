@@ -108,12 +108,12 @@ struct Build: AsyncParsableCommand {
     ///
     /// Download the Sparkle framework archive with URLSession.
     ///
-    private func downloadSparkle() async throws -> URL {
+    private func downloadSparkle() async throws -> (archive: URL, source: URL) {
         let url = await SparkleRepository.getDownloadAddress(for: sparkleRelease)
         let request = URLRequest(url: url)
         let (file, _) = try await URLSession.shared.download(for: request)
         
-        return file
+        return (file, url)
     }
     
     mutating func run() async throws {
@@ -215,12 +215,15 @@ struct Build: AsyncParsableCommand {
             appName += "Dev"
         }
         
+        var sparkleDownload: (archive: URL, source: URL)?
         if disableAutoUpdater == false {
             Log.info("Configuring Sparkle auto-updater.")
             
             stopwatch.record("Sparkle Configuration")
 
-            let downloadedArchive = try await downloadSparkle()
+            let download = try await downloadSparkle()
+            sparkleDownload = download
+            let downloadedArchive = download.archive
             let fm = FileManager.default
             
             let sparkleUnarchiveResult = await shell("tar -xvf \(downloadedArchive.path) -C \(buildPath)")
@@ -282,6 +285,70 @@ struct Build: AsyncParsableCommand {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
+
+        let dependencyCaptureId = "\(craftTarget)-\(UUID().uuidString)"
+        let swiftCaptureURL = buildURL.appendingPathComponent("sbom/\(dependencyCaptureId)/swift")
+        guard await mac_crafter.run("/usr/bin/env", [
+            "python3", repoRootURL.appendingPathComponent("admin/sbom/sbom.py").path, "swift", "capture",
+            "--source-dir", repoRootURL.path,
+            "--output-dir", swiftCaptureURL.path,
+            "--build-id", dependencyCaptureId,
+        ]) == 0 else {
+            throw MacCrafterError.craftError("Client compilation succeeded, but Swift dependency capture failed.")
+        }
+        Log.info("Swift dependency inventory: \(swiftCaptureURL.path)")
+
+        let craftCaptureURL = buildURL.appendingPathComponent("sbom/\(dependencyCaptureId)/craft")
+        guard await mac_crafter.run("/usr/bin/env", [
+            "python3", repoRootURL.appendingPathComponent("admin/sbom/sbom.py").path, "craft", "capture",
+            "--craft-root", buildURL.appendingPathComponent(craftTarget).path,
+            "--target-package", craftBlueprintName,
+            "--output-dir", craftCaptureURL.path,
+            "--build-id", dependencyCaptureId,
+        ]) == 0 else {
+            throw MacCrafterError.craftError("Client compilation succeeded, but Craft dependency capture failed.")
+        }
+        Log.info("Craft dependency inventory: \(craftCaptureURL.path)")
+
+        let downloadsURL = buildURL.appendingPathComponent("sbom/\(dependencyCaptureId)/downloads")
+        var downloadCaptureArguments = [
+            "python3", repoRootURL.appendingPathComponent("admin/sbom/sbom.py").path, "sparkle", "capture",
+            "--output-dir", downloadsURL.path, "--build-id", dependencyCaptureId,
+        ]
+        if let sparkleDownload {
+            downloadCaptureArguments += [
+                "--archive", sparkleDownload.archive.path,
+                "--version", sparkleRelease,
+                "--download-url", sparkleDownload.source.absoluteString,
+            ]
+        }
+        guard await mac_crafter.run("/usr/bin/env", downloadCaptureArguments) == 0 else {
+            throw MacCrafterError.craftError("Client compilation succeeded, but Sparkle dependency capture failed.")
+        }
+        Log.info("Separate download inventory: \(downloadsURL.path)")
+
+        let desktopCaptureURL = buildURL.appendingPathComponent("sbom/\(dependencyCaptureId)/desktop")
+        guard await mac_crafter.run("/usr/bin/env", [
+            "python3", repoRootURL.appendingPathComponent("admin/sbom/sbom.py").path, "desktop", "capture",
+            "--source-dir", repoRootURL.path, "--output-dir", desktopCaptureURL.path,
+            "--build-id", dependencyCaptureId,
+        ]) == 0 else {
+            throw MacCrafterError.craftError("Client compilation succeeded, but Desktop source capture failed.")
+        }
+        Log.info("Desktop source inventory: \(desktopCaptureURL.path)")
+
+        let combinedSBOMURL = buildURL.appendingPathComponent("sbom/\(dependencyCaptureId)/bom.cdx.json")
+        guard await mac_crafter.run("/usr/bin/env", [
+            "python3", repoRootURL.appendingPathComponent("admin/sbom/sbom.py").path, "common", "combine",
+            "--input", craftCaptureURL.appendingPathComponent("craft.cdx.json").path,
+            "--input", swiftCaptureURL.appendingPathComponent("swift.cdx.json").path,
+            "--input", downloadsURL.appendingPathComponent("downloads.cdx.json").path,
+            "--input", desktopCaptureURL.appendingPathComponent("desktop.cdx.json").path,
+            "--output", combinedSBOMURL.path, "--build-id", dependencyCaptureId,
+        ]) == 0 else {
+            throw MacCrafterError.craftError("Dependency capture succeeded, but SBOM combination failed.")
+        }
+        Log.info("Combined SBOM: \(combinedSBOMURL.path)")
 
         // MARK: Debug Symbols
 
