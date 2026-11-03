@@ -79,7 +79,7 @@ class ShareOptionsView: NSView {
     var controller: ShareController? {
         didSet {
             guard controller != nil else { return }
-            optionsTitleTextField.stringValue = String(localized: "Share options")
+            optionsTitleTextField.stringValue = String(localized: "Share Options")
             deleteButton.title = String(localized: "Delete")
             deleteButton.image = NSImage(systemSymbolName: "trash", accessibilityDescription: String(localized: "Delete trash icon"))
             deleteButton.bezelColor = NSColor.systemRed
