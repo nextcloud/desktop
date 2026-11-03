@@ -85,7 +85,7 @@ class TestLaunchOnStartup : public QObject
 
     void verifyRequests() const
     {
-        const auto service = QString::fromLatin1(LINUX_APPLICATION_ID) + u".service"_s;
+        const auto service = QString::fromLatin1(LINUX_APPLICATION_ID ".service");
         for (const auto &request : requests()) {
             QCOMPARE(request.path(), u"/org/freedesktop/systemd1"_s);
             QCOMPARE(request.interface(), u"org.freedesktop.systemd1.Manager"_s);
@@ -346,7 +346,8 @@ private Q_SLOTS:
         for (const auto failure : {"timeout", "error", "malformed", "extra-argument", "disconnected", "no-server"}) {
             for (const auto enabled : {true, false}) {
                 for (const auto existing : {true, false}) {
-                    const auto name = QString::fromLatin1(failure) + (enabled ? u"-enable"_s : u"-disable"_s) + (existing ? u"-existing"_s : u"-absent"_s);
+                    const auto name =
+                        QString(QString::fromLatin1(failure) + (enabled ? u"-enable"_s : u"-disable"_s) + (existing ? u"-existing"_s : u"-absent"_s));
                     QTest::newRow(qPrintable(name)) << QString::fromLatin1(failure) << enabled << existing;
                 }
             }
@@ -471,7 +472,7 @@ int main(int argc, char **argv)
             return 1;
         }
         const auto appName = QString::fromLatin1(APPLICATION_SHORTNAME);
-        const auto path = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + u"/autostart/"_s + appName + u".desktop"_s;
+        const auto path = QString(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + u"/autostart/"_s + appName + u".desktop"_s);
         auto desktop = QFile(path);
         const auto existed = desktop.exists();
         const auto enabled = arguments.at(2) == u"enable";

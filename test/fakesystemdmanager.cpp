@@ -84,8 +84,10 @@ bool FakeSystemdManager::handleMessage(const QDBusMessage &message, const QDBusC
             return connection.send(message.createReply(QVariant(true)));
         }
         state = u"masked"_s;
-        const auto changes =
-            emptyMaskReply ? QList<SystemdUnitFileChange>{} : QList<SystemdUnitFileChange>{{u"symlink"_s, u"/test/user/unit.service"_s, u"/dev/null"_s}};
+        auto changes = QList<SystemdUnitFileChange>{};
+        if (!emptyMaskReply) {
+            changes.emplaceBack(u"symlink"_s, u"/test/user/unit.service"_s, u"/dev/null"_s);
+        }
         return connection.send(message.createReply(QVariant::fromValue(changes)));
     }
     if (message.member() == u"Reload") {
