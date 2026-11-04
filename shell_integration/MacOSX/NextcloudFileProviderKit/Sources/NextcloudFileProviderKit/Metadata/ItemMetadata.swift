@@ -147,6 +147,13 @@ public extension ItemMetadata {
         name = fileName
     }
 
+    /// Keep the permissions the parent's listing stored for a folder other than the root, because a mount point's own read returns its storage's permissions instead.
+    mutating func keepPermissionsListedByParent(from existing: any ItemMetadata) {
+        guard directory, ocId != NSFileProviderItemIdentifier.rootContainer.rawValue else { return }
+
+        permissions = existing.permissions
+    }
+
     mutating func apply(account: Account) {
         self.account = account.ncKitAccount
         user = account.username

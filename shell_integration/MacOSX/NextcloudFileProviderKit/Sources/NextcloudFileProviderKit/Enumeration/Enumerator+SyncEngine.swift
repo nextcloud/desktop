@@ -22,7 +22,7 @@ extension Enumerator {
                 // preservation of `visitedDirectory` so the just-set `true`
                 // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
+                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false, keepPermissionsListedByParent: true)
             } else {
                 dbManager.addItemMetadataPreservingLocalState(metadata)
             }
