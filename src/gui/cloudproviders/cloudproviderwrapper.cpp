@@ -98,6 +98,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
     }
 
     // Build recently changed files list
+    auto recentsChanged = false;
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
         const auto fm = QFontMetricsF{QApplication::font()};
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
@@ -118,6 +119,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
             while (_recentlyChanged.size() > maxRecentlyChangedItems) {
                 _recentlyChanged.removeLast();
             }
+            recentsChanged = true;
         }
     }
 
@@ -150,8 +152,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
     }
     updateStatusText(msg);
 
-    if (!progress._lastCompletedItem.isEmpty()
-            && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
+    if (recentsChanged) {
         GMenuItem* item = nullptr;
         g_menu_remove_all (G_MENU(_recentMenu));
         if(!_recentlyChanged.isEmpty()) {
