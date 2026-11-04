@@ -150,7 +150,10 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
                     .arg(totalSizeStr);
         }
     }
-    updateStatusText(msg);
+    // A paused folder keeps showing the paused state.
+    if (!_paused) {
+        updateStatusText(msg);
+    }
 
     if (recentsChanged) {
         GMenuItem* item = nullptr;
@@ -206,18 +209,23 @@ Folder* CloudProviderWrapper::folder()
 
 void CloudProviderWrapper::slotSyncStarted()
 {
+    if (_paused) {
+        return;
+    }
     cloud_providers_account_exporter_set_status(_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_SYNCING);
 }
 
 void CloudProviderWrapper::slotSyncFinished(const SyncResult &result)
 {
-    if (result.status() == result.Success || result.status() == result.Problem)
-    {
-        cloud_providers_account_exporter_set_status(_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
-        updateStatusText(result.statusString());
+    // A paused folder keeps showing the paused state.
+    if (_paused) {
+        updatePauseStatus();
         return;
     }
-    cloud_providers_account_exporter_set_status(_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_ERROR);
+
+    const auto failed = result.status() == SyncResult::Error || result.status() == SyncResult::SetupError;
+    cloud_providers_account_exporter_set_status(_cloudProviderAccount,
+                                                failed ? CLOUD_PROVIDERS_ACCOUNT_STATUS_ERROR : CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
     updateStatusText(result.statusString());
 }
 
