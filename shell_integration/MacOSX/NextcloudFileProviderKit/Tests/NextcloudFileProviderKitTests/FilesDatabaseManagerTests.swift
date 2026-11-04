@@ -2305,4 +2305,21 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             "An item listed again must no longer be marked deleted."
         )
     }
+
+    /// Extending a lock changes only its timeout, not the file's ETag.
+    func testExtendedLockTimeoutIsWritten() {
+        let ocId = "lock-extended-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.lock = true
+        original.lockTimeOut = Date(timeIntervalSince1970: 3_000_000)
+        Self.dbManager.addItemMetadata(original)
+
+        let extendedTimeout = Date(timeIntervalSince1970: 4_000_000)
+        var extended = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        extended.lock = true
+        extended.lockTimeOut = extendedTimeout
+        Self.dbManager.addItemMetadataPreservingLocalState(extended)
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.lockTimeOut, extendedTimeout)
+    }
 }
