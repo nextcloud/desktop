@@ -543,7 +543,7 @@ public final class FilesDatabaseManager: Sendable {
                         preservingLocalStateFrom: existingMetadata,
                         preserveVisitedDirectory: true,
                         preserveDownloadState: keepExistingDownloadState,
-                        clearLockToken: pathChanged
+                        lockTokenPolicy: pathChanged ? .clear : .preserveLocal
                     )
 
                     returningUpdatedMetadatas.append(updatedMetadata)
@@ -667,9 +667,6 @@ public final class FilesDatabaseManager: Sendable {
                 if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
                     // A folder fetch publishes a deleted directory only after its downloads succeed.
                     let canUpdateTarget = !preserveDeletedTarget || !existing.deleted
-                    if readTargetMetadata.etag == existing.etag {
-                        readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
-                    }
 
                     // `visitedDirectory` is local-only, so it takes no part in the remote-state
                     // comparison and is recorded separately from `metadatasToUpdate`, which is also
@@ -683,10 +680,13 @@ public final class FilesDatabaseManager: Sendable {
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
-                        if keepExistingDownloadState {
-                            readTargetMetadata.downloaded = existing.downloaded
-                        }
-                        readTargetMetadata.keepDownloaded = existing.keepDownloaded
+                        readTargetMetadata = RemoteMetadataMerger.merge(
+                            readTargetMetadata,
+                            preservingLocalStateFrom: existing,
+                            preserveVisitedDirectory: false,
+                            preserveDownloadState: keepExistingDownloadState,
+                            lockTokenPolicy: .useIncoming
+                        )
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {

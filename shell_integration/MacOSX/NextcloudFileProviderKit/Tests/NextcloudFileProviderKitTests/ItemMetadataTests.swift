@@ -116,19 +116,25 @@ struct ItemMetadataTests {
         #expect(merged.downloaded == (preserveDownloadState ? existing.downloaded : incomingDownloaded))
     }
 
-    @Test(arguments: [false, true], [nil, "stored-lock"] as [String?])
-    func remoteMergeRespectsExplicitLockClearing(clearLockToken: Bool, storedLockToken: String?) {
+    @Test(arguments: [nil, "stored-lock"] as [String?], [nil, "incoming-lock"] as [String?])
+    func remoteMergeRespectsLockTokenPolicy(storedLockToken: String?, incomingLockToken: String?) {
         var existing = SendableItemMetadata.rawRow(ocId: "item")
         existing.lockToken = storedLockToken
         var incoming = existing
-        incoming.lockToken = "incoming-lock"
+        incoming.lockToken = incomingLockToken
 
-        let merged = RemoteMetadataMerger.merge(
-            incoming, preservingLocalStateFrom: existing, preserveVisitedDirectory: true,
-            clearLockToken: clearLockToken
-        )
+        let cases: [(policy: RemoteMetadataMerger.LockTokenPolicy, expected: String?)] = [
+            (.preserveLocal, storedLockToken),
+            (.useIncoming, incomingLockToken),
+            (.clear, nil)
+        ]
+        for (policy, expected) in cases {
+            let merged = RemoteMetadataMerger.merge(
+                incoming, preservingLocalStateFrom: existing, lockTokenPolicy: policy
+            )
 
-        #expect(merged.lockToken == (clearLockToken ? nil : storedLockToken))
+            #expect(merged.lockToken == expected)
+        }
     }
 
     @Test func thumbnailUrlCorrect() {
