@@ -1,12 +1,12 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-/// Preserves local fields from an already-resolved item when replacing its server metadata.
+/// Preserves local fields from an already-resolved item, including visit state only for directories.
 enum RemoteMetadataMerger {
     static func merge(
         _ metadata: SendableItemMetadata,
         preservingLocalStateFrom existing: any ItemMetadata,
-        preserveVisitedDirectory: Bool,
+        preserveVisitedDirectory: Bool = true,
         preserveDownloadState: Bool = true,
         clearLockToken: Bool = false
     ) -> SendableItemMetadata {
@@ -16,7 +16,7 @@ enum RemoteMetadataMerger {
         }
         merged.keepDownloaded = existing.keepDownloaded
 
-        if preserveVisitedDirectory {
+        if metadata.directory, preserveVisitedDirectory {
             merged.visitedDirectory = existing.visitedDirectory
         }
 
