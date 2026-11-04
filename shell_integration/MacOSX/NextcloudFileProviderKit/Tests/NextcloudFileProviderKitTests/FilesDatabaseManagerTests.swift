@@ -2162,6 +2162,53 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedRotated.downloaded)
     }
 
+    func testPreservingUpsertReturnsAndStoresMergedMetadataForBothIdentityLookups() throws {
+        for rotatesIdentifier in [false, true] {
+            for preserveVisitedDirectory in [false, true] {
+                for unchangedEtag in [false, true] {
+                    let suffix = "\(rotatesIdentifier)-\(preserveVisitedDirectory)-\(unchangedEtag)"
+                    var original = SendableItemMetadata(ocId: "original-\(suffix)", fileName: "\(suffix).txt", account: Self.account)
+                    original.directory = true
+                    original.downloaded = true
+                    original.keepDownloaded = false
+                    original.visitedDirectory = false
+                    original.lockToken = "stored-lock"
+                    original.etag = "stored-etag"
+                    original.fileProviderContentVersion = "stored-content-version"
+                    try Self.dbManager.insertForTesting(original)
+
+                    var incoming = original
+                    if rotatesIdentifier {
+                        incoming.ocId = "rotated-\(suffix)"
+                    }
+                    incoming.downloaded = false
+                    incoming.keepDownloaded = true
+                    incoming.visitedDirectory = true
+                    incoming.lockToken = "incoming-lock"
+                    incoming.etag = unchangedEtag ? original.etag : "new-etag"
+                    incoming.fileProviderContentVersion = "incoming-content-version"
+                    incoming.size = 1024
+                    incoming.status = Status.uploadError.rawValue
+                    incoming.chunkUploadId = "incoming-upload"
+
+                    let merged = Self.dbManager.addItemMetadataPreservingLocalState(incoming, preserveVisitedDirectory: preserveVisitedDirectory)
+
+                    var expected = incoming
+                    expected.downloaded = true
+                    expected.keepDownloaded = false
+                    expected.visitedDirectory = !preserveVisitedDirectory
+                    expected.lockToken = original.lockToken
+                    expected.fileProviderContentVersion = unchangedEtag ? original.fileProviderContentVersion : incoming.fileProviderContentVersion
+                    XCTAssertEqual(merged, expected, "Unexpected merge for \(suffix)")
+                    XCTAssertEqual(Self.dbManager.itemMetadata(ocId: incoming.ocId), expected, "Persisted metadata differs for \(suffix)")
+                    if rotatesIdentifier {
+                        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: original.ocId)?.deleted, true)
+                    }
+                }
+            }
+        }
+    }
+
     func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 

@@ -916,20 +916,14 @@ public final class FilesDatabaseManager: Sendable {
                     return
                 }
 
-                toWrite.downloaded = existing.downloaded
-                toWrite.keepDownloaded = existing.keepDownloaded
-
-                if preserveVisitedDirectory {
-                    toWrite.visitedDirectory = existing.visitedDirectory
-                }
+                toWrite = RemoteMetadataMerger.merge(
+                    metadata,
+                    preservingLocalStateFrom: existing,
+                    preserveVisitedDirectory: preserveVisitedDirectory
+                )
 
                 if keepPermissionsListedByParent {
                     toWrite.keepPermissionsListedByParent(from: existing)
-                }
-
-                toWrite.lockToken = existing.lockToken
-                if toWrite.etag == existing.etag {
-                    toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
                 }
 
                 // An ocId lookup can find a moved or deleted row, so check location and deletion state.
@@ -966,17 +960,11 @@ public final class FilesDatabaseManager: Sendable {
                     .fetchRecords(db, logger: logger)
 
                 if logicalCandidates.count == 1, let existing = logicalCandidates.first {
-                    toWrite.downloaded = existing.downloaded
-                    toWrite.keepDownloaded = existing.keepDownloaded
-
-                    if preserveVisitedDirectory {
-                        toWrite.visitedDirectory = existing.visitedDirectory
-                    }
-
-                    toWrite.lockToken = existing.lockToken
-                    if toWrite.etag == existing.etag {
-                        toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                    }
+                    toWrite = RemoteMetadataMerger.merge(
+                        metadata,
+                        preservingLocalStateFrom: existing,
+                        preserveVisitedDirectory: preserveVisitedDirectory
+                    )
                 } else {
                     // No prior row at this ocId or logical address: this is a
                     // genuinely new item. Inherit the parent's "Always keep

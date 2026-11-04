@@ -6,6 +6,76 @@ import Foundation
 import Testing
 
 struct ItemMetadataTests {
+    @Test(arguments: [false, true])
+    func remoteMergePreservesLocalStateAcrossMoves(storedValue: Bool) {
+        var existing = SendableItemMetadata.rawRow(ocId: "existing")
+        existing.directory = true
+        existing.serverUrl = "https://example.com/old-parent"
+        existing.fileName = "old-name.txt"
+        existing.downloaded = storedValue
+        existing.keepDownloaded = storedValue
+        existing.visitedDirectory = storedValue
+        existing.lockToken = storedValue ? "stored-lock" : nil
+        existing.etag = "old-etag"
+
+        var incoming = SendableItemMetadata.rawRow(ocId: "incoming")
+        incoming.directory = true
+        incoming.serverUrl = "https://example.com/new-parent"
+        incoming.fileName = "new-name.txt"
+        incoming.etag = "new-etag"
+        incoming.size = 1024
+        incoming.downloaded = !storedValue
+        incoming.keepDownloaded = !storedValue
+        incoming.visitedDirectory = !storedValue
+        incoming.lockToken = "incoming-lock"
+        incoming.status = Status.uploadError.rawValue
+        incoming.chunkUploadId = "incoming-upload"
+        incoming.sessionError = "incoming-error"
+
+        let merged = RemoteMetadataMerger.merge(incoming, preservingLocalStateFrom: existing, preserveVisitedDirectory: true)
+
+        #expect(merged.downloaded == storedValue)
+        #expect(merged.keepDownloaded == storedValue)
+        #expect(merged.visitedDirectory == storedValue)
+        #expect(merged.lockToken == existing.lockToken)
+        #expect(merged.ocId == incoming.ocId)
+        #expect(merged.serverUrl == incoming.serverUrl)
+        #expect(merged.fileName == incoming.fileName)
+        #expect(merged.etag == incoming.etag)
+        #expect(merged.size == incoming.size)
+        #expect(merged.status == incoming.status)
+        #expect(merged.chunkUploadId == incoming.chunkUploadId)
+        #expect(merged.sessionError == incoming.sessionError)
+    }
+
+    @Test(arguments: [false, true], [false, true])
+    func remoteMergeRespectsVisitedDirectoryPreservation(preserveVisitedDirectory: Bool, storedVisitedDirectory: Bool) {
+        var existing = SendableItemMetadata.rawRow(ocId: "item")
+        existing.directory = true
+        existing.visitedDirectory = storedVisitedDirectory
+        var incoming = existing
+        incoming.visitedDirectory = !storedVisitedDirectory
+
+        let merged = RemoteMetadataMerger.merge(incoming, preservingLocalStateFrom: existing, preserveVisitedDirectory: preserveVisitedDirectory)
+
+        #expect(merged.visitedDirectory == (preserveVisitedDirectory ? storedVisitedDirectory : incoming.visitedDirectory))
+    }
+
+    @Test(arguments: [false, true], [nil, "stored-content-version"] as [String?])
+    func remoteMergePreservesContentVersionOnlyForUnchangedEtag(unchangedEtag: Bool, storedContentVersion: String?) {
+        var existing = SendableItemMetadata.rawRow(ocId: "item")
+        existing.etag = "stored-etag"
+        existing.fileProviderContentVersion = storedContentVersion
+        var incoming = existing
+        incoming.etag = unchangedEtag ? existing.etag : "new-etag"
+        incoming.fileProviderContentVersion = "incoming-content-version"
+
+        let merged = RemoteMetadataMerger.merge(incoming, preservingLocalStateFrom: existing, preserveVisitedDirectory: true)
+
+        #expect(merged.fileProviderContentVersion == (unchangedEtag ? storedContentVersion : incoming.fileProviderContentVersion))
+        #expect(merged.etag == incoming.etag)
+    }
+
     @Test func thumbnailUrlCorrect() {
         let account =
             Account(user: "user", id: "id", serverUrl: "https://examplecloud.com", password: "bla")
