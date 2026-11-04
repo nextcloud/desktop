@@ -26,6 +26,20 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         rootItem.children = []
     }
 
+    ///
+    /// Run one materialized-set reconciliation in which the system reports nothing as materialized,
+    /// as it does until it has caught up with a download.
+    ///
+    private func reconcileBeforeTheSystemReportsTheDownloads() async {
+        let finished = XCTestExpectation(description: "Reconciliation finished")
+        let observer = MaterializedEnumerationObserver(
+            account: Self.account, dbManager: Self.dbManager, log: FileProviderLogMock()
+        ) { _, _ in finished.fulfill() }
+
+        observer.finishEnumerating(upTo: nil)
+        await fulfillment(of: [finished], timeout: 1)
+    }
+
     func testFetchFileContents() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)
@@ -70,6 +84,9 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(fetchedItem.itemIdentifier, item.itemIdentifier)
         XCTAssertEqual(fetchedItem.filename, item.filename)
         XCTAssertEqual(fetchedItem.creationDate, item.creationDate)
+
+        await reconcileBeforeTheSystemReportsTheDownloads()
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.downloaded, true, "A reconciliation before the system reports the download must not undo it.")
     }
 
     func testFetchAliasFileContentsDetectsAliasType() async throws {
@@ -261,5 +278,9 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(
             try Data(contentsOf: itemChildDirBChildFileUrl), remoteDirectoryChildDirBChildFile.data
         )
+
+        await reconcileBeforeTheSystemReportsTheDownloads()
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directoryChildFileMetadata.ocId)?.downloaded, true, "A reconciliation before the system reports the download must not undo it.")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directoryChildDirBChildFileMetadata.ocId)?.downloaded, true, "A reconciliation before the system reports the download must not undo it.")
     }
 }

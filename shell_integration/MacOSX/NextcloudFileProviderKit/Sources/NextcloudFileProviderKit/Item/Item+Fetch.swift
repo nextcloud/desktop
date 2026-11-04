@@ -90,6 +90,11 @@ public extension Item {
                             handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                         ) ?? NSFileProviderError(.cannotSynchronize)
                     }
+
+                    // The system confirms this download only later, so hold the row against
+                    // reconciliation, recording first so no pass sees `downloaded = true` without
+                    // the entry.
+                    dbManager.pendingMaterializations.recordDownloaded(identifier)
                 }
 
                 metadata.status = Status.normal.rawValue
@@ -232,6 +237,10 @@ public extension Item {
         // having downloaded incorrectly enumerated files
         updatedMetadata.uploaded = true
         updatedMetadata.sessionError = ""
+
+        // The system confirms this download only later, so hold the row against reconciliation,
+        // recording first so no pass sees `downloaded = true` without the entry.
+        dbManager.pendingMaterializations.recordDownloaded(itemIdentifier)
 
         dbManager.addItemMetadata(updatedMetadata)
 
