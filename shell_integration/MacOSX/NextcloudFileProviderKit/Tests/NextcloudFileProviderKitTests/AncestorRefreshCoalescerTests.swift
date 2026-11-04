@@ -58,7 +58,6 @@ struct AncestorRefreshCoalescerTests {
     private func recordingNudge(_ recorder: NudgeRecorder) -> @Sendable (NSFileProviderItemIdentifier) async throws -> Void {
         { identifier in
             await recorder.begin(identifier)
-            await recorder.end()
         }
     }
 
@@ -145,7 +144,6 @@ struct AncestorRefreshCoalescerTests {
         let parkedNudge: @Sendable (NSFileProviderItemIdentifier) async throws -> Void = { identifier in
             await recorder.begin(identifier)
             await nudgeInFlight.wait()
-            await recorder.end()
         }
 
         coalescer.enqueue(ocIds: ["containerA/file1", "containerC/file1"], ancestors: Self.containers, nudge: parkedNudge, log: log)
@@ -175,7 +173,6 @@ struct AncestorRefreshCoalescerTests {
         let coalescer = AncestorRefreshCoalescer(waitForWindow: { await window.wait() })
         let failingNudge: @Sendable (NSFileProviderItemIdentifier) async throws -> Void = { identifier in
             await recorder.begin(identifier)
-            await recorder.end()
 
             throw NudgeFailure()
         }
@@ -238,14 +235,23 @@ struct AncestorRefreshCoalescerTests {
         coalescer.enqueue(ocIds: ["containerC/file1"], ancestors: Self.containers, nudge: recordingNudge(current), log: log)
 
         try await waitUntil({ await window.entries == 2 }, "An enqueue after cancel() never started a drain.")
-        // The cancelled drain hands its batch back just after its last nudge, which can land after the new drain's claim, so every window is opened until all three arrive.
-        try await waitUntil({ await window.release(); return await current.count >= 3 }, "The drain started after cancel() did not take over the cancelled drain's batch.")
+        // The cancelled drain hands its batch back just after its last nudge, which can land after the new drain's claim or after it has ended, so every poll starts a drain if none runs and opens its window until all three arrive.
+        let currentNudge = recordingNudge(current)
+        let log = log
+        try await waitUntil({
+            if await current.count >= 3 {
+                return true
+            }
+            coalescer.enqueue(ocIds: [], ancestors: Self.containers, nudge: currentNudge, log: log)
+            await window.release()
+            return false
+        }, "The drain started after cancel() did not take over the cancelled drain's batch.")
 
         #expect(await cancelled.count == 1, "The cancelled drain kept nudging after the nudge it had in flight.")
         #expect(await Set(current.nudged) == [Self.containerA, Self.containerB, Self.containerC], "The batch the cancelled drain had claimed must be nudged by the next drain.")
     }
 
-    /// Invalidating an extension must stop its own domain's drain, so the next instance's closures take over the pending batch.
+    /// Invalidating an extension must stop its own domain's drain, so the pending batch waits for the next enqueue's drain.
     @Test func invalidatingTheExtensionStopsItsDomainsDrain() async throws {
         let cancelled = NudgeRecorder()
         let current = NudgeRecorder()
