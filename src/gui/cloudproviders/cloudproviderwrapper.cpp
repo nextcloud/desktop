@@ -36,7 +36,9 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName.toUtf8().data());
 
     cloud_providers_account_exporter_set_name (_cloudProviderAccount, folder->shortGuiLocalPath().toUtf8().data());
-    cloud_providers_account_exporter_set_icon (_cloudProviderAccount, g_icon_new_for_string(APPLICATION_ICON_NAME, nullptr));
+    GIcon *icon = g_icon_new_for_string(APPLICATION_ICON_NAME, nullptr);
+    cloud_providers_account_exporter_set_icon (_cloudProviderAccount, icon);
+    g_clear_object(&icon);
     cloud_providers_account_exporter_set_path (_cloudProviderAccount, folder->cleanPath().toUtf8().data());
     cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
     model = getMenuModel();
