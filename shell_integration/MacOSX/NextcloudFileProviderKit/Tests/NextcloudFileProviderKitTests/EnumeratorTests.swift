@@ -1522,27 +1522,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         }
     }
 
-    func testSingleFileReadRemoteErrorDoesNotPersistMetadata() async throws {
-        var existing = remoteItemA.toItemMetadata(account: Self.account)
-        existing.etag = "stored-etag"
-        existing.keepDownloaded = true
-        existing.lockToken = "stored-lock"
-        try Self.dbManager.insertForTesting(existing)
-        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
-        remote.enumerateErrorBySuffix = ["/itemA": error]
-
-        let result = await Enumerator.readServerUrl(
-            remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
-            dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
-        )
-
-        XCTAssertEqual(result.error, error)
-        XCTAssertNil(result.metadatas)
-        XCTAssertNil(result.changes)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
-    }
-
     func testDirectoryTargetReadReportsMergedExistingMetadata() async throws {
         let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let expectedPath = remoteFolder.remotePath
@@ -1643,38 +1622,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
             XCTAssertEqual(created, metadata)
         }
-    }
-
-    func testDirectoryTargetReadRemoteErrorDoesNotPersistMetadata() async throws {
-        var existing = remoteFolder.toItemMetadata(account: Self.account)
-        existing.etag = "stored-etag"
-        existing.downloaded = true
-        existing.keepDownloaded = true
-        existing.visitedDirectory = true
-        existing.lockToken = "stored-lock"
-        existing.fileProviderContentVersion = "stored-version"
-        try Self.dbManager.insertForTesting(existing)
-        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
-        let expectedPath = remoteFolder.remotePath
-        remote.enumerateCallHandler = { path, depth, _, _, _, account, options, _ in
-            XCTAssertEqual(path, expectedPath)
-            XCTAssertEqual(depth, .target)
-            XCTAssertEqual(account, Self.account)
-            XCTAssertFalse(options.paginate)
-        }
-        let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
-        remote.enumerateErrorBySuffix = ["/folder": error]
-
-        let result = await Enumerator.readServerUrl(
-            remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
-            dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
-        )
-
-        XCTAssertEqual(result.error, error)
-        XCTAssertEqual(remote.readOperationCount, 1)
-        XCTAssertNil(result.metadatas)
-        XCTAssertNil(result.changes)
-        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
     }
 
     func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async throws {

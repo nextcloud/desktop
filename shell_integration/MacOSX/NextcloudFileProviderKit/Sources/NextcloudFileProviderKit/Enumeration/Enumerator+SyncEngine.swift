@@ -285,7 +285,26 @@ extension Enumerator {
             return RemoteReadResult(metadatas: [], nextPage: nextPage)
         }
 
-        func finishTargetRead(_ metadata: SendableItemMetadata, changes: ChangeSet) async -> RemoteReadResult {
+        func finishTargetRead(_ received: SendableItemMetadata) async -> RemoteReadResult {
+            // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+            let (metadata, changes) = await dbManager.perform {
+                dbManager -> (SendableItemMetadata, ChangeSet) in
+                if let existing = dbManager.itemMetadata(ocId: received.ocId) {
+                    let metadata = existing.mergingRemoteMetadata(
+                        received,
+                        preserveVisitedDirectory: true,
+                        preserveDownloadState: true,
+                        lock: .preserveLocal
+                    )
+                    return (metadata, ChangeSet(updated: [metadata]))
+                }
+
+                // Inherit the parent's pin so the overlay and content policy match its siblings.
+                var metadata = received
+                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                return (metadata, ChangeSet(created: [metadata]))
+            }
+
             do {
                 try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
             } catch is CancellationError {
@@ -307,24 +326,7 @@ extension Enumerator {
                 (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
-                let received = receivedFile.toItemMetadata()
-
-                // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
-                let (metadata, changes) = await dbManager.perform {
-                    dbManager -> (SendableItemMetadata, ChangeSet) in
-                    if let existing = dbManager.itemMetadata(ocId: received.ocId) {
-                        let metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
-                        return (metadata, ChangeSet(updated: [metadata]))
-                    }
-
-                    // Genuinely new item: inherit the parent's pin so the
-                    // overlay and `contentPolicy` match its siblings (#10054).
-                    var metadata = received
-                    metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
-                    return (metadata, ChangeSet(created: [metadata]))
-                }
-
-                return await finishTargetRead(metadata, changes: changes)
+                return await finishTargetRead(receivedFile.toItemMetadata())
             }
         }
 
@@ -348,24 +350,7 @@ extension Enumerator {
                 return RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
             }
 
-            let received = receivedFile.toItemMetadata()
-
-            // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
-            let (metadata, changes) = await dbManager.perform {
-                dbManager -> (SendableItemMetadata, ChangeSet) in
-                if let existing = dbManager.itemMetadata(ocId: received.ocId) {
-                    let metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
-                    return (metadata, ChangeSet(updated: [metadata]))
-                }
-
-                // Genuinely new item: inherit the parent's pin so the
-                // overlay and `contentPolicy` match its siblings (#10054).
-                var metadata = received
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
-                return (metadata, ChangeSet(created: [metadata]))
-            }
-
-            return await finishTargetRead(metadata, changes: changes)
+            return await finishTargetRead(receivedFile.toItemMetadata())
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
