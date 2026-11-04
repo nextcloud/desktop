@@ -277,6 +277,13 @@ extension Enumerator {
                 logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
                 continue
             }
+
+            // A move that reached the database during the scan makes this deletion about the old path, not the item.
+            if let current = dbManager.itemMetadata(ocId: deletedMetadata.ocId), !current.hasSameRemotePath(as: deletedMetadata.remotePath()) {
+                logger.debug("Ignoring deletion of an item that has since moved.", [.item: deletedMetadata.ocId])
+                continue
+            }
+
             var deleteMarked = deletedMetadata
             deleteMarked.deleted = true
             deleteMarked.syncTime = Date()
