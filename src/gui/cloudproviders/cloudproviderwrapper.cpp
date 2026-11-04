@@ -25,6 +25,8 @@ Q_LOGGING_CATEGORY(lcNextcloudCloudProviderIntegration, "nextcloud.cloudprovider
 
 int CloudProviderWrapper::preferredTextWidth = 0;
 
+static constexpr auto maxRecentlyChangedItems = 5;
+
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
 {
@@ -105,18 +107,18 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         QString elidedFileName = fm.elidedText(fileName, Qt::ElideRight, preferredTextWidth);
         //: %1 is the elided file name. %2 is the sync result. %3 is the current time.
         QString actionText = tr("%1 (%2, %3)").arg(elidedFileName, elidedKindStr, timeStr);
-        if (f) {
-            QString fullPath = f->path() + '/' + fileName;
-            if (QFile(fullPath).exists()) {
-                if (_recentlyChanged.length() > 5) {
-                    _recentlyChanged.removeFirst();
-                }
-                _recentlyChanged.append(qMakePair(actionText, fullPath));
-            } else {
-                _recentlyChanged.append(qMakePair(actionText, QString("")));
+        // Entries for files that no longer exist (e.g. deletions) can't be shown in the file manager.
+        const QString fullPath = f->cleanPath() + '/' + fileName;
+        if (QFile::exists(fullPath)) {
+            // Re-completing a file replaces its previous entry instead of duplicating it.
+            _recentlyChanged.removeIf([&fullPath](const auto &entry) {
+                return entry.second == fullPath;
+            });
+            _recentlyChanged.prepend(qMakePair(actionText, fullPath));
+            while (_recentlyChanged.size() > maxRecentlyChangedItems) {
+                _recentlyChanged.removeLast();
             }
         }
-
     }
 
     // Build status details text
@@ -317,7 +319,6 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
 
     if(g_str_equal(name, "showfile")) {
         const gchar *path = g_variant_get_string(parameter, nullptr);
-        g_print("showfile => %s\n", path);
         showInFileManager(QString(path));
     }
 
