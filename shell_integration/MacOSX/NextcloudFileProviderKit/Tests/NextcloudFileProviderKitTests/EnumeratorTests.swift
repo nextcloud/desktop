@@ -1490,6 +1490,140 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
     }
 
+    func testDirectoryTargetReadReportsMergedExistingMetadata() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let expectedPath = remoteFolder.remotePath
+        remote.enumerateCallHandler = { path, depth, _, _, _, account, options, _ in
+            XCTAssertEqual(path, expectedPath)
+            XCTAssertEqual(depth, .target)
+            XCTAssertEqual(account, Self.account)
+            XCTAssertFalse(options.paginate)
+        }
+        let cases: [(
+            downloaded: Bool, keepDownloaded: Bool, visitedDirectory: Bool,
+            lockToken: String?, unchangedEtag: Bool, contentVersion: String?
+        )] = [
+            (false, false, false, nil, true, nil),
+            (false, true, true, "stored-lock", true, "stored-version"),
+            (true, false, true, nil, false, "stored-version"),
+            (true, true, false, "stored-lock", false, nil)
+        ]
+        for testCase in cases {
+            var parent = rootItem.toItemMetadata(account: Self.account)
+            parent.keepDownloaded = !testCase.keepDownloaded
+            try Self.dbManager.insertForTesting(parent)
+            var existing = remoteFolder.toNKFile().toItemMetadata()
+            existing.downloaded = testCase.downloaded
+            existing.keepDownloaded = testCase.keepDownloaded
+            existing.visitedDirectory = testCase.visitedDirectory
+            existing.lockToken = testCase.lockToken
+            existing.etag = testCase.unchangedEtag ? remoteFolder.versionIdentifier : "stored-etag"
+            existing.fileProviderContentVersion = testCase.contentVersion
+            try Self.dbManager.insertForTesting(existing)
+            let previousReadCount = remote.readOperationCount
+
+            let result = await Enumerator.readServerUrl(
+                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
+                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(result.error)
+            XCTAssertEqual(remote.readOperationCount, previousReadCount + 1)
+            let metadata = try XCTUnwrap(result.metadatas?.first)
+            let changes = try XCTUnwrap(result.changes)
+            let reported = try XCTUnwrap(changes.updated.first)
+            XCTAssertEqual(result.metadatas?.count, 1)
+            XCTAssertEqual(changes.updated.count, 1)
+            XCTAssertTrue(changes.created.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertTrue(metadata.directory)
+            XCTAssertEqual(metadata.downloaded, testCase.downloaded)
+            XCTAssertEqual(metadata.keepDownloaded, testCase.keepDownloaded)
+            XCTAssertEqual(metadata.visitedDirectory, testCase.visitedDirectory)
+            XCTAssertEqual(metadata.lockToken, testCase.lockToken)
+            XCTAssertEqual(metadata.fileProviderContentVersion, testCase.unchangedEtag ? testCase.contentVersion : nil)
+            XCTAssertEqual(metadata.etag, remoteFolder.versionIdentifier)
+            XCTAssertEqual(metadata.remotePath(), remoteFolder.remotePath)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+            XCTAssertEqual(reported, metadata)
+        }
+    }
+
+    func testDirectoryTargetReadReportsInheritedParentPin() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let expectedPath = remoteFolder.remotePath
+        remote.enumerateCallHandler = { path, depth, _, _, _, account, options, _ in
+            XCTAssertEqual(path, expectedPath)
+            XCTAssertEqual(depth, .target)
+            XCTAssertEqual(account, Self.account)
+            XCTAssertFalse(options.paginate)
+        }
+        for parentPinned in [false, true] {
+            try Self.dbManager.removeAllRowsForTesting()
+            var parent = rootItem.toItemMetadata(account: Self.account)
+            parent.keepDownloaded = parentPinned
+            try Self.dbManager.insertForTesting(parent)
+            let previousReadCount = remote.readOperationCount
+
+            let result = await Enumerator.readServerUrl(
+                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
+                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(result.error)
+            XCTAssertEqual(remote.readOperationCount, previousReadCount + 1)
+            let metadata = try XCTUnwrap(result.metadatas?.first)
+            let changes = try XCTUnwrap(result.changes)
+            let created = try XCTUnwrap(changes.created.first)
+            XCTAssertEqual(result.metadatas?.count, 1)
+            XCTAssertEqual(changes.created.count, 1)
+            XCTAssertTrue(changes.updated.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertTrue(metadata.directory)
+            XCTAssertEqual(metadata.keepDownloaded, parentPinned)
+            XCTAssertFalse(metadata.downloaded)
+            XCTAssertFalse(metadata.visitedDirectory)
+            XCTAssertNil(metadata.lockToken)
+            XCTAssertNil(metadata.fileProviderContentVersion)
+            XCTAssertEqual(metadata.etag, remoteFolder.versionIdentifier)
+            XCTAssertEqual(metadata.remotePath(), remoteFolder.remotePath)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+            XCTAssertEqual(created, metadata)
+        }
+    }
+
+    func testDirectoryTargetReadRemoteErrorDoesNotPersistMetadata() async throws {
+        var existing = remoteFolder.toItemMetadata(account: Self.account)
+        existing.etag = "stored-etag"
+        existing.downloaded = true
+        existing.keepDownloaded = true
+        existing.visitedDirectory = true
+        existing.lockToken = "stored-lock"
+        existing.fileProviderContentVersion = "stored-version"
+        try Self.dbManager.insertForTesting(existing)
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let expectedPath = remoteFolder.remotePath
+        remote.enumerateCallHandler = { path, depth, _, _, _, account, options, _ in
+            XCTAssertEqual(path, expectedPath)
+            XCTAssertEqual(depth, .target)
+            XCTAssertEqual(account, Self.account)
+            XCTAssertFalse(options.paginate)
+        }
+        let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
+        remote.enumerateErrorBySuffix = ["/folder": error]
+
+        let result = await Enumerator.readServerUrl(
+            remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
+            dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.error, error)
+        XCTAssertEqual(remote.readOperationCount, 1)
+        XCTAssertNil(result.metadatas)
+        XCTAssertNil(result.changes)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
+    }
+
     func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))
