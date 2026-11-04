@@ -54,6 +54,7 @@ private:
     bool _paused;
     GMenu* _mainMenu = nullptr;
     GMenu* _recentMenu = nullptr;
+    GActionGroup* _actionGroup = nullptr;
 };
 
 #endif // CLOUDPROVIDER_H

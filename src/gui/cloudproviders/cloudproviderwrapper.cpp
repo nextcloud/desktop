@@ -23,8 +23,6 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcNextcloudCloudProviderIntegration, "nextcloud.cloudprovider.integration", QtInfoMsg)
 
-GSimpleActionGroup *actionGroup = nullptr;
-
 int CloudProviderWrapper::preferredTextWidth = 0;
 
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
@@ -66,8 +64,7 @@ CloudProviderWrapper::~CloudProviderWrapper()
 {
     g_object_unref(_cloudProviderAccount);
     g_object_unref(_mainMenu);
-    g_object_unref(actionGroup);
-    actionGroup = nullptr;
+    g_clear_object(&_actionGroup);
     g_object_unref(_recentMenu);
 }
 
@@ -370,20 +367,22 @@ static GActionEntry actions[] = {
 
 GActionGroup* CloudProviderWrapper::getActionGroup()
 {
-    g_clear_object (&actionGroup);
-    actionGroup = g_simple_action_group_new ();
-    g_action_map_add_action_entries (G_ACTION_MAP (actionGroup), actions, G_N_ELEMENTS (actions), this);
+    g_clear_object(&_actionGroup);
+    _actionGroup = G_ACTION_GROUP(g_simple_action_group_new());
+    g_action_map_add_action_entries(G_ACTION_MAP(_actionGroup), actions, G_N_ELEMENTS(actions), this);
     bool state = _folder->syncPaused();
-    GAction *pause = g_action_map_lookup_action(G_ACTION_MAP(actionGroup), "pause");
+    GAction *pause = g_action_map_lookup_action(G_ACTION_MAP(_actionGroup), "pause");
     g_simple_action_set_state(G_SIMPLE_ACTION(pause), g_variant_new_boolean(state));
-    return G_ACTION_GROUP (g_object_ref (actionGroup));
+    return G_ACTION_GROUP(g_object_ref(_actionGroup));
 }
 
 void CloudProviderWrapper::slotSyncPausedChanged(Folder *folder, bool state)
 {
     Q_UNUSED(folder);
     _paused = state;
-    GAction *pause = g_action_map_lookup_action(G_ACTION_MAP(actionGroup), "pause");
-    g_simple_action_set_state (G_SIMPLE_ACTION(pause), g_variant_new_boolean(state));
+    if (_actionGroup) {
+        GAction *pause = g_action_map_lookup_action(G_ACTION_MAP(_actionGroup), "pause");
+        g_simple_action_set_state(G_SIMPLE_ACTION(pause), g_variant_new_boolean(state));
+    }
     updatePauseStatus();
 }
