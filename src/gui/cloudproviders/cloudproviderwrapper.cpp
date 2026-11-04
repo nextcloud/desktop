@@ -55,17 +55,12 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
     g_clear_object (&action_group);
 }
 
-void mainMenuWasDeleted(gpointer data, GObject *where_the_object_was)
-{
-    qCDebug(lcNextcloudCloudProviderIntegration) << "I was deleted" << data << where_the_object_was;
-}
-
 CloudProviderWrapper::~CloudProviderWrapper()
 {
-    g_object_unref(_cloudProviderAccount);
-    g_object_unref(_mainMenu);
+    g_clear_object(&_cloudProviderAccount);
+    g_clear_object(&_mainMenu);
     g_clear_object(&_actionGroup);
-    g_object_unref(_recentMenu);
+    g_clear_object(&_recentMenu);
 }
 
 CloudProvidersAccountExporter* CloudProviderWrapper::accountExporter()
@@ -228,9 +223,9 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     GMenu* section = nullptr;
     GMenuItem* item = nullptr;
 
+    g_clear_object(&_mainMenu);
+    g_clear_object(&_recentMenu);
     _mainMenu = g_menu_new();
-    g_object_ref(_mainMenu);
-    g_object_weak_ref(reinterpret_cast<GObject*>(_mainMenu), mainMenuWasDeleted, this);
 
     section = g_menu_new();
     item = addMenuItem(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), "cloudprovider.openmaindialog");
@@ -281,7 +276,8 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
     g_clear_object (&section);
 
-    return G_MENU_MODEL(_mainMenu);
+    // The caller owns the returned reference; _mainMenu keeps its own.
+    return G_MENU_MODEL(g_object_ref(_mainMenu));
 }
 
 static void
