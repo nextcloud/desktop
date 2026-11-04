@@ -186,8 +186,13 @@ void CloudProviderWrapper::updatePauseStatus()
         updateStatusText(tr("Sync paused"));
         cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_ERROR);
     } else {
-        updateStatusText(tr("Syncing"));
-        cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_SYNCING);
+        if (_folder->isSyncRunning()) {
+            updateStatusText(tr("Syncing"));
+            cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_SYNCING);
+        } else {
+            updateStatusText(tr("Idle"));
+            cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
+        }
     }
 }
 
