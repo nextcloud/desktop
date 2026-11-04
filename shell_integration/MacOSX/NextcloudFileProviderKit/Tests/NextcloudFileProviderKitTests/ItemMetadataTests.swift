@@ -61,6 +61,31 @@ struct ItemMetadataTests {
         #expect(merged.visitedDirectory == (preserveVisitedDirectory ? storedVisitedDirectory : incoming.visitedDirectory))
     }
 
+    @Test(arguments: [false, true], [false, true])
+    func remoteMergeKeepsIncomingVisitedStateForFiles(preserveVisitedDirectory: Bool, incomingVisitedDirectory: Bool) {
+        var existing = SendableItemMetadata.rawRow(ocId: "item")
+        existing.visitedDirectory = !incomingVisitedDirectory
+        var incoming = existing
+        incoming.visitedDirectory = incomingVisitedDirectory
+
+        let merged = RemoteMetadataMerger.merge(incoming, preservingLocalStateFrom: existing, preserveVisitedDirectory: preserveVisitedDirectory)
+
+        #expect(merged.visitedDirectory == incomingVisitedDirectory)
+    }
+
+    @Test(arguments: [false, true], [false, true])
+    func remoteMergePreservesVisitedStateByDefaultOnlyForDirectories(directory: Bool, incomingVisitedDirectory: Bool) {
+        var existing = SendableItemMetadata.rawRow(ocId: "item")
+        existing.directory = directory
+        existing.visitedDirectory = !incomingVisitedDirectory
+        var incoming = existing
+        incoming.visitedDirectory = incomingVisitedDirectory
+
+        let merged = RemoteMetadataMerger.merge(incoming, preservingLocalStateFrom: existing)
+
+        #expect(merged.visitedDirectory == (directory ? existing.visitedDirectory : incomingVisitedDirectory))
+    }
+
     @Test(arguments: [false, true], [nil, "stored-content-version"] as [String?])
     func remoteMergePreservesContentVersionOnlyForUnchangedEtag(unchangedEtag: Bool, storedContentVersion: String?) {
         var existing = SendableItemMetadata.rawRow(ocId: "item")
