@@ -331,15 +331,6 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
 }
 
 static void
-activate_action_openrecentfile (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-    Q_UNUSED(action);
-    Q_UNUSED(parameter);
-    auto *self = static_cast<CloudProviderWrapper*>(user_data);
-    QDesktopServices::openUrl(self->folder()->accountState()->account()->url());
-}
-
-static void
 activate_action_pause (GSimpleAction *action,
                        GVariant      *parameter,
                        gpointer       user_data)
@@ -361,7 +352,6 @@ static GActionEntry actions[] = {
     { "showfile",  activate_action_open, "s", nullptr, nullptr, {0,0,0}},
     { "openhelp",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "opensettings",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
-    { "openrecentfile",  activate_action_openrecentfile, "s", nullptr, nullptr, {0,0,0}},
     { "pause",  activate_action_pause, nullptr, "false", nullptr, {0,0,0}}
 };
 
