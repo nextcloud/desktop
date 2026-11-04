@@ -212,6 +212,11 @@ extension Enumerator {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        guard !serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) else {
+            logger.info("Not reading a folder that waits to be placed again by a listing.", [.url: serverUrl])
+            return RemoteReadResult(error: .parkedFolderPath)
+        }
+
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 
         let options: NKRequestOptions = if let pageSettings {

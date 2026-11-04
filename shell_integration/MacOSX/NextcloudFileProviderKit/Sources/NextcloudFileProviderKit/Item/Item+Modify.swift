@@ -488,6 +488,11 @@ public extension Item {
             return (modifiedIgnored, NSFileProviderError(.excludedFromSync))
         }
 
+        guard !metadata.isAtHoldingPath || changedFields.isDisjoint(with: [.contents, .filename, .parentItemIdentifier]) else {
+            logger.info("Not modifying an item whose folder waits to be placed again by a listing.", [.item: itemIdentifier, .name: filename])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
+
         guard itemTarget.itemIdentifier == modifiedItem.itemIdentifier else {
             logger.error("Could not modify item, different identifier to the item the modification was targeting (\(itemTarget.itemIdentifier.rawValue)).", [.item: modifiedItem])
 
@@ -520,6 +525,11 @@ public extension Item {
                     nil,
                     NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
                 )
+            }
+
+            guard !parentItemMetadata.isAtHoldingPath || !changedFields.contains(.parentItemIdentifier) else {
+                logger.info("Not modifying an item whose target folder waits to be placed again by a listing.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
             newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
