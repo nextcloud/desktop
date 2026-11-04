@@ -426,6 +426,7 @@ IF( APPLE )
             macOS/fileproviderutils.h
             macOS/fileproviderutils_mac.h
             macOS/fileproviderutils_mac.mm
+            macOS/fileproviderpushbatch.h
             macOS/fileproviderxpc.h
             macOS/fileproviderxpcconnection.h
             macOS/fileproviderxpc_mac.mm

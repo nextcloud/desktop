@@ -76,6 +76,9 @@ target_sources(MacTrayAccountRowTest PRIVATE ncaccountrowdelegatemock.h ncaccoun
 if(BUILD_FILE_PROVIDER_MODULE)
     nextcloud_add_test(XPCServiceLifecycle)
     target_sources(XPCServiceLifecycleTest PRIVATE xpcservicetestpeer.mm)
+    add_executable(FileProviderPushBatchTest testfileproviderpushbatch.cpp)
+    add_test(NAME FileProviderPushBatchTest COMMAND FileProviderPushBatchTest)
+    set_target_properties(FileProviderPushBatchTest PROPERTIES FOLDER Tests)
     nextcloud_add_test(FileProviderXPCUtils)
     target_sources(FileProviderXPCUtilsTest PRIVATE testfileprovideritem.mm)
     # Keep NSUserDefaults writes out of the application's preferences domain.

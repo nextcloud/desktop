@@ -66,9 +66,8 @@ extension FileProviderExtension: ClientCommunicationProtocol {
         }
 
         guard let dbManager else {
-            logger.info("Received file ID changes before database setup. Signalling enumerator.")
-            notifyChange()
-            completionHandler(true)
+            logger.debug("Received file ID changes before database setup. Requesting retry.")
+            completionHandler(false)
             return
         }
 

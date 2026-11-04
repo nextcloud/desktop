@@ -7,6 +7,7 @@
 
 #include <QList>
 #include <QObject>
+#include <QTimer>
 #include <optional>
 
 #include "accountstate.h"
@@ -122,6 +123,9 @@ private Q_SLOTS:
     void slotAccountStateChanged(const OCC::AccountState * const accountState);
 
 private:
+    void deliverPendingFileIds();
+    void scheduleFileIdDelivery(int delayMs);
+    QTimer _fileIdRetryTimer;
     class MacImplementation;
     std::unique_ptr<MacImplementation> d;
 };
