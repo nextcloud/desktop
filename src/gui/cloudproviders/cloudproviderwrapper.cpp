@@ -344,15 +344,12 @@ activate_action_pause (GSimpleAction *action,
                        GVariant      *parameter,
                        gpointer       user_data)
 {
+    Q_UNUSED(action);
     Q_UNUSED(parameter);
     auto *self = static_cast<CloudProviderWrapper*>(user_data);
-    GVariant *old_state = nullptr, *new_state = nullptr;
 
-    old_state = g_action_get_state (G_ACTION (action));
-    new_state = g_variant_new_boolean (!(bool)g_variant_get_boolean (old_state));
-    self->folder()->setSyncPaused((bool)g_variant_get_boolean(new_state));
-    g_simple_action_set_state (action, new_state);
-    g_variant_unref (old_state);
+    // The action state is updated by CloudProviderWrapper::slotSyncPausedChanged.
+    self->folder()->setSyncPaused(!self->folder()->syncPaused());
 }
 
 static GActionEntry actions[] = {
