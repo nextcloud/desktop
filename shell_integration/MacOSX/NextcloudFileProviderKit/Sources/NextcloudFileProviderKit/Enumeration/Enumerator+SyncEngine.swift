@@ -220,7 +220,7 @@ extension Enumerator {
         let networkClock = ContinuousClock()
         let networkStart = networkClock.now
 
-        let (_, files, data, error) = await remoteInterface.enumerate(
+        let (_, enumeratedFiles, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
             showHiddenFiles: true,
@@ -239,6 +239,7 @@ extension Enumerator {
             }
         )
 
+        var files = enumeratedFiles
         let networkElapsed = networkClock.now - networkStart
         signposter.endInterval("PROPFIND", propfindState, "files=\(files.count)")
         logger.performance(
@@ -305,7 +306,22 @@ extension Enumerator {
             }
         }
 
+        // A listed folder stored at another path was either moved here or is a second mount of the same folder, which shares its identifier (#10106).
+        let listsTarget = depth != .target && !isFollowUpPaginatedRequest
+        let secondMounts = await secondMountedDirectories(
+            among: listsTarget ? Array(files.dropFirst()) : files,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            logger: logger
+        )
+        files.removeAll { secondMounts[$0.ocId] != nil }
+
         if depth == .target {
+            if let storedMetadata = secondMounts[receivedFile.ocId] {
+                return RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+            }
+
             let receivedMetadata = receivedFile.toItemMetadata()
             let isNew = dbManager.itemMetadata(ocId: receivedMetadata.ocId) == nil
             let metadata = dbManager.addItemMetadataPreservingLocalState(receivedMetadata)
@@ -341,5 +357,53 @@ extension Enumerator {
             logger.error("Infinite depth read requested.")
             return RemoteReadResult(error: .cancelled)
         }
+    }
+
+    /// The listed folders to keep at their stored path, keyed by identifier, because the server still returns them there or the stored path could not be read.
+    private static func secondMountedDirectories(
+        among files: [NKFile],
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        logger: FileProviderLogger
+    ) async -> [String: SendableItemMetadata] {
+        let directories = files.filter(\.directory)
+
+        guard !directories.isEmpty else {
+            return [:]
+        }
+
+        let storedByOcId = dbManager.itemMetadatas(ocIds: directories.map(\.ocId))
+        var secondMounts: [String: SendableItemMetadata] = [:]
+
+        for directory in directories {
+            guard let stored = storedByOcId[directory.ocId], stored.directory, !stored.deleted, !stored.isTrashed,
+                  !stored.hasSameLocation(as: directory.toItemMetadata())
+            else {
+                continue
+            }
+
+            let storedPath = stored.remotePath()
+            let (_, filesAtStoredPath, _, error) = await remoteInterface.enumerate(
+                remotePath: storedPath,
+                depth: .target,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                account: account,
+                options: .init(),
+                taskHandler: { _ in }
+            )
+
+            if error == .success, filesAtStoredPath.first?.ocId == directory.ocId {
+                logger.info("Kept a folder at its stored path because the server still returns it there.", [.item: directory.ocId, .url: storedPath])
+                secondMounts[directory.ocId] = stored
+            } else if error != .success, error.errorCode != 404 {
+                logger.error("Kept a folder at its stored path because the path could not be checked.", [.item: directory.ocId, .url: storedPath, .error: error])
+                secondMounts[directory.ocId] = stored
+            }
+        }
+
+        return secondMounts
     }
 }

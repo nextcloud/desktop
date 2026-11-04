@@ -275,6 +275,13 @@ public final class FilesDatabaseManager: Sendable {
         } ?? nil
     }
 
+    /// The stored rows for the given identifiers, keyed by identifier; identifiers without a row are absent.
+    public func itemMetadatas(ocIds: [String]) -> [String: SendableItemMetadata] {
+        read("Could not look up item metadata by identifiers.") { db in
+            try itemMetadatas(ocIds: ocIds, in: db).mapValues(\.metadata)
+        } ?? [:]
+    }
+
     public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
         itemMetadata(ocId: identifier.rawValue)
     }
