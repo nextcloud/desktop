@@ -145,7 +145,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     ///
     /// The push-notification lookup: many file identifiers, none of which belong to this domain, against a large table.
     ///
-    func testBenchmarkContainsAnyItemMetadata() {
+    func testBenchmarkTargetsForPushedFileIds() {
         let folderUrl = Self.account.davFilesUrl + "/Bench"
         let absentIds = Set((1_000_000 ..< 1_005_000).map(String.init))
         var durations: [Duration] = []
@@ -159,14 +159,14 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             let clock = ContinuousClock()
             startMeasuring()
             let start = clock.now
-            let found = manager.containsAnyItemMetadata(fileIds: absentIds)
+            let found = manager.targetsForPushedFileIds(absentIds)
             durations.append(clock.now - start)
             stopMeasuring()
 
-            XCTAssertFalse(found)
+            XCTAssertEqual(found, [])
         }
 
-        report("ContainsAnyItemMetadata", items: absentIds.count, durations: durations)
+        report("TargetsForPushedFileIds", items: absentIds.count, durations: durations)
     }
 
     ///

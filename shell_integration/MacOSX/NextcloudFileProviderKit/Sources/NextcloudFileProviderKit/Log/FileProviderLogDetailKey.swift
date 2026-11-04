@@ -51,6 +51,11 @@ public enum FileProviderLogDetailKey: String, Sendable {
     case materializedCount
 
     ///
+    /// The number of items a working-set scan starts from.
+    ///
+    case targetCount
+
+    ///
     /// An `NKLock` as provided by NextcloudKit when a file system item is locked on the server.
     ///
     case lock

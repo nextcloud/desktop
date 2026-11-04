@@ -322,21 +322,33 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadata(ocId: identifier.rawValue)
     }
 
-    /// Return whether metadata exists for any numeric WebDAV file ID received from notify-push.
-    public func containsAnyItemMetadata(fileIds: Set<String>) -> Bool {
+    ///
+    /// The items to read for the numeric WebDAV file IDs of a push: a live directory, a live file and its parent, and the parent of a deleted row.
+    ///
+    /// - Returns: An empty set when no ID is known, or `nil` when the database could not be read.
+    ///
+    public func targetsForPushedFileIds(_ fileIds: Set<String>) -> Set<NSFileProviderItemIdentifier>? {
         guard !fileIds.isEmpty else {
-            return false
+            return []
         }
 
         return read("Could not look up item metadata by file identifiers.") { db in
+            var targets = Set<NSFileProviderItemIdentifier>()
+
             for chunk in Array(fileIds).chunked(into: Self.inClauseChunkSize) {
-                if try !ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.fileId)).isEmpty(db) {
-                    return true
+                for metadata in try ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.fileId)).fetchRecords(db, logger: logger).map(\.metadata) {
+                    if !metadata.deleted {
+                        targets.insert(NSFileProviderItemIdentifier(metadata.ocId))
+                    }
+
+                    if metadata.deleted || !metadata.directory, let parent = try parentItemIdentifier(of: metadata, in: db) {
+                        targets.insert(parent)
+                    }
                 }
             }
 
-            return false
-        } ?? false
+            return targets
+        }
     }
 
     ///
@@ -1053,13 +1065,8 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
-        let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
-
-        if metadata.serverUrl == homeServerFilesUrl {
-            return .rootContainer
-        } else if metadata.serverUrl == trashServerFilesUrl {
-            return .trashContainer
+        if let systemContainer = Self.systemContainerHolding(metadata) {
+            return systemContainer
         }
 
         guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
@@ -1069,6 +1076,29 @@ public final class FilesDatabaseManager: Sendable {
         }
 
         return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
+    }
+
+    /// The identifier of the container holding `metadata`, looked up inside an open transaction.
+    func parentItemIdentifier(of metadata: SendableItemMetadata, in db: Database) throws -> NSFileProviderItemIdentifier? {
+        if let systemContainer = Self.systemContainerHolding(metadata) {
+            return systemContainer
+        }
+
+        return try parentDirectoryMetadataForItem(metadata, in: db).map { NSFileProviderItemIdentifier($0.ocId) }
+    }
+
+    /// The root or trash container when `metadata` lies directly in it.
+    private static func systemContainerHolding(_ metadata: SendableItemMetadata) -> NSFileProviderItemIdentifier? {
+        let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
+        let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
+
+        if metadata.serverUrl == homeServerFilesUrl {
+            return .rootContainer
+        } else if metadata.serverUrl == trashServerFilesUrl {
+            return .trashContainer
+        }
+
+        return nil
     }
 
     public func parentItemIdentifierWithRemoteFallback(

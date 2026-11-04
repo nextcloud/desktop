@@ -65,6 +65,7 @@ import OSLog
     var ncAccount: Account?
     var dbManager: FilesDatabaseManager?
     var ignoredFiles: IgnoredFilesMatcher?
+    let remoteChangeTargets = RemoteChangeTargets()
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
 
     var syncActions = Set<UUID>()
@@ -579,6 +580,7 @@ import OSLog
             remoteInterface: ncKit,
             dbManager: dbManager,
             domain: domain,
+            remoteChangeTargets: remoteChangeTargets,
             log: log
         )
     }
@@ -622,6 +624,9 @@ import OSLog
     // MARK: - Helper functions
 
     func signalEnumerator(completionHandler: @Sendable @escaping (_ error: Error?) -> Void) {
+        // The extension signals after a failed operation, whose cause no push has to have named.
+        remoteChangeTargets.requestFullWalk()
+
         guard let manager else {
             logger.error("Cannot get file provider manager for domain. Cannot signal enumerator.")
             return
@@ -971,6 +976,8 @@ import OSLog
                 logger: logger
             )
             dbManager = databaseManager
+            // A newly set up database starts with a full walk.
+            remoteChangeTargets.requestFullWalk()
 
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
             signalAccountReady()

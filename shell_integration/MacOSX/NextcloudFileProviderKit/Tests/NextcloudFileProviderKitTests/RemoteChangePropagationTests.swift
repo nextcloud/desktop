@@ -14,8 +14,9 @@
 //  push/poll signal drives. That path is:
 //
 //      enumerateChanges(.workingSet)
-//        -> scanMaterialisedItemsForRemoteChanges()  // PROPFINDs every *materialized* item,
-//                                                    // writes fresh metadata + syncTime to the DB
+//        -> scanMaterialisedItemsForRemoteChanges()  // PROPFINDs the pushed items, or every
+//                                                    // *materialized* item, and writes fresh
+//                                                    // metadata + syncTime to the DB
 //        -> pendingWorkingSetChanges(since: anchor)  // re-derives the report from the DB by
 //                                                    // `syncTime > anchorDate` (+ a child scan)
 //        -> observer.didUpdate / didDeleteItems
@@ -144,13 +145,15 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     }
 
     private func runWorkingSetChanges(
-        _ remoteInterface: MockRemoteInterface
+        _ remoteInterface: MockRemoteInterface,
+        remoteChangeTargets: RemoteChangeTargets = RemoteChangeTargets()
     ) async throws -> MockChangeObserver {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
+            remoteChangeTargets: remoteChangeTargets,
             log: FileProviderLogMock()
         )
         let observer = MockChangeObserver(enumerator: enumerator)
@@ -807,32 +810,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    /// S3 (push gate): on notify_push servers `processFileIdsChanged` signals the working set when at
-    /// least one received fileId is locally known (`containsAnyItemMetadata`). The server propagates
-    /// a change's ETag up every ancestor to the user's root, so a `notify_file_id` for a newly-created
-    /// item also carries its PARENT folder's fileId (and ancestors) — all of which the client has
-    /// enumerated. The gate therefore matches and the new item triggers a refresh; it only ignores a
-    /// push whose ids are entirely outside the enumerated tree. See nextcloud/desktop#6430.
-    func testPushGateMatchesParentFolderOfNewItem() {
-        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
-        // `MockRemoteItem.identifier` becomes both ocId and fileId; use a numeric id like the server.
-        folder.identifier = "1234"
-        seed(folder, visitedDirectory: true)
-
-        // A new child of folder 1234 has an id the client has never seen, but the server's parent-etag
-        // propagation means the push also carries the known parent folder id 1234 — so the gate matches
-        // and the new child is not dropped.
-        XCTAssertTrue(
-            Self.dbManager.containsAnyItemMetadata(fileIds: ["1234", "9001"]),
-            "A push carrying the (known) parent folder id must pass the gate so the new child surfaces."
-        )
-        // A push whose ids are all outside the enumerated tree affects nothing the working set tracks.
-        XCTAssertFalse(
-            Self.dbManager.containsAnyItemMetadata(fileIds: ["9001", "9002"]),
-            "A push with no locally known ids is correctly ignored."
-        )
-    }
-
     /// Headline regression for nextcloud/desktop#9688 and #10681: a folder the user creates on the Mac,
     /// then an item created inside it on the server, which stays invisible unless creation marks the
     /// folder visited.
@@ -1080,5 +1057,554 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(observer.deletedItemIdentifiers.map(\.rawValue).contains(file.identifier), "A file that a listing in this scan returned must not be reported deleted.")
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.serverUrl, Self.account.davFilesUrl + "/A")
+    }
+
+    // MARK: - Push-targeted scanning
+
+    func testPushedFileIdsResolveToTheItemsToRead() {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        folder.identifier = "1000"
+        let file = makeFile(name: "file", parent: folder, etag: "file-v1")
+        file.identifier = "1001"
+        let rootFile = makeFile(name: "rootFile", parent: rootItem, etag: "rootFile-v1")
+        rootFile.identifier = "1002"
+        let deletedFile = makeFile(name: "deletedFile", parent: folder, etag: "deletedFile-v1")
+        deletedFile.identifier = "1003"
+        let unknownFolder = makeFolder(name: "unknown", parent: rootItem, etag: "unknown-v1")
+        let orphan = makeFile(name: "orphan", parent: unknownFolder, etag: "orphan-v1")
+        orphan.identifier = "1004"
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        seed(rootFile, downloaded: true)
+        var deletedMetadata = deletedFile.toItemMetadata(account: Self.account)
+        deletedMetadata.deleted = true
+        Self.dbManager.addItemMetadata(deletedMetadata)
+        seed(orphan, downloaded: true)
+        var renamedId = makeFile(name: "renamedId", parent: folder, etag: "renamedId-v1").toItemMetadata(account: Self.account)
+        renamedId.ocId = "00001005oc"
+        renamedId.fileId = "1005"
+        Self.dbManager.addItemMetadata(renamedId)
+
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1001"]), [NSFileProviderItemIdentifier("1001"), NSFileProviderItemIdentifier("1000")])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1000"]), [NSFileProviderItemIdentifier("1000")])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1002"]), [NSFileProviderItemIdentifier("1002"), .rootContainer])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1000", "9001"]), [NSFileProviderItemIdentifier("1000")])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["9001"]), [])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1003"]), [NSFileProviderItemIdentifier("1000")])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1004"]), [NSFileProviderItemIdentifier("1004")])
+        XCTAssertEqual(Self.dbManager.targetsForPushedFileIds(["1005"]), [NSFileProviderItemIdentifier("00001005oc"), NSFileProviderItemIdentifier("1000")])
+    }
+
+    func testATargetedScanReadsOnlyTheTargetedContainer() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        let untouched = makeFolder(name: "untouched", parent: rootItem, etag: "untouched-v1")
+        seed(targeted, visitedDirectory: true)
+        seed(untouched, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        _ = await enumerator.scanMaterialisedItemsForRemoteChanges(
+            startingFrom: [NSFileProviderItemIdentifier(targeted.identifier)]
+        )
+
+        XCTAssertEqual(recorder.paths.filter { $0.hasSuffix("/targeted") }.count, 1)
+        XCTAssertEqual(recorder.paths.count, 1, "Got: \(recorder.paths)")
+    }
+
+    func testATargetedScanReportsAChangeInTheTargetAndNoDeletionOutsideIt() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        let untouched = makeFolder(name: "untouched", parent: rootItem, etag: "untouched-v1")
+        let goneOnServer = makeFile(name: "gone", parent: untouched, etag: "gone-v1")
+        seed(targeted, visitedDirectory: true)
+        seed(untouched, visitedDirectory: true)
+        seed(goneOnServer, downloaded: true)
+
+        let created = makeFile(name: "created", parent: targeted, etag: "created-v1")
+        targeted.versionIdentifier = "targeted-v2"
+        untouched.children.removeAll()
+        untouched.versionIdentifier = "untouched-v2"
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(
+            startingFrom: [NSFileProviderItemIdentifier(targeted.identifier)]
+        )
+
+        XCTAssertTrue(changes.updated.contains { $0.ocId == created.identifier })
+        XCTAssertFalse(changes.deleted.contains { $0.ocId == goneOnServer.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: goneOnServer.identifier)?.deleted, false)
+        XCTAssertFalse(changes.hadFailure)
+    }
+
+    func testWithNothingRestrictedTheScanReadsEveryMaterialisedContainer() async throws {
+        let alpha = makeFolder(name: "alpha", parent: rootItem, etag: "alpha-v1")
+        let beta = makeFolder(name: "beta", parent: rootItem, etag: "beta-v1")
+        seed(alpha, visitedDirectory: true)
+        seed(beta, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        _ = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: nil)
+
+        XCTAssertTrue(recorder.paths.contains { $0.hasSuffix("/alpha") })
+        XCTAssertTrue(recorder.paths.contains { $0.hasSuffix("/beta") })
+    }
+
+    func testTheFirstDerivationWalksEverythingEvenWhenAPushNamedAContainer() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        let untouched = makeFolder(name: "untouched", parent: rootItem, etag: "untouched-v1")
+        seed(targeted, visitedDirectory: true)
+        seed(untouched, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+        let targets = RemoteChangeTargets()
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+
+        _ = try await runWorkingSetChanges(remoteInterface, remoteChangeTargets: targets)
+
+        XCTAssertTrue(recorder.paths.contains { $0.hasSuffix("/untouched") }, "Got: \(recorder.paths)")
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+        XCTAssertEqual(targets.takeScope(), .targets([NSFileProviderItemIdentifier(targeted.identifier)]))
+    }
+
+    func testADerivationAfterAFullWalkReadsOnlyThePushedContainer() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        let untouched = makeFolder(name: "untouched", parent: rootItem, etag: "untouched-v1")
+        seed(targeted, visitedDirectory: true)
+        seed(untouched, visitedDirectory: true)
+        let created = makeFile(name: "created", parent: targeted, etag: "created-v1")
+        targeted.versionIdentifier = "targeted-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: Date())
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+
+        let observer = try await runWorkingSetChanges(remoteInterface, remoteChangeTargets: targets)
+
+        XCTAssertEqual(recorder.paths.count, 1, "Got: \(recorder.paths)")
+        XCTAssertTrue(reportedIds(observer).contains(created.identifier))
+    }
+
+    func testATargetedDerivationDoesNotPostponeTheNextFullWalk() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        seed(targeted, visitedDirectory: true)
+
+        let secondsLeftInTheInterval: TimeInterval = 60
+        let lastFullWalk = Date(timeIntervalSinceNow: -RemoteChangeTargets.fullWalkInterval + secondsLeftInTheInterval)
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: lastFullWalk)
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+
+        _ = try await runWorkingSetChanges(MockRemoteInterface(account: Self.account, rootItem: rootItem), remoteChangeTargets: targets)
+
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+        XCTAssertEqual(targets.takeScope(now: lastFullWalk.addingTimeInterval(RemoteChangeTargets.fullWalkInterval)), .fullWalk)
+    }
+
+    func testAFailedTargetedReadIsRetriedByTheNextDerivation() async throws {
+        let targeted = makeFolder(name: "targeted", parent: rootItem, etag: "targeted-v1")
+        seed(targeted, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.enumerateErrorBySuffix = ["/targeted": NKError(statusCode: 500, fallbackDescription: "Internal Server Error")]
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: Date())
+        targets.record(targets: [NSFileProviderItemIdentifier(targeted.identifier)])
+
+        _ = try await runWorkingSetChanges(remoteInterface, remoteChangeTargets: targets)
+
+        XCTAssertEqual(targets.takeScope(), .targets([NSFileProviderItemIdentifier(targeted.identifier)]))
+    }
+
+    func testAFullWalkWithAFailedReadStillCompletesAndRetriesTheFailedItem() async throws {
+        let failing = makeFolder(name: "failing", parent: rootItem, etag: "failing-v1")
+        let healthy = makeFolder(name: "healthy", parent: rootItem, etag: "healthy-v1")
+        seed(failing, visitedDirectory: true)
+        seed(healthy, visitedDirectory: true)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.enumerateErrorBySuffix = ["/failing": NKError(statusCode: 500, fallbackDescription: "Internal Server Error")]
+        let targets = RemoteChangeTargets()
+
+        _ = try await runWorkingSetChanges(remoteInterface, remoteChangeTargets: targets)
+
+        XCTAssertEqual(targets.takeScope(), .targets([NSFileProviderItemIdentifier(failing.identifier)]))
+    }
+
+    func testAPushRecordsTheItemsItNames() async {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        folder.identifier = "1000"
+        seed(folder, visitedDirectory: true)
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.dbManager = Self.dbManager
+        fileProviderExtension.remoteChangeTargets.noteFullWalkCompleted(startedAt: Date())
+
+        await processFileIdsChanged([1000, 9001], in: fileProviderExtension)
+
+        XCTAssertEqual(fileProviderExtension.remoteChangeTargets.takeScope(), .targets([NSFileProviderItemIdentifier("1000")]))
+    }
+
+    func testAPushWithoutFileIdsRequestsAFullWalk() async {
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.dbManager = Self.dbManager
+        fileProviderExtension.remoteChangeTargets.noteFullWalkCompleted(startedAt: Date())
+        fileProviderExtension.remoteChangeTargets.record(targets: [NSFileProviderItemIdentifier("1000")])
+
+        await processFileIdsChanged([], in: fileProviderExtension)
+
+        XCTAssertEqual(fileProviderExtension.remoteChangeTargets.takeScope(), .fullWalk)
+    }
+
+    func testAPushBeforeTheDatabaseIsReadyRequestsAFullWalk() async {
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.remoteChangeTargets.noteFullWalkCompleted(startedAt: Date())
+        fileProviderExtension.remoteChangeTargets.record(targets: [NSFileProviderItemIdentifier("1000")])
+
+        await processFileIdsChanged([1000], in: fileProviderExtension)
+
+        XCTAssertEqual(fileProviderExtension.remoteChangeTargets.takeScope(), .fullWalk)
+    }
+
+    func testATargetedScanReadsAChangedVisitedChildThatHoldsNothingMaterialised() async throws {
+        let parent = makeFolder(name: "parent", parent: rootItem, etag: "parent-v1")
+        let child = makeFolder(name: "child", parent: parent, etag: "child-v1")
+        seed(parent, visitedDirectory: true)
+        seed(child, visitedDirectory: true)
+        let created = makeFile(name: "created", parent: child, etag: "created-v1")
+        child.versionIdentifier = "child-v2"
+        parent.versionIdentifier = "parent-v2"
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(
+            startingFrom: [NSFileProviderItemIdentifier(parent.identifier)]
+        )
+
+        XCTAssertTrue(changes.updated.contains { $0.ocId == created.identifier })
+    }
+
+    func testATargetedScanOfTheRootReadsTheRoot() async throws {
+        seed(rootItem, visitedDirectory: true)
+        let created = makeFile(name: "created", parent: rootItem, etag: "created-v1")
+        rootItem.versionIdentifier = "root-v2"
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: [.rootContainer])
+
+        XCTAssertTrue(changes.updated.contains { $0.ocId == created.identifier })
+    }
+
+    func testATargetedScanReadsADownloadedFileWhoseParentIsNotVisited() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let file = makeFile(name: "file", parent: folder, etag: "file-v1")
+        seed(folder)
+        seed(file, downloaded: true)
+        file.versionIdentifier = "file-v2"
+        file.modificationDate = Date()
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let recorder = EnumeratePathRecorder()
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            recorder.add(remotePath)
+        }
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let targets = try XCTUnwrap(Self.dbManager.targetsForPushedFileIds([file.identifier]))
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: targets)
+
+        XCTAssertTrue(changes.updated.contains { $0.ocId == file.identifier })
+        XCTAssertEqual(recorder.paths.map { $0.hasSuffix("/folder") }, [true])
+    }
+
+    func testTheExtensionHandsItsTargetsToTheWorkingSetEnumerator() throws {
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.ncAccount = Self.account
+        fileProviderExtension.dbManager = Self.dbManager
+
+        let enumerator = try XCTUnwrap(fileProviderExtension.enumerator(for: .workingSet, request: NSFileProviderRequest()) as? Enumerator)
+
+        XCTAssertTrue(enumerator.remoteChangeTargets === fileProviderExtension.remoteChangeTargets)
+    }
+
+    func testAPushNamingOnlyUnknownIdsRecordsNothing() async {
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.dbManager = Self.dbManager
+        fileProviderExtension.remoteChangeTargets.noteFullWalkCompleted(startedAt: Date())
+
+        await processFileIdsChanged([9001], in: fileProviderExtension)
+        fileProviderExtension.remoteChangeTargets.record(targets: [NSFileProviderItemIdentifier("other")])
+
+        XCTAssertEqual(fileProviderExtension.remoteChangeTargets.takeScope(), .targets([NSFileProviderItemIdentifier("other")]))
+    }
+
+    func testTheExtensionsOwnSignalRequestsAFullWalk() {
+        let fileProviderExtension = makeExtension()
+        fileProviderExtension.remoteChangeTargets.noteFullWalkCompleted(startedAt: Date())
+        fileProviderExtension.remoteChangeTargets.record(targets: [NSFileProviderItemIdentifier("other")])
+
+        fileProviderExtension.signalEnumerator { _ in }
+
+        XCTAssertEqual(fileProviderExtension.remoteChangeTargets.takeScope(), .fullWalk)
+    }
+
+    func testATargetedScanKeepsAFileRenamedInAFolderThatIsNotVisited() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let file = makeFile(name: "before", parent: folder, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(folder)
+        seed(file, downloaded: true)
+        file.name = "after"
+        file.remotePath = folder.remotePath + "/after"
+        folder.versionIdentifier = "folder-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let targets = try XCTUnwrap(Self.dbManager.targetsForPushedFileIds([file.identifier]))
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: targets)
+
+        XCTAssertFalse(changes.deleted.contains { $0.ocId == file.identifier })
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.fileName, "after")
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+    }
+
+    func testATargetedScanReadsTheMaterialisedItemsBelowAFolderThatIsGone() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let subfolder = makeFolder(name: "subfolder", parent: folder, etag: "subfolder-v1")
+        let file = makeFile(name: "file", parent: subfolder, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(folder, visitedDirectory: true)
+        seed(subfolder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        rootItem.children.removeAll()
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: [NSFileProviderItemIdentifier(folder.identifier), .rootContainer])
+
+        XCTAssertTrue(changes.deleted.contains { $0.ocId == folder.identifier })
+        XCTAssertTrue(changes.deleted.contains { $0.ocId == subfolder.identifier })
+        XCTAssertTrue(changes.deleted.contains { $0.ocId == file.identifier })
+        XCTAssertFalse(changes.needsFullWalk)
+    }
+
+    func testATargetedScanLeavesAMissingFolderToAFullWalkWhenItsParentWasNotRead() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let file = makeFile(name: "file", parent: folder, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        rename(folder, to: "renamed")
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: [NSFileProviderItemIdentifier(folder.identifier)])
+
+        XCTAssertTrue(changes.needsFullWalk)
+        XCTAssertTrue(changes.deleted.isEmpty)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folder.identifier)?.deleted, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+    }
+
+    func testADerivationKeepsAFolderRenamedWhileItsPushWasLost() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let file = makeFile(name: "file", parent: folder, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        rename(folder, to: "renamed")
+        rootItem.versionIdentifier = "root-v2"
+        let secondsLeftInTheInterval: TimeInterval = 60
+        let lastFullWalk = Date(timeIntervalSinceNow: -RemoteChangeTargets.fullWalkInterval + secondsLeftInTheInterval)
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: lastFullWalk)
+        targets.record(targets: [NSFileProviderItemIdentifier(folder.identifier)])
+
+        let observer = try await runWorkingSetChanges(MockRemoteInterface(account: Self.account, rootItem: rootItem), remoteChangeTargets: targets)
+
+        targets.record(targets: [NSFileProviderItemIdentifier(folder.identifier)])
+        XCTAssertEqual(targets.takeScope(now: lastFullWalk.addingTimeInterval(RemoteChangeTargets.fullWalkInterval)), .targets([NSFileProviderItemIdentifier(folder.identifier)]))
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(folder.identifier)))
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(file.identifier)))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folder.identifier)?.fileName, "renamed")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+    }
+
+    func testADerivationKeepsARenamedFolderWhoseOldPathHoldsANewFolder() async throws {
+        let folder = makeFolder(name: "Reports", parent: rootItem, etag: "folder-v1")
+        let file = makeFile(name: "file", parent: folder, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        rename(folder, to: "Reports 2025")
+        let newFolder = makeFolder(name: "Reports", parent: rootItem, etag: "new-v1")
+        newFolder.identifier = "new-reports"
+        rootItem.versionIdentifier = "root-v2"
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: Date())
+        targets.record(targets: [NSFileProviderItemIdentifier(folder.identifier)])
+
+        let observer = try await runWorkingSetChanges(MockRemoteInterface(account: Self.account, rootItem: rootItem), remoteChangeTargets: targets)
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(folder.identifier)))
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(file.identifier)))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folder.identifier)?.fileName, "Reports 2025")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+    }
+
+    func testTheFullWalkOverrulesATargetedDeletionOfAnItemThatMoved() async throws {
+        let source = makeFolder(name: "source", parent: rootItem, etag: "source-v1")
+        let destination = makeFolder(name: "destination", parent: rootItem, etag: "destination-v1")
+        let unreadParent = makeFolder(name: "unread", parent: rootItem, etag: "unread-v1")
+        let movedFolder = makeFolder(name: "moved", parent: unreadParent, etag: "moved-v1")
+        let movedFile = makeFile(name: "file", parent: source, etag: "file-v1")
+        seed(rootItem, visitedDirectory: true)
+        seed(source, visitedDirectory: true)
+        seed(destination, visitedDirectory: true)
+        seed(unreadParent, visitedDirectory: true)
+        seed(movedFolder, visitedDirectory: true)
+        seed(movedFile, downloaded: true)
+        move(movedFile, to: destination)
+        move(movedFolder, to: destination)
+        for folder in try [XCTUnwrap(rootItem), source, destination, unreadParent] {
+            folder.versionIdentifier += "-v2"
+        }
+        let targets = RemoteChangeTargets()
+        targets.noteFullWalkCompleted(startedAt: Date())
+        targets.record(targets: [NSFileProviderItemIdentifier(source.identifier), NSFileProviderItemIdentifier(movedFolder.identifier)])
+
+        let observer = try await runWorkingSetChanges(MockRemoteInterface(account: Self.account, rootItem: rootItem), remoteChangeTargets: targets)
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(movedFile.identifier)))
+        XCTAssertFalse(observer.deletedItemIdentifiers.contains(NSFileProviderItemIdentifier(movedFolder.identifier)))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: movedFile.identifier)?.deleted, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: movedFile.identifier)?.serverUrl, destination.remotePath)
+    }
+
+    private func move(_ item: MockRemoteItem, to newParent: MockRemoteItem) {
+        item.parent?.children.removeAll { $0 === item }
+        let oldPath = item.remotePath
+        let newPath = newParent.remotePath + "/" + item.name
+        var pending = [item]
+
+        while let current = pending.popLast() {
+            current.remotePath = newPath + current.remotePath.dropFirst(oldPath.count)
+            pending += current.children
+        }
+
+        item.parent = newParent
+        newParent.children.append(item)
+    }
+
+    func testATargetedScanReadsAPinnedFolderThatIsNotVisited() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        seed(folder, keepDownloaded: true)
+        let created = makeFile(name: "created", parent: folder, etag: "created-v1")
+        folder.versionIdentifier = "folder-v2"
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let changes = await enumerator.scanMaterialisedItemsForRemoteChanges(startingFrom: [NSFileProviderItemIdentifier(folder.identifier)])
+
+        XCTAssertTrue(changes.updated.contains { $0.ocId == created.identifier })
+    }
+
+    private func rename(_ item: MockRemoteItem, to name: String) {
+        let oldPath = item.remotePath
+        let newPath = (oldPath as NSString).deletingLastPathComponent + "/" + name
+        var pending = [item]
+
+        while let current = pending.popLast() {
+            current.remotePath = newPath + current.remotePath.dropFirst(oldPath.count)
+            pending += current.children
+        }
+
+        item.name = name
+    }
+
+    private func makeExtension() -> FileProviderExtension {
+        FileProviderExtension(domain: NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(UUID().uuidString), displayName: "Test"))
+    }
+
+    private func processFileIdsChanged(_ fileIds: [NSNumber], in fileProviderExtension: FileProviderExtension) async {
+        await withCheckedContinuation { continuation in
+            fileProviderExtension.processFileIdsChanged(fileIds) { _ in
+                continuation.resume()
+            }
+        }
     }
 }

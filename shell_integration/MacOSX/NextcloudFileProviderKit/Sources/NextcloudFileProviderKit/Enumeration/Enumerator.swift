@@ -14,7 +14,7 @@ import NextcloudKit
 /// - **Working set** (`.workingSet`): the items the system keeps track of — visited folders and
 ///   downloaded files. This is the only container a change notification ever signals (the app calls
 ///   `signalEnumerator(for: .workingSet)`), so working-set change enumeration is what drives remote
-///   updates into the framework. See ``scanMaterialisedItemsForRemoteChanges()``.
+///   updates into the framework. See ``scanMaterialisedItemsForRemoteChanges(startingFrom:)``.
 /// - **Trash** (`.trashContainer`): items deleted on this device. See the `Trash` extension.
 /// - **Regular directory**: a normal folder, read from the server and (for changes) diffed against
 ///   the local database. See the `ItemEnumeration` and `ChangeEnumeration` extensions.
@@ -55,6 +55,9 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     /// enumerator can resume the next batch.
     let changeBuffer: ChangeDeliveryBuffer
 
+    /// Decides whether a working-set scan starts from the items pushes named or walks the whole materialised set.
+    let remoteChangeTargets: RemoteChangeTargets
+
     /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
     /// per-page item budget used for paginated item enumeration (``pageItemCount``).
     static let defaultBatchSize = 1000
@@ -77,6 +80,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         pageSize: Int = 1000,
+        remoteChangeTargets: RemoteChangeTargets = RemoteChangeTargets(),
         log: any FileProviderLogging
     ) throws {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
@@ -86,6 +90,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         currentAnchor = Self.syncAnchor(at: Date(), storeIdentity: dbManager.storeIdentity)
         self.domain = domain
         pageItemCount = pageSize
+        self.remoteChangeTargets = remoteChangeTargets
         logger = FileProviderLogger(category: "Enumerator", log: log)
         changeBuffer = ChangeDeliveryBuffer(
             dbManager: dbManager,
