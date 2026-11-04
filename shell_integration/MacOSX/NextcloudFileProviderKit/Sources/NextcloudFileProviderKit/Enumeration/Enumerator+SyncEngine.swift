@@ -306,29 +306,13 @@ extension Enumerator {
         }
 
         if depth == .target {
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let updatedMetadatas = isNew ? [] : [metadata]
-            let newMetadatas = isNew ? [metadata] : []
-
-            metadata.lockToken = existing?.lockToken
-            metadata.visitedDirectory = existing?.visitedDirectory == true
-            metadata.downloaded = existing?.downloaded == true
-
-            if let existing {
-                metadata.keepDownloaded = existing.keepDownloaded
-            } else {
-                // Genuinely new item: inherit the parent's pin so the
-                // overlay and `contentPolicy` match its siblings (#10054).
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
-            }
-
-            dbManager.addItemMetadata(metadata)
+            let receivedMetadata = receivedFile.toItemMetadata()
+            let isNew = dbManager.itemMetadata(ocId: receivedMetadata.ocId) == nil
+            let metadata = dbManager.addItemMetadataPreservingLocalState(receivedMetadata)
 
             return RemoteReadResult(
                 metadatas: [metadata],
-                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
+                changes: ChangeSet(created: isNew ? [metadata] : [], updated: isNew ? [] : [metadata]),
                 nextPage: nextPage
             )
         } else if depth == .targetAndDirectChildren {

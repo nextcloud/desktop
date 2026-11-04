@@ -524,6 +524,27 @@ public final class FilesDatabaseManager: Sendable {
                     ])
                 }
 
+            } else if let movedMetadata = try itemMetadata(ocId: updatedMetadata.ocId, in: db), !movedMetadata.hasSameLocation(as: updatedMetadata) {
+                // Listed here but stored elsewhere, so the server moved it, and it keeps its local state and takes its descendants along.
+                if updatedMetadata.etag == movedMetadata.etag {
+                    updatedMetadata.fileProviderContentVersion = movedMetadata.fileProviderContentVersion
+                }
+
+                if updatedMetadata.directory {
+                    directoriesNeedingRename.append(updatedMetadata)
+                }
+
+                if keepExistingDownloadState {
+                    updatedMetadata.downloaded = movedMetadata.downloaded
+                }
+
+                updatedMetadata.visitedDirectory = movedMetadata.visitedDirectory
+                updatedMetadata.keepDownloaded = movedMetadata.keepDownloaded
+                updatedMetadata.lockToken = nil
+
+                returningUpdatedMetadatas.append(updatedMetadata)
+
+                logger.debug("Moved existing item metadata into the listed folder.", [.item: updatedMetadata.ocId, .name: updatedMetadata.fileName])
             } else { // This is a new metadata
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
                 if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
@@ -606,6 +627,8 @@ public final class FilesDatabaseManager: Sendable {
             var metadatasToCreate = metadatasToChange.newMetadatas
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
+            var movedDescendants: [SendableItemMetadata] = []
+
             for metadata in directoriesNeedingRename {
                 if let updatedDirectoryChildren = try renameDirectoryAndPropagateToChildren(
                     ocId: metadata.ocId,
@@ -613,9 +636,13 @@ public final class FilesDatabaseManager: Sendable {
                     newFileName: metadata.fileName,
                     in: db
                 ) {
-                    metadatasToUpdate += updatedDirectoryChildren
+                    movedDescendants += updatedDirectoryChildren
                 }
             }
+
+            // An item listed here is written as listed, and a descendant moved by two renames keeps only the later copy, because the rows are upserted in order.
+            var writtenOcIds = Set(updatedChildMetadatas.map(\.ocId))
+            metadatasToUpdate += movedDescendants.reversed().filter { writtenOcIds.insert($0.ocId).inserted }.reversed()
 
             var visitToRecord: String?
 
@@ -848,6 +875,8 @@ public final class FilesDatabaseManager: Sendable {
                     logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
                     return
                 }
+
+                try relocateDescendantsIfMoved(toWrite, in: db)
             } else {
                 // The ocId lookup missed. Before falling back to defaults from the
                 // server payload, look for a single non-deleted, non-local-lock row
