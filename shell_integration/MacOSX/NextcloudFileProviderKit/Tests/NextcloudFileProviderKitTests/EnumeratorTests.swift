@@ -1381,6 +1381,115 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(updatedMetadata.downloaded, "Downloaded state should be preserved")
     }
 
+    func testSingleFileReadReportsMergedExistingMetadata() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let expectedPath = remoteItemA.remotePath
+        remote.enumerateCallHandler = { path, depth, _, _, _, account, options, _ in
+            XCTAssertEqual(path, expectedPath)
+            XCTAssertEqual(depth, .targetAndDirectChildren)
+            XCTAssertEqual(account, Self.account)
+            XCTAssertFalse(options.paginate)
+        }
+        var parent = remoteFolder.toItemMetadata(account: Self.account)
+        parent.keepDownloaded = true
+        try Self.dbManager.insertForTesting(parent)
+        let versionCases: [(Bool, String?)] = [(false, nil), (false, "stored-version"), (true, nil), (true, "stored-version")]
+        for storedValue in [false, true] {
+            for (unchangedEtag, storedVersion) in versionCases {
+                var existing = remoteItemA.toNKFile().toItemMetadata()
+                existing.serverUrl = Self.account.davFilesUrl + "/old-parent"
+                existing.apply(fileName: "old-name.txt")
+                existing.etag = unchangedEtag ? remoteItemA.versionIdentifier : "old-etag"
+                existing.fileProviderContentVersion = storedVersion
+                existing.downloaded = storedValue
+                existing.keepDownloaded = storedValue
+                existing.visitedDirectory = true
+                existing.lockToken = "stored-lock"
+                existing.status = Status.uploading.rawValue
+                existing.chunkUploadId = "stored-upload"
+                try Self.dbManager.insertForTesting(existing)
+                let previousReadCount = remote.readOperationCount
+
+                let result = await Enumerator.readServerUrl(
+                    remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
+                    dbManager: Self.dbManager, log: FileProviderLogMock()
+                )
+
+                XCTAssertNil(result.error)
+                XCTAssertEqual(remote.readOperationCount, previousReadCount + 1)
+                let metadata = try XCTUnwrap(result.metadatas?.first)
+                let changes = try XCTUnwrap(result.changes)
+                let reported = try XCTUnwrap(changes.updated.first)
+                XCTAssertEqual(result.metadatas?.count, 1)
+                XCTAssertEqual(changes.updated.count, 1)
+                XCTAssertTrue(changes.created.isEmpty)
+                XCTAssertTrue(changes.deleted.isEmpty)
+                XCTAssertEqual(metadata.downloaded, storedValue)
+                XCTAssertEqual(metadata.keepDownloaded, storedValue)
+                XCTAssertFalse(metadata.visitedDirectory)
+                XCTAssertEqual(metadata.lockToken, existing.lockToken)
+                XCTAssertEqual(metadata.fileProviderContentVersion, unchangedEtag ? storedVersion : nil)
+                XCTAssertEqual(metadata.etag, remoteItemA.versionIdentifier)
+                XCTAssertEqual(metadata.remotePath(), remoteItemA.remotePath)
+                XCTAssertEqual(metadata.status, Status.normal.rawValue)
+                XCTAssertNil(metadata.chunkUploadId)
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+                XCTAssertEqual(reported, metadata)
+            }
+        }
+    }
+
+    func testSingleFileReadReportsInheritedParentPin() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        for parentPinned in [false, true] {
+            try Self.dbManager.removeAllRowsForTesting()
+            var parent = remoteFolder.toItemMetadata(account: Self.account)
+            parent.keepDownloaded = parentPinned
+            try Self.dbManager.insertForTesting(parent)
+
+            let result = await Enumerator.readServerUrl(
+                remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
+                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(result.error)
+            let metadata = try XCTUnwrap(result.metadatas?.first)
+            let changes = try XCTUnwrap(result.changes)
+            let created = try XCTUnwrap(changes.created.first)
+            XCTAssertEqual(changes.created.count, 1)
+            XCTAssertTrue(changes.updated.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertEqual(metadata.keepDownloaded, parentPinned)
+            XCTAssertFalse(metadata.downloaded)
+            XCTAssertFalse(metadata.visitedDirectory)
+            XCTAssertNil(metadata.lockToken)
+            XCTAssertEqual(metadata.etag, remoteItemA.versionIdentifier)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
+            XCTAssertEqual(created, metadata)
+        }
+    }
+
+    func testSingleFileReadRemoteErrorDoesNotPersistMetadata() async throws {
+        var existing = remoteItemA.toItemMetadata(account: Self.account)
+        existing.etag = "stored-etag"
+        existing.keepDownloaded = true
+        existing.lockToken = "stored-lock"
+        try Self.dbManager.insertForTesting(existing)
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
+        remote.enumerateErrorBySuffix = ["/itemA": error]
+
+        let result = await Enumerator.readServerUrl(
+            remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
+            dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.error, error)
+        XCTAssertNil(result.metadatas)
+        XCTAssertNil(result.changes)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
+    }
+
     func testTrashChangeEnumerationFailWhenNoTrashInCapabilities() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         XCTAssert(remoteInterface.capabilities.contains(##""undelete": true,"##))

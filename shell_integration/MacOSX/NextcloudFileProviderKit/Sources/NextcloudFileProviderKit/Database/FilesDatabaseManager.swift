@@ -889,7 +889,7 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// - Parameters:
     ///   - metadata: The freshly-built metadata to persist.
-    ///   - preserveVisitedDirectory: When `false`, do not carry over
+    ///   - preserveVisitedDirectory: For directories, when `false`, do not carry over
     ///     ``visitedDirectory`` from the existing row. Callers that have just
     ///     visited the directory in the current request should pass `false`
     ///     and pre-set `metadata.visitedDirectory = true`, so the visit is

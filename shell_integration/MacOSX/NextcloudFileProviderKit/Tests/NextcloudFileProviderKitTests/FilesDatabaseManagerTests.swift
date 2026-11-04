@@ -465,7 +465,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
                     var expected = incoming
                     expected.downloaded = keepExistingDownloadState
                     expected.keepDownloaded = true
-                    expected.visitedDirectory = true
+                    expected.visitedDirectory = false
                     expected.lockToken = changesPath ? nil : original.lockToken
                     expected.fileProviderContentVersion = unchangedEtag ? original.fileProviderContentVersion : incoming.fileProviderContentVersion
                     XCTAssertEqual(changes.updated, [expected], "Unexpected changed child for \(suffix)")
