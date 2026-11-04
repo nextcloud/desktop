@@ -118,7 +118,7 @@ public extension Item {
         // "Remove downloaded items" appears on the folder, its subfolders, and up
         // to the root (#10085).
         if let domain, let manager = NSFileProviderManager(for: domain), !downloadedFileOcIds.isEmpty {
-            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(downloadedFileOcIds), manager: manager, dbManager: dbManager, logger: logger)
+            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(downloadedFileOcIds), domain: domain.identifier, manager: manager, dbManager: dbManager, logger: logger)
         }
     }
 
@@ -241,7 +241,7 @@ public extension Item {
         // before the system re-enumerates its materialized set, so the observer's
         // reconciliation would see no change (#10085).
         if !isDirectory, let domain, let manager = NSFileProviderManager(for: domain) {
-            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], manager: manager, dbManager: dbManager, logger: logger)
+            refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: [ocId], domain: domain.identifier, manager: manager, dbManager: dbManager, logger: logger)
         }
 
         guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(

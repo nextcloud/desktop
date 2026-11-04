@@ -229,6 +229,35 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// A pinned file's ancestors are still returned, because the downloads a pin triggers are what refreshes the "Remove download" answer of the folders above the pin.
+    func testAncestorContainerIdentifiersIncludePinnedFile() throws {
+        var folder = SendableItemMetadata.rawRow(ocId: "pinned-folder")
+        folder.account = Self.account.ncKitAccount
+        folder.serverUrl = Self.account.davFilesUrl
+        folder.urlBase = Self.account.serverUrl
+        folder.userId = Self.account.id
+        folder.fileName = "pinned"
+        folder.directory = true
+        folder.keepDownloaded = true
+
+        var pinnedFile = SendableItemMetadata.rawRow(ocId: "pinned-file")
+        pinnedFile.account = Self.account.ncKitAccount
+        pinnedFile.serverUrl = Self.account.davFilesUrl + "/pinned"
+        pinnedFile.urlBase = Self.account.serverUrl
+        pinnedFile.userId = Self.account.id
+        pinnedFile.fileName = "note.txt"
+        pinnedFile.downloaded = true
+        pinnedFile.keepDownloaded = true
+
+        try Self.dbManager.insertForTesting(folder)
+        try Self.dbManager.insertForTesting(pinnedFile)
+
+        XCTAssertEqual(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["pinned-file"]),
+            [NSFileProviderItemIdentifier("pinned-folder"), .rootContainer]
+        )
+    }
+
     /// `evictableDescendantFileIdentifiers` returns exactly the downloaded,
     /// non-deleted, non-pinned descendant FILES — the set the "Remove downloaded
     /// items" handler evicts individually (#10085). Pinned, dataless, tombstoned,
