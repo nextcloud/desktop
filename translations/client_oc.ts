@@ -1325,7 +1325,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1531"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Connectat a %1 (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1578"/>
@@ -3646,7 +3646,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="293"/>
         <source>Show &amp;Quota Warning Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar las notificacions d’avertiment de &amp;quòta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="42"/>
@@ -3656,7 +3656,7 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="46"/>
         <source>Show chat notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar las fenèstras de las notificacions del chat.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="50"/>
@@ -4042,7 +4042,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/infosettings.ui" line="172"/>
         <source>Restore &amp;Default</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar çò per _defaut</translation>
     </message>
     <message>
         <location filename="../src/gui/infosettings.ui" line="193"/>
