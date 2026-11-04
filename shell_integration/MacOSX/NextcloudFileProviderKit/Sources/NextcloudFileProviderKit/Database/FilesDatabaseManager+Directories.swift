@@ -261,16 +261,18 @@ extension FilesDatabaseManager {
             .fetchRecord(db, logger: logger)
     }
 
-    /// Move a directory's descendants along when `incoming` places that directory somewhere other than its stored row.
-    func relocateDescendantsIfMoved(_ incoming: any ItemMetadata, in db: Database) throws {
-        guard incoming.directory,
-              let stored = try directoryMetadata(ocId: incoming.ocId, in: db),
-              !stored.hasSameLocation(as: incoming)
-        else {
-            return
-        }
+    /// Whether a live directory other than `ocId` is stored at the given location, which a move of `ocId` there must wait for.
+    func directoryHolds(serverUrl: String, fileName: String, otherThan ocId: String, ignoring ignoredOcIds: Set<String> = [], in db: Database) throws -> Bool {
+        let occupants = try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.hasLocation(serverUrl: serverUrl, fileName: fileName)
+                    && ItemMetadataRecord.Columns.directory == true
+                    && ItemMetadataRecord.Columns.deleted == false
+                    && ItemMetadataRecord.Columns.ocId != ocId
+            )
+            .fetchRecords(db, logger: logger)
 
-        _ = try renameDirectoryAndPropagateToChildren(ocId: incoming.ocId, newServerUrl: incoming.serverUrl, newFileName: incoming.fileName, in: db)
+        return occupants.contains { !ignoredOcIds.contains($0.ocId) }
     }
 
     func renameDirectoryAndPropagateToChildren(
@@ -289,11 +291,15 @@ extension FilesDatabaseManager {
             .filter(
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
                     && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
+                    && ItemMetadataRecord.Columns.deleted == false
             )
             .fetchRecords(db, logger: logger)
 
         try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
+
+        var movedChildren: [SendableItemMetadata] = []
+        movedChildren.reserveCapacity(childItemResults.count)
 
         for var childItem in childItemResults {
             let oldServerUrl = childItem.serverUrl
@@ -303,6 +309,7 @@ extension FilesDatabaseManager {
             childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
             childItem.lockToken = nil
             try childItem.upsertRow(db)
+            movedChildren.append(childItem.metadata)
             logger.debug(
                 """
                 Moved childItem at: \(oldServerUrl)
@@ -311,12 +318,6 @@ extension FilesDatabaseManager {
             )
         }
 
-        return try ItemMetadataRecord
-            .filter(
-                ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
-            )
-            .fetchRecords(db, logger: logger)
-            .map(\.metadata)
+        return movedChildren
     }
 }
