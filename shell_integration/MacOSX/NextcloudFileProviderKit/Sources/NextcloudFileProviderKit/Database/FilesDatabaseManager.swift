@@ -531,10 +531,6 @@ public final class FilesDatabaseManager: Sendable {
 
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
-                if updatedMetadata.etag == existingMetadata.etag {
-                    updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
-                }
-
                 if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
@@ -542,13 +538,13 @@ public final class FilesDatabaseManager: Sendable {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
 
-                    if keepExistingDownloadState {
-                        updatedMetadata.downloaded = existingMetadata.downloaded
-                    }
-
-                    updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
-                    updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
-                    updatedMetadata.lockToken = pathChanged ? nil : existingMetadata.lockToken
+                    updatedMetadata = RemoteMetadataMerger.merge(
+                        updatedMetadata,
+                        preservingLocalStateFrom: existingMetadata,
+                        preserveVisitedDirectory: true,
+                        preserveDownloadState: keepExistingDownloadState,
+                        clearLockToken: pathChanged
+                    )
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 

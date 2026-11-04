@@ -6,17 +6,21 @@ enum RemoteMetadataMerger {
     static func merge(
         _ metadata: SendableItemMetadata,
         preservingLocalStateFrom existing: any ItemMetadata,
-        preserveVisitedDirectory: Bool
+        preserveVisitedDirectory: Bool,
+        preserveDownloadState: Bool = true,
+        clearLockToken: Bool = false
     ) -> SendableItemMetadata {
         var merged = metadata
-        merged.downloaded = existing.downloaded
+        if preserveDownloadState {
+            merged.downloaded = existing.downloaded
+        }
         merged.keepDownloaded = existing.keepDownloaded
 
         if preserveVisitedDirectory {
             merged.visitedDirectory = existing.visitedDirectory
         }
 
-        merged.lockToken = existing.lockToken
+        merged.lockToken = clearLockToken ? nil : existing.lockToken
         if merged.etag == existing.etag {
             merged.fileProviderContentVersion = existing.fileProviderContentVersion
         }
