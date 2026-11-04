@@ -164,6 +164,7 @@ public extension ItemMetadata {
             && comparingMetadata.hasPreview == hasPreview
             && comparingMetadata.note == note
             && comparingMetadata.lock == lock
+            && comparingMetadata.lockTimeOut == lockTimeOut
             && comparingMetadata.sharePermissionsCollaborationServices
             == sharePermissionsCollaborationServices
             && comparingMetadata.favorite == favorite

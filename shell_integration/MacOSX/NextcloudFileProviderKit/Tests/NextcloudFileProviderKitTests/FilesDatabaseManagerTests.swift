@@ -2193,4 +2193,133 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let storedB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "B"))
         XCTAssertFalse(storedB.deleted)
     }
+
+    // MARK: - Redundant-write suppression
+
+    ///
+    /// `syncTime` is the observable, carried from the incoming payload so that it advances if and
+    /// only if the row was actually written.
+    ///
+    private func seedRow(ocId: String, etag: String, syncTime: Date, visited: Bool = false) -> SendableItemMetadata {
+        var metadata = SendableItemMetadata(ocId: ocId, fileName: "doc.txt", account: Self.account)
+        metadata.etag = etag
+        metadata.syncTime = syncTime
+        metadata.visitedDirectory = visited
+        // The convenience initializer stamps `Date()`, and `date` is part of the remote-state
+        // comparison — pin it so successive rows differ only where the test intends.
+        metadata.date = Date(timeIntervalSince1970: 500_000)
+        metadata.creationDate = Date(timeIntervalSince1970: 500_000)
+        return metadata
+    }
+
+    func testUnchangedRemoteStateIsNotRewritten() {
+        let ocId = "unchanged-\(name)"
+        let firstSeen = Date(timeIntervalSince1970: 1_000_000)
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: firstSeen))
+
+        let rescanned = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        let returned = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, firstSeen,
+            "An unchanged row must not be rewritten."
+        )
+        XCTAssertEqual(returned.ocId, ocId, "The merged metadata must still be returned to the caller.")
+        XCTAssertEqual(returned.etag, "v1")
+    }
+
+    func testChangedRemoteStateIsStillWritten() {
+        let ocId = "changed-\(name)"
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000)))
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v2", syncTime: later))
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.etag, "v2", "A real remote change must still be persisted.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    func testRowThatIsNotNormalIsResetEvenWhenRemoteStateIsUnchanged() {
+        let ocId = "upload-error-\(name)"
+        var failedUpload = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        failedUpload.status = Status.uploadError.rawValue
+        Self.dbManager.addItemMetadata(failedUpload)
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v1", syncTime: later))
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.status, Status.normal.rawValue, "A row left at uploadError must be reset to normal by the listing.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    /// `visitedDirectory` is local-only and so not part of `isInSameDatabaseStoreableRemoteState`,
+    /// so the skip must compare it explicitly or a recorded visit would be silently dropped.
+    func testRecordingADirectoryVisitIsAlwaysWritten() {
+        let ocId = "visit-\(name)"
+        var directory = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        directory.directory = true
+        Self.dbManager.addItemMetadata(directory)
+
+        var visited = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000), visited: true)
+        visited.directory = true
+        Self.dbManager.addItemMetadataPreservingLocalState(visited, preserveVisitedDirectory: false)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.visitedDirectory, true,
+            "Recording a directory visit must be written even when the remote state is unchanged."
+        )
+    }
+
+    /// A server-side move keeps the item's ETag, date and size, so the row found by `ocId` must
+    /// still be rewritten when the listing reports it somewhere else.
+    func testMovedItemWithUnchangedRemoteStateIsWritten() {
+        let ocId = "moved-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.serverUrl = Self.account.davFilesUrl + "/A"
+        Self.dbManager.addItemMetadata(original)
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        var moved = seedRow(ocId: ocId, etag: "v1", syncTime: later)
+        moved.serverUrl = Self.account.davFilesUrl + "/B"
+        Self.dbManager.addItemMetadataPreservingLocalState(moved)
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.serverUrl, Self.account.davFilesUrl + "/B", "A moved item must be stored at its new location.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    func testSoftDeletedItemWithUnchangedRemoteStateIsRevived() {
+        let ocId = "revived-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.deleted = true
+        Self.dbManager.addItemMetadata(original)
+
+        Self.dbManager.addItemMetadataPreservingLocalState(
+            seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        )
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.deleted, false,
+            "An item listed again must no longer be marked deleted."
+        )
+    }
+
+    /// Extending a lock changes only its timeout, not the file's ETag.
+    func testExtendedLockTimeoutIsWritten() {
+        let ocId = "lock-extended-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.lock = true
+        original.lockTimeOut = Date(timeIntervalSince1970: 3_000_000)
+        Self.dbManager.addItemMetadata(original)
+
+        let extendedTimeout = Date(timeIntervalSince1970: 4_000_000)
+        var extended = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        extended.lock = true
+        extended.lockTimeOut = extendedTimeout
+        Self.dbManager.addItemMetadataPreservingLocalState(extended)
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.lockTimeOut, extendedTimeout)
+    }
 }
