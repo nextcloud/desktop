@@ -258,6 +258,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 @interface TestClientCommunicationService : NSObject <ClientCommunicationProtocol>
 @property (nonatomic, copy) NSString *domainIdentifier;
+@property (nonatomic, copy) NSString *serverUrl;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
@@ -290,6 +291,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
                         password:(NSString *)password
                        userAgent:(NSString *)userAgent
 {
+    self.serverUrl = serverUrl;
 }
 
 - (void)removeAccountConfig
@@ -411,11 +413,11 @@ private:
     QTemporaryDir configDirectory;
     OCC::AccountState *testAccountState = nullptr;
 
-    OCC::AccountState *addTestAccount(const QString &domainIdentifier = {})
+    OCC::AccountState *addTestAccount(const QString &domainIdentifier = {}, const QUrl &url = QUrl(u"https://cloud.example.test"_s))
     {
         OCC::ConfigFile().setMacFileProviderModeEnabled(false);
         const auto account = OCC::Account::create();
-        account->setUrl(QUrl(u"https://cloud.example.test"_s));
+        account->setUrl(url);
         account->setDavUser(u"alice"_s);
         account->setCredentials(new CredentialsStub(u"alice"_s, u"password"_s));
         account->setFileProviderDomainIdentifier(domainIdentifier);
@@ -1377,9 +1379,7 @@ private Q_SLOTS:
 
     void fileProviderServerUrlUsesAceHostname()
     {
-        const auto url =
-            QUrl(QString::fromUtf8("https://b\xC3\xBC"
-                                   "cher.com"));
+        const auto url = QUrl(u"https://bücher.com"_s);
 
         QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), u"https://xn--bcher-kva.com"_s);
         QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(QUrl(u"https://xn--bcher-kva.com/nextcloud"_s)),
@@ -1388,11 +1388,7 @@ private Q_SLOTS:
 
     void fileProviderServerUrlPreservesOtherComponents()
     {
-        const auto url =
-            QUrl(QString::fromUtf8("https://user@b\xC3\xBC"
-                                   "cher.com:8443/nextcloud/space%20name/%25/"
-                                   "\xC3\xBC"
-                                   "?q=%25#section"));
+        const auto url = QUrl(u"https://user@bücher.com:8443/nextcloud/space%20name/%25/ü?q=%25#section"_s);
         const auto original = url.toString();
         const QString originalAuthority = url.scheme() + u"://"_s + url.authority();
 
@@ -1407,6 +1403,29 @@ private Q_SLOTS:
             const auto url = QUrl(urlString);
             QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), url.toString());
         }
+    }
+
+    void authenticationSendsAceHostnameToFileProvider()
+    {
+        installDomainLookupMocks();
+        const auto accountState = addTestAccount(u"registered-domain"_s, QUrl(u"https://bücher.com/nextcloud"_s));
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto remoteService = [TestClientCommunicationService new];
+        remoteService.domainIdentifier = @"registered-domain";
+        const auto connection = [TestXPCConnection new];
+        connection.remoteService = remoteService;
+        const auto service = [TestFileProviderService new];
+        service.name = communicationServiceName;
+        service.connection = (NSXPCConnection *)connection;
+        manager.service = (NSFileProviderService *)service;
+
+        OCC::Mac::FileProviderXPC owner;
+        owner.connectToFileProviderDomains();
+        QVERIFY(connection.resumed);
+        QVERIFY(accountState->account()->url().toString() != u"https://xn--bcher-kva.com/nextcloud"_s);
+        owner.authenticateFileProviderDomain(u"registered-domain"_s);
+        QCOMPARE(QString::fromNSString(remoteService.serverUrl), u"https://xn--bcher-kva.com/nextcloud"_s);
     }
 
     void concurrentServiceLookupsCanBeCollected()
