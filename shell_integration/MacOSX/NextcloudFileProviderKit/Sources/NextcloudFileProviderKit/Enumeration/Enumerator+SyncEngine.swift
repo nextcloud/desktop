@@ -343,32 +343,22 @@ extension Enumerator {
         if depth == .target {
             let received = receivedFile.toItemMetadata()
 
-            // Read and merge off the cooperative pool: see
-            // `FilesDatabaseManager.perform(_:)`.
-            let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
-                dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
-                var metadata = received
-                let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-                let isNew = existing == nil
-                let updatedMetadatas = isNew ? [] : [metadata]
-                let newMetadatas = isNew ? [metadata] : []
-
-                metadata.lockToken = existing?.lockToken
-                metadata.visitedDirectory = existing?.visitedDirectory == true
-                metadata.downloaded = existing?.downloaded == true
-
-                if let existing {
-                    metadata.keepDownloaded = existing.keepDownloaded
-                } else {
-                    // Genuinely new item: inherit the parent's pin so the
-                    // overlay and `contentPolicy` match its siblings (#10054).
-                    metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+            // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+            let (metadata, changes) = await dbManager.perform {
+                dbManager -> (SendableItemMetadata, ChangeSet) in
+                if let existing = dbManager.itemMetadata(ocId: received.ocId) {
+                    let metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
+                    return (metadata, ChangeSet(updated: [metadata]))
                 }
 
-                return (metadata, newMetadatas, updatedMetadatas)
+                // Genuinely new item: inherit the parent's pin so the
+                // overlay and `contentPolicy` match its siblings (#10054).
+                var metadata = received
+                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                return (metadata, ChangeSet(created: [metadata]))
             }
 
-            return await finishTargetRead(metadata, changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas))
+            return await finishTargetRead(metadata, changes: changes)
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
