@@ -58,12 +58,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
                 capabilities.insert(.allowsWriting)
             }
 
-            if permissions.contains("NV") { // Updateable, renameable, moveable
+            if permissions.contains("NV") { // Renameable, moveable
                 capabilities.formUnion([.allowsRenaming, .allowsReparenting])
-
-                if metadata.directory {
-                    capabilities.insert(.allowsAddingSubItems)
-                }
             }
 
             if permissions.contains("CK"), metadata.directory { // Folder not changeable but adding sub-files & -folders
@@ -375,6 +371,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             path: "", // Placeholder as not set in original code
+            permissions: "RGDNVCK",
             serverUrl: account.davFilesUrl,
             size: 0, // Default as not set in original code
             uploaded: true,
@@ -430,6 +427,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
             path: "", // Placeholder as not set in original code
+            permissions: "RGDNVCK",
             serverUrl: account.trashUrl,
             size: 0, // Default as not set in original code
             uploaded: true,
