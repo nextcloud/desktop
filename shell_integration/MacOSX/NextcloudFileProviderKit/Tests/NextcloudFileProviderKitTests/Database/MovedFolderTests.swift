@@ -43,9 +43,7 @@ extension DatabaseTestSuites {
         }
 
         private func metadata(_ identifier: String, _ name: String, at serverUrl: String, directory: Bool = false) -> SendableItemMetadata {
-            var metadata = remoteItem(identifier, name, at: serverUrl, directory: directory).toItemMetadata(account: account)
-            metadata.uploaded = true
-            return metadata
+            remoteItem(identifier, name, at: serverUrl, directory: directory).toItemMetadata(account: account)
         }
 
         private func store(_ rows: SendableItemMetadata...) {
@@ -105,6 +103,12 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "folder")?.visitedDirectory == true, "A moved folder must stay visited.", sourceLocation: sourceLocation)
             #expect(manager.itemMetadata(ocId: "folder")?.keepDownloaded == true, "A moved folder must stay pinned.", sourceLocation: sourceLocation)
             #expect(["folder", "file", "subfolder", "nested"].allSatisfy { manager.itemMetadata(ocId: $0)?.deleted == false }, sourceLocation: sourceLocation)
+        }
+
+        private func expectDescendantsStayBelowSource(sourceLocation: SourceLocation = #_sourceLocation) {
+            #expect(manager.itemMetadata(ocId: "folder")?.serverUrl == filesUrl + "/src", sourceLocation: sourceLocation)
+            #expect(manager.itemMetadata(ocId: "file")?.serverUrl == filesUrl + "/src/Ontwerp", sourceLocation: sourceLocation)
+            #expect(manager.itemMetadata(ocId: "nested")?.serverUrl == filesUrl + "/src/Ontwerp/sub", sourceLocation: sourceLocation)
         }
 
         // MARK: - Writers
@@ -198,6 +202,7 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "nested")?.serverUrl == filesUrl + "/src/sub")
             #expect(manager.itemMetadata(ocId: "file")?.serverUrl == filesUrl + "/src/Ontwerp2")
             #expect(changes?.updated.filter { $0.ocId == "subfolder" }.map(\.serverUrl) == [filesUrl + "/src"], "The moved subfolder must be reported once, where it is listed.")
+            #expect(changes?.updated.filter { $0.ocId == "nested" }.map(\.serverUrl) == [filesUrl + "/src/sub"], "A descendant moved by two renames must be reported once, at its final path.")
         }
 
         /// On the server `/B/Docs` became `/B/Docs-old` and `/A/Docs` moved to `/B/Docs`, so the contents of the two folders must not mix.
@@ -826,19 +831,315 @@ extension DatabaseTestSuites {
             #expect(!scan.deleted.map(\.ocId).contains("folder"))
         }
 
-        /// Pins the behaviour for a folder shared twice (#10106): each listing moves the one row, and its descendants follow the last listing.
-        @Test func aFolderListedUnderTwoParentsFollowsTheLastListing() {
+        // MARK: - A folder reachable at two paths (#10106)
+
+        /// The server tree with the seeded folder below `dst`, and also still below `src` when `secondMount` is set.
+        private func remoteInterface(secondMount: Bool, pagination: Bool = false) -> MockRemoteInterface {
+            let root = MockRemoteItem.rootItem(account: account)
+            let source = remoteItem("src", "src", at: filesUrl, directory: true)
+            let destination = remoteItem("dst", "dst", at: filesUrl, directory: true)
+            let atDestination = remoteItem("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)
+            root.children = [source, destination]
+            source.parent = root
+            destination.parent = root
+            destination.children = [atDestination]
+            atDestination.parent = destination
+
+            if secondMount {
+                let atSource = remoteItem("folder", "Ontwerp", at: filesUrl + "/src", directory: true)
+                source.children = [atSource]
+                atSource.parent = source
+            }
+
+            return MockRemoteInterface(account: account, rootItem: root, pagination: pagination)
+        }
+
+        private func readDestination(through read: Read, remoteInterface: MockRemoteInterface) async -> RemoteReadResult {
+            await Enumerator.readServerUrl(
+                filesUrl + "/dst",
+                pageSettings: read == .paged ? (page: nil, index: 0, size: 100) : nil,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: manager,
+                log: log
+            )
+        }
+
+        @Test(arguments: Read.allCases)
+        func aFolderListedUnderASecondParentStaysWhereItIsStored(read: Read) async {
             seedFolderBelowSource()
-            let source = metadata("src", "src", at: filesUrl, directory: true)
-            let atSource = metadata("folder", "Ontwerp", at: filesUrl + "/src", directory: true)
-            let destination = metadata("dst", "dst", at: filesUrl, directory: true)
-            let atDestination = metadata("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)
 
-            _ = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/dst", updatedMetadatas: [destination, atDestination], keepExistingDownloadState: true)
+            let result = await readDestination(through: read, remoteInterface: remoteInterface(secondMount: true, pagination: read == .paged))
+
+            #expect(result.error == nil)
+            expectDescendantsStayBelowSource()
+            #expect(result.metadatas?.contains { $0.ocId == "folder" } == false, "The second mount must not be reported.")
+            if read == .depthOne {
+                #expect(result.changes?.updated.contains { $0.ocId == "folder" } == false)
+            }
+        }
+
+        /// A share mounted at the root has no parent row, and is still checked as a second mount.
+        @Test func aSecondMountStoredAtTheRootStaysThere() async {
+            store(
+                metadata("dst", "dst", at: filesUrl, directory: true),
+                metadata("folder", "Ontwerp", at: filesUrl, directory: true),
+                metadata("file", "a.indd", at: filesUrl + "/Ontwerp")
+            )
+            let remoteInterface = remoteInterface(secondMount: false)
+            let atRoot = remoteItem("folder", "Ontwerp", at: filesUrl, directory: true)
+            atRoot.parent = remoteInterface.rootItem
+            remoteInterface.rootItem?.children.append(atRoot)
+
+            let result = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+
+            #expect(result.error == nil)
+            #expect(manager.itemMetadata(ocId: "folder")?.serverUrl == filesUrl)
+            #expect(manager.itemMetadata(ocId: "file")?.serverUrl == filesUrl + "/Ontwerp")
+        }
+
+        @Test func aSingleItemReadOfASecondMountKeepsTheStoredFolder() async {
+            seedFolderBelowSource()
+
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface(secondMount: true), dbManager: manager, depth: .target, log: log)
+
+            #expect(result.error == nil)
+            expectDescendantsStayBelowSource()
+            #expect(result.metadatas?.map(\.serverUrl) == [filesUrl + "/src"])
+            #expect(result.changes?.updated.isEmpty == true)
+            #expect(result.changes?.created.isEmpty == true)
+        }
+
+        @Test(arguments: Read.allCases)
+        func aFolderGoneFromItsStoredPathIsMoved(read: Read) async {
+            seedFolderBelowSource()
+
+            let result = await readDestination(through: read, remoteInterface: remoteInterface(secondMount: false, pagination: read == .paged))
+
+            #expect(result.error == nil)
             expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
+        }
 
-            _ = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/src", updatedMetadatas: [source, atSource], keepExistingDownloadState: true)
-            expectDescendantsMoved(to: filesUrl + "/src/Ontwerp")
+        @Test func aFolderWhoseStoredPathNowHoldsAnotherItemIsMoved() async {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: false)
+            let source = remoteInterface.rootItem?.children.first { $0.identifier == "src" }
+            let replacement = remoteItem("replacement", "Ontwerp", at: filesUrl + "/src", directory: true)
+            replacement.parent = source
+            source?.children = [replacement]
+
+            _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+
+            expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
+        }
+
+        /// A single second mount is read at its stored path, so the listing does not download its stored parent.
+        @Test(arguments: Read.allCases)
+        func aSecondMountIsCheckedAtItsStoredPathWithoutListingItsParent(read: Read) async {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true, pagination: read == .paged)
+            let recorder = EnumeratePathRecorder()
+            let depths = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, depth, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+                if remotePath == filesUrl + "/src/Ontwerp" {
+                    depths.add(depth.rawValue)
+                }
+            }
+
+            let result = await readDestination(through: read, remoteInterface: remoteInterface)
+
+            #expect(result.error == nil)
+            expectDescendantsStayBelowSource()
+            #expect(recorder.paths.filter { $0 != filesUrl + "/dst" } == [filesUrl + "/src/Ontwerp"])
+            #expect(depths.paths == [EnumerateDepth.target.rawValue], "The folder is read without its children.")
+        }
+
+        /// Folders moved out of one parent are checked with a single read of that parent, not one read per folder.
+        @Test func foldersMovedOutOfOneParentAreCheckedWithOneRead() async {
+            store(metadata("src", "src", at: filesUrl, directory: true), metadata("dst", "dst", at: filesUrl, directory: true))
+            let remoteInterface = remoteInterface(secondMount: false)
+            let destination = remoteInterface.rootItem?.children.first { $0.identifier == "dst" }
+            for index in 1 ... 3 {
+                store(metadata("moved-\(index)", "Moved \(index)", at: filesUrl + "/src", directory: true))
+                let moved = remoteItem("moved-\(index)", "Moved \(index)", at: filesUrl + "/dst", directory: true)
+                moved.parent = destination
+                destination?.children.append(moved)
+            }
+            let recorder = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+
+            let result = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+
+            #expect(result.error == nil)
+            #expect(recorder.paths.filter { $0 != filesUrl + "/dst" } == [filesUrl + "/src"], "Only the stored parent is read besides the listing.")
+            #expect((1 ... 3).allSatisfy { manager.itemMetadata(ocId: "moved-\($0)")?.serverUrl == filesUrl + "/dst" })
+        }
+
+        @Test func aFolderWhoseStoredPathCannotBeReadIsMoved() async {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true)
+            remoteInterface.enumerateErrorBySuffix = ["/src/Ontwerp": NKError(statusCode: 500, fallbackDescription: "Internal server error")]
+
+            let result = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+
+            #expect(result.error == nil)
+            expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
+        }
+
+        /// A folder renamed inside the listed folder is not checked as a second mount, so the rename is written without another request.
+        @Test func aFolderRenamedInTheListedFolderIsNotCheckedAsASecondMount() async {
+            seedFolderBelowSource()
+            let root = MockRemoteItem.rootItem(account: account)
+            let source = remoteItem("src", "src", at: filesUrl, directory: true)
+            let renamed = remoteItem("folder", "Ontwerp-2025", at: filesUrl + "/src", directory: true)
+            root.children = [source]
+            source.parent = root
+            source.children = [renamed]
+            renamed.parent = source
+            let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
+            let recorder = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+
+            let result = await Enumerator.readServerUrl(filesUrl + "/src", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(result.error == nil)
+            #expect(recorder.paths == [filesUrl + "/src"])
+            #expect(manager.itemMetadata(ocId: "folder")?.fileName == "Ontwerp-2025")
+            #expect(result.changes?.deleted.contains { $0.ocId == "folder" } == false)
+            expectDescendantsMoved(to: filesUrl + "/src/Ontwerp-2025")
+        }
+
+        /// A folder stored below a parked folder, directly or further down, is not checked at the parked folder's holding path.
+        @Test func aFolderBelowAParkedFolderIsNotCheckedAtTheHoldingPath() async {
+            store(
+                metadata("dst", "dst", at: filesUrl, directory: true),
+                metadata("old-docs", "Docs", at: filesUrl + "/dst", directory: true),
+                metadata("child", "C", at: filesUrl + "/dst/Docs", directory: true),
+                metadata("grandchild", "D", at: filesUrl + "/dst/Docs/C", directory: true)
+            )
+            write([metadata("dst", "dst", at: filesUrl, directory: true), metadata("new-docs", "Docs", at: filesUrl + "/dst", directory: true)], through: .depthOne)
+            let root = MockRemoteItem.rootItem(account: account)
+            let destination = remoteItem("dst", "dst", at: filesUrl, directory: true)
+            let newDocs = remoteItem("new-docs", "Docs", at: filesUrl + "/dst", directory: true)
+            let child = remoteItem("child", "C", at: filesUrl + "/dst", directory: true)
+            let grandchild = remoteItem("grandchild", "D", at: filesUrl + "/dst", directory: true)
+            root.children = [destination]
+            destination.parent = root
+            destination.children = [newDocs, child, grandchild]
+            newDocs.parent = destination
+            child.parent = destination
+            grandchild.parent = destination
+            let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
+            let recorder = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(result.error == nil)
+            #expect(recorder.paths == [filesUrl + "/dst"])
+            #expect(manager.itemMetadata(ocId: "child")?.serverUrl == filesUrl + "/dst")
+            #expect(manager.itemMetadata(ocId: "grandchild")?.serverUrl == filesUrl + "/dst")
+        }
+
+        /// A listing that moved folders from many stored parents checks those parents several at a time, up to the scan's width.
+        @Test func foldersMovedOutOfManyParentsAreCheckedSeveralAtATime() async {
+            let parentCount = workingSetScanConcurrency + 2
+            store(metadata("dst", "dst", at: filesUrl, directory: true))
+            let remoteInterface = remoteInterface(secondMount: false)
+            let destination = remoteInterface.rootItem?.children.first { $0.identifier == "dst" }
+            for index in 1 ... parentCount {
+                store(metadata("parent-\(index)", "Client \(index)", at: filesUrl, directory: true), metadata("moved-\(index)", "Project \(index)", at: filesUrl + "/Client \(index)", directory: true))
+                let moved = remoteItem("moved-\(index)", "Project \(index)", at: filesUrl + "/dst", directory: true)
+                moved.parent = destination
+                destination?.children.append(moved)
+            }
+            let recorder = EnumeratePathRecorder()
+            let gate = ConcurrentCallGate(width: workingSetScanConcurrency)
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+            remoteInterface.enumerateHandler = {
+                // The listing itself comes first and alone, so only the checks after it are held.
+                if recorder.paths.count > 1 {
+                    await gate.pass()
+                }
+            }
+
+            let result = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+
+            #expect(result.error == nil)
+            #expect(recorder.paths.count == parentCount + 1)
+            #expect(await gate.peak == workingSetScanConcurrency)
+            #expect((1 ... parentCount).allSatisfy { manager.itemMetadata(ocId: "moved-\($0)")?.serverUrl == filesUrl + "/dst" })
+        }
+
+        /// A read cancelled while the stored path is read writes nothing.
+        @Test func aReadCancelledDuringTheStoredPathCheckWritesNothing() async {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: false)
+            let cancelled = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                if remotePath == filesUrl + "/src/Ontwerp" {
+                    cancelled.add(remotePath)
+                }
+            }
+
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst", account: account, remoteInterface: remoteInterface, dbManager: manager, isCancelled: { !cancelled.paths.isEmpty }, log: log)
+
+            #expect(result.error == .cancelled)
+            expectDescendantsStayBelowSource()
+        }
+
+        /// A subfolder that earlier flipping left below another parent, with no row at its stored parent path, is not a second mount.
+        @Test func aSubfolderStoredBelowAMissingParentIsMovedToTheListedFolder() async throws {
+            var folder = metadata("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)
+            folder.visitedDirectory = true
+            store(
+                metadata("src", "src", at: filesUrl, directory: true),
+                metadata("dst", "dst", at: filesUrl, directory: true),
+                folder,
+                metadata("subfolder", "sub", at: filesUrl + "/src/Ontwerp", directory: true),
+                metadata("nested", "b.indd", at: filesUrl + "/src/Ontwerp/sub")
+            )
+            let remoteInterface = remoteInterface(secondMount: true)
+            for parent in [remoteInterface.rootItem?.children.first { $0.identifier == "dst" }, remoteInterface.rootItem?.children.first { $0.identifier == "src" }] {
+                let mount = parent?.children.first { $0.identifier == "folder" }
+                let sub = try remoteItem("subfolder", "sub", at: #require((mount?.remotePath)), directory: true)
+                sub.parent = mount
+                mount?.children = [sub]
+            }
+
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(result.error == nil)
+            #expect(manager.itemMetadata(ocId: "subfolder")?.serverUrl == filesUrl + "/dst/Ontwerp")
+            #expect(manager.itemMetadata(ocId: "nested")?.serverUrl == filesUrl + "/dst/Ontwerp/sub")
+        }
+
+        /// The first entry of a later page is a listed item, not the read target, so it is checked as well.
+        @Test func aSecondMountFirstOnALaterPageStaysWhereItIsStored() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true, pagination: true)
+            let destination = remoteInterface.rootItem?.children.first { $0.identifier == "dst" }
+            let file = remoteItem("dst-file", "notes.txt", at: filesUrl + "/dst")
+            file.parent = destination
+            destination?.children.insert(file, at: 0)
+
+            let firstPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: nil, index: 0, size: 2), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let token = try #require(firstPage.nextPage?.token?.data(using: .utf8))
+            let secondPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: NSFileProviderPage(token), index: 1, size: 2), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(firstPage.error == nil)
+            #expect(secondPage.error == nil)
+            #expect(secondPage.metadatas?.contains { $0.ocId == "folder" } == false)
+            expectDescendantsStayBelowSource()
         }
     }
 }

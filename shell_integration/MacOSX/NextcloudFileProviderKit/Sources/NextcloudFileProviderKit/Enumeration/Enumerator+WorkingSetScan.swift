@@ -5,9 +5,9 @@
 import Foundation
 
 ///
-/// How many working-set scan reads may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share, so on an HTTP/1.1 server a transfer started during a scan waits for a scan read to finish.
+/// How many working-set scan reads, and separately how many stored-path checks of one listing, may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share.
 ///
-private let workingSetScanConcurrency = 6
+let workingSetScanConcurrency = 6
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
