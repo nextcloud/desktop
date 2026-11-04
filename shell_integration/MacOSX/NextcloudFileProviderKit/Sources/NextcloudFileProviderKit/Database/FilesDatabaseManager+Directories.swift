@@ -261,6 +261,18 @@ extension FilesDatabaseManager {
             .fetchRecord(db, logger: logger)
     }
 
+    /// Move a directory's descendants along when `incoming` places that directory somewhere other than its stored row.
+    func relocateDescendantsIfMoved(_ incoming: any ItemMetadata, in db: Database) throws {
+        guard incoming.directory,
+              let stored = try directoryMetadata(ocId: incoming.ocId, in: db),
+              !stored.hasSameLocation(as: incoming)
+        else {
+            return
+        }
+
+        _ = try renameDirectoryAndPropagateToChildren(ocId: incoming.ocId, newServerUrl: incoming.serverUrl, newFileName: incoming.fileName, in: db)
+    }
+
     func renameDirectoryAndPropagateToChildren(
         ocId: String, newServerUrl: String, newFileName: String, in db: Database
     ) throws -> [SendableItemMetadata]? {
