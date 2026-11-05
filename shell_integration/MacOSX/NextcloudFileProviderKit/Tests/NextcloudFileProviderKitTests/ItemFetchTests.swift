@@ -1753,7 +1753,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {
-        let (item, remoteInterface, _) = makeFetchItem(directory: true)
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
         let progress = Progress()
         let session = URLSession(configuration: .ephemeral)
         defer { session.invalidateAndCancel() }
@@ -1775,6 +1775,10 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(networkError, NSURLErrorCancelled)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
         XCTAssertEqual(remoteInterface.downloadOperationCount, 0)
+        for child in directory.children {
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: child.identifier))
+        }
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: directory.identifier)?.visitedDirectory, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
@@ -2186,6 +2190,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let networkError = try await nextTestValue(from: networkCompletion)
         XCTAssertEqual(networkError, NSURLErrorCancelled)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: directory.identifier))
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.status, Status.normal.rawValue)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")

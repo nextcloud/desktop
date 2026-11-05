@@ -142,6 +142,7 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
+        guard !Task.isCancelled else { return (nil, nil, .cancelled) }
         let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
@@ -205,6 +206,7 @@ extension Enumerator {
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
+        guard !Task.isCancelled else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -271,6 +273,7 @@ extension Enumerator {
             return RemoteReadResult(error: error)
         }
 
+        guard !Task.isCancelled else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
             let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
