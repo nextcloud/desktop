@@ -194,6 +194,17 @@ private Q_SLOTS:
         QCOMPARE(check_file_full("Test.icml"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("Test.prproj"), CSYNC_NOT_EXCLUDED);
 
+        /* Keka temporary extraction output is excluded, file or folder, including its contents */
+        QCOMPARE(check_file_full("Archive.kextraction"), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(check_dir_full("Archive.kextraction"), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(check_dir_full("subdir/Archive.kextraction"), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(check_file_full("Archive.kextraction/inner.txt"), CSYNC_FILE_EXCLUDE_LIST);
+
+        /* The archive and the final extracted folder are NOT excluded */
+        QCOMPARE(check_file_full("Archive.zip"), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(check_dir_full("Archive"), CSYNC_NOT_EXCLUDED);
+        QCOMPARE(check_file_full("Archive.kextraction.txt"), CSYNC_NOT_EXCLUDED);
+
         /* Not excluded because the pattern .netscape/cache requires directory. */
         QCOMPARE(check_file_full(".netscape/cache"), CSYNC_NOT_EXCLUDED);
 
