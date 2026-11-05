@@ -322,10 +322,6 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
         QDesktopServices::openUrl(self->folder()->accountState()->account()->url());
     }
 
-    if(g_str_equal(name, "openfolder")) {
-        showInFileManager(self->folder()->cleanPath());
-    }
-
     if(g_str_equal(name, "showfile")) {
         const gchar *path = g_variant_get_string(parameter, nullptr);
         showInFileManager(QString(path));
@@ -358,7 +354,6 @@ static GActionEntry actions[] = {
     { "openwebsite",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "quit",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "logout",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
-    { "openfolder",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "showfile",  activate_action_open, "s", nullptr, nullptr, {0,0,0}},
     { "openhelp",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
     { "opensettings",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
