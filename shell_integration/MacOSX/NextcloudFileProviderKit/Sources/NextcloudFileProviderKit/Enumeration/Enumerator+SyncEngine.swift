@@ -101,8 +101,10 @@ extension Enumerator {
         logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
 
         if let pageIndex {
-            let (metadatas, error) =
+            // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+            let (metadatas, error) = await dbManager.perform { dbManager in
                 handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+            }
             return (metadatas, nil, error)
         }
 
@@ -129,7 +131,9 @@ extension Enumerator {
             return (nil, nil, .invalidData)
         }
 
-        if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
+        // Both database calls run off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+        let directoryOcId = directory.ocId
+        if let existingMetadata = await dbManager.perform({ $0.itemMetadata(ocId: directoryOcId) }) {
             directory.downloaded = existingMetadata.downloaded
             directory.keepDownloaded = existingMetadata.keepDownloaded
         }
@@ -138,26 +142,29 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        let batchClock = ContinuousClock()
-        let batchStart = batchClock.now
-        let batchWriteState = signposter.beginInterval(
-            "Depth1BatchWrite",
-            id: signposter.makeSignpostID(),
-            "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
-        )
-        let changes = dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
-            serverUrl: serverUrl,
-            updatedMetadatas: files,
-            keepExistingDownloadState: true
-        )
-        signposter.endInterval("Depth1BatchWrite", batchWriteState)
+        let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
+            let batchClock = ContinuousClock()
+            let batchStart = batchClock.now
+            let batchWriteState = signposter.beginInterval(
+                "Depth1BatchWrite",
+                id: signposter.makeSignpostID(),
+                "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
+            )
+            let changes = dbManager.depth1ReadUpdateItemMetadatas(
+                account: account.ncKitAccount,
+                serverUrl: serverUrl,
+                updatedMetadatas: files,
+                keepExistingDownloadState: true
+            )
+            signposter.endInterval("Depth1BatchWrite", batchWriteState)
+
+            return (changes, batchClock.now - batchStart)
+        }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
         // enumeration bottleneck: its per-item logical-dedup scans are O(N²) over a flat folder. Log its
         // wall-clock + items/sec so the effect of the normalizedFileName index is visible in the JSONL
         // (the `Depth1BatchWrite` signpost shows the same in Instruments).
-        let batchElapsed = batchClock.now - batchStart
         let batchRate = batchElapsed.fpSeconds > 0 ? Double(files.count) / batchElapsed.fpSeconds : 0
         logger.performance(
             "PERF Depth1BatchWrite items=\(files.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
@@ -282,15 +289,58 @@ extension Enumerator {
                 (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
-                var metadata = receivedFile.toItemMetadata()
+                let received = receivedFile.toItemMetadata()
+
+                // Read, merge and write in one hop off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+                let (metadata, newItems, updatedItems) = await dbManager.perform {
+                    dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+                    var metadata = received
+                    let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                    let isNew = existing == nil
+                    let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                    metadata.lockToken = existing?.lockToken
+                    if metadata.etag == existing?.etag {
+                        metadata.fileProviderContentVersion = existing?.fileProviderContentVersion
+                    }
+                    let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                    metadata.downloaded = existing?.downloaded == true
+
+                    if let existing {
+                        metadata.keepDownloaded = existing.keepDownloaded
+                    } else {
+                        // Genuinely new item: inherit the parent's pin so the
+                        // overlay and `contentPolicy` match its siblings (#10054).
+                        metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                    }
+
+                    dbManager.addItemMetadata(metadata)
+
+                    return (metadata, newItems, updatedItems)
+                }
+
+                return RemoteReadResult(
+                    metadatas: [metadata],
+                    changes: ChangeSet(created: newItems, updated: updatedItems),
+                    nextPage: nextPage
+                )
+            }
+        }
+
+        if depth == .target {
+            let received = receivedFile.toItemMetadata()
+
+            // Read, merge and write in one hop off the cooperative pool: see
+            // `FilesDatabaseManager.perform(_:)`.
+            let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
+                dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+                var metadata = received
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                 let isNew = existing == nil
-                let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                let updatedMetadatas = isNew ? [] : [metadata]
+                let newMetadatas = isNew ? [metadata] : []
+
                 metadata.lockToken = existing?.lockToken
-                if metadata.etag == existing?.etag {
-                    metadata.fileProviderContentVersion = existing?.fileProviderContentVersion
-                }
-                let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                metadata.visitedDirectory = existing?.visitedDirectory == true
                 metadata.downloaded = existing?.downloaded == true
 
                 if let existing {
@@ -302,34 +352,9 @@ extension Enumerator {
                 }
 
                 dbManager.addItemMetadata(metadata)
-                return RemoteReadResult(
-                    metadatas: [metadata],
-                    changes: ChangeSet(created: newItems, updated: updatedItems),
-                    nextPage: nextPage
-                )
+
+                return (metadata, newMetadatas, updatedMetadatas)
             }
-        }
-
-        if depth == .target {
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let updatedMetadatas = isNew ? [] : [metadata]
-            let newMetadatas = isNew ? [metadata] : []
-
-            metadata.lockToken = existing?.lockToken
-            metadata.visitedDirectory = existing?.visitedDirectory == true
-            metadata.downloaded = existing?.downloaded == true
-
-            if let existing {
-                metadata.keepDownloaded = existing.keepDownloaded
-            } else {
-                // Genuinely new item: inherit the parent's pin so the
-                // overlay and `contentPolicy` match its siblings (#10054).
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
-            }
-
-            dbManager.addItemMetadata(metadata)
 
             return RemoteReadResult(
                 metadatas: [metadata],

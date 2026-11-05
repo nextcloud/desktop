@@ -2057,6 +2057,52 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    func testNewFileInheritsItsParentsPinDuringTargetDepthRead() async {
+        let remoteFolder = MockRemoteItem(
+            identifier: "pinnedFolder",
+            name: "pinnedFolder",
+            remotePath: Self.account.davFilesUrl + "/pinnedFolder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let remoteFile = MockRemoteItem(
+            identifier: "newFileInPinnedFolder",
+            name: "new.txt",
+            remotePath: remoteFolder.remotePath + "/new.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+
+        rootItem.children = [remoteFolder]
+        remoteFolder.parent = rootItem
+        remoteFolder.children = [remoteFile]
+        remoteFile.parent = remoteFolder
+
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.keepDownloaded = true
+        Self.dbManager.addItemMetadata(folderMetadata)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let readResult = await Enumerator.readServerUrl(
+            remoteFile.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(readResult.error)
+        XCTAssertEqual(readResult.changes?.created.map(\.ocId), ["newFileInPinnedFolder"])
+        XCTAssertEqual(readResult.changes?.updated.isEmpty, true)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: "newFileInPinnedFolder")?.keepDownloaded, true, "A new file read on its own must inherit its parent's pin.")
+    }
+
     // MARK: - Batched enumeration (nextcloud/desktop #10266: >20000 items in one batch crash)
 
     /// Seed `count` materialised files directly under the root, present unchanged on the server, all
