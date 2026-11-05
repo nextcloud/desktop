@@ -1297,7 +1297,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDirectoryAndPackageFetchRetryRenamedMemberUsingServerListing() async throws {
-        for package in [false, true] {
+        for (package, versionChanged) in [(false, false), (false, true), (true, false), (true, true)] {
             let (item, remoteInterface, directory) = package ? makePackageFetchItem() : makeFetchItem(directory: true)
             XCTAssertEqual(item.isBundleOrPackage, package)
             let child = directory.children[0]
@@ -1310,10 +1310,20 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             let failedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
             XCTAssertEqual(failedMetadata.status, Status.downloadError.rawValue)
             XCTAssertEqual(failedMetadata.fileName, originalName)
+            var localMetadata = failedMetadata
+            localMetadata.keepDownloaded = true
+            localMetadata.visitedDirectory = true
+            localMetadata.lockToken = "local-token"
+            localMetadata.fileProviderContentVersion = "previous-local-version"
+            Self.dbManager.addItemMetadata(localMetadata)
             child.name = "renamed.txt"
             child.remotePath = directory.remotePath + "/" + child.name
-            child.versionIdentifier = "renamed-version"
-            child.data = Data("New remote contents".utf8)
+            if versionChanged {
+                child.versionIdentifier = "renamed-version"
+                child.data = Data("New remote contents".utf8)
+                child.modificationDate = Date(timeIntervalSince1970: 1_750_000_000)
+            }
+            directory.versionIdentifier = "retried-directory-version"
             let childIdentifier = child.identifier
             let renamedName = child.name
             remoteInterface.downloadError = nil
@@ -1331,6 +1341,22 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             let localPath = try XCTUnwrap(url)
             XCTAssertFalse(FileManager.default.fileExists(atPath: localPath.appendingPathComponent(originalName).path))
             XCTAssertEqual(remoteInterface.downloadOperationCount, 1 + directory.children.count)
+            let completedChild = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: child.identifier))
+            XCTAssertEqual(completedChild.etag, child.versionIdentifier)
+            XCTAssertEqual(completedChild.size, child.size)
+            XCTAssertEqual(completedChild.date, child.modificationDate)
+            XCTAssertEqual(completedChild.fileName, child.name)
+            XCTAssertEqual(completedChild.fileNameView, child.name)
+            XCTAssertEqual(completedChild.serverUrl, directory.remotePath)
+            XCTAssertTrue(completedChild.keepDownloaded)
+            XCTAssertTrue(completedChild.visitedDirectory)
+            XCTAssertEqual(completedChild.lockToken, localMetadata.lockToken)
+            XCTAssertEqual(completedChild.fileProviderContentVersion, versionChanged ? nil : localMetadata.fileProviderContentVersion)
+            XCTAssertEqual(Self.dbManager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: child.remotePath)?.ocId, child.identifier)
+            let completedDirectory = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
+            XCTAssertEqual(completedDirectory.etag, directory.versionIdentifier)
+            XCTAssertEqual(try XCTUnwrap(fetchedItem).itemVersion.contentVersion, Data(directory.versionIdentifier.utf8))
+            XCTAssertEqual(try XCTUnwrap(fetchedItem).isBundleOrPackage, package)
             for child in directory.children {
                 XCTAssertEqual(try Data(contentsOf: localPath.appendingPathComponent(child.name)), child.data)
             }
@@ -1651,32 +1677,47 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
     }
 
     func testSuccessfulFetchPreservesConcurrentMetadataChanges() async throws {
-        let (item, remoteInterface, remoteItem) = makeFetchItem()
-        let dbManager = Self.dbManager
-        let (task, release) = try await startSuspendedFetch(item: item, remoteInterface: remoteInterface)
-        defer {
-            task.cancel()
+        for directory in [false, true] {
+            let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)
+            let dbManager = Self.dbManager
+            let (task, release) = try await startSuspendedFetch(item: item, remoteInterface: remoteInterface)
+            defer {
+                task.cancel()
+                release.finish()
+                if directory {
+                    removeDownloadedDirectory(remoteInterface: remoteInterface)
+                } else {
+                    removeDownloadedContents(remoteInterface: remoteInterface)
+                }
+            }
+            var metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            metadata.favorite = true
+            metadata.keepDownloaded = true
+            dbManager.addItemMetadata(metadata)
+
             release.finish()
-            removeDownloadedContents(remoteInterface: remoteInterface)
+            let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+            XCTAssertNil(error)
+            let returnedItem = try XCTUnwrap(fetchedItem)
+            XCTAssertTrue(returnedItem.isDownloaded)
+            XCTAssertTrue(returnedItem.metadata.keepDownloaded)
+            XCTAssertTrue(returnedItem.metadata.favorite)
+            XCTAssertEqual(returnedItem.contentPolicy, .downloadEagerlyAndKeepDownloaded)
+            if !directory {
+                XCTAssertEqual(try Data(contentsOf: XCTUnwrap(url)), remoteItem.data)
+            } else {
+                let directoryURL = try XCTUnwrap(url)
+                XCTAssertTrue(FileManager.default.fileExists(atPath: directoryURL.path))
+            }
+            let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            XCTAssertTrue(remainingMetadata.downloaded)
+            XCTAssertTrue(remainingMetadata.uploaded)
+            XCTAssertEqual(remainingMetadata.status, Status.normal.rawValue)
+            XCTAssertEqual(remainingMetadata.sessionError, "")
+            XCTAssertTrue(remainingMetadata.favorite)
+            XCTAssertTrue(remainingMetadata.keepDownloaded)
         }
-        var metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
-        metadata.favorite = true
-        metadata.keepDownloaded = true
-        dbManager.addItemMetadata(metadata)
-
-        release.finish()
-        let (url, fetchedItem, error) = try await testTaskValue(of: task)
-
-        XCTAssertNil(error)
-        XCTAssertTrue(try XCTUnwrap(fetchedItem).isDownloaded)
-        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(url)), remoteItem.data)
-        let remainingMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
-        XCTAssertTrue(remainingMetadata.downloaded)
-        XCTAssertTrue(remainingMetadata.uploaded)
-        XCTAssertEqual(remainingMetadata.status, Status.normal.rawValue)
-        XCTAssertEqual(remainingMetadata.sessionError, "")
-        XCTAssertTrue(remainingMetadata.favorite)
-        XCTAssertTrue(remainingMetadata.keepDownloaded)
     }
 
     func testCancelledDirectoryEnumerationDoesNotStartChildDownloads() async throws {

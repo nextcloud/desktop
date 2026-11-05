@@ -45,7 +45,8 @@ public extension Item {
         domain: NSFileProviderDomain?,
         progress: Progress,
         operation: DownloadOperation,
-        childOperations: inout [DownloadOperation]
+        childOperations: inout [DownloadOperation],
+        downloadedMetadatas: inout [String: SendableItemMetadata]
     ) async throws -> [String] {
         func checkFetchCancellation() throws {
             if progress.isCancelled || Task.isCancelled {
@@ -82,15 +83,14 @@ public extension Item {
                 ) ?? NSFileProviderError(.cannotSynchronize)
             }
 
-            guard var metadatas = readResult.metadatas else {
+            guard var metadatas = readResult.metadatas, !metadatas.isEmpty else {
                 logger.error("Could not fetch directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath])
                 throw NSFileProviderError(.cannotSynchronize)
             }
 
             try dbManager.validateDownload(directory.operation)
-            if !metadatas.isEmpty {
-                metadatas.removeFirst() // Remove the dir itself
-            }
+            let directoryMetadata = metadatas.removeFirst()
+            downloadedMetadatas[directoryMetadata.ocId] = directoryMetadata
             if directory.packageContents {
                 try dbManager.restorePackageDownloadMetadatas(metadatas, for: directory.operation)
             } else {
@@ -110,6 +110,7 @@ public extension Item {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 childOperations.append(childOperation)
+                downloadedMetadatas[metadata.ocId] = metadata
                 if metadata.directory {
                     let childItem = Item(
                         metadata: metadata,
@@ -147,7 +148,7 @@ public extension Item {
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
                         let cancelled = error.errorCode == NSURLErrorCancelled
-                        try? dbManager.finishDownload(
+                        _ = try? dbManager.finishDownload(
                             childOperation,
                             status: cancelled ? .normal : .downloadError,
                             downloaded: false,
@@ -218,6 +219,7 @@ public extension Item {
         }
 
         var childOperations: [DownloadOperation] = []
+        var downloadedMetadatas: [String: SendableItemMetadata] = [:]
         var downloadedFileOcIds: [String] = []
         var contentsReturned = false
         var fetchErrorDescription: String?
@@ -225,10 +227,10 @@ public extension Item {
         defer {
             if !contentsReturned {
                 for childOperation in childOperations {
-                    try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                    _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
                 }
                 let cancelled = fetchWasCancelled || progress.isCancelled || Task.isCancelled
-                try? dbManager.finishDownload(
+                _ = try? dbManager.finishDownload(
                     operation,
                     status: cancelled ? .normal : .downloadError,
                     downloaded: false,
@@ -268,7 +270,8 @@ public extension Item {
                     domain: domain,
                     progress: progress,
                     operation: operation,
-                    childOperations: &childOperations
+                    childOperations: &childOperations,
+                    downloadedMetadatas: &downloadedMetadatas
                 )
             } catch {
                 logger.error("Could not fetch directory contents.", [.item: ocId, .error: error])
@@ -316,14 +319,6 @@ public extension Item {
             }
         }
 
-        updatedMetadata.status = Status.normal.rawValue
-        updatedMetadata.downloaded = true
-        // HACK: We were previously failing to correctly set the uploaded state to true for
-        // enumerated items. Fix it now to ensure we do not show "waiting for upload" when
-        // having downloaded incorrectly enumerated files
-        updatedMetadata.uploaded = true
-        updatedMetadata.sessionError = ""
-
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: metadata,
             remoteInterface: remoteInterface,
@@ -352,10 +347,10 @@ public extension Item {
         }
         do {
             if isDirectory {
-                try dbManager.finishDirectoryDownload(operation, children: childOperations)
+                updatedMetadata = try dbManager.finishDirectoryDownload(operation, children: childOperations, metadatas: downloadedMetadatas)
                 progress.completedUnitCount += 1
             } else {
-                try dbManager.finishDownload(operation, status: .normal, downloaded: true, contentType: detectedContentType)
+                updatedMetadata = try dbManager.finishDownload(operation, status: .normal, downloaded: true, contentType: detectedContentType)
             }
         } catch {
             fetchErrorDescription = error.localizedDescription

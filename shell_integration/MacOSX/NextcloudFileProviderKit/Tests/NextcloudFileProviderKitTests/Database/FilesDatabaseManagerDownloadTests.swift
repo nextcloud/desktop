@@ -32,10 +32,11 @@ extension DatabaseTestSuites {
             return operation
         }
 
-        private func makeDirectoryDownloadOperations() throws -> (root: DownloadOperation, children: [DownloadOperation]) {
+        private func makeDirectoryDownloadOperations() throws -> (root: DownloadOperation, children: [DownloadOperation], metadatas: [String: SendableItemMetadata]) {
             let log = FileProviderLogMock()
             let root = DownloadOperation(ocId: UUID().uuidString, cancellation: NetworkOperationCancellation(log: log), log: log)
             let children = [root.childOperation(for: UUID().uuidString), root.childOperation(for: UUID().uuidString)]
+            var metadatas: [String: SendableItemMetadata] = [:]
             for (index, operation) in ([root] + children).enumerated() {
                 var metadata = SendableItemMetadata(ocId: operation.ocId, fileName: operation.ocId, account: DatabaseTestSuites.account)
                 metadata.directory = index != 1
@@ -45,12 +46,13 @@ extension DatabaseTestSuites {
                 metadata.favorite = true
                 metadata.lockToken = "local-lock"
                 metadata.fileProviderContentVersion = "local-version"
+                metadatas[metadata.ocId] = metadata
                 manager.addItemMetadata(metadata)
                 let started = try #require(manager.beginDownload(operation))
                 #expect(started.status == Status.downloading.rawValue)
                 #expect(!started.downloaded)
             }
-            return (root, children)
+            return (root, children, metadatas)
         }
 
         let manager = DatabaseTestSuites.makeManager()
@@ -238,7 +240,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationPreservesLiveMetadata() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             for directory in [false, true] {
                 for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
                     var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
@@ -272,7 +274,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationPreservesDeletedMembersLocalState() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             for directory in [false, true] {
                 for status in [Status.normal, .downloadError] {
                     var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
@@ -307,7 +309,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationInsertsMissingMetadata() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
 
             try manager.restorePackageDownloadMetadatas([metadata], for: operation)
@@ -317,7 +319,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationRejectsDeletedTransferStateAtomically() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             for status in [Status.inDownload, .downloading, .inUpload, .uploading, .uploadError] {
                 let missing = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
                 var restorable = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
@@ -348,7 +350,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationRejectsDeletedParent() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
             metadata.deleted = true
             manager.addItemMetadata(metadata)
@@ -364,7 +366,7 @@ extension DatabaseTestSuites {
             let log = FileProviderLogMock()
             let newer = DownloadOperation(ocId: operation.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
             _ = try #require(manager.beginDownload(newer))
-            defer { try? manager.finishDownload(newer, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(newer, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
 
             expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([metadata], for: operation) }
@@ -374,7 +376,7 @@ extension DatabaseTestSuites {
 
         @Test func packageDownloadRestorationRejectsCancelledParent() throws {
             let operation = try makeDirectoryDownloadOperation()
-            defer { try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
             operation.cancellation.cancel()
 
@@ -384,10 +386,10 @@ extension DatabaseTestSuites {
         }
 
         @Test func packageDownloadRestorationRejectsOwnedDeletedChild() throws {
-            let (operation, children) = try makeDirectoryDownloadOperations()
+            let (operation, children, _) = try makeDirectoryDownloadOperations()
             defer {
                 for download in [operation] + children {
-                    try? manager.finishDownload(download, status: .normal, downloaded: false)
+                    _ = try? manager.finishDownload(download, status: .normal, downloaded: false)
                 }
             }
             var metadata = try #require(manager.itemMetadata(ocId: children[0].ocId))
@@ -401,16 +403,16 @@ extension DatabaseTestSuites {
         }
 
         @Test func directoryDownloadCompletionPublishesAllItemsAndPreservesLocalState() throws {
-            let (root, children) = try makeDirectoryDownloadOperations()
+            let (root, children, metadatas) = try makeDirectoryDownloadOperations()
             let operations = [root] + children
             defer {
                 for operation in operations {
-                    try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                 }
             }
             let before = try operations.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
 
-            try manager.finishDirectoryDownload(root, children: children)
+            try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
 
             for var expected in before {
                 expected.status = Status.normal.rawValue
@@ -421,20 +423,41 @@ extension DatabaseTestSuites {
             }
         }
 
+        @Test func directoryDownloadCompletionRejectsMissingListingWithoutPublishing() throws {
+            let (root, children, listed) = try makeDirectoryDownloadOperations()
+            let operations = [root] + children
+            defer {
+                for operation in operations {
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                }
+            }
+            let before = try operations.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
+            var metadatas = listed
+            metadatas.removeValue(forKey: children[0].ocId)
+
+            expectError(NSFileProviderError(.cannotSynchronize)) {
+                try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
+            }
+
+            for metadata in before {
+                #expect(manager.itemMetadata(ocId: metadata.ocId) == metadata)
+            }
+        }
+
         @Test func directoryDownloadCompletionRetainsOwnershipAfterWriteFailure() throws {
-            let (root, children) = try makeDirectoryDownloadOperations()
+            let (root, children, metadatas) = try makeDirectoryDownloadOperations()
             let operations = [root] + children
             let identifiers = Set(operations.map { NSFileProviderItemIdentifier($0.ocId) })
             defer {
                 for operation in operations {
-                    try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                 }
             }
             let snapshots = try operations.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
             try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
 
             #expect(throws: (any Error).self) {
-                try manager.finishDirectoryDownload(root, children: children)
+                try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
             }
 
             #expect(manager.pendingMaterializations.awaitingConfirmation(among: identifiers).isEmpty)
@@ -443,7 +466,7 @@ extension DatabaseTestSuites {
             for metadata in snapshots {
                 try manager.insertForTesting(metadata)
             }
-            try manager.finishDirectoryDownload(root, children: children)
+            try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
 
             #expect(manager.pendingMaterializations.awaitingConfirmation(among: identifiers) == identifiers)
 
@@ -458,11 +481,11 @@ extension DatabaseTestSuites {
 
         @Test func directoryDownloadCompletionRejectsMissingChildWithoutPublishingOtherItems() throws {
             for removeRow in [false, true] {
-                let (root, children) = try makeDirectoryDownloadOperations()
+                let (root, children, metadatas) = try makeDirectoryDownloadOperations()
                 let operations = [root] + children
                 defer {
                     for operation in operations {
-                        try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                        _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                     }
                 }
                 let missingChild = try #require(children.last)
@@ -473,7 +496,7 @@ extension DatabaseTestSuites {
                 }
                 let before = operations.compactMap { manager.itemMetadata(ocId: $0.ocId) }
 
-                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.finishDirectoryDownload(root, children: children) }
+                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas) }
 
                 for metadata in before {
                     #expect(manager.itemMetadata(ocId: metadata.ocId) == metadata)
@@ -494,13 +517,13 @@ extension DatabaseTestSuites {
 
         @Test func directoryDownloadCompletionPreservesSupersedingChildState() throws {
             for newerCompleted in [false, true] {
-                let (root, children) = try makeDirectoryDownloadOperations()
+                let (root, children, metadatas) = try makeDirectoryDownloadOperations()
                 let child = children[0]
                 let log = FileProviderLogMock()
                 let newer = DownloadOperation(ocId: child.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
                 defer {
                     for operation in [root] + children + [newer] {
-                        try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                        _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                     }
                 }
                 _ = try #require(manager.beginDownload(newer))
@@ -511,13 +534,13 @@ extension DatabaseTestSuites {
                 let otherOperations = [root] + Array(children.dropFirst())
                 let before = try otherOperations.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
 
-                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.finishDirectoryDownload(root, children: children) }
+                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas) }
 
                 for metadata in before {
                     #expect(manager.itemMetadata(ocId: metadata.ocId) == metadata)
                 }
                 for operation in [root] + children {
-                    try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                 }
                 #expect(manager.itemMetadata(ocId: child.ocId) == expectedNewer)
                 if !newerCompleted {
@@ -541,8 +564,8 @@ extension DatabaseTestSuites {
             let log = FileProviderLogMock()
             let newer = DownloadOperation(ocId: operation.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
             defer {
-                try? manager.finishDownload(operation, status: .normal, downloaded: false)
-                try? reopened.finishDownload(newer, status: .normal, downloaded: false)
+                _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                _ = try? reopened.finishDownload(newer, status: .normal, downloaded: false)
             }
             _ = try #require(reopened.beginDownload(newer))
             try reopened.finishDownload(newer, status: .normal, downloaded: true)
@@ -557,16 +580,16 @@ extension DatabaseTestSuites {
         }
 
         @Test func directoryDownloadCompletionReportsMissingRequestedRoot() throws {
-            let (root, children) = try makeDirectoryDownloadOperations()
+            let (root, children, metadatas) = try makeDirectoryDownloadOperations()
             defer {
                 for operation in [root] + children {
-                    try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                 }
             }
             manager.removeItemMetadata(ocId: root.ocId)
             let before = try children.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
 
-            expectError(NSFileProviderError(.noSuchItem)) { try manager.finishDirectoryDownload(root, children: children) }
+            expectError(NSFileProviderError(.noSuchItem)) { try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas) }
 
             #expect(manager.itemMetadata(ocId: root.ocId) == nil)
             for metadata in before {

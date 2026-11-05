@@ -86,15 +86,21 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Publish the folder and its children together only while every download still owns its item.
-    func finishDirectoryDownload(_ operation: DownloadOperation, children: [DownloadOperation]) throws {
+    /// Publish the listed content and the folder's download state in one transaction.
+    @discardableResult
+    func finishDirectoryDownload(
+        _ operation: DownloadOperation,
+        children: [DownloadOperation],
+        metadatas: [String: SendableItemMetadata]
+    ) throws -> SendableItemMetadata {
         try Self.downloadOperations.withLock { operations in
             let downloads = [operation] + children
             guard downloads.allSatisfy({ operations[storeIdentity]?[$0.ocId]?.identifier == $0.identifier }) else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
+            let completed: SendableItemMetadata
             do {
-                try write(durability: .full) { db in
+                completed = try write(durability: .full) { db in
                     let items = try downloads.map { download in
                         guard let item = try itemMetadata(ocId: download.ocId, in: db), !item.deleted else {
                             if download.identifier == operation.identifier {
@@ -102,19 +108,40 @@ extension FilesDatabaseManager {
                             }
                             throw NSFileProviderError(.cannotSynchronize)
                         }
-                        return item
+                        guard let listed = metadatas[download.ocId] else {
+                            throw NSFileProviderError(.cannotSynchronize)
+                        }
+                        // Enumeration skips in-flight rows. Save the listing used by this fetch
+                        // while retaining current local state and the detected content type.
+                        var metadata = item.metadata
+                        if metadata.etag != listed.etag {
+                            metadata.fileProviderContentVersion = nil
+                        }
+                        metadata.etag = listed.etag
+                        metadata.size = listed.size
+                        metadata.date = listed.date
+                        metadata.creationDate = listed.creationDate
+                        metadata.checksums = listed.checksums
+                        metadata.fileName = listed.fileName
+                        metadata.fileNameView = listed.fileNameView
+                        metadata.name = listed.name
+                        metadata.serverUrl = listed.serverUrl
+                        metadata.path = listed.path
+                        metadata.status = Status.normal.rawValue
+                        metadata.downloaded = true
+                        metadata.uploaded = true
+                        metadata.sessionError = ""
+                        return metadata
                     }
-                    for var item in items {
-                        item.status = Status.normal.rawValue
-                        item.downloaded = true
-                        item.uploaded = true
-                        item.sessionError = ""
-                        try item.upsertRow(db)
+                    for metadata in items {
+                        // Rebuild the row so its indexed location keys follow the listed path.
+                        try ItemMetadataRecord(metadata).upsertRow(db)
                     }
                     // Register before commit so reconciliation protects these rows until File Provider confirms them.
                     for download in downloads {
                         pendingMaterializations.recordDownloaded(NSFileProviderItemIdentifier(download.ocId))
                     }
+                    return items[0]
                 }
             } catch {
                 logger.error("Could not finish directory download in database.", [.item: operation.ocId, .error: error])
@@ -126,20 +153,22 @@ extension FilesDatabaseManager {
             if operations[storeIdentity]?.isEmpty == true {
                 operations.removeValue(forKey: storeIdentity)
             }
+            return completed
         }
     }
 
-    /// Save the download state only while this operation owns the item.
+    /// Save and return current metadata only while this operation owns the item.
+    @discardableResult
     func finishDownload(
         _ operation: DownloadOperation,
         status: Status,
         downloaded: Bool,
         error: String? = nil,
         contentType: String? = nil
-    ) throws {
+    ) throws -> SendableItemMetadata {
         let ocId = operation.ocId
         let statusValue = status.rawValue
-        try Self.downloadOperations.withLock { operations in
+        return try Self.downloadOperations.withLock { operations in
             guard operations[storeIdentity]?[ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
@@ -150,7 +179,7 @@ extension FilesDatabaseManager {
                 }
             }
             do {
-                try write(durability: .full) { db in
+                return try write(durability: .full) { db in
                     guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
                     }
@@ -167,6 +196,7 @@ extension FilesDatabaseManager {
                     if downloaded {
                         pendingMaterializations.recordDownloaded(NSFileProviderItemIdentifier(ocId))
                     }
+                    return item.metadata
                 }
             } catch {
                 logger.error("Could not finish download in database.", [.item: ocId, .error: error])
