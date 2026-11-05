@@ -7,6 +7,15 @@ import NextcloudKit
 import UniformTypeIdentifiers
 
 public extension Item {
+    private static func hasAliasSignature(at url: URL) -> Bool {
+        guard let fileHandle = try? FileHandle(forReadingFrom: url) else { return false }
+        defer { try? fileHandle.close() }
+
+        // Apple bookmark and alias files start with this signature.
+        let signature = Data("book".utf8)
+        return (try? fileHandle.read(upToCount: signature.count)) == signature
+    }
+
     private func downloadFileContents(
         remotePath: String,
         localPath: String,
@@ -118,11 +127,11 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
                 let childOperation = operation.childOperation(for: metadata.ocId)
 
-                guard dbManager.beginDownload(
+                guard let stagedMetadata = dbManager.beginDownload(
                     childOperation,
                     listedMetadata: metadata,
                     allowsDeletedPackageMember: directory.packageContents
-                ) != nil else {
+                ) else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 childOperations.append(childOperation)
@@ -167,6 +176,13 @@ public extension Item {
                         throw operation.error(for: fetchError(error))
                     }
                     try dbManager.validateDownload(childOperation)
+                    // The server can list an alias as a generic file, so recheck known aliases when their ETag changes.
+                    if stagedMetadata.etag != metadata.etag,
+                       stagedMetadata.contentType == UTType.aliasFile.identifier,
+                       Self.hasAliasSignature(at: URL(fileURLWithPath: childLocalPath))
+                    {
+                        downloadedMetadatas[metadata.ocId]?.contentType = UTType.aliasFile.identifier
+                    }
                     downloadedFileOcIds.append(metadata.ocId)
                 }
 
@@ -321,15 +337,13 @@ public extension Item {
         logger.debug("Acquired contents of item.", [.item: ocId, .name: updatedMetadata.fileName])
 
         var detectedContentType: String?
-        if !isDirectory, updatedMetadata.contentType != UTType.aliasFile.identifier, let fileHandle = try? FileHandle(forReadingFrom: localPath) {
-            let magic = fileHandle.readData(ofLength: 4)
-            try? fileHandle.close()
-            // Apple Bookmark/Alias format magic bytes: "book" (0x62 0x6F 0x6F 0x6B)
-            if magic == Data([0x62, 0x6F, 0x6F, 0x6B]) {
-                logger.debug("Detected macOS alias file by magic number.", [.name: updatedMetadata.fileName])
-                updatedMetadata.contentType = UTType.aliasFile.identifier
-                detectedContentType = UTType.aliasFile.identifier
-            }
+        if !isDirectory,
+           updatedMetadata.contentType != UTType.aliasFile.identifier,
+           Self.hasAliasSignature(at: localPath)
+        {
+            logger.debug("Detected macOS alias file by magic number.", [.name: updatedMetadata.fileName])
+            updatedMetadata.contentType = UTType.aliasFile.identifier
+            detectedContentType = UTType.aliasFile.identifier
         }
 
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(

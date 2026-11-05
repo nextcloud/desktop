@@ -1503,6 +1503,49 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testDirectoryFetchRefreshesAliasTypeWhenChildVersionChanges() async throws {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let changed = directory.children[0]
+        let unchanged = directory.children[1]
+        let updatedAlias = directory.children[2]
+        let aliasContents = Data("book".utf8)
+        for child in [changed, unchanged, updatedAlias] {
+            child.data = aliasContents
+            var metadata = child.toNKFile().toItemMetadata()
+            XCTAssertTrue(metadata.contentType.isEmpty)
+            metadata.contentType = UTType.aliasFile.identifier
+            metadata.status = Status.downloadError.rawValue
+            Self.dbManager.addItemMetadata(metadata)
+        }
+        changed.versionIdentifier = "ordinary-file-version"
+        changed.data = Data("Ordinary file contents".utf8)
+        updatedAlias.versionIdentifier = "updated-alias-version"
+        let updatedAliasContents = aliasContents + Data("New bookmark data".utf8)
+        updatedAlias.data = updatedAliasContents
+        defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+        let (url, _, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(error)
+        let destination = try XCTUnwrap(url)
+        let changedPath = destination.appendingPathComponent(changed.name)
+        XCTAssertEqual(try Data(contentsOf: changedPath), changed.data)
+        XCTAssertEqual(try Data(contentsOf: destination.appendingPathComponent(unchanged.name)), aliasContents)
+        let changedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: changed.identifier))
+        XCTAssertTrue(changedMetadata.downloaded)
+        XCTAssertEqual(changedMetadata.etag, changed.versionIdentifier)
+        XCTAssertEqual(Item.contentType(for: changedMetadata), try XCTUnwrap(UTType(filenameExtension: changedPath.pathExtension)))
+        let unchangedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: unchanged.identifier))
+        XCTAssertTrue(unchangedMetadata.downloaded)
+        XCTAssertEqual(unchangedMetadata.etag, unchanged.versionIdentifier)
+        XCTAssertEqual(Item.contentType(for: unchangedMetadata), UTType.aliasFile)
+        XCTAssertEqual(try Data(contentsOf: destination.appendingPathComponent(updatedAlias.name)), updatedAliasContents)
+        let updatedAliasMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: updatedAlias.identifier))
+        XCTAssertTrue(updatedAliasMetadata.downloaded)
+        XCTAssertEqual(updatedAliasMetadata.etag, updatedAlias.versionIdentifier)
+        XCTAssertEqual(Item.contentType(for: updatedAliasMetadata), UTType.aliasFile)
+    }
+
     func testDirectoryFetchFinishesNestedDirectoryState() async throws {
         let errorCodes: [Int?] = [nil, 503, NSURLErrorCancelled]
         for errorCode in errorCodes {

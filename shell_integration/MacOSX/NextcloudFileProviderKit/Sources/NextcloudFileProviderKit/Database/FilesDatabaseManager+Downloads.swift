@@ -169,10 +169,13 @@ extension FilesDatabaseManager {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
 
-                        // Retain current local state and the detected content type.
                         var metadata = item.metadata
                         if metadata.etag != listed.etag {
                             metadata.fileProviderContentVersion = nil
+                        }
+                        // A locally detected file type applies to the version present when the transfer began.
+                        if !metadata.directory, started.etag != listed.etag {
+                            metadata.contentType = listed.contentType
                         }
                         metadata.etag = listed.etag
                         metadata.size = listed.size
