@@ -1679,104 +1679,104 @@ This action will abort any currently running synchronization.</source>
         <translation>Ο λογαριασμός συνδέθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
         <source>Will require %1 of storage</source>
         <translation>Θα απαιτηθούν %1 αποθηκευτικού χώρου</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 ελεύθερος χώρος</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Δεν υπάρχει αρκετός ελεύθερος χώρος στον τοπικό φάκελο!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
         <source>Please choose a local sync folder.</source>
         <translation>Παρακαλώ επιλέξτε έναν τοπικό φάκελο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Παρακαλώ επιλέξτε έναν άδειο τοπικό φάκελο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
         <source>Could not create local folder %1</source>
         <translation>Αδυναμία δημιουργίας τοπικού φακέλου %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
         <source>Checking remote folder</source>
         <translation>Έλεγχος απομακρυσμένου φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
         <source>No remote folder specified!</source>
         <translation>Δεν καθορίστηκε απομακρυσμένος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
         <source>Creating remote folder</source>
         <translation>Δημιουργία απομακρυσμένου φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Η δημιουργία φακέλου κατέληξε σε κωδικό σφάλματος HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλου απέτυχε επειδή τα διαπιστευτήρια που δοθήκαν είναι λανθασμένα. Παρακαλώ επιστρέψτε και ελέγξτε τα διαπιστευτήριά σας.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Η ρύθμιση του λογαριασμού απέτυχε κατά τη δημιουργία του φακέλου συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
         <source>Could not create the sync folder.</source>
         <translation>Αδυναμία δημιουργίας του φακέλου συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
         <source>Local Sync Folder</source>
         <translation>Τοπικός Φάκελος Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
         <source>Select a certificate</source>
         <translation>Επιλέξτε ένα πιστοποιητικό</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Αρχεία πιστοποιητικών (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2120"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2140"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Αδυναμία πρόσβασης στο επιλεγμένο αρχείο πιστοποιητικού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Αδυναμία φόρτωσης πιστοποιητικού. Ίσως λάθος κωδικός πρόσβασης;</translation>
     </message>
