@@ -244,16 +244,20 @@ public final class FilesDatabaseManager: Sendable {
     ///
     func write<T>(durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
         try writer.writeWithoutTransaction { db in
-            try db.execute(sql: durability.pragma)
-
-            var result: T?
-            try db.inTransaction {
-                result = try body(db)
-                return .commit
-            }
-
-            return result!
+            try writeTransaction(in: db, durability: durability, body)
         }
+    }
+
+    private func writeTransaction<T>(in db: Database, durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
+        try db.execute(sql: durability.pragma)
+
+        var result: T?
+        try db.inTransaction {
+            result = try body(db)
+            return .commit
+        }
+
+        return result!
     }
 
     /// Checkpoint the write-ahead log so the file is complete on disk before the process goes away.
@@ -784,6 +788,22 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    /// Save the item metadata returned by the server. Roll back the write if cancellation is detected before commit.
+    func addItemMetadataFromRemoteRead(
+        _ metadata: SendableItemMetadata,
+        isCancelled: @Sendable @escaping () -> Bool
+    ) async throws {
+        // GRDB's async writer handles Swift task cancellation while waiting for the writer.
+        try await writer.writeWithoutTransaction { db in
+            try self.writeTransaction(in: db, durability: .full) { db in
+                guard !isCancelled() else { throw CancellationError() }
+                try self.insertItemMetadata(metadata, in: db)
+                // Progress can be cancelled before its handler cancels the Swift task.
+                guard !isCancelled() else { throw CancellationError() }
+            }
+        }
+    }
+
     /// Set the given `downloaded` and `visitedDirectory` values of several rows in one write transaction, leaving every other column and every missing row untouched; a failure discards the whole batch.
     ///
     /// - Parameter durability: ``WriteDurability/full`` unless the flags only mirror the system's materialized set, which the next reconciliation pass rebuilds.
@@ -1048,9 +1068,10 @@ public final class FilesDatabaseManager: Sendable {
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
         account: Account,
-        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { false }
     ) async -> NSFileProviderItemIdentifier? {
-        guard !Task.isCancelled else { return nil }
+        guard !Task.isCancelled, !isCancelled() else { return nil }
         if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
             return parentItemIdentifier
         }
@@ -1062,10 +1083,11 @@ public final class FilesDatabaseManager: Sendable {
             dbManager: self,
             depth: .target,
             taskHandler: taskHandler,
+            isCancelled: isCancelled,
             log: logger.log
         )
 
-        guard !Task.isCancelled else { return nil }
+        guard !Task.isCancelled, !isCancelled() else { return nil }
 
         guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [

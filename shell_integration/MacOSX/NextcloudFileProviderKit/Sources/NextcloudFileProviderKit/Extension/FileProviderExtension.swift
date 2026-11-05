@@ -294,6 +294,7 @@ import OSLog
             remoteInterface: ncKit,
             dbManager: dbManager,
             taskHandler: { cancellation.register(task: $0) },
+            isCancelled: { cancellation.isCancelled },
             log: log
         )
         guard !progress.isCancelled, !Task.isCancelled else {

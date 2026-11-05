@@ -51,6 +51,7 @@ public func fetchThumbnails(
                                 remoteInterface: remoteInterface,
                                 dbManager: dbManager,
                                 taskHandler: { cancellation.register(task: $0) },
+                                isCancelled: { progress.isCancelled || cancellation.isCancelled },
                                 log: logger.log
                             )
                             guard !progress.isCancelled, !Task.isCancelled else {

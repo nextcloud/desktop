@@ -350,7 +350,8 @@ public extension Item {
             fromMetadata: updatedMetadata,
             remoteInterface: remoteInterface,
             account: account,
-            taskHandler: { cancellation.register(task: $0) }
+            taskHandler: { cancellation.register(task: $0) },
+            isCancelled: { cancellation.isCancelled }
         )
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, operation.error(for: CocoaError(.userCancelled)))

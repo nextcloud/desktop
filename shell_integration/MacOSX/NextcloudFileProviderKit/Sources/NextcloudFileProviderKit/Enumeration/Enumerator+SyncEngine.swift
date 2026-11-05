@@ -206,9 +206,10 @@ extension Enumerator {
         expectedDirectoryOcId: String? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { false },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
-        guard !Task.isCancelled else { return RemoteReadResult(error: .cancelled) }
+        guard !Task.isCancelled, !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -275,7 +276,7 @@ extension Enumerator {
             return RemoteReadResult(error: error)
         }
 
-        guard !Task.isCancelled else { return RemoteReadResult(error: .cancelled) }
+        guard !Task.isCancelled, !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
             let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
@@ -296,6 +297,18 @@ extension Enumerator {
             return RemoteReadResult(metadatas: [], nextPage: nextPage)
         }
 
+        func finishTargetRead(_ metadata: SendableItemMetadata, changes: ChangeSet) async -> RemoteReadResult {
+            do {
+                try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
+            } catch is CancellationError {
+                return RemoteReadResult(error: .cancelled)
+            } catch {
+                // A single-item lookup can still return the server result if caching fails.
+                logger.error("Could not persist remote item metadata.", [.item: metadata.ocId, .error: error])
+            }
+            return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
+        }
+
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
         // That is NOT the case for paginated results with offsets
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
@@ -308,7 +321,7 @@ extension Enumerator {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 let received = receivedFile.toItemMetadata()
 
-                // Read, merge and write in one hop off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+                // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
                 let (metadata, newItems, updatedItems) = await dbManager.perform {
                     dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
                     var metadata = received
@@ -330,23 +343,17 @@ extension Enumerator {
                         metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                     }
 
-                    dbManager.addItemMetadata(metadata)
-
                     return (metadata, newItems, updatedItems)
                 }
 
-                return RemoteReadResult(
-                    metadatas: [metadata],
-                    changes: ChangeSet(created: newItems, updated: updatedItems),
-                    nextPage: nextPage
-                )
+                return await finishTargetRead(metadata, changes: ChangeSet(created: newItems, updated: updatedItems))
             }
         }
 
         if depth == .target {
             let received = receivedFile.toItemMetadata()
 
-            // Read, merge and write in one hop off the cooperative pool: see
+            // Read and merge off the cooperative pool: see
             // `FilesDatabaseManager.perform(_:)`.
             let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
                 dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
@@ -368,16 +375,10 @@ extension Enumerator {
                     metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                 }
 
-                dbManager.addItemMetadata(metadata)
-
                 return (metadata, newMetadatas, updatedMetadatas)
             }
 
-            return RemoteReadResult(
-                metadatas: [metadata],
-                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
-                nextPage: nextPage
-            )
+            return await finishTargetRead(metadata, changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas))
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,

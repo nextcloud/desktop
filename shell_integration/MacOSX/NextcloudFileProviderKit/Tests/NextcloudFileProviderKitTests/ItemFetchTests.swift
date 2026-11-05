@@ -2641,10 +2641,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let progress = Progress()
         let session = URLSession(configuration: .ephemeral)
         defer { session.invalidateAndCancel() }
-        let (networkTask, networkCompletion) = try observedNetworkTask(
-            in: session,
-            url: XCTUnwrap(URL(string: "https://example.invalid/parent"))
-        )
+        let networkCancelled = DispatchSemaphore(value: 0)
+        let networkTask = try session.dataTask(with: XCTUnwrap(URL(string: "https://example.invalid/parent"))) { _, _, error in
+            XCTAssertEqual((error as? URLError)?.code, .cancelled)
+            networkCancelled.signal()
+        }
         defer { removeDownloadedContents(remoteInterface: remoteInterface) }
         remoteInterface.enumerateCallHandler = { path, depth, _, _, _, _, _, taskHandler in
             XCTAssertEqual(path, directory.remotePath)
@@ -2652,6 +2653,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, true)
             taskHandler(networkTask)
             progress.cancel()
+            // Keep the lookup pending until the registered request observes cancellation.
+            XCTAssertEqual(networkCancelled.wait(timeout: .now() + .seconds(Int(asyncTestTimeout.components.seconds))), .success)
         }
 
         let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: Self.dbManager)
@@ -2659,8 +2662,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(url)
         XCTAssertNil(fetchedItem)
         XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
-        let networkError = try await nextTestValue(from: networkCompletion)
-        XCTAssertEqual(networkError, NSURLErrorCancelled)
         XCTAssertEqual(remoteInterface.readOperationCount, 1)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: directory.identifier))
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.downloaded, false)
@@ -2668,6 +2669,44 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
         XCTAssertNil(progress.cancellationHandler)
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+    }
+
+    func testCancelledParentLookupLeavesMetadataUnchanged() async throws {
+        for cancelDuringWrite in [false, true] {
+            let (item, remoteInterface, directory) = makeNestedFetchItem()
+            let dbManager = Self.dbManager
+            let progress = Progress()
+            let parentId = directory.identifier
+            remoteInterface.enumerateCallHandler = { path, depth, _, _, _, _, _, _ in
+                XCTAssertEqual(path, directory.remotePath)
+                XCTAssertEqual(depth, .target)
+                // Model Progress cancellation before its handler reaches the Swift task.
+                progress.cancellationHandler = nil
+                if !cancelDuringWrite {
+                    progress.cancel()
+                }
+            }
+            if cancelDuringWrite {
+                try dbManager.setItemMetadataInsertionHandlerForTesting(ocId: parentId) { progress.cancel() }
+            }
+            defer {
+                if cancelDuringWrite {
+                    try? dbManager.setItemMetadataInsertionHandlerForTesting(ocId: parentId, nil)
+                }
+                removeDownloadedContents(remoteInterface: remoteInterface)
+            }
+
+            let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: dbManager)
+
+            XCTAssertTrue(progress.isCancelled)
+            XCTAssertEqual(remoteInterface.readOperationCount, 1)
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            XCTAssertNil(dbManager.itemMetadata(ocId: parentId))
+            let temporaryFile = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: temporaryFile.path))
+        }
     }
 
     func testCancellingThumbnailPreparationCancelsParentTask() async throws {

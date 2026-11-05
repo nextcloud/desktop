@@ -493,13 +493,14 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { false },
         log: any FileProviderLogging
     ) async -> Item? {
         // resolve the given identifier to a record in the model
 
-        guard !Task.isCancelled else { return nil }
+        guard !Task.isCancelled, !isCancelled() else { return nil }
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
-        guard !Task.isCancelled else { return nil }
+        guard !Task.isCancelled, !isCancelled() else { return nil }
 
         guard identifier != .rootContainer else {
             return Item.rootContainer(
@@ -531,11 +532,12 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
                 fromMetadata: metadata,
                 remoteInterface: remoteInterface,
                 account: account,
-                taskHandler: taskHandler
+                taskHandler: taskHandler,
+                isCancelled: isCancelled
             )
         }
 
-        guard !Task.isCancelled, let parentItemIdentifier else {
+        guard !Task.isCancelled, !isCancelled(), let parentItemIdentifier else {
             return nil
         }
 
@@ -543,7 +545,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
 
-        guard !Task.isCancelled else { return nil }
+        guard !Task.isCancelled, !isCancelled() else { return nil }
 
         return Item(
             metadata: metadata,

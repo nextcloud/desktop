@@ -153,6 +153,30 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Run the handler after inserting a specific item, before the transaction commits.
+    func setItemMetadataInsertionHandlerForTesting(ocId: String, _ handler: (@Sendable () -> Void)?) throws {
+        let function = DatabaseFunction("on_item_metadata_insert", argumentCount: 0) { _ in
+            handler?()
+            return nil
+        }
+        try writer.write { db in
+            if handler != nil {
+                let identifier = ocId.replacingOccurrences(of: "'", with: "''")
+                db.add(function: function)
+                try db.execute(sql: """
+                CREATE TEMP TRIGGER on_item_metadata_insert AFTER INSERT ON itemMetadata
+                WHEN NEW.ocId = '\(identifier)'
+                BEGIN
+                    SELECT on_item_metadata_insert();
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS on_item_metadata_insert")
+                db.remove(function: function)
+            }
+        }
+    }
+
     /// Reject publishing a completed download while allowing its start and cleanup writes.
     func setDownloadCompletionWriteFailureForTesting(_ enabled: Bool, ocId: String) throws {
         try writer.write { db in
