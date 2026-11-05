@@ -2262,6 +2262,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         guard let _ = try await nextTestValue(from: started) else {
             throw URLError(.badServerResponse)
         }
+        let sharedFetch = await RetrievedCapabilitiesActor.shared.sharedFetches[Self.account.ncKitAccount]
+        let capabilitiesTask = try XCTUnwrap(sharedFetch?.task)
         batch.progress.cancel()
 
         var thumbnailCount = 0
@@ -2278,7 +2280,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(networkError, NSURLErrorCancelled)
         XCTAssertEqual(remoteInterface.readOperationCount, 0)
         XCTAssertNil(batch.progress.cancellationHandler)
-        await RetrievedCapabilitiesActor.shared.awaitFetchCompletion(forAccount: Self.account.ncKitAccount)
+        _ = try await testTaskValue(of: capabilitiesTask)
         let cached = await RetrievedCapabilitiesActor.shared.getCapabilities(for: Self.account.ncKitAccount)
         XCTAssertNil(cached)
     }

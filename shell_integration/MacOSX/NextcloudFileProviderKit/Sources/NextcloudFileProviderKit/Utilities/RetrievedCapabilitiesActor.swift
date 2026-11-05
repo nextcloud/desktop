@@ -14,10 +14,8 @@ actor RetrievedCapabilitiesActor: Sendable {
 
     static let shared = RetrievedCapabilitiesActor()
 
-    var ongoingFetches: Set<String> = []
     private var data: [String: (capabilities: Capabilities, retrievedAt: Date)] = [:]
 
-    private var ongoingFetchContinuations: [String: [UUID: CheckedContinuation<Void, Never>]] = [:]
     private(set) var sharedFetches: [String: (identifier: UUID, task: Task<Void, Never>, cancellation: FetchCancellation)] = [:]
     private var sharedFetchContinuations: [String: [UUID: CheckedContinuation<FetchResult, Never>]] = [:]
 
@@ -28,10 +26,6 @@ actor RetrievedCapabilitiesActor: Sendable {
         fetch: @Sendable @escaping (@Sendable @escaping (URLSessionTask) -> Void) async -> FetchResult
     ) async -> FetchResult {
         guard !Task.isCancelled else { return (account, nil, nil, .cancelled) }
-        // Shared fetches have their own waiters; other tracked fetches use awaitFetchCompletion.
-        if sharedFetches[account] == nil {
-            await awaitFetchCompletion(forAccount: account, onWaiting: onWaiting)
-        }
         let token = UUID()
         let result: FetchResult = await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
@@ -47,7 +41,6 @@ actor RetrievedCapabilitiesActor: Sendable {
                 onWaiting()
                 guard sharedFetches[account] == nil else { return }
                 let identifier = UUID()
-                setOngoingFetch(forAccount: account, ongoing: true)
                 // Registration may arrive after cancellation, so the callback shares a locked flag.
                 let cancellation = FetchCancellation(initialState: (task: nil, cancelled: false))
                 let task = Task.detached {
@@ -80,7 +73,6 @@ actor RetrievedCapabilitiesActor: Sendable {
         }
         sharedFetches.removeValue(forKey: account)
         let continuations = sharedFetchContinuations.removeValue(forKey: account)
-        setOngoingFetch(forAccount: account, ongoing: false)
         continuations?.values.forEach { $0.resume(returning: result) }
     }
 
@@ -101,7 +93,6 @@ actor RetrievedCapabilitiesActor: Sendable {
         }
         fetch.task.cancel()
         networkTask?.cancel()
-        setOngoingFetch(forAccount: account, ongoing: false)
     }
 
     func getCapabilities(for account: String) -> (capabilities: Capabilities, retrievedAt: Date)? {
@@ -116,43 +107,6 @@ actor RetrievedCapabilitiesActor: Sendable {
         data[account] = (capabilities: capabilities, retrievedAt: retrievedAt)
     }
 
-    func setOngoingFetch(forAccount account: String, ongoing: Bool) {
-        if ongoing {
-            ongoingFetches.insert(account)
-        } else {
-            ongoingFetches.remove(account)
-            // If there are any continuations waiting for this account, resume them.
-            if let continuations = ongoingFetchContinuations.removeValue(forKey: account) {
-                continuations.values.forEach { $0.resume() }
-            }
-        }
-    }
-
-    func awaitFetchCompletion(forAccount account: String, onWaiting: @Sendable () -> Void = {}) async {
-        guard !Task.isCancelled, ongoingFetches.contains(account) else { return }
-        let token = UUID()
-        await withTaskCancellationHandler {
-            await withCheckedContinuation { continuation in
-                guard !Task.isCancelled, ongoingFetches.contains(account) else {
-                    continuation.resume()
-                    return
-                }
-                ongoingFetchContinuations[account, default: [:]][token] = continuation
-                onWaiting()
-            }
-        } onCancel: {
-            Task { await self.cancelWaiter(forAccount: account, token: token) }
-        }
-    }
-
-    private func cancelWaiter(forAccount account: String, token: UUID) {
-        let continuation = ongoingFetchContinuations[account]?.removeValue(forKey: token)
-        if ongoingFetchContinuations[account]?.isEmpty == true {
-            ongoingFetchContinuations.removeValue(forKey: account)
-        }
-        continuation?.resume()
-    }
-
     func reset() {
         for account in Array(sharedFetches.keys) {
             cancelSharedFetch(forAccount: account)
@@ -161,9 +115,6 @@ actor RetrievedCapabilitiesActor: Sendable {
             continuations.values.forEach { $0.resume(returning: (account, nil, nil, .cancelled)) }
         }
         sharedFetchContinuations = [:]
-        ongoingFetchContinuations.values.forEach { $0.values.forEach { $0.resume() } }
-        ongoingFetches = []
-        ongoingFetchContinuations = [:]
         data = [:]
     }
 }

@@ -176,7 +176,7 @@ struct RemoteInterfaceExtensionTests {
             #expect(await actor.getCapabilities(for: testAccount.ncKitAccount)?.capabilities == newCapabilities)
         } else {
             #expect(await actor.getCapabilities(for: testAccount.ncKitAccount) == nil)
-            #expect(await actor.ongoingFetches.contains(testAccount.ncKitAccount))
+            #expect(await actor.sharedFetches[testAccount.ncKitAccount] != nil)
             releaseNewContinuation.yield(())
             #expect(try await testTaskValue(of: replacement).capabilities == newCapabilities)
         }
@@ -362,40 +362,6 @@ struct RemoteInterfaceExtensionTests {
         let actorCache = await RetrievedCapabilitiesActor.shared.getCapabilities(for: testAccount.ncKitAccount)
         #expect(actorCache?.capabilities == newCaps)
         #expect((actorCache?.retrievedAt ?? .distantPast) > staleDate)
-    }
-
-    @Test func currentCapabilitiesAwaitsAndUsesCache() async {
-        let (cachedCaps, cachedData) = capabilitiesFromMockJSON()
-
-        let remoteInterface = TestableRemoteInterface { acc, _, _ in
-            Issue.record("fetchCapabilities should NOT be called when cache is fresh after await.")
-            return (acc.ncKitAccount, cachedCaps, cachedData, .success)
-        }
-
-        // 1. Simulate an external process starting a fetch for testAccount
-        await RetrievedCapabilitiesActor.shared.setOngoingFetch(forAccount: testAccount.ncKitAccount, ongoing: true)
-
-        await confirmation("currentCapabilitiesReturned") { currentCapabilitiesReturned in
-            let currentCapabilitiesTask = Task { @Sendable in
-                // 2. This call to currentCapabilities should await the ongoing fetch.
-                let result = await remoteInterface.currentCapabilities(account: testAccount)
-                currentCapabilitiesReturned()
-                // Assertions on the result will be done after the task.
-                #expect(result.capabilities == cachedCaps)
-                #expect(result.error == .success)
-            }
-
-            // 3. Now, the "external" fetch completes and populates the cache.
-            await RetrievedCapabilitiesActor.shared.setCapabilities(
-                forAccount: testAccount.ncKitAccount,
-                capabilities: cachedCaps,
-                retrievedAt: Date() // Fresh date
-            )
-
-            await RetrievedCapabilitiesActor.shared.setOngoingFetch(forAccount: testAccount.ncKitAccount, ongoing: false)
-
-            await currentCapabilitiesTask.value
-        }
     }
 
     @Test func supportsTrashTrue() async {
