@@ -257,12 +257,6 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
-        // `metadata` is a value snapshot captured before `upload()`. A partial chunked-upload
-        // failure leaves the current resumable upload identifier in the database, but the error paths
-        // below write this snapshot back. Refresh the identifier so that write does not replace the
-        // current identifier with its pre-upload value. Successful and non-resumable uploads clear it.
-        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
-
         guard error == .success else {
             logger.error(
                 """
@@ -273,6 +267,13 @@ public extension Item {
                 """
             )
 
+            let shouldClearLockToken = error.isPreconditionFailedError || error.isLockedError || error.isNotFoundError
+            dbManager.recordUploadFailure(
+                ocId: ocId,
+                errorDescription: error.errorDescription,
+                staleLockToken: shouldClearLockToken ? metadata.lockToken : nil
+            )
+
             // We sent `If-Match`, so a 412 here means the server copy diverged
             // from the version this edit was based on — a genuine content conflict,
             // not merely a stale lock. Do NOT commit the rejected upload. Clear any
@@ -280,10 +281,6 @@ public extension Item {
             // server's newer version is fetched.
             if sentIfMatch, error.isPreconditionFailedError {
                 logger.error("Upload rejected: server version changed since last sync (If-Match precondition failed).", [.item: itemIdentifier, .name: filename])
-                metadata.lockToken = nil
-                metadata.status = Status.uploadError.rawValue
-                metadata.sessionError = error.errorDescription
-                dbManager.addItemMetadata(metadata)
                 if let domain, let manager = NSFileProviderManager(for: domain) {
                     Task {
                         try? await manager.signalEnumerator(for: .workingSet)
@@ -307,8 +304,7 @@ public extension Item {
             }
 
             if error.isPreconditionFailedError || error.isLockedError {
-                logger.info("Clearing stale lock token after lock/precondition error.", [.item: itemIdentifier])
-                metadata.lockToken = nil
+                logger.info("Upload failed with a lock or precondition error.", [.item: itemIdentifier])
                 // Signal re-enumeration: if the parent was also renamed (causing the
                 // precondition failure), the working set check will update the path
                 // before the system retries.
@@ -325,10 +321,6 @@ public extension Item {
             // cannotSynchronize rather than noSuchItem: the file still exists on the
             // server at a different location.
             if error.isNotFoundError {
-                metadata.lockToken = nil
-                metadata.status = Status.uploadError.rawValue
-                metadata.sessionError = error.errorDescription
-                dbManager.addItemMetadata(metadata)
                 if let domain, let manager = NSFileProviderManager(for: domain) {
                     Task {
                         try? await manager.signalEnumerator(for: .workingSet)
@@ -336,10 +328,6 @@ public extension Item {
                 }
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
-
-            metadata.status = Status.uploadError.rawValue
-            metadata.sessionError = error.errorDescription
-            dbManager.addItemMetadata(metadata)
 
             // Surface the quota refusal in the main app's activity view (per-item entry +
             // per-folder summary with a "Retry all uploads" button), matching the parity
@@ -356,6 +344,9 @@ public extension Item {
             // it is painless to check here too just in case
             return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: logger.log))
         }
+
+        // Upload bookkeeping may have cleared the chunk identifier.
+        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
 
         // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
         await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)

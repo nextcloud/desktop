@@ -751,6 +751,24 @@ public final class FilesDatabaseManager: Sendable {
         } ?? nil
     }
 
+    /// Update the current upload state without writing back metadata captured before the transfer.
+    func recordUploadFailure(ocId: String, errorDescription: String, staleLockToken: String?) {
+        write("Could not record upload failure.", [.item: ocId]) { db in
+            guard var record = try itemMetadata(ocId: ocId, in: db),
+                  !record.deleted,
+                  record.status == Status.uploading.rawValue
+            else { return }
+
+            try record.updateChanges(db) {
+                $0.status = Status.uploadError.rawValue
+                $0.sessionError = errorDescription
+                if let staleLockToken, $0.lockToken == staleLockToken {
+                    $0.lockToken = nil
+                }
+            }
+        }
+    }
+
     /// Persist `metadata`, evicting any other live row at its logical address first.
     ///
     /// - Parameter durability: ``WriteDurability/full`` unless the row only mirrors the server.

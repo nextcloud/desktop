@@ -33,7 +33,8 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         errorCode: Int,
         chunkSize: Int?,
         cancelDuringChunkPreparation: Bool = false,
-        cancelDuringUpload: Bool = false
+        cancelDuringUpload: Bool = false,
+        keepDownloadedDuringChunkPreparation: Bool? = nil
     ) async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let expectCancellation = cancelDuringChunkPreparation || cancelDuringUpload
@@ -55,7 +56,19 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         let chunkDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         defer { try? FileManager.default.removeItem(at: chunkDirectory) }
         if cancelDuringChunkPreparation {
+            let itemIdentifier = remoteItem.identifier
             remoteInterface.chunkPreparationHandler = {
+                if let keepDownloadedDuringChunkPreparation {
+                    do {
+                        let current = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: itemIdentifier))
+                        XCTAssertEqual(current.status, Status.uploading.rawValue)
+                        XCTAssertEqual(current.keepDownloaded, !keepDownloadedDuringChunkPreparation)
+                        let updated = try XCTUnwrap(Self.dbManager.set(keepDownloaded: keepDownloadedDuringChunkPreparation, for: current))
+                        XCTAssertEqual(updated.keepDownloaded, keepDownloadedDuringChunkPreparation)
+                    } catch {
+                        XCTFail("Could not update pin during chunk preparation: \(error)")
+                    }
+                }
                 progress.cancel()
                 let cancelled = await waitForCancellation()
                 XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
@@ -78,6 +91,9 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         var itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         itemMetadata.uploaded = true
         itemMetadata.downloaded = true
+        if let keepDownloadedDuringChunkPreparation {
+            itemMetadata.keepDownloaded = !keepDownloadedDuringChunkPreparation
+        }
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let newContents = Data("Updated content".utf8)
@@ -143,6 +159,9 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(storedMetadata.status, Status.uploadError.rawValue)
         XCTAssertEqual(storedMetadata.sessionError, uploadError.errorDescription)
         XCTAssertEqual(storedMetadata.etag, itemMetadata.etag)
+        if let keepDownloadedDuringChunkPreparation {
+            XCTAssertEqual(storedMetadata.keepDownloaded, keepDownloadedDuringChunkPreparation)
+        }
         XCTAssertEqual(remoteItem.data, originalRemoteData)
     }
 
@@ -243,6 +262,17 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
 
     func testCancellationDuringChunkPreparationRemainsUnuploaded() async throws {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringChunkPreparation: true)
+    }
+
+    func testCancellationDuringChunkPreparationPreservesConcurrentPinChanges() async throws {
+        for keepDownloaded in [true, false] {
+            try await assertFailedContentModificationRemainsUnuploaded(
+                errorCode: NSURLErrorCancelled,
+                chunkSize: 2,
+                cancelDuringChunkPreparation: true,
+                keepDownloadedDuringChunkPreparation: keepDownloaded
+            )
+        }
     }
 
     func testCancellationDuringUploadRemainsUnuploaded() async throws {
