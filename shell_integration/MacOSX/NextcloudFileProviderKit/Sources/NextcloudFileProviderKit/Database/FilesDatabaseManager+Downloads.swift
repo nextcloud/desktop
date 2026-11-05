@@ -22,7 +22,7 @@ extension FilesDatabaseManager {
     func restorePackageDownloadMetadatas(_ metadatas: [SendableItemMetadata], for operation: DownloadOperation) throws {
         guard !metadatas.isEmpty else { return }
         try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[operation.ocId]?.identifier == operation.identifier else {
+            guard operations[storeIdentity]?[operation.ocId]?.operation.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             try write(durability: .full) { db in
@@ -49,11 +49,25 @@ extension FilesDatabaseManager {
         }
     }
 
-    func beginDownload(_ operation: DownloadOperation) -> SendableItemMetadata? {
+    /// Register `operation` as the item's download owner and mark the item as downloading.
+    /// For a folder child, first check `listedMetadata` from the parent listing against the current row.
+    func beginDownload(_ operation: DownloadOperation, listedMetadata: SendableItemMetadata? = nil) -> SendableItemMetadata? {
         let ocId = operation.ocId
         let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
             let metadata: SendableItemMetadata? = write("Could not start download in database.", [.item: ocId]) { db -> SendableItemMetadata? in
                 guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else { return nil }
+                if let listedMetadata {
+                    // A sibling's transfer may have given another listing time to update this row.
+                    guard item.serverUrl.precomposedStringWithCanonicalMapping == listedMetadata.serverUrl.precomposedStringWithCanonicalMapping else {
+                        return nil
+                    }
+                    // A depth-1 read refreshes normal rows and skips rows with unfinished transfers.
+                    if item.status == Status.normal.rawValue,
+                       item.etag != listedMetadata.etag || !item.hasSameLocation(as: listedMetadata)
+                    {
+                        return nil
+                    }
+                }
                 item.status = Status.downloading.rawValue
                 item.downloaded = false
                 item.sessionError = ""
@@ -61,8 +75,8 @@ extension FilesDatabaseManager {
                 return item.metadata
             } ?? nil
             guard let metadata else { return (nil, nil) }
-            let supersededOperation = operations[storeIdentity]?[ocId]
-            operations[storeIdentity, default: [:]][ocId] = operation
+            let supersededOperation = operations[storeIdentity]?[ocId]?.operation
+            operations[storeIdentity, default: [:]][ocId] = (operation, metadata.etag, metadata.remotePath())
             return (metadata, supersededOperation)
         }
         // Cancellation resumes the old fetch, which may need the ownership lock for cleanup.
@@ -75,7 +89,7 @@ extension FilesDatabaseManager {
     /// Check a staged download without publishing or releasing its ownership.
     func validateDownload(_ operation: DownloadOperation) throws {
         try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[operation.ocId]?.identifier == operation.identifier else {
+            guard operations[storeIdentity]?[operation.ocId]?.operation.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             try writer.read { db in
@@ -95,7 +109,9 @@ extension FilesDatabaseManager {
     ) throws -> SendableItemMetadata {
         try Self.downloadOperations.withLock { operations in
             let downloads = [operation] + children
-            guard downloads.allSatisfy({ operations[storeIdentity]?[$0.ocId]?.identifier == $0.identifier }) else {
+            guard let activeDownloads = operations[storeIdentity],
+                  downloads.allSatisfy({ activeDownloads[$0.ocId]?.operation.identifier == $0.identifier })
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             let completed: SendableItemMetadata
@@ -108,11 +124,21 @@ extension FilesDatabaseManager {
                             }
                             throw NSFileProviderError(.cannotSynchronize)
                         }
-                        guard let listed = metadatas[download.ocId] else {
+                        guard let listed = metadatas[download.ocId],
+                              listed.account == item.account,
+                              let started = activeDownloads[download.ocId]
+                        else {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
-                        // Enumeration skips in-flight rows. Save the listing used by this fetch
-                        // while retaining current local state and the detected content type.
+                        // A retry can start with a stale row. Use the listing when that row's
+                        // version and location have stayed the same during the transfer.
+                        let unchangedSinceStart = item.etag == started.etag && item.hasSameRemotePath(as: started.remotePath)
+                        let matchesListing = item.etag == listed.etag && item.hasSameLocation(as: listed)
+                        guard unchangedSinceStart || matchesListing else {
+                            throw NSFileProviderError(.cannotSynchronize)
+                        }
+
+                        // Retain current local state and the detected content type.
                         var metadata = item.metadata
                         if metadata.etag != listed.etag {
                             metadata.fileProviderContentVersion = nil
@@ -134,6 +160,15 @@ extension FilesDatabaseManager {
                         return metadata
                     }
                     for metadata in items {
+                        // Enumeration can leave an in-flight row at an address now occupied by another item.
+                        let addressAvailable = try ItemMetadataRecord
+                            .filter(ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName))
+                            .filter(ItemMetadataRecord.Columns.account == metadata.account && ItemMetadataRecord.Columns.ocId != metadata.ocId)
+                            .filter(ItemMetadataRecord.Columns.deleted == false && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false)
+                            .isEmpty(db)
+                        guard addressAvailable else {
+                            throw NSFileProviderError(.cannotSynchronize)
+                        }
                         // Rebuild the row so its indexed location keys follow the listed path.
                         try ItemMetadataRecord(metadata).upsertRow(db)
                     }
@@ -170,7 +205,7 @@ extension FilesDatabaseManager {
         let ocId = operation.ocId
         let statusValue = status.rawValue
         return try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[ocId]?.identifier == operation.identifier else {
+            guard operations[storeIdentity]?[ocId]?.operation.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             // Keep ownership if publishing the download fails so the caller can clean up.

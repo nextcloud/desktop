@@ -66,10 +66,12 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    typealias ActiveDownload = (operation: DownloadOperation, etag: String, remotePath: String)
+
     let logger: FileProviderLogger
     let account: Account
-    /// Share download ownership across FilesDatabaseManager instances accessing the same database.
-    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: DownloadOperation]]())
+    /// Share ownership and the starting ETag and path across managers accessing the same database.
+    static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: ActiveDownload]]())
 
     /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
     let writer: any DatabaseWriter

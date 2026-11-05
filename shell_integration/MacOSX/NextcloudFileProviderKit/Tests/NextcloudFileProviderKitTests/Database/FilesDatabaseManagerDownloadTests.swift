@@ -515,6 +515,58 @@ extension DatabaseTestSuites {
             }
         }
 
+        @Test func directoryDownloadRejectsStaleListingBeforeChildStarts() throws {
+            let account = DatabaseTestSuites.account
+            var child = SendableItemMetadata(ocId: UUID().uuidString, fileName: "moved.txt", account: account)
+            child.serverUrl = account.davFilesUrl + "/destination"
+            manager.addItemMetadata(child)
+            let stored = try #require(manager.itemMetadata(ocId: child.ocId))
+            let log = FileProviderLogMock()
+            let operation = DownloadOperation(ocId: child.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
+
+            defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
+            var listed = child
+            listed.serverUrl = account.davFilesUrl + "/source"
+            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            listed.serverUrl = child.serverUrl
+            listed.etag = "previous-version"
+            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            listed.etag = child.etag
+            listed.apply(fileName: "previous-name.txt")
+            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            #expect(manager.itemMetadata(ocId: child.ocId) == stored)
+        }
+
+        @Test func directoryDownloadCompletionRejectsReplacementAtListedPath() throws {
+            let (root, children, metadatas) = try makeDirectoryDownloadOperations()
+            let operations = [root] + children
+            defer {
+                for operation in operations {
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                }
+            }
+            let snapshots = try operations.map { try #require(manager.itemMetadata(ocId: $0.ocId)) }
+            let original = try #require(metadatas[children[0].ocId])
+            var replacement = original
+            replacement.ocId = UUID().uuidString
+            replacement.etag = "replacement-version"
+            manager.addItemMetadata(replacement)
+            let storedReplacement = try #require(manager.itemMetadata(ocId: replacement.ocId))
+            #expect(storedReplacement.remotePath() == original.remotePath())
+            #expect(!storedReplacement.deleted)
+            // The ordinary deduplication path leaves an in-flight occupant in place.
+            #expect(manager.itemMetadata(ocId: original.ocId) == snapshots[1])
+
+            expectError(NSFileProviderError(.cannotSynchronize)) {
+                try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
+            }
+
+            for snapshot in snapshots {
+                #expect(manager.itemMetadata(ocId: snapshot.ocId) == snapshot)
+            }
+            #expect(manager.itemMetadata(ocId: replacement.ocId) == storedReplacement)
+        }
+
         @Test func directoryDownloadCompletionPreservesSupersedingChildState() throws {
             for newerCompleted in [false, true] {
                 let (root, children, metadatas) = try makeDirectoryDownloadOperations()

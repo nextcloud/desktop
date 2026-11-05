@@ -114,7 +114,7 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
                 let childOperation = operation.childOperation(for: metadata.ocId)
 
-                guard dbManager.beginDownload(childOperation) != nil else {
+                guard dbManager.beginDownload(childOperation, listedMetadata: metadata) != nil else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 childOperations.append(childOperation)

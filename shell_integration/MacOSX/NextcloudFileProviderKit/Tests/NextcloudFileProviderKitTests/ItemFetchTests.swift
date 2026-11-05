@@ -1610,6 +1610,81 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testDirectoryFetchPreservesChildMovedDuringTransfer() async throws {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let destination = makeDirectoryChild(of: rootItem)
+        let dbManager = Self.dbManager
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        remoteInterface.downloadHandler = {
+            guard remoteInterface.downloadOperationCount == 2 else { return }
+            startedContinuation.yield(())
+            do {
+                _ = try await nextTestValue(from: release)
+            } catch is CancellationError {
+                // The test can stop the suspended fetch while unwinding.
+            } catch {
+                XCTFail("Suspended download was not released: \(error)")
+            }
+        }
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
+        defer {
+            startedContinuation.finish()
+            releaseContinuation.finish()
+            task.cancel()
+            remoteInterface.downloadHandler = nil
+            removeDownloadedDirectory(remoteInterface: remoteInterface)
+        }
+        guard try await nextTestValue(from: started) != nil else {
+            throw URLError(.badServerResponse)
+        }
+        let localDirectory = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+        // Only the first transfer has written its bytes. Find that child without assuming listing order.
+        let movedChild = try XCTUnwrap(directory.children.first {
+            FileManager.default.fileExists(atPath: localDirectory.appendingPathComponent($0.name).path)
+        })
+        let original = try XCTUnwrap(dbManager.itemMetadata(ocId: movedChild.identifier))
+        XCTAssertEqual(original.status, Status.downloading.rawValue)
+        XCTAssertEqual(original.serverUrl, directory.remotePath)
+        XCTAssertFalse(original.downloaded)
+
+        directory.children.removeAll { $0.identifier == movedChild.identifier }
+        destination.children.append(movedChild)
+        movedChild.parent = destination
+        movedChild.name = "moved-" + movedChild.name
+        movedChild.remotePath = destination.remotePath + "/" + movedChild.name
+        let listing = await Enumerator.readServerUrl(
+            destination.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(listing.error)
+        XCTAssertTrue(try XCTUnwrap(listing.changes).created.contains { $0.ocId == movedChild.identifier })
+        let moved = try XCTUnwrap(dbManager.itemMetadata(ocId: movedChild.identifier))
+        XCTAssertEqual(moved.remotePath(), movedChild.remotePath)
+        XCTAssertEqual(moved.etag, movedChild.versionIdentifier)
+        XCTAssertFalse(moved.downloaded)
+
+        releaseContinuation.finish()
+        let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let stored = try XCTUnwrap(dbManager.itemMetadata(ocId: movedChild.identifier))
+        XCTAssertEqual(stored.remotePath(), moved.remotePath())
+        XCTAssertEqual(stored.etag, moved.etag)
+        XCTAssertEqual(stored.status, Status.normal.rawValue)
+        XCTAssertFalse(stored.downloaded)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: directory.identifier)?.downloaded, false)
+        for child in directory.children {
+            XCTAssertEqual(dbManager.itemMetadata(ocId: child.identifier)?.downloaded, false)
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localDirectory.path))
+    }
+
     func testDirectoryFetchReportsMissingRequestedFolder() async {
         let (item, remoteInterface, directory) = makeFetchItem(directory: true)
         rootItem.children.removeAll { $0.identifier == directory.identifier }
