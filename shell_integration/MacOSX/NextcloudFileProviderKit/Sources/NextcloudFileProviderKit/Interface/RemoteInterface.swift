@@ -165,13 +165,14 @@ public protocol RemoteInterface: Sendable {
 }
 
 public extension RemoteInterface {
-    /// Cancelling a caller stops its wait; the request continues only while other callers still need it.
+    /// Callers share one capabilities request per account.
+    /// Cancelling a caller stops its wait. The request continues only while other callers still need it.
     func currentCapabilities(
-        account: Account,
-        options: NKRequestOptions = .init()
+        account: Account
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
         await RetrievedCapabilitiesActor.shared.currentCapabilities(forAccount: account.ncKitAccount) { sharedTaskHandler in
-            await fetchCapabilities(account: account, options: options, taskHandler: sharedTaskHandler)
+            // Keep file-specific preconditions such as If-Match from affecting other callers.
+            await fetchCapabilities(account: account, options: .init(), taskHandler: sharedTaskHandler)
         }
     }
 

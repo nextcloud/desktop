@@ -154,7 +154,7 @@ private func performUpload(
             return chunkSize
         }
 
-        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account, options: options)
+        let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
         guard error == .success,
               let capabilities,

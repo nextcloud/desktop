@@ -645,6 +645,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Optional hook invoked after a delete path is captured and before the mock applies it.
     public var deleteCallHandler: (() -> Void)?
 
+    public private(set) var lastCapabilitiesRequestOptions: NKRequestOptions?
+
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
     /// which etag. Captured before any injected `uploadError` short-circuit.
@@ -1480,9 +1482,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     public func fetchCapabilities(
         account: Account,
-        options _: NKRequestOptions,
+        options: NKRequestOptions,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        lastCapabilitiesRequestOptions = options
         if let capabilitiesHandler {
             await capabilitiesHandler(account, taskHandler)
         }

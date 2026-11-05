@@ -772,6 +772,33 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    func testSharedCapabilitiesLookupOmitsUploadPrecondition() async throws {
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let contents = Data("Updated file".utf8)
+        try contents.write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let ifMatch = "\"base-etag\""
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileURL.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            options: NKRequestOptions(customHeader: ["If-Match": ifMatch]),
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.remoteError, .success)
+        let capabilityOptions = try XCTUnwrap(remoteInterface.lastCapabilitiesRequestOptions)
+        XCTAssertNil(capabilityOptions.customHeader?["If-Match"])
+        XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, ifMatch)
+        XCTAssertEqual(root.children.first?.data, contents)
+    }
+
     func testUsingServerCapabilitiesChunkSize() async throws {
         let capabilities = ##"""
         {
