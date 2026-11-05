@@ -866,11 +866,10 @@ public final class FilesDatabaseManager: Sendable {
     /// these fields back to their defaults, silently undoing user-visible
     /// state such as "Always keep downloaded" (#9923).
     ///
-    /// Returns the merged metadata that was persisted. Callers that report
-    /// items back to the file-provider framework MUST forward the returned
-    /// value rather than the input — otherwise the framework receives the
-    /// pre-merge defaults and renders the item as if the local-only state
-    /// (e.g. pinned-via-keep-downloaded) had been cleared.
+    /// Returns the metadata to report to File Provider, including the existing
+    /// row when the item has an unfinished upload. Callers must report this
+    /// value so File Provider sees local state such as ``keepDownloaded``.
+    /// Incoming server metadata uses defaults for these local-only fields.
     ///
     /// - Parameters:
     ///   - metadata: The freshly-built metadata to persist.
@@ -887,6 +886,13 @@ public final class FilesDatabaseManager: Sendable {
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
         write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
             if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
+                let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
+                // A listing describes the server copy while the local edit is still pending.
+                if !existing.deleted, existing.isUpload || hasFailedUpload {
+                    toWrite = existing.metadata
+                    return
+                }
+
                 toWrite.downloaded = existing.downloaded
                 toWrite.keepDownloaded = existing.keepDownloaded
 
@@ -899,7 +905,9 @@ public final class FilesDatabaseManager: Sendable {
                     toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
                 }
 
-                // Skip a `normal` row whose remote state is unchanged, and also compare location and `deleted` because this row was found by `ocId` alone, and `visitedDirectory` because it is local-only. Rows that are not `normal` are always written, which resets them.
+                // An ocId lookup can find a moved or deleted row, so check location and deletion state.
+                // Compare visitedDirectory separately because it is local-only.
+                // Writing other non-normal rows resets their state.
                 if !existing.deleted,
                    existing.status == Status.normal.rawValue,
                    existing.hasSameLocation(as: toWrite),

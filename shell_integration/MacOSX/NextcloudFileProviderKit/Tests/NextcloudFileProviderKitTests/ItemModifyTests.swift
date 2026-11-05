@@ -275,6 +275,77 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testCancelledUploadRemainsUnuploadedAfterPaginatedListing() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let listingInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, pagination: true)
+        let progress = Progress()
+        let log = FileProviderLogMock()
+        let dbManager = Self.dbManager
+        var metadata = remoteItem.toItemMetadata(account: Self.account)
+        metadata.downloaded = true
+        dbManager.addItemMetadata(metadata)
+        let ocId = metadata.ocId
+        let localETag = metadata.etag
+        let localSize = metadata.size
+        let remoteETag = "concurrent-server-version"
+        let remoteContents = Data("Newer contents from another device".utf8)
+
+        let contents = Data("Updated content".utf8)
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try contents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        var targetMetadata = metadata
+        targetMetadata.size = Int64(contents.count)
+        let item = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: dbManager)
+        let target = Item(metadata: targetMetadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: dbManager)
+
+        @Sendable func assertPageReportsPendingUpload() async {
+            let page = await Enumerator.readServerUrl(
+                Self.account.davFilesUrl,
+                pageSettings: (nil, 0, 100),
+                account: Self.account,
+                remoteInterface: listingInterface,
+                dbManager: dbManager,
+                log: log
+            )
+            XCTAssertNil(page.error)
+            let listed = page.metadatas?.first { $0.ocId == ocId }
+            XCTAssertEqual(listed?.uploaded, false)
+            XCTAssertEqual(listed?.etag, localETag)
+            XCTAssertEqual(listed?.size, localSize)
+        }
+
+        remoteInterface.uploadHandler = {
+            // Another device changes the server copy while the PUT is paused.
+            let remoteCopy = listingInterface.rootItem?.children.first { $0.identifier == ocId }
+            remoteCopy?.versionIdentifier = remoteETag
+            remoteCopy?.data = remoteContents
+            await assertPageReportsPendingUpload()
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Cancellation must reach the upload")
+        }
+
+        let (modifiedItem, error) = await item.modify(
+            itemTarget: target,
+            changedFields: [.contents],
+            contents: contentsURL,
+            forcedChunkSize: contents.count,
+            progress: progress,
+            dbManager: dbManager
+        )
+
+        XCTAssertNil(modifiedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        await assertPageReportsPendingUpload()
+        let stored = try XCTUnwrap(dbManager.itemMetadata(ocId: ocId))
+        XCTAssertFalse(stored.uploaded)
+        XCTAssertEqual(stored.status, Status.uploadError.rawValue)
+        XCTAssertEqual(stored.etag, localETag)
+        XCTAssertEqual(stored.size, localSize)
+        XCTAssertEqual(remoteItem.data, remoteContents)
+    }
+
     func testCancellationDuringUploadRemainsUnuploaded() async throws {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil, cancelDuringUpload: true)
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringUpload: true)
