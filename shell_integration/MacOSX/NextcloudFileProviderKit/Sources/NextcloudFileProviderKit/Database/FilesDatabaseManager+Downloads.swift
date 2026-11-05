@@ -26,7 +26,7 @@ extension FilesDatabaseManager {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             try write(durability: .full) { db in
-                guard !operation.cancellation.isCancelled else { throw CocoaError(.userCancelled) }
+                try operation.cancellation.checkCancellation()
                 guard let directory = try itemMetadata(ocId: operation.ocId, in: db), !directory.deleted else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
@@ -117,6 +117,8 @@ extension FilesDatabaseManager {
             let completed: SendableItemMetadata
             do {
                 completed = try write(durability: .full) { db in
+                    // Cancellation can arrive while this transaction waits for the writer.
+                    try operation.cancellation.checkCancellation()
                     let items = try downloads.map { download in
                         guard let item = try itemMetadata(ocId: download.ocId, in: db), !item.deleted else {
                             if download.identifier == operation.identifier {
@@ -172,6 +174,7 @@ extension FilesDatabaseManager {
                         // Rebuild the row so its indexed location keys follow the listed path.
                         try ItemMetadataRecord(metadata).upsertRow(db)
                     }
+                    try operation.cancellation.checkCancellation()
                     // Register before commit so reconciliation protects these rows until File Provider confirms them.
                     for download in downloads {
                         pendingMaterializations.recordDownloaded(NSFileProviderItemIdentifier(download.ocId))
@@ -220,6 +223,10 @@ extension FilesDatabaseManager {
             }
             do {
                 let metadata = try write(durability: .full) { db in
+                    // Cleanup must be able to write even after the fetch is cancelled.
+                    if downloaded {
+                        try operation.cancellation.checkCancellation()
+                    }
                     guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
                     }
@@ -238,6 +245,7 @@ extension FilesDatabaseManager {
                     }
                     try item.upsertRow(db)
                     if downloaded {
+                        try operation.cancellation.checkCancellation()
                         pendingMaterializations.recordDownloaded(NSFileProviderItemIdentifier(ocId))
                     }
                     return item.metadata

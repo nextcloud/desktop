@@ -234,7 +234,7 @@ public extension Item {
                 for childOperation in childOperations {
                     _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
                 }
-                let cancelled = fetchWasCancelled || progress.isCancelled || Task.isCancelled
+                let cancelled = fetchWasCancelled || cancellation.isCancelled || Task.isCancelled
                 _ = try? dbManager.finishDownload(
                     operation,
                     status: cancelled ? .normal : .downloadError,

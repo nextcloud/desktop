@@ -11,6 +11,14 @@ import UniformTypeIdentifiers
 import XCTest
 
 final class ItemFetchTests: NextcloudFileProviderKitTestCase {
+    private func waitForDownloadPublicationLock() async throws {
+        let deadline = ContinuousClock.now + asyncTestTimeout
+        while FilesDatabaseManager.downloadOperations.withLockIfAvailable({ _ in true }) != nil {
+            guard ContinuousClock.now < deadline else { throw URLError(.timedOut) }
+            try await Task.sleep(for: .milliseconds(1))
+        }
+    }
+
     private func removeDownloadedContents(remoteInterface: MockRemoteInterface) {
         guard let localPath = remoteInterface.downloadDestinationURL else { return }
         try? FileManager.default.removeItem(at: localPath)
@@ -1886,6 +1894,87 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(try Data(contentsOf: XCTUnwrap(retryURL)), remoteItem.data)
         XCTAssertEqual(dbManager.itemMetadata(ocId: ocId)?.status, Status.normal.rawValue)
         XCTAssertEqual(dbManager.itemMetadata(ocId: ocId)?.downloaded, true)
+    }
+
+    func testFetchCancelledWhileWaitingForCompletionWrite() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let dbManager = Self.dbManager
+        let progress = Progress()
+        let releaseWriter = DispatchSemaphore(value: 0)
+        let (writerHeld, writerHeldContinuation) = AsyncStream<Void>.makeStream()
+        remoteInterface.downloadCompletionHandler = {
+            defer { writerHeldContinuation.finish() }
+            do {
+                try await dbManager.holdWriterForTesting(until: releaseWriter)
+                writerHeldContinuation.yield(())
+            } catch {
+                XCTFail("Could not hold the database writer: \(error)")
+            }
+        }
+        let task = Task { await item.fetchContents(progress: progress, dbManager: dbManager) }
+        defer {
+            releaseWriter.signal()
+            writerHeldContinuation.finish()
+            task.cancel()
+            remoteInterface.downloadCompletionHandler = nil
+            removeDownloadedContents(remoteInterface: remoteInterface)
+        }
+        guard try await nextTestValue(from: writerHeld) != nil else {
+            throw URLError(.badServerResponse)
+        }
+        // In this single-file fetch the next ownership lock acquisition is completion.
+        try await waitForDownloadPublicationLock()
+        let destination = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: destination.path))
+        progress.cancel()
+        releaseWriter.signal()
+
+        let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: destination.path))
+        let metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertEqual(metadata.status, Status.normal.rawValue)
+        XCTAssertFalse(metadata.downloaded)
+        XCTAssertEqual(metadata.sessionError, "")
+        XCTAssertTrue(dbManager.pendingMaterializations.awaitingConfirmation(among: [item.itemIdentifier]).isEmpty)
+    }
+
+    func testDirectoryFetchRollsBackWhenCancelledDuringCompletionWrite() async throws {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        let dbManager = Self.dbManager
+        let progress = Progress()
+        remoteInterface.downloadCompletionHandler = {
+            // Simulate the Progress state changing before its cancellation handler runs.
+            progress.cancellationHandler = nil
+        }
+        try dbManager.setDownloadCompletionWriteHandlerForTesting { progress.cancel() }
+        defer {
+            try? dbManager.setDownloadCompletionWriteHandlerForTesting(nil)
+            remoteInterface.downloadCompletionHandler = nil
+            removeDownloadedDirectory(remoteInterface: remoteInterface)
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(progress: progress, dbManager: dbManager)
+
+        XCTAssertEqual(remoteInterface.downloadOperationCount, directory.children.count)
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        let destination = try XCTUnwrap(directoryDownloadDestination(remoteInterface: remoteInterface))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: destination.path))
+        let items = [directory] + directory.children
+        for remoteItem in items {
+            let metadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+            XCTAssertEqual(metadata.status, Status.normal.rawValue)
+            XCTAssertFalse(metadata.downloaded)
+            XCTAssertEqual(metadata.sessionError, "")
+        }
+        let identifiers = Set(items.map { NSFileProviderItemIdentifier($0.identifier) })
+        XCTAssertTrue(dbManager.pendingMaterializations.awaitingConfirmation(among: identifiers).isEmpty)
     }
 
     func testSuccessfulFetchPreservesConcurrentMetadataChanges() async throws {

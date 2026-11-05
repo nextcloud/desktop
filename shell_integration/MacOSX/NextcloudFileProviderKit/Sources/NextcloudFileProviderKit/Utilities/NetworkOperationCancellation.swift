@@ -22,8 +22,15 @@ final class NetworkOperationCancellation: @unchecked Sendable {
 
     var isCancelled: Bool {
         lock.lock()
-        defer { lock.unlock() }
-        return cancelled
+        let wasCancelled = cancelled
+        let activeProgress = progress
+        lock.unlock()
+        // Progress can report cancellation before its handler runs.
+        return wasCancelled || activeProgress?.isCancelled == true
+    }
+
+    func checkCancellation() throws {
+        guard !isCancelled else { throw CocoaError(.userCancelled) }
     }
 
     func cancel() {

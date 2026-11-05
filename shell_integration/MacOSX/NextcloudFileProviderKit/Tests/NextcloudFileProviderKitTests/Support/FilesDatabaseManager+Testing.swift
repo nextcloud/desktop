@@ -89,6 +89,49 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Park the writer on a dispatch queue until the test releases it, with a timeout as a backstop.
+    func holdWriterForTesting(until release: DispatchSemaphore) async throws {
+        let (entered, continuation) = AsyncStream<Result<Void, any Error>>.makeStream()
+        DispatchQueue.global().async {
+            defer { continuation.finish() }
+            do {
+                try self.writer.writeWithoutTransaction { _ in
+                    continuation.yield(.success(()))
+                    _ = release.wait(timeout: .now() + .seconds(Int(asyncTestTimeout.components.seconds) * 2))
+                }
+            } catch {
+                continuation.yield(.failure(error))
+            }
+        }
+        guard let result = try await nextTestValue(from: entered) else {
+            throw URLError(.badServerResponse)
+        }
+        try result.get()
+    }
+
+    /// Run the handler inside the transaction after a row is marked downloaded.
+    func setDownloadCompletionWriteHandlerForTesting(_ handler: (@Sendable () -> Void)?) throws {
+        let function = DatabaseFunction("on_download_completion_write", argumentCount: 0) { _ in
+            handler?()
+            return nil
+        }
+        try writer.write { db in
+            if handler != nil {
+                db.add(function: function)
+                try db.execute(sql: """
+                CREATE TEMP TRIGGER on_download_completion_write AFTER UPDATE ON itemMetadata
+                WHEN NEW.downloaded = 1
+                BEGIN
+                    SELECT on_download_completion_write();
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS on_download_completion_write")
+                db.remove(function: function)
+            }
+        }
+    }
+
     /// Reject publishing a completed download while allowing its start and cleanup writes.
     func setDownloadCompletionWriteFailureForTesting(_ enabled: Bool, ocId: String) throws {
         try writer.write { db in
