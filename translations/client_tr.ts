@@ -1679,104 +1679,104 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Hesap bağlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
         <source>Will require %1 of storage</source>
         <translation>%1 depolama alanı gerekecek</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 boş alan</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Yerel klasörde yeterli boş alan yok!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
         <source>Please choose a local sync folder.</source>
         <translation>Lütfen bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Lütfen boş bir yerel eşitleme klasörü seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
         <source>Could not create local folder %1</source>
         <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
         <source>Checking remote folder</source>
         <translation>Uzak klasör denetleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
         <source>No remote folder specified!</source>
         <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
         <source>Error: %1</source>
         <translation>Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
         <source>Creating remote folder</source>
         <translation>Uzak klasör oluşturuluyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Klasör oluşturma işlemi %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Geçersiz kimlik doğrulama bilgileri nedeniyle uzak klasör oluşturulamadı. Lütfen geri giderek kimlik doğrulama bilgilerinizi denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>%1 uzak klasörü &lt;tt&gt;%2&lt;/tt&gt; hatası nedeniyle oluşturulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Eşitleme klasörü oluşturulurken hesap kurulumu tamamlanamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
         <source>Could not create the sync folder.</source>
         <translation>Eşitleme klasörü oluşturulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
         <source>Local Sync Folder</source>
         <translation>Yerel eşitleme klasörü</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
         <source>Select a certificate</source>
         <translation>Bir sertifika seçin</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Sertifika dosyaları (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2120"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2140"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Seçilmiş sertifika dosyasına erişilemedi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Sertifika yüklenemedi. Parola yanlış olabilir mi?</translation>
     </message>
