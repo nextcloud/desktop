@@ -13,6 +13,8 @@
 #include <account.h>
 #include <folder.h>
 #include <accountstate.h>
+#include <algorithm>
+
 #include <QApplication>
 #include <QDesktopServices>
 #include "openfilemanager.h"
@@ -98,7 +100,6 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
     }
 
     // Build recently changed files list
-    auto recentsChanged = false;
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
         const auto fm = QFontMetricsF{QApplication::font()};
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
@@ -111,15 +112,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         // Entries for files that no longer exist (e.g. deletions) can't be shown in the file manager.
         const QString fullPath = f->cleanPath() + '/' + fileName;
         if (QFile::exists(fullPath)) {
-            // Re-completing a file replaces its previous entry instead of duplicating it.
-            _recentlyChanged.removeIf([&fullPath](const auto &entry) {
-                return entry.second == fullPath;
-            });
-            _recentlyChanged.prepend(qMakePair(actionText, fullPath));
-            while (_recentlyChanged.size() > maxRecentlyChangedItems) {
-                _recentlyChanged.removeLast();
-            }
-            recentsChanged = true;
+            addRecentlyChanged(actionText, fullPath);
         }
     }
 
@@ -154,25 +147,39 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
     if (!_paused) {
         updateStatusText(msg);
     }
+}
 
-    if (recentsChanged) {
-        GMenuItem* item = nullptr;
-        g_menu_remove_all (G_MENU(_recentMenu));
-        if(!_recentlyChanged.isEmpty()) {
-            QList<QPair<QString, QString>>::iterator i;
-            for (i = _recentlyChanged.begin(); i != _recentlyChanged.end(); i++) {
-                QString label = i->first;
-                QString fullPath = i->second;
-                item = menu_item_new(label, "cloudprovider.showfile");
-                g_menu_item_set_action_and_target_value(item, "cloudprovider.showfile", g_variant_new_string(fullPath.toUtf8().data()));
-                g_menu_append_item(_recentMenu, item);
-                g_clear_object (&item);
-            }
-        } else {
-            item = menu_item_new(tr("No recently changed files"), nullptr);
-            g_menu_append_item(_recentMenu, item);
-            g_clear_object (&item);
+void CloudProviderWrapper::addRecentlyChanged(const QString &label, const QString &fullPath)
+{
+    // The menu mirrors _recentlyChanged one to one, except for the placeholder shown while the list is empty.
+    if (_recentlyChanged.isEmpty()) {
+        g_menu_remove_all(G_MENU(_recentMenu));
+    } else {
+        const auto existing = std::find_if(_recentlyChanged.cbegin(), _recentlyChanged.cend(), [&fullPath](const auto &entry) {
+            return entry.second == fullPath;
+        });
+        const auto index = static_cast<int>(existing - _recentlyChanged.cbegin());
+        // It is already the first entry, don't update it.
+        if (index == 0) {
+            return;
         }
+
+        // Re-completing a file replaces its previous entry instead of duplicating it.
+        if (existing != _recentlyChanged.cend()) {
+            _recentlyChanged.removeAt(index);
+            g_menu_remove(G_MENU(_recentMenu), index);
+        }
+    }
+
+    _recentlyChanged.prepend(qMakePair(label, fullPath));
+    auto *item = menu_item_new(label, "cloudprovider.showfile");
+    g_menu_item_set_action_and_target_value(item, "cloudprovider.showfile", g_variant_new_string(fullPath.toUtf8().data()));
+    g_menu_prepend_item(G_MENU(_recentMenu), item);
+    g_clear_object(&item);
+
+    while (_recentlyChanged.size() > maxRecentlyChangedItems) {
+        _recentlyChanged.removeLast();
+        g_menu_remove(G_MENU(_recentMenu), _recentlyChanged.size());
     }
 }
 
