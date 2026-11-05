@@ -133,6 +133,8 @@ import OSLog
         logger.debug("File provider extension process is being invalidated.")
         blockSyncObservation?.invalidate()
         blockSyncObservation = nil
+        // The running drain nudges through this instance's manager and database, so it stops; what is still pending waits for the next enqueue's drain.
+        AncestorRefreshCoalescer.shared(for: domain.identifier).cancel()
         dbManager?.checkpointForShutdown()
     }
 
@@ -576,7 +578,7 @@ import OSLog
             // the database before this enumeration runs (#10085).
             let changed = materialized.union(evicted)
             if let self, !changed.isEmpty {
-                refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(changed.map(\.rawValue)), manager: manager, dbManager: dbManager, logger: logger)
+                refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: Set(changed.map(\.rawValue)), domain: domain.identifier, manager: manager, dbManager: dbManager, logger: logger)
             }
             completionHandler()
         }
