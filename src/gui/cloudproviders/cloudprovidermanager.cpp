@@ -14,8 +14,6 @@
 
 #include <QPointer>
 
-static CloudProvidersProviderExporter *_providerExporter = nullptr;
-
 using CloudProviderManagerCallbackData = QPointer<CloudProviderManager>;
 
 static void destroyManagerCallbackData(gpointer user_data)
@@ -31,13 +29,7 @@ void on_name_acquired(GDBusConnection *connection, const gchar *name, gpointer u
         return;
     }
 
-    // Registering again would leak the exporter and connect the signals twice.
-    if (_providerExporter) {
-        return;
-    }
-    _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
-    cloud_providers_provider_exporter_set_name(_providerExporter, APPLICATION_NAME);
-    self->registerSignals();
+    self->registerProvider(connection);
 }
 
 void on_name_lost(GDBusConnection *connection, const gchar *name, gpointer user_data)
@@ -51,6 +43,17 @@ void on_name_lost(GDBusConnection *connection, const gchar *name, gpointer user_
 
     // Also called when the name could not be acquired at all, in which case there is nothing to release.
     self->unregisterProvider();
+}
+
+void CloudProviderManager::registerProvider(GDBusConnection *connection)
+{
+    // Registering again would leak the exporter and connect the signals twice.
+    if (_providerExporter) {
+        return;
+    }
+    _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
+    cloud_providers_provider_exporter_set_name(_providerExporter, APPLICATION_NAME);
+    registerSignals();
 }
 
 void CloudProviderManager::registerSignals()
