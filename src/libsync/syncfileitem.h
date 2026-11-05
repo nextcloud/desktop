@@ -124,7 +124,6 @@ public:
      */
     [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties, RemotePermissions::MountedPermissionAlgorithm algorithm);
 
-
     SyncFileItem()
         : _type(ItemTypeSkip)
         , _direction(None)
@@ -134,6 +133,7 @@ public:
         , _status(NoStatus)
         , _isRestoration(false)
         , _isSelectiveSync(false)
+        , _isUploadForbiddenItemKept(false)
     {
     }
 
@@ -278,6 +278,7 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
+    bool _isUploadForbiddenItemKept BITFIELD(1); // The upload was ignored, and the local-only data was kept on disk (new item in a read-only folder)
     EncryptionStatus _e2eEncryptionStatus = EncryptionStatus::NotEncrypted; // The file is E2EE or the content of the directory should be E2EE
     EncryptionStatus _e2eEncryptionServerCapability = EncryptionStatus::NotEncrypted;
     EncryptionStatus _e2eEncryptionStatusRemote = EncryptionStatus::NotEncrypted;
