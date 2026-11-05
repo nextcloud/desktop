@@ -17,6 +17,7 @@ func setChunkUploadIdentifier(
 func discardChunkUploads(
     forItemIdentifiers itemIdentifiers: [String],
     excluding retainedChunkUploadIdentifier: String? = nil,
+    chunksBaseDirectory: URL? = nil,
     usingRemoteInterface remoteInterface: RemoteInterface,
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
@@ -44,6 +45,7 @@ func discardChunkUploads(
 
     discardChunkUploads(
         withIdentifiers: uploadIdentifiers,
+        chunksBaseDirectory: chunksBaseDirectory,
         usingRemoteInterface: remoteInterface,
         dbManager: dbManager,
         logger: logger
@@ -54,6 +56,7 @@ func discardChunkUploads(
 func removeLocalChunkUpload(
     uploadIdentifier: String,
     chunksDirectory: URL?,
+    chunksBaseDirectory: URL? = nil,
     usingRemoteInterface remoteInterface: RemoteInterface,
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
@@ -68,7 +71,10 @@ func removeLocalChunkUpload(
                 // Nothing remains to clean up.
             }
         } else {
-            try remoteInterface.removeLocalChunks(remoteChunkStoreFolderName: uploadIdentifier)
+            try remoteInterface.removeLocalChunks(
+                remoteChunkStoreFolderName: uploadIdentifier,
+                chunksBaseDirectory: chunksBaseDirectory
+            )
         }
     } catch {
         logger.error(
@@ -83,6 +89,7 @@ func removeLocalChunkUpload(
 
 /// Removes tracked uploads that cannot be resumed after extension startup.
 func cleanupAbandonedChunkUploads(
+    chunksBaseDirectory: URL? = nil,
     usingRemoteInterface remoteInterface: RemoteInterface,
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
@@ -94,6 +101,7 @@ func cleanupAbandonedChunkUploads(
 
     discardChunkUploads(
         withIdentifiers: abandonedIdentifiers,
+        chunksBaseDirectory: chunksBaseDirectory,
         usingRemoteInterface: remoteInterface,
         dbManager: dbManager,
         logger: logger
@@ -102,13 +110,17 @@ func cleanupAbandonedChunkUploads(
 
 private func discardChunkUploads(
     withIdentifiers uploadIdentifiers: Set<String>,
+    chunksBaseDirectory: URL? = nil,
     usingRemoteInterface remoteInterface: RemoteInterface,
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
     for uploadIdentifier in uploadIdentifiers {
         do {
-            try remoteInterface.removeLocalChunks(remoteChunkStoreFolderName: uploadIdentifier)
+            try remoteInterface.removeLocalChunks(
+                remoteChunkStoreFolderName: uploadIdentifier,
+                chunksBaseDirectory: chunksBaseDirectory
+            )
         } catch {
             logger.error(
                 "Could not remove abandoned local chunks.",
