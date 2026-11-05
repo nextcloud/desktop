@@ -131,13 +131,22 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     }
 
     public var filename: String {
+        Self.filename(for: metadata)
+    }
+
+    static func filename(for metadata: SendableItemMetadata) -> String {
         metadata.isTrashed && !metadata.trashbinFileName.isEmpty ?
             metadata.trashbinFileName : !metadata.fileName.isEmpty ?
             metadata.fileName : "unnamed file"
     }
 
     public var contentType: UTType {
-        if itemIdentifier == .rootContainer || (metadata.contentType.isEmpty && metadata.directory) {
+        Self.contentType(for: metadata)
+    }
+
+    static func contentType(for metadata: SendableItemMetadata) -> UTType {
+        let filename = Self.filename(for: metadata)
+        if metadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue || (metadata.contentType.isEmpty && metadata.directory) {
             return .folder
         } else if metadata.contentType == "httpd/unix-directory", metadata.directory {
             let filenameComponents = filename.components(separatedBy: ".")

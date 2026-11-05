@@ -38,10 +38,14 @@ public extension Item {
         return error
     }
 
+    /// Download the folder at `directoryRemotePath` and its descendants.
+    /// `requestedFolderIsPackage` classifies that folder using the database row read by `beginDownload`.
+    /// Inside packages, stage listed children whose rows are marked `deleted` for folder completion.
     private func fetchDirectoryContents(
         itemIdentifier: NSFileProviderItemIdentifier,
         directoryLocalPath: String,
         directoryRemotePath: String,
+        requestedFolderIsPackage: Bool,
         domain: NSFileProviderDomain?,
         progress: Progress,
         operation: DownloadOperation,
@@ -65,7 +69,7 @@ public extension Item {
 
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
-        var remoteDirectories = [(path: directoryRemotePath, operation: operation, packageContents: isBundleOrPackage)]
+        var remoteDirectories = [(path: directoryRemotePath, operation: operation, packageContents: requestedFolderIsPackage)]
         var downloadedFileOcIds: [String] = []
         while !remoteDirectories.isEmpty {
             try checkFetchCancellation()
@@ -100,7 +104,7 @@ public extension Item {
             let directoryMetadata = metadatas.removeFirst()
             downloadedMetadatas[directoryMetadata.ocId] = directoryMetadata
             if directory.packageContents {
-                try dbManager.restorePackageDownloadMetadatas(metadatas, for: directory.operation)
+                try dbManager.ensurePackageDownloadMembersExist(metadatas, for: directory.operation)
             } else {
                 metadatas = try dbManager.directoryDownloadMetadatas(metadatas)
             }
@@ -114,27 +118,25 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
                 let childOperation = operation.childOperation(for: metadata.ocId)
 
-                guard dbManager.beginDownload(childOperation, listedMetadata: metadata) != nil else {
+                guard dbManager.beginDownload(
+                    childOperation,
+                    listedMetadata: metadata,
+                    allowsDeletedPackageMember: directory.packageContents
+                ) != nil else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 childOperations.append(childOperation)
                 downloadedMetadatas[metadata.ocId] = metadata
                 if metadata.directory {
-                    let childItem = Item(
-                        metadata: metadata,
-                        parentItemIdentifier: NSFileProviderItemIdentifier(directory.operation.ocId),
-                        account: account,
-                        remoteInterface: remoteInterface,
-                        dbManager: dbManager,
-                        displayFileActions: false,
-                        remoteSupportsTrash: false,
-                        log: logger.log
-                    )
                     // Ordinary subfolders inside a package still contain package members.
+                    let childPackageContents = directory.packageContents || Self.isBundleOrPackage(
+                        contentType: Self.contentType(for: metadata),
+                        filename: Self.filename(for: metadata)
+                    )
                     remoteDirectories.append((
                         path: remotePath,
                         operation: childOperation,
-                        packageContents: directory.packageContents || childItem.isBundleOrPackage
+                        packageContents: childPackageContents
                     ))
                     try FileManager.default.createDirectory(
                         at: URL(fileURLWithPath: childLocalPath),
@@ -206,7 +208,6 @@ public extension Item {
             }
         }
 
-        let isDirectory = contentType.conforms(to: .directory)
         // Give each fetch its own destination so cleanup cannot remove another fetch's contents.
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let operation = DownloadOperation(ocId: ocId, cancellation: cancellation, log: logger.log)
@@ -221,6 +222,8 @@ public extension Item {
         }
 
         let serverUrlFileName = updatedMetadata.remotePath()
+        let currentContentType = Self.contentType(for: updatedMetadata)
+        let isDirectory = currentContentType.conforms(to: .directory)
         logger.debug("Fetching item.", [.name: updatedMetadata.fileName, .url: serverUrlFileName])
 
         var childOperations: [DownloadOperation] = []
@@ -268,10 +271,15 @@ public extension Item {
             }
 
             do {
+                let requestedFolderIsPackage = Self.isBundleOrPackage(
+                    contentType: currentContentType,
+                    filename: Self.filename(for: updatedMetadata)
+                )
                 downloadedFileOcIds = try await fetchDirectoryContents(
                     itemIdentifier: itemIdentifier,
                     directoryLocalPath: localPath.path,
                     directoryRemotePath: serverUrlFileName,
+                    requestedFolderIsPackage: requestedFolderIsPackage,
                     domain: domain,
                     progress: progress,
                     operation: operation,

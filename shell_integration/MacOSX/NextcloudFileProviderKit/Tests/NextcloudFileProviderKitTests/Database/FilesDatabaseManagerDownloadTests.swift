@@ -265,14 +265,14 @@ extension DatabaseTestSuites {
                     received.sessionError = ""
                     received.lockToken = nil
 
-                    try manager.restorePackageDownloadMetadatas([received], for: operation)
+                    try manager.ensurePackageDownloadMembersExist([received], for: operation)
 
                     #expect(manager.itemMetadata(ocId: metadata.ocId) == before)
                 }
             }
         }
 
-        @Test func packageDownloadRestorationPreservesDeletedMembersLocalState() throws {
+        @Test func failedPackageMemberDownloadPreservesDeletedMetadata() throws {
             let operation = try makeDirectoryDownloadOperation()
             defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             for directory in [false, true] {
@@ -290,8 +290,7 @@ extension DatabaseTestSuites {
                     metadata.sessionError = "existing-error"
                     metadata.deleted = true
                     manager.addItemMetadata(metadata)
-                    var expected = try #require(manager.itemMetadata(ocId: metadata.ocId))
-                    expected.deleted = false
+                    let expected = try #require(manager.itemMetadata(ocId: metadata.ocId))
                     var received = metadata
                     received.deleted = false
                     received.downloaded = false
@@ -300,7 +299,12 @@ extension DatabaseTestSuites {
                     received.sessionError = ""
                     received.lockToken = nil
 
-                    try manager.restorePackageDownloadMetadatas([received], for: operation)
+                    try manager.ensurePackageDownloadMembersExist([received], for: operation)
+                    let child = operation.childOperation(for: metadata.ocId)
+                    let staged = try #require(manager.beginDownload(child, listedMetadata: received, allowsDeletedPackageMember: true))
+                    defer { _ = try? manager.finishDownload(child, status: .normal, downloaded: false) }
+                    #expect(staged.deleted)
+                    try manager.finishDownload(child, status: .normal, downloaded: false)
 
                     #expect(manager.itemMetadata(ocId: metadata.ocId) == expected)
                 }
@@ -312,7 +316,7 @@ extension DatabaseTestSuites {
             defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
 
-            try manager.restorePackageDownloadMetadatas([metadata], for: operation)
+            try manager.ensurePackageDownloadMembersExist([metadata], for: operation)
 
             #expect(manager.itemMetadata(ocId: metadata.ocId) == metadata)
         }
@@ -339,8 +343,8 @@ extension DatabaseTestSuites {
                 receivedBlocked.status = Status.normal.rawValue
                 receivedBlocked.sessionError = ""
 
-                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([receivedBlocked], for: operation) }
-                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([missing, receivedRestorable, receivedBlocked], for: operation) }
+                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.ensurePackageDownloadMembersExist([receivedBlocked], for: operation) }
+                expectError(NSFileProviderError(.cannotSynchronize)) { try manager.ensurePackageDownloadMembersExist([missing, receivedRestorable, receivedBlocked], for: operation) }
 
                 #expect(manager.itemMetadata(ocId: missing.ocId) == nil)
                 #expect(manager.itemMetadata(ocId: restorable.ocId) == beforeRestorable)
@@ -356,7 +360,7 @@ extension DatabaseTestSuites {
             manager.addItemMetadata(metadata)
             #expect(manager.deleteItemMetadata(ocId: operation.ocId))
 
-            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([metadata], for: operation) }
+            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.ensurePackageDownloadMembersExist([metadata], for: operation) }
 
             #expect(try #require(manager.itemMetadata(ocId: metadata.ocId)).deleted)
         }
@@ -369,7 +373,7 @@ extension DatabaseTestSuites {
             defer { _ = try? manager.finishDownload(newer, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
 
-            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([metadata], for: operation) }
+            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.ensurePackageDownloadMembersExist([metadata], for: operation) }
 
             #expect(manager.itemMetadata(ocId: metadata.ocId) == nil)
         }
@@ -380,7 +384,7 @@ extension DatabaseTestSuites {
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
             operation.cancellation.cancel()
 
-            expectError(CocoaError(.userCancelled)) { try manager.restorePackageDownloadMetadatas([metadata], for: operation) }
+            expectError(CocoaError(.userCancelled)) { try manager.ensurePackageDownloadMembersExist([metadata], for: operation) }
 
             #expect(manager.itemMetadata(ocId: metadata.ocId) == nil)
         }
@@ -397,7 +401,7 @@ extension DatabaseTestSuites {
             metadata.status = Status.normal.rawValue
             manager.addItemMetadata(metadata)
 
-            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.restorePackageDownloadMetadatas([metadata], for: operation) }
+            expectError(NSFileProviderError(.cannotSynchronize)) { try manager.ensurePackageDownloadMembersExist([metadata], for: operation) }
 
             #expect(manager.itemMetadata(ocId: metadata.ocId) == metadata)
         }

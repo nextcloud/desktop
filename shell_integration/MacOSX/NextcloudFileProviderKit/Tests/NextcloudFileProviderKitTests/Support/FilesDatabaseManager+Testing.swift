@@ -109,6 +109,27 @@ extension FilesDatabaseManager {
         try result.get()
     }
 
+    /// Apply a directory rename after the next write commits.
+    func renameDirectoryAfterNextTransactionForTesting(
+        ocId: String,
+        newServerUrl: String,
+        newFileName: String
+    ) async throws {
+        try await writer.writeWithoutTransaction { db in
+            db.afterNextTransaction { db in
+                try? db.inTransaction {
+                    _ = try self.renameDirectoryAndPropagateToChildren(
+                        ocId: ocId,
+                        newServerUrl: newServerUrl,
+                        newFileName: newFileName,
+                        in: db
+                    )
+                    return .commit
+                }
+            }
+        }
+    }
+
     /// Run the handler inside the transaction after a row is marked downloaded.
     func setDownloadCompletionWriteHandlerForTesting(_ handler: (@Sendable () -> Void)?) throws {
         let function = DatabaseFunction("on_download_completion_write", argumentCount: 0) { _ in

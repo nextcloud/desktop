@@ -6,6 +6,10 @@ import Foundation
 import GRDB
 
 extension FilesDatabaseManager {
+    private func canDownloadDeletedPackageMember(_ item: ItemMetadataRecord) -> Bool {
+        item.status == Status.normal.rawValue || item.status == Status.downloadError.rawValue
+    }
+
     /// Use listed server metadata for live children without undoing local deletions.
     func directoryDownloadMetadatas(_ metadatas: [SendableItemMetadata]) throws -> [SendableItemMetadata] {
         try writer.read { db in
@@ -18,31 +22,34 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Restore listed package members while preserving local transfer state.
-    func restorePackageDownloadMetadatas(_ metadatas: [SendableItemMetadata], for operation: DownloadOperation) throws {
+    /// Insert missing package members and check that deleted members can be downloaded.
+    func ensurePackageDownloadMembersExist(_ metadatas: [SendableItemMetadata], for operation: DownloadOperation) throws {
         guard !metadatas.isEmpty else { return }
         try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[operation.ocId]?.operation.identifier == operation.identifier else {
+            guard let activeDownloads = operations[storeIdentity],
+                  let started = activeDownloads[operation.ocId],
+                  started.operation.identifier == operation.identifier
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             try write(durability: .full) { db in
                 try operation.cancellation.checkCancellation()
-                guard let directory = try itemMetadata(ocId: operation.ocId, in: db), !directory.deleted else {
+                // A rename can land after the listing commits. Retry before inserting members at the old path.
+                guard let directory = try directoryMetadata(ocId: operation.ocId, in: db),
+                      directory.deleted == started.wasDeleted,
+                      directory.hasSameRemotePath(as: started.remotePath)
+                else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
                 for metadata in metadatas {
-                    guard var existing = try itemMetadata(ocId: metadata.ocId, in: db) else {
+                    guard let existing = try itemMetadata(ocId: metadata.ocId, in: db) else {
                         try insertItemMetadata(metadata, in: db)
                         continue
                     }
-                    if existing.deleted {
-                        guard existing.status == Status.normal.rawValue || existing.status == Status.downloadError.rawValue,
-                              operations[storeIdentity]?[metadata.ocId] == nil
-                        else {
-                            throw NSFileProviderError(.cannotSynchronize)
-                        }
-                        existing.deleted = false
-                        try existing.upsertRow(db)
+                    if existing.deleted,
+                       activeDownloads[metadata.ocId] != nil || !canDownloadDeletedPackageMember(existing)
+                    {
+                        throw NSFileProviderError(.cannotSynchronize)
                     }
                 }
             }
@@ -51,11 +58,23 @@ extension FilesDatabaseManager {
 
     /// Register `operation` as the item's download owner and mark the item as downloading.
     /// For a folder child, first check `listedMetadata` from the parent listing against the current row.
-    func beginDownload(_ operation: DownloadOperation, listedMetadata: SendableItemMetadata? = nil) -> SendableItemMetadata? {
+    /// A listed package member can be staged while its row is still marked deleted.
+    func beginDownload(
+        _ operation: DownloadOperation,
+        listedMetadata: SendableItemMetadata? = nil,
+        allowsDeletedPackageMember: Bool = false
+    ) -> SendableItemMetadata? {
         let ocId = operation.ocId
         let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
-            let metadata: SendableItemMetadata? = write("Could not start download in database.", [.item: ocId]) { db -> SendableItemMetadata? in
-                guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else { return nil }
+            let metadata = write("Could not start download in database.", [.item: ocId]) { db -> SendableItemMetadata? in
+                guard var item = try itemMetadata(ocId: ocId, in: db) else { return nil }
+                if item.deleted {
+                    guard allowsDeletedPackageMember,
+                          listedMetadata != nil,
+                          operations[storeIdentity]?[ocId] == nil,
+                          canDownloadDeletedPackageMember(item)
+                    else { return nil }
+                }
                 if let listedMetadata {
                     // A sibling's transfer may have given another listing time to update this row.
                     guard item.serverUrl.precomposedStringWithCanonicalMapping == listedMetadata.serverUrl.precomposedStringWithCanonicalMapping else {
@@ -68,15 +87,18 @@ extension FilesDatabaseManager {
                         return nil
                     }
                 }
-                item.status = Status.downloading.rawValue
-                item.downloaded = false
-                item.sessionError = ""
-                try item.upsertRow(db)
+                // A deleted package member is staged in memory until the whole folder succeeds.
+                if !item.deleted {
+                    item.status = Status.downloading.rawValue
+                    item.downloaded = false
+                    item.sessionError = ""
+                    try item.upsertRow(db)
+                }
                 return item.metadata
             } ?? nil
             guard let metadata else { return (nil, nil) }
             let supersededOperation = operations[storeIdentity]?[ocId]?.operation
-            operations[storeIdentity, default: [:]][ocId] = (operation, metadata.etag, metadata.remotePath())
+            operations[storeIdentity, default: [:]][ocId] = (operation, metadata.etag, metadata.remotePath(), metadata.deleted)
             return (metadata, supersededOperation)
         }
         // Cancellation resumes the old fetch, which may need the ownership lock for cleanup.
@@ -89,11 +111,15 @@ extension FilesDatabaseManager {
     /// Check a staged download without publishing or releasing its ownership.
     func validateDownload(_ operation: DownloadOperation) throws {
         try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[operation.ocId]?.operation.identifier == operation.identifier else {
+            guard let started = operations[storeIdentity]?[operation.ocId],
+                  started.operation.identifier == operation.identifier
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             try writer.read { db in
-                guard let item = try itemMetadata(ocId: operation.ocId, in: db), !item.deleted else {
+                guard let item = try itemMetadata(ocId: operation.ocId, in: db),
+                      item.deleted == started.wasDeleted
+                else {
                     throw NSFileProviderError(.cannotSynchronize)
                 }
             }
@@ -120,7 +146,10 @@ extension FilesDatabaseManager {
                     // Cancellation can arrive while this transaction waits for the writer.
                     try operation.cancellation.checkCancellation()
                     let items = try downloads.map { download in
-                        guard let item = try itemMetadata(ocId: download.ocId, in: db), !item.deleted else {
+                        guard let started = activeDownloads[download.ocId],
+                              let item = try itemMetadata(ocId: download.ocId, in: db),
+                              item.deleted == started.wasDeleted
+                        else {
                             if download.identifier == operation.identifier {
                                 throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(operation.ocId))
                             }
@@ -128,7 +157,7 @@ extension FilesDatabaseManager {
                         }
                         guard let listed = metadatas[download.ocId],
                               listed.account == item.account,
-                              let started = activeDownloads[download.ocId]
+                              !started.wasDeleted || canDownloadDeletedPackageMember(item)
                         else {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
@@ -156,6 +185,7 @@ extension FilesDatabaseManager {
                         metadata.serverUrl = listed.serverUrl
                         metadata.path = listed.path
                         metadata.status = Status.normal.rawValue
+                        metadata.deleted = false
                         metadata.downloaded = true
                         metadata.uploaded = true
                         metadata.sessionError = ""
@@ -208,7 +238,9 @@ extension FilesDatabaseManager {
         let ocId = operation.ocId
         let statusValue = status.rawValue
         return try Self.downloadOperations.withLock { operations in
-            guard operations[storeIdentity]?[ocId]?.operation.identifier == operation.identifier else {
+            guard let started = operations[storeIdentity]?[ocId],
+                  started.operation.identifier == operation.identifier
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             // Keep ownership if publishing the download fails so the caller can clean up.
@@ -227,8 +259,15 @@ extension FilesDatabaseManager {
                     if downloaded {
                         try operation.cancellation.checkCancellation()
                     }
-                    guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else {
+                    guard var item = try itemMetadata(ocId: ocId, in: db),
+                          item.deleted == started.wasDeleted
+                    else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
+                    }
+                    if started.wasDeleted {
+                        // Only folder completion can publish a deleted package member.
+                        guard !downloaded else { throw NSFileProviderError(.cannotSynchronize) }
+                        return item.metadata
                     }
                     // A folder listing can update the ETag while the download is in flight.
                     if let expectedETag, item.etag != expectedETag {

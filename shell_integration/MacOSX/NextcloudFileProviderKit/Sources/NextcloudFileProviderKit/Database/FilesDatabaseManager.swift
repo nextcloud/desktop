@@ -66,7 +66,8 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    typealias ActiveDownload = (operation: DownloadOperation, etag: String, remotePath: String)
+    /// Records which package members must stay deleted until the folder is published.
+    typealias ActiveDownload = (operation: DownloadOperation, etag: String, remotePath: String, wasDeleted: Bool)
 
     let logger: FileProviderLogger
     let account: Account
@@ -589,7 +590,8 @@ public final class FilesDatabaseManager: Sendable {
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
-        keepExistingDownloadState: Bool
+        keepExistingDownloadState: Bool,
+        preserveDeletedTarget: Bool = false
     ) -> ChangeSet? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
@@ -663,6 +665,8 @@ public final class FilesDatabaseManager: Sendable {
                 }
 
                 if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
+                    // A folder fetch publishes a deleted directory only after its downloads succeed.
+                    let canUpdateTarget = !preserveDeletedTarget || !existing.deleted
                     if readTargetMetadata.etag == existing.etag {
                         readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
                     }
@@ -670,11 +674,12 @@ public final class FilesDatabaseManager: Sendable {
                     // `visitedDirectory` is local-only, so it takes no part in the remote-state
                     // comparison and is recorded separately from `metadatasToUpdate`, which is also
                     // the change set handed to the framework.
-                    if readTargetMetadata.directory, !existing.visitedDirectory {
+                    if canUpdateTarget, readTargetMetadata.directory, !existing.visitedDirectory {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
-                    if existing.status == Status.normal.rawValue,
+                    if canUpdateTarget,
+                       existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")

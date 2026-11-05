@@ -90,6 +90,7 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         files: [NKFile],
         pageIndex: Int?,
+        preserveDeletedTarget: Bool,
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -155,7 +156,8 @@ extension Enumerator {
                 account: account.ncKitAccount,
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
-                keepExistingDownloadState: true
+                keepExistingDownloadState: true,
+                preserveDeletedTarget: preserveDeletedTarget
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
@@ -383,6 +385,7 @@ extension Enumerator {
                 dbManager: dbManager,
                 files: files,
                 pageIndex: pageSettings?.index,
+                preserveDeletedTarget: expectedDirectoryOcId != nil,
                 log: logger.log
             )
 
