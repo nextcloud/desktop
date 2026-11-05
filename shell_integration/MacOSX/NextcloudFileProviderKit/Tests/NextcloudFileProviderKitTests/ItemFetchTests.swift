@@ -1856,6 +1856,38 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.downloaded, true)
     }
 
+    func testFetchReturnsRetryableErrorWhenDownloadCompletionWriteFails() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let dbManager = Self.dbManager
+        let ocId = remoteItem.identifier
+        try dbManager.setDownloadCompletionWriteFailureForTesting(true, ocId: ocId)
+        defer {
+            try? dbManager.setDownloadCompletionWriteFailureForTesting(false, ocId: ocId)
+            removeDownloadedContents(remoteInterface: remoteInterface)
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let failedDestination = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: failedDestination.path))
+        let failedMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: ocId))
+        XCTAssertEqual(failedMetadata.status, Status.downloadError.rawValue)
+        XCTAssertFalse(failedMetadata.downloaded)
+        XCTAssertTrue(dbManager.pendingMaterializations.awaitingConfirmation(among: [item.itemIdentifier]).isEmpty)
+
+        try dbManager.setDownloadCompletionWriteFailureForTesting(false, ocId: ocId)
+        let (retryURL, retryItem, retryError) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(retryError)
+        XCTAssertTrue(try XCTUnwrap(retryItem).isDownloaded)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(retryURL)), remoteItem.data)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: ocId)?.status, Status.normal.rawValue)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: ocId)?.downloaded, true)
+    }
+
     func testSuccessfulFetchPreservesConcurrentMetadataChanges() async throws {
         for directory in [false, true] {
             let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)

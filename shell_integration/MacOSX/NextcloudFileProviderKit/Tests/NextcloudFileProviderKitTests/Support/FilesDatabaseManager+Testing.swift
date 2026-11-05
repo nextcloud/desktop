@@ -89,6 +89,24 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Reject publishing a completed download while allowing its start and cleanup writes.
+    func setDownloadCompletionWriteFailureForTesting(_ enabled: Bool, ocId: String) throws {
+        try writer.write { db in
+            if enabled {
+                let identifier = ocId.replacingOccurrences(of: "'", with: "''")
+                try db.execute(sql: """
+                CREATE TRIGGER fail_download_completion BEFORE UPDATE ON itemMetadata
+                WHEN NEW.ocId = '\(identifier)' AND NEW.downloaded = 1
+                BEGIN
+                    SELECT RAISE(ABORT, 'Injected download completion write failure');
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS fail_download_completion")
+            }
+        }
+    }
+
     ///
     /// Recreate the schema after ``breakTableForTesting(_:)`` on a manager shared by several tests.
     ///

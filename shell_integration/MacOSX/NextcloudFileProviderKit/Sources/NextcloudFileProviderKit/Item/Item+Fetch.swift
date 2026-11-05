@@ -365,7 +365,15 @@ public extension Item {
             }
         } catch {
             fetchErrorDescription = error.localizedDescription
-            return (nil, nil, operation.error(for: error))
+            // File Provider accepts only Cocoa and File Provider errors.
+            // Report a metadata write failure as a retryable synchronization error.
+            let errorDomain = (error as NSError).domain
+            let completionError: Error = if errorDomain == NSCocoaErrorDomain || errorDomain == NSFileProviderErrorDomain {
+                error
+            } else {
+                NSFileProviderError(.cannotSynchronize)
+            }
+            return (nil, nil, operation.error(for: completionError))
         }
 
         // Refresh ancestor actions after the successful download state has been saved (#10085).
