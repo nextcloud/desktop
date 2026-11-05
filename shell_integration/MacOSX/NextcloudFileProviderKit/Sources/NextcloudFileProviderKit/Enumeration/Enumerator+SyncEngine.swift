@@ -90,6 +90,7 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         files: [NKFile],
         pageIndex: Int?,
+        preserveDeletedTarget: Bool,
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -142,6 +143,7 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
+        guard !Task.isCancelled else { return (nil, nil, .cancelled) }
         let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
@@ -154,7 +156,8 @@ extension Enumerator {
                 account: account.ncKitAccount,
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
-                keepExistingDownloadState: true
+                keepExistingDownloadState: true,
+                preserveDeletedTarget: preserveDeletedTarget
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
@@ -200,9 +203,13 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
+        expectedDirectoryOcId: String? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -241,6 +248,7 @@ extension Enumerator {
             account: account,
             options: options,
             taskHandler: { task in
+                taskHandler(task)
                 if let domain, let enumeratedItemIdentifier {
                     NSFileProviderManager(for: domain)?.register(
                         task,
@@ -268,6 +276,16 @@ extension Enumerator {
             return RemoteReadResult(error: error)
         }
 
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        if let expectedDirectoryOcId {
+            // A path may now refer to a different item from the one this download owns.
+            let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
+            guard let target, target.directory, target.ocId == expectedDirectoryOcId, target.account == account.ncKitAccount else {
+                logger.error("Read directory no longer matches the download's item.", [.item: expectedDirectoryOcId, .url: serverUrl])
+                return RemoteReadResult(error: .invalidData)
+            }
+        }
+
         // This will be nil if the page settings were also nil, as the server will not give us the
         // pagination-related headers.
         let nextPage = EnumeratorPageResponse(nkResponseData: data, index: (pageSettings?.index ?? 0) + 1, log: log)
@@ -277,6 +295,18 @@ extension Enumerator {
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
             return RemoteReadResult(metadatas: [], nextPage: nextPage)
+        }
+
+        func finishTargetRead(_ metadata: SendableItemMetadata, changes: ChangeSet) async -> RemoteReadResult {
+            do {
+                try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
+            } catch is CancellationError {
+                return RemoteReadResult(error: .cancelled)
+            } catch {
+                // A single-item lookup can still return the server result if caching fails.
+                logger.error("Could not persist remote item metadata.", [.item: metadata.ocId, .error: error])
+            }
+            return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
@@ -291,7 +321,7 @@ extension Enumerator {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
                 let received = receivedFile.toItemMetadata()
 
-                // Read, merge and write in one hop off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+                // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
                 let (metadata, newItems, updatedItems) = await dbManager.perform {
                     dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
                     var metadata = received
@@ -313,23 +343,17 @@ extension Enumerator {
                         metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                     }
 
-                    dbManager.addItemMetadata(metadata)
-
                     return (metadata, newItems, updatedItems)
                 }
 
-                return RemoteReadResult(
-                    metadatas: [metadata],
-                    changes: ChangeSet(created: newItems, updated: updatedItems),
-                    nextPage: nextPage
-                )
+                return await finishTargetRead(metadata, changes: ChangeSet(created: newItems, updated: updatedItems))
             }
         }
 
         if depth == .target {
             let received = receivedFile.toItemMetadata()
 
-            // Read, merge and write in one hop off the cooperative pool: see
+            // Read and merge off the cooperative pool: see
             // `FilesDatabaseManager.perform(_:)`.
             let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
                 dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
@@ -351,16 +375,10 @@ extension Enumerator {
                     metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                 }
 
-                dbManager.addItemMetadata(metadata)
-
                 return (metadata, newMetadatas, updatedMetadatas)
             }
 
-            return RemoteReadResult(
-                metadatas: [metadata],
-                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
-                nextPage: nextPage
-            )
+            return await finishTargetRead(metadata, changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas))
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
@@ -368,6 +386,7 @@ extension Enumerator {
                 dbManager: dbManager,
                 files: files,
                 pageIndex: pageSettings?.index,
+                preserveDeletedTarget: expectedDirectoryOcId != nil,
                 log: logger.log
             )
 

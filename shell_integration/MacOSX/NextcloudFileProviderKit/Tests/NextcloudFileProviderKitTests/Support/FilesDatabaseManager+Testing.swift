@@ -89,17 +89,126 @@ extension FilesDatabaseManager {
         }
     }
 
+    /// Park the writer on a dispatch queue until the test releases it, with a timeout as a backstop.
+    func holdWriterForTesting(until release: DispatchSemaphore) async throws {
+        let (entered, continuation) = AsyncStream<Result<Void, any Error>>.makeStream()
+        DispatchQueue.global().async {
+            defer { continuation.finish() }
+            do {
+                try self.writer.writeWithoutTransaction { _ in
+                    continuation.yield(.success(()))
+                    _ = release.wait(timeout: .now() + .seconds(Int(asyncTestTimeout.components.seconds) * 2))
+                }
+            } catch {
+                continuation.yield(.failure(error))
+            }
+        }
+        guard let result = try await nextTestValue(from: entered) else {
+            throw URLError(.badServerResponse)
+        }
+        try result.get()
+    }
+
+    /// Apply a directory rename after the next write commits.
+    func renameDirectoryAfterNextTransactionForTesting(
+        ocId: String,
+        newServerUrl: String,
+        newFileName: String
+    ) async throws {
+        try await writer.writeWithoutTransaction { db in
+            db.afterNextTransaction { db in
+                try? db.inTransaction {
+                    _ = try self.renameDirectoryAndPropagateToChildren(
+                        ocId: ocId,
+                        newServerUrl: newServerUrl,
+                        newFileName: newFileName,
+                        in: db
+                    )
+                    return .commit
+                }
+            }
+        }
+    }
+
+    /// Run the handler inside the transaction after a row is marked downloaded.
+    func setDownloadCompletionWriteHandlerForTesting(_ handler: (@Sendable () -> Void)?) throws {
+        let function = DatabaseFunction("on_download_completion_write", argumentCount: 0) { _ in
+            handler?()
+            return nil
+        }
+        try writer.write { db in
+            if handler != nil {
+                db.add(function: function)
+                try db.execute(sql: """
+                CREATE TEMP TRIGGER on_download_completion_write AFTER UPDATE ON itemMetadata
+                WHEN NEW.downloaded = 1
+                BEGIN
+                    SELECT on_download_completion_write();
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS on_download_completion_write")
+                db.remove(function: function)
+            }
+        }
+    }
+
+    /// Run the handler after inserting a specific item, before the transaction commits.
+    func setItemMetadataInsertionHandlerForTesting(ocId: String, _ handler: (@Sendable () -> Void)?) throws {
+        let function = DatabaseFunction("on_item_metadata_insert", argumentCount: 0) { _ in
+            handler?()
+            return nil
+        }
+        try writer.write { db in
+            if handler != nil {
+                let identifier = ocId.replacingOccurrences(of: "'", with: "''")
+                db.add(function: function)
+                try db.execute(sql: """
+                CREATE TEMP TRIGGER on_item_metadata_insert AFTER INSERT ON itemMetadata
+                WHEN NEW.ocId = '\(identifier)'
+                BEGIN
+                    SELECT on_item_metadata_insert();
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS on_item_metadata_insert")
+                db.remove(function: function)
+            }
+        }
+    }
+
+    /// Reject publishing a completed download while allowing its start and cleanup writes.
+    func setDownloadCompletionWriteFailureForTesting(_ enabled: Bool, ocId: String) throws {
+        try writer.write { db in
+            if enabled {
+                let identifier = ocId.replacingOccurrences(of: "'", with: "''")
+                try db.execute(sql: """
+                CREATE TRIGGER fail_download_completion BEFORE UPDATE ON itemMetadata
+                WHEN NEW.ocId = '\(identifier)' AND NEW.downloaded = 1
+                BEGIN
+                    SELECT RAISE(ABORT, 'Injected download completion write failure');
+                END
+                """)
+            } else {
+                try db.execute(sql: "DROP TRIGGER IF EXISTS fail_download_completion")
+            }
+        }
+    }
+
     ///
     /// Recreate the schema after ``breakTableForTesting(_:)`` on a manager shared by several tests.
     ///
     func recreateTablesForTesting() {
         try? writer.write { db in
-            for table in DatabaseSchema.tableNames where try db.tableExists(table) {
-                try db.execute(sql: "DROP TABLE \(table)")
+            for table in DatabaseSchema.tableNames {
+                try db.execute(sql: "DROP TABLE IF EXISTS \(table)")
             }
             try db.execute(sql: "DELETE FROM grdb_migrations")
         }
         try? DatabaseSchema.migrator.migrate(writer)
+        try? writer.write { db in
+            try StoreIdentityRecord(identity: storeIdentity).insert(db)
+        }
     }
 
     ///
@@ -110,11 +219,11 @@ extension FilesDatabaseManager {
     }
 
     ///
-    /// Remove every row of every table.
+    /// Clear domain data while retaining the database file's identity.
     ///
     func removeAllRowsForTesting() throws {
         try writer.write { db in
-            for table in DatabaseSchema.tableNames {
+            for table in DatabaseSchema.tableNames where table != StoreIdentityRecord.databaseTableName {
                 try db.execute(sql: "DELETE FROM \(table)")
             }
         }

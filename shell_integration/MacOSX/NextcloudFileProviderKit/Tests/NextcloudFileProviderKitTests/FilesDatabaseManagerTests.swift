@@ -2269,18 +2269,21 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(stored?.syncTime, later)
     }
 
-    func testRowThatIsNotNormalIsResetEvenWhenRemoteStateIsUnchanged() {
+    func testListingKeepsFailedUploadMetadata() throws {
         let ocId = "upload-error-\(name)"
         var failedUpload = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
         failedUpload.status = Status.uploadError.rawValue
+        failedUpload.sessionError = "Upload cancelled"
+        failedUpload.chunkUploadId = "pending-chunk-upload"
         Self.dbManager.addItemMetadata(failedUpload)
+        let pending = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: ocId))
 
-        let later = Date(timeIntervalSince1970: 2_000_000)
-        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v1", syncTime: later))
+        var rescanned = seedRow(ocId: ocId, etag: "v2", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        rescanned.uploaded = true
+        let reported = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
 
-        let stored = Self.dbManager.itemMetadata(ocId: ocId)
-        XCTAssertEqual(stored?.status, Status.normal.rawValue, "A row left at uploadError must be reset to normal by the listing.")
-        XCTAssertEqual(stored?.syncTime, later)
+        XCTAssertEqual(reported, pending)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId), pending)
     }
 
     /// `visitedDirectory` is local-only and so not part of `isInSameDatabaseStoreableRemoteState`,
