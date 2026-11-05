@@ -381,8 +381,7 @@ public extension Item {
                     operation,
                     status: .normal,
                     downloaded: true,
-                    contentType: detectedContentType,
-                    expectedETag: updatedMetadata.etag
+                    contentType: detectedContentType
                 )
             }
         } catch {

@@ -235,8 +235,7 @@ extension FilesDatabaseManager {
         status: Status,
         downloaded: Bool,
         error: String? = nil,
-        contentType: String? = nil,
-        expectedETag: String? = nil
+        contentType: String? = nil
     ) throws -> SendableItemMetadata {
         let ocId = operation.ocId
         let statusValue = status.rawValue
@@ -272,8 +271,11 @@ extension FilesDatabaseManager {
                         guard !downloaded else { throw NSFileProviderError(.cannotSynchronize) }
                         return item.metadata
                     }
-                    // A folder listing can update the ETag while the download is in flight.
-                    if let expectedETag, item.etag != expectedETag {
+                    // A listing can report a newer version while we download, leaving the bytes stale.
+                    // A move can leave the fetch with the old parent identifier even if the ETag matches.
+                    if downloaded,
+                       item.etag != started.etag || !item.hasSameRemotePath(as: started.remotePath)
+                    {
                         throw NSFileProviderError(.cannotSynchronize)
                     }
                     item.status = statusValue

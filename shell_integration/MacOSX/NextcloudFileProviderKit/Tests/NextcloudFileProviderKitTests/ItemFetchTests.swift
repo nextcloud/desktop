@@ -2007,6 +2007,66 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.downloaded, true)
     }
 
+    func testFetchRetriesAfterFileMovesWithoutChangingETag() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let destination = makeDirectoryChild(of: rootItem)
+        let dbManager = Self.dbManager
+        let ocId = remoteItem.identifier
+        let etag = remoteItem.versionIdentifier
+        let oldPath = remoteItem.remotePath
+        let newName = "moved.txt"
+        let parentPath = destination.remotePath
+        let newPath = parentPath + "/" + newName
+        let contents = try XCTUnwrap(remoteItem.data)
+
+        remoteInterface.downloadCompletionHandler = {
+            // Another client moves the file after the GET writes its bytes.
+            let move = await remoteInterface.move(
+                remotePathSource: oldPath,
+                remotePathDestination: newPath,
+                account: Self.account
+            )
+            XCTAssertEqual(move.error, .success)
+            let listing = await Enumerator.readServerUrl(
+                parentPath,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                log: FileProviderLogMock()
+            )
+            XCTAssertNil(listing.error)
+        }
+        defer {
+            remoteInterface.downloadCompletionHandler = nil
+            removeDownloadedContents(remoteInterface: remoteInterface)
+        }
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        let oldDestination = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+        defer { try? FileManager.default.removeItem(at: oldDestination) }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: oldDestination.path))
+        let moved = try XCTUnwrap(dbManager.itemMetadata(ocId: ocId))
+        XCTAssertEqual(moved.remotePath(), newPath)
+        XCTAssertEqual(moved.etag, etag)
+        XCTAssertFalse(moved.downloaded)
+        XCTAssertFalse(moved.isDownload)
+
+        remoteInterface.downloadCompletionHandler = nil
+        let (retryURL, retryItem, retryError) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(retryError)
+        let completed = try XCTUnwrap(retryItem)
+        XCTAssertEqual(completed.itemIdentifier, item.itemIdentifier)
+        XCTAssertEqual(completed.parentItemIdentifier.rawValue, destination.identifier)
+        XCTAssertEqual(completed.filename, newName)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(retryURL)), contents)
+        XCTAssertTrue(completed.isDownloaded)
+    }
+
     func testFetchReturnsRetryableErrorWhenDownloadCompletionWriteFails() async throws {
         let (item, remoteInterface, remoteItem) = makeFetchItem()
         let dbManager = Self.dbManager
