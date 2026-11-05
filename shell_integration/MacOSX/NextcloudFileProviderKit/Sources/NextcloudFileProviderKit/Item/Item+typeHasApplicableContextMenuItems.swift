@@ -1,8 +1,6 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
-import Foundation
-
 extension Item {
     ///
     /// Convenience wrapper for ``getContextMenuItemTypeFilters(account:remoteInterface:)`` and ``typeHasApplicableContextMenuItems(filters:candidate:)``.
@@ -14,11 +12,7 @@ extension Item {
     ///
     /// - Returns: `true`, if the candidate MIME type is covered by the list of filters provided, otherwise `false`.
     ///
-    static func typeHasApplicableContextMenuItems(
-        account: Account,
-        remoteInterface: RemoteInterface,
-        candidate: String
-    ) async -> Bool {
+    static func typeHasApplicableContextMenuItems(account: Account, remoteInterface: RemoteInterface, candidate: String) async -> Bool {
         let filters = await getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
         return typeHasApplicableContextMenuItems(filters: filters, candidate: candidate)
     }

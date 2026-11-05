@@ -528,9 +528,7 @@ public final class FilesDatabaseManager: Sendable {
                     updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
                 }
 
-                if existingMetadata.status == Status.normal.rawValue,
-                   !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
-                {
+                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
