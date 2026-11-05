@@ -1708,6 +1708,79 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testFetchRejectsOlderBytesAfterPaginatedEnumerationUpdatesVersion() async throws {
+        let (item, remoteInterface, remoteItem) = makeFetchItem()
+        let dbManager = Self.dbManager
+        let oldContents = try XCTUnwrap(remoteItem.data)
+        let oldVersion = remoteItem.versionIdentifier
+        let newContents = Data("Updated server contents".utf8)
+        let newVersion = "new-server-version"
+        let (started, startedContinuation) = AsyncStream<Void>.makeStream()
+        let (release, releaseContinuation) = AsyncStream<Void>.makeStream()
+        remoteInterface.downloadCompletionHandler = {
+            startedContinuation.yield(())
+            do {
+                _ = try await nextTestValue(from: release)
+            } catch is CancellationError {
+                // The test can stop the suspended fetch while unwinding.
+            } catch {
+                XCTFail("Suspended download was not released: \(error)")
+            }
+        }
+        let task = Task { await item.fetchContents(dbManager: dbManager) }
+        defer {
+            startedContinuation.finish()
+            releaseContinuation.finish()
+            task.cancel()
+            remoteInterface.downloadCompletionHandler = nil
+            removeDownloadedContents(remoteInterface: remoteInterface)
+        }
+        guard try await nextTestValue(from: started) != nil else {
+            throw URLError(.badServerResponse)
+        }
+        let oldDestination = try XCTUnwrap(remoteInterface.downloadDestinationURL)
+        defer { try? FileManager.default.removeItem(at: oldDestination) }
+        XCTAssertEqual(try Data(contentsOf: oldDestination), oldContents)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.etag, oldVersion)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.status, Status.downloading.rawValue)
+
+        remoteItem.data = newContents
+        remoteItem.versionIdentifier = newVersion
+        remoteInterface.pagination = true
+        let listing = await Enumerator.readServerUrl(
+            Self.account.davFilesUrl,
+            pageSettings: (page: nil, index: 0, size: 5),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            log: FileProviderLogMock()
+        )
+        XCTAssertNil(listing.error)
+        XCTAssertEqual(listing.metadatas?.first { $0.ocId == remoteItem.identifier }?.etag, newVersion)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.etag, newVersion)
+
+        releaseContinuation.finish()
+        let (url, fetchedItem, error) = try await testTaskValue(of: task)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: oldDestination.path))
+        let rejectedMetadata = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteItem.identifier))
+        XCTAssertEqual(rejectedMetadata.etag, newVersion)
+        XCTAssertFalse(rejectedMetadata.downloaded)
+        XCTAssertEqual(rejectedMetadata.status, Status.downloadError.rawValue)
+
+        remoteInterface.downloadCompletionHandler = nil
+        let (retryURL, retryItem, retryError) = await item.fetchContents(dbManager: dbManager)
+
+        XCTAssertNil(retryError)
+        XCTAssertEqual(try Data(contentsOf: XCTUnwrap(retryURL)), newContents)
+        XCTAssertEqual(try XCTUnwrap(retryItem).itemVersion.contentVersion, Data(newVersion.utf8))
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.etag, newVersion)
+        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteItem.identifier)?.downloaded, true)
+    }
+
     func testSuccessfulFetchPreservesConcurrentMetadataChanges() async throws {
         for directory in [false, true] {
             let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)

@@ -355,7 +355,13 @@ public extension Item {
                 updatedMetadata = try dbManager.finishDirectoryDownload(operation, children: childOperations, metadatas: downloadedMetadatas)
                 progress.completedUnitCount += 1
             } else {
-                updatedMetadata = try dbManager.finishDownload(operation, status: .normal, downloaded: true, contentType: detectedContentType)
+                updatedMetadata = try dbManager.finishDownload(
+                    operation,
+                    status: .normal,
+                    downloaded: true,
+                    contentType: detectedContentType,
+                    expectedETag: updatedMetadata.etag
+                )
             }
         } catch {
             fetchErrorDescription = error.localizedDescription

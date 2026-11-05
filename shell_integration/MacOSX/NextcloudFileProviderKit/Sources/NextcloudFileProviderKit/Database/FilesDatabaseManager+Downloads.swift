@@ -164,7 +164,8 @@ extension FilesDatabaseManager {
         status: Status,
         downloaded: Bool,
         error: String? = nil,
-        contentType: String? = nil
+        contentType: String? = nil,
+        expectedETag: String? = nil
     ) throws -> SendableItemMetadata {
         let ocId = operation.ocId
         let statusValue = status.rawValue
@@ -172,16 +173,24 @@ extension FilesDatabaseManager {
             guard operations[storeIdentity]?[ocId]?.identifier == operation.identifier else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
+            // Keep ownership if publishing the download fails so the caller can clean up.
+            var releaseOwnership = !downloaded
             defer {
-                operations[storeIdentity]?.removeValue(forKey: ocId)
-                if operations[storeIdentity]?.isEmpty == true {
-                    operations.removeValue(forKey: storeIdentity)
+                if releaseOwnership {
+                    operations[storeIdentity]?.removeValue(forKey: ocId)
+                    if operations[storeIdentity]?.isEmpty == true {
+                        operations.removeValue(forKey: storeIdentity)
+                    }
                 }
             }
             do {
-                return try write(durability: .full) { db in
+                let metadata = try write(durability: .full) { db in
                     guard var item = try itemMetadata(ocId: ocId, in: db), !item.deleted else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
+                    }
+                    // A folder listing can update the ETag while the download is in flight.
+                    if let expectedETag, item.etag != expectedETag {
+                        throw NSFileProviderError(.cannotSynchronize)
                     }
                     item.status = statusValue
                     item.downloaded = downloaded
@@ -198,6 +207,8 @@ extension FilesDatabaseManager {
                     }
                     return item.metadata
                 }
+                releaseOwnership = true
+                return metadata
             } catch {
                 logger.error("Could not finish download in database.", [.item: ocId, .error: error])
                 throw error
