@@ -1069,9 +1069,9 @@ public final class FilesDatabaseManager: Sendable {
         remoteInterface: RemoteInterface,
         account: Account,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
-        isCancelled: @Sendable @escaping () -> Bool = { false }
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled }
     ) async -> NSFileProviderItemIdentifier? {
-        guard !Task.isCancelled, !isCancelled() else { return nil }
+        guard !isCancelled() else { return nil }
         if let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) {
             return parentItemIdentifier
         }
@@ -1087,7 +1087,7 @@ public final class FilesDatabaseManager: Sendable {
             log: logger.log
         )
 
-        guard !Task.isCancelled, !isCancelled() else { return nil }
+        guard !isCancelled() else { return nil }
 
         guard readResult.error == nil, let parentMetadata = readResult.metadatas?.first else {
             logger.error("Could not retrieve parent item identifier remotely.", [

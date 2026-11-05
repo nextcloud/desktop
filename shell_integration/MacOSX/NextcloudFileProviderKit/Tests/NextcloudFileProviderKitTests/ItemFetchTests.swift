@@ -2671,6 +2671,28 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
+    func testAlreadyCancelledTaskSkipsParentLookup() async throws {
+        let (item, remoteInterface, directory) = makeNestedFetchItem()
+        let dbManager = Self.dbManager
+        let metadata = item.metadata
+        let account = Self.account
+        let lookup = Task<Bool, Never> { @Sendable in
+            withUnsafeCurrentTask { $0?.cancel() }
+            let parent = await dbManager.parentItemIdentifierWithRemoteFallback(
+                fromMetadata: metadata,
+                remoteInterface: remoteInterface,
+                account: account
+            )
+            return parent == nil
+        }
+
+        let parentWasSkipped = try await testTaskValue(of: lookup)
+
+        XCTAssertTrue(parentWasSkipped)
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
+        XCTAssertNil(dbManager.itemMetadata(ocId: directory.identifier))
+    }
+
     func testCancelledParentLookupLeavesMetadataUnchanged() async throws {
         for cancelDuringWrite in [false, true] {
             let (item, remoteInterface, directory) = makeNestedFetchItem()

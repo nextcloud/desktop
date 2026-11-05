@@ -206,10 +206,10 @@ extension Enumerator {
         expectedDirectoryOcId: String? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
-        isCancelled: @Sendable @escaping () -> Bool = { false },
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
-        guard !Task.isCancelled, !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -276,7 +276,7 @@ extension Enumerator {
             return RemoteReadResult(error: error)
         }
 
-        guard !Task.isCancelled, !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
             let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
