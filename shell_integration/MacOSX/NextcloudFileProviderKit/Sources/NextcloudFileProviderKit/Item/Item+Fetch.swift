@@ -54,6 +54,15 @@ public extension Item {
             }
         }
 
+        func fetchError(_ error: NKError, readingRoot: Bool = false) -> Error {
+            // A missing descendant does not mean the folder requested by File Provider is gone.
+            if error.isNotFoundError, !readingRoot {
+                return NSFileProviderError(.cannotSynchronize)
+            }
+            return error.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier)
+                ?? NSFileProviderError(.cannotSynchronize)
+        }
+
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
         var remoteDirectories = [(path: directoryRemotePath, operation: operation, packageContents: isBundleOrPackage)]
@@ -70,6 +79,7 @@ public extension Item {
                 dbManager: dbManager,
                 domain: domain,
                 enumeratedItemIdentifier: itemIdentifier,
+                expectedDirectoryOcId: directory.operation.ocId,
                 taskHandler: { operation.cancellation.register(task: $0) },
                 log: logger.log
             )
@@ -78,9 +88,7 @@ public extension Item {
             if let readError = readResult.error, readError != .success {
                 logger.error("Could not enumerate directory contents.", [.name: metadata.fileName, .url: remoteDirectoryPath, .error: readError])
 
-                throw readError.fileProviderError(
-                    handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-                ) ?? NSFileProviderError(.cannotSynchronize)
+                throw fetchError(readError, readingRoot: directory.operation.identifier == operation.identifier)
             }
 
             guard var metadatas = readResult.metadatas, !metadatas.isEmpty else {
@@ -154,9 +162,7 @@ public extension Item {
                             downloaded: false,
                             error: cancelled ? nil : error.errorDescription
                         )
-                        throw operation.error(for: error.fileProviderError(
-                            handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
-                        ) ?? NSFileProviderError(.cannotSynchronize))
+                        throw operation.error(for: fetchError(error))
                     }
                     try dbManager.validateDownload(childOperation)
                     downloadedFileOcIds.append(metadata.ocId)
@@ -200,10 +206,6 @@ public extension Item {
             }
         }
 
-        let serverUrlFileName = metadata.remotePath()
-
-        logger.debug("Fetching item.", [.name: metadata.fileName, .url: serverUrlFileName])
-
         let isDirectory = contentType.conforms(to: .directory)
         // Give each fetch its own destination so cleanup cannot remove another fetch's contents.
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -217,6 +219,9 @@ public extension Item {
                 NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
             )
         }
+
+        let serverUrlFileName = updatedMetadata.remotePath()
+        logger.debug("Fetching item.", [.name: updatedMetadata.fileName, .url: serverUrlFileName])
 
         var childOperations: [DownloadOperation] = []
         var downloadedMetadatas: [String: SendableItemMetadata] = [:]
@@ -320,7 +325,7 @@ public extension Item {
         }
 
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
-            fromMetadata: metadata,
+            fromMetadata: updatedMetadata,
             remoteInterface: remoteInterface,
             account: account,
             taskHandler: { cancellation.register(task: $0) }

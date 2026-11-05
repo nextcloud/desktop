@@ -1296,6 +1296,38 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testFetchUsesCurrentPathWhenItemSnapshotPredatesRename() async throws {
+        for directory in [false, true] {
+            let (item, remoteInterface, remoteItem) = makeFetchItem(directory: directory)
+            remoteItem.name = "renamed-" + remoteItem.name
+            remoteItem.remotePath = Self.account.davFilesUrl + "/" + remoteItem.name
+            for child in remoteItem.children {
+                child.remotePath = remoteItem.remotePath + "/" + child.name
+            }
+            Self.dbManager.addItemMetadata(remoteItem.toItemMetadata(account: Self.account))
+            defer {
+                if directory {
+                    removeDownloadedDirectory(remoteInterface: remoteInterface)
+                } else {
+                    removeDownloadedContents(remoteInterface: remoteInterface)
+                }
+            }
+
+            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+            XCTAssertNil(error)
+            XCTAssertEqual(try XCTUnwrap(fetchedItem).filename, remoteItem.name)
+            let destination = try XCTUnwrap(url)
+            if directory {
+                for child in remoteItem.children {
+                    XCTAssertEqual(try Data(contentsOf: destination.appendingPathComponent(child.name)), child.data)
+                }
+            } else {
+                XCTAssertEqual(try Data(contentsOf: destination), remoteItem.data)
+            }
+        }
+    }
+
     func testDirectoryAndPackageFetchRetryRenamedMemberUsingServerListing() async throws {
         for (package, versionChanged) in [(false, false), (false, true), (true, false), (true, true)] {
             let (item, remoteInterface, directory) = package ? makePackageFetchItem() : makeFetchItem(directory: true)
@@ -1747,6 +1779,65 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.sessionError, "")
     }
 
+    func testFolderFetchRejectsReplacementDirectoryAtSamePath() async {
+        for replaceRoot in [false, true] {
+            let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+            let replaced = replaceRoot ? directory : makeDirectoryChild(of: directory)
+            let originalIdentifier = replaced.identifier
+            let replacementIdentifier = UUID().uuidString
+            let expectedDownloadCount = replaceRoot ? 0 : directory.children.count - 1
+            remoteInterface.enumerateCallHandler = { path, _, _, _, _, _, _, _ in
+                if path == replaced.remotePath {
+                    replaced.identifier = replacementIdentifier
+                }
+            }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            XCTAssertEqual(remoteInterface.downloadOperationCount, expectedDownloadCount)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: originalIdentifier)?.downloaded, false)
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: replacementIdentifier))
+        }
+    }
+
+    func testFolderFetchTreatsRemoteChildNotFoundAsRetryable() async throws {
+        for missingDirectory in [false, true] {
+            let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+            let notFound = NKError(errorCode: 404, errorDescription: "Child disappeared on the server")
+            if missingDirectory {
+                let childDirectory = makeDirectoryChild(of: directory)
+                remoteInterface.enumerateErrorBySuffix[childDirectory.remotePath] = notFound
+            } else {
+                remoteInterface.downloadError = notFound
+            }
+            defer { removeDownloadedDirectory(remoteInterface: remoteInterface) }
+
+            let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+            XCTAssertNil(url)
+            XCTAssertNil(fetchedItem)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+            let root = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
+            XCTAssertFalse(root.deleted)
+            XCTAssertFalse(root.downloaded)
+        }
+    }
+
+    func testMissingRemoteFolderReportsNoSuchItemForRequestedRoot() async {
+        let (item, remoteInterface, directory) = makeFetchItem(directory: true)
+        remoteInterface.enumerateErrorBySuffix[directory.remotePath] = NKError(errorCode: 404, errorDescription: "Requested folder is gone")
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
+    }
+
     func testDiscardedFolderDownloadLeavesCompletedChildrenDataless() async throws {
         for cancelProgress in [false, true] {
             let (item, remoteInterface, directory) = makeFetchItem(directory: true)
@@ -1943,7 +2034,12 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                 if cancelled {
                     XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
                 } else {
-                    XCTAssertEqual((error as? NSFileProviderError)?.code, errorCode == 404 ? .noSuchItem : .serverUnreachable)
+                    let expected: NSFileProviderError.Code = if errorCode == 404 {
+                        directory ? .cannotSynchronize : .noSuchItem
+                    } else {
+                        .serverUnreachable
+                    }
+                    XCTAssertEqual((error as? NSFileProviderError)?.code, expected)
                 }
                 let metadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue))
                 XCTAssertFalse(metadata.downloaded)

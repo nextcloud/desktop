@@ -200,6 +200,7 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
+        expectedDirectoryOcId: String? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         log: any FileProviderLogging
@@ -268,6 +269,15 @@ extension Enumerator {
         guard let data else {
             logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
             return RemoteReadResult(error: error)
+        }
+
+        if let expectedDirectoryOcId {
+            // A path may now refer to a different item from the one this download owns.
+            let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
+            guard let target, target.directory, target.ocId == expectedDirectoryOcId, target.account == account.ncKitAccount else {
+                logger.error("Read directory no longer matches the download's item.", [.item: expectedDirectoryOcId, .url: serverUrl])
+                return RemoteReadResult(error: .invalidData)
+            }
         }
 
         // This will be nil if the page settings were also nil, as the server will not give us the
