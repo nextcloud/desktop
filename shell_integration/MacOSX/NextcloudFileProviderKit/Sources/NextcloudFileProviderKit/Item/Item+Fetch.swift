@@ -53,7 +53,7 @@ public extension Item {
     private func fetchDirectoryContents(
         itemIdentifier: NSFileProviderItemIdentifier,
         directoryLocalPath: String,
-        directoryRemotePath: String,
+        rootMetadata: SendableItemMetadata,
         requestedFolderIsPackage: Bool,
         domain: NSFileProviderDomain?,
         progress: Progress,
@@ -78,16 +78,18 @@ public extension Item {
 
         progress.totalUnitCount = 1 // Add 1 for final procedures
 
-        var remoteDirectories = [(path: directoryRemotePath, operation: operation, packageContents: requestedFolderIsPackage)]
+        let directoryRemotePath = rootMetadata.remotePath()
+        var remoteDirectories = [(metadata: rootMetadata, operation: operation, packageContents: requestedFolderIsPackage)]
         var downloadedFileOcIds: [String] = []
         while !remoteDirectories.isEmpty {
             try checkFetchCancellation()
             let directory = remoteDirectories.removeFirst()
             try dbManager.validateDownload(directory.operation)
-            let remoteDirectoryPath = directory.path
+            let remoteDirectoryPath = directory.metadata.remotePath()
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
+                sourceMetadata: directory.metadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 domain: domain,
@@ -143,7 +145,7 @@ public extension Item {
                         filename: Self.filename(for: metadata)
                     )
                     remoteDirectories.append((
-                        path: remotePath,
+                        metadata: metadata,
                         operation: childOperation,
                         packageContents: childPackageContents
                     ))
@@ -294,7 +296,7 @@ public extension Item {
                 downloadedFileOcIds = try await fetchDirectoryContents(
                     itemIdentifier: itemIdentifier,
                     directoryLocalPath: localPath.path,
-                    directoryRemotePath: serverUrlFileName,
+                    rootMetadata: updatedMetadata,
                     requestedFolderIsPackage: requestedFolderIsPackage,
                     domain: domain,
                     progress: progress,

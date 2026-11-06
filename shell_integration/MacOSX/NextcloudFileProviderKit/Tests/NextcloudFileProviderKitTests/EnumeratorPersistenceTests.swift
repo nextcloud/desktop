@@ -1,25 +1,31 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+@preconcurrency import Alamofire
 @preconcurrency import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import NextcloudKit
+@testable import NextcloudKit
 import Testing
 @testable import TestInterface
 
 @Suite("Enumerator metadata persistence")
 struct EnumeratorPersistenceTests {
-    private let account = DatabaseTestSuites.account
-    private let manager = DatabaseTestSuites.makeManager()
+    private let account: Account
+    private let manager: FilesDatabaseManager
     private let folder: MockRemoteItem
     private let file: MockRemoteItem
     private let remote: MockRemoteInterface
     private let anchorDate = Date(timeIntervalSinceNow: -60)
 
     init() {
-        let account = DatabaseTestSuites.account
+        self.init(account: DatabaseTestSuites.account)
+    }
+
+    private init(account: Account) {
+        self.account = account
+        manager = DatabaseTestSuites.makeManager(account: account)
         let root = MockRemoteItem.rootItem(account: account)
         let folder = MockRemoteItem(
             identifier: "folder", versionIdentifier: "folder-v1", name: "folder",
@@ -141,6 +147,84 @@ struct EnumeratorPersistenceTests {
         #expect(result.changes == nil)
     }
 
+    @Test(arguments: [
+        ("/instance//nextcloud", "/instance//nextcloud"),
+        ("/instance/./nextcloud", "/instance/nextcloud"),
+        ("/instance/previous/../nextcloud", "/instance/nextcloud")
+    ])
+    func readsThePathProducedByTheDAVResponseParser(configuredWebroot: String, responseWebroot: String) async throws {
+        let origin = "https://\(UUID().uuidString.lowercased()).example.invalid"
+        let account = Account(
+            user: "login",
+            id: "user-id",
+            serverUrl: origin + configuredWebroot,
+            password: "test"
+        )
+        let filePath = Account.webDavFilesUrlSuffix + account.id + "/Docs/report.txt"
+        let configuredURL = try #require(URL(string: account.serverUrl + filePath))
+        let parsedURL = try #require(URL(string: origin + "/instance/nextcloud" + filePath))
+        let ocId = "parser-file-id"
+        let body = Data("""
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:response>
+            <d:href>\(responseWebroot)\(filePath)</d:href>
+            <d:propstat>
+              <d:prop>
+                <oc:id>\(ocId)</oc:id>
+                <d:getcontenttype>text/plain</d:getcontenttype>
+              </d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+        </d:multistatus>
+        """.utf8)
+        MockHTTPURLProtocol.setResponse(for: configuredURL, statusCode: 207, body: body)
+        MockHTTPURLProtocol.setResponse(for: parsedURL, statusCode: 207, body: body)
+        defer {
+            MockHTTPURLProtocol.removeResponse(for: configuredURL)
+            MockHTTPURLProtocol.removeResponse(for: parsedURL)
+        }
+
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = NKSession(
+            nkCommonInstance: remote.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "FileProvider-test",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: Alamofire.Session(configuration: configuration)
+        )
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        let initialRead = await remote.enumerate(remotePath: configuredURL.absoluteString, depth: .target, account: account)
+        try #require(initialRead.error == .success)
+        let metadata = try #require(initialRead.files.first).toItemMetadata()
+        try #require(metadata.urlBase == account.serverUrl)
+        try #require(metadata.remotePath() == parsedURL.absoluteString)
+
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let result = await Enumerator.readServerUrl(
+            metadata.remotePath(),
+            account: account,
+            sourceMetadata: metadata,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        #expect(MockHTTPURLProtocol.requests(for: parsedURL).map(\.httpMethod) == ["PROPFIND"])
+        #expect(result.error == nil)
+        #expect(result.metadatas?.map(\.ocId) == [ocId])
+    }
+
     @Test func workingSetSkipsAStaleURLThatWouldReturn404() async throws {
         let previousAccount = Account(
             user: account.username,
@@ -148,8 +232,33 @@ struct EnumeratorPersistenceTests {
             serverUrl: "https://previous.example.com",
             password: account.password
         )
+        try await expectWorkingSetToSkip404(at: previousAccount)
+    }
+
+    @Test func workingSetSkipsAStaleURLThatMatchesTheDAVResponseRoot() async throws {
+        let currentAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: account.serverUrl + "/instance//nextcloud",
+            password: account.password
+        )
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: account.serverUrl + "/instance/nextcloud",
+            password: account.password
+        )
+        let fixture = Self(account: currentAccount)
+        try await fixture.expectWorkingSetToSkip404(at: previousAccount)
+    }
+
+    private func expectWorkingSetToSkip404(at previousAccount: Account) async throws {
         try storeFolderAndFile(at: previousAccount)
-        remote.enumerateErrorBySuffix = ["/folder": NKError(statusCode: 404, fallbackDescription: "File not found")]
+        let stalePath = previousAccount.davFilesUrl + "/" + folder.name
+        let storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
+        try #require(storedFolder.urlBase == previousAccount.serverUrl)
+        try #require(storedFolder.remotePath() == stalePath)
+        remote.enumerateErrorBySuffix[stalePath] = NKError(statusCode: 404, fallbackDescription: "File not found")
         let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
         let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
 
@@ -160,6 +269,7 @@ struct EnumeratorPersistenceTests {
         #expect(observer.deletedItemIdentifiers.isEmpty)
         #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
         #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
     }
 
     @Test func containerSkipsAStaleURLThatWouldReturnAnEmpty207() async throws {

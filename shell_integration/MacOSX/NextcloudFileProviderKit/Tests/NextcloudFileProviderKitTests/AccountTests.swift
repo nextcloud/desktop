@@ -110,12 +110,37 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         let responseBase = "https://xn--bcher-kva.de/instance"
         let filesRoot = responseBase + Account.webDavFilesUrlSuffix + account.id
         let trashRoot = responseBase + Account.webDavTrashUrlSuffix + account.id + "/trash"
+        var file = SendableItemMetadata(ocId: "file", fileName: "File", account: account)
+        file.serverUrl = filesRoot
+        var trashedFile = file
+        trashedFile.serverUrl = trashRoot
 
         XCTAssertTrue(account.ownsDAVReadURL(account.davFilesUrl))
         XCTAssertTrue(account.ownsDAVReadURL(account.trashUrl + "/Folder"))
-        XCTAssertTrue(account.ownsDAVReadURL(filesRoot + "/Folder"))
-        XCTAssertTrue(account.ownsDAVReadURL(trashRoot + "/Folder"))
-        XCTAssertFalse(account.ownsDAVReadURL(filesRoot + "-old/Folder"))
-        XCTAssertFalse(account.ownsDAVReadURL(trashRoot + "-old/Folder"))
+        XCTAssertTrue(account.ownsDAVReadURL(file.remotePath(), sourceMetadata: file))
+        XCTAssertTrue(account.ownsDAVReadURL(trashedFile.remotePath(), sourceMetadata: trashedFile))
+        XCTAssertFalse(account.ownsDAVReadURL(file.remotePath()))
+        XCTAssertFalse(account.ownsDAVReadURL(trashedFile.remotePath()))
+        XCTAssertFalse(account.ownsDAVReadURL(filesRoot + "-old/Folder", sourceMetadata: file))
+        XCTAssertFalse(account.ownsDAVReadURL(trashRoot + "-old/Folder", sourceMetadata: trashedFile))
+    }
+
+    func testDAVResponseRootRequiresByteExactBaseAndUserProvenance() {
+        let account = Account(user: "login", id: "us\u{00E9}r", serverUrl: "https://example.com/caf\u{00E9}/", password: "password")
+        var file = SendableItemMetadata(ocId: "file", fileName: "File", account: account)
+        file.serverUrl = "https://example.com/caf\u{00E9}" + Account.webDavFilesUrlSuffix + account.id
+        let url = file.remotePath()
+
+        XCTAssertTrue(account.ownsDAVReadURL(url, sourceMetadata: file))
+
+        var differentBase = file
+        differentBase.urlBase = "https://example.com/cafe\u{0301}/"
+        XCTAssertEqual(differentBase.urlBase, account.serverUrl)
+        XCTAssertFalse(account.ownsDAVReadURL(url, sourceMetadata: differentBase))
+
+        var differentUser = file
+        differentUser.userId = "use\u{0301}r"
+        XCTAssertEqual(differentUser.userId, account.id)
+        XCTAssertFalse(account.ownsDAVReadURL(url, sourceMetadata: differentUser))
     }
 }

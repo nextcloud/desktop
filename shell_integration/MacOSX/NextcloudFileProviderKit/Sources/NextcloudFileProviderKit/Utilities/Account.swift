@@ -61,9 +61,9 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         return String(remotePath.dropFirst(filesRootPrefix.count))
     }
 
-    func ownsDAVReadURL(_ url: String) -> Bool {
+    func ownsDAVReadURL(_ url: String, sourceMetadata: SendableItemMetadata? = nil) -> Bool {
         func matches(_ root: String) -> Bool {
-            url == root || url.hasPrefix(root + "/")
+            url.utf8.elementsEqual(root.utf8) || url.utf8.starts(with: (root + "/").utf8)
         }
 
         let roots = [davFilesUrl, trashUrl]
@@ -71,16 +71,56 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             return true
         }
 
-        // NextcloudKit rebuilds URLs from the parsed host and decoded DAV href.
-        guard let decodedBase = URL(string: serverUrl)?.absoluteString.removingPercentEncoding else {
+        // A normalized URL can coincide with a previous base. Use the row's account provenance to distinguish them.
+        guard let sourceMetadata,
+              sourceMetadata.urlBase.utf8.elementsEqual(serverUrl.utf8),
+              sourceMetadata.userId.utf8.elementsEqual(id.utf8)
+        else {
             return false
         }
-        let responseBase = decodedBase.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        guard responseBase != serverUrl else { return false }
 
-        return roots.contains { root in
-            root.hasPrefix(serverUrl + "/") && matches(responseBase + root.dropFirst(serverUrl.count))
+        // NextcloudKit joins the scheme, host and port with the decoded DAV parent path.
+        guard let configuredURL = URL(string: serverUrl),
+              let scheme = configuredURL.scheme,
+              let host = configuredURL.host
+        else {
+            return false
         }
+
+        // Like NSString.deletingLastPathComponent in the DAV parser, collapse separators before decoding.
+        let pathComponents = configuredURL.path(percentEncoded: true).split(separator: "/")
+        let port = configuredURL.port.map { ":\($0)" } ?? ""
+        let origin = "\(scheme)://\(host)\(port)"
+        let configuredPrefix = (serverUrl + "/").utf8
+
+        func matchesResponseRoot(webrootComponents: [Substring]) -> Bool {
+            guard let path = webrootComponents.joined(separator: "/").removingPercentEncoding else {
+                return false
+            }
+            let responseBase = path.isEmpty ? origin : origin + "/" + path
+            return roots.contains { root in
+                guard root.utf8.starts(with: configuredPrefix) else { return false }
+                let davPath = String(decoding: root.utf8.dropFirst(serverUrl.utf8.count), as: UTF8.self)
+                return matches(responseBase + davPath)
+            }
+        }
+
+        if matchesResponseRoot(webrootComponents: pathComponents) {
+            return true
+        }
+
+        // A reverse proxy can resolve dot segments in the webroot before forwarding the request.
+        let canonicalComponents = pathComponents.reduce(into: [Substring]()) { components, component in
+            switch component {
+                case ".":
+                    break
+                case "..":
+                    _ = components.popLast()
+                default:
+                    components.append(component)
+            }
+        }
+        return canonicalComponents != pathComponents && matchesResponseRoot(webrootComponents: canonicalComponents)
     }
 
     public init?(dictionary: [String: String]) {

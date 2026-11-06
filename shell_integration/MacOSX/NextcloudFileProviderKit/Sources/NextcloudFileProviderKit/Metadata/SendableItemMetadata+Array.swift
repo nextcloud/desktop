@@ -25,8 +25,7 @@ extension [SendableItemMetadata] {
 
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(itemMetadata) else {
                 logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
-                let targetUrl = itemMetadata.serverUrl
-                throw FilesDatabaseManager.parentMetadataNotFoundError(itemUrl: targetUrl)
+                throw FilesDatabaseManager.parentMetadataNotFoundError(for: itemMetadata)
             }
 
             let displayFileActions = Item.typeHasApplicableContextMenuItems(filters: allFilters, candidate: itemMetadata.contentType)

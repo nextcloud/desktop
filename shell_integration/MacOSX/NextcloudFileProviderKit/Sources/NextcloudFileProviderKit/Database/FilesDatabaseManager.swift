@@ -22,6 +22,7 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     static let errorDomain = "FilesDatabaseManager"
+    static let missingParentChildIdentifierKey = "MissingParentChildIdentifier"
 
     /// Why the database could not be opened. The domain must not be set up until a later attempt succeeds.
     public enum OpenError: Error {
@@ -37,10 +38,13 @@ public final class FilesDatabaseManager: Sendable {
         NSError(domain: errorDomain, code: code.rawValue, userInfo: userInfo)
     }
 
-    static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
+    static func parentMetadataNotFoundError(for metadata: SendableItemMetadata) -> NSError {
         error(
             code: .parentMetadataNotFound,
-            userInfo: [ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: itemUrl]
+            userInfo: [
+                ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: metadata.serverUrl,
+                missingParentChildIdentifierKey: metadata.ocId
+            ]
         )
     }
 
@@ -1079,6 +1083,7 @@ public final class FilesDatabaseManager: Sendable {
         let readResult = await Enumerator.readServerUrl(
             metadata.serverUrl,
             account: account,
+            sourceMetadata: metadata,
             remoteInterface: remoteInterface,
             dbManager: self,
             depth: .target,
