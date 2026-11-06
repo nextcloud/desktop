@@ -69,7 +69,25 @@
     <Property Id="NC_PERMACHINE_INSTALLDIR" Secure="yes">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
-    <SetProperty Id="INSTALLDIR" Value="[NC_PERMACHINE_INSTALLDIR]" After="AppSearch" Sequence="both">NC_PERMACHINE_INSTALLDIR AND NOT $(var.PerUserInstall)</SetProperty>
+    <SetProperty Id="INSTALLDIR" Value="[NC_PERMACHINE_INSTALLDIR]" After="FindRelatedProducts" Sequence="both">NC_PERMACHINE_INSTALLDIR AND NOT $(var.PerUserInstall)</SetProperty>
+
+    <!--
+        Previous per-user installation: its path is stored in HKCU (see RegistryVersionInfo, HKMU).
+        An upgrade keeps the per-user scope: MSIINSTALLPERUSER must be set before FindRelatedProducts,
+        which only finds the related products installed in the current scope, so FindRelatedProducts
+        is moved after AppSearch (it runs before it by default).
+    -->
+    <Property Id="NC_PERUSER_INSTALLDIR" Secure="yes">
+        <RegistrySearch Id="RegistryPerUserInstallDir" Type="raw" Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
+    </Property>
+    <SetProperty Action="SetPerUserScopeFromPreviousInstall" Id="MSIINSTALLPERUSER" Value="1" After="AppSearch" Sequence="both">NC_PERUSER_INSTALLDIR AND NOT NSIS_UNINSTALLEXE</SetProperty>
+    <SetProperty Action="SetPerUserInstallDir" Id="INSTALLDIR" Value="[NC_PERUSER_INSTALLDIR]" After="FindRelatedProducts" Sequence="both">NC_PERUSER_INSTALLDIR AND $(var.PerUserInstall)</SetProperty>
+    <InstallUISequence>
+        <FindRelatedProducts After="SetPerUserScopeFromPreviousInstall" />
+    </InstallUISequence>
+    <InstallExecuteSequence>
+        <FindRelatedProducts After="SetPerUserScopeFromPreviousInstall" />
+    </InstallExecuteSequence>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
@@ -83,7 +101,7 @@
         when the scope was not requested on the command line (MSIINSTALLPERUSER=1) and no previous installation
         (MSI or legacy NSIS) was found, an upgrade keeps the scope of the installed version.
     -->
-    <SetProperty Id="NC_SHOW_INSTALL_SCOPE_DLG" Value="1" After="AppSearch" Sequence="ui">NOT Installed AND NOT MSIINSTALLPERUSER AND NOT WIX_UPGRADE_DETECTED AND NOT NSIS_UNINSTALLEXE</SetProperty>
+    <SetProperty Id="NC_SHOW_INSTALL_SCOPE_DLG" Value="1" After="FindRelatedProducts" Sequence="ui">NOT Installed AND NOT MSIINSTALLPERUSER AND NOT WIX_UPGRADE_DETECTED AND NOT NSIS_UNINSTALLEXE</SetProperty>
     <!-- Remember the per-machine installation folder, to restore it when going back from per-user to per-machine -->
     <SetProperty Id="NC_PERMACHINE_DEFAULTDIR" Value="[INSTALLDIR]" After="CostFinalize" Sequence="ui">NC_SHOW_INSTALL_SCOPE_DLG</SetProperty>
 
