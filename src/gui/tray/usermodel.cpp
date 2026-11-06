@@ -214,7 +214,6 @@ SyncIssueKind syncIssueKindForSyncFileItem(const OCC::SyncFileItem::Status statu
         break;
     case OCC::SyncFileItem::SoftError:
     case OCC::SyncFileItem::Conflict:
-    case OCC::SyncFileItem::FileIgnored:
     case OCC::SyncFileItem::Restoration:
     case OCC::SyncFileItem::FileLocked:
     case OCC::SyncFileItem::FileNameInvalid:
@@ -224,6 +223,8 @@ SyncIssueKind syncIssueKindForSyncFileItem(const OCC::SyncFileItem::Status statu
         break;
     case OCC::SyncFileItem::NoStatus:
     case OCC::SyncFileItem::Success:
+    // ignored files are excluded on purpose, not a sync issue
+    case OCC::SyncFileItem::FileIgnored:
         result = SyncIssueKind::None;
         break;
     }
