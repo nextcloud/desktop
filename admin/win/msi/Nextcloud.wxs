@@ -61,10 +61,15 @@
 
     <Media Id="1" Cabinet="$(var.AppShortName).cab" EmbedCab="yes" />
 
-    <!-- If already installed: Use previously chosen path (use 32-bit registry like NSIS does) -->
-    <Property Id="INSTALLDIR">
+    <!--
+        If already installed: Use previously chosen path (use 32-bit registry like NSIS does)
+        The path is stored in HKLM, so it only applies to per-machine installations: a per-user
+        installation must not pick up the Program Files folder of a (previous) per-machine one.
+    -->
+    <Property Id="NC_PERMACHINE_INSTALLDIR" Secure="yes">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
+    <SetProperty Id="INSTALLDIR" Value="[NC_PERMACHINE_INSTALLDIR]" After="AppSearch" Sequence="both">NC_PERMACHINE_INSTALLDIR AND NOT $(var.PerUserInstall)</SetProperty>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
@@ -92,8 +97,8 @@
         <!-- Install: Remove previous NSIS installation, if detected -->
         <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
 
-        <!-- Install: Ensure ACLs are set -->
-        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed</Custom>
+        <!-- Install: Ensure ACLs are set (per-machine only: a per-user installation must stay writable by its user) -->
+        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed AND NOT $(var.PerUserInstall)</Custom>
 
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
         <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
