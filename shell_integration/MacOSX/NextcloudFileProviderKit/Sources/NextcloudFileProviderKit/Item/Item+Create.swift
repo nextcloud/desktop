@@ -341,6 +341,8 @@ public extension Item {
         }
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
+        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
+        let isOnIgnoreList = ignoredFiles?.isExcluded(relativePath) ?? false
 
         // Bundles and packages (`.app`, `.key`, `.pages`, `.fcpbundle`, …) are folders that the
         // system presents as atomic files. WebDAV cannot represent the full bundle layout
@@ -350,12 +352,13 @@ public extension Item {
         // boundary, route them through the existing `createIgnored` path (which returns
         // `NSFileProviderError(.excludedFromSync)`), and tell the user via the activity view.
         // Tracked at https://github.com/nextcloud/desktop/issues/9827.
+        // A package on the ignore list is excluded here too, but without the warning.
 
         if itemTemplate.isBundleOrPackage {
             logger.info("Refusing to sync bundle or package because this is not supported.", [.name: itemTemplate.filename])
 
-            if let domain {
-                ItemExclusionReporter.report(relativePath: parentItemRelativePath + "/" + itemTemplate.filename, fileName: itemTemplate.filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: log)
+            if let domain, !isOnIgnoreList {
+                ItemExclusionReporter.report(relativePath: relativePath, fileName: itemTemplate.filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: log)
             }
 
             return await Item.createIgnored(basedOn: itemTemplate, parentItemRemotePath: parentItemRemotePath, contents: url, account: account, remoteInterface: remoteInterface, progress: progress, dbManager: dbManager, log: log)
@@ -375,8 +378,7 @@ public extension Item {
             )
         }
 
-        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+        guard !isOnIgnoreList else {
             return await Item.createIgnored(
                 basedOn: itemTemplate,
                 parentItemRemotePath: parentItemRemotePath,

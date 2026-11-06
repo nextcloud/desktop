@@ -923,6 +923,149 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
     }
 
+    /// A package on the ignore list is still excluded from sync on modification, but without the bundle warning in the activity view.
+    func testModifyIgnoredBundleIsExcludedWithoutBundleReport() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let (bundleMetadata, modifiedItem, error) = await modifyBundleWithIgnoreList(named: "Talk.key", appProxy: proxy)
+
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+        XCTAssertTrue(proxy.captured.isEmpty)
+    }
+
+    /// A package that is not on the ignore list still produces the bundle warning on modification.
+    func testModifyBundleNotOnIgnoreListReportsExclusion() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "Presentation.pages"
+        let (bundleMetadata, modifiedItem, error) = await modifyBundleWithIgnoreList(named: filename, appProxy: proxy)
+
+        XCTAssertNotNil(modifiedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+        XCTAssertEqual(proxy.captured.map(\.fileName), [filename])
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .bundle))
+    }
+
+    /// A package renamed off the ignore list still produces the bundle warning, because it is refused without being on the list.
+    func testModifyRenamedIgnoredBundleReportsExclusion() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let (bundleMetadata, modifiedItem, error) = await modifyBundleWithIgnoreList(named: "Talk.key", renamingTo: "Talk.pages", appProxy: proxy)
+
+        XCTAssertEqual(modifiedItem?.filename, "Talk.pages")
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+        XCTAssertEqual(proxy.captured.count, 1)
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .bundle))
+    }
+
+    /// A package moved out of an ignored folder still produces the bundle warning, because it is refused without being on the list.
+    func testModifyMovedIgnoredBundleReportsExclusion() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let (bundleMetadata, modifiedItem, error) = await modifyBundleWithIgnoreList(
+            named: "Talk.key",
+            ignoreList: ["Downloads/*"],
+            in: "Downloads",
+            movingTo: "Documents",
+            appProxy: proxy
+        )
+
+        XCTAssertEqual(modifiedItem?.parentItemIdentifier, NSFileProviderItemIdentifier("Documents-id"))
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: bundleMetadata.ocId))
+        XCTAssertEqual(proxy.captured.count, 1)
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .bundle))
+    }
+
+    /// Modifies a bundle folder that is on the server and in the database, optionally renaming it or moving it into another folder below the root.
+    private func modifyBundleWithIgnoreList(
+        named filename: String,
+        ignoreList: [String] = ["*.key"],
+        in folderName: String? = nil,
+        renamingTo newFilename: String? = nil,
+        movingTo newFolderName: String? = nil,
+        appProxy: ExclusionCapturingAppProxy
+    ) async -> (SendableItemMetadata, Item?, Error?) {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+
+        let addRemoteDirectory = { (name: String, parent: MockRemoteItem) -> MockRemoteItem in
+            let directory = MockRemoteItem(
+                identifier: "\(name)-id",
+                name: name,
+                remotePath: parent.remotePath + "/" + name,
+                directory: true,
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            directory.parent = parent
+            parent.children.append(directory)
+            return directory
+        }
+
+        let parentIdentifier = { (folder: MockRemoteItem?) -> NSFileProviderItemIdentifier in
+            folder.map { NSFileProviderItemIdentifier($0.identifier) } ?? .rootContainer
+        }
+
+        let folder = folderName.map { addRemoteDirectory($0, self.rootItem) }
+        let newFolder = newFolderName.map { addRemoteDirectory($0, self.rootItem) }
+
+        for directory in [folder, newFolder].compactMap(\.self) {
+            Self.dbManager.addItemMetadata(directory.toItemMetadata(account: Self.account))
+        }
+
+        let remoteBundle = addRemoteDirectory(filename, folder ?? rootItem)
+        var bundleMetadata = remoteBundle.toItemMetadata(account: Self.account)
+        bundleMetadata.contentType = UTType.bundle.identifier
+        Self.dbManager.addItemMetadata(bundleMetadata)
+
+        let bundleItem = Item(
+            metadata: bundleMetadata,
+            parentItemIdentifier: parentIdentifier(folder),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        var changedFields: NSFileProviderItemFields = []
+        var targetMetadata = bundleMetadata
+
+        if let newFilename {
+            changedFields.insert(.filename)
+            targetMetadata.fileName = newFilename
+            targetMetadata.fileNameView = newFilename
+        }
+
+        if newFolder != nil {
+            changedFields.insert(.parentItemIdentifier)
+        }
+
+        if changedFields.isEmpty {
+            changedFields = [.contents]
+        }
+
+        let targetItem = Item(
+            metadata: targetMetadata,
+            parentItemIdentifier: parentIdentifier(newFolder ?? folder),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let (modifiedItem, error) = await bundleItem.modify(
+            itemTarget: targetItem,
+            changedFields: changedFields,
+            contents: nil,
+            ignoredFiles: IgnoredFilesMatcher(ignoreList: ignoreList, log: FileProviderLogMock()),
+            domain: NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier("test-domain-package"), displayName: "test"),
+            dbManager: Self.dbManager,
+            appProxy: appProxy
+        )
+
+        return (bundleMetadata, modifiedItem, error)
+    }
+
     func testModifyIntoIgnoredDestinationKeepsExclusionMarkerAfterRemoteDelete() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
