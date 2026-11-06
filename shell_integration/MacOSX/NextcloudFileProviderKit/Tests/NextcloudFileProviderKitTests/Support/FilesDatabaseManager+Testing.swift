@@ -70,14 +70,23 @@ extension FilesDatabaseManager {
         }
     }
 
-    /// Reject metadata inserts and updates while keeping reads and change delivery available.
-    func setItemMetadataWriteFailureForTesting(_ enabled: Bool) throws {
+    /// Reject metadata inserts and updates, optionally for one item, while keeping reads and change delivery available.
+    func setItemMetadataWriteFailureForTesting(_ enabled: Bool, ocId: String? = nil) throws {
         try writer.write { db in
+            let condition: String
+            if let ocId {
+                let literal = try #require(try String.fetchOne(db, sql: "SELECT quote(?)", arguments: [ocId]))
+                condition = "WHEN NEW.ocId = \(literal)"
+            } else {
+                condition = ""
+            }
+
             for operation in ["INSERT", "UPDATE"] {
                 let trigger = "fail_item_metadata_\(operation)"
                 if enabled {
                     try db.execute(sql: """
                     CREATE TRIGGER \(trigger) BEFORE \(operation) ON itemMetadata
+                    \(condition)
                     BEGIN
                         SELECT RAISE(ABORT, 'Injected metadata write failure');
                     END
