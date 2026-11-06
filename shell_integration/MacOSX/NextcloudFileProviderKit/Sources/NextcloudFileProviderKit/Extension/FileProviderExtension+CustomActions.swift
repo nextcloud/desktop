@@ -60,10 +60,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     return Progress()
                 }
 
-                // The numeric file id is required to build the deprecated
-                // fallback URL the main app uses when PROPFIND for the
-                // server-side `privatelink` property is unavailable. Without
-                // it, the main app would have nothing to open.
+                // The main app needs the numeric file ID to build the internal link.
                 guard !metadata.fileId.isEmpty else {
                     logger.error("Cannot open item in browser because the metadata has no fileId.", [.item: itemIdentifier])
                     completionHandler(NSFileProviderError(.noSuchItem))
@@ -95,11 +92,7 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     return Progress()
                 }
 
-                // The numeric file id is required to build the deprecated
-                // fallback URL the main app uses when PROPFIND for the
-                // server-side `privatelink` property is unavailable. Without
-                // it, the main app would have nothing to copy. Matches the
-                // equivalent guard in `case .openInBrowser`.
+                // The main app needs the numeric file ID to build the internal link.
                 guard !metadata.fileId.isEmpty else {
                     logger.error("Cannot copy internal link because the metadata has no fileId.", [.item: itemIdentifier])
                     completionHandler(NSFileProviderError(.noSuchItem))
