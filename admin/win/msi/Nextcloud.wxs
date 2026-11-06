@@ -78,6 +78,15 @@
         </RegistrySearch>
     </Property>
 
+    <!--
+        Installation scope wizard page (NcInstallScopeDlg, see InstallScopeDlg.wxs): only shown for a new installation
+        when the scope was not requested on the command line (MSIINSTALLPERUSER=1) and no previous installation
+        (MSI or legacy NSIS) was found, an upgrade keeps the scope of the installed version.
+    -->
+    <SetProperty Id="NC_SHOW_INSTALL_SCOPE_DLG" Value="1" After="AppSearch" Sequence="ui">NOT Installed AND NOT MSIINSTALLPERUSER AND NOT WIX_UPGRADE_DETECTED AND NOT NSIS_UNINSTALLEXE</SetProperty>
+    <!-- Remember the per-machine installation folder, to restore it when going back from per-user to per-machine -->
+    <SetProperty Id="NC_PERMACHINE_DEFAULTDIR" Value="[INSTALLDIR]" After="CostFinalize" Sequence="ui">NC_SHOW_INSTALL_SCOPE_DLG</SetProperty>
+
     <!-- Property to disable update checks -->
     <Property Id="SKIPAUTOUPDATE" Value="0" />
 
@@ -144,10 +153,33 @@
         <UIRef Id="WixUI_FeatureTree" />
         <UIRef Id="WixUI_ErrorProgressText" />
 
-        <!-- Skip the license page -->
-        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">1</Publish>
+        <DialogRef Id="NcInstallScopeDlg" />
+
+        <!--
+            Skip the license page, and show the installation scope page when needed
+            (the last NewDialog event of a control wins: the Order 3 and 4 events replace the WixUI_FeatureTree ones)
+        -->
+        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">NOT NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="NcInstallScopeDlg" Order="4">NC_SHOW_INSTALL_SCOPE_DLG</Publish>
         <!-- Skip the page on the way back too -->
-        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">1</Publish>
+        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">NOT NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="NcInstallScopeDlg" Order="4">NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+
+        <!--
+            Installation scope page: apply the chosen scope
+              - per-machine: ALLUSERS=1, installed in Program Files (or the folder of a previous per-machine installation)
+              - per-user:    ALLUSERS=2 + MSIINSTALLPERUSER=1, installed in %LOCALAPPDATA%\Programs
+            The installation folder has already been resolved (CostFinalize), so it is changed with SetTargetPath.
+        -->
+        <Publish Dialog="NcInstallScopeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="ALLUSERS" Value="1" Order="1">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="{}" Order="2">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="INSTALLDIR" Value="[NC_PERMACHINE_DEFAULTDIR]" Order="3">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="ALLUSERS" Value="2" Order="4">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="1" Order="5">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="INSTALLDIR" Value="[LocalAppDataFolder]Programs\$(var.AppName)\" Order="6">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Event="SetTargetPath" Value="INSTALLDIR" Order="7">1</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="8">1</Publish>
 
         <!-- https://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/run_program_after_install.html -->        
         <Publish Dialog="ExitDialog" 
