@@ -153,6 +153,7 @@ public Q_SLOTS:
     void showTrayPopup(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
     void showActivitiesWindow(int userIndex = -1);
+    void toggleActivitiesWindow();
     void showAssistantWindow(int userIndex = -1);
     void showSearchWindow(int userIndex = -1);
     void showUserStatusWindow(int userIndex);
