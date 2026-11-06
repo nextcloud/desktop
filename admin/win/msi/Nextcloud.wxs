@@ -193,9 +193,12 @@
     </Directory>
 
     <DirectoryRef Id="TARGETDIR">
-        <!-- Version numbers used to detect existing installation (use 32-bit registry like NSIS does) -->
+        <!--
+            Version numbers used to detect existing installation (use 32-bit registry like NSIS does)
+            HKMU = HKLM for per-machine installations, HKCU for per-user installations
+        -->
         <Component Id="RegistryVersionInfo" Guid="*" Win64="no">
-            <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]" />
                 <RegistryValue Type="integer" Name="VersionMajor" Value="$(var.VerMajor)" />
                 <RegistryValue Type="integer" Name="VersionMinor" Value="$(var.VerMinor)" />
@@ -207,23 +210,27 @@
             </RegistryKey>
         </Component>
 
-        <!-- Platform bitness-dependent settings -->
+        <!--
+            Platform bitness-dependent settings
+            The client only reads these device defaults from HKLM, so they are only written for per-machine installations.
+        -->
         <Component Id="RegistryDefaultSettings" Guid="*" Win64="$(var.PlatformWin64)">
+            <Condition>NOT $(var.PerUserInstall)</Condition>
             <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)">
                 <!-- Property to disable update checks -->
                 <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
             </RegistryKey>
         </Component>
-        <!-- Register URI handler -->
+        <!-- Register URI handler (HKMU: machine-wide or current user only, following the installation scope) -->
         <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
                 <RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
             </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
