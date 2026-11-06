@@ -909,22 +909,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="239"/>
+        <location filename="../src/libsync/account.cpp" line="240"/>
         <source>Public Share Link</source>
         <translation>Avaliku jagamise link</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1092"/>
+        <location filename="../src/libsync/account.cpp" line="1107"/>
         <source>File %1 is already locked by %2.</source>
         <translation>%2 on juba lukustanud „%1“ faili.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1094"/>
+        <location filename="../src/libsync/account.cpp" line="1109"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>„%1“ faili lukustamisel tekkis viga: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1096"/>
+        <location filename="../src/libsync/account.cpp" line="1111"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>„%1“ faili lukustuse eemaldamisel tekkis viga: %2</translation>
     </message>
@@ -3810,117 +3810,117 @@ Lisateave asjatundjatele: see olukord võib olla ka seotud asjaoluga, et ühes k
 <context>
     <name>OCC::Gui::Sharing::SharingController</name>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="172"/>
         <source>The server did not generate a valid public-link identifier.</source>
         <translation>Server ei suutnud luua korrektset avaliku lingi tunnust.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="178"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="181"/>
         <source>Could not create the public link.</source>
         <translation>Avaliku jagamislingi loomine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="217"/>
         <source>Could not retrieve the internal link.</source>
         <translation>Sisemise jagamislingi laadimine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="263"/>
         <source>The server returned an invalid share.</source>
         <translation>Server andis päringuvastuseks vigase jagamise.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="272"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="275"/>
         <source>Could not create the share.</source>
         <translation>Selle jagamise loomine ei õnnestunud</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="320"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="324"/>
         <source>Could not delete the share.</source>
         <translation>Selle jagamise kustutamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="363"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="353"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="356"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="763"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="766"/>
         <source>Could not add the recipient.</source>
         <translation>Saaja lisamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="384"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="387"/>
         <source>Could not remove the recipient.</source>
         <translation>Saaja eemaldamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="412"/>
         <source>The server did not generate a valid sharing link.</source>
         <translation>Server ei suutnud luua korrektset jagamislinki.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="423"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="426"/>
         <source>Could not update the sharing link.</source>
         <translation>Jagamislingi uuendamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="431"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="434"/>
         <source>Could not generate a sharing link.</source>
         <translation>Jagamislingi loomine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="479"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="464"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="472"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="571"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="579"/>
         <source>Could not update the permissions.</source>
         <translation>Õiguste uuendamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="528"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="536"/>
         <source>Could not update the recipient permissions.</source>
         <translation>Saajate õiguste uuendamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="612"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="616"/>
         <source>Could not update the sharing setting.</source>
         <translation>Jagamise seadistuse uuendamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="666"/>
         <source>The server did not activate the share.</source>
         <translation>Server ei suutnud jagamist aktiveerida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="669"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="672"/>
         <source>Could not send the share.</source>
         <translation>Selle jagamise edastamine ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="730"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="713"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="723"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="750"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="774"/>
         <source>The newly created share is no longer available.</source>
         <translation>Äsjaloodud jagamine pole enam saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="735"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="738"/>
         <source>Could not attach the item to the share.</source>
         <translation>Objekti sidumine jagamisega ei õnnestunud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="834"/>
         <source>Could not save all changes to the share.</source>
         <translation>Kõikide jagamise muudatuste salvestamine ei õnnestunud.</translation>
     </message>
@@ -4884,7 +4884,7 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2244"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Teisaldatud vigasesse sihtkohta, taastan andmed</translation>
     </message>
@@ -4904,22 +4904,22 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
         <translation>Pole lubatud, kuna sul puuduvad õigused alamkausta lisamiseks sinna kausta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2202"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Pole lubatud, kuna sul puuduvad õigused failide lisamiseks sinna kausta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2217"/>
+        <location filename="../src/libsync/discovery.cpp" line="2221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Pole lubatud üles laadida, kuna tegemist on serveri poolel ainult-loetava failiga, taastan oleku</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2254"/>
+        <location filename="../src/libsync/discovery.cpp" line="2258"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Eemaldamine pole lubatud, taastan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2427"/>
+        <location filename="../src/libsync/discovery.cpp" line="2431"/>
         <source>Error while reading the database</source>
         <translation>Viga andmebaasist lugemisel</translation>
     </message>
@@ -5519,48 +5519,48 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="559"/>
         <source>%1 days</source>
         <translation>%1 päeva</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="561"/>
         <source>%1 day</source>
         <translation>%1 päev</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="562"/>
         <source>Today</source>
         <translation>Täna</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="737"/>
         <source>Secure file drop link</source>
         <translation>Turvalise failiedastuse link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="740"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
         <translation>Jagamislink</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
         <source>Link share</source>
         <translation>Lingiga jagamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="751"/>
         <source>Internal link</source>
         <translation>Sisemine link</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="753"/>
         <source>Secure file drop</source>
         <translation>Turvaline failiedastus</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="942"/>
         <source>Could not find local folder for %1</source>
         <translation>Ei õnnestunud leida kohalikku kausta „%1“ jaoks</translation>
     </message>
@@ -5598,23 +5598,23 @@ Palun arvesta, et käsurealt lisatud logimistingimused on alati primaarsed nende
         <translation>Kontekstimenüü jagamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
         <source>I shared something with you</source>
         <translation>Ma jagasin sinuga midagi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Share options</source>
         <translation>Jagamise valikud</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Send private link by email …</source>
         <translation>Saada privaatne link e-kirjaga…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopeeri privaatne link lõikelauale</translation>
     </message>
@@ -5653,102 +5653,102 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Järgneva kausta krüptimine õnnestus: „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
         <source>File actions</source>
         <translation>Tegevused failidega</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Tegevus</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
         <source>Leave this share</source>
         <translation>Lahku jaoskaustast</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this file is not allowed</source>
         <translation>Selle faili edasijagamine pole lubatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Selle kausta edasijagamine pole lubatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1344"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
         <source>Encrypt</source>
         <translation>Krüpti</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
         <source>Lock file</source>
         <translation>Lukusta fail</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
         <source>Unlock file</source>
         <translation>Eemalda faili lukustus</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1374"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
         <source>Locked by %1</source>
         <translation>Lukustaja: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Aegub %1 minuti pärast</numerusform><numerusform>Aegub %1 minuti pärast</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
         <source>Apply labels</source>
         <translation>Rakenda sildid / kasuta silte</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
         <source>Resolve conflict …</source>
         <translation>Lahenda failikonflikt…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
         <source>Move and rename …</source>
         <translation>Teisalda ja muuda nime…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
         <source>Move, rename and upload …</source>
         <translation>Teisalda, muuda nime ja laadi üles…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1543"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
         <source>Delete local changes</source>
         <translation>Kustuta kohalikud muudatused</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1549"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
         <source>Move and upload …</source>
         <translation>Teisalda ja laadi üles…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1550"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
         <source>Delete</source>
         <translation>Kustuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
         <source>Copy internal link</source>
         <translation>Kopeeri sisemine link</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Open in browser</source>
         <translation>Ava veebibrauseris</translation>
     </message>
@@ -6156,53 +6156,53 @@ Veateade serveri päringuvastuses: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="574"/>
+        <location filename="../src/gui/systray.cpp" line="571"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation>Lisa konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="573"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Ava %1i Töölauarakendus</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <source>Pause sync</source>
         <translation>Peata sünkroonimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="580"/>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <source>Resume sync</source>
         <translation>Jätka sünroonimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="581"/>
+        <location filename="../src/gui/systray.cpp" line="578"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation>Seadistused</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="582"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
         <source>Help</source>
         <translation>Abiteave</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="583"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
         <source>Exit %1</source>
         <translation>Sulge %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation>Peata sünkroonimine kõigi jaoks</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation>Jätka sünkroonimist kõigi jaoks</translation>
@@ -6816,12 +6816,12 @@ Veateade serveri päringuvastuses: %2</translation>
         <translation>Vali uus asukoht…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>Internal link copied</source>
         <translation>Sisemine link on kopeeritud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Sisemine link on kopeeritud lõikelauale</translation>
     </message>
