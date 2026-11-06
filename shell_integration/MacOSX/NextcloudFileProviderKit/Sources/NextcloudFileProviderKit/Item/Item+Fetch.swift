@@ -359,7 +359,7 @@ public extension Item {
         guard let parentItemIdentifier else {
             logger.error("Could not find parent item id for file.", [.name: metadata.fileName])
 
-            let error = NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            let error = NSFileProviderError(.cannotSynchronize)
             fetchErrorDescription = error.localizedDescription
             return (nil, nil, operation.error(for: error))
         }

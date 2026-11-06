@@ -494,11 +494,37 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> Item? {
-        // resolve the given identifier to a record in the model
+        try? await resolveStoredItem(
+            identifier: identifier,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            taskHandler: taskHandler,
+            isCancelled: isCancelled,
+            log: log
+        )
+    }
 
-        guard !isCancelled() else { return nil }
+    static func resolveStoredItem(
+        identifier: NSFileProviderItemIdentifier,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        includeDeleted: Bool = true,
+        unresolvedParentError: any Error = NSFileProviderError(.cannotSynchronize),
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
+        log: any FileProviderLogging
+    ) async throws -> Item {
+        func checkCancellation() throws {
+            if isCancelled() {
+                throw CocoaError(.userCancelled)
+            }
+        }
+
+        try checkCancellation()
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
-        guard !isCancelled() else { return nil }
+        try checkCancellation()
 
         guard identifier != .rootContainer else {
             return Item.rootContainer(
@@ -519,8 +545,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier) else {
-            return nil
+        guard let metadata = dbManager.itemMetadata(identifier), includeDeleted || !metadata.deleted else {
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
         let parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
@@ -535,15 +561,17 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard !isCancelled(), let parentItemIdentifier else {
-            return nil
+        try checkCancellation()
+        // A failed parent read says nothing about whether the cached child was removed.
+        guard let parentItemIdentifier else {
+            throw unresolvedParentError
         }
 
         // Display File Actions
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
 
-        guard !isCancelled() else { return nil }
+        try checkCancellation()
 
         return Item(
             metadata: metadata,
