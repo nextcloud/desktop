@@ -156,13 +156,13 @@ QByteArray Utility::userAgentString()
 {
     return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
         .arg(platform(),
-            QStringLiteral(MIRALL_VERSION_STRING),
-            qApp->applicationName(),
-            QSysInfo::productType(),
-            QSysInfo::kernelVersion(),
-            QSysInfo::buildCpuArchitecture(),
-            QSysInfo::currentCpuArchitecture())
-        .toLatin1();
+             QStringLiteral(MIRALL_VERSION_STRING),
+             qApp->applicationName(),
+             QSysInfo::productType(),
+             QSysInfo::kernelVersion(),
+             QSysInfo::buildCpuArchitecture(),
+             QSysInfo::currentCpuArchitecture())
+        .toUtf8();
 }
 
 QByteArray Utility::friendlyUserAgentString()
