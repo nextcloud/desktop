@@ -21,7 +21,28 @@
         UpgradeCode="$(var.UpgradeCode)"
         Language="1033" Codepage="$(var.codepage)" Version="$(var.VerFull)">
     <Package Id="*" Keywords="Installer" Description="$(var.AppName) $(var.VerDesc)" Manufacturer="$(var.AppVendor)"
-        InstallerVersion="300" Platform="$(var.Platform)" Languages="1033" Compressed="yes" SummaryCodepage="$(var.codepage)" InstallScope="perMachine" />
+        InstallerVersion="500" Platform="$(var.Platform)" Languages="1033" Compressed="yes" SummaryCodepage="$(var.codepage)" />
+
+    <!--
+        Dual-purpose package (per-machine or per-user), see:
+        https://learn.microsoft.com/en-us/windows/win32/msi/single-package-authoring
+
+        ALLUSERS=2 lets Windows Installer pick the context from MSIINSTALLPERUSER:
+          - MSIINSTALLPERUSER unset (default): per-machine installation, same behaviour as before
+          - MSIINSTALLPERUSER=1:               per-user installation
+        MSIINSTALLPERUSER is only honoured by Windows Installer 5.0+ (Windows 7 and later),
+        hence InstallerVersion="500" above.
+
+        Administrators can still force a per-machine installation with ALLUSERS=1.
+    -->
+    <Property Id="ALLUSERS" Value="2" />
+
+    <!--
+        Condition that is true for a per-user installation:
+          - ALLUSERS empty: per-user context (this is how Windows Installer reports it once the context is resolved)
+          - ALLUSERS=2 and MSIINSTALLPERUSER=1: per-user context requested, not yet resolved
+    -->
+    <?define PerUserInstall = "(NOT ALLUSERS OR (ALLUSERS=2 AND MSIINSTALLPERUSER=1))" ?>
 
     <!--
         Upgrading: Since we always want to allow up-/downgrade, we don't specify a maximum version, thus
@@ -40,10 +61,33 @@
 
     <Media Id="1" Cabinet="$(var.AppShortName).cab" EmbedCab="yes" />
 
-    <!-- If already installed: Use previously chosen path (use 32-bit registry like NSIS does) -->
-    <Property Id="INSTALLDIR">
+    <!--
+        If already installed: Use previously chosen path (use 32-bit registry like NSIS does)
+        The path is stored in HKLM, so it only applies to per-machine installations: a per-user
+        installation must not pick up the Program Files folder of a (previous) per-machine one.
+    -->
+    <Property Id="NC_PERMACHINE_INSTALLDIR" Secure="yes">
         <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
     </Property>
+    <SetProperty Id="INSTALLDIR" Value="[NC_PERMACHINE_INSTALLDIR]" After="FindRelatedProducts" Sequence="both">NC_PERMACHINE_INSTALLDIR AND NOT $(var.PerUserInstall)</SetProperty>
+
+    <!--
+        Previous per-user installation: its path is stored in HKCU (see RegistryVersionInfo, HKMU).
+        An upgrade keeps the per-user scope: MSIINSTALLPERUSER must be set before FindRelatedProducts,
+        which only finds the related products installed in the current scope, so FindRelatedProducts
+        is moved after AppSearch (it runs before it by default).
+    -->
+    <Property Id="NC_PERUSER_INSTALLDIR" Secure="yes">
+        <RegistrySearch Id="RegistryPerUserInstallDir" Type="raw" Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
+    </Property>
+    <SetProperty Action="SetPerUserScopeFromPreviousInstall" Id="MSIINSTALLPERUSER" Value="1" After="AppSearch" Sequence="both">NC_PERUSER_INSTALLDIR AND NOT NSIS_UNINSTALLEXE</SetProperty>
+    <SetProperty Action="SetPerUserInstallDir" Id="INSTALLDIR" Value="[NC_PERUSER_INSTALLDIR]" After="FindRelatedProducts" Sequence="both">NC_PERUSER_INSTALLDIR AND $(var.PerUserInstall)</SetProperty>
+    <InstallUISequence>
+        <FindRelatedProducts After="SetPerUserScopeFromPreviousInstall" />
+    </InstallUISequence>
+    <InstallExecuteSequence>
+        <FindRelatedProducts After="SetPerUserScopeFromPreviousInstall" />
+    </InstallExecuteSequence>
 
     <!-- Detect legacy NSIS installation -->
     <Property Id="NSIS_UNINSTALLEXE">
@@ -51,6 +95,15 @@
             <FileSearch Id="LegacyUninstallFileName" Name="Uninstall.exe"/>
         </RegistrySearch>
     </Property>
+
+    <!--
+        Installation scope wizard page (NcInstallScopeDlg, see InstallScopeDlg.wxs): only shown for a new installation
+        when the scope was not requested on the command line (MSIINSTALLPERUSER=1) and no previous installation
+        (MSI or legacy NSIS) was found, an upgrade keeps the scope of the installed version.
+    -->
+    <SetProperty Id="NC_SHOW_INSTALL_SCOPE_DLG" Value="1" After="FindRelatedProducts" Sequence="ui">NOT Installed AND NOT MSIINSTALLPERUSER AND NOT WIX_UPGRADE_DETECTED AND NOT NSIS_UNINSTALLEXE</SetProperty>
+    <!-- Remember the per-machine installation folder, to restore it when going back from per-user to per-machine -->
+    <SetProperty Id="NC_PERMACHINE_DEFAULTDIR" Value="[INSTALLDIR]" After="CostFinalize" Sequence="ui">NC_SHOW_INSTALL_SCOPE_DLG</SetProperty>
 
     <!-- Property to disable update checks -->
     <Property Id="SKIPAUTOUPDATE" Value="0" />
@@ -71,8 +124,8 @@
         <!-- Install: Remove previous NSIS installation, if detected -->
         <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
 
-        <!-- Install: Ensure ACLs are set -->
-        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed</Custom>
+        <!-- Install: Ensure ACLs are set (per-machine only: a per-user installation must stay writable by its user) -->
+        <Custom Action="EnsureACL" After="InstallFiles">NOT Installed AND NOT $(var.PerUserInstall)</Custom>
 
         <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
         <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
@@ -118,10 +171,33 @@
         <UIRef Id="WixUI_FeatureTree" />
         <UIRef Id="WixUI_ErrorProgressText" />
 
-        <!-- Skip the license page -->
-        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">1</Publish>
+        <DialogRef Id="NcInstallScopeDlg" />
+
+        <!--
+            Skip the license page, and show the installation scope page when needed
+            (the last NewDialog event of a control wins: the Order 3 and 4 events replace the WixUI_FeatureTree ones)
+        -->
+        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">NOT NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="NcInstallScopeDlg" Order="4">NC_SHOW_INSTALL_SCOPE_DLG</Publish>
         <!-- Skip the page on the way back too -->
-        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">1</Publish>
+        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">NOT NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="NcInstallScopeDlg" Order="4">NC_SHOW_INSTALL_SCOPE_DLG</Publish>
+
+        <!--
+            Installation scope page: apply the chosen scope
+              - per-machine: ALLUSERS=1, installed in Program Files (or the folder of a previous per-machine installation)
+              - per-user:    ALLUSERS=2 + MSIINSTALLPERUSER=1, installed in %LOCALAPPDATA%\Programs
+            The installation folder has already been resolved (CostFinalize), so it is changed with SetTargetPath.
+        -->
+        <Publish Dialog="NcInstallScopeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="ALLUSERS" Value="1" Order="1">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="{}" Order="2">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="INSTALLDIR" Value="[NC_PERMACHINE_DEFAULTDIR]" Order="3">NC_INSTALL_SCOPE = "perMachine"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="ALLUSERS" Value="2" Order="4">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="MSIINSTALLPERUSER" Value="1" Order="5">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Property="INSTALLDIR" Value="[LocalAppDataFolder]Programs\$(var.AppName)\" Order="6">NC_INSTALL_SCOPE = "perUser"</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Event="SetTargetPath" Value="INSTALLDIR" Order="7">1</Publish>
+        <Publish Dialog="NcInstallScopeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="8">1</Publish>
 
         <!-- https://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/run_program_after_install.html -->        
         <Publish Dialog="ExitDialog" 
@@ -167,9 +243,12 @@
     </Directory>
 
     <DirectoryRef Id="TARGETDIR">
-        <!-- Version numbers used to detect existing installation (use 32-bit registry like NSIS does) -->
+        <!--
+            Version numbers used to detect existing installation (use 32-bit registry like NSIS does)
+            HKMU = HKLM for per-machine installations, HKCU for per-user installations
+        -->
         <Component Id="RegistryVersionInfo" Guid="*" Win64="no">
-            <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]" />
                 <RegistryValue Type="integer" Name="VersionMajor" Value="$(var.VerMajor)" />
                 <RegistryValue Type="integer" Name="VersionMinor" Value="$(var.VerMinor)" />
@@ -181,23 +260,27 @@
             </RegistryKey>
         </Component>
 
-        <!-- Platform bitness-dependent settings -->
+        <!--
+            Platform bitness-dependent settings
+            The client only reads these device defaults from HKLM, so they are only written for per-machine installations.
+        -->
         <Component Id="RegistryDefaultSettings" Guid="*" Win64="$(var.PlatformWin64)">
+            <Condition>NOT $(var.PerUserInstall)</Condition>
             <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)">
                 <!-- Property to disable update checks -->
                 <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
             </RegistryKey>
         </Component>
-        <!-- Register URI handler -->
+        <!-- Register URI handler (HKMU: machine-wide or current user only, following the installation scope) -->
         <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
                 <RegistryValue Type="string" Name="URL Protocol" Value="" />
             </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
             </RegistryKey>
-            <RegistryKey Root="HKLM" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+            <RegistryKey Root="HKMU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
