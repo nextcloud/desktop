@@ -831,6 +831,104 @@ extension DatabaseTestSuites {
             #expect(!scan.deleted.map(\.ocId).contains("folder"))
         }
 
+        /// An enumerator created before a listing moved its folder reads the folder where it is now, and a 404 there deletes nothing while the parent still lists the folder.
+        @Test func aStaleEnumeratorDoesNotDeleteAFolderThatMoved() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: false)
+            addSeededContents(to: remoteInterface, below: "dst")
+            remoteInterface.enumerateErrorBySuffix = ["/dst/Ontwerp/sub": NKError(statusCode: 404, fallbackDescription: "Not Found")]
+            let staleEnumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            write([metadata("dst", "dst", at: filesUrl, directory: true), metadata("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)], through: .depthOne)
+            let recorder = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+            let observer = MockChangeObserver(enumerator: staleEnumerator)
+            try await observer.enumerateChanges()
+
+            #expect(recorder.paths == [filesUrl + "/dst/Ontwerp/sub", filesUrl + "/dst/Ontwerp"], "The folder and its parent are read where the folder is stored now.")
+            #expect(observer.deletedItemIdentifiers.isEmpty)
+            #expect(manager.itemMetadata(ocId: "subfolder")?.serverUrl == filesUrl + "/dst/Ontwerp")
+            #expect(manager.itemMetadata(ocId: "subfolder")?.deleted == false)
+            #expect(manager.itemMetadata(ocId: "nested")?.deleted == false)
+        }
+
+        /// The enumerator of `sub` gets a 404 before any listing has seen that the server moved `Ontwerp`, so it cannot tell the move from a deletion.
+        @Test func aFolderWhose404ComesBeforeTheMoveIsNotDeleted() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: false)
+            addSeededContents(to: remoteInterface, below: "dst")
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+
+            try await observer.enumerateChanges()
+            _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(observer.deletedItemIdentifiers.isEmpty)
+            expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
+        }
+
+        /// The enumerator of `Ontwerp` takes its move to another parent for a deletion, and the listings of the new path write the folder and its children again.
+        @Test func aFolderMovedAwayFromItsReadableParentGetsItsChildrenBack() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: false)
+            addSeededContents(to: remoteInterface, below: "dst")
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+
+            try await observer.enumerateChanges()
+            _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+            let inFolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let inSubfolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp/sub", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(observer.deletedItemIdentifiers.map(\.rawValue) == ["folder"])
+            #expect(["folder", "file", "subfolder", "nested"].allSatisfy { manager.itemMetadata(ocId: $0)?.deleted == false })
+            #expect(manager.itemMetadata(ocId: "file")?.serverUrl == filesUrl + "/dst/Ontwerp")
+            #expect(manager.itemMetadata(ocId: "nested")?.serverUrl == filesUrl + "/dst/Ontwerp/sub")
+            let updatedInFolder = Set(inFolder.changes?.updated.map(\.ocId) ?? [])
+            #expect(updatedInFolder.isSuperset(of: ["file", "subfolder"]))
+            #expect(inSubfolder.changes?.updated.contains { $0.ocId == "nested" } == true)
+        }
+
+        /// The enumerator of a parked folder does not read the folder's old path, so a 404 there, for the folder that took that path, does not delete the parked folder's children.
+        @Test func theEnumeratorOfAParkedFolderDoesNotReadItsOldPath() async throws {
+            store(metadata("p", "P", at: filesUrl, directory: true), metadata("old-docs", "Docs", at: filesUrl + "/P", directory: true), metadata("file", "f.txt", at: filesUrl + "/P/Docs"))
+            let root = MockRemoteItem.rootItem(account: account)
+            let parent = remoteItem("p", "P", at: filesUrl, directory: true)
+            parent.parent = root
+            root.children = [parent]
+            let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("old-docs"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            write([metadata("new-docs", "Docs", at: filesUrl + "/P", directory: true)], through: .depthOne)
+            let recorder = EnumeratePathRecorder()
+            remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+                recorder.add(remotePath)
+            }
+
+            let error = await #expect(throws: NSFileProviderError.self) {
+                try await observer.enumerateChanges()
+            }
+
+            #expect(error?.code == .cannotSynchronize)
+            #expect(recorder.paths.isEmpty)
+            #expect(manager.itemMetadata(ocId: "file")?.deleted == false)
+        }
+
+        /// A folder deleted on the server, whose parent no longer lists it, is still deleted by its enumerator.
+        @Test func aFolderGoneFromItsReadableParentIsDeletedByItsEnumerator() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true)
+            addSeededContents(to: remoteInterface, below: "src")
+            let atSource = remoteInterface.rootItem?.children.first { $0.identifier == "src" }?.children.first { $0.identifier == "folder" }
+            atSource?.children.removeAll { $0.identifier == "subfolder" }
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+
+            try await observer.enumerateChanges()
+
+            #expect(observer.deletedItemIdentifiers.map(\.rawValue) == ["subfolder"])
+            #expect(manager.itemMetadata(ocId: "subfolder")?.deleted == true)
+        }
+
         // MARK: - A folder reachable at two paths (#10106)
 
         /// The server tree with the seeded folder below `dst`, and also still below `src` when `secondMount` is set.
@@ -852,6 +950,22 @@ extension DatabaseTestSuites {
             }
 
             return MockRemoteInterface(account: account, rootItem: root, pagination: pagination)
+        }
+
+        /// Give the remote `Ontwerp` below the given parent the seeded contents: `a.indd`, and `sub` holding `b.indd`.
+        private func addSeededContents(to remoteInterface: MockRemoteInterface, below parentIdentifier: String) {
+            guard let mount = remoteInterface.rootItem?.children.first(where: { $0.identifier == parentIdentifier })?.children.first(where: { $0.identifier == "folder" }) else {
+                return
+            }
+
+            let file = remoteItem("file", "a.indd", at: mount.remotePath)
+            let sub = remoteItem("subfolder", "sub", at: mount.remotePath, directory: true)
+            let nested = remoteItem("nested", "b.indd", at: mount.remotePath + "/sub")
+            file.parent = mount
+            sub.parent = mount
+            nested.parent = sub
+            mount.children = [file, sub]
+            sub.children = [nested]
         }
 
         private func readDestination(through read: Read, remoteInterface: MockRemoteInterface) async -> RemoteReadResult {
@@ -976,6 +1090,36 @@ extension DatabaseTestSuites {
             #expect(result.error == nil)
             #expect(recorder.paths.filter { $0 != filesUrl + "/dst" } == [filesUrl + "/src"], "Only the stored parent is read besides the listing.")
             #expect((1 ... 3).allSatisfy { manager.itemMetadata(ocId: "moved-\($0)")?.serverUrl == filesUrl + "/dst" })
+        }
+
+        /// A listing of the other path of a folder reachable at two paths leaves out the subfolders stored below the other path, so it must not delete them.
+        @Test func aReadOfTheOtherPathKeepsTheSubfoldersOfTheSecondMount() async {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true)
+            addSeededContents(to: remoteInterface, below: "src")
+            addSeededContents(to: remoteInterface, below: "dst")
+
+            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+
+            #expect(["folder", "file", "subfolder", "nested"].allSatisfy { manager.itemMetadata(ocId: $0)?.deleted == false })
+            #expect(manager.itemMetadata(ocId: "nested").flatMap { manager.parentItemIdentifierFromMetadata($0) } == NSFileProviderItemIdentifier("subfolder"))
+        }
+
+        /// After a failed check moved the folder once, an enumerator created at its other path reads the stored path, so its listing does not move the folder back.
+        @Test func anEnumeratorCreatedAtTheOtherPathReadsTheStoredPath() async throws {
+            seedFolderBelowSource()
+            let remoteInterface = remoteInterface(secondMount: true)
+            addSeededContents(to: remoteInterface, below: "src")
+            addSeededContents(to: remoteInterface, below: "dst")
+            let enumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            remoteInterface.enumerateErrorBySuffix = ["/src/Ontwerp": NKError(statusCode: 500, fallbackDescription: "Internal server error")]
+            _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
+            remoteInterface.enumerateErrorBySuffix = [:]
+
+            try await MockChangeObserver(enumerator: enumerator).enumerateChanges()
+
+            #expect(manager.itemMetadata(ocId: "file")?.serverUrl == filesUrl + "/dst/Ontwerp")
+            #expect(manager.itemMetadata(ocId: "file").flatMap { manager.parentItemIdentifierFromMetadata($0) } == NSFileProviderItemIdentifier("folder"))
         }
 
         @Test func aFolderWhoseStoredPathCannotBeReadIsMoved() async {
