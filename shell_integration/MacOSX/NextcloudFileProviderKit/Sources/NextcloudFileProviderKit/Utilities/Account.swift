@@ -61,6 +61,28 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         return String(remotePath.dropFirst(filesRootPrefix.count))
     }
 
+    func ownsDAVReadURL(_ url: String) -> Bool {
+        func matches(_ root: String) -> Bool {
+            url == root || url.hasPrefix(root + "/")
+        }
+
+        let roots = [davFilesUrl, trashUrl]
+        if roots.contains(where: matches) {
+            return true
+        }
+
+        // NextcloudKit rebuilds URLs from the parsed host and decoded DAV href.
+        guard let decodedBase = URL(string: serverUrl)?.absoluteString.removingPercentEncoding else {
+            return false
+        }
+        let responseBase = decodedBase.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard responseBase != serverUrl else { return false }
+
+        return roots.contains { root in
+            root.hasPrefix(serverUrl + "/") && matches(responseBase + root.dropFirst(serverUrl.count))
+        }
+    }
+
     public init?(dictionary: [String: String]) {
         guard let username = dictionary[AccountDictUsernameKey],
               let id = dictionary[AccountDictIdKey],

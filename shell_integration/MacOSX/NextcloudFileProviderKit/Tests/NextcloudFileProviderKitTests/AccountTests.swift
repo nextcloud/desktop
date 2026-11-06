@@ -104,4 +104,18 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(account.fileName, "u_s_e_r_example_com")
     }
+
+    func testDAVReadURLsAcceptTheConfiguredAndDAVResponseRoots() {
+        let account = Account(user: "user", id: "userId", serverUrl: "https://bücher.de/instance/", password: "password")
+        let responseBase = "https://xn--bcher-kva.de/instance"
+        let filesRoot = responseBase + Account.webDavFilesUrlSuffix + account.id
+        let trashRoot = responseBase + Account.webDavTrashUrlSuffix + account.id + "/trash"
+
+        XCTAssertTrue(account.ownsDAVReadURL(account.davFilesUrl))
+        XCTAssertTrue(account.ownsDAVReadURL(account.trashUrl + "/Folder"))
+        XCTAssertTrue(account.ownsDAVReadURL(filesRoot + "/Folder"))
+        XCTAssertTrue(account.ownsDAVReadURL(trashRoot + "/Folder"))
+        XCTAssertFalse(account.ownsDAVReadURL(filesRoot + "-old/Folder"))
+        XCTAssertFalse(account.ownsDAVReadURL(trashRoot + "-old/Folder"))
+    }
 }

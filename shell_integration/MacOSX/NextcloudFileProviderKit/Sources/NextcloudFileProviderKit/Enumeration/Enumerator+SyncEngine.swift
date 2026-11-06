@@ -212,6 +212,11 @@ extension Enumerator {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        guard account.ownsDAVReadURL(serverUrl) else {
+            logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
+            return RemoteReadResult(error: .invalidData)
+        }
+
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 
         let options: NKRequestOptions = if let pageSettings {

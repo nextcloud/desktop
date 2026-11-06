@@ -141,6 +141,77 @@ struct EnumeratorPersistenceTests {
         #expect(result.changes == nil)
     }
 
+    @Test func workingSetSkipsAStaleURLThatWouldReturn404() async throws {
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://previous.example.com",
+            password: account.password
+        )
+        try storeFolderAndFile(at: previousAccount)
+        remote.enumerateErrorBySuffix = ["/folder": NKError(statusCode: 404, fallbackDescription: "File not found")]
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(remote.readOperationCount == 0)
+        #expect(observer.changedItems.isEmpty)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
+    }
+
+    @Test func containerSkipsAStaleURLThatWouldReturnAnEmpty207() async throws {
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id + "-previous",
+            serverUrl: account.serverUrl,
+            password: account.password
+        )
+        try storeFolderAndFile(at: previousAccount)
+        // The mock serves the old collection without its cached child.
+        remote.injectMock(previousAccount)
+        remote.rootItem?.remotePath = previousAccount.davFilesUrl
+        folder.remotePath = previousAccount.davFilesUrl + "/" + folder.name
+        folder.userId = previousAccount.id
+        folder.children = []
+        remote.enumerateResponseStatusCode = 207
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
+        }
+
+        #expect(remote.readOperationCount == 0)
+        #expect(observer.changedItems.isEmpty)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+    }
+
+    @Test func workingSetReportsA404UnderTheCurrentDAVBaseAsADeletion() async throws {
+        remote.enumerateErrorBySuffix = ["/folder": NKError(statusCode: 404, fallbackDescription: "File not found")]
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+
+        try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
+
+        #expect(remote.readOperationCount == 1)
+        #expect(observer.deletedItemIdentifiers == [.init(folder.identifier)])
+    }
+
+    private func storeFolderAndFile(at previousAccount: Account) throws {
+        var storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
+        storedFolder.apply(account: previousAccount)
+        storedFolder.serverUrl = previousAccount.davFilesUrl
+        manager.addItemMetadata(storedFolder)
+
+        var storedFile = try #require(manager.itemMetadata(ocId: file.identifier))
+        storedFile.apply(account: previousAccount)
+        storedFile.serverUrl = storedFolder.remotePath()
+        manager.addItemMetadata(storedFile)
+    }
+
     private func readFolder() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             folder.remotePath, account: account, remoteInterface: remote,
