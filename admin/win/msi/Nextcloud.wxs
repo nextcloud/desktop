@@ -21,7 +21,28 @@
         UpgradeCode="$(var.UpgradeCode)"
         Language="1033" Codepage="$(var.codepage)" Version="$(var.VerFull)">
     <Package Id="*" Keywords="Installer" Description="$(var.AppName) $(var.VerDesc)" Manufacturer="$(var.AppVendor)"
-        InstallerVersion="300" Platform="$(var.Platform)" Languages="1033" Compressed="yes" SummaryCodepage="$(var.codepage)" InstallScope="perMachine" />
+        InstallerVersion="500" Platform="$(var.Platform)" Languages="1033" Compressed="yes" SummaryCodepage="$(var.codepage)" />
+
+    <!--
+        Dual-purpose package (per-machine or per-user), see:
+        https://learn.microsoft.com/en-us/windows/win32/msi/single-package-authoring
+
+        ALLUSERS=2 lets Windows Installer pick the context from MSIINSTALLPERUSER:
+          - MSIINSTALLPERUSER unset (default): per-machine installation, same behaviour as before
+          - MSIINSTALLPERUSER=1:               per-user installation
+        MSIINSTALLPERUSER is only honoured by Windows Installer 5.0+ (Windows 7 and later),
+        hence InstallerVersion="500" above.
+
+        Administrators can still force a per-machine installation with ALLUSERS=1.
+    -->
+    <Property Id="ALLUSERS" Value="2" />
+
+    <!--
+        Condition that is true for a per-user installation:
+          - ALLUSERS empty: per-user context (this is how Windows Installer reports it once the context is resolved)
+          - ALLUSERS=2 and MSIINSTALLPERUSER=1: per-user context requested, not yet resolved
+    -->
+    <?define PerUserInstall = "(NOT ALLUSERS OR (ALLUSERS=2 AND MSIINSTALLPERUSER=1))" ?>
 
     <!--
         Upgrading: Since we always want to allow up-/downgrade, we don't specify a maximum version, thus
