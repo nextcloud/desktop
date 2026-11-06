@@ -1165,7 +1165,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         // Case 1: Can add sub-items to a directory
         var dirMetadata =
             SendableItemMetadata(ocId: "dir-add-id", fileName: "MyFolder", account: Self.account)
-        dirMetadata.permissions = "NV"
+        dirMetadata.permissions = "CK"
         dirMetadata.directory = true
         let canAddSubItemsItem = Item(
             metadata: dirMetadata,
@@ -1179,7 +1179,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertTrue(
             canAddSubItemsItem.capabilities.contains(.allowsAddingSubItems),
-            "Directory with 'NV' should allow adding sub-items."
+            "Directory with 'CK' should allow adding sub-items."
         )
 
         // Case 2: Cannot add sub-items to a file
@@ -1219,6 +1219,46 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
             cannotAddToLockedDirItem.capabilities.contains(.allowsAddingSubItems),
             "Locked directory should not allow adding sub-items."
         )
+
+        // Case 4: A read-only received share is listed with 'NV' but without 'CK'
+        var readOnlyShareMetadata = dirMetadata
+        readOnlyShareMetadata.ocId = "read-only-share-id"
+        readOnlyShareMetadata.permissions = "SGDNV"
+        let readOnlyShareItem = Item(
+            metadata: readOnlyShareMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            dbManager: Self.dbManager,
+            displayFileActions: false,
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
+        )
+        XCTAssertTrue(
+            readOnlyShareItem.capabilities.isSuperset(of: [.allowsRenaming, .allowsReparenting]),
+            "A received share can still be renamed and moved."
+        )
+        XCTAssertFalse(
+            readOnlyShareItem.capabilities.contains(.allowsAddingSubItems),
+            "A share without 'CK' must not allow adding sub-items."
+        )
+
+        // Case 5: The root and trash containers keep allowing sub-items
+        XCTAssertTrue(
+            makeRootItem().capabilities.contains(.allowsAddingSubItems),
+            "The root container must allow adding sub-items."
+        )
+        let trashItem = Item.trashContainer(
+            remoteInterface: MockRemoteInterface(account: Self.account),
+            account: Self.account,
+            dbManager: Self.dbManager,
+            remoteSupportsTrash: true,
+            log: FileProviderLogMock()
+        )
+        XCTAssertTrue(
+            trashItem.capabilities.contains(.allowsAddingSubItems),
+            "The trash container must keep allowing sub-items."
+        )
     }
 
     func testCapabilitiesFullPermissionsFile() {
@@ -1253,7 +1293,7 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         var metadata = SendableItemMetadata(
             ocId: "full-perms-folder", fileName: "SuperFolder", account: Self.account
         )
-        metadata.permissions = "RGDNVW"
+        metadata.permissions = "RGDNVCK"
         metadata.directory = true
         let item = Item(
             metadata: metadata,
