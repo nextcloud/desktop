@@ -22,16 +22,25 @@ struct EnumeratorPersistenceTests {
         let account = DatabaseTestSuites.account
         let root = MockRemoteItem.rootItem(account: account)
         let folder = MockRemoteItem(
-            identifier: "folder", versionIdentifier: "folder-v1", name: "folder",
-            remotePath: account.davFilesUrl + "/folder", directory: true,
-            account: account.ncKitAccount, username: account.username,
-            userId: account.id, serverUrl: account.serverUrl
+            identifier: "folder",
+            versionIdentifier: "folder-v1",
+            name: "folder",
+            remotePath: account.davFilesUrl + "/folder",
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
         )
         let file = MockRemoteItem(
-            identifier: "file", versionIdentifier: "file-v1", name: "file.txt",
+            identifier: "file",
+            versionIdentifier: "file-v1",
+            name: "file.txt",
             remotePath: folder.remotePath + "/file.txt",
-            account: account.ncKitAccount, username: account.username,
-            userId: account.id, serverUrl: account.serverUrl
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
         )
         folder.parent = root
         root.children = [folder]
@@ -141,17 +150,274 @@ struct EnumeratorPersistenceTests {
         #expect(result.changes == nil)
     }
 
+    @Test func pagedTargetWriteFailureStopsBeforePersistingChildren() throws {
+        folder.versionIdentifier = "folder-v2"
+        file.versionIdentifier = "file-v2"
+        try manager.setItemMetadataWriteFailureForTesting(true, ocId: folder.identifier)
+
+        let result = Enumerator.handlePagedReadResults(
+            files: [folder.toNKFile(), file.toNKFile()],
+            pageIndex: 0,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.error == .metadataDatabaseWriteFailed)
+        #expect(result.metadatas == nil)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.etag == "folder-v1")
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+    }
+
+    @Test(arguments: [0, 1])
+    func pagedChildWriteFailureRollsBackTheWholePageAndAllowsRetry(pageIndex: Int) throws {
+        var storedFolder = folder.toNKFile().toItemMetadata()
+        storedFolder.visitedDirectory = pageIndex > 0
+        storedFolder.keepDownloaded = true
+        manager.addItemMetadata(storedFolder)
+        var stored = file.toNKFile().toItemMetadata()
+        stored.keepDownloaded = true
+        stored.downloaded = true
+        manager.addItemMetadata(stored)
+        folder.versionIdentifier = "folder-v2"
+        file.versionIdentifier = "file-v2"
+        var newFile = file.toNKFile()
+        newFile.ocId = "new-file"
+        newFile.fileId = "new-file"
+        newFile.fileName = "new-file.txt"
+        var oldFile = newFile.toItemMetadata()
+        oldFile.ocId = "old-file"
+        oldFile.fileId = "old-file"
+        oldFile.downloaded = true
+        oldFile.keepDownloaded = true
+        manager.addItemMetadata(oldFile)
+        var failingFile = newFile
+        failingFile.ocId = "failing-file"
+        failingFile.fileId = "failing-file"
+        failingFile.fileName = "failing-file.txt"
+        let files = (pageIndex == 0 ? [folder.toNKFile()] : []) + [file.toNKFile(), newFile, failingFile]
+        try manager.setItemMetadataWriteFailureForTesting(true, ocId: failingFile.ocId)
+
+        let failed = Enumerator.handlePagedReadResults(
+            files: files,
+            pageIndex: pageIndex,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+
+        #expect(failed.error == .metadataDatabaseWriteFailed)
+        #expect(failed.metadatas == nil)
+        #expect(manager.itemMetadata(ocId: newFile.ocId) == nil)
+        #expect(manager.itemMetadata(ocId: oldFile.ocId)?.deleted == false)
+        #expect(manager.itemMetadata(ocId: failingFile.ocId) == nil)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+        #expect(manager.itemMetadata(ocId: file.identifier)?.keepDownloaded == true)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.downloaded == true)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.etag == "folder-v1")
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.visitedDirectory == storedFolder.visitedDirectory)
+
+        try manager.setItemMetadataWriteFailureForTesting(false)
+        let recovered = Enumerator.handlePagedReadResults(
+            files: files,
+            pageIndex: pageIndex,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+
+        #expect(recovered.error == nil)
+        #expect(recovered.metadatas?.map(\.ocId) == [file.identifier, newFile.ocId, failingFile.ocId])
+        let reported = try #require(recovered.metadatas?.first { $0.ocId == file.identifier })
+        #expect(reported.etag == "file-v2")
+        #expect(reported.keepDownloaded)
+        #expect(reported.downloaded)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == reported.etag)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.keepDownloaded == reported.keepDownloaded)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.downloaded == reported.downloaded)
+        #expect(manager.itemMetadata(ocId: newFile.ocId)?.keepDownloaded == true)
+        #expect(manager.itemMetadata(ocId: newFile.ocId)?.downloaded == true)
+        #expect(manager.itemMetadata(ocId: oldFile.ocId)?.deleted == true)
+        #expect(manager.itemMetadata(ocId: failingFile.ocId)?.keepDownloaded == true)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.etag == (pageIndex == 0 ? "folder-v2" : "folder-v1"))
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.visitedDirectory == true)
+    }
+
+    @Test func pagedRemoteReadPropagatesPersistenceFailure() async throws {
+        file.versionIdentifier = "file-v2"
+        try manager.setItemMetadataWriteFailureForTesting(true, ocId: file.identifier)
+
+        let result = await Enumerator.readServerUrl(
+            folder.remotePath,
+            pageSettings: (page: nil, index: 0, size: 100),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        #expect(remote.readOperationCount == 1)
+        #expect(result.error == .metadataDatabaseWriteFailed)
+        #expect(result.error?.fileProviderError?.code == .cannotSynchronize)
+        #expect(result.metadatas == nil)
+        #expect(result.changes == nil)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+    }
+
+    @Test func failedPageDoesNotHideLockChangesFromTheWorkingSet() async throws {
+        let account = Account(user: UUID().uuidString, id: "user", serverUrl: "https://mock.nc.com", password: "password")
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let root = MockRemoteItem.rootItem(account: account)
+        let folder = MockRemoteItem(
+            identifier: "folder",
+            versionIdentifier: "folder-v1",
+            name: "folder",
+            remotePath: account.davFilesUrl + "/folder",
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        let file = MockRemoteItem(
+            identifier: "file",
+            versionIdentifier: "file-v1",
+            name: "file.txt",
+            remotePath: folder.remotePath + "/file.txt",
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        let laterFile = MockRemoteItem(
+            identifier: "later-file",
+            versionIdentifier: "later-v1",
+            name: "later.txt",
+            remotePath: folder.remotePath + "/later.txt",
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        folder.parent = root
+        root.children = [folder]
+        file.parent = folder
+        laterFile.parent = folder
+        folder.children = [file, laterFile]
+        let baselineDate = Date(timeIntervalSince1970: anchorDate.timeIntervalSince1970.rounded(.down) - 60)
+        root.modificationDate = baselineDate
+        folder.modificationDate = baselineDate
+        file.modificationDate = baselineDate
+        laterFile.modificationDate = baselineDate
+        for directory in [root, folder] {
+            var metadata = directory.toNKFile().toItemMetadata()
+            metadata.visitedDirectory = true
+            metadata.syncTime = baselineDate
+            manager.addItemMetadata(metadata)
+        }
+        for child in folder.children {
+            var metadata = child.toNKFile().toItemMetadata()
+            // A downloaded sibling keeps the folder eligible for a scan even with an unchanged ETag.
+            metadata.downloaded = child.identifier == laterFile.identifier
+            metadata.syncTime = baselineDate
+            manager.addItemMetadata(metadata)
+        }
+        file.locked = true
+        file.lockOwner = "other-user"
+        file.lockTimeOut = anchorDate.addingTimeInterval(3600)
+        laterFile.locked = true
+        laterFile.lockOwner = file.lockOwner
+        laterFile.lockTimeOut = file.lockTimeOut
+        let remote = MockRemoteInterface(account: account, rootItem: root, pagination: true)
+        remote.capabilities = remote.capabilities.replacingOccurrences(of: "\"major\": 28", with: "\"major\": 31")
+        #expect(remote.directMockCapabilities()?.major == 31)
+        let pageSize = folder.children.count + 1
+        remote.enumerateCallHandler = { path, depth, _, _, _, _, options, _ in
+            #expect(path == folder.remotePath)
+            #expect(depth == .targetAndDirectChildren)
+            #expect(options.paginate)
+            #expect(options.paginateOffset == 0)
+            #expect(options.paginateCount == pageSize)
+            #expect(options.paginateToken == nil)
+        }
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(folder.identifier),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            pageSize: pageSize,
+            log: FileProviderLogMock()
+        )
+        try manager.setItemMetadataWriteFailureForTesting(true, ocId: laterFile.identifier)
+        let page = NSFileProviderPage.initialPageSortedByName as NSFileProviderPage
+        let failed = MockEnumerationObserver(enumerator: enumerator)
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await failed.enumerateItemsPage(page: page)
+        }
+
+        #expect(remote.readOperationCount == 1)
+        #expect(failed.items.isEmpty)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.lock == false)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.downloaded == false)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.syncTime == baselineDate)
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.etag == "folder-v1")
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.syncTime == baselineDate)
+        #expect(manager.itemMetadata(ocId: laterFile.identifier)?.etag == "later-v1")
+        #expect(manager.itemMetadata(ocId: laterFile.identifier)?.lock == false)
+
+        try manager.setItemMetadataWriteFailureForTesting(false)
+        remote.enumerateCallHandler = nil
+        // Change enumeration must still discover the lock before the failed item page is retried.
+        let workingSet = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+        let changes = MockChangeObserver(enumerator: workingSet)
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        try await changes.enumerateChanges(from: anchor)
+
+        #expect(changes.error == nil)
+        #expect(changes.deletedItemIdentifiers.isEmpty)
+        let changedFile = try #require(changes.changedItems.first { $0.itemIdentifier.rawValue == file.identifier } as? Item)
+        #expect(changedFile.metadata.lock)
+        #expect(changedFile.metadata.etag == "file-v1")
+        #expect(!changedFile.metadata.downloaded)
+        #expect(changedFile.metadata.lockOwner == file.lockOwner)
+        #expect(!changedFile.capabilities.contains(.allowsWriting))
+        #expect(manager.itemMetadata(ocId: file.identifier)?.lock == true)
+
+        let recovered = MockEnumerationObserver(enumerator: enumerator)
+        try await recovered.enumerateItemsPage(page: page)
+
+        #expect(recovered.error == nil)
+        #expect(Set(recovered.items.map(\.itemIdentifier)) == Set([file, laterFile].map { NSFileProviderItemIdentifier($0.identifier) }))
+        let reportedFile = try #require(recovered.items.first { $0.itemIdentifier.rawValue == file.identifier } as? Item)
+        #expect(reportedFile.metadata.lock)
+        #expect(!reportedFile.capabilities.contains(.allowsWriting))
+        #expect(recovered.page == nil)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+    }
+
     private func readFolder() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
-            folder.remotePath, account: account, remoteInterface: remote,
-            dbManager: manager, depth: .targetAndDirectChildren, log: FileProviderLogMock()
+            folder.remotePath,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
         )
     }
 
     private func makeEnumerator(_ identifier: NSFileProviderItemIdentifier) throws -> Enumerator {
         try Enumerator(
-            enumeratedItemIdentifier: identifier, account: account,
-            remoteInterface: remote, dbManager: manager, log: FileProviderLogMock()
+            enumeratedItemIdentifier: identifier,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
         )
     }
 }
