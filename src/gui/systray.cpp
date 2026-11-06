@@ -567,9 +567,6 @@ void Systray::setupContextMenu()
     // will not work on GNOME, as the old menu will not be correctly replaced.
     setContextMenu(_contextMenu);
 
-#if defined(Q_OS_LINUX)
-    setupQtTrayContextMenu(_contextMenu, this);
-#else
     if (AccountManager::instance()->accounts().isEmpty()) {
         _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
     } else {
@@ -597,7 +594,6 @@ void Systray::setupContextMenu()
         resumeAction->setVisible(anyPaused);
         resumeAction->setEnabled(anyPaused);
     });
-#endif
 }
 
 void Systray::destroyDialog(QQuickWindow *dialog) const
