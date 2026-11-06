@@ -56,7 +56,8 @@ private Q_SLOTS:
         const auto userAgent = userAgentString();
         QCoreApplication::setApplicationName(previousName);
 
-        QVERIFY(userAgent.contains(QByteArray("(") + expectedName + ", "));
+        const auto expectedBranding = QByteArray("(").append(expectedName).append(", ");
+        QVERIFY(userAgent.contains(expectedBranding));
         QCOMPARE(QString::fromUtf8(userAgent).toUtf8(), userAgent);
     }
 
