@@ -32,6 +32,7 @@ install(FILES
         Nextcloud.wxs
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
+        InstallScopeDlg.wxs
         gui/banner.bmp
         gui/dialog.bmp
     DESTINATION msi/)
