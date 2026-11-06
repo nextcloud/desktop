@@ -109,6 +109,7 @@ extension Enumerator {
                 serverUrl,
                 pageSettings: pageSettings,
                 account: account,
+                sourceMetadata: enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 depth: .targetAndDirectChildren,

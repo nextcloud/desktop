@@ -10,7 +10,7 @@ public extension Item {
     private func fetchDirectoryContents(
         itemIdentifier: NSFileProviderItemIdentifier,
         directoryLocalPath: String,
-        directoryRemotePath: String,
+        directoryMetadata: SendableItemMetadata,
         domain: NSFileProviderDomain?,
         progress: Progress
     ) async throws {
@@ -21,13 +21,16 @@ public extension Item {
         // 2. Download everything within this directory
         // 3. Detect child directories
         // 4. Repeat 1 -> 3 for each child directory
-        var remoteDirectoryPaths = [directoryRemotePath]
+        let directoryRemotePath = directoryMetadata.remotePath()
+        var remoteDirectories = [directoryMetadata]
         var downloadedFileOcIds: [String] = []
-        while !remoteDirectoryPaths.isEmpty {
-            let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
+        while !remoteDirectories.isEmpty {
+            let directory = remoteDirectories.removeFirst()
+            let remoteDirectoryPath = directory.remotePath()
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
+                sourceMetadata: directory,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: logger.log
@@ -58,7 +61,7 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
 
                 if metadata.directory {
-                    remoteDirectoryPaths.append(remotePath)
+                    remoteDirectories.append(metadata)
                     try FileManager.default.createDirectory(
                         at: URL(fileURLWithPath: childLocalPath),
                         withIntermediateDirectories: true,
@@ -182,7 +185,7 @@ public extension Item {
                 try await fetchDirectoryContents(
                     itemIdentifier: itemIdentifier,
                     directoryLocalPath: localPath.path,
-                    directoryRemotePath: serverUrlFileName,
+                    directoryMetadata: metadata,
                     domain: domain,
                     progress: progress
                 )
@@ -262,7 +265,7 @@ public extension Item {
         ) else {
             logger.error("Could not find parent item id for file.", [.name: metadata.fileName])
 
-            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
+            return (nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: updatedMetadata.contentType)

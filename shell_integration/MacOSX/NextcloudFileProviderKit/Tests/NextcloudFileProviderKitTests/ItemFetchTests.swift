@@ -98,6 +98,58 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.downloaded, true, "A reconciliation before the system reports the download must not undo it.")
     }
 
+    func testDownloadedFileWithAnUnresolvedParentCanBeRetried() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let directory = MockRemoteItem(
+            identifier: "missing-parent",
+            name: "folder",
+            remotePath: Self.account.davFilesUrl + "/folder",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        let file = MockRemoteItem(
+            identifier: UUID().uuidString,
+            name: "nested.txt",
+            remotePath: directory.remotePath + "/nested.txt",
+            data: Data([1, 2, 3]),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        rootItem.children = [directory]
+        directory.parent = rootItem
+        directory.children = [file]
+        file.parent = directory
+        remoteInterface.enumerateErrorBySuffix[directory.remotePath] = NKError(
+            errorCode: 503,
+            errorDescription: "Parent lookup unavailable"
+        )
+        let metadata = file.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .init(directory.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let destination = FileManager.default.temporaryDirectory.appendingPathComponent(file.identifier)
+        defer { try? FileManager.default.removeItem(at: destination) }
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+    }
+
     func testFetchAliasFileContentsDetectsAliasType() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.injectMock(Self.account)

@@ -48,6 +48,7 @@ extension Enumerator {
             let readResult = await Self.readServerUrl(
                 serverUrl,
                 account: account,
+                sourceMetadata: enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: logger.log

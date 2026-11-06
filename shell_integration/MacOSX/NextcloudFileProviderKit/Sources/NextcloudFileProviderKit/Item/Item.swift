@@ -477,7 +477,27 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     }
 
     public static func storedItem(identifier: NSFileProviderItemIdentifier, account: Account, remoteInterface: RemoteInterface, dbManager: FilesDatabaseManager, log: any FileProviderLogging) async -> Item? {
-        // resolve the given identifier to a record in the model
+        try? await resolveStoredItem(
+            identifier: identifier,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            log: log
+        )
+    }
+
+    static func resolveStoredItem(
+        identifier: NSFileProviderItemIdentifier,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        includeDeleted: Bool = true,
+        unresolvedParentError: any Error = NSFileProviderError(.cannotSynchronize),
+        log: any FileProviderLogging
+    ) async throws -> Item {
+        guard !identifier.rawValue.isEmpty else {
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+        }
 
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
 
@@ -500,8 +520,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier) else {
-            return nil
+        guard let metadata = dbManager.itemMetadata(identifier), includeDeleted || !metadata.deleted else {
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
         let parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
@@ -515,7 +535,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         }
 
         guard let parentItemIdentifier else {
-            return nil
+            throw unresolvedParentError
         }
 
         // Display File Actions
