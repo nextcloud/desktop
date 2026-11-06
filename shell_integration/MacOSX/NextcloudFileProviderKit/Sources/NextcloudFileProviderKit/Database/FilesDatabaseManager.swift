@@ -667,6 +667,17 @@ public final class FilesDatabaseManager: Sendable {
             if toWrite.etag == existing.etag {
                 toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
             }
+
+            // Skip a `normal` row whose remote state is unchanged, and also compare location and `deleted` because this row was found by `ocId` alone, and `visitedDirectory` because it is local-only. Rows that are not `normal` are always written, which resets them.
+            if !existing.deleted,
+               existing.status == Status.normal.rawValue,
+               existing.hasSameLocation(as: toWrite),
+               existing.isInSameDatabaseStoreableRemoteState(toWrite),
+               existing.visitedDirectory == toWrite.visitedDirectory
+            {
+                logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+                return toWrite
+            }
         } else {
             // The ocId lookup missed. Before falling back to defaults from the
             // server payload, look for a single non-deleted, non-local-lock row
@@ -701,17 +712,6 @@ public final class FilesDatabaseManager: Sendable {
                 toWrite.lockToken = existing.lockToken
                 if toWrite.etag == existing.etag {
                     toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                }
-
-                // Skip a `normal` row whose remote state is unchanged, and also compare location and `deleted` because this row was found by `ocId` alone, and `visitedDirectory` because it is local-only. Rows that are not `normal` are always written, which resets them.
-                if !existing.deleted,
-                   existing.status == Status.normal.rawValue,
-                   existing.hasSameLocation(as: toWrite),
-                   existing.isInSameDatabaseStoreableRemoteState(toWrite),
-                   existing.visitedDirectory == toWrite.visitedDirectory
-                {
-                    logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
-                    return
                 }
             } else {
                 // No prior row at this ocId or logical address: this is a
