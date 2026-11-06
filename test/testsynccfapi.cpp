@@ -65,6 +65,14 @@ void setPinState(const QString &path, PinState state, cfapi::SetPinRecurseMode m
     }
 }
 
+bool hasExcludedPinState(const QString &path)
+{
+    // CfGetPlaceholderInfo() fails on regular files, so read the attributes that encode CF_PIN_STATE_EXCLUDED.
+    const auto attributes = GetFileAttributesW(reinterpret_cast<const wchar_t *>(QDir::toNativeSeparators(path).utf16()));
+    constexpr auto excludedAttributes = DWORD{FILE_ATTRIBUTE_PINNED | FILE_ATTRIBUTE_UNPINNED};
+    return attributes != INVALID_FILE_ATTRIBUTES && (attributes & excludedAttributes) == excludedAttributes;
+}
+
 bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
@@ -1173,6 +1181,61 @@ private Q_SLOTS:
         CFVERIFY_VIRTUAL(fakeFolder, "onlinerenamed2/file1rename");
 
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
+    }
+
+    void testIgnoredFileGetsExcludedPinState()
+    {
+        FakeFolder fakeFolder{FileInfo()};
+        setupVfs(fakeFolder);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"*.ignored"_s);
+
+        fakeFolder.localModifier().mkdir(u"A"_s);
+        fakeFolder.localModifier().insert(u"A/foo.ignored"_s);
+        fakeFolder.localModifier().insert(u"A/bar"_s);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentRemoteState().find(u"A/foo.ignored"_s));
+        QVERIFY(hasExcludedPinState(fakeFolder.localPath() + u"A/foo.ignored"_s));
+        QVERIFY(!hasExcludedPinState(fakeFolder.localPath() + u"A/bar"_s));
+        QVERIFY(!hasExcludedPinState(fakeFolder.localPath() + u"A"_s));
+    }
+
+    void testFileNoLongerIgnoredSyncs()
+    {
+        FakeFolder fakeFolder{FileInfo()};
+        auto vfs = setupVfs(fakeFolder);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"*.ignored"_s);
+
+        fakeFolder.localModifier().insert(u"foo.ignored"_s);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(hasExcludedPinState(fakeFolder.localPath() + u"foo.ignored"_s));
+
+        // The renamed file keeps its attributes, so it must lose the excluded pin state when it gets converted.
+        fakeFolder.localModifier().rename(u"foo.ignored"_s, u"foo"_s);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find(u"foo"_s));
+        CFVERIFY_NONVIRTUAL(fakeFolder, u"foo"_s);
+        QVERIFY(!hasExcludedPinState(fakeFolder.localPath() + u"foo"_s));
+        QCOMPARE(*vfs->pinState(u"foo"_s), PinState::Inherited);
+    }
+
+    void testExcludedStatusDoesNotChangePlaceholderPinState()
+    {
+        FakeFolder fakeFolder{FileInfo()};
+        auto vfs = setupVfs(fakeFolder);
+
+        fakeFolder.localModifier().insert(u"foo"_s);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState(u"foo"_s), PinState::Inherited);
+
+        // Locked or restored placeholders are reported as excluded too.
+        vfs->fileStatusChanged(fakeFolder.localPath() + u"foo"_s, SyncFileStatus::StatusExcluded);
+        QCOMPARE(*vfs->pinState(u"foo"_s), PinState::Inherited);
+
+        // A path that does not exist (anymore) is skipped.
+        vfs->fileStatusChanged(fakeFolder.localPath() + u"missing"_s, SyncFileStatus::StatusExcluded);
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + u"missing"_s));
     }
 
     void testEmptyFolderInOnlineOnlyRoot()
