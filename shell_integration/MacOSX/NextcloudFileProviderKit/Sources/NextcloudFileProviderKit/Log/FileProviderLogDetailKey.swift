@@ -36,6 +36,21 @@ public enum FileProviderLogDetailKey: String, Sendable {
     case item
 
     ///
+    /// The number of items reconciled as evicted in one pass.
+    ///
+    case evictedCount
+
+    ///
+    /// The number of recently downloaded items held back from reconciliation until the system confirms them.
+    ///
+    case deferredCount
+
+    ///
+    /// The number of items newly reported as materialized in one pass.
+    ///
+    case materializedCount
+
+    ///
     /// An `NKLock` as provided by NextcloudKit when a file system item is locked on the server.
     ///
     case lock
