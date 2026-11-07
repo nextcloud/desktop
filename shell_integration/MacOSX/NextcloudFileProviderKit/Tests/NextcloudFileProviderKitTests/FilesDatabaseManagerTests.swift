@@ -2297,6 +2297,28 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedRotated.downloaded)
     }
 
+    /// The redundant-write skip compares remote state, not `ocId`, so it must not apply to a row found by logical address.
+    func testAddItemMetadataPreservingLocalStateWritesOcIdRotationWithUnchangedRemoteState() throws {
+        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let date = Date(timeIntervalSince1970: 1_000_000)
+
+        var original = SendableItemMetadata(ocId: "originalOcId", fileName: "rotated.txt", account: account)
+        original.etag = "v1"
+        original.date = date
+        Self.dbManager.addItemMetadata(original)
+
+        var rotated = SendableItemMetadata(ocId: "rotatedOcId", fileName: "rotated.txt", account: account)
+        rotated.etag = "v1"
+        rotated.date = date
+
+        Self.dbManager.addItemMetadataPreservingLocalState(rotated)
+
+        let storedRotated = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "rotatedOcId"))
+        XCTAssertFalse(storedRotated.deleted)
+        let storedOriginal = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "originalOcId"))
+        XCTAssertTrue(storedOriginal.deleted, "Original row should be soft-deleted after rotation")
+    }
+
     func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
