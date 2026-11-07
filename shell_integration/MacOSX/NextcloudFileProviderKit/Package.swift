@@ -69,6 +69,14 @@ let package = Package(
         .testTarget(
             name: "NextcloudFileProviderKitTests",
             dependencies: ["NextcloudFileProviderKit", "TestInterface"]
+        ),
+        .executableTarget(
+            name: "NextcloudFileProviderKitBenchmarks",
+            dependencies: [
+                "NextcloudFileProviderKit",
+                .product(name: "NextcloudKit", package: "NextcloudKit")
+            ],
+            path: "Benchmarks/Harness"
         )
     ]
 )
