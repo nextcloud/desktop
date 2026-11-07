@@ -20,11 +20,17 @@
 
 #include <QDesktopServices>
 #include <QDialog>
+#include <QFile>
 #include <QScopeGuard>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
+
+#include <openssl/pem.h>
+#include <openssl/pkcs12.h>
+
+#include <memory>
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
@@ -91,7 +97,41 @@ public:
     {
         controller.initialiseLocalSyncFolder();
     }
+
+    static void loadClientCertificateFile(AccountWizardController &controller, const QString &path)
+    {
+        controller.loadClientCertificateFile(QUrl::fromLocalFile(path));
+    }
 };
+
+}
+
+namespace {
+
+// Qt cannot write PKCS#12, so build one from the e2e test certificate and key.
+bool writeTestPkcs12(const QString &path, const char *password)
+{
+    QFile certFile(u"e2etestsfakecert.pem"_s);
+    QFile keyFile(u"e2etestsfakecertprivatekey.pem"_s);
+    if (!certFile.open(QFile::ReadOnly) || !keyFile.open(QFile::ReadOnly)) {
+        return false;
+    }
+    const auto certPem = certFile.readAll();
+    const auto keyPem = keyFile.readAll();
+    const std::unique_ptr<BIO, decltype(&BIO_free)> certBio(BIO_new_mem_buf(certPem.constData(), static_cast<int>(certPem.size())), BIO_free);
+    const std::unique_ptr<BIO, decltype(&BIO_free)> keyBio(BIO_new_mem_buf(keyPem.constData(), static_cast<int>(keyPem.size())), BIO_free);
+    const std::unique_ptr<X509, decltype(&X509_free)> cert(PEM_read_bio_X509(certBio.get(), nullptr, nullptr, nullptr), X509_free);
+    const std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)> key(PEM_read_bio_PrivateKey(keyBio.get(), nullptr, nullptr, nullptr), EVP_PKEY_free);
+    const std::unique_ptr<PKCS12, decltype(&PKCS12_free)> pkcs12(
+        PKCS12_create(password, "test", key.get(), cert.get(), nullptr, NID_aes_256_cbc, NID_aes_256_cbc, 0, 0, 0), PKCS12_free);
+    unsigned char *der = nullptr;
+    const auto length = pkcs12 ? i2d_PKCS12(pkcs12.get(), &der) : 0;
+    const QByteArray data(reinterpret_cast<const char *>(der), qMax(length, 0));
+    OPENSSL_free(der);
+
+    QFile file(path);
+    return !data.isEmpty() && file.open(QFile::WriteOnly) && file.write(data) == data.size();
+}
 
 }
 
@@ -740,6 +780,65 @@ private Q_SLOTS:
             QSKIP("This build chooses no sync options, so the wizard always finishes.");
         }
         QCOMPARE(controller.currentStep() == AccountWizardController::SyncOptionsStep, showsSyncOptions);
+    }
+
+    void unusableClientCertificateFileIsRejectedWhenChosen()
+    {
+        QFETCH(bool, createEmptyFile);
+        QFETCH(QString, error);
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        if (createEmptyFile) {
+            QFile file(path);
+            QVERIFY(file.open(QFile::WriteOnly));
+        }
+        AccountWizardController controller;
+
+        AccountWizardControllerTestAccess::loadClientCertificateFile(controller, path);
+
+        QCOMPARE(controller.clientCertificateError(), error);
+        QVERIFY(!controller.clientCertificateValid());
+    }
+
+    void unusableClientCertificateFileIsRejectedWhenChosen_data()
+    {
+        QTest::addColumn<bool>("createEmptyFile");
+        QTest::addColumn<QString>("error");
+        QTest::newRow("missing") << false << u"Could not access the selected certificate file."_s;
+        QTest::newRow("empty") << true << u"The selected certificate file is empty."_s;
+    }
+
+    // Regression: the bundle is read when chosen, so submitting must not need the file again.
+    void submittingClientCertificateDoesNotReopenTheFile()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        QVERIFY(writeTestPkcs12(path, "secret"));
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::loadClientCertificateFile(controller, path);
+        QVERIFY(QFile::remove(path));
+
+        controller.setClientCertificatePassword(u"secret"_s);
+
+        QVERIFY(controller.submitClientCertificate());
+        QVERIFY(controller.clientCertificateError().isEmpty());
+    }
+
+    void submittingClientCertificateWithWrongPasswordKeepsTheSelection()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        QVERIFY(writeTestPkcs12(path, "secret"));
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::loadClientCertificateFile(controller, path);
+
+        controller.setClientCertificatePassword(u"wrong"_s);
+
+        QVERIFY(!controller.submitClientCertificate());
+        QCOMPARE(controller.clientCertificateError(), u"Could not load certificate. Maybe wrong password?"_s);
+        QVERIFY(controller.clientCertificateValid());
     }
 
 #ifdef Q_OS_LINUX

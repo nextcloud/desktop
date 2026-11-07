@@ -2108,16 +2108,36 @@ void AccountWizardController::chooseClientCertificate()
         return;
     }
 
-#ifdef Q_OS_MACOS
-    const auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(fileUrl);
-    if (!scopedAccess->isValid()) {
-        _clientCertificateError = tr("Could not access the selected certificate file.");
+    loadClientCertificateFile(fileUrl);
+}
+
+void AccountWizardController::loadClientCertificateFile(const QUrl &fileUrl)
+{
+    // The open panel already granted access; read the file now so nothing has to re-acquire it later.
+    const auto localPath = fileUrl.toLocalFile();
+    QFile certFile(localPath);
+    QByteArray certData;
+    QString error;
+    if (!certFile.open(QFile::ReadOnly)) {
+        qCWarning(lcAccountWizardController) << "Failed to open certificate file:" << localPath << certFile.errorString();
+        error = tr("Could not access the selected certificate file.");
+    } else {
+        certData = certFile.readAll();
+        if (certData.isEmpty()) {
+            qCWarning(lcAccountWizardController) << "Certificate file is empty:" << localPath;
+            error = tr("The selected certificate file is empty.");
+        }
+    }
+    if (certData.isEmpty()) {
+        _clientCertificatePath.clear();
+        _clientCertificateData.clear();
+        _clientCertificateError = error;
         Q_EMIT clientCertificateChanged();
         return;
     }
-#endif
 
-    _clientCertificatePath = fileUrl.toLocalFile();
+    _clientCertificateData = certData;
+    _clientCertificatePath = localPath;
     _clientCertificateError.clear();
     Q_EMIT clientCertificateChanged();
 }
@@ -2128,31 +2148,24 @@ bool AccountWizardController::submitClientCertificate()
         return false;
     }
 
-    QFile certFile(_clientCertificatePath);
-    if (!certFile.open(QFile::ReadOnly)) {
-        qCWarning(lcAccountWizardController) << "Failed to open certificate file:" << _clientCertificatePath;
-        _clientCertificateError = tr("Could not access the selected certificate file.");
-        Q_EMIT clientCertificateChanged();
-        return false;
-    }
-
-    const auto certData = certFile.readAll();
     const auto certPassword = _clientCertificatePassword.toLocal8Bit();
 
-    auto certDataCopy = certData;
-    QBuffer certDataBuffer(&certDataCopy);
-    certDataBuffer.open(QIODevice::ReadOnly);
-    if (!QSslCertificate::importPkcs12(&certDataBuffer,
-            &_clientSslKey,
-            &_clientSslCertificate,
-            &_clientSslCaCertificates,
-            certPassword)) {
-        _clientCertificateError = tr("Could not load certificate. Maybe wrong password?");
-        Q_EMIT clientCertificateChanged();
-        return false;
+    {
+        QBuffer certDataBuffer(&_clientCertificateData);
+        certDataBuffer.open(QIODevice::ReadOnly);
+        if (!QSslCertificate::importPkcs12(&certDataBuffer,
+                &_clientSslKey,
+                &_clientSslCertificate,
+                &_clientSslCaCertificates,
+                certPassword)) {
+            qCWarning(lcAccountWizardController) << "Failed to import PKCS#12 bundle:" << _clientCertificatePath;
+            _clientCertificateError = tr("Could not load certificate. Maybe wrong password?");
+            Q_EMIT clientCertificateChanged();
+            return false;
+        }
     }
 
-    _clientCertBundle = certData;
+    _clientCertBundle = _clientCertificateData;
     _clientCertPassword = certPassword;
 
     clearClientCertificateInput();
@@ -2163,6 +2176,7 @@ bool AccountWizardController::submitClientCertificate()
 void AccountWizardController::clearClientCertificateInput()
 {
     _clientCertificatePath.clear();
+    _clientCertificateData.clear();
     _clientCertificatePassword.clear();
     _clientCertificateError.clear();
     Q_EMIT clientCertificateChanged();
