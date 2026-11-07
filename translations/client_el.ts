@@ -891,17 +891,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="344"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Το αίτημα διαρκεί περισσότερο από το συνηθισμένο. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό. Εάν εξακολουθεί να μην λειτουργεί, επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="350"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="352"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Προέκυψε απρόσμενο σφάλμα. Δοκιμάστε ξανά τον συγχρονισμό ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν το πρόβλημα συνεχίζεται.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="591"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="593"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>Ο διακομιστής επιβάλλει αυστηρή ασφάλεια μεταφοράς και δεν δέχεται μη αξιόπιστα πιστοποιητικά.</translation>
     </message>
@@ -7045,132 +7045,132 @@ Server replied with error: %2</source>
         <translation>Διαδρομές που ξεκινούν με τον χαρακτήρα &apos;#&apos; δεν υποστηρίζονται σε λειτουργία VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Δεν μπορέσαμε να επεξεργαστούμε το αίτημά σας. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό αργότερα. Εάν αυτό συνεχίζει να συμβαίνει, επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Πρέπει να συνδεθείτε για να συνεχίσετε. Εάν έχετε προβλήματα με τα διαπιστευτήριά σας, παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Δεν έχετε πρόσβαση σε αυτόν τον πόρο. Εάν πιστεύετε ότι αυτό είναι λάθος, παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Δεν μπορέσαμε να βρούμε αυτό που ψάχνατε. Μπορεί να έχει μετακινηθεί ή διαγραφεί. Εάν χρειάζεστε βοήθεια, επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Φαίνεται ότι χρησιμοποιείτε έναν διαμεσολαβητή που απαιτεί πιστοποίηση. Παρακαλώ ελέγξτε τις ρυθμίσεις και τα διαπιστευτήρια του διαμεσολαβητή σας. Εάν χρειάζεστε βοήθεια, επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Το αίτημα διαρκεί περισσότερο από το συνηθισμένο. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό. Εάν εξακολουθεί να μην λειτουργεί, επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>Τα αρχεία του διακομιστή άλλαξαν ενώ εργαζόσασταν. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό. Επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν το πρόβλημα συνεχίζεται.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Αυτός ο φάκελος ή αρχείο δεν είναι πλέον διαθέσιμος. Εάν χρειάζεστε βοήθεια, παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>Το αίτημα δεν μπορούσε να ολοκληρωθεί επειδή ορισμένες απαιτούμενες προϋποθέσεις δεν πληρούνταν. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό αργότερα. Εάν χρειάζεστε βοήθεια, παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Το αρχείο είναι πολύ μεγάλο για μεταφόρτωση. Ίσως χρειαστεί να επιλέξετε ένα μικρότερο αρχείο ή να επικοινωνήσετε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>Η διεύθυνση που χρησιμοποιήθηκε για το αίτημα είναι πολύ μεγάλη για να την χειριστεί ο διακομιστής. Παρακαλώ δοκιμάστε να συντομεύσετε τις πληροφορίες που στέλνετε ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Αυτός ο τύπος αρχείου δεν υποστηρίζεται. Παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Ο διακομιστής δεν μπόρεσε να επεξεργαστεί το αίτημά σας επειδή ορισμένες πληροφορίες ήταν εσφαλμένες ή ελλιπείς. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό αργότερα ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>Ο πόρος που προσπαθείτε να προσπελάσετε είναι προς το παρόν κλειδωμένος και δεν μπορεί να τροποποιηθεί. Παρακαλώ δοκιμάστε να το αλλάξετε αργότερα ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Αυτό το αίτημα δεν μπορούσε να ολοκληρωθεί επειδή λείπουν ορισμένες απαιτούμενες προϋποθέσεις. Παρακαλώ δοκιμάστε ξανά αργότερα ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Κάνατε πάρα πολλά αιτήματα. Παρακαλώ περιμένετε και δοκιμάστε ξανά. Εάν συνεχίσετε να το βλέπετε αυτό, ο διαχειριστής του διακομιστή σας μπορεί να βοηθήσει.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Κάτι πήγε στραβά στον διακομιστή. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό αργότερα ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν το πρόβλημα συνεχίζεται.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Ο διακομιστής δεν αναγνωρίζει τη μέθοδο αιτήματος. Παρακαλώ επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Έχουμε πρόβλημα σύνδεσης με τον διακομιστή. Παρακαλώ δοκιμάστε ξανά σύντομα. Εάν το πρόβλημα συνεχίζεται, ο διαχειριστής του διακομιστή σας μπορεί να σας βοηθήσει.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Ο διακομιστής είναι απασχολημένος αυτή τη στιγμή. Παρακαλώ δοκιμάστε να συνδεθείτε ξανά σε λίγα λεπτά ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν είναι επείγον.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>Χρειάζεται πολύς χρόνος για σύνδεση με τον διακομιστή. Παρακαλώ δοκιμάστε ξανά αργότερα. Εάν χρειάζεστε βοήθεια, επικοινωνήστε με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Ο διακομιστής δεν υποστηρίζει την έκδοση της σύνδεσης που χρησιμοποιείται. Επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Ο διακομιστής δεν έχει αρκετό χώρο για να ολοκληρώσει το αίτημά σας. Παρακαλώ ελέγξτε πόσο όριο έχει ο χρήστης σας επικοινωνώντας με τον διαχειριστή του διακομιστή σας.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>Το δίκτυό σας απαιτεί επιπλέον πιστοποίηση. Παρακαλώ ελέγξτε τη σύνδεσή σας. Επικοινωνήστε με τον διαχειριστή του διακομιστή σας για βοήθεια εάν το πρόβλημα συνεχίζεται.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Δεν έχετε άδεια πρόσβασης σε αυτόν τον πόρο. Εάν πιστεύετε ότι αυτό είναι λάθος, επικοινωνήστε με τον διαχειριστή του διακομιστή σας για να ζητήσετε βοήθεια.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Προέκυψε ένα μη αναμενόμενο σφάλμα. Παρακαλώ δοκιμάστε ξανά τον συγχρονισμό ή επικοινωνήστε με τον διαχειριστή του διακομιστή σας εάν το πρόβλημα συνεχίζεται.</translation>
     </message>
