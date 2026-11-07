@@ -48,6 +48,9 @@ System Volume Information
 *.filepart
 *.crdownload
 
+# Keka temporary extraction output, renamed to its final name once extraction finishes.
+*.kextraction
+
 *.kate-swp
 *.gnucash.tmp-*
 
