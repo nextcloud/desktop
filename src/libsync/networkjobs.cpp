@@ -1174,74 +1174,59 @@ void DetermineAuthTypeJob::start()
 {
     qCInfo(lcDetermineAuthTypeJob) << "Determining auth type for" << _account->davUrl();
 
+    if (_account->isPublicShareLink()) {
+        // Probe unnecessary
+        _resultGet = Basic;
+        _getDone = true;
+        checkAllDone();
+        return;
+    }
+
     QNetworkRequest req;
     // Prevent HttpCredentialsAccessManager from setting an Authorization header.
     req.setAttribute(AbstractCredentials::DontAddCredentialsAttribute, true);
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    // Start two parallel requests
-
-    // 1. determines whether it's a basic auth server
+    // Probe to determine if server requires basic auth
     auto get = _account->sendRequest("GET", _account->url(), req);
 
-    // 2. checks the HTTP auth method.
-    auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
-
     get->setTimeout(30 * 1000);
-    propfind->setTimeout(30 * 1000);
     get->setIgnoreCredentialFailure(true);
-    propfind->setIgnoreCredentialFailure(true);
 
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this, get]() {
         const auto reply = get->reply();
-        const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate");
+        const auto wwwAuthenticateHeader = reply->rawHeader("WWW-Authenticate").toLower();
+
+        // rawHeader() comma-combines repeated WWW-Authenticate fields.
+        // This check only recognizes Basic when the combined value starts with it;
+        // other challenge layouts are not parsed.
         if (reply->error() == QNetworkReply::AuthenticationRequiredError
-            && (wwwAuthenticateHeader.startsWith("Basic") || wwwAuthenticateHeader.startsWith("Bearer"))) {
+            && (wwwAuthenticateHeader.startsWith("basic"))) {
+            // If a simple GET gave us an authentication required error and the server
+            // offers basic auth then we have no choice but to use it.
             _resultGet = Basic;
         } else {
+            if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
+                qCWarning(lcDetermineAuthTypeJob)
+                    << "GET auth probe required authentication but did not advertise Basic; falling back to Login Flow v2";
+            }
             _resultGet = LoginFlowV2;
         }
-        if (_account->isPublicShareLink()) {
-            _resultGet = Basic;
-        }
         _getDone = true;
-        checkAllDone();
-    });
-    connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
-
-        if (authChallenge.isEmpty()) {
-            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
-        } else {
-            qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
-        }
-        _resultPropfind = Basic;
-        _propfindDone = true;
         checkAllDone();
     });
 }
 
 void DetermineAuthTypeJob::checkAllDone()
 {
-    if (!_getDone || !_propfindDone) {
+    if (!_getDone) {
         return;
     }
 
     Q_ASSERT(_resultGet != NoAuthType);
-    Q_ASSERT(_resultPropfind != NoAuthType);
 
-    auto result = _resultPropfind;
-
-    if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
-        result = LoginFlowV2;
-    }
-
-    // If we determined that a simple get gave us an authentication required error
-    // then the server enforces basic auth and we got no choice but to use this
-    if (_resultGet == Basic) {
-        result = Basic;
-    }
+    auto result = _resultGet;
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
     Q_EMIT authType(result);
