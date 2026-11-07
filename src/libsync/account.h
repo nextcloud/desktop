@@ -263,6 +263,8 @@ public:
     /** Access the server capabilities */
     [[nodiscard]] const Capabilities &capabilities() const;
     void setCapabilities(const QVariantMap &caps);
+    [[nodiscard]] QByteArray capabilitiesEtag() const;
+    void setCapabilitiesEtag(const QByteArray &etag);
 
     /** Access the server version
      *

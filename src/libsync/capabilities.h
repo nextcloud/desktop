@@ -36,7 +36,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(PushNotificationTypes)
 class OWNCLOUDSYNC_EXPORT Capabilities
 {
 public:
-    Capabilities(const QVariantMap &capabilities);
+    Capabilities(const QVariantMap &capabilities, const QByteArray &etag = {});
 
     [[nodiscard]] bool shareAPI() const;
     [[nodiscard]] bool shareEmailPasswordEnforced() const;
@@ -184,11 +184,15 @@ public:
 
     [[nodiscard]] bool governanceAvailable() const;
 
+    [[nodiscard]] QByteArray etag() const;
+    void setEtag(const QByteArray &etag);
+
 private:
     [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
     QList<DirectEditor*> _directEditors;
+    QByteArray _etag;
 };
 
 /*-------------------------------------------------------------------------------------*/

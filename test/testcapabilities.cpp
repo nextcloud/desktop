@@ -468,6 +468,19 @@ private Q_SLOTS:
                                                                                 QMimeDatabase::MatchExtension));
         QCOMPARE(contextMenu.size(), 6);
     }
+
+    void testEtag_getAndSet()
+    {
+        OCC::Capabilities capabilities(QVariantMap{});
+        QCOMPARE(capabilities.etag(), QByteArray());
+
+        const auto testEtag = QByteArrayLiteral("\"123456789\"");
+        capabilities.setEtag(testEtag);
+        QCOMPARE(capabilities.etag(), testEtag);
+
+        OCC::Capabilities capabilitiesWithEtag(QVariantMap{}, testEtag);
+        QCOMPARE(capabilitiesWithEtag.etag(), testEtag);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)
