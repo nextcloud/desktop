@@ -2636,6 +2636,22 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    func testDownloadedFileWithAnUnresolvedParentCanBeRetried() async {
+        let (item, remoteInterface, directory) = makeNestedFetchItem()
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
+        remoteInterface.enumerateErrorBySuffix[directory.remotePath] = NKError(errorCode: 503, errorDescription: "Parent lookup unavailable")
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 1)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.deleted, false)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
+    }
+
     func testCancellingParentLookupCancelsNetworkTask() async throws {
         let (item, remoteInterface, directory) = makeNestedFetchItem()
         let progress = Progress()

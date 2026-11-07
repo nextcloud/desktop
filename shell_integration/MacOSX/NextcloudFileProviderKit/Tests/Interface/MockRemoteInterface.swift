@@ -670,6 +670,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// associated error instead of reading the mock tree. Lets tests reproduce a working-set scan in
     /// which one folder's PROPFIND fails (e.g. a large container timing out) while the rest succeed.
     public var enumerateErrorBySuffix: [String: NKError] = [:]
+    public var enumerateResponseStatusCode = 200
 
     public init(
         account: Account,
@@ -1315,7 +1316,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
                 request: nil,
                 response: HTTPURLResponse(
                     url: URL(string: account.davFilesUrl + remotePath)!,
-                    statusCode: 200,
+                    statusCode: enumerateResponseStatusCode,
                     httpVersion: "HTTP/1.1",
                     headerFields: responseHeaders
                 ),

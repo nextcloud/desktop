@@ -347,6 +347,7 @@ extension Enumerator {
                     let result = await Enumerator.readServerUrl(
                         item.remotePath(),
                         account: self.account,
+                        sourceMetadata: item,
                         remoteInterface: self.remoteInterface,
                         dbManager: self.dbManager,
                         depth: item.directory ? .targetAndDirectChildren : .target,
