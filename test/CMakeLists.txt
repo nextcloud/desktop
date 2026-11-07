@@ -73,6 +73,7 @@ endif()
 
 nextcloud_add_test(SyncMove)
 nextcloud_add_test(SyncDelete)
+nextcloud_add_test(DataLoss)
 nextcloud_add_test(SyncConflict)
 nextcloud_add_test(SyncFileStatusTracker)
 nextcloud_add_test(Download)
