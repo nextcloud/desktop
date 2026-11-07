@@ -1382,11 +1382,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         return;
     }
 
-    if (isEncrypted()) {
-        propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
-    } else {
-        propagator()->_journal->setDownloadInfo(_item->_encryptedFileName, SyncJournalDb::DownloadInfo());
-    }
+    propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
 
     propagator()->_journal->commit("download file start2");
 
