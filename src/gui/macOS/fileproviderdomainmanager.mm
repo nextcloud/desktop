@@ -18,10 +18,13 @@
 #include "config.h"
 #include "fileprovider.h"
 #include "fileproviderdomainmanager.h"
+#include "fileproviderpushbatch.h"
+
 #include "fileprovidersettingscontroller.h"
 #include "fileproviderutils.h"
 #include "fileproviderutils_mac.h"
 #include "fileproviderxpc_mac_utils.h"
+#include <QDeadlineTimer>
 
 #include "gui/accountmanager.h"
 #include "libsync/account.h"
@@ -38,11 +41,23 @@ namespace OCC {
 
 namespace Mac {
 
+namespace
+{
+constexpr auto fileIdCoalescingDelayMs = 100;
+constexpr auto fileIdRetryDelayMs = 5000;
+}
+
 class FileProviderDomainManager::MacImplementation
 {
 public:
     MacImplementation() = default;
     ~MacImplementation() = default;
+
+    struct PendingFileIds {
+        FileProviderPushBatch batch;
+        QDeadlineTimer retryAfter;
+    };
+    QHash<QString, PendingFileIds> pendingFileIds;
 
     // MARK: - Synchronous NSFileProviderDomainManager Wrappers
 
@@ -371,6 +386,8 @@ FileProviderDomainManager::FileProviderDomainManager(QObject * const parent)
     qCDebug(lcMacFileProviderDomainManager) << "Initializing...";
 
     d.reset(new FileProviderDomainManager::MacImplementation());
+    _fileIdRetryTimer.setSingleShot(true);
+    connect(&_fileIdRetryTimer, &QTimer::timeout, this, &FileProviderDomainManager::deliverPendingFileIds);
 }
 
 FileProviderDomainManager::~FileProviderDomainManager() = default;
@@ -437,7 +454,12 @@ QList<NSFileProviderDomain *> FileProviderDomainManager::getDomains(bool *succes
 
 bool FileProviderDomainManager::removeAllDomains()
 {
-    return d && d->removeAllDomains();
+    if (!d || !d->removeAllDomains()) {
+        return false;
+    }
+
+    d->pendingFileIds.clear();
+    return true;
 }
 
 void FileProviderDomainManager::reconnectAll()
@@ -464,7 +486,12 @@ std::optional<QString> FileProviderDomainManager::removeDomain(NSFileProviderDom
         return {};
     }
 
-    return d->removeDomain(domain);
+    const auto domainIdentifier = QString::fromNSString(domain.identifier);
+    const auto preservedData = d->removeDomain(domain);
+    if (preservedData.has_value()) {
+        d->pendingFileIds.remove(domainIdentifier);
+    }
+    return preservedData;
 }
 
 QString FileProviderDomainManager::addDomainForAccount(const AccountState * const accountState)
@@ -604,29 +631,74 @@ void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * co
         return;
     }
 
-    qCInfo(lcMacFileProviderDomainManager) << "Received file ID changes for account"
-                                            << account->displayName();
-
-    NSFileProviderDomain * const domain = domainForAccount(account);
-
-    if (!domain) {
-        qCWarning(lcMacFileProviderDomainManager) << "No domain found for account"
-                                                   << account->displayName();
+    if (fileIds.isEmpty()) {
+        // A legacy notify_file event carries no IDs to forward.
+        if (NSFileProviderDomain *const domain = domainForAccount(account)) {
+            d->signalEnumerator(domain);
+        }
         return;
     }
 
-    const auto fileProvider = FileProvider::instance();
-    const auto xpc = fileProvider ? fileProvider->xpc() : nullptr;
-    const auto domainIdentifier = QString::fromNSString(domain.identifier);
-
-    if (xpc && xpc->processFileIdsChanged(domainIdentifier, fileIds)) {
+    const auto domainIdentifier = account->fileProviderDomainIdentifier();
+    if (domainIdentifier.isEmpty()) {
         return;
     }
 
-    qCWarning(lcMacFileProviderDomainManager) << "Could not forward file ID changes to domain"
-                                               << domainIdentifier
-                                               << "refreshing without filtering.";
-    d->signalEnumerator(domain);
+    auto &batch = d->pendingFileIds[domainIdentifier].batch;
+    for (const auto fileId : fileIds) {
+        batch.add(fileId);
+    }
+    scheduleFileIdDelivery(fileIdCoalescingDelayMs);
+}
+
+void FileProviderDomainManager::scheduleFileIdDelivery(int delayMs)
+{
+    if (!_fileIdRetryTimer.isActive() || _fileIdRetryTimer.remainingTime() > delayMs) {
+        _fileIdRetryTimer.start(delayMs);
+    }
+}
+
+void FileProviderDomainManager::deliverPendingFileIds()
+{
+    const auto xpc = FileProvider::instance()->xpc();
+    for (auto it = d->pendingFileIds.begin(); it != d->pendingFileIds.end();) {
+        const auto domainIdentifier = it.key();
+        const auto account = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+        if (!account) {
+            it = d->pendingFileIds.erase(it);
+            continue;
+        }
+
+        auto &pending = *it++;
+        if (!pending.batch.ready()) {
+            continue;
+        }
+        if (!pending.retryAfter.hasExpired()) {
+            scheduleFileIdDelivery(static_cast<int>(pending.retryAfter.remainingTime()));
+            continue;
+        }
+        if (!xpc || !account->isConnected()) {
+            pending.retryAfter.setRemainingTime(fileIdRetryDelayMs);
+            scheduleFileIdDelivery(fileIdRetryDelayMs);
+            continue;
+        }
+
+        const auto delivery = pending.batch.beginDelivery();
+        xpc->deliverFileIds(domainIdentifier, delivery, this, [this, domainIdentifier, delivery](bool acknowledged) {
+            const auto pending = d->pendingFileIds.find(domainIdentifier);
+            if (pending == d->pendingFileIds.end() || !pending->batch.finishDelivery(delivery, acknowledged)) {
+                return;
+            }
+            if (!acknowledged) {
+                pending->retryAfter.setRemainingTime(fileIdRetryDelayMs);
+                scheduleFileIdDelivery(fileIdRetryDelayMs);
+            } else if (pending->batch.ready()) {
+                scheduleFileIdDelivery(fileIdCoalescingDelayMs);
+            } else {
+                d->pendingFileIds.erase(pending);
+            }
+        });
+    }
 }
 
 std::optional<QString> FileProviderDomainManager::removeDomainByAccount(const AccountState *const accountState)
@@ -653,7 +725,7 @@ std::optional<QString> FileProviderDomainManager::removeDomainByAccount(const Ac
     }
     for (NSFileProviderDomain *const domain : domains) {
         if (account->fileProviderDomainIdentifier() == QString::fromNSString(domain.identifier)) {
-            return d->removeDomain(domain);
+            return removeDomain(domain);
         }
     }
     return QString{};

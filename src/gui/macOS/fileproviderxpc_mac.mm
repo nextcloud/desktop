@@ -7,6 +7,10 @@
 #include "fileproviderxpc.h"
 
 #include <QLoggingCategory>
+#include <QPointer>
+#include <QtConcurrentRun>
+
+#include <utility>
 
 #include "csync/csync_exclude.h"
 
@@ -15,6 +19,7 @@
 #include "gui/accountmanager.h"
 #include "gui/macOS/fileprovider.h"
 #include "gui/macOS/fileproviderdomainmanager.h"
+#include "gui/macOS/fileproviderutils_mac.h"
 #include "gui/macOS/fileproviderxpc_mac_utils.h"
 
 #import <Foundation/Foundation.h>
@@ -22,13 +27,94 @@
 static_assert(__has_feature(objc_arc), "File Provider XPC requires ARC.");
 
 namespace {
-    constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
-    constexpr auto reachableRetryTimeout = 300; // seconds
+constexpr auto semaphoreWaitTimeout = std::chrono::seconds(1);
+constexpr auto semaphoreWaitDelta = std::chrono::nanoseconds(semaphoreWaitTimeout).count();
+constexpr auto reachableRetryTimeout = 300; // seconds
 }
 
 namespace OCC::Mac {
 
 Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", QtInfoMsg)
+
+namespace
+{
+using FileProviderXPCUtils::ClientCommunicationConnection;
+
+enum class FileIdDeliveryResult {
+    Delivered,
+    RetryLater,
+    Reconnect,
+};
+
+void releaseFileProviderConnection(ClientCommunicationConnection connection)
+{
+    [(__bridge_transfer NSXPCConnection *)connection.xpcConnection invalidate];
+    (void)CFBridgingRelease(connection.clientCommunicationService);
+}
+
+struct DiscoveredConnection {
+    ClientCommunicationConnection connection;
+
+    ~DiscoveredConnection()
+    {
+        releaseFileProviderConnection(connection);
+    }
+};
+
+std::shared_ptr<DiscoveredConnection> discoverFileProviderConnection(const QString &domainIdentifier, id<AppProtocol> delegate)
+{
+    auto replacement = std::make_shared<DiscoveredConnection>();
+    for (NSFileProviderDomain *const domain in FileProviderUtils::fileProviderDomains()) {
+        if (QString::fromNSString(domain.identifier) != domainIdentifier) {
+            continue;
+        }
+        NSFileProviderManager *const manager = [NSFileProviderManager managerForDomain:domain];
+        if (!manager) {
+            break;
+        }
+        const auto services = FileProviderXPCUtils::getFileProviderServices(@[ manager ]);
+        const auto connections = FileProviderXPCUtils::connectToFileProviderServices(services);
+        auto newConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, delegate);
+        replacement->connection = newConnections.take(domainIdentifier);
+        for (const auto &unexpected : std::as_const(newConnections)) {
+            releaseFileProviderConnection(unexpected);
+        }
+        break;
+    }
+    return replacement;
+}
+
+FileIdDeliveryResult sendFileIdsToExtension(NSXPCConnection *connection, const FileProviderPushBatch::FileIds &fileIds)
+{
+    if (!connection) {
+        return FileIdDeliveryResult::Reconnect;
+    }
+
+    NSMutableArray<NSNumber *> *const nsFileIds = [NSMutableArray arrayWithCapacity:fileIds.size()];
+    for (const auto fileId : fileIds) {
+        [nsFileIds addObject:@(fileId)];
+    }
+
+    id response = nil;
+    const auto replied = FileProviderUtils::waitForFileProviderRequest(
+        "forwarding file ID changes",
+        ^(FileProviderUtils::RequestReplyHandler reply) {
+            id<ClientCommunicationProtocol> const service = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+                const auto connectionLost =
+                    [error.domain isEqualToString:NSCocoaErrorDomain] && (error.code == NSXPCConnectionInterrupted || error.code == NSXPCConnectionInvalid);
+                reply(@(static_cast<int>(connectionLost ? FileIdDeliveryResult::Reconnect : FileIdDeliveryResult::RetryLater)), nil);
+            }];
+            [service processFileIdsChanged:nsFileIds
+                         completionHandler:^(BOOL didProcess) {
+                             reply(@(static_cast<int>(didProcess ? FileIdDeliveryResult::Delivered : FileIdDeliveryResult::RetryLater)), nil);
+                         }];
+        },
+        &response,
+        semaphoreWaitTimeout);
+    return replied && response ? static_cast<FileIdDeliveryResult>([response intValue]) : FileIdDeliveryResult::RetryLater;
+}
+
+}
 
 FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}
@@ -43,8 +129,7 @@ FileProviderXPC::~FileProviderXPC()
 void FileProviderXPC::disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier)
 {
     const auto clientCommConnection = _clientCommConnections.take(fileProviderDomainIdentifier);
-    [(__bridge_transfer NSXPCConnection *)clientCommConnection.xpcConnection invalidate];
-    (void)CFBridgingRelease(clientCommConnection.clientCommunicationService);
+    releaseFileProviderConnection(clientCommConnection);
 }
 
 void FileProviderXPC::disconnectFromFileProviderDomains()
@@ -66,7 +151,8 @@ void FileProviderXPC::connectToFileProviderDomains()
     
     // Get the FileProviderService singleton from FileProvider
     const auto fileProviderService = FileProvider::instance()->service();
-    const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
+    const auto delegate = fileProviderService ? (__bridge id<AppProtocol>)fileProviderService->delegate() : nil;
+    const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, delegate);
 
     for (const auto &domainIdentifier : clientCommConnections.keys()) {
         const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
@@ -196,29 +282,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         qCWarning(lcFileProviderXPC) << "Could not reach file provider domain service.";
 
         if (reconfigureOnFail) {
-            qCWarning(lcFileProviderXPC) << "Could not reach service of file provider domain"
-                                         << fileProviderDomainIdentifier
-                                         << "going to attempt reconfiguring interface";
-            const auto ncDomainManager = FileProvider::instance()->domainManager();
-            const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
-
-            if (!accountState || !accountState->account()) {
-                qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconfigure.";
-                return response;
-            }
-
-            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState->account().data()));
-            const auto manager = [NSFileProviderManager managerForDomain:domain];
-            const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
-            const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
-            const auto fileProviderService = FileProvider::instance()->service();
-            const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
-
-            for (const auto &domainIdentifier : clientCommConnections.keys()) {
-                const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
-                disconnectFromFileProviderDomain(domainIdentifier);
-                _clientCommConnections.insert(domainIdentifier, clientCommConnection);
-            }
+            (void)reconnectFileProviderDomain(fileProviderDomainIdentifier);
         }
 
         if (retry) {
@@ -229,6 +293,30 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
         }
     }
     return response;
+}
+
+bool FileProviderXPC::reconnectFileProviderDomain(const QString &domainIdentifier)
+{
+    const auto service = FileProvider::instance()->service();
+    const auto delegate = service ? (__bridge id<AppProtocol>)service->delegate() : nil;
+    auto replacement = discoverFileProviderConnection(domainIdentifier, delegate);
+    if (!replacement->connection.xpcConnection) {
+        return false;
+    }
+
+    installFileProviderConnection(domainIdentifier, std::exchange(replacement->connection, {}));
+    return true;
+}
+
+void FileProviderXPC::installFileProviderConnection(const QString &domainIdentifier, ClientCommunicationConnection connection)
+{
+    disconnectFromFileProviderDomain(domainIdentifier);
+    _clientCommConnections.insert(domainIdentifier, connection);
+    const auto account = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    if (account && account->isConnected()) {
+        authenticateFileProviderDomain(domainIdentifier);
+    }
+    setIgnoreListForDomain(domainIdentifier);
 }
 
 std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const
@@ -263,41 +351,77 @@ std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QS
     return hasDirtyUserData;
 }
 
-bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const
+void FileProviderXPC::deliverFileIds(const QString &domainIdentifier,
+                                     const FileProviderPushBatch::Delivery &delivery,
+                                     QObject *context,
+                                     std::function<void(bool)> completed)
 {
-    const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
-    const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
+    sendFileIds(domainIdentifier, delivery, context, std::move(completed), true);
+}
 
-    if (service == nil) {
-        qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
-        return false;
-    }
+void FileProviderXPC::sendFileIds(const QString &domainIdentifier,
+                                  const FileProviderPushBatch::Delivery &delivery,
+                                  QObject *context,
+                                  std::function<void(bool)> completed,
+                                  bool allowReconnect)
+{
+    const auto account = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+    NSXPCConnection *const connection = (__bridge NSXPCConnection *)_clientCommConnections.value(domainIdentifier).xpcConnection;
+    const QPointer<FileProviderXPC> self(this);
+    QtConcurrent::run([connection, delivery] {
+        @autoreleasepool {
+            return sendFileIdsToExtension(connection, *delivery);
+        }
+    })
+        .then(context,
+              [self, connection, domainIdentifier, delivery, context, completed = std::move(completed), allowReconnect, account](FileIdDeliveryResult result) {
+                  if (result != FileIdDeliveryResult::Reconnect || !allowReconnect || !self) {
+                      completed(result == FileIdDeliveryResult::Delivered);
+                      return;
+                  }
+                  const auto currentAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+                  if (!currentAccount || currentAccount != account || !currentAccount->isConnected()) {
+                      completed(false);
+                      return;
+                  }
+                  if (self->_clientCommConnections.value(domainIdentifier).xpcConnection != (__bridge void *)connection) {
+                      self->sendFileIds(domainIdentifier, delivery, context, std::move(completed), false);
+                      return;
+                  }
 
-    NSMutableArray<NSNumber *> *const nsFileIds = [NSMutableArray arrayWithCapacity:fileIds.size()];
-
-    for (const auto fileId : fileIds) {
-        [nsFileIds addObject:@(fileId)];
-    }
-
-    __block auto processed = false;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [service processFileIdsChanged:nsFileIds completionHandler:^(BOOL didProcess) {
-        processed = didProcess;
-        dispatch_semaphore_signal(semaphore);
-    }];
-
-    const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
-
-    if (waitResult != 0) {
-        qCWarning(lcFileProviderXPC) << "Timed out while forwarding file ID changes to file provider domain"
-                                     << fileProviderDomainIdentifier;
-        return false;
-    }
-
-    return processed;
+                  const auto service = FileProvider::instance()->service();
+                  const auto delegate = service ? (__bridge id<AppProtocol>)service->delegate() : nil;
+                  QtConcurrent::run([domainIdentifier, delegate] {
+                      @autoreleasepool {
+                          return discoverFileProviderConnection(domainIdentifier, delegate);
+                      }
+                  })
+                      .then(context,
+                            [self, connection, domainIdentifier, delivery, context, completed = std::move(completed), account](
+                                const std::shared_ptr<DiscoveredConnection> &replacement) {
+                                const auto currentAccount = AccountManager::instance()->accountFromFileProviderDomainIdentifier(domainIdentifier);
+                                if (!self || currentAccount != account || !currentAccount->isConnected()) {
+                                    completed(false);
+                                    return;
+                                }
+                                if (self->_clientCommConnections.value(domainIdentifier).xpcConnection == (__bridge void *)connection) {
+                                    if (!replacement->connection.xpcConnection) {
+                                        completed(false);
+                                        return;
+                                    }
+                                    self->installFileProviderConnection(domainIdentifier, std::exchange(replacement->connection, {}));
+                                }
+                                self->sendFileIds(domainIdentifier, delivery, context, std::move(completed), false);
+                            });
+              });
 }
 
 void FileProviderXPC::setIgnoreList() const
+{
+    setIgnoreListForDomain({});
+}
+
+void FileProviderXPC::setIgnoreListForDomain(const QString &domainIdentifier) const
 {
     ExcludedFiles ignoreList;
     ConfigFile::setupDefaultExcludeFilePaths(ignoreList);
@@ -314,6 +438,9 @@ void FileProviderXPC::setIgnoreList() const
     NSArray<NSString *> *const nsPatterns = [mutableNsPatterns copy];
 
     for (const auto &fileProviderDomainIdentifier : _clientCommConnections.keys()) {
+        if (!domainIdentifier.isEmpty() && fileProviderDomainIdentifier != domainIdentifier) {
+            continue;
+        }
         qCInfo(lcFileProviderXPC) << "Updating ignore list of file provider domain" << fileProviderDomainIdentifier;
         const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
         const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
