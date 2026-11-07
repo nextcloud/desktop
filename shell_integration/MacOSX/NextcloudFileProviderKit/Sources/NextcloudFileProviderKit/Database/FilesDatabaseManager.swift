@@ -682,6 +682,8 @@ public final class FilesDatabaseManager: Sendable {
                         visitToRecord = readTargetMetadata.ocId
                     }
 
+                    readTargetMetadata.keepPermissionsListedByParent(from: existing)
+
                     if canUpdateTarget,
                        existing.status == Status.normal.rawValue,
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
@@ -898,9 +900,10 @@ public final class FilesDatabaseManager: Sendable {
     ///     visited the directory in the current request should pass `false`
     ///     and pre-set `metadata.visitedDirectory = true`, so the visit is
     ///     recorded rather than overwritten by a stale `false` from the DB.
+    ///   - keepPermissionsListedByParent: Pass `true` when `metadata` is a folder's own read, so the permissions its parent listed are kept.
     ///
     @discardableResult
-    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
+    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true, keepPermissionsListedByParent: Bool = false) -> SendableItemMetadata {
         var toWrite = metadata
 
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
@@ -918,6 +921,10 @@ public final class FilesDatabaseManager: Sendable {
 
                 if preserveVisitedDirectory {
                     toWrite.visitedDirectory = existing.visitedDirectory
+                }
+
+                if keepPermissionsListedByParent {
+                    toWrite.keepPermissionsListedByParent(from: existing)
                 }
 
                 toWrite.lockToken = existing.lockToken
