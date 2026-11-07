@@ -499,8 +499,19 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
 
 void VfsCfApi::fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus)
 {
-    Q_UNUSED(systemFileName);
-    Q_UNUSED(fileStatus);
+    if (fileStatus.tag() != SyncFileStatus::StatusExcluded) {
+        return;
+    }
+
+    // A placeholder was synced before and is only reported as excluded while it is locked or being restored.
+    const auto localPath = QDir::toNativeSeparators(systemFileName);
+    if (!FileSystem::fileExists(localPath) || cfapi::findPlaceholderInfo(localPath)) {
+        return;
+    }
+
+    if (!setPinStateLocal(localPath, PinState::Excluded)) {
+        qCWarning(lcCfApi) << "Could not set pin state of" << localPath << "to excluded";
+    }
 }
 
 void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &folderPath, const SyncJournalFileRecord &record)
