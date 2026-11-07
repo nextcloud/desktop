@@ -31,6 +31,7 @@ public Q_SLOTS:
     void setBaseFilename(const QString &baseFilename);
     void setLocalVersionFilename(const QString &localVersionFilename);
     void setRemoteVersionFilename(const QString &remoteVersionFilename);
+    void openLocalConflictFolder();
 
     void accept() override;
 

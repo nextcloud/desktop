@@ -24,6 +24,7 @@ Item {
     required property url existingPreviewUrl
     required property url conflictPreviewUrl
     required property var model
+    required property int index
 
     EnforcedPlainTextLabel {
         id: existingFileNameLabel
@@ -37,16 +38,20 @@ Item {
         font.pixelSize: Style.fontPixelSizeResolveConflictsDialog
     }
 
-    RowLayout {
+    GridLayout {
         anchors.top: existingFileNameLabel.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottomMargin: 8
+        
+        columns: 2
+        columnSpacing: Style.standardSpacing
 
         ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
 
             itemSelected: root.conflictSelected
             itemPreviewUrl: root.conflictPreviewUrl
@@ -62,6 +67,7 @@ Item {
         ConflictItemFileInfo {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
 
             itemSelected: root.existingSelected
             itemPreviewUrl: root.existingPreviewUrl
@@ -71,6 +77,38 @@ Item {
 
             onSelectedChanged: function() {
                 model.existingSelected = itemSelected
+            }
+        }
+        
+        EnforcedPlainTextLabel {
+            id: openFolderLabel
+            Layout.fillWidth: true
+            Layout.columnSpan: 2
+            Layout.preferredWidth: 1
+            elide: Text.ElideRight
+            text: root.ListView.view.model.model.fileManagerText()
+            Layout.leftMargin: Style.resolveConflictsLabelMargin
+            color: Style.ncBlue
+            font.underline: true
+
+            MouseArea {
+                id: linkMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                
+                onClicked: {
+                    let success = root.ListView.view.model.model.openConflictFolder(index);
+                    
+                    if (!success) {
+                        parent.text = qsTr("Folder not found");
+                        parent.color = Style.wizardErrorText;
+                        
+                        openFolderLabel.font.underline = false;
+                        linkMouseArea.cursorShape = Qt.ArrowCursor;
+                        linkMouseArea.enabled = false;
+                    }
+                }
             }
         }
     }
