@@ -290,6 +290,14 @@ public Q_SLOTS:
 
     void forceSyncForFolder(OCC::Folder *folder);
 
+    /**
+     * @brief Starts a sync of every folder that can sync, ahead of any other scheduled folder.
+     *
+     * Like forceSyncForFolder(), running syncs are terminated and error blacklists are wiped,
+     * but paused folders are left paused.
+     */
+    void forceSyncForAllFolders();
+
     void removeE2eFiles(const OCC::AccountPtr &account) const;
 
     void slotServerVersionChanged(const OCC::AccountPtr &account);
