@@ -9,6 +9,8 @@
 
 #include <QtTest>
 
+#include <algorithm>
+
 #include <QAction>
 #include <QByteArray>
 #include <QColor>
@@ -16,13 +18,16 @@
 #include <QImage>
 #include <QMenu>
 #include <QPalette>
+#include <QScopeGuard>
 #include <QSize>
+#include <QTemporaryDir>
 
 #include "systray.h"
 
 #include "systraysynccontroltesthelper.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestSystraySyncControlQt : public QObject
 {
@@ -39,6 +44,42 @@ class TestSystraySyncControlQt : public QObject
     static QAction *resumeSyncAction(const QMenu &menu)
     {
         return menu.findChild<QAction *>(QStringLiteral("trayResumeSyncAction"));
+    }
+
+    static QAction *findSyncNowAction(const QMenu &menu)
+    {
+        const auto actions = menu.actions();
+        const auto it = std::find_if(actions.cbegin(), actions.cend(), [](const QAction *action) {
+            return action->text() == Systray::tr("Sync now");
+        });
+        return it != actions.cend() ? *it : nullptr;
+    }
+
+    static QAction *contextMenuSyncNowAction(Systray *systray)
+    {
+        const auto menu = systray->contextMenu();
+        if (!menu) {
+            return nullptr;
+        }
+        // The context menu refreshes its actions right before being shown.
+        Q_EMIT menu->aboutToShow();
+        return findSyncNowAction(*menu);
+    }
+
+    static QAction *popupSyncNowAction(QMenu &menu, Systray *systray)
+    {
+        setupQtTrayContextMenu(&menu, systray);
+        return findSyncNowAction(menu);
+    }
+
+    /** @brief Adds a classic folder to a connected account; the folder deletes the account state when removed. */
+    static Folder *addConnectedFolder(const QString &path)
+    {
+        auto account = Account::create();
+        account->setUrl(QUrl(u"https://three.example.com"_s));
+        account->setDavUser(u"carol"_s);
+        account->setCredentials(new HttpCredentialsTest(u"carol"_s, u"secret"_s));
+        return FolderMan::instance()->addFolder(new FakeAccountState(account), folderDefinition(path));
     }
 
     static QByteArray iconAlphaMask(const QIcon &icon)
@@ -212,6 +253,73 @@ private Q_SLOTS:
         QCOMPARE(overallStatus, SyncResult::NotYetStarted);
         QCOMPARE(FolderMan::trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false, overallProgressInfo),
                  QStringLiteral("Waiting to start syncing."));
+    }
+
+    void contextMenuSyncNowSchedulesSyncableFolders()
+    {
+        const auto systray = Systray::instance();
+        const auto folderMan = FolderMan::instance();
+
+        // The helper's accounts never connect, so none of their folders can sync.
+        QVERIFY(!systray->canSyncNow());
+        const auto hiddenAction = contextMenuSyncNowAction(systray);
+        QVERIFY(hiddenAction);
+        QVERIFY(!hiddenAction->isVisible());
+
+        QTemporaryDir folderDir;
+        QVERIFY(folderDir.isValid());
+        const auto folder = addConnectedFolder(folderDir.path());
+        QVERIFY(folder);
+        const auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+        QVERIFY(systray->canSyncNow());
+        QVERIFY(!folderMan->scheduleQueue().contains(folder));
+
+        const auto syncNowAction = contextMenuSyncNowAction(systray);
+        QVERIFY(syncNowAction);
+        QVERIFY(syncNowAction->isVisible());
+        syncNowAction->trigger();
+        syncNowAction->trigger();
+
+        // Clicking again does not queue the folder twice.
+        QCOMPARE(folderMan->scheduleQueue().count(folder), 1);
+        QVERIFY(!folderMan->scheduleQueue().contains(_helper.firstFolder()));
+        QVERIFY(!folderMan->scheduleQueue().contains(_helper.secondFolder()));
+
+        folder->setSyncPaused(true);
+        QVERIFY(!systray->canSyncNow());
+        QVERIFY(!contextMenuSyncNowAction(systray)->isVisible());
+    }
+
+    void popupSyncNowSchedulesSyncableFolders()
+    {
+        const auto systray = Systray::instance();
+        const auto folderMan = FolderMan::instance();
+
+        auto hiddenMenu = QMenu{};
+        QVERIFY(!popupSyncNowAction(hiddenMenu, systray));
+
+        QTemporaryDir folderDir;
+        QVERIFY(folderDir.isValid());
+        const auto folder = addConnectedFolder(folderDir.path());
+        QVERIFY(folder);
+        const auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+
+        auto menu = QMenu{};
+        const auto syncNowAction = popupSyncNowAction(menu, systray);
+        QVERIFY(syncNowAction);
+        syncNowAction->trigger();
+
+        QCOMPARE(folderMan->scheduleQueue().count(folder), 1);
+        QVERIFY(!folderMan->scheduleQueue().contains(_helper.firstFolder()));
+        QVERIFY(!folderMan->scheduleQueue().contains(_helper.secondFolder()));
+
+        folder->setSyncPaused(true);
+        auto pausedMenu = QMenu{};
+        QVERIFY(!popupSyncNowAction(pausedMenu, systray));
     }
 };
 
