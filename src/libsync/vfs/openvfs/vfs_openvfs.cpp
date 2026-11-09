@@ -669,33 +669,11 @@ Optional<PinState> OpenVFS::pinState(const QString &folderPath)
 
 Vfs::AvailabilityResult OpenVFS::availability(const QString &folderPath, [[maybe_unused]] const AvailabilityRecursivity recursiveCheck)
 {
-    const auto attribs = placeHolderAttributes(params().root() / folderPath);
-    if (attribs) {
-        switch (convertPinState(attribs.pinState)) {
-        case OCC::PinState::AlwaysLocal:
-            return VfsItemAvailability::AlwaysLocal;
-        case OCC::PinState::OnlineOnly:
-            return VfsItemAvailability::OnlineOnly;
-        case OCC::PinState::Inherited: {
-            switch (attribs.state) {
-            case ::OpenVFS::Constants::States::Hydrated:
-                return VfsItemAvailability::AllHydrated;
-            case ::OpenVFS::Constants::States::DeHydrated:
-                return VfsItemAvailability::AllDehydrated;
-            case ::OpenVFS::Constants::States::Hydrating:
-                return VfsItemAvailability::Mixed;
-            }
-        }
-            Q_UNREACHABLE();
-        case OCC::PinState::Unspecified:
-            [[fallthrough]];
-        case OCC::PinState::Excluded:
-            return VfsItemAvailability::Mixed;
-        };
-    } else {
+    if (!placeHolderAttributes(params().root() / folderPath)) {
         return AvailabilityError::NoSuchItem;
     }
-    return VfsItemAvailability::Mixed;
+    // the pin state of a folder does not tell whether the files below it are hydrated, the journal knows that
+    return availabilityFromPinState(folderPath, pinState(folderPath));
 }
 
 void OpenVFS::fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus)

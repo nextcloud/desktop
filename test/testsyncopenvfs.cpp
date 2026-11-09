@@ -125,6 +125,38 @@ private Q_SLOTS:
         }
     }
 
+    void testFolderWithNewLocalFileCanBeDehydratedAgain()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareHydratedFolder(fakeFolder, *vfs);
+        QVERIFY(vfs->setPinState(u"A"_s, PinState::OnlineOnly));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->availability(u"A"_s, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
+
+        fakeFolder.localModifier().insert(u"A/new"_s, 32);
+        QVERIFY(writeDefaultAttributes(fakeFolder.localPath() + u"A/new"_s));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(dbRecord(fakeFolder, u"A/new"_s)._type, ItemTypeFile);
+        QCOMPARE(*vfs->availability(u"A"_s, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::Mixed);
+
+        QVERIFY(vfs->setPinState(u"A"_s, PinState::OnlineOnly));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(dbRecord(fakeFolder, u"A/new"_s)._type, ItemTypeVirtualFile);
+        QCOMPARE(*vfs->availability(u"A"_s, Vfs::AvailabilityRecursivity::RecursiveAvailability), VfsItemAvailability::OnlineOnly);
+    }
+
+    void testAvailabilityOfMissingItem()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareHydratedFolder(fakeFolder, *vfs);
+
+        const auto availability = vfs->availability(u"missing"_s, Vfs::AvailabilityRecursivity::RecursiveAvailability);
+        QVERIFY(!availability);
+        QCOMPARE(availability.error(), Vfs::AvailabilityError::NoSuchItem);
+    }
+
     void testPinningAFolderKeepsExcludedItems()
     {
         FakeFolder fakeFolder{FileInfo{}};

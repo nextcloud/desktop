@@ -345,6 +345,8 @@ protected:
     bool setPinStateInDb(const QString &folderPath, PinState state);
     Optional<PinState> pinStateInDb(const QString &folderPath);
     AvailabilityResult availabilityInDb(const QString &folderPath);
+    // Combines pin with the hydration states the journal has for folderPath and everything below it.
+    AvailabilityResult availabilityFromPinState(const QString &folderPath, const Optional<PinState> &pin);
 
     // the parameters passed to start()
     VfsSetupParams _setupParams;
