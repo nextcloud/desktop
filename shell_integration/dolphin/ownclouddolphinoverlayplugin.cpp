@@ -55,7 +55,9 @@ private:
             return r;
         }
 
-        if (status.startsWith("OK")) {
+        if (status.contains("+VIRT")) {
+            r << QStringLiteral("cloudstatus");
+        } else if (status.startsWith("OK")) {
             r << QStringLiteral("vcs-normal");
         }
         if (status.startsWith("SYNC") || status.startsWith("NEW")) {

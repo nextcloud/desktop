@@ -720,9 +720,18 @@ void SocketApi::processFileActionsRequest(const QString &localFile)
     Q_EMIT fileActionsCommandReceived(fileData.localPath);
 }
 
+QString SocketApi::statusString(SyncFileStatus fileStatus)
+{
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
+    // The Windows and macOS integrations match status strings exactly, and the system shows dehydrated files itself
+    fileStatus.setDehydrated(false);
+#endif
+    return fileStatus.toSocketAPIString();
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
-    QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
+    QString msg = buildMessage(QLatin1String("STATUS"), systemPath, statusString(fileStatus));
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
     for (const auto &listener : std::as_const(_listeners)) {
@@ -733,8 +742,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     // Also broadcast to FinderSync via XPC
     if (auto app = qobject_cast<Application*>(qApp)) {
         if (auto finderSyncXPC = app->finderSyncXPC()) {
-            const QString statusString = fileStatus.toSocketAPIString();
-            finderSyncXPC->setStatusResult(statusString, systemPath);
+            finderSyncXPC->setStatusResult(statusString(fileStatus), systemPath);
         }
     }
 #endif
@@ -748,23 +756,22 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener)
 {
-    QString statusString;
+    QString fileStatusString;
 
     auto fileData = FileData::get(argument);
     if (!fileData.folder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        statusString = QLatin1String("NOP");
+        fileStatusString = QLatin1String("NOP");
     } else {
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
         QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
         listener->registerMonitoredDirectory(qHash(directory));
 
-        SyncFileStatus fileStatus = fileData.syncFileStatus();
-        statusString = fileStatus.toSocketAPIString();
+        fileStatusString = statusString(fileData.syncFileStatus());
     }
 
-    const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
+    const QString message = QLatin1String("STATUS:") % fileStatusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
     listener->sendMessage(message);
 }
 
