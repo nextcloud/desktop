@@ -594,11 +594,11 @@ bool OpenVFS::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
         const auto attribs = placeHolderAttributes(path);
         if (attribs.state == ::OpenVFS::Constants::States::DeHydrated) {
             stat->type = ItemTypeVirtualFile;
-            if (attribs.pinState == convertPinState(PinState::AlwaysLocal)) {
+            if (pin && *pin == PinState::AlwaysLocal) {
                 stat->type = ItemTypeVirtualFileDownload;
             }
         } else {
-            if (attribs.pinState == convertPinState(PinState::OnlineOnly)) {
+            if (pin && *pin == PinState::OnlineOnly) {
                 stat->type = ItemTypeVirtualFileDehydration;
             }
         }
@@ -619,7 +619,37 @@ bool OpenVFS::setPinState(const QString &folderPath, PinState state)
     if (!setPlaceholderAttributes(attribs)) {
         return false;
     }
+    if (std::filesystem::is_directory(localPath.get())) {
+        inheritPinStateBelow(localPath);
+    }
     return true;
+}
+
+void OpenVFS::inheritPinStateBelow(const FileSystem::Path &folderPath)
+{
+    auto error = std::error_code{};
+    const auto end = std::filesystem::recursive_directory_iterator{};
+    for (auto it = std::filesystem::recursive_directory_iterator{folderPath.get(), error}; !error && it != end; it.increment(error)) {
+        auto attribs = placeHolderAttributes(it->path());
+        if (!attribs) {
+            continue;
+        }
+        // excluded items are not synced, they keep their pin state
+        if (attribs.pinState == ::OpenVFS::Constants::PinStates::Excluded) {
+            it.disable_recursion_pending();
+            continue;
+        }
+        if (attribs.pinState == ::OpenVFS::Constants::PinStates::Inherited) {
+            continue;
+        }
+        attribs.pinState = ::OpenVFS::Constants::PinStates::Inherited;
+        if (const auto result = setPlaceholderAttributes(attribs); !result) {
+            qCWarning(lcOpenVFS) << "Failed to reset the pin state of" << it->path().native() << result.error();
+        }
+    }
+    if (error) {
+        qCWarning(lcOpenVFS) << "Failed to reset the pin states below" << folderPath.toString() << QString::fromStdString(error.message());
+    }
 }
 
 Optional<PinState> OpenVFS::pinState(const QString &folderPath)
