@@ -84,7 +84,7 @@ if "%VERSION_SUFFIX%" == ""                 set "VERSION_SUFFIX="
 
 Rem Git tag for checkout when CHECKOUT_DESKTOP=1 (default: master for daily build)
 if "%TAG_DESKTOP%" == ""                    set "TAG_DESKTOP=master"
-if "%CRAFT_TAG_DESKTOP%" == ""              set "CRAFT_TAG_DESKTOP=stable-34.0"
+if "%CRAFT_TAG_DESKTOP%" == ""              set "CRAFT_TAG_DESKTOP=stable-35.0"
 
 Rem ********************************************************************************************
 
