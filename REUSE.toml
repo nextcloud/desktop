@@ -30,6 +30,12 @@ SPDX-FileCopyrightText = "2014 ownCloud GmbH"
 SPDX-License-Identifier = "GPL-2.0-or-later"
 
 [[annotations]]
+path = ["shell_integration/icons/SVG/Dehydrated.svg", "shell_integration/icons/*x*/oC_dehydrated.png"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Nextcloud GmbH and Nextcloud contributors"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+
+[[annotations]]
 path = [
     "admin/osx/container-migration.plist.cmake",
     "shell_integration/MacOSX/TransifexStringCatalogSanitizer/Package.swift",

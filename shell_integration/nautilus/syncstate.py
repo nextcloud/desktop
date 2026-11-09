@@ -429,8 +429,8 @@ class SyncStateExtension_Nextcloud(GObject.GObject, Nautilus.InfoProvider):
                     'NEW+SWM'   : [appname + '_a_shared', appname + '_sync'],
                     'IGNORE+SWM': [appname + '_a_shared', appname + '_warn'],
                     'ERROR+SWM' : [appname + '_a_shared', appname + '_error'],
-                    'OK+VIRT'   : [appname + '_ok'],
-                    'OK+SWM+VIRT': [appname + '_a_shared', appname + '_ok'],
+                    'OK+VIRT'   : [appname + '_dehydrated'],
+                    'OK+SWM+VIRT': [appname + '_a_shared', appname + '_dehydrated'],
                     'NOP'       : ''
                   }
 

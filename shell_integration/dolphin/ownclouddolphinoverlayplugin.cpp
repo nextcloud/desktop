@@ -4,13 +4,16 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "ownclouddolphinpluginhelper.h"
+#include <KFileItem>
 #include <KOverlayIconPlugin>
 #include <KPluginFactory>
-#include <QtNetwork/QLocalSocket>
-#include <KFileItem>
 #include <QDir>
+#include <QIcon>
 #include <QTimer>
-#include "ownclouddolphinpluginhelper.h"
+#include <QtNetwork/QLocalSocket>
+
+using namespace Qt::StringLiterals;
 
 class OwncloudDolphinPlugin : public KOverlayIconPlugin
 {
@@ -49,6 +52,13 @@ public:
     }
 
 private:
+    // The client installs its emblems into the icon theme. Use a theme icon if they are not installed.
+    static QString emblem(const QString &name, const QString &fallbackName)
+    {
+        const auto emblemName = QStringLiteral(APPLICATION_SHORTNAME) + u'_' + name;
+        return QIcon::hasThemeIcon(emblemName) ? emblemName : fallbackName;
+    }
+
     QStringList overlaysForString(const QByteArray &status) {
         QStringList r;
         if (status.startsWith("NOP")) {
@@ -56,22 +66,22 @@ private:
         }
 
         if (status.contains("+VIRT")) {
-            r << QStringLiteral("cloudstatus");
+            r << emblem(u"dehydrated"_s, u"cloudstatus"_s);
         } else if (status.startsWith("OK")) {
-            r << QStringLiteral("vcs-normal");
+            r << emblem(u"ok"_s, u"vcs-normal"_s);
         }
         if (status.startsWith("SYNC") || status.startsWith("NEW")) {
-            r << QStringLiteral("vcs-update-required");
+            r << emblem(u"sync"_s, u"vcs-update-required"_s);
         }
         if (status.startsWith("IGNORE") || status.startsWith("WARN")) {
-            r << QStringLiteral("vcs-locally-modified-unstaged");
+            r << emblem(u"warn"_s, u"vcs-locally-modified-unstaged"_s);
         }
         if (status.startsWith("ERROR")) {
-            r << QStringLiteral("vcs-conflicting");
+            r << emblem(u"error"_s, u"vcs-conflicting"_s);
         }
 
         if (status.contains("+SWM")) {
-            r << QStringLiteral("document-share");
+            r << emblem(u"a_shared"_s, u"emblem-shared"_s);
         }
 
         return r;
