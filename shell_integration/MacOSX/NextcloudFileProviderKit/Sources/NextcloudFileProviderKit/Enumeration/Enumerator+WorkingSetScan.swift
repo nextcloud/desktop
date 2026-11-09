@@ -143,6 +143,7 @@ extension Enumerator {
         // advancing the working-set sync point past changes this pass could not discover.
         var hadReadFailure = storedMaterialisedItems == nil
         var failedItemIds = Set<String>()
+        var notFoundOcIds = Set<String>()
 
         // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
         func remotePathDepth(_ metadata: SendableItemMetadata) -> Int {
@@ -192,6 +193,7 @@ extension Enumerator {
 
                 if readResult.error?.errorCode == 404 {
                     accumulatedDeletions.append(itemToScan)
+                    notFoundOcIds.insert(itemToScan.ocId)
                     scannedItemIds.insert(itemToScan.ocId)
                     // Children are not marked deleted here — they may have moved with their parent.
                     logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
@@ -301,15 +303,31 @@ extension Enumerator {
 
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
-            if deletedMetadata.status >= Status.inUpload.rawValue {
-                logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
-                continue
+            // Check and write in one transaction, so a move that commits in between is not overwritten.
+            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
+                let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
+
+                if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
+                    logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                // A move that reached the database during the scan makes a 404 about the old path, not the item.
+                if notFoundOcIds.contains(deletedMetadata.ocId), let current, !current.hasSameRemotePath(as: deletedMetadata.remotePath()) {
+                    logger.debug("Ignoring deletion of an item that has since moved.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                var deleteMarked = deletedMetadata
+                deleteMarked.deleted = true
+                deleteMarked.syncTime = Date()
+                try dbManager.insertItemMetadata(deleteMarked, in: db)
+                return deleteMarked
+            } ?? nil
+
+            if let deleteMarked {
+                reportedDeletions.append(deleteMarked)
             }
-            var deleteMarked = deletedMetadata
-            deleteMarked.deleted = true
-            deleteMarked.syncTime = Date()
-            dbManager.addItemMetadata(deleteMarked)
-            reportedDeletions.append(deleteMarked)
         }
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.
