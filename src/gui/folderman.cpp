@@ -1910,7 +1910,10 @@ QString FolderMan::trayTooltipStatusString(SyncResult::Status syncStatus, bool h
         folderMessage = tr("Waiting to start syncing.");
         break;
     case SyncResult::SyncPrepare:
-        folderMessage = tr("Preparing for sync.");
+        folderMessage = progress ? progress->preparationStatusString() : tr("Starting sync…");
+        if (folderMessage.isEmpty()) {
+            folderMessage = tr("Starting sync…");
+        }
         break;
     case SyncResult::SyncRunning:
         if (progress && progress->status() == ProgressInfo::Propagation) {
