@@ -599,7 +599,8 @@ public final class FilesDatabaseManager: Sendable {
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
-        preserveDeletedTarget: Bool = false
+        preserveDeletedTarget: Bool = false,
+        responseDirectoryURL: String? = nil
     ) -> ChangeSet? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
@@ -612,11 +613,18 @@ public final class FilesDatabaseManager: Sendable {
                 cleanServerUrl.removeLast()
             }
 
+            var matchesReadDirectory = ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
+            if let responseDirectoryURL, responseDirectoryURL != cleanServerUrl {
+                // V1 rows may still use the parent URL returned by the DAV parser.
+                matchesReadDirectory = matchesReadDirectory
+                    || ItemMetadataRecord.hasServerUrl(equalTo: responseDirectoryURL, includingDescendants: false)
+            }
+
             let existingMetadatas = try ItemMetadataRecord
                 .filter(
                     // Don't worry — root will be updated at the end of this method if is the target
                     ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
-                        && ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
+                        && matchesReadDirectory
                         && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.uploaded == true
                 )
@@ -1050,12 +1058,11 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
-        let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
+        let parentDAVPath = Account.davRelativePath(forURL: metadata.serverUrl, accountBaseURL: metadata.urlBase, backendUserID: metadata.userId)
 
-        if metadata.serverUrl == homeServerFilesUrl {
+        if parentDAVPath.map(Account.isStoredFilesRootLocation) == true {
             return .rootContainer
-        } else if metadata.serverUrl == trashServerFilesUrl {
+        } else if parentDAVPath == "trash:" {
             return .trashContainer
         }
 

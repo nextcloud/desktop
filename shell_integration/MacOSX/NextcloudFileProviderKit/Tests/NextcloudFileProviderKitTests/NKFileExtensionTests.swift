@@ -4,7 +4,34 @@
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudKit
+import Testing
 import XCTest
+
+@Test func recognizesDAVRootReturnedWithBackendIDAsName() async throws {
+    let account = Account(
+        user: "login",
+        id: "backend-id",
+        serverUrl: "https://example.com//web%20root/",
+        password: "password"
+    )
+    var root = NKFile()
+    root.ocId = "dav-root-id"
+    root.directory = true
+    root.fileName = account.id
+    root.serverUrl = "https://example.com/web root/remote.php/dav/files"
+    root.urlBase = account.serverUrl
+    root.userId = account.id
+
+    let listing = try #require(await [root].toSendableDirectoryMetadata(
+        account: account,
+        requestedDirectoryURL: account.davFilesUrl
+    ))
+
+    #expect(listing.root.ocId == root.ocId)
+    #expect(listing.root.directory)
+    #expect(listing.files.isEmpty)
+    #expect(account.davFilesUrl.contains("web root"))
+}
 
 final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
     static let account = Account(user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd")
@@ -75,38 +102,34 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    // MARK: - isDirectoryToRead(_:directoryToRead:)
+    // MARK: - matchesRequestedDirectoryURL(_:)
 
-    func testIsDirectoryToReadForRoot() {
+    func testMatchesRequestedDirectoryURLForRoot() {
         let item = createNKFile(ocId: NextcloudKit.shared.nkCommonInstance.rootFileName, serverUrl: Self.account.davFilesUrl, fileName: NextcloudKit.shared.nkCommonInstance.rootFileName)
-        let items = [NKFile]()
-        let result = items.isDirectoryToRead(item, directoryToRead: Self.account.davFilesUrl)
+        let result = item.matchesRequestedDirectoryURL(Self.account.davFilesUrl)
         XCTAssertTrue(result)
     }
 
-    func testIsDirectoryToReadForDirectoryInRoot() {
+    func testMatchesRequestedDirectoryURLForDirectoryInRoot() {
         let item = createNKFile(ocId: "some", serverUrl: Self.account.davFilesUrl, fileName: "Subdirectory", directory: true)
-        let items = [NKFile]()
-        let result = items.isDirectoryToRead(item, directoryToRead: "\(Self.account.davFilesUrl)/Subdirectory")
+        let result = item.matchesRequestedDirectoryURL("\(Self.account.davFilesUrl)/Subdirectory")
         XCTAssertTrue(result)
     }
 
-    func testIsDirectoryToReadForFileInRoot() {
+    func testMatchesRequestedDirectoryURLForFileInRoot() {
         let item = createNKFile(ocId: "some", serverUrl: Self.account.davFilesUrl, fileName: "File", directory: false)
-        let items = [NKFile]()
-        let result = items.isDirectoryToRead(item, directoryToRead: Self.account.davFilesUrl)
+        let result = item.matchesRequestedDirectoryURL(Self.account.davFilesUrl)
         XCTAssertFalse(result)
     }
 
-    func testIsDirectoryToReadForFileInSubdirectory() {
+    func testMatchesRequestedDirectoryURLForFileInSubdirectory() {
         let subdirectoryURL = "\(Self.account.davFilesUrl)/Subdirectory"
         let item = createNKFile(ocId: "some", serverUrl: "\(subdirectoryURL)/File", fileName: "File", directory: false)
-        let items = [NKFile]()
-        let result = items.isDirectoryToRead(item, directoryToRead: subdirectoryURL)
+        let result = item.matchesRequestedDirectoryURL(subdirectoryURL)
         XCTAssertFalse(result)
     }
 
-    // MARK: - toSendableDirectoryMetadata(account:directoryToRead:) Tests
+    // MARK: - toSendableDirectoryMetadata(account:requestedDirectoryURL:) Tests
 
     func testToSendableDirectoryMetadataHandlesRootAsTargetCorrectly() async throws {
         // 1. Arrange: Create an array of NKFiles where the first item is the special root.
@@ -126,7 +149,7 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         let files = [rootNKFile, childNKFile]
 
         // 2. Act
-        let result = await files.toSendableDirectoryMetadata(account: Self.account, directoryToRead: Self.account.davFilesUrl)
+        let result = await files.toSendableDirectoryMetadata(account: Self.account, requestedDirectoryURL: Self.account.davFilesUrl)
 
         // 3. Assert
         let unwrappedResult = try XCTUnwrap(result)
@@ -166,7 +189,7 @@ final class NKFileExtensionsTests: NextcloudFileProviderKitTestCase {
         let files = [parentFolderNKFile, childFileNKFile, childDirNKFile]
 
         // 2. Act
-        let result = await files.toSendableDirectoryMetadata(account: Self.account, directoryToRead: "\(Self.account.davFilesUrl)/MyFolder")
+        let result = await files.toSendableDirectoryMetadata(account: Self.account, requestedDirectoryURL: "\(Self.account.davFilesUrl)/MyFolder")
 
         // 3. Assert
         let unwrappedResult = try XCTUnwrap(result)

@@ -136,6 +136,63 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v2")
     }
 
+    @Test func directoryListingPreservesChildrenStoredUnderTheDAVResponseURL() async throws {
+        let account = Account(
+            user: "login",
+            id: "backend-id",
+            serverUrl: "https://example.com/instance//nextcloud",
+            password: "test"
+        )
+        let responseFilesRoot = "https://example.com/instance/nextcloud" + Account.webDavFilesUrlSuffix + account.id
+        let responseDirectoryURL = responseFilesRoot + "/Docs"
+        let requestedDirectoryURL = account.davFilesUrl + "/Docs"
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        var cached = DatabaseTestSuites.makeFile(
+            ocId: "report-id",
+            fileName: "Report.txt",
+            serverUrl: responseDirectoryURL,
+            account: account
+        )
+        cached.uploaded = true
+        cached.downloaded = true
+        cached.keepDownloaded = true
+        cached.etag = "old-etag"
+        try manager.insertForTesting(cached)
+
+        var directory = NKFile()
+        directory.ocId = "docs-id"
+        directory.directory = true
+        directory.fileName = "Docs"
+        directory.serverUrl = responseFilesRoot
+        directory.account = account.ncKitAccount
+        directory.urlBase = account.serverUrl
+        directory.user = account.username
+        directory.userId = account.id
+
+        var report = directory
+        report.ocId = cached.ocId
+        report.directory = false
+        report.fileName = cached.fileName
+        report.serverUrl = responseDirectoryURL
+        report.etag = "new-etag"
+
+        let result = await Enumerator.handleDepth1ReadFileOrFolder(
+            serverUrl: requestedDirectoryURL,
+            account: account,
+            dbManager: manager,
+            files: [directory, report],
+            pageIndex: nil,
+            preserveDeletedTarget: false,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.readError == nil)
+        let stored = try #require(manager.itemMetadata(ocId: cached.ocId))
+        #expect(stored.etag == report.etag)
+        #expect(stored.downloaded)
+        #expect(stored.keepDownloaded)
+    }
+
     @Test func serverErrorIsPreserved() async {
         let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
         remote.enumerateErrorBySuffix = ["/folder": error]
@@ -205,13 +262,14 @@ struct EnumeratorPersistenceTests {
         remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
         let initialRead = await remote.enumerate(remotePath: configuredURL.absoluteString, depth: .target, account: account)
         try #require(initialRead.error == .success)
-        let metadata = try #require(initialRead.files.first).toItemMetadata()
+        let file = try #require(initialRead.files.first)
+        try #require(file.matchesResponseItemURL(parsedURL.absoluteString))
+        let metadata = file.toItemMetadata()
         try #require(metadata.urlBase == account.serverUrl)
-        try #require(metadata.remotePath() == parsedURL.absoluteString)
 
         let manager = DatabaseTestSuites.makeManager(account: account)
         let result = await Enumerator.readServerUrl(
-            metadata.remotePath(),
+            parsedURL.absoluteString,
             account: account,
             sourceMetadata: metadata,
             remoteInterface: remote,

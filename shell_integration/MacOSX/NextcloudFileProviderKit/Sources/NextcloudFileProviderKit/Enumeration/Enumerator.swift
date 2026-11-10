@@ -107,7 +107,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             }
 
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata.fileName])
-            serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
+            serverUrl = enumeratedItemMetadata.remotePath()
         }
 
         logger.info("Set up enumerator.", [.account: self.account.ncKitAccount, .url: serverUrl])
