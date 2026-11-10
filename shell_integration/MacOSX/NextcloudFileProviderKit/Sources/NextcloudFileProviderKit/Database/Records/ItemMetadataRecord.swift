@@ -54,7 +54,6 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
     var lockTime: Date?
     var lockTimeOut: Date?
     var lockToken: String?
-    var path: String
     var permissions: String
     var quotaUsedBytes: Int64
     var quotaAvailableBytes: Int64
@@ -204,7 +203,6 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         lockTime = value.lockTime
         lockTimeOut = value.lockTimeOut
         lockToken = value.lockToken
-        path = value.path
         permissions = value.permissions
         quotaUsedBytes = value.quotaUsedBytes
         quotaAvailableBytes = value.quotaAvailableBytes

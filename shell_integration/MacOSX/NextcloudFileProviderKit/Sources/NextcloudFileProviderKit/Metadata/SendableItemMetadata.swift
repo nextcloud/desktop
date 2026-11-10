@@ -6,7 +6,8 @@ import Foundation
 ///
 /// Value type carrying the metadata of one file provider item.
 ///
-/// This is the representation handed out by ``FilesDatabaseManager`` and passed between concurrency domains. Its `Codable` form is persisted inside change-delivery sessions, so its stored properties must not change shape.
+/// The database manager hands out this value across concurrency domains.
+/// Change-delivery sessions persist its `Codable` representation. Preserve decoding of existing snapshots when changing it.
 ///
 public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
     static let filesRootPlaceholderName = "/"
@@ -51,7 +52,6 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
     public var lockTime: Date?
     public var lockTimeOut: Date?
     public var lockToken: String?
-    public var path: String
     public var permissions: String
     public var quotaUsedBytes: Int64
     public var quotaAvailableBytes: Int64
@@ -120,7 +120,6 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         lockTime: Date? = nil,
         lockTimeOut: Date? = nil,
         lockToken: String? = nil,
-        path: String,
         permissions: String = "RGDNVW",
         quotaUsedBytes: Int64 = 0,
         quotaAvailableBytes: Int64 = 0,
@@ -188,7 +187,6 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         self.lockTime = lockTime
         self.lockTimeOut = lockTimeOut
         self.lockToken = lockToken
-        self.path = path
         self.permissions = permissions
         self.quotaUsedBytes = quotaUsedBytes
         self.quotaAvailableBytes = quotaAvailableBytes
@@ -258,7 +256,6 @@ public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
         lockTime = value.lockTime
         lockTimeOut = value.lockTimeOut
         lockToken = value.lockToken
-        path = value.path
         permissions = value.permissions
         quotaUsedBytes = value.quotaUsedBytes
         quotaAvailableBytes = value.quotaAvailableBytes

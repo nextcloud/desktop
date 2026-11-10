@@ -131,6 +131,22 @@ extension DatabaseTestSuites {
             #expect(Set(manager.itemsMetadataByFileNameSuffix(suffix: "").map(\.ocId)) == ["lower", "upper", "bracket", "percent"])
         }
 
+        @Test func desktopAppParentPathFollowsMovesAndPreservesFolderNames() throws {
+            let account = DatabaseTestSuites.account
+            let file = DatabaseTestSuites.makeFile(ocId: "report", fileName: "Report.txt")
+            manager.addItemMetadata(file)
+
+            let folder = "Docs #?%20"
+            manager.renameItemMetadata(
+                ocId: file.ocId,
+                newServerUrl: account.davFilesUrl + "/" + folder,
+                newFileName: file.fileName
+            )
+
+            let moved = try #require(manager.itemMetadata(ocId: file.ocId))
+            #expect(moved.davParentPathWithoutOrigin == Account.webDavFilesUrlSuffix + account.id + "/" + folder + "/")
+        }
+
         @Test func fileIdMembershipHandlesMoreThanOneChunkOfIdentifiers() throws {
             try manager.insertForTesting({
                 var metadata = DatabaseTestSuites.makeFile(ocId: "known", fileName: "known.txt")

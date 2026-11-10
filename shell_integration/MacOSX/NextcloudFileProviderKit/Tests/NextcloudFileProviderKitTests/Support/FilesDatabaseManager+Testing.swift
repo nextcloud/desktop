@@ -251,7 +251,6 @@ extension SendableItemMetadata {
             fileNameView: "",
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             permissions: "",
             serverUrl: "",
             size: 0,

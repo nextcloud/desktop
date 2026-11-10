@@ -68,7 +68,6 @@ public protocol ItemMetadata: Equatable {
     var lockTime: Date? { get set } // Time the file was locked
     var lockTimeOut: Date? { get set } // Time the file's lock will expire
     var lockToken: String? { get set }
-    var path: String { get set }
     var permissions: String { get set }
     var shareType: [Int] { get set }
     var quotaUsedBytes: Int64 { get set }
@@ -190,6 +189,19 @@ public extension ItemMetadata {
                 .init(name: "y", value: "\(size.height)"),
                 .init(name: "a", value: "true")
             ])
+    }
+
+    /// The WebDAV path of the item's parent folder, sent to the desktop app as `remoteItemPath` over XPC.
+    /// For example, `https://cloud.example.com:8443/nextcloud/remote.php/dav/files/alice/Team`
+    /// becomes `/nextcloud/remote.php/dav/files/alice/Team/`.
+    internal var davParentPathWithoutOrigin: String {
+        // The URL already contains decoded folder names. Keep literal "#" and "?" characters in the path.
+        guard let scheme = serverUrl.range(of: "://"),
+              let pathStart = serverUrl[scheme.upperBound...].firstIndex(of: "/")
+        else { return "" }
+
+        let path = serverUrl[pathStart...]
+        return path.hasSuffix("/") ? String(path) : path + "/"
     }
 
     internal var isFilesRoot: Bool {

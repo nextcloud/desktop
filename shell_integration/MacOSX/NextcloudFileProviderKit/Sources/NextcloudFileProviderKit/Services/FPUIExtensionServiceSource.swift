@@ -131,7 +131,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         app.presentUnifiedSharing(
             forItem: metadata.fileId,
             localPath: localPath as String,
-            remoteItemPath: metadata.path,
+            remoteItemPath: metadata.davParentPathWithoutOrigin,
             forDomainIdentifier: domainIdentifier
         )
         logger.info("Asked the main app to present unified sharing.", [.item: identifier, .domain: fpExtension.domain.identifier])
