@@ -5683,53 +5683,53 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="593"/>
+        <location filename="../src/gui/systray.cpp" line="590"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="877"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="598"/>
-        <location filename="../src/gui/systray.cpp" line="608"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="605"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="599"/>
-        <location filename="../src/gui/systray.cpp" line="614"/>
+        <location filename="../src/gui/systray.cpp" line="596"/>
+        <location filename="../src/gui/systray.cpp" line="611"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="600"/>
+        <location filename="../src/gui/systray.cpp" line="597"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="915"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="601"/>
+        <location filename="../src/gui/systray.cpp" line="598"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="602"/>
+        <location filename="../src/gui/systray.cpp" line="599"/>
         <source>Exit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="608"/>
+        <location filename="../src/gui/systray.cpp" line="605"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="614"/>
+        <location filename="../src/gui/systray.cpp" line="611"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="889"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
