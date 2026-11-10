@@ -27,6 +27,7 @@ Q_LOGGING_CATEGORY(lcFolderStatus, "nextcloud.gui.folder.model", QtInfoMsg)
 static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";
 static const char propertyEncryptionMap[] = "nc_encryptionMap";
+static const char propertySyncEnabledMap[] = "nc_syncEnabledMap";
 
 static QString removeTrailingSlash(const QString &path)
 {
@@ -634,7 +635,8 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
                                            << "http://owncloud.org/ns:permissions"
                                            << "http://nextcloud.org/ns:is-mount-root"
                                            << "http://owncloud.org/ns:fileid"
-                                           << "http://nextcloud.org/ns:is-encrypted";
+                                           << "http://nextcloud.org/ns:is-encrypted"
+                                           << "http://nextcloud.org/ns:sync-enabled";
     job->setProperties(props);
 
     job->setTimeout(60 * 1000);
@@ -646,6 +648,8 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         this, &FolderStatusModel::slotGatherPermissions);
     connect(job, &LsColJob::directoryListingIterated,
             this, &FolderStatusModel::slotGatherEncryptionStatus);
+    connect(job, &LsColJob::directoryListingIterated,
+            this, &FolderStatusModel::slotGatherSyncEnabledStatus);
 
     job->start();
 
@@ -692,6 +696,21 @@ void FolderStatusModel::slotGatherEncryptionStatus(const QString &href, const QM
     ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     encryptionMap[href] = *it;
     job->setProperty(propertyEncryptionMap, encryptionMap);
+}
+
+void FolderStatusModel::slotGatherSyncEnabledStatus(const QString &href, const QMap<QString, QString> &properties)
+{
+    const auto it = properties.find("sync-enabled");
+    if (it == properties.end()) {
+        return;
+    }
+
+    const auto job = sender();
+    auto syncEnabledMap = job->property(propertySyncEnabledMap).toMap();
+    job->setProperty(propertySyncEnabledMap, QVariant()); // avoid a detach of the map while it is modified
+    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    syncEnabledMap[href] = *it;
+    job->setProperty(propertySyncEnabledMap, syncEnabledMap);
 }
 
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
@@ -741,6 +760,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
     const auto permissionMap = job->property(propertyPermissionMap).toMap();
     const auto encryptionMap = job->property(propertyEncryptionMap).toMap();
+    const auto syncEnabledMap = job->property(propertySyncEnabledMap).toMap();
 
     auto sortedSubfolders = list;
     if (!sortedSubfolders.isEmpty()) {
@@ -755,6 +775,14 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     for (const auto &path : std::as_const(sortedSubfolders)) {
         auto relativePath = path.mid(pathToRemove.size());
         if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
+            continue;
+        }
+        // Server-side external storage mounts can opt out of client sync
+        // entirely (nc:sync-enabled == "false") while remaining browsable
+        // via web/mobile. Never surface them in the "choose what to sync"
+        // tree so they can't be selected for automatic sync, whether the
+        // account was just connected or already existed.
+        if (syncEnabledMap.value(removeTrailingSlash(path)).toString() == "false"_L1) {
             continue;
         }
 
