@@ -17,6 +17,20 @@ let AccountDictFileNameKey = "fileNameKey"
 /// Ephemeral data model which provides account information associated with a file provider domain.
 ///
 public struct Account: CustomStringConvertible, Equatable, Sendable {
+    private enum DAVRoot: String, CaseIterable {
+        case files = "files:"
+        case trash = "trash:"
+
+        func rootURL(accountBaseURL: String, backendUserID: String) -> String {
+            switch self {
+                case .files:
+                    return accountBaseURL + Account.webDavFilesUrlSuffix + backendUserID
+                case .trash:
+                    return accountBaseURL + Account.webDavTrashUrlSuffix + backendUserID + "/trash"
+            }
+        }
+    }
+
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
     public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
 
@@ -56,61 +70,79 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     ///
     /// Paths outside the files root, such as trash paths, do not have a sync-relative path.
     public func filesRootRelativePath(for remotePath: String) -> String? {
-        let filesRootPrefix = davFilesUrl + "/"
-        guard remotePath.hasPrefix(filesRootPrefix) else { return nil }
-        return String(remotePath.dropFirst(filesRootPrefix.count))
+        let prefix = DAVRoot.files.rawValue + "/"
+        guard let location = Self.relativeDAVLocationIfUnderRoot(forURL: remotePath, accountBaseURL: serverUrl, backendUserID: id),
+              location.hasPrefix(prefix)
+        else { return nil }
+        return String(location.dropFirst(prefix.count))
     }
 
     func ownsDAVReadURL(_ url: String, sourceMetadata: SendableItemMetadata? = nil) -> Bool {
-        func matches(_ root: String) -> Bool {
-            url.utf8.elementsEqual(root.utf8) || url.utf8.starts(with: (root + "/").utf8)
+        for root in [davFilesUrl, trashUrl] {
+            if let suffix = Self.pathSuffix(of: url, underRoot: root) {
+                return !suffix.split(separator: "/").contains("..")
+            }
         }
 
-        let roots = [davFilesUrl, trashUrl]
-        if roots.contains(where: matches) {
-            return true
-        }
-
-        // A normalized URL can coincide with a previous base. Use the row's account provenance to distinguish them.
+        // A parser-normalized URL can also match an older account's configured root.
         guard let sourceMetadata,
               sourceMetadata.urlBase.utf8.elementsEqual(serverUrl.utf8),
-              sourceMetadata.userId.utf8.elementsEqual(id.utf8)
+              sourceMetadata.userId.utf8.elementsEqual(id.utf8),
+              let location = Self.relativeDAVLocationIfUnderRoot(forURL: url, accountBaseURL: serverUrl, backendUserID: id)
         else {
             return false
         }
+        return !location.split(separator: "/").contains("..")
+    }
 
-        // NextcloudKit joins the scheme, host and port with the decoded DAV parent path.
-        guard let configuredURL = URL(string: serverUrl),
+    /// Replaces a matching DAV files or trash root for `backendUserID` with `files:` or `trash:`.
+    /// The suffix is preserved, so `/Docs` under the files root becomes `files:/Docs`.
+    /// Matches configured and parser-normalized roots derived from `accountBaseURL`.
+    /// Returns `nil` when the user ID is empty or no root matches.
+    private static func relativeDAVLocationIfUnderRoot(forURL url: String, accountBaseURL: String, backendUserID: String) -> String? {
+        guard !backendUserID.isEmpty else { return nil }
+
+        func relativeLocation(underAccountBaseURL base: String) -> String? {
+            for root in DAVRoot.allCases {
+                if let suffix = pathSuffix(of: url, underRoot: root.rootURL(accountBaseURL: base, backendUserID: backendUserID)) {
+                    return root.rawValue + suffix
+                }
+            }
+            return nil
+        }
+
+        if let location = relativeLocation(underAccountBaseURL: accountBaseURL) {
+            return location
+        }
+
+        let decodedAccountBaseURL = percentDecodedAccountBaseURL(accountBaseURL)
+        if decodedAccountBaseURL != accountBaseURL, let location = relativeLocation(underAccountBaseURL: decodedAccountBaseURL) {
+            return location
+        }
+
+        // NextcloudKit builds the response URL from the origin and the decoded DAV href.
+        guard let configuredURL = URL(string: accountBaseURL),
               let scheme = configuredURL.scheme,
               let host = configuredURL.host
         else {
-            return false
+            return nil
         }
 
-        // Like NSString.deletingLastPathComponent in the DAV parser, collapse separators before decoding.
-        let pathComponents = configuredURL.path(percentEncoded: true).split(separator: "/")
         let port = configuredURL.port.map { ":\($0)" } ?? ""
         let origin = "\(scheme)://\(host)\(port)"
-        let configuredPrefix = (serverUrl + "/").utf8
+        let installationPathComponents = configuredURL.path(percentEncoded: true).split(separator: "/")
 
-        func matchesResponseRoot(webrootComponents: [Substring]) -> Bool {
-            guard let path = webrootComponents.joined(separator: "/").removingPercentEncoding else {
-                return false
-            }
-            let responseBase = path.isEmpty ? origin : origin + "/" + path
-            return roots.contains { root in
-                guard root.utf8.starts(with: configuredPrefix) else { return false }
-                let davPath = String(decoding: root.utf8.dropFirst(serverUrl.utf8.count), as: UTF8.self)
-                return matches(responseBase + davPath)
-            }
+        func parserBaseURL(forPathComponents pathComponents: [Substring]) -> String? {
+            guard let decoded = pathComponents.joined(separator: "/").removingPercentEncoding else { return nil }
+            return decoded.isEmpty ? origin : origin + "/" + decoded
         }
 
-        if matchesResponseRoot(webrootComponents: pathComponents) {
-            return true
+        if let base = parserBaseURL(forPathComponents: installationPathComponents), let location = relativeLocation(underAccountBaseURL: base) {
+            return location
         }
 
-        // A reverse proxy can resolve dot segments in the webroot before forwarding the request.
-        let canonicalComponents = pathComponents.reduce(into: [Substring]()) { components, component in
+        // A reverse proxy may also resolve dot segments in the configured webroot.
+        let dotResolvedPathComponents = installationPathComponents.reduce(into: [Substring]()) { components, component in
             switch component {
                 case ".":
                     break
@@ -120,7 +152,24 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
                     components.append(component)
             }
         }
-        return canonicalComponents != pathComponents && matchesResponseRoot(webrootComponents: canonicalComponents)
+        guard dotResolvedPathComponents != installationPathComponents else { return nil }
+        return parserBaseURL(forPathComponents: dotResolvedPathComponents).flatMap(relativeLocation(underAccountBaseURL:))
+    }
+
+    /// NextcloudKit applies URL encoding when sending a request. Decode only the
+    /// configured base, since item paths returned by the DAV parser are already decoded.
+    private static func percentDecodedAccountBaseURL(_ base: String) -> String {
+        guard base.contains("%"), base.contains("://") else { return base }
+        return base.removingPercentEncoding ?? base
+    }
+
+    /// Compare DAV roots byte-for-byte, including the path segment boundary.
+    private static func pathSuffix(of url: String, underRoot root: String) -> String? {
+        if url.utf8.elementsEqual(root.utf8) {
+            return ""
+        }
+        guard url.utf8.starts(with: (root + "/").utf8) else { return nil }
+        return String(decoding: url.utf8.dropFirst(root.utf8.count), as: UTF8.self)
     }
 
     public init?(dictionary: [String: String]) {

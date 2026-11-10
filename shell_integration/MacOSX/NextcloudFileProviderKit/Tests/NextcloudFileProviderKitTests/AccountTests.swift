@@ -3,6 +3,7 @@
 
 import Foundation
 @testable import NextcloudFileProviderKit
+import Testing
 import XCTest
 
 final class AccountTests: NextcloudFileProviderKitTestCase {
@@ -143,4 +144,28 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(differentUser.userId, account.id)
         XCTAssertFalse(account.ownsDAVReadURL(url, sourceMetadata: differentUser))
     }
+}
+
+@Test func recognizesDecodedDAVResponseRoots() {
+    let account = Account(
+        user: "login",
+        id: "backend-id",
+        serverUrl: "https://example.com:8443//web%20root/staging/../",
+        password: "password"
+    )
+    let filesRoot = "https://example.com:8443/web root/remote.php/dav/files/backend-id"
+    let trashRoot = "https://example.com:8443/web root/remote.php/dav/trashbin/backend-id/trash"
+
+    let metadata = SendableItemMetadata(ocId: "item", fileName: "File", account: account)
+
+    #expect(account.ownsDAVReadURL(filesRoot, sourceMetadata: metadata))
+    #expect(account.ownsDAVReadURL(trashRoot + "/folder", sourceMetadata: metadata))
+    #expect(!account.ownsDAVReadURL(filesRoot))
+    #expect(!account.ownsDAVReadURL(filesRoot + "-old/folder", sourceMetadata: metadata))
+    #expect(!account.ownsDAVReadURL(filesRoot + "/../old/folder", sourceMetadata: metadata))
+    #expect(!account.ownsDAVReadURL(account.davFilesUrl + "/../old/folder"))
+    #expect(!account.ownsDAVReadURL(filesRoot.replacingOccurrences(of: ":8443", with: ""), sourceMetadata: metadata))
+    #expect(!account.ownsDAVReadURL("files:/folder", sourceMetadata: metadata))
+    #expect(account.filesRootRelativePath(for: filesRoot + "/100% #1?") == "100% #1?")
+    #expect(account.filesRootRelativePath(for: trashRoot + "/folder") == nil)
 }
