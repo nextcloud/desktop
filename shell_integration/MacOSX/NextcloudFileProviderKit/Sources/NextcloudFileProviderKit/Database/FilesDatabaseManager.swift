@@ -343,29 +343,21 @@ public final class FilesDatabaseManager: Sendable {
         } ?? false
     }
 
-    ///
-    /// Look up the item metadata by its account identifier and remote address.
-    ///
-    /// - Parameters:
-    ///     - account: The account this item is scoped by.
-    ///     - remoteURL: The full remote URL of the item as a `String`.
-    ///
-    /// - Returns: Metadata related to the item found by the parameters.
-    ///
-    public func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
-        read("Could not look up item metadata by remote URL.", [.account: account, .url: rawRemoteURL]) { db in
-            try self.itemMetadata(account: account, locatedAtRemoteUrl: rawRemoteURL, in: db)?.metadata
+    /// Look up item metadata by its full remote URL in this domain's database.
+    public func itemMetadata(locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
+        read("Could not look up item metadata by remote URL.", [.account: account.ncKitAccount, .url: rawRemoteURL]) { db in
+            try self.itemMetadata(locatedAtRemoteUrl: rawRemoteURL, in: db)?.metadata
         } ?? nil
     }
 
-    /// Fetch metadata for the files root when File Provider supplies `.rootContainer` without a server item ID.
-    public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
+    /// Look up the WebDAV Files root for Finder's `.rootContainer` identifier.
+    public func rootItemMetadata() -> SendableItemMetadata? {
         read("Could not look up the root item metadata.", [.account: account.ncKitAccount]) { db in
-            try fetchFilesRootRecord(account: account, in: db)?.metadata
+            try fetchFilesRootRecord(in: db)?.metadata
         } ?? nil
     }
 
-    private func fetchFilesRootRecord(account: Account, in db: Database) throws -> ItemMetadataRecord? {
+    private func fetchFilesRootRecord(in db: Database) throws -> ItemMetadataRecord? {
         let rootURL = account.davFilesUrl
         let splitRootParentURL = String(rootURL.dropLast(account.id.count + 1))
         let normalizedRootParent = ItemMetadataRecord.matchesStoredParentLocation(rootURL, includingDescendants: false)
@@ -419,50 +411,38 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
-    func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
-        if account == self.account.ncKitAccount,
-           let relativePath = self.account.davRelativePath(forURL: rawRemoteURL),
+    func itemMetadata(locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
+        try itemMetadata(locatedAtRemoteUrl: rawRemoteURL, filesRootAccountKey: account.ncKitAccount, in: db)
+    }
+
+    private func itemMetadata(
+        locatedAtRemoteUrl rawRemoteURL: String,
+        filesRootAccountKey: String,
+        in db: Database
+    ) throws -> ItemMetadataRecord? {
+        if filesRootAccountKey == account.ncKitAccount,
+           let relativePath = account.davRelativePath(forURL: rawRemoteURL),
            Account.isStoredFilesRootLocation(relativePath) {
-            return try fetchFilesRootRecord(account: self.account, in: db)
+            return try fetchFilesRootRecord(in: db)
         }
 
-        guard var urlComponents = URLComponents(string: rawRemoteURL) else {
-            logger.error("Failed to create URL components from raw remote URL.", [.account: account, .url: rawRemoteURL])
+        // DAV responses contain decoded path components, so "#" and "?" can be part of a name.
+        // Split the original URL to preserve the hostname as written and keep those characters in the path.
+        guard let schemeSeparator = rawRemoteURL.range(of: "://"),
+              let pathStart = rawRemoteURL[schemeSeparator.upperBound...].firstIndex(of: "/"),
+              URLComponents(string: String(rawRemoteURL[..<pathStart]))?.host?.isEmpty == false
+        else {
             return nil
         }
 
-        // Clear everything which is not part of the path to be able to derive a prefix which is then removed from the original raw remote URL.
-        urlComponents.fragment = nil
-        urlComponents.query = nil
-        urlComponents.path = ""
+        let pathComponents = rawRemoteURL[pathStart...].split(separator: "/")
+        guard let fileNameComponent = pathComponents.last else { return nil }
 
-        guard let baseURL = urlComponents.url else {
-            logger.error("Failed to derive base URL from components.", [.account: account, .url: rawRemoteURL])
-            return nil
-        }
+        let fileName = String(fileNameComponent)
+        let parentEnd = pathComponents.dropLast().last?.endIndex ?? rawRemoteURL.index(after: pathStart)
+        let rawParentURL = String(rawRemoteURL[..<parentEnd])
 
-        guard let basePrefix = baseURL.absoluteString.removingPercentEncoding else {
-            logger.error("Failed to derive absolute string from base URL.", [.account: account, .url: rawRemoteURL])
-            return nil
-        }
-
-        let index = rawRemoteURL.index(rawRemoteURL.startIndex, offsetBy: basePrefix.count)
-        let rawRemotePath = rawRemoteURL.suffix(from: index)
-        let pathComponents = rawRemotePath.split(separator: "/")
-
-        // Get the file name but also take the possible fragment into consideration which is not part of a URL path but a file name.
-        // Hence a .lastPathComponent does not work and the path must be split by its slashes.
-        guard let fileNameSubstring = pathComponents.last else {
-            return nil
-        }
-
-        let fileName = String(fileNameSubstring)
-
-        // Derive the parent address by removing the last path component and discarding the fragment which may actually be part of the file name and not a URL fragment.
-        let parentPathComponents = pathComponents.dropLast()
-        let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
-        let rawParentURL = baseURL.absoluteString + parentPath
-
+        // Older rows can omit the account key. Keep matching the full URL until the DAV migration fills it in.
         return try ItemMetadataRecord
             .filter(matchesParentURLAndFileName(parentURL: rawParentURL, fileName: fileName))
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
@@ -472,7 +452,11 @@ public final class FilesDatabaseManager: Sendable {
     func parentDirectoryMetadataForItem(_ itemMetadata: any ItemMetadata, in db: Database) throws -> ItemMetadataRecord? {
         guard !itemMetadata.isFilesRoot else { return nil }
 
-        let parent = try self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
+        let parent = try self.itemMetadata(
+            locatedAtRemoteUrl: itemMetadata.serverUrl,
+            filesRootAccountKey: itemMetadata.account,
+            in: db
+        )
         // Finder stores the root's pin on the synthetic root row.
         if parent?.isFilesRootWithServerID == true,
            let syntheticRoot = try self.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, in: db),
@@ -1147,15 +1131,10 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
+    /// Return metadata for this domain's materialized items.
     ///
-    /// Return metadata for materialized file provider items.
-    ///
-    /// - Parameters:
-    ///     - account: The account identifier to filter by.
-    ///
-    /// - Returns: An array of sendable metadata objects, or `nil` when the database could not be read. An empty array means nothing is materialized; `nil` must not be taken for that.
-    ///
-    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata]? {
+    /// Returns an empty array when no items are materialized and `nil` when the database read fails.
+    public func materialisedItemMetadatas() -> [SendableItemMetadata]? {
         read("Could not fetch the materialized item metadata.") { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.isMaterialised)

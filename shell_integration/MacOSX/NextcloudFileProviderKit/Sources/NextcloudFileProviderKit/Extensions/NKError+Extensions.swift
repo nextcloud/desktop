@@ -108,15 +108,15 @@ extension NKError {
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }
-        guard let collidingItemMetadata = dbManager.itemMetadata(
-            account: dbManager.account.ncKitAccount, locatedAtRemoteUrl: problemRemotePath
-        ), let collidingItem = await Item.storedItem(
-            identifier: .init(collidingItemMetadata.ocId),
-            account: dbManager.account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            log: log
-        ) else {
+        guard let collidingItemMetadata = dbManager.itemMetadata(locatedAtRemoteUrl: problemRemotePath),
+              let collidingItem = await Item.storedItem(
+                  identifier: .init(collidingItemMetadata.ocId),
+                  account: dbManager.account,
+                  remoteInterface: remoteInterface,
+                  dbManager: dbManager,
+                  log: log
+              )
+        else {
             return NSFileProviderError(.filenameCollision)
         }
         return NSError.fileProviderErrorForCollision(with: collidingItem)

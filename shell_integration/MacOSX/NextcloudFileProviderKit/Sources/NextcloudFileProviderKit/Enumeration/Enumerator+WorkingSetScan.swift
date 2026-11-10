@@ -129,7 +129,7 @@ extension Enumerator {
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
-        let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        let storedMaterialisedItems = dbManager.materialisedItemMetadatas()
         let materialisedItems = (storedMaterialisedItems ?? [])
             .filter { !$0.deleted && !$0.isTrashed }
             .sorted { $0.remotePath().count < $1.remotePath().count }

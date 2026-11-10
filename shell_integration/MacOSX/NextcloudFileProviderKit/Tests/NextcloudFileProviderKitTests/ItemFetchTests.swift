@@ -1492,7 +1492,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertTrue(completedChild.visitedDirectory)
             XCTAssertEqual(completedChild.lockToken, localMetadata.lockToken)
             XCTAssertEqual(completedChild.fileProviderContentVersion, versionChanged ? nil : localMetadata.fileProviderContentVersion)
-            XCTAssertEqual(Self.dbManager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: child.remotePath)?.ocId, child.identifier)
+            XCTAssertEqual(Self.dbManager.itemMetadata(locatedAtRemoteUrl: child.remotePath)?.ocId, child.identifier)
             let completedDirectory = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
             XCTAssertEqual(completedDirectory.etag, directory.versionIdentifier)
             XCTAssertEqual(try XCTUnwrap(fetchedItem).itemVersion.contentVersion, Data(directory.versionIdentifier.utf8))

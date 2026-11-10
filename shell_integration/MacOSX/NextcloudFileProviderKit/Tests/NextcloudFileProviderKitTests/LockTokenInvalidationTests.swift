@@ -29,7 +29,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
     func testRenameItemMetadataClearsLockToken() throws {
         var metadata = SendableItemMetadata.rawRow(ocId: "lock-1")
-        metadata.account = "TestAccount"
+        metadata.account = Self.account.ncKitAccount
         metadata.serverUrl = "https://cloud.example.com/files/old"
         metadata.fileName = "doc.txt"
         metadata.lockToken = "opaquelocktoken:abc123"
@@ -49,13 +49,13 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
     func testRenameDirectoryClearsLockTokenOnChildren() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "lock-dir")
-        dir.account = "TestAccount"
+        dir.account = Self.account.ncKitAccount
         dir.serverUrl = "https://cloud.example.com/files"
         dir.fileName = "folder"
         dir.directory = true
 
         var child = SendableItemMetadata.rawRow(ocId: "lock-child")
-        child.account = "TestAccount"
+        child.account = Self.account.ncKitAccount
         child.serverUrl = "https://cloud.example.com/files/folder"
         child.fileName = "important.docx"
         child.lockToken = "opaquelocktoken:xyz789"
@@ -82,9 +82,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
     }
 
     func testProcessUpdateClearsLockTokenWhenFileNameChanges() {
-        let account = Account(
-            user: "lockClear", id: "lc", serverUrl: "https://example.com", password: ""
-        )
+        let account = Self.account
 
         var parentDir = SendableItemMetadata(
             ocId: "lock-clear-parent", fileName: "parentDir", account: account
@@ -129,9 +127,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
     }
 
     func testProcessUpdatePreservesLockTokenWhenPathUnchanged() {
-        let account = Account(
-            user: "lockKeep", id: "lk", serverUrl: "https://example.com", password: ""
-        )
+        let account = Self.account
 
         var parentDir = SendableItemMetadata(
             ocId: "lock-keep-parent", fileName: "parentDir", account: account
