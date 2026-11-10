@@ -48,6 +48,12 @@ extension FilesDatabaseManager {
             return []
         }
 
+        // Finder's `.rootContainer` row holds the root's pin. Keep it alongside the row keyed
+        // by the server's ocId, even though both have the same URL and filename.
+        if incoming.isFilesRoot {
+            return []
+        }
+
         // A soft-deleted incoming row is a tombstone, not an authoritative live
         // occupant of its logical address, so it must never evict a live sibling.
         // A deletion is authoritative only about its own ocId; if another live row
@@ -151,7 +157,11 @@ extension FilesDatabaseManager {
             }
 
             // The exclusions decide which rows may be soft-deleted, not which rows are repaired.
-            guard !row.deleted, !row.isLockFileOfLocalOrigin, row.ocId != rootContainerOcId else {
+            guard !row.deleted,
+                  !row.isLockFileOfLocalOrigin,
+                  row.ocId != rootContainerOcId,
+                  row.fileName != SendableItemMetadata.filesRootPlaceholderName
+            else {
                 continue
             }
 

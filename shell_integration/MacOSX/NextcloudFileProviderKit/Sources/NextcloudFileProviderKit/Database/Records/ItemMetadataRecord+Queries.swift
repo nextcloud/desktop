@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 import GRDB
 
@@ -11,6 +12,12 @@ import GRDB
 ///
 extension ItemMetadataRecord {
     typealias Columns = CodingKeys
+
+    /// A root row shares the same parent URL as top-level items.
+    static var isFilesRoot: SQLExpression {
+        Columns.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
+            || (Columns.directory == true && Columns.fileName == SendableItemMetadata.filesRootPlaceholderName)
+    }
 
     /// Match the normalized stored parent location and normalized filename together.
     static func matchesStoredParentLocationAndFileName(parentLocation: String, fileName: String) -> SQLExpression {

@@ -118,7 +118,7 @@ extension Enumerator {
             id: signposter.makeSignpostID(),
             "serverUrl=\(serverUrl, privacy: .public) files=\(filesFromResponse.count)"
         )
-        let convertedDirectory = await filesFromResponse.toSendableDirectoryMetadata(account: account, requestedDirectoryURL: serverUrl)
+        let convertedDirectory = await filesFromResponse.toSendableDirectoryMetadata(requestedDirectoryURL: serverUrl)
         signposter.endInterval("ConvertDirectoryMetadata", convDirState)
 
         guard var (directory, _, files) = convertedDirectory else {
@@ -283,6 +283,12 @@ extension Enumerator {
 
         guard error == .success else {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
+            // A 404 at the account's Files root means the domain could not be read. Let Finder retry.
+            if error.isNotFoundError,
+               let davPath = account.davRelativePath(forURL: serverUrl),
+               Account.isStoredFilesRootLocation(davPath) {
+                return RemoteReadResult(error: .invalidData)
+            }
             return RemoteReadResult(error: error)
         }
 

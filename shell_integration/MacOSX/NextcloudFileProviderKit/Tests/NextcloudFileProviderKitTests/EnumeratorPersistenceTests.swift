@@ -242,24 +242,7 @@ struct EnumeratorPersistenceTests {
             MockHTTPURLProtocol.removeResponse(for: parsedURL)
         }
 
-        let remote = NextcloudKit()
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockHTTPURLProtocol.self]
-        let session = NKSession(
-            nkCommonInstance: remote.nkCommonInstance,
-            urlBase: account.serverUrl,
-            user: account.username,
-            userId: account.id,
-            password: account.password,
-            account: account.ncKitAccount,
-            userAgent: "FileProvider-test",
-            groupIdentifier: "",
-            httpMaximumConnectionsPerHost: 1,
-            httpMaximumConnectionsPerHostInDownload: 1,
-            httpMaximumConnectionsPerHostInUpload: 1,
-            sessionDataOverride: Alamofire.Session(configuration: configuration)
-        )
-        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        let remote = nextcloudKitForDAVRead(account: account)
         let initialRead = await remote.enumerate(remotePath: configuredURL.absoluteString, depth: .target, account: account)
         try #require(initialRead.error == .success)
         let file = try #require(initialRead.files.first)
@@ -281,6 +264,72 @@ struct EnumeratorPersistenceTests {
         #expect(MockHTTPURLProtocol.requests(for: parsedURL).map(\.httpMethod) == ["PROPFIND"])
         #expect(result.error == nil)
         #expect(result.metadatas?.map(\.ocId) == [ocId])
+    }
+
+    @Test(arguments: [(false, true), (true, true), (false, false), (true, false)])
+    func directoryReadAcceptsEquivalentWebrootWithMatchingBackendID(filesRoot: Bool, matchingBackendID: Bool) async throws {
+        let origin = "https://\(UUID().uuidString.lowercased()).example.invalid"
+        let account = Account(
+            user: "login",
+            id: "backénd",
+            serverUrl: origin + "/N%C3%A9xt",
+            password: "test"
+        )
+        let directorySuffix = filesRoot ? "" : "/Docs"
+        let directoryURL = account.davFilesUrl + directorySuffix
+        let requestURL = try #require(URL(string: directoryURL))
+        let responseBackendID = matchingBackendID ? "back%C3%A9nd" : "backe%CC%81nd"
+        let responsePath = "/Ne%CC%81xt" + Account.webDavFilesUrlSuffix + responseBackendID + directorySuffix
+        let body = Data("""
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:response>
+            <d:href>\(responsePath)/</d:href>
+            <d:propstat>
+              <d:prop>
+                <oc:id>directory-id</oc:id>
+                <d:resourcetype><d:collection/></d:resourcetype>
+              </d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+          <d:response>
+            <d:href>\(responsePath)/report.txt</d:href>
+            <d:propstat>
+              <d:prop>
+                <oc:id>file-id</oc:id>
+                <d:getcontenttype>text/plain</d:getcontenttype>
+              </d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+        </d:multistatus>
+        """.utf8)
+        MockHTTPURLProtocol.setResponse(for: requestURL, statusCode: 207, body: body)
+        defer { MockHTTPURLProtocol.removeResponse(for: requestURL) }
+
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let result = await Enumerator.readServerUrl(
+            directoryURL,
+            account: account,
+            remoteInterface: nextcloudKitForDAVRead(account: account),
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        let requests = MockHTTPURLProtocol.requests(for: requestURL)
+        #expect(requests.map(\.httpMethod) == ["PROPFIND"])
+        #expect(requests.first?.value(forHTTPHeaderField: "Depth") == "1")
+        if matchingBackendID {
+            #expect(result.error == nil)
+            #expect(result.metadatas?.map(\.ocId) == ["directory-id", "file-id"])
+            let storedFile = manager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: directoryURL + "/report.txt")
+            #expect(storedFile?.ocId == "file-id")
+            #expect(storedFile?.serverUrl.utf8.elementsEqual(directoryURL.utf8) == true)
+        } else {
+            #expect(result.error == .invalidData)
+            #expect(manager.itemMetadata(ocId: "file-id") == nil)
+        }
     }
 
     @Test func workingSetSkipsAStaleURLThatWouldReturn404() async throws {
@@ -308,6 +357,28 @@ struct EnumeratorPersistenceTests {
         )
         let fixture = Self(account: currentAccount)
         try await fixture.expectWorkingSetToSkip404(at: previousAccount)
+    }
+
+    private func nextcloudKitForDAVRead(account: Account) -> NextcloudKit {
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = NKSession(
+            nkCommonInstance: remote.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "FileProvider-test",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: Alamofire.Session(configuration: configuration)
+        )
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        return remote
     }
 
     private func expectWorkingSetToSkip404(at previousAccount: Account) async throws {
@@ -356,6 +427,46 @@ struct EnumeratorPersistenceTests {
         #expect(observer.deletedItemIdentifiers.isEmpty)
         #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
         #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+    }
+
+    @Test(arguments: [NSFileProviderItemIdentifier.rootContainer.rawValue, "server-root-id"])
+    func workingSetRetriesA404ForTheFilesRoot(rootID: String) async throws {
+        var root = DatabaseTestSuites.makeFile(
+            ocId: rootID,
+            fileName: SendableItemMetadata.filesRootPlaceholderName,
+            serverUrl: account.davFilesUrl,
+            account: account
+        )
+        root.directory = true
+        root.visitedDirectory = true
+        root.keepDownloaded = true
+        root.syncTime = Date(timeIntervalSinceNow: -120)
+        manager.addItemMetadata(root)
+        remote.enumerateErrorBySuffix[account.davFilesUrl] = NKError(statusCode: 404, fallbackDescription: "File not found")
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(remote.readOperationCount == 2)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
+        let savedRoot = try #require(manager.itemMetadata(ocId: rootID))
+        #expect(!savedRoot.deleted)
+        #expect(savedRoot.keepDownloaded)
+    }
+
+    @Test func rootContainerReturnsARetryableErrorWhenDAVReturns404() async throws {
+        remote.enumerateErrorBySuffix[account.davFilesUrl] = NKError(statusCode: 404, fallbackDescription: "File not found")
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.rootContainer))
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateChanges(from: anchor)
+        }
+
+        #expect(remote.readOperationCount == 1)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
     }
 
     @Test func workingSetReportsA404UnderTheCurrentDAVBaseAsADeletion() async throws {

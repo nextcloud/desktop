@@ -9,6 +9,8 @@ import Foundation
 /// This is the representation handed out by ``FilesDatabaseManager`` and passed between concurrency domains. Its `Codable` form is persisted inside change-delivery sessions, so its stored properties must not change shape.
 ///
 public struct SendableItemMetadata: ItemMetadata, Codable, Sendable {
+    static let filesRootPlaceholderName = "/"
+
     public var ocId: String
     public var account: String
     public var checksums: String

@@ -6,20 +6,12 @@ import Foundation
 import GRDB
 
 public extension FilesDatabaseManager {
-    private func fullServerPathUrl(for metadata: any ItemMetadata) -> String {
-        if metadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            metadata.serverUrl
-        } else {
-            metadata.serverUrl + "/" + metadata.fileName
-        }
-    }
-
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true))
+                .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -31,11 +23,11 @@ public extension FilesDatabaseManager {
     /// this does not recurse into descendants.
     ///
     func immediateChildItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false))
+                .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -47,7 +39,7 @@ public extension FilesDatabaseManager {
     /// carries the same `serverUrl` its children do.
     ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
         let account = directoryMetadata.account
         let ocId = directoryMetadata.ocId
 
@@ -57,6 +49,7 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.deleted == false
                         && ItemMetadataRecord.Columns.ocId != ocId
+                        && !ItemMetadataRecord.isFilesRoot
                         && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false)
                 )
                 .fetchCount(db)
@@ -82,7 +75,7 @@ public extension FilesDatabaseManager {
     /// matching the directory `.../folder`.
     ///
     func hasEvictableDescendantFile(directoryMetadata: SendableItemMetadata) -> Bool {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not look up evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
             try !ItemMetadataRecord
@@ -105,7 +98,7 @@ public extension FilesDatabaseManager {
     /// (#9891, #10085).
     ///
     func evictableDescendantFileIdentifiers(directoryMetadata: SendableItemMetadata) -> [NSFileProviderItemIdentifier] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
@@ -180,7 +173,9 @@ public extension FilesDatabaseManager {
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: SendableItemMetadata) -> SendableItemMetadata? {
-        self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
+        read("Could not look up parent directory metadata.", [.item: itemMetadata.ocId, .url: itemMetadata.serverUrl]) { db in
+            try parentDirectoryMetadataForItem(itemMetadata, in: db)?.metadata
+        } ?? nil
     }
 
     func directoryMetadata(ocId: String) -> SendableItemMetadata? {

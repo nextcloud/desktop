@@ -99,9 +99,14 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             serverUrl = account.davFilesUrl
             enumeratedItemMetadata = nil
         } else {
+            // Finder opens the Files root with `.rootContainer` above. The server's root ocId
+            // is kept for DAV metadata, so reject it as a Finder container identifier.
             enumeratedItemMetadata = dbManager.itemMetadata(enumeratedItemIdentifier)
 
-            guard let enumeratedItemMetadata, enumeratedItemMetadata.deleted == false else {
+            guard let enumeratedItemMetadata,
+                  !enumeratedItemMetadata.deleted,
+                  !enumeratedItemMetadata.isFilesRootWithServerID
+            else {
                 logger.error("Could not find item with identifier.", [.item: enumeratedItemIdentifier])
                 throw NSFileProviderError(.noSuchItem)
             }
