@@ -197,7 +197,7 @@ extension FilesDatabaseManager {
                     for metadata in items {
                         // Enumeration can leave an in-flight row at an address now occupied by another item.
                         let addressAvailable = try ItemMetadataRecord
-                            .filter(ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName))
+                            .filter(matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName))
                             .filter(ItemMetadataRecord.Columns.account == metadata.account && ItemMetadataRecord.Columns.ocId != metadata.ocId)
                             .filter(ItemMetadataRecord.Columns.deleted == false && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false)
                             .isEmpty(db)

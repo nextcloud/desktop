@@ -393,7 +393,7 @@ public final class FilesDatabaseManager: Sendable {
             try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.Columns.account == account
-                        && ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(serverUrl, includingDescendants: true)
                 )
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
@@ -401,6 +401,14 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     // MARK: - Lookup workers
+
+    func matchesParentURLAndFileName(parentURL: String, fileName: String) -> SQLExpression {
+        ItemMetadataRecord.matchesStoredParentLocationAndFileName(parentLocation: parentURL, fileName: fileName)
+    }
+
+    func matchesParentDirectoryURL(_ directoryURL: String, includingDescendants: Bool) -> SQLExpression {
+        ItemMetadataRecord.matchesStoredParentLocation(directoryURL, includingDescendants: includingDescendants)
+    }
 
     func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
         try ItemMetadataRecord.filter(key: ocId).fetchRecord(db, logger: logger)
@@ -446,7 +454,7 @@ public final class FilesDatabaseManager: Sendable {
         let rawParentURL = baseURL.absoluteString + parentPath
 
         return try ItemMetadataRecord
-            .filter(ItemMetadataRecord.hasLocation(serverUrl: rawParentURL, fileName: fileName))
+            .filter(matchesParentURLAndFileName(parentURL: rawParentURL, fileName: fileName))
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
             .fetchRecord(db, logger: logger)
     }
@@ -613,11 +621,11 @@ public final class FilesDatabaseManager: Sendable {
                 cleanServerUrl.removeLast()
             }
 
-            var matchesReadDirectory = ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
+            var matchesReadDirectory = matchesParentDirectoryURL(cleanServerUrl, includingDescendants: false)
             if let responseDirectoryURL, responseDirectoryURL != cleanServerUrl {
                 // V1 rows may still use the parent URL returned by the DAV parser.
                 matchesReadDirectory = matchesReadDirectory
-                    || ItemMetadataRecord.hasServerUrl(equalTo: responseDirectoryURL, includingDescendants: false)
+                    || matchesParentDirectoryURL(responseDirectoryURL, includingDescendants: false)
             }
 
             let existingMetadatas = try ItemMetadataRecord
@@ -964,7 +972,7 @@ public final class FilesDatabaseManager: Sendable {
                 // prior row in the same write that persists the fresh one.
                 let logicalCandidates = try ItemMetadataRecord
                     .filter(
-                        ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
+                        matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName)
                             && ItemMetadataRecord.Columns.deleted == false
                             && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
                     )
@@ -1163,7 +1171,7 @@ public final class FilesDatabaseManager: Sendable {
             for serverUrl in updatedItems.filter(\.directory).map({ $0.remotePath() }) {
                 let children = try ItemMetadataRecord
                     .filter(
-                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: false)
+                        matchesParentDirectoryURL(serverUrl, includingDescendants: false)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
                     .fetchRecords(db, logger: logger)
@@ -1195,7 +1203,7 @@ public final class FilesDatabaseManager: Sendable {
             for serverUrl in deletedItems.filter(\.directory).map({ $0.remotePath() }) {
                 let children = try ItemMetadataRecord
                     .filter(
-                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
+                        matchesParentDirectoryURL(serverUrl, includingDescendants: true)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
                     .fetchRecords(db, logger: logger)
