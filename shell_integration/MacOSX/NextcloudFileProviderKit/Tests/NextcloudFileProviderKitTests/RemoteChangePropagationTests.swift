@@ -557,6 +557,158 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// A rename landing while the scan's read of the old path is in flight must not turn that read's 404 into a deletion.
+    func testA404ForAPathTheItemHasMovedAwayFromIsNotADeletion() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let seeded = seed(folder, visitedDirectory: true)
+
+        // The server has already accepted the rename, so the path the scan holds 404s.
+        rootItem.children.removeAll { $0 === folder }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // The rename reaches the database while the read of the old path is in flight.
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/folder") else { return }
+
+            var renamed = seeded
+            renamed.fileName = "renamedFolder"
+            renamed.fileNameView = "renamedFolder"
+            Self.dbManager.addItemMetadata(renamed)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+        let deletedIds = Set(observer.deletedItemIdentifiers.map(\.rawValue))
+
+        XCTAssertNil(observer.error)
+        XCTAssertFalse(
+            deletedIds.contains(folder.identifier),
+            "A 404 for a path the item has since been renamed away from must not be reported as a deletion."
+        )
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: folder.identifier)?.deleted, false,
+            "The stale 404 must not mark the moved item's row deleted."
+        )
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: folder.identifier)?.fileName, "renamedFolder",
+            "The stale 404 must not rewrite the row back to its pre-rename name."
+        )
+    }
+
+    /// A rename whose MOVE response is handled after the 404 for the old path, while the scan reads a later wave, must not turn that 404 into a deletion.
+    func testA404WhoseRenameLandsDuringALaterReadIsNotADeletion() async throws {
+        let folder = makeFolder(name: "folder", parent: rootItem, etag: "folder-v1")
+        let other = makeFolder(name: "other", parent: rootItem, etag: "other-v1")
+        let laterFolder = makeFolder(name: "later", parent: other, etag: "later-v1")
+        let seeded = seed(folder, visitedDirectory: true)
+        seed(laterFolder, visitedDirectory: true)
+        rootItem.children.removeAll { $0 === folder }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/other/later") else { return }
+
+            var renamed = seeded
+            renamed.fileName = "renamedFolder"
+            renamed.fileNameView = "renamedFolder"
+            Self.dbManager.addItemMetadata(renamed)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.map(\.rawValue).contains(folder.identifier))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folder.identifier)?.fileName, "renamedFolder")
+    }
+
+    /// A child that a folder's depth-1 read found deleted stays deleted when a folder above it is renamed in a later wave of the scan.
+    func testADepth1DeletionIsReportedWhenAParentIsRenamedDuringTheScan() async throws {
+        let folderA = makeFolder(name: "A", parent: rootItem, etag: "a-v1")
+        let folderP = makeFolder(name: "P", parent: folderA, etag: "p-v1")
+        let child = makeFile(name: "c", parent: folderP, etag: "c-v1")
+        let other = makeFolder(name: "other", parent: rootItem, etag: "other-v1")
+        let sub = makeFolder(name: "sub", parent: other, etag: "sub-v1")
+        let laterFolder = makeFolder(name: "later", parent: sub, etag: "later-v1")
+        seed(folderA, visitedDirectory: true)
+        seed(folderP, visitedDirectory: true)
+        seed(child)
+        seed(laterFolder, visitedDirectory: true)
+
+        // A collaborator deletes c, which changes the ETags above it.
+        folderP.children.removeAll { $0 === child }
+        folderP.versionIdentifier = "p-v2"
+        folderA.versionIdentifier = "a-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let rootUrl = Self.account.davFilesUrl
+
+        // The user's rename of A lands while the scan reads a deeper wave, after /A/P was merged.
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/other/sub/later") else { return }
+            _ = Self.dbManager.renameDirectoryAndPropagateToChildren(ocId: folderA.identifier, newServerUrl: rootUrl, newFileName: "A2")
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertTrue(observer.deletedItemIdentifiers.map(\.rawValue).contains(child.identifier))
+    }
+
+    /// An upload that starts during the scan keeps a file whose read returned 404 from being deleted.
+    func testAnUploadStartedDuringTheScanBlocksTheDeletion() async throws {
+        let file = makeFile(name: "f", parent: rootItem, etag: "f-v1")
+        let laterFolder = makeFolder(name: "zzLaterFolder", parent: rootItem, etag: "later-v1")
+        let seededFile = seed(file, downloaded: true)
+        seed(laterFolder, visitedDirectory: true)
+
+        rootItem.children.removeAll { $0 === file }
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        // The user saves f in an editor while the scan reads a later item.
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/zzLaterFolder") else { return }
+            _ = Self.dbManager.setStatusForItemMetadata(seededFile, status: .uploading)
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.map(\.rawValue).contains(file.identifier))
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+    }
+
+    /// A downloaded file moved into a folder the scan does not read must not be reported deleted by the 404 at its old path.
+    func testAFileMovedIntoAnUnvisitedFolderIsNotADeletion() async throws {
+        seed(rootItem, visitedDirectory: true)
+        let source = makeFolder(name: "source", parent: rootItem, etag: "source-v1")
+        let target = makeFolder(name: "target", parent: rootItem, etag: "target-v1")
+        let file = makeFile(name: "f", parent: source, etag: "f-v1")
+        seed(source, visitedDirectory: true)
+        seed(target)
+        seed(file, downloaded: true)
+
+        // The server has already accepted the move.
+        source.children.removeAll { $0 === file }
+        target.children.append(file)
+        file.parent = target
+        file.remotePath = target.remotePath + "/f"
+        source.versionIdentifier = "source-v2"
+        target.versionIdentifier = "target-v2"
+        rootItem.versionIdentifier = "root-v2"
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let targetUrl = Self.account.davFilesUrl + "/target"
+
+        // The MOVE response is handled while the scan reads the old folder.
+        remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
+            guard remotePath.hasSuffix("/source") else { return }
+            Self.dbManager.renameItemMetadata(ocId: file.identifier, newServerUrl: targetUrl, newFileName: "f")
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertFalse(observer.deletedItemIdentifiers.map(\.rawValue).contains(file.identifier))
+    }
+
     /// S4: the change-detection predicate `isInSameDatabaseStoreableRemoteState` keys on ETag (+ a
     /// fixed field set). If a file's content changes but its ETag is unchanged, the predicate treats
     /// it as unchanged and the update is skipped. Real servers bump the ETag on content change, so
