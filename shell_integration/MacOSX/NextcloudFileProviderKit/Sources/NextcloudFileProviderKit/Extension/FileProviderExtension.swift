@@ -60,6 +60,7 @@ import OSLog
     /// NextcloudKit instance used by this file provider extension object.
     ///
     let ncKit: NextcloudKit
+    private let databaseDirectory: URL?
     var thumbnailFetcher = NextcloudFileProviderKit.fetchThumbnails
 
     var ncAccount: Account?
@@ -115,8 +116,9 @@ import OSLog
         self.init(domain: domain, ncKit: .shared)
     }
 
-    init(domain: NSFileProviderDomain, ncKit: NextcloudKit) {
+    init(domain: NSFileProviderDomain, ncKit: NextcloudKit, databaseDirectory: URL? = nil) {
         self.domain = domain
+        self.databaseDirectory = databaseDirectory
         manager = NSFileProviderManager(for: domain)
 
         // Set up logging.
@@ -835,35 +837,30 @@ import OSLog
                 return
             }
 
-            await performSetup(account: account, generation: generation, userAgent: userAgent, completionHandler: completionHandler)
-            clearPendingAccount(matching: account)
+            await performSetup(account: account, generation: generation, userAgent: userAgent) { error in
+                self.clearPendingAccount(matching: account, generation: generation)
+                completionHandler?(error)
+            }
         }
 
         setupChain = next
         setupLock.unlock()
     }
 
-    ///
-    /// Synchronous cleanup helper used by the ``setupChain`` continuation so the lock acquisition
-    /// stays out of the surrounding asynchronous context. `NSLock.lock()` / `unlock()` are
-    /// unavailable from async functions in Swift 6 because awaiting across them can deadlock the
-    /// cooperative thread pool; doing the lock dance inside this synchronous method sidesteps the
-    /// diagnostic without changing the semantics.
-    ///
-    private func clearPendingAccount(matching account: Account) {
-        setupLock.lock()
-
-        if pendingAccount == account {
-            pendingAccount = nil
+    /// Allow another setup for this account before notifying the caller of the result.
+    private func clearPendingAccount(matching account: Account, generation: Int) {
+        setupLock.withLock {
+            if generation == setupGeneration, pendingAccount == account {
+                pendingAccount = nil
+            }
         }
-
-        setupLock.unlock()
     }
 
-    ///
-    /// Store the account for later access, unless ``removeAccount()`` superseded the setup started at `generation`.
-    ///
-    func storeAccount(_ account: Account, generation: Int) -> Bool {
+    /// Save the password in the Keychain. With `awaitingDatabaseSetup: true`, save the incoming
+    /// account separately for Finder retries so the migration from absolute WebDAV parent URLs
+    /// to paths such as `files:/Team` can still read the previous account.
+    /// With `false`, replace the domain's configured account and clear the retry details.
+    func storeAccount(_ account: Account, generation: Int, awaitingDatabaseSetup: Bool = false) -> Bool {
         setupLock.lock()
         defer { setupLock.unlock() }
 
@@ -871,12 +868,24 @@ import OSLog
             return false
         }
 
-        config.serverUrl = account.serverUrl
-        config.user = account.username
-        config.userId = account.id
         keychain.savePassword(account.password, for: account.username)
-
+        if awaitingDatabaseSetup {
+            config.accountForSetupRetry = account.davAccountIdentity
+        } else {
+            config.recordAccountAfterDatabaseSetup(account)
+        }
         return true
+    }
+
+    /// Prefer the incoming account so Finder retries with the same server and credentials after a setup failure.
+    func storedAccountForAuthentication() -> Account? {
+        setupLock.withLock {
+            guard let identity = config.accountForSetupRetry ?? config.configuredDAVAccountIdentity,
+                  let password = keychain.getPassword(for: identity.username)
+            else { return nil }
+
+            return Account(davAccountIdentity: identity, password: password)
+        }
     }
 
     ///
@@ -907,6 +916,7 @@ import OSLog
 
         setupGeneration += 1
         pendingAccount = nil
+        config.accountForSetupRetry = nil
         ncAccount = nil
 
         return keychain.deletePassword()
@@ -924,8 +934,7 @@ import OSLog
         userAgent: String,
         completionHandler: (@Sendable (NSError?) -> Void)?
     ) async {
-        // Store account information independently from the main app for later access.
-        guard storeAccount(account, generation: generation) else {
+        guard storeAccount(account, generation: generation, awaitingDatabaseSetup: true) else {
             logger.info("Cancelling domain account setup because the account was removed meanwhile.")
             completionHandler?(NSError(.missingAccountInformation))
             return
@@ -964,12 +973,19 @@ import OSLog
                 logger.info("Successfully authenticated.")
         }
 
+        guard setupLock.withLock({ generation == setupGeneration }) else {
+            logger.info("Cancelling domain account setup because the account was removed meanwhile.")
+            completionHandler?(NSError(.missingAccountInformation))
+            return
+        }
+
         // Opening the database may import or migrate it, so it happens off the main actor.
         let databaseManager: FilesDatabaseManager
 
         do {
             databaseManager = try FilesDatabaseManager(
                 account: account,
+                databaseDirectory: databaseDirectory,
                 fileProviderDomainIdentifier: domain.identifier,
                 log: log
             )
@@ -977,6 +993,15 @@ import OSLog
             // Without its database the domain stays unavailable; every request keeps failing until a later setup succeeds.
             logger.fault("Could not open the metadata database. The domain is not set up.", [.error: error])
             completionHandler?(NSError(.databaseUnavailable))
+            return
+        }
+
+        // On the first upgrade to `files:` and `trash:` paths, the database can use the previous
+        // login, server URL and backend user ID to identify which cached rows to update with the
+        // incoming account details. Replace those settings only after opening the database succeeds.
+        guard storeAccount(account, generation: generation) else {
+            logger.info("Cancelling domain account setup because the account was removed meanwhile.")
+            completionHandler?(NSError(.missingAccountInformation))
             return
         }
 
