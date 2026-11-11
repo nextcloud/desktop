@@ -13,6 +13,7 @@
 
 #include <QStandardPaths>
 #include <QUrl>
+#include <QVariant>
 
 using namespace Qt::StringLiterals;
 
@@ -34,6 +35,15 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void testWizardHideSelfHostButtonMatchesBranding()
+    {
+        const auto theme = OCC::Theme::instance();
+        const auto hidden = static_cast<bool>(WIZARD_HIDE_SELF_HOST_BUTTON);
+
+        QCOMPARE(theme->wizardHideSelfHostButton(), hidden);
+        QCOMPARE(theme->property("wizardHideSelfHostButton"), QVariant(hidden));
     }
 
     void testWizardSignupMatchesBranding()

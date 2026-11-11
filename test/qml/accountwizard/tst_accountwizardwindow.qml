@@ -48,6 +48,7 @@ Item {
                 wizard = null
                 wait(0)
             }
+            Theme.wizardHideSelfHostButton = false
             Theme.wizardHideSignupButton = false
         }
 
@@ -64,21 +65,26 @@ Item {
             return null
         }
 
-        function test_signupVisibility_data() {
+        function test_buttonVisibility_data() {
             return [
-                { tag: "default", hidden: false, step: AccountWizardController.ServerStep, visible: true },
-                { tag: "hidden", hidden: true, step: AccountWizardController.ServerStep, visible: false },
-                { tag: "other step", hidden: false, step: AccountWizardController.BasicAuthStep, visible: false },
-                { tag: "hidden on other step", hidden: true, step: AccountWizardController.BasicAuthStep, visible: false }
+                { tag: "default", hideSignup: false, hideSelfHost: false, step: AccountWizardController.ServerStep, signupVisible: true, selfHostVisible: true },
+                { tag: "hide signup", hideSignup: true, hideSelfHost: false, step: AccountWizardController.ServerStep, signupVisible: false, selfHostVisible: true },
+                { tag: "hide Self-host", hideSignup: false, hideSelfHost: true, step: AccountWizardController.ServerStep, signupVisible: true, selfHostVisible: false },
+                { tag: "hide both", hideSignup: true, hideSelfHost: true, step: AccountWizardController.ServerStep, signupVisible: false, selfHostVisible: false },
+                { tag: "other step default", hideSignup: false, hideSelfHost: false, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false },
+                { tag: "other step hide signup", hideSignup: true, hideSelfHost: false, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false },
+                { tag: "other step hide Self-host", hideSignup: false, hideSelfHost: true, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false },
+                { tag: "other step hide both", hideSignup: true, hideSelfHost: true, step: AccountWizardController.BasicAuthStep, signupVisible: false, selfHostVisible: false }
             ]
         }
 
-        function test_signupVisibility(data) {
-            Theme.wizardHideSignupButton = data.hidden
+        function test_buttonVisibility(data) {
+            Theme.wizardHideSignupButton = data.hideSignup
+            Theme.wizardHideSelfHostButton = data.hideSelfHost
             const wizard = createWizard(data.step)
-            compare(findVisibleButton(wizard.contentItem, "Sign up") !== null, data.visible)
+            compare(findVisibleButton(wizard.contentItem, "Sign up") !== null, data.signupVisible)
+            compare(findVisibleButton(wizard.contentItem, "Self-host") !== null, data.selfHostVisible)
             if (data.step === AccountWizardController.ServerStep) {
-                verify(findVisibleButton(wizard.contentItem, "Self-host"))
                 verify(findVisibleButton(wizard.contentItem, "Log in"))
             }
         }
