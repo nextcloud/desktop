@@ -20,6 +20,12 @@ import UniformTypeIdentifiers
 ///
 @Suite("Blocking synchronization", .serialized)
 struct BlockSyncTests {
+    enum MutationDuringAccountSetup: CaseIterable {
+        case create
+        case modify
+        case delete
+    }
+
     ///
     /// The key as it is written by an administrator and read by the extension.
     ///
@@ -298,6 +304,55 @@ struct BlockSyncTests {
         let error = await withCheckedContinuation { continuation in
             _ = makeExtension().createItem(basedOn: StubItem(), fields: [], contents: nil, request: NSFileProviderRequest()) { _, _, _, error in
                 continuation.resume(returning: error)
+            }
+        }
+
+        #expect((error as? NSFileProviderError)?.code == .serverUnreachable)
+    }
+
+    @Test(arguments: MutationDuringAccountSetup.allCases)
+    func mutationsReportTemporaryUnavailabilityDuringAccountSetup(mutation: MutationDuringAccountSetup) async throws {
+        let fileProviderExtension = makeExtension()
+        defer { fileProviderExtension.invalidate() }
+        let manager = DatabaseTestSuites.makeManager()
+        try #require(fileProviderExtension.publishDatabaseManager(
+            manager,
+            generation: fileProviderExtension.setupGeneration
+        ))
+        fileProviderExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: [], log: FileProviderLogMock())
+        manager.invalidateForDAVAccountChange()
+
+        let item = StubItem()
+        let request = NSFileProviderRequest()
+        let error: (any Error)? = await withCheckedContinuation { continuation in
+            switch mutation {
+                case .create:
+                    _ = fileProviderExtension.createItem(
+                        basedOn: item,
+                        fields: [],
+                        contents: nil,
+                        request: request
+                    ) { _, _, _, error in
+                        continuation.resume(returning: error)
+                    }
+                case .modify:
+                    _ = fileProviderExtension.modifyItem(
+                        item,
+                        baseVersion: NSFileProviderItemVersion(),
+                        changedFields: [],
+                        contents: nil,
+                        request: request
+                    ) { _, _, _, error in
+                        continuation.resume(returning: error)
+                    }
+                case .delete:
+                    _ = fileProviderExtension.deleteItem(
+                        identifier: item.itemIdentifier,
+                        baseVersion: NSFileProviderItemVersion(),
+                        request: request
+                    ) { error in
+                        continuation.resume(returning: error)
+                    }
             }
         }
 

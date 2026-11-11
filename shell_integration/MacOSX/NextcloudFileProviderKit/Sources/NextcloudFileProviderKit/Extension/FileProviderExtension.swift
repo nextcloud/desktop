@@ -379,9 +379,9 @@ import OSLog
         }
 
         guard !dbManager.wasInvalidatedByDAVAccountChange else {
-            logger.debug("Not creating item because database is unavailable.", [.item: itemTemplate.itemIdentifier])
+            logger.debug("Not creating item because its database manager belongs to the previous DAV account.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
-            completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
+            completionHandler(itemTemplate, [], false, NSFileProviderError(.serverUnreachable))
             return Progress()
         }
 
@@ -459,9 +459,9 @@ import OSLog
         }
 
         guard !dbManager.wasInvalidatedByDAVAccountChange else {
-            logger.debug("Not modifying item because the database is unavailable.")
+            logger.debug("Not modifying item because its database manager belongs to the previous DAV account.", [.item: identifier])
             insertErrorAction(actionId)
-            completionHandler(item, [], false, NSFileProviderError(.cannotSynchronize))
+            completionHandler(item, [], false, NSFileProviderError(.serverUnreachable))
             return Progress()
         }
 
@@ -542,9 +542,9 @@ import OSLog
         }
 
         guard !dbManager.wasInvalidatedByDAVAccountChange else {
-            logger.debug("Not deleting item because database unavailable.", [.item: identifier])
+            logger.debug("Not deleting item because its database manager belongs to the previous DAV account.", [.item: identifier])
             insertErrorAction(actionId)
-            completionHandler(NSFileProviderError(.cannotSynchronize))
+            completionHandler(NSFileProviderError(.serverUnreachable))
             return Progress()
         }
 
@@ -657,7 +657,7 @@ import OSLog
         manager.signalEnumerator(for: .workingSet, completionHandler: completionHandler)
     }
 
-    private func signalEnumeratorAfterAccountSetup() {
+    private func signalEnumeratorAfterAccountSetup(replacedInvalidatedManager: Bool) {
         guard let manager else {
             logger.error("Could not get manager for domain. Cannot signal enumerator after account setup.")
             return
@@ -668,6 +668,16 @@ import OSLog
         manager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
                 self.logger.error("Cannot resolve .notAuthenticated error.", [.error: error?.localizedDescription])
+            }
+        }
+
+        // Mutations refused while replacing the DAV account return serverUnreachable.
+        // If sync is paused, unpausing will release those requests.
+        if replacedInvalidatedManager, !blockSync {
+            manager.signalErrorResolved(NSFileProviderError(.serverUnreachable)) { error in
+                if let error {
+                    self.logger.error("Cannot resolve .serverUnreachable error after account setup.", [.error: error])
+                }
             }
         }
 
@@ -946,12 +956,13 @@ import OSLog
             return
         }
 
-        if let dbManager,
-           dbManager.account.ncKitAccount == account.ncKitAccount,
-           !dbManager.matchesDAVAccount(account)
+        let previousDatabaseManager = dbManager
+        if let previousDatabaseManager,
+           previousDatabaseManager.account.ncKitAccount == account.ncKitAccount,
+           !previousDatabaseManager.matchesDAVAccount(account)
         {
             // A backend ID change can replace the NextcloudKit session before SQLite is rebound.
-            dbManager.invalidateForDAVAccountChange()
+            previousDatabaseManager.invalidateForDAVAccountChange()
         }
         ncKit.appendSession(account: account, userAgent: userAgent)
 
@@ -1039,7 +1050,9 @@ import OSLog
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
             signalAccountReady()
             completionHandler?(nil)
-            signalEnumeratorAfterAccountSetup()
+            signalEnumeratorAfterAccountSetup(
+                replacedInvalidatedManager: previousDatabaseManager?.wasInvalidatedByDAVAccountChange == true
+            )
         }
     }
 
