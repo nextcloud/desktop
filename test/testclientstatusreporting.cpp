@@ -71,9 +71,9 @@ private Q_SLOTS:
         };
         account->setCapabilities(capabilities);
 
-        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) -> QNetworkReply * {
             if (req.url().path() != u"/ocs/v2.php/apps/security_guard/diagnostics"_s) {
-                return static_cast<QNetworkReply *>(nullptr);
+                return new FakeErrorReply{op, req, fakeQnam.data(), 404};
             }
             QNetworkReply *reply = nullptr;
             const auto reqBody = device->readAll();
