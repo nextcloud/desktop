@@ -1776,6 +1776,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Не удалось получить доступ к выбранному файлу сертификата.</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2128"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Не удалось загрузить сертификат. Возможно, неверный пароль.</translation>
@@ -5494,7 +5499,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="186"/>
         <source>Advanced</source>
-        <translation>Расширенные</translation>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="190"/>
@@ -7569,7 +7574,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
-        <translation>Расширенные настройки общего доступа</translation>
+        <translation>Дополнительные настройки общего доступа</translation>
     </message>
 </context>
 <context>

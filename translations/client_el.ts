@@ -1776,6 +1776,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Αδυναμία πρόσβασης στο επιλεγμένο αρχείο πιστοποιητικού.</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2128"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Αδυναμία φόρτωσης πιστοποιητικού. Ίσως λάθος κωδικός πρόσβασης;</translation>
