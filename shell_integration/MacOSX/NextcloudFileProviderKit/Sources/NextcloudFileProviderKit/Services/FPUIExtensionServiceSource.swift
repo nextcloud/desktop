@@ -72,20 +72,24 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     }
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
-        let rawIdentifier = identifier.rawValue
-        logger.info("Fetching shares for item \(rawIdentifier)")
+        logger.info("Looking up the item path for the File Provider UI.", [.item: identifier])
 
         guard let dbManager = fpExtension.dbManager else {
             logger.error("Could not fetch the item path because account setup has not published a database manager.", [.item: identifier])
             return nil
         }
         guard let item = dbManager.itemMetadata(identifier) else {
-            logger.error("No item \(rawIdentifier) in db, no shares.")
+            logger.error("Could not fetch the item path because metadata is missing.", [.item: identifier])
             return nil
         }
 
-        let completePath = item.serverUrl + "/" + item.fileName
-        return completePath.replacingOccurrences(of: dbManager.account.davFilesUrl, with: "") as NSString
+        let remotePath = item.remotePath()
+        let filesPath = item.isFilesRoot && !remotePath.hasSuffix("/") ? remotePath + "/" : remotePath
+        guard let relativePath = dbManager.account.filesRootRelativePath(for: filesPath) else {
+            logger.error("Could not fetch the item path because it is outside the account's Files root.", [.item: identifier])
+            return nil
+        }
+        return ("/" + relativePath) as NSString
     }
 
     func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
