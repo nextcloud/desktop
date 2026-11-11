@@ -1797,6 +1797,12 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     return true;
 }
 
+QByteArray SyncJournalDb::formatDavFileIdPrefix(qint64 fileId)
+{
+    static constexpr auto minimumDavFileIdWidth = 8;
+    return u"%1"_s.arg(fileId, minimumDavFileIdWidth, 10, '0'_L1).toLatin1();
+}
+
 bool SyncJournalDb::hasFileIds(const QList<qint64> &fileIds)
 {
     if (fileIds.isEmpty()) {

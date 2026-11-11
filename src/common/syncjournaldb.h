@@ -76,6 +76,7 @@ public:
     [[nodiscard]] bool updateLocalMetadata(const QString &filename,
         qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo);
 
+    [[nodiscard]] static QByteArray formatDavFileIdPrefix(qint64 fileId);
     [[nodiscard]] bool hasFileIds(const QList<qint64> &fileIds);
 
     /// Return value for hasHydratedOrDehydratedFiles()

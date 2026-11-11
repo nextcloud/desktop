@@ -135,7 +135,7 @@ Q_SIGNALS:
     void etag(const QByteArray &, const QDateTime &time);
     void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
     void setfolderQuota(const OCC::FolderQuota &folderQuota);
-    void firstDirectoryFileId(qint64 fileId);
+    void firstDirectoryFileId(qint64 fileId, const QByteArray &instanceId);
 
 private Q_SLOTS:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
