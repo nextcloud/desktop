@@ -14,6 +14,7 @@
 #include <localdiscoverytracker.h>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 struct FakeBrokenXmlPropfindReply : FakePropfindReply {
     FakeBrokenXmlPropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op,
@@ -234,24 +235,66 @@ private Q_SLOTS:
         QCOMPARE(completeSpy.findItem("invalidValue")->_folderQuota.bytesAvailable, -1);
     }
 
+    void testRootFileIdReceived_data()
+    {
+        QTest::addColumn<QByteArray>("instanceId");
+        QTest::newRow("digit-leading suffix") << "123xyz"_ba;
+        QTest::newRow("empty suffix") << ""_ba;
+        QTest::newRow("unverified suffix") << QByteArray{};
+    }
+
     void testRootFileIdReceived()
     {
-        // disable FakeFolder's initial sync run to allow for spying on the `rootFileIdReceived` signal
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12(), {}, {}, false };
+        QFETCH(QByteArray, instanceId);
 
+        const auto originalDavIdProperty = "<oc:id>603493314oc1x2y3z4w</oc:id>"_ba;
+        const auto originalNumericIdProperty = "<oc:fileid>603493314</oc:fileid>"_ba;
+        auto davIdProperty = originalDavIdProperty;
+        auto numericIdProperty = "<oc:fileid>-1</oc:fileid>"_ba;
+
+        auto remoteState = FileInfo::A12_B12_C12_S12();
+        remoteState.fileId = "603493314oc1x2y3z4w"_ba;
+        FakeFolder fakeFolder{remoteState, {}, {}, false};
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute).toString() != u"PROPFIND"_s || !getFilePathFromUrl(request.url()).isEmpty()) {
+                return nullptr;
+            }
+            const auto reply = new FakePropfindReply(fakeFolder.remoteModifier(), op, request, nullptr);
+            reply->payload.replace(originalDavIdProperty, davIdProperty);
+            reply->payload.replace(originalNumericIdProperty, numericIdProperty);
+            return reply;
+        });
         QSignalSpy rootFileIdSpy(&fakeFolder.syncEngine(), &SyncEngine::rootFileIdReceived);
-        QVERIFY(fakeFolder.syncOnce());
 
-        // root file id signal should only be emitted once
-        QCOMPARE(rootFileIdSpy.size(), 1);
-        const auto expectedRootFileId = fakeFolder.currentRemoteState().numericFileId();
-        const auto receivedRootFileId = QByteArray::number(rootFileIdSpy.takeFirst().at(0).toLongLong(), 10);
-        QCOMPARE(receivedRootFileId, expectedRootFileId);
+        const auto verifyRootIdentity = [&](qint64 expectedId, const QByteArray &expectedInstanceId) {
+            QCOMPARE(rootFileIdSpy.size(), 1);
+            const auto arguments = rootFileIdSpy.takeFirst();
+            QCOMPARE(arguments.at(0).toLongLong(), expectedId);
+            const auto receivedInstanceId = arguments.at(1).toByteArray();
+            QCOMPARE(receivedInstanceId, expectedInstanceId);
+            QCOMPARE(receivedInstanceId.isNull(), expectedInstanceId.isNull());
+        };
 
-        // another sync should not emit the root file id signal again as it's already known
-        rootFileIdSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(rootFileIdSpy.size(), 0);
+        QVERIFY(rootFileIdSpy.isEmpty());
+
+        numericIdProperty = originalNumericIdProperty;
+        davIdProperty = instanceId.isNull() ? "<oc:id>603493315123xyz</oc:id>"_ba : "<oc:id>603493314"_ba + instanceId + "</oc:id>"_ba;
+        QVERIFY(fakeFolder.syncOnce());
+        verifyRootIdentity(603493314, instanceId);
+
+        davIdProperty = originalDavIdProperty;
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(rootFileIdSpy.isEmpty());
+
+        davIdProperty.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(rootFileIdSpy.isEmpty());
+
+        numericIdProperty = "<oc:fileid>603493315</oc:fileid>"_ba;
+        davIdProperty = "<oc:id>603493315123456</oc:id>"_ba;
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(rootFileIdSpy.isEmpty());
     }
 
     // Regression: processEvents() inside LsColJob::finished() must not run before reply()

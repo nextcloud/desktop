@@ -574,7 +574,7 @@ private Q_SLOTS:
             auto folder = _fm->addFolder(account, definition);
             QVERIFY(folder);
 
-            Q_EMIT folder->syncEngine().rootFileIdReceived(rootFileId);
+            Q_EMIT folder->syncEngine().rootFileIdReceived(rootFileId, {});
 
             auto journal = folder->journalDb();
             for (const auto &fileId : fileIds) {
