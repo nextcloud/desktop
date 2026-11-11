@@ -306,6 +306,8 @@ IF( APPLE )
         macOS/lowpowergpu_mac.mm
         macOS/macsandboxfolderpicker.h
         macOS/macsandboxfolderpicker.mm
+        macOS/macsandboxpanelutils.h
+        macOS/macsandboxpanelutils.mm
         # macOS tray account popup: one type per header/implementation pair.
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
@@ -377,6 +379,7 @@ IF( APPLE )
         notificationsoundplayer_mac.mm
         macOS/lowpowergpu_mac.mm
         macOS/macsandboxfolderpicker.mm
+        macOS/macsandboxpanelutils.mm
         macOS/trayaccountpopup/ncactionrow.mm
         macOS/trayaccountpopup/ncpointinghandbutton.mm
         macOS/trayaccountpopup/ncalertboxrow.mm
