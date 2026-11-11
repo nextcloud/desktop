@@ -21,6 +21,12 @@ private Q_SLOTS:
         QVERIFY(!userHomeDirectory.contains(QStringLiteral("/Library/Containers/")));
         QVERIFY(QDir(userHomeDirectory).isAbsolute());
     }
+
+    // Tests run unsandboxed, where the home location is the real one; inside the sandbox it is the app container.
+    void userHomeDirectoryMatchesTheHomeLocationOutsideTheSandbox()
+    {
+        QCOMPARE(OCC::Utility::getRealHomeDirectory(), QDir::homePath());
+    }
 };
 
 QTEST_APPLESS_MAIN(TestMacSandboxUtility)
