@@ -492,7 +492,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> Item? {
-        try? await resolveStoredItem(
+        try? await lookupResolvingParent(
             identifier: identifier,
             account: account,
             remoteInterface: remoteInterface,
@@ -503,12 +503,16 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         )
     }
 
-    static func resolveStoredItem(
+    /// Get the item for a File Provider request and report lookup errors to the caller.
+    /// Set `allowsRemoteLookup` to false when synchronization is paused so a current
+    /// item with an uncached parent returns `serverUnreachable` before a DAV read.
+    static func lookupResolvingParent(
         identifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         includeDeleted: Bool = true,
+        allowsRemoteLookup: Bool = true,
         unresolvedParentError: any Error = NSFileProviderError(.cannotSynchronize),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
@@ -521,19 +525,20 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         }
 
         try checkCancellation()
-        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
-        try checkCancellation()
-
-        guard identifier != .rootContainer else {
-            return Item.rootContainer(
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                remoteSupportsTrash: remoteSupportsTrash,
-                log: log
-            )
-        }
-        guard identifier != .trashContainer else {
+        if identifier == .rootContainer || identifier == .trashContainer {
+            guard dbManager.hasCurrentDAVAccountBinding() else { throw unresolvedParentError }
+            let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+            try checkCancellation()
+            guard dbManager.hasCurrentDAVAccountBinding() else { throw unresolvedParentError }
+            if identifier == .rootContainer {
+                return Item.rootContainer(
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    remoteSupportsTrash: remoteSupportsTrash,
+                    log: log
+                )
+            }
             return Item.trashContainer(
                 remoteInterface: remoteInterface,
                 account: account,
@@ -543,15 +548,21 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(identifier, retryError: unresolvedParentError),
+        let retryError = allowsRemoteLookup ? unresolvedParentError : NSFileProviderError(.serverUnreachable)
+        guard let metadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(identifier, retryError: retryError),
               !metadata.isFilesRootWithServerID,
               includeDeleted || !metadata.deleted
         else {
+            guard dbManager.hasCurrentDAVAccountBinding() else { throw unresolvedParentError }
             throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
+        try checkCancellation()
+
         let parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
             .trashContainer
+        } else if !allowsRemoteLookup {
+            dbManager.parentItemIdentifierFromMetadata(metadata)
         } else {
             await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
@@ -565,14 +576,18 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         try checkCancellation()
         // A failed parent read says nothing about whether the cached child was removed.
         guard let parentItemIdentifier else {
-            throw unresolvedParentError
+            throw retryError
         }
+
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+        try checkCancellation()
 
         // Display File Actions
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
 
         try checkCancellation()
+        guard dbManager.hasCurrentDAVAccountBinding() else { throw unresolvedParentError }
 
         return Item(
             metadata: metadata,

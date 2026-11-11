@@ -164,18 +164,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     for identifier in itemIdentifiers {
                         group.addTask {
-                            // This task processes one item.
-                            guard let item = await Item.storedItem(
+                            let item = try await Item.lookupResolvingParent(
                                 identifier: identifier,
                                 account: ncAccount,
                                 remoteInterface: localNcKit,
                                 dbManager: dbManager,
+                                allowsRemoteLookup: !self.blockSync,
                                 log: self.log
-                            ) else {
-                                throw NSError.fileProviderErrorForNonExistentItem(
-                                    withIdentifier: identifier
-                                )
-                            }
+                            )
                             try await item.set(keepDownloaded: keepDownloaded, domain: localDomain)
                         }
                     }
@@ -239,9 +235,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     for identifier in itemIdentifiers {
                         group.addTask {
-                            guard let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: localNcKit, dbManager: dbManager, log: self.log) else {
-                                throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                            }
+                            let item = try await Item.lookupResolvingParent(
+                                identifier: identifier,
+                                account: ncAccount,
+                                remoteInterface: localNcKit,
+                                dbManager: dbManager,
+                                allowsRemoteLookup: !self.blockSync,
+                                log: self.log
+                            )
 
                             if item.metadata.directory {
                                 // "Remove downloaded items" on a folder or the root: evict each

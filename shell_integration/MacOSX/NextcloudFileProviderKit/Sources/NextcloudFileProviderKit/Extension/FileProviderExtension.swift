@@ -218,12 +218,13 @@ import OSLog
             }
 
             do {
-                let item = try await Item.resolveStoredItem(
+                let item = try await Item.lookupResolvingParent(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
                     includeDeleted: false,
+                    allowsRemoteLookup: !blockSync,
                     log: log
                 )
                 progress.completedUnitCount = 1
@@ -310,7 +311,7 @@ import OSLog
 
         let item: Item
         do {
-            item = try await Item.resolveStoredItem(
+            item = try await Item.lookupResolvingParent(
                 identifier: itemIdentifier,
                 account: ncAccount,
                 remoteInterface: ncKit,
@@ -465,7 +466,7 @@ import OSLog
         Task {
             let existingItem: Item
             do {
-                existingItem = try await Item.resolveStoredItem(
+                existingItem = try await Item.lookupResolvingParent(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
@@ -547,7 +548,7 @@ import OSLog
         Task {
             let item: Item
             do {
-                item = try await Item.resolveStoredItem(
+                item = try await Item.lookupResolvingParent(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
