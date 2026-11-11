@@ -642,6 +642,7 @@ public final class FilesDatabaseManager: Sendable {
     private func processItemMetadatasToUpdate(
         existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata],
+        itemIDsToDelete: Set<String>,
         keepExistingDownloadState: Bool,
         in db: Database
     ) throws -> (
@@ -672,7 +673,11 @@ public final class FilesDatabaseManager: Sendable {
         for var updatedMetadata in updatedMetadatas {
             var existing = existingByOcId[updatedMetadata.ocId]
             if existing == nil,
-               let rebound = try rebindUnresolvedItemFromDAVListing(updatedMetadata, in: db)
+               let rebound = try rebindUnresolvedItemFromDAVListing(
+                   updatedMetadata,
+                   itemIDsToDelete: itemIDsToDelete,
+                   in: db
+               )
             {
                 existing = rebound
                 reboundItemIDs.append(rebound.ocId)
@@ -831,6 +836,7 @@ public final class FilesDatabaseManager: Sendable {
             let metadatasToChange = try processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas,
+                itemIDsToDelete: Set(metadatasToDelete.map(\.ocId)),
                 keepExistingDownloadState: keepExistingDownloadState,
                 in: db
             )

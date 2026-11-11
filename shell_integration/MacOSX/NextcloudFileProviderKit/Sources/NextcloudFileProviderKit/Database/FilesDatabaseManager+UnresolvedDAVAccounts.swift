@@ -28,6 +28,7 @@ extension FilesDatabaseManager {
     /// The listing's usual merge still decides which remote and local fields to keep.
     func rebindUnresolvedItemFromDAVListing(
         _ listed: SendableItemMetadata,
+        itemIDsToDelete: Set<String> = [],
         in db: Database
     ) throws -> ItemMetadataRecord? {
         guard listed.uploaded,
@@ -63,12 +64,14 @@ extension FilesDatabaseManager {
               )
         else { return nil }
 
-        // Preserve a different live row at the current address, including a local upload.
-        let currentAddressOccupied = try !ItemMetadataRecord
+        // A complete listing can replace an occupant it will mark deleted in this transaction.
+        // An occupant with an unfinished upload stays live and still blocks recovery at this path.
+        let occupantIDs = try ItemMetadataRecord
             .filter(matchesParentURLAndFileName(parentURL: listed.serverUrl, fileName: listed.fileName))
             .filter(!ItemMetadataRecord.Columns.deleted && !ItemMetadataRecord.Columns.isLockFileOfLocalOrigin)
-            .isEmpty(db)
-        guard !currentAddressOccupied else { return nil }
+            .select(ItemMetadataRecord.Columns.ocId, as: String.self)
+            .fetchAll(db)
+        guard occupantIDs.allSatisfy(itemIDsToDelete.contains) else { return nil }
 
         cached.updateLocation(parentURL: listed.serverUrl, fileName: cached.fileName, domainAccount: account)
         cached.lockToken = nil

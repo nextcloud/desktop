@@ -343,6 +343,68 @@ struct DAVPathPersistenceTests {
         #expect(!retained.deleted)
     }
 
+    @Test(arguments: [
+        (paginated: false, occupantIsUploading: false),
+        (paginated: true, occupantIsUploading: false),
+        (paginated: false, occupantIsUploading: true)
+    ])
+    func ambiguousPreviousHostsRecoverAtOccupiedPathOnlyWhenListingRemovesOccupant(
+        listingMode: (paginated: Bool, occupantIsUploading: Bool)
+    ) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let account = Self.currentAccount
+        let folderURL = account.davFilesUrl + "/" + Self.folderName
+        var occupant = DatabaseTestSuites.makeFile(
+            ocId: "stale-report-id",
+            fileName: Self.fileName,
+            serverUrl: folderURL,
+            account: account
+        )
+        occupant.uploaded = !listingMode.occupantIsUploading
+        if listingMode.occupantIsUploading {
+            occupant.status = Status.uploading.rawValue
+            occupant.chunkUploadId = "pending-occupant-upload"
+        }
+        _ = try writeUnboundStoreWithMaterializedItems(
+            oldAccount: Self.previousHostAccount,
+            additionalMetadata: [
+                DatabaseTestSuites.makeFileFromEarlierServerURL(account: account),
+                occupant
+            ]
+        )
+        savePreviouslyConfiguredAccount(account)
+
+        let manager = try openManager()
+        #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
+        #expect(manager.itemMetadata(locatedAtRemoteUrl: occupant.remotePath())?.ocId == occupant.ocId)
+        let remote = makeRemoteWithTeamFolder()
+        let listing = await listDirectory(
+            folderURL,
+            manager: manager,
+            remote: remote,
+            paginated: listingMode.paginated
+        )
+
+        #expect(remote.readOperationCount == 1)
+        let savedOccupant = try #require(manager.itemMetadata(ocId: occupant.ocId))
+        if listingMode.paginated || listingMode.occupantIsUploading {
+            #expect(listing.error != nil)
+            #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
+            #expect(!savedOccupant.deleted)
+            #expect(savedOccupant.hasUnfinishedUpload == listingMode.occupantIsUploading)
+            #expect(savedOccupant.chunkUploadId == occupant.chunkUploadId)
+        } else {
+            #expect(listing.error == nil)
+            #expect(listing.changes?.deleted.map(\.ocId) == [occupant.ocId])
+            #expect(listing.changes?.updated.contains { $0.ocId == Self.fileId } == true)
+            #expect(savedOccupant.deleted)
+            let recovered = try #require(manager.itemMetadata(locatedAtRemoteUrl: occupant.remotePath()))
+            #expect(recovered.ocId == Self.fileId)
+            #expect(recovered.downloaded)
+            #expect(recovered.keepDownloaded)
+        }
+    }
+
     @Test func startupFillsMissingAccountDetailsForMatchingDAVParents() throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
