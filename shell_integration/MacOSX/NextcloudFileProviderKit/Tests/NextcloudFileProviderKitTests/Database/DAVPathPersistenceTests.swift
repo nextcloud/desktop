@@ -226,7 +226,7 @@ struct DAVPathPersistenceTests {
     }
 
     @Test(arguments: [false, true])
-    func mixedLegacyCacheKeepsOldItemWhenListingReturnsItsID(fileUploadFailed: Bool) async throws {
+    func ambiguousPreviousHostsKeepOldItemWhenListingReturnsItsID(fileUploadFailed: Bool) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
         let previous = Self.previousHostAccount
@@ -387,11 +387,18 @@ struct DAVPathPersistenceTests {
     }
 
     @Test(arguments: [false, true])
-    func startupRebasesLegacyRowsThatAgreeOnThePreviousServer(fileUploadFailed: Bool) async throws {
+    func mixedCacheRebasesOldRowsBeforeListing(fileUploadFailed: Bool) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
         let previousIdentity = try writeUnboundStoreWithMaterializedItems(
             oldAccount: Self.previousHostAccount,
+            additionalMetadata: [
+                DatabaseTestSuites.makeFile(
+                    ocId: "already-current",
+                    fileName: "Listed before the upgrade.txt",
+                    account: account
+                )
+            ],
             fileUploadFailed: fileUploadFailed
         )
         savePreviouslyConfiguredAccount(account)
@@ -432,7 +439,7 @@ struct DAVPathPersistenceTests {
         #expect(reopened.itemMetadata(ocId: file.ocId)?.keepDownloaded == true)
     }
 
-    @Test func startupDoesNotInferThePreviousAccountWhenRowsUseBothServerURLs() throws {
+    @Test func startupDoesNotInferThePreviousAccountWhenRowsUseMultiplePreviousServerURLs() throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
         let currentFile = DatabaseTestSuites.makeFile(
@@ -442,7 +449,10 @@ struct DAVPathPersistenceTests {
         )
         _ = try writeUnboundStoreWithMaterializedItems(
             oldAccount: Self.previousHostAccount,
-            additionalMetadata: [currentFile]
+            additionalMetadata: [
+                currentFile,
+                DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)
+            ]
         )
         savePreviouslyConfiguredAccount(account)
 

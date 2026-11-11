@@ -203,7 +203,8 @@ struct RealmStoreImporterTests {
         #expect(manager.materialisedItemMetadatas()?.contains { $0.ocId == foreignFile.ocId } == false)
     }
 
-    @Test func importRebasesTheOldHostWhenDomainSettingsAlreadyUseTheNewHost() throws {
+    @Test(arguments: [false, true])
+    func importRebasesTheOldHostWhenDomainSettingsAlreadyUseTheNewHost(hasCurrentServerRows: Bool) throws {
         let fixture = Self.makeFixture()
         defer { try? FileManager.default.removeItem(at: fixture.directory) }
         try Self.writeLegacyStore(at: fixture)
@@ -233,10 +234,23 @@ struct RealmStoreImporterTests {
         pending.keepDownloaded = true
         pending.chunkUploadId = "pending-upload"
         pending.lockToken = "old-lock"
+        var alreadyRefreshed = DatabaseTestSuites.makeFile(
+            ocId: "already-refreshed",
+            fileName: "Listed before the upgrade.txt",
+            serverUrl: currentAccount.davFilesUrl + "/Docs",
+            account: currentAccount
+        )
+        alreadyRefreshed.uploaded = true
+        alreadyRefreshed.lockToken = "current-lock"
         try autoreleasepool {
             let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
             defer { realm.invalidate() }
-            try realm.write { realm.add(LegacyRealmItemMetadata(value: pending)) }
+            try realm.write {
+                realm.add(LegacyRealmItemMetadata(value: pending))
+                if hasCurrentServerRows {
+                    realm.add(LegacyRealmItemMetadata(value: alreadyRefreshed))
+                }
+            }
         }
 
         let outcome = RealmStoreImporter.importIfNeeded(
@@ -275,6 +289,11 @@ struct RealmStoreImporterTests {
         #expect(saved.downloaded)
         #expect(saved.keepDownloaded)
         #expect(saved.lockToken == nil)
+        if hasCurrentServerRows {
+            let refreshed = try #require(manager.itemMetadata(ocId: alreadyRefreshed.ocId))
+            #expect(refreshed.remotePath() == alreadyRefreshed.remotePath())
+            #expect(refreshed.lockToken == alreadyRefreshed.lockToken)
+        }
     }
 
     @Test(arguments: MissingAccountDetails.allCases)

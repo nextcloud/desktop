@@ -40,7 +40,10 @@ struct StoreIdentityRecord: Codable, Sendable, FetchableRecord, PersistableRecor
                   !previouslyConfiguredAccount.matchesByteForByte(currentAccount) {
             sourceAccount = previouslyConfiguredAccount
             sourceBackendUserID = sourceAccount.backendUserID
-        } else if let previousAccount = try previousAccountIfLegacyRowsAgree(currentAccount: currentAccount, in: db) {
+        } else if let previousAccount = try previousAccountIfOutdatedRowsAgree(
+            currentAccount: currentAccount,
+            in: db
+        ) {
             sourceAccount = previousAccount
             sourceBackendUserID = previousAccount.backendUserID
         } else {
@@ -117,9 +120,10 @@ struct StoreIdentityRecord: Codable, Sendable, FetchableRecord, PersistableRecor
         return storeIdentity
     }
 
-    /// On the first open of a legacy store, use the old URL when all live server rows agree
-    /// on one account and its login and backend user ID match the current account.
-    private static func previousAccountIfLegacyRowsAgree(
+    /// An older extension may have refreshed some rows after the server URL changed.
+    /// Ignore rows already using the current account. Infer the old URL only if the
+    /// other live server rows agree on one account with the current login and backend user ID.
+    private static func previousAccountIfOutdatedRowsAgree(
         currentAccount: DAVAccountIdentity,
         in db: Database
     ) throws -> DAVAccountIdentity? {
@@ -138,6 +142,12 @@ struct StoreIdentityRecord: Codable, Sendable, FetchableRecord, PersistableRecor
             ItemMetadataRecord
                 .filter(!columns.deleted && !columns.isLockFileOfLocalOrigin)
                 .filter(!syntheticContainerIDs.contains(columns.ocId))
+                .filter(
+                    columns.account != currentAccount.accountKey
+                        || columns.urlBase != currentAccount.serverBaseURL
+                        || columns.user != currentAccount.username
+                        || columns.userId != currentAccount.backendUserID
+                )
                 .select(
                     columns.account,
                     columns.urlBase,
