@@ -1540,6 +1540,51 @@ private Q_SLOTS:
         QVERIFY(!isPathInsideDeletedDir(QStringLiteral("A/B/child.txt"), QString()));
     }
 
+    // A rename rejected with 423 is reverted locally. The restored journal record must
+    // keep the lock state of the original file (this client may hold a token lock on it,
+    // taken automatically for an office lock file), including its token, or the lock can
+    // never be released.
+    void testMove423KeepsLockState()
+    {
+        FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{QStringLiteral("D"), {{"file.odt", 64}}}}}};
+        const auto davUser = fakeFolder.account()->davUser();
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("D/file.odt"),
+                                                    FileModifier::LockState::FileLocked,
+                                                    static_cast<int>(SyncFileItem::LockOwnerType::TokenLock),
+                                                    davUser,
+                                                    davUser,
+                                                    {},
+                                                    QDateTime::currentSecsSinceEpoch(),
+                                                    0);
+        // Locking changes the etag; sync so the rename below is detected as a move.
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Only a LOCK reply carries the token (and the fake server doesn't report the
+        // owner type), so seed the state this client keeps after locking the file.
+        SyncJournalFileRecord record;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.odt"), &record));
+        QVERIFY(record._lockstate._locked);
+        record._lockstate._lockOwnerType = static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock);
+        record._lockstate._lockOwnerId = davUser;
+        record._lockstate._lockToken = QStringLiteral("held-token");
+        QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+
+        fakeFolder.localModifier().rename("D/file.odt", "D/renamed.odt");
+        fakeFolder.serverErrorPaths().append("D/file.odt", 423);
+        fakeFolder.syncOnce();
+
+        QVERIFY(fakeFolder.currentLocalState().find("D/file.odt"));
+        QVERIFY(!fakeFolder.currentLocalState().find("D/renamed.odt"));
+
+        SyncJournalFileRecord restored;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("D/file.odt"), &restored));
+        QVERIFY(restored.isValid());
+        QVERIFY(restored._lockstate._locked);
+        QCOMPARE(restored._lockstate._lockOwnerType, static_cast<qint64>(SyncFileItem::LockOwnerType::TokenLock));
+        QCOMPARE(restored._lockstate._lockOwnerId, davUser);
+        QCOMPARE(restored._lockstate._lockToken, QStringLiteral("held-token"));
+    }
+
 private:
     static void seedStaleLock(FakeFolder &folder, const QByteArray &path)
     {
