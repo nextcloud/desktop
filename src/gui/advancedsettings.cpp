@@ -25,7 +25,7 @@
 #endif
 
 #ifdef Q_OS_MACOS
-#include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfilepicker.h"
 #endif
 
 #include <KZip>
@@ -51,6 +51,8 @@
 #include <chrono>
 
 Q_LOGGING_CATEGORY(lcAdvancedSettings, "nextcloud.settings.advanced")
+
+using namespace Qt::StringLiterals;
 
 namespace {
 struct ZipEntry {
@@ -232,6 +234,9 @@ namespace OCC {
 AdvancedSettings::AdvancedSettings(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::AdvancedSettings)
+    , _debugArchiveLocationPicker([this](std::function<void(const QString &)> completion) {
+        pickDebugArchiveLocation(std::move(completion));
+    })
 {
     _ui->setupUi(this);
 
@@ -433,39 +438,32 @@ void AdvancedSettings::slotIgnoreFilesEditor()
     }
 }
 
-void AdvancedSettings::slotCreateDebugArchive()
+void AdvancedSettings::pickDebugArchiveLocation(std::function<void(const QString &)> completion)
 {
-    const auto destination = QFileDialog::getSaveFileUrl(
-        this,
-        tr("Create Debug Archive"),
-        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
-        tr("Zip Archives") + " (*.zip)"
-    );
-
-    if (!destination.isLocalFile() || destination.toLocalFile().isEmpty()) {
-        return;
-    }
+    const auto caption = tr("Create Debug Archive");
+    const auto directory = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 
 #ifdef Q_OS_MACOS
-    auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(destination);
-
-    if (!scopedAccess->isValid()) {
-        QMessageBox::critical(
-            this,
-            tr("Failed to Access File"),
-            tr("Could not access the selected location. Please try again or choose a different location.")
-        );
-        return;
-    }
+    // QFileDialog gives up the sandbox access to the chosen file before returning, so only the
+    // native panel can keep it while the archive is written.
+    Mac::SandboxFilePicker::selectFileToSave(window()->windowHandle(), caption, directory, u"zip"_s, std::move(completion));
+#else
+    completion(QFileDialog::getSaveFileName(this, caption, directory, tr("Zip Archives") + u" (*.zip)"_s));
 #endif
+}
 
-    if (createDebugArchive(destination.toLocalFile())) {
-        QMessageBox::information(
-            this,
-            tr("Debug Archive Created"),
-            tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination.toLocalFile())
-        );
-    }
+void AdvancedSettings::slotCreateDebugArchive()
+{
+    const QPointer<AdvancedSettings> settings(this);
+    _debugArchiveLocationPicker([settings](const QString &destination) {
+        if (!settings || destination.isEmpty() || !createDebugArchive(destination)) {
+            return;
+        }
+
+        QMessageBox::information(settings,
+                                 tr("Debug Archive Created"),
+                                 tr("Redact information deemed sensitive before sharing! Debug archive created at %1").arg(destination));
+    });
 }
 
 void AdvancedSettings::slotRemotePollIntervalChanged(int seconds)
