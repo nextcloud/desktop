@@ -648,12 +648,14 @@ public final class FilesDatabaseManager: Sendable {
         newMetadatas: [SendableItemMetadata],
         updatedMetadatas: [SendableItemMetadata],
         directoriesNeedingRename: [SendableItemMetadata],
-        itemMetadataToReportByID: [String: SendableItemMetadata]
+        itemMetadataToReportByID: [String: SendableItemMetadata],
+        reboundItemIDs: [String]
     ) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
         var itemMetadataToReportByID: [String: SendableItemMetadata] = [:]
+        var reboundItemIDs: [String] = []
 
         // Keyed once up front; the first occurrence of an identifier wins.
         var existingByOcId: [String: ItemMetadataRecord] = [:]
@@ -668,7 +670,14 @@ public final class FilesDatabaseManager: Sendable {
         var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
 
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
+            var existing = existingByOcId[updatedMetadata.ocId]
+            if existing == nil,
+               let rebound = try rebindUnresolvedItemFromDAVListing(updatedMetadata, in: db)
+            {
+                existing = rebound
+                reboundItemIDs.append(rebound.ocId)
+            }
+            if let existingMetadata = existing {
                 if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existingMetadata, listed: updatedMetadata) {
                     itemMetadataToReportByID[pendingUpload.ocId] = pendingUpload
                     continue
@@ -735,7 +744,8 @@ public final class FilesDatabaseManager: Sendable {
             returningNewMetadatas,
             returningUpdatedMetadatas,
             directoriesNeedingRename,
-            itemMetadataToReportByID
+            itemMetadataToReportByID,
+            reboundItemIDs
         )
     }
 
@@ -828,6 +838,7 @@ public final class FilesDatabaseManager: Sendable {
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             var metadatasToCreate = metadatasToChange.newMetadatas
             var itemMetadataToReportByID = metadatasToChange.itemMetadataToReportByID
+            var reboundItemIDs = metadatasToChange.reboundItemIDs
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
             for metadata in directoriesNeedingRename {
@@ -848,7 +859,14 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.visitedDirectory = true
                 }
 
-                if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
+                var existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db)
+                if existing == nil,
+                   let rebound = try rebindUnresolvedItemFromDAVListing(readTargetMetadata, in: db)
+                {
+                    existing = rebound
+                    reboundItemIDs.append(rebound.ocId)
+                }
+                if let existing {
                     if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existing, listed: readTargetMetadata) {
                         itemMetadataToReportByID[pendingUpload.ocId] = pendingUpload
                     }
@@ -905,6 +923,18 @@ public final class FilesDatabaseManager: Sendable {
                 try ItemMetadataRecord
                     .filter(key: visitToRecord)
                     .updateAll(db, ItemMetadataRecord.Columns.visitedDirectory.set(to: true))
+            }
+
+            // Even when the remote fields are unchanged, the recovered rows are visible again.
+            if !reboundItemIDs.isEmpty {
+                var updatedIDs = Set(metadatasToUpdate.map(\.ocId))
+                for ocId in reboundItemIDs {
+                    guard let recovered = try itemMetadata(ocId: ocId, in: db)?.metadata else { continue }
+                    itemMetadataToReportByID[ocId] = recovered
+                    if updatedIDs.insert(ocId).inserted {
+                        metadatasToUpdate.append(recovered)
+                    }
+                }
             }
 
             let changes = ChangeSet(
@@ -1111,7 +1141,9 @@ public final class FilesDatabaseManager: Sendable {
 
         // The local flags carried over from the old row were committed durably when set.
         try write(durability: .relaxed) { db in
-            if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
+            let existing = try itemMetadata(ocId: metadata.ocId, in: db)
+                ?? rebindUnresolvedItemFromDAVListing(metadata, in: db)
+            if let existing {
                 if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existing, listed: metadata) {
                     toWrite = pendingUpload
                     return

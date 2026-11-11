@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 @preconcurrency import FileProvider
+import Foundation
 import GRDB
 
 extension FilesDatabaseManager {
@@ -20,6 +21,59 @@ extension FilesDatabaseManager {
             && !columns.isLockFileOfLocalOrigin
             && !ItemMetadataRecord.isFilesRoot
             && (sameUserOnPreviousServer || outdatedAbsoluteParent)
+    }
+
+    /// A listing can confirm one row when startup cannot identify a single previous server URL.
+    /// Bind the cached row to the current account only when the listed ID, type and path match.
+    /// The listing's usual merge still decides which remote and local fields to keep.
+    func rebindUnresolvedItemFromDAVListing(
+        _ listed: SendableItemMetadata,
+        in db: Database
+    ) throws -> ItemMetadataRecord? {
+        guard listed.uploaded,
+              !listed.deleted,
+              !listed.isFilesRoot,
+              listed.account.utf8.elementsEqual(account.ncKitAccount.utf8),
+              listed.urlBase.utf8.elementsEqual(account.serverUrl.utf8),
+              listed.user.utf8.elementsEqual(account.username.utf8),
+              listed.userId.utf8.elementsEqual(account.id.utf8),
+              let listedParent = account.davRelativePath(forURL: listed.serverUrl),
+              !Account.isStoredTrashLocation(listedParent),
+              !listedParent.split(separator: "/").contains(".."),
+              !listed.fileName.isEmpty,
+              listed.fileName != ".",
+              listed.fileName != "..",
+              !listed.fileName.contains("/")
+        else { return nil }
+
+        guard var cached = try ItemMetadataRecord
+            .filter(key: listed.ocId)
+            .filter(unresolvedDAVAccountRows)
+            .fetchRecord(db, logger: logger),
+              let cachedParent = cached.storedParentPath,
+              cachedParent.utf8.elementsEqual(listedParent.utf8),
+              cached.fileName.utf8.elementsEqual(listed.fileName.utf8),
+              cached.directory == listed.directory,
+              cached.user.utf8.elementsEqual(account.username.utf8),
+              cached.userId.utf8.elementsEqual(account.id.utf8),
+              URL(string: cached.urlBase)?.host != nil,
+              !cached.urlBase.utf8.elementsEqual(account.serverUrl.utf8),
+              cached.account.utf8.elementsEqual(
+                  Account.ncKitAccountString(from: cached.user, serverUrl: cached.urlBase).utf8
+              )
+        else { return nil }
+
+        // Preserve a different live row at the current address, including a local upload.
+        let currentAddressOccupied = try !ItemMetadataRecord
+            .filter(matchesParentURLAndFileName(parentURL: listed.serverUrl, fileName: listed.fileName))
+            .filter(!ItemMetadataRecord.Columns.deleted && !ItemMetadataRecord.Columns.isLockFileOfLocalOrigin)
+            .isEmpty(db)
+        guard !currentAddressOccupied else { return nil }
+
+        cached.updateLocation(parentURL: listed.serverUrl, fileName: cached.fileName, domainAccount: account)
+        cached.lockToken = nil
+        try cached.upsertRow(db)
+        return cached
     }
 
     /// Return nil for a missing item. Ask Finder to retry if the row still has outdated

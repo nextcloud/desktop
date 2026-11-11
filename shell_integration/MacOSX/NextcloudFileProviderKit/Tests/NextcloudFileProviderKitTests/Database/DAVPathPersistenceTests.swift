@@ -225,15 +225,29 @@ struct DAVPathPersistenceTests {
         #expect(manager.itemMetadata(locatedAtRemoteUrl: file.remotePath()) == nil)
     }
 
-    @Test(arguments: [false, true])
-    func ambiguousPreviousHostsKeepOldItemWhenListingReturnsItsID(fileUploadFailed: Bool) async throws {
+    @Test(
+        arguments: [false, true],
+        [
+            (paginated: false, listParentFirst: false),
+            (paginated: false, listParentFirst: true),
+            (paginated: true, listParentFirst: false),
+            (paginated: true, listParentFirst: true)
+        ]
+    )
+    func ambiguousPreviousHostsRecoverListedItemsAtTheirCachedPaths(
+        fileUploadFailed: Bool,
+        listingMode: (paginated: Bool, listParentFirst: Bool)
+    ) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
         let previous = Self.previousHostAccount
+        let unlisted = DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)
+        let earlier = Account(user: unlisted.user, id: unlisted.userId, serverUrl: unlisted.urlBase, password: account.password)
         _ = try writeUnboundStoreWithMaterializedItems(
             oldAccount: previous,
-            additionalMetadata: [DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)],
-            fileUploadFailed: fileUploadFailed
+            additionalMetadata: [unlisted],
+            fileUploadFailed: fileUploadFailed,
+            fileAccount: earlier
         )
         savePreviouslyConfiguredAccount(account)
 
@@ -252,18 +266,78 @@ struct DAVPathPersistenceTests {
         }
         #expect(observer.items.isEmpty)
         #expect(remote.readOperationCount == 0)
+        #expect(manager.itemMetadata(ocId: Self.folderId) == nil)
+        #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
+
+        if listingMode.listParentFirst {
+            let rootListing = await listDirectory(
+                account.davFilesUrl,
+                manager: manager,
+                remote: remote,
+                paginated: listingMode.paginated
+            )
+            #expect(rootListing.error == nil)
+            #expect(manager.itemMetadata(ocId: Self.folderId)?.urlBase == account.serverUrl)
+            #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
+        }
+
+        let folderURL = account.davFilesUrl + "/" + Self.folderName
+        let listing = await listDirectory(
+            folderURL,
+            manager: manager,
+            remote: remote,
+            paginated: listingMode.paginated
+        )
+        #expect(listing.error == nil)
+        #expect(remote.readOperationCount == (listingMode.listParentFirst ? 2 : 1))
+        let folder = try #require(manager.itemMetadata(ocId: Self.folderId))
+        let reportedFile = try #require(listing.metadatas?.first { $0.ocId == Self.fileId })
+        #expect(folder.remotePath() == folderURL)
+        #expect(folder.visitedDirectory)
+        #expect(reportedFile.remotePath() == folderURL + "/" + Self.fileName)
+        #expect(reportedFile.hasUnfinishedUpload == fileUploadFailed)
+        #expect(reportedFile.chunkUploadId == (fileUploadFailed ? "pending-edit-upload" : nil))
+        #expect(reportedFile.keepDownloaded)
+        #expect(reportedFile.downloaded)
+        #expect(reportedFile.etag == (fileUploadFailed ? Self.storedETag : Self.remoteETag))
+        #expect(manager.itemMetadata(ocId: Self.fileId)?.remotePath() == reportedFile.remotePath())
+        #expect(manager.itemMetadata(ocId: unlisted.ocId) == nil)
+        #expect(manager.itemMetadatas(account: earlier.ncKitAccount).contains { $0.ocId == unlisted.ocId })
+    }
+
+    @Test(arguments: [false, true])
+    func ambiguousPreviousHostsPreservePendingUploadWhenListingShowsARename(paginated: Bool) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let account = Self.currentAccount
+        let previous = Self.previousHostAccount
+        _ = try writeUnboundStoreWithMaterializedItems(
+            oldAccount: previous,
+            additionalMetadata: [DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)],
+            fileUploadFailed: true
+        )
+        savePreviouslyConfiguredAccount(account)
+
+        let manager = try openManager()
+        let remote = makeRemoteWithTeamFolder()
+        let folderURL = account.davFilesUrl + "/" + Self.folderName
+        let file = try #require(remote.rootItem?.children.first?.children.first)
+        file.name = "Renamed.txt"
+        file.remotePath = folderURL + "/" + file.name
 
         let listing = await listDirectory(
-            account.davFilesUrl + "/" + Self.folderName,
+            folderURL,
             manager: manager,
-            remote: remote
+            remote: remote,
+            paginated: paginated
         )
         #expect(listing.error != nil)
         #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
         let retained = try #require(manager.itemMetadatas(account: previous.ncKitAccount).first {
             $0.ocId == Self.fileId
         })
-        #expect(retained.hasUnfinishedUpload == fileUploadFailed)
+        #expect(retained.fileName == Self.fileName)
+        #expect(retained.chunkUploadId == "pending-edit-upload")
+        #expect(retained.hasUnfinishedUpload)
         #expect(retained.keepDownloaded)
         #expect(retained.downloaded)
         #expect(!retained.deleted)
@@ -791,10 +865,10 @@ struct DAVPathPersistenceTests {
     private func writeUnboundStoreWithMaterializedItems(
         oldAccount: Account = Self.oldAccount,
         additionalMetadata: [SendableItemMetadata] = [],
-        fileUploadFailed: Bool = false
+        fileUploadFailed: Bool = false,
+        fileAccount: Account? = nil
     ) throws -> String {
         savePreviouslyConfiguredAccount(oldAccount)
-        let oldParent = oldAccount.davFilesUrl + "/" + Self.folderName
         var folder = DatabaseTestSuites.makeFile(
             ocId: Self.folderId,
             fileName: Self.folderName,
@@ -804,11 +878,12 @@ struct DAVPathPersistenceTests {
         folder.visitedDirectory = true
         folder.uploaded = true
         folder.etag = Self.storedETag
+        let cachedFileAccount = fileAccount ?? oldAccount
         var file = DatabaseTestSuites.makeFile(
             ocId: Self.fileId,
             fileName: Self.fileName,
-            serverUrl: oldParent,
-            account: oldAccount
+            serverUrl: cachedFileAccount.davFilesUrl + "/" + Self.folderName,
+            account: cachedFileAccount
         )
         file.downloaded = true
         file.uploaded = true
@@ -880,10 +955,12 @@ struct DAVPathPersistenceTests {
     private func listDirectory(
         _ url: String,
         manager: FilesDatabaseManager,
-        remote: MockRemoteInterface
+        remote: MockRemoteInterface,
+        paginated: Bool = false
     ) async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             url,
+            pageSettings: paginated ? (page: nil, index: 0, size: 100) : nil,
             account: Self.currentAccount,
             remoteInterface: remote,
             dbManager: manager,

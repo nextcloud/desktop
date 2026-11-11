@@ -128,11 +128,13 @@ struct MutationDestinationTests {
             }
         }
 
-        let (modified, error) = await mutate()
         if hasMixedServerURLs {
+            let (modified, error) = await mutate()
             #expect((error as? NSFileProviderError)?.code == .cannotSynchronize)
             #expect(modified == nil)
             #expect(remote.readOperationCount == 0)
+            #expect(manager.directoryMetadata(ocId: folderID) == nil)
+            #expect(manager.itemMetadatas(account: previous.ncKitAccount).map(\.ocId) == [folderID])
 
             let listing = await Enumerator.readServerUrl(
                 account.davFilesUrl,
@@ -142,18 +144,21 @@ struct MutationDestinationTests {
                 depth: .targetAndDirectChildren,
                 log: log
             )
-            #expect(listing.error != nil)
+            try #require(listing.error == nil)
             #expect(remote.readOperationCount == 1)
             #expect(folder.children.isEmpty)
             #expect(root.children.contains { $0.identifier == source.identifier })
-            #expect(manager.directoryMetadata(ocId: folderID) == nil)
-            #expect(manager.itemMetadatas(account: previous.ncKitAccount).map(\.ocId) == [folderID])
-        } else {
-            #expect(error == nil)
-            let name = mutation == .createFolder ? createdFolderName : source.name
-            #expect(modified?.metadata.remotePath() == folderURL + "/" + name)
-            #expect(folder.children.map(\.name) == [name])
-            #expect(manager.directoryMetadata(ocId: folderID)?.remotePath() == folderURL)
+            #expect(manager.itemMetadatas(account: previous.ncKitAccount).isEmpty)
         }
+
+        let (modified, error) = await mutate()
+        #expect(error == nil)
+        let recoveryReads = hasMixedServerURLs ? 1 : 0
+        let newFolderReads = mutation == .createFolder ? 1 : 0
+        #expect(remote.readOperationCount == recoveryReads + newFolderReads)
+        let name = mutation == .createFolder ? createdFolderName : source.name
+        #expect(modified?.metadata.remotePath() == folderURL + "/" + name)
+        #expect(folder.children.map(\.name) == [name])
+        #expect(manager.directoryMetadata(ocId: folderID)?.remotePath() == folderURL)
     }
 }
