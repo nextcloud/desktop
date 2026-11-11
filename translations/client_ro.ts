@@ -1776,6 +1776,11 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
         <translation>Fișierul de certificat selectat nu a putut fi accesat.</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2128"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Certificatul nu a putut fi încărcat. Poate parola este greșită?</translation>

@@ -1773,6 +1773,11 @@ This action will abort any currently running synchronization.</source>
         <translation>无法访问所选证书文件。</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2128"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>无法加载证书。可能是密码错误？</translation>
