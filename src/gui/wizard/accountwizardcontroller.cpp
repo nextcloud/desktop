@@ -32,6 +32,7 @@
 #ifdef Q_OS_MACOS
 #include "common/macsandboxpersistentaccess.h"
 #include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfilepicker.h"
 #include "macOS/macsandboxfolderpicker.h"
 #endif
 
@@ -106,6 +107,9 @@ AccountWizardController::AccountWizardController(QObject *parent)
     , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
     , _localSyncFolderPicker([this](const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion) {
         pickLocalSyncFolder(caption, startFolder, std::move(completion));
+    })
+    , _clientCertificatePicker([this](std::function<void(const QString &)> completion) {
+        pickClientCertificate(std::move(completion));
     })
 {
     initialiseAccount();
@@ -2100,15 +2104,25 @@ void AccountWizardController::useClientCertificateForSecureConnection()
 
 void AccountWizardController::chooseClientCertificate()
 {
-    const auto fileUrl = QFileDialog::getOpenFileUrl(nullptr,
-        tr("Select a certificate"),
-        QUrl(),
-        tr("Certificate files (*.p12 *.pfx)"));
-    if (fileUrl.isEmpty()) {
-        return;
-    }
+    const QPointer<AccountWizardController> controller(this);
+    _clientCertificatePicker([controller](const QString &path) {
+        if (controller && !path.isEmpty()) {
+            controller->loadClientCertificateFile(QUrl::fromLocalFile(path));
+        }
+    });
+}
 
-    loadClientCertificateFile(fileUrl);
+void AccountWizardController::pickClientCertificate(std::function<void(const QString &)> completion)
+{
+    const auto caption = tr("Select a certificate");
+
+#ifdef Q_OS_MACOS
+    // QFileDialog gives up the sandbox access to the chosen file before returning, so only the
+    // native panel can keep it while the certificate is read.
+    Mac::SandboxFilePicker::selectFileToOpen(_window, caption, {u"p12"_s, u"pfx"_s}, std::move(completion));
+#else
+    completion(QFileDialog::getOpenFileName(nullptr, caption, {}, tr("Certificate files (*.p12 *.pfx)")));
+#endif
 }
 
 void AccountWizardController::loadClientCertificateFile(const QUrl &fileUrl)
