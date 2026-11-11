@@ -767,7 +767,7 @@ void SyncEngine::startSync()
             _discoveryPhase.get()
         );
     }
-    
+
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
     connect(discoveryJob, &ProcessDirectoryJob::updatedRootFolderQuota, account().data(), &Account::rootFolderQuotaChanged);
@@ -803,14 +803,13 @@ void SyncEngine::slotRootEtagReceived(const QByteArray &e, const QDateTime &time
     }
 }
 
-void SyncEngine::slotRootFileIdReceived(const qint64 fileId)
+void SyncEngine::slotRootFileIdReceived(qint64 fileId, const QByteArray &instanceId)
 {
-    if (_rootFileIdReceived) {
+    if (_rootFileIdReceived || fileId <= 0) {
         return;
     }
-    _rootFileId = fileId;
     _rootFileIdReceived = true;
-    Q_EMIT rootFileIdReceived(fileId);
+    Q_EMIT rootFileIdReceived(fileId, instanceId);
 }
 
 void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
