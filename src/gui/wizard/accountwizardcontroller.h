@@ -274,10 +274,13 @@ private:
     using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
     // Reports the chosen folder, or an empty path when cancelled, and its security-scoped bookmark if any.
     using LocalSyncFolderPicker = std::function<void(const QString &, const QString &, std::function<void(const QString &, const QByteArray &)>)>;
+    // Reports the chosen client certificate file, or an empty path when cancelled.
+    using ClientCertificatePicker = std::function<void(std::function<void(const QString &)>)>;
 
     friend class AccountWizardControllerTestAccess;
 
     void pickLocalSyncFolder(const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion);
+    void pickClientCertificate(std::function<void(const QString &)> completion);
 
     // The wizard account is not registered yet, so its own server settings have to be used.
     [[nodiscard]] ManagedVirtualFilesMode accountManagedVirtualFilesMode() const;
@@ -334,6 +337,7 @@ private:
     AccountPtr _account;
     LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     LocalSyncFolderPicker _localSyncFolderPicker;
+    ClientCertificatePicker _clientCertificatePicker;
     QPointer<QWindow> _window;
     std::unique_ptr<Flow2Auth> _flow2Auth;
     QPointer<SelectiveSyncDialog> _selectiveSyncDialog;
