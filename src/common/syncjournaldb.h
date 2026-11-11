@@ -77,7 +77,7 @@ public:
         qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo);
 
     [[nodiscard]] static QByteArray formatDavFileIdPrefix(qint64 fileId);
-    [[nodiscard]] bool hasFileIds(const QList<qint64> &fileIds);
+    [[nodiscard]] bool hasFileIds(const QList<qint64> &fileIds, const QByteArray &instanceId);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated

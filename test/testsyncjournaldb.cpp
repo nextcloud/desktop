@@ -588,10 +588,11 @@ private Q_SLOTS:
 
     void testHasFileIds()
     {
+        const auto instanceId = "oc123xyz987e"_ba;
         QList<qint64> allFileIds = {};
-        const auto makeEntry = [this, &allFileIds](const qint64 &fileId) -> void {
+        const auto makeEntry = [this, &allFileIds, &instanceId](const qint64 &fileId) -> void {
             SyncJournalFileRecord record;
-            record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+            record._fileId = u"%1"_s.arg(fileId, 8, 10, '0'_L1).toLatin1() + instanceId;
             record._modtime = QDateTime::currentSecsSinceEpoch();
             record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
             record._type = ItemTypeFile;
@@ -620,37 +621,68 @@ private Q_SLOTS:
         makeEntry(maxInt64); // have an entry for the maximum int64 value
 
         // these exist:
-        QVERIFY(_db.hasFileIds({4}));
-        QVERIFY(_db.hasFileIds({-9}));
-        QVERIFY(_db.hasFileIds({8, 25, 31}));
-        QVERIFY(_db.hasFileIds({maxInt32 + 4, maxInt64 - 17}));
-        QVERIFY(_db.hasFileIds({maxInt64 - 17}));
-        QVERIFY(_db.hasFileIds({maxInt64}));
+        QVERIFY(_db.hasFileIds({4}, instanceId));
+        QVERIFY(_db.hasFileIds({-9}, instanceId));
+        QVERIFY(_db.hasFileIds({8, 25, 31}, instanceId));
+        QVERIFY(_db.hasFileIds({maxInt32 + 4, maxInt64 - 17}, instanceId));
+        QVERIFY(_db.hasFileIds({maxInt64 - 17}, instanceId));
+        QVERIFY(_db.hasFileIds({maxInt64}, instanceId));
 
         // these don't:
-        QVERIFY(!_db.hasFileIds({-8}));
-        QVERIFY(!_db.hasFileIds({-16}));
-        QVERIFY(!_db.hasFileIds({-(maxInt32 + 4)}));
-        QVERIFY(!_db.hasFileIds({maxInt64 - 33}));
-        QVERIFY(!_db.hasFileIds({maxInt32 + 33}));
-        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint32>::min()}));
-        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint64>::min()}));
+        QVERIFY(!_db.hasFileIds({-8}, instanceId));
+        QVERIFY(!_db.hasFileIds({-16}, instanceId));
+        QVERIFY(!_db.hasFileIds({-(maxInt32 + 4)}, instanceId));
+        QVERIFY(!_db.hasFileIds({maxInt64 - 33}, instanceId));
+        QVERIFY(!_db.hasFileIds({maxInt32 + 33}, instanceId));
+        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint32>::min()}, instanceId));
+        QVERIFY(!_db.hasFileIds({std::numeric_limits<qint64>::min()}, instanceId));
 
         // as fileids are padded with zeroes, ensure that there is no accidental base-8 conversion done
         // 0o37 (octal) == 31 (decimal) --> 37(dec) does not exist, but 31(dec) does.
-        QVERIFY(_db.hasFileIds({037})); // octal
-        QVERIFY(!_db.hasFileIds({37})); // decimal
+        QVERIFY(_db.hasFileIds({037}, instanceId)); // octal
+        QVERIFY(!_db.hasFileIds({37}, instanceId)); // decimal
 
-        QVERIFY(!_db.hasFileIds({33}));    // 33 does not exist...
-        QVERIFY(_db.hasFileIds({33, 25})); // ...but 25 does
+        QVERIFY(!_db.hasFileIds({33}, instanceId)); // 33 does not exist...
+        QVERIFY(_db.hasFileIds({33, 25}, instanceId)); // ...but 25 does
 
         // nothing doesn't exist
-        QVERIFY(!_db.hasFileIds({}));
+        QVERIFY(!_db.hasFileIds({}, instanceId));
 
         // checking for a large amount of file ids should also work just fine, and be reasonably fast.
         QBENCHMARK {
-            QVERIFY(_db.hasFileIds(allFileIds));
+            QVERIFY(_db.hasFileIds(allFileIds, instanceId));
         }
+    }
+
+    void testHasFileIdsWithDigitLeadingInstanceId_data()
+    {
+        QTest::addColumn<QByteArray>("instanceId");
+        QTest::addColumn<QByteArray>("davFileId");
+        QTest::addColumn<qint64>("fileId");
+        QTest::addColumn<qint64>("fileIdWithSuffixDigits");
+
+        QTest::newRow("digit-leading") << "123xyz"_ba << "00000042123xyz"_ba << qint64{42} << qint64{42123};
+        QTest::newRow("all-digits") << "123"_ba << "603493314123"_ba << qint64{603493314} << qint64{603493314123};
+    }
+
+    void testHasFileIdsWithDigitLeadingInstanceId()
+    {
+        QFETCH(QByteArray, instanceId);
+        QFETCH(QByteArray, davFileId);
+        QFETCH(qint64, fileId);
+        QFETCH(qint64, fileIdWithSuffixDigits);
+
+        auto record = SyncJournalFileRecord{};
+        record._path = "digit-leading-instance-item"_ba;
+        record._fileId = davFileId;
+        record._modtime = QDateTime::currentSecsSinceEpoch();
+        record._type = ItemTypeFile;
+        record._etag = "etag"_ba;
+        QVERIFY(_db.setFileRecord(record));
+
+        QVERIFY(_db.hasFileIds({fileId}, instanceId));
+        QVERIFY(!_db.hasFileIds({fileIdWithSuffixDigits}, instanceId));
+        QVERIFY(!_db.hasFileIds({fileId}, "other-instance"_ba));
     }
 
 private:
