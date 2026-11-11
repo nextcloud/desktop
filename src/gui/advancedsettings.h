@@ -9,6 +9,8 @@
 #include <QPointer>
 #include <QWidget>
 
+#include <functional>
+
 namespace OCC {
 
 class IgnoreListEditor;
@@ -39,9 +41,15 @@ private Q_SLOTS:
     void updatePollIntervalVisibility();
 
 private:
+    using DebugArchiveLocationPicker = std::function<void(std::function<void(const QString &)>)>;
+
+    friend class AdvancedSettingsTestAccess;
+
     void customizeStyle();
+    void pickDebugArchiveLocation(std::function<void(const QString &)> completion);
 
     Ui::AdvancedSettings *_ui;
+    DebugArchiveLocationPicker _debugArchiveLocationPicker;
     QPointer<IgnoreListEditor> _ignoreEditor;
     bool _currentlyLoading = false;
 };

@@ -304,6 +304,8 @@ IF( APPLE )
         macOS/localnetworkpermission.mm
         macOS/lowpowergpu_mac.h
         macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfilepicker.h
+        macOS/macsandboxfilepicker.mm
         macOS/macsandboxfolderpicker.h
         macOS/macsandboxfolderpicker.mm
         macOS/macsandboxpanelutils.h
@@ -378,6 +380,7 @@ IF( APPLE )
         systray_mac_common.mm
         notificationsoundplayer_mac.mm
         macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfilepicker.mm
         macOS/macsandboxfolderpicker.mm
         macOS/macsandboxpanelutils.mm
         macOS/trayaccountpopup/ncactionrow.mm
@@ -814,7 +817,7 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
-    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework AppKit" "-framework Foundation" "-framework Metal" "-framework Network")
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework AppKit" "-framework Foundation" "-framework Metal" "-framework Network" "-framework UniformTypeIdentifiers")
     # ServiceManagement for SMAppService, used to register the FinderSync broker login item.
     # src/csync links it too, for utility_mac.mm, but PRIVATE — so it does not propagate here.
     target_link_libraries(nextcloudCore PRIVATE "-framework ServiceManagement")
