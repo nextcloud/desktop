@@ -8,9 +8,15 @@
 #include "clientstatusreportingcommon.h"
 #include "clientstatusreportingdatabase.h"
 #include "clientstatusreportingnetwork.h"
+#include "configfile.h"
+#include "folderman.h"
 #include "syncenginetestutils.h"
+#include "testhelper.h"
+#include "tray/usermodel.h"
 
+#include <QScopeGuard>
 #include <QSignalSpy>
+#include <QTemporaryDir>
 #include <QTest>
 
 using namespace Qt::StringLiterals;
@@ -28,7 +34,8 @@ public:
 
     QScopedPointer<FakeQNAM> fakeQnam;
     OCC::Account *account;
-    QScopedPointer<OCC::AccountState> accountState;
+    OCC::AccountStatePtr accountState;
+    QTemporaryDir configDir;
     QString dbFilePath;
     QVariantMap bodyReceivedAndParsed;
 
@@ -39,6 +46,8 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+        QVERIFY(configDir.isValid());
+        OCC::ConfigFile::setConfDir(configDir.path());
 
         OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval = 1000;
         OCC::ClientStatusReportingNetwork::repordSendIntervalMs = 2000;
@@ -63,6 +72,9 @@ private Q_SLOTS:
         account->setCapabilities(capabilities);
 
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+            if (req.url().path() != u"/ocs/v2.php/apps/security_guard/diagnostics"_s) {
+                return static_cast<QNetworkReply *>(nullptr);
+            }
             QNetworkReply *reply = nullptr;
             const auto reqBody = device->readAll();
             bodyReceivedAndParsed = QJsonDocument::fromJson(reqBody).toVariant().toMap();
@@ -268,6 +280,146 @@ private Q_SLOTS:
         }
         OCC::ClientStatusReportingDatabase::dbPathForTesting = dbFilePath;
         QFile::remove(otherPath);
+    }
+
+    void testFailedSyncStillReportsErrors_data()
+    {
+        QTest::addColumn<bool>("cachedReport");
+        QTest::addColumn<bool>("queuedConflicts");
+        QTest::newRow("startup") << false << false;
+        QTest::newRow("startup with conflict events") << false << true;
+        QTest::newRow("cached conflicts") << true << false;
+        QTest::newRow("cached conflicts and new events") << true << true;
+    }
+
+    void testFailedSyncStillReportsErrors()
+    {
+        QFETCH(bool, cachedReport);
+        QFETCH(bool, queuedConflicts);
+        OCC::ClientStatusReportingDatabase database(account);
+        QVERIFY(database.deleteClientStatusReportingRecords().isValid());
+        const auto conflicts = QVariantMap{{u"count"_s, 5}, {u"oldest"_s, 10}};
+        database.setLastSentReport(cachedReport ? QVariantMap{{u"sync_conflicts"_s, conflicts}} : QVariantMap{});
+        database.setLastSentReportTimestamp(0);
+        account->setServerErrorsResolvedAt(0);
+        bodyReceivedAndParsed.clear();
+
+        auto folderDir = QTemporaryDir{};
+        QVERIFY(folderDir.isValid());
+        const auto folderMan = OCC::FolderMan::instance();
+        folderMan->setSyncEnabled(false);
+        const auto folder = folderMan->addFolder(accountState.data(), folderDefinition(folderDir.path()));
+        QVERIFY(folder);
+        const auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+        auto user = OCC::User{accountState};
+        auto &engine = folder->syncEngine();
+        // Only the inventory callbacks run here; Folder's completion slot requires a started sync.
+        QObject::disconnect(&engine, &OCC::SyncEngine::finished, folder, nullptr);
+        engine.progressInfo()->_status = OCC::ProgressInfo::Reconcile;
+        user.slotProgressInfo(folder->alias(), *engine.progressInfo());
+        user.slotAddError(folder->alias(), u"Upload failed"_s, OCC::ErrorCategory::GenericError);
+        engine.progressInfo()->_status = OCC::ProgressInfo::Done;
+        Q_EMIT engine.finished(false);
+        QVERIFY(!account->syncConflictReport());
+
+        if (queuedConflicts) {
+            account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ConflictCaseClash);
+        }
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(bodyReceivedAndParsed.isEmpty());
+
+        account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_ServerError);
+        account->reportClientStatus(OCC::ClientStatusReportingStatus::E2EeError_GeneralError);
+        account->reportClientStatus(OCC::ClientStatusReportingStatus::UploadError_Virus_Detected);
+        QTRY_VERIFY(!bodyReceivedAndParsed.isEmpty());
+        const auto uploadKey = QString::fromUtf8(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::UploadError_ServerError));
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap().value(uploadKey).toMap().value(u"count"_s).toInt(), 1);
+        QCOMPARE(bodyReceivedAndParsed.value(u"e2ee_errors"_s).toMap().value(u"count"_s).toInt(), 1);
+        QCOMPARE(bodyReceivedAndParsed.value(u"virus_detected"_s).toMap().value(u"count"_s).toInt(), 1);
+        if (cachedReport) {
+            QCOMPARE(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap(), conflicts);
+        } else {
+            QCOMPARE(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap().value(u"count"_s).toInt(), queuedConflicts ? 1 : 0);
+        }
+        QTRY_VERIFY(database.getClientStatusReportingRecords().isEmpty());
+
+        // A successful full sync clears the reported transfer error and preserves other categories.
+        const auto sentReport = bodyReceivedAndParsed;
+        bodyReceivedAndParsed.clear();
+        engine.progressInfo()->_status = OCC::ProgressInfo::Reconcile;
+        user.slotProgressInfo(folder->alias(), *engine.progressInfo());
+        engine.progressInfo()->_status = OCC::ProgressInfo::Done;
+        Q_EMIT engine.finished(true);
+        QVERIFY(account->syncConflictReport());
+        QVERIFY(account->syncConflictReport()->isEmpty());
+        database.setLastSentReportTimestamp(0);
+        QTRY_VERIFY(!bodyReceivedAndParsed.isEmpty());
+        QVERIFY(bodyReceivedAndParsed.value(u"problems"_s).toMap().isEmpty());
+        QVERIFY(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap().isEmpty());
+        QCOMPARE(bodyReceivedAndParsed.value(u"e2ee_errors"_s), sentReport.value(u"e2ee_errors"_s));
+        QCOMPARE(bodyReceivedAndParsed.value(u"virus_detected"_s), sentReport.value(u"virus_detected"_s));
+        QTRY_COMPARE(database.lastSentReport(), bodyReceivedAndParsed);
+    }
+
+    void testConflictInventoryFromActivities_data()
+    {
+        using Status = OCC::SyncFileItem::Status;
+        QTest::addColumn<QList<Status>>("statuses");
+        QTest::addColumn<bool>("success");
+        QTest::addColumn<int>("expectedCount");
+        QTest::newRow("ordinary conflict") << QList<Status>{Status::Conflict} << false << 1;
+        QTest::newRow("case clash") << QList<Status>{Status::FileNameClash} << false << 1;
+        QTest::newRow("invalid filename") << QList<Status>{Status::FileNameInvalid} << false << 1;
+        QTest::newRow("successful run with case clash") << QList<Status>{Status::FileNameClash} << true << 1;
+        QTest::newRow("successful run with invalid filename") << QList<Status>{Status::FileNameInvalid} << true << 1;
+        QTest::newRow("mixed errors") << QList<Status>{Status::NormalError, Status::FileNameClash, Status::FileNameInvalid, Status::Conflict} << false << 3;
+        QTest::newRow("resolved") << QList<Status>{} << true << 0;
+    }
+
+    void testConflictInventoryFromActivities()
+    {
+        QFETCH(QList<OCC::SyncFileItem::Status>, statuses);
+        QFETCH(bool, success);
+        QFETCH(int, expectedCount);
+        auto folderDir = QTemporaryDir{};
+        QVERIFY(folderDir.isValid());
+        const auto folderMan = OCC::FolderMan::instance();
+        folderMan->setSyncEnabled(false);
+        const auto folder = folderMan->addFolder(accountState.data(), folderDefinition(folderDir.path()));
+        QVERIFY(folder);
+        const auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+        auto user = OCC::User{accountState};
+        auto &engine = folder->syncEngine();
+        QObject::disconnect(&engine, &OCC::SyncEngine::finished, folder, nullptr);
+        engine.progressInfo()->_status = OCC::ProgressInfo::Reconcile;
+        user.slotProgressInfo(folder->alias(), *engine.progressInfo());
+        QVERIFY(!account->syncConflictReport());
+
+        auto timestamp = qint64{1};
+        for (const auto status : statuses) {
+            auto activity = OCC::Activity{};
+            activity._type = OCC::Activity::SyncFileItemType;
+            activity._folder = folder->alias();
+            activity._file = QString::number(timestamp);
+            activity._id = timestamp;
+            activity._dateTime = QDateTime::fromMSecsSinceEpoch(timestamp++);
+            activity._syncFileItemStatus = status;
+            user.getActivityModel()->addErrorToActivityList(activity, OCC::ActivityListModel::ErrorType::SyncError);
+        }
+
+        engine.progressInfo()->_status = OCC::ProgressInfo::Done;
+        Q_EMIT engine.finished(success);
+        QVERIFY(account->syncConflictReport());
+        if (expectedCount == 0) {
+            QVERIFY(account->syncConflictReport()->isEmpty());
+        } else {
+            QCOMPARE(account->syncConflictReport()->value(u"count"_s).toInt(), expectedCount);
+            QCOMPARE(account->syncConflictReport()->value(u"oldest"_s).toLongLong(), statuses.first() == OCC::SyncFileItem::NormalError ? 2 : 1);
+        }
     }
 
     void cleanupTestCase()

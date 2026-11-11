@@ -228,6 +228,7 @@ private:
     void updateSyncStatus();
     [[nodiscard]] QVariantMap buildAccountAlert() const;
     void refreshAccountAlert();
+    [[nodiscard]] static bool isSyncConflictForReporting(SyncFileItem::Status status);
     void updateSyncConflictReport();
 
     bool notificationAlreadyShown(const qint64 notificationId);

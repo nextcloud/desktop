@@ -60,7 +60,7 @@ void ClientStatusReportingNetwork::sendReportToServer()
         return;
     }
 
-    if (_reportJob || (_account->usesActivityConflictReports() && !_account->syncConflictReport())) {
+    if (_reportJob || !_account) {
         return;
     }
 
@@ -74,10 +74,6 @@ void ClientStatusReportingNetwork::sendReportToServer()
     const auto report = prepareReport();
     if (report.isEmpty()) {
         qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because no records are queued";
-        return;
-    }
-
-    if (!_account) {
         return;
     }
 
@@ -135,7 +131,7 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
     const auto hasOtherRecords = std::ranges::any_of(records, [&isResolvedServerError](const auto &record) {
         return !isResolvedServerError(record) && classifyStatus(static_cast<ClientStatusReportingStatus>(record._status)) != statusReportCategorySyncConflicts;
     });
-    if (records.isEmpty() || (conflictReport && !hasOtherRecords)) {
+    if (records.isEmpty() || (_account->usesActivityConflictReports() && !hasOtherRecords)) {
         // Do not replace unknown server categories with an all-clear after an upgrade.
         if (!conflictReport || (previousReport.isEmpty() && conflictReport->isEmpty())) {
             return {};
@@ -195,6 +191,9 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
     }
     if (conflictReport) {
         report[statusReportCategorySyncConflicts] = *conflictReport;
+    } else if (_account->usesActivityConflictReports() && previousReport.contains(statusReportCategorySyncConflicts)) {
+        // An incomplete inventory must not clear the last reported conflicts.
+        report[statusReportCategorySyncConflicts] = previousReport.value(statusReportCategorySyncConflicts);
     }
     clearResolvedServerErrors(report);
     return report;

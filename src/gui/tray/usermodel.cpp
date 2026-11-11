@@ -1199,7 +1199,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             [this, folder, inventoryKnown, fullSync, engine = &engine](bool success) {
                 // Conflicts themselves can make finished(false); only an empty inventory needs success.
                 const auto hasConflicts = std::ranges::any_of(_activityModel->errorsList(), [&folder](const auto &activity) {
-                    return activity._folder == folder && activity._syncFileItemStatus == SyncFileItem::Conflict;
+                    return activity._folder == folder && isSyncConflictForReporting(activity._syncFileItemStatus);
                 });
                 if (inventoryKnown && (success || (engine->progressInfo()->status() == ProgressInfo::Done && hasConflicts))) {
                     _conflictInventoryFolders.insert(folder);
@@ -1257,6 +1257,11 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
     }
 }
 
+bool User::isSyncConflictForReporting(const SyncFileItem::Status status)
+{
+    return status == SyncFileItem::Conflict || status == SyncFileItem::FileNameClash || status == SyncFileItem::FileNameInvalid;
+}
+
 void User::updateSyncConflictReport()
 {
     const auto &folders = FolderMan::instance()->map();
@@ -1279,7 +1284,7 @@ void User::updateSyncConflictReport()
     auto count = 0;
     auto oldest = std::numeric_limits<qint64>::max();
     for (const auto &activity : _activityModel->errorsList()) {
-        if (accountFolders.contains(activity._folder) && activity._syncFileItemStatus == SyncFileItem::Conflict) {
+        if (accountFolders.contains(activity._folder) && isSyncConflictForReporting(activity._syncFileItemStatus)) {
             ++count;
             oldest = std::min(oldest, activity._dateTime.toMSecsSinceEpoch());
         }
