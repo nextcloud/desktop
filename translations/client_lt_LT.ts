@@ -1776,6 +1776,11 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
         <translation>Nepavyko pasiekti pasirinkto sertifikato failo.</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2128"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2156"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Nepavyko įkelti sertifikato. Galbūt neteisingas slaptažodis?</translation>
