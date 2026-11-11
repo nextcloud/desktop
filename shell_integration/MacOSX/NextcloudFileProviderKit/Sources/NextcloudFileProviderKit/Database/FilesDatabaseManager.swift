@@ -642,6 +642,7 @@ public final class FilesDatabaseManager: Sendable {
     private func processItemMetadatasToUpdate(
         existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata],
+        listedDirectoryURL: String,
         itemIDsToDelete: Set<String>,
         keepExistingDownloadState: Bool,
         in db: Database
@@ -675,6 +676,7 @@ public final class FilesDatabaseManager: Sendable {
             if existing == nil,
                let rebound = try rebindUnresolvedItemFromDAVListing(
                    updatedMetadata,
+                   listedDirectoryURL: listedDirectoryURL,
                    itemIDsToDelete: itemIDsToDelete,
                    in: db
                )
@@ -836,6 +838,7 @@ public final class FilesDatabaseManager: Sendable {
             let metadatasToChange = try processItemMetadatasToUpdate(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas,
+                listedDirectoryURL: cleanServerUrl,
                 itemIDsToDelete: Set(metadatasToDelete.map(\.ocId)),
                 keepExistingDownloadState: keepExistingDownloadState,
                 in: db
@@ -1141,14 +1144,21 @@ public final class FilesDatabaseManager: Sendable {
 
     func persistItemMetadataFromPagedListing(
         _ metadata: SendableItemMetadata,
-        preserveVisitedDirectory: Bool = true
+        preserveVisitedDirectory: Bool = true,
+        listedDirectoryURL: String? = nil,
+        evictUploadedOccupantsAtListedPath: Bool = false
     ) throws -> SendableItemMetadata {
         var toWrite = metadata
 
         // The local flags carried over from the old row were committed durably when set.
         try write(durability: .relaxed) { db in
             let existing = try itemMetadata(ocId: metadata.ocId, in: db)
-                ?? rebindUnresolvedItemFromDAVListing(metadata, in: db)
+                ?? rebindUnresolvedItemFromDAVListing(
+                    metadata,
+                    listedDirectoryURL: listedDirectoryURL,
+                    evictUploadedOccupantsAtListedPath: evictUploadedOccupantsAtListedPath,
+                    in: db
+                )
             if let existing {
                 if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existing, listed: metadata) {
                     toWrite = pendingUpload

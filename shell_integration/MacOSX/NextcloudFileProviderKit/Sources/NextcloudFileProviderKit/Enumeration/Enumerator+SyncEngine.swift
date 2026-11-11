@@ -8,6 +8,7 @@ extension Enumerator {
     static func handlePagedReadResults(
         files: [NKFile],
         pageIndex: Int,
+        listedDirectoryURL: String? = nil,
         dbManager: FilesDatabaseManager,
         log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
@@ -69,7 +70,11 @@ extension Enumerator {
 
             let dbStart = clock.now
             do {
-                let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(itemMetadata)
+                let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(
+                    itemMetadata,
+                    listedDirectoryURL: listedDirectoryURL,
+                    evictUploadedOccupantsAtListedPath: true
+                )
                 metadatas.append(savedMetadata)
             } catch {
                 logger.error("Could not persist the listed item.", [.item: itemMetadata.ocId, .error: error])
@@ -116,6 +121,7 @@ extension Enumerator {
                 handlePagedReadResults(
                     files: files,
                     pageIndex: pageIndex,
+                    listedDirectoryURL: serverUrl.last == "/" ? String(serverUrl.dropLast()) : serverUrl,
                     dbManager: dbManager,
                     log: log
                 )

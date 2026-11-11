@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import NextcloudKit
 
 extension FilesDatabaseManager {
     /// Live rows that startup could not assign to the current WebDAV account.
@@ -24,16 +25,23 @@ extension FilesDatabaseManager {
     }
 
     /// A listing can confirm one row when startup cannot identify a single previous server URL.
-    /// Bind the cached row to the current account only when the listed ID, type and path match.
+    /// A cached row's ID and type must match. A directory listing can also recover a file
+    /// at a different path when that file has no pending transfer and the new parent
+    /// is the directory that was requested.
     /// The listing's usual merge still decides which remote and local fields to keep.
+    /// A complete listing supplies the IDs it will delete in this transaction.
+    /// A paged child can replace an uploaded occupant at the exact returned path.
     func rebindUnresolvedItemFromDAVListing(
         _ listed: SendableItemMetadata,
+        listedDirectoryURL: String? = nil,
         itemIDsToDelete: Set<String> = [],
+        evictUploadedOccupantsAtListedPath: Bool = false,
         in db: Database
     ) throws -> ItemMetadataRecord? {
         guard listed.uploaded,
               !listed.deleted,
               !listed.isFilesRoot,
+              !listed.ocId.isEmpty,
               listed.account.utf8.elementsEqual(account.ncKitAccount.utf8),
               listed.urlBase.utf8.elementsEqual(account.serverUrl.utf8),
               listed.user.utf8.elementsEqual(account.username.utf8),
@@ -52,8 +60,6 @@ extension FilesDatabaseManager {
             .filter(unresolvedDAVAccountRows)
             .fetchRecord(db, logger: logger),
               let cachedParent = cached.storedParentPath,
-              cachedParent.utf8.elementsEqual(listedParent.utf8),
-              cached.fileName.utf8.elementsEqual(listed.fileName.utf8),
               cached.directory == listed.directory,
               cached.user.utf8.elementsEqual(account.username.utf8),
               cached.userId.utf8.elementsEqual(account.id.utf8),
@@ -64,16 +70,53 @@ extension FilesDatabaseManager {
               )
         else { return nil }
 
-        // A complete listing can replace an occupant it will mark deleted in this transaction.
-        // An occupant with an unfinished upload stays live and still blocks recovery at this path.
-        let occupantIDs = try ItemMetadataRecord
+        let matchesCachedPath = cachedParent.utf8.elementsEqual(listedParent.utf8)
+            && cached.fileName.utf8.elementsEqual(listed.fileName.utf8)
+        if !matchesCachedPath {
+            guard let listedDirectoryURL,
+                  let directoryPath = account.davRelativePath(forURL: listedDirectoryURL),
+                  directoryPath.utf8.elementsEqual(listedParent.utf8),
+                  !cached.directory,
+                  cached.uploaded,
+                  cached.status == Status.normal.rawValue || cached.status == Status.downloadError.rawValue,
+                  Account.isStoredDAVRelativeLocation(cachedParent),
+                  !Account.isStoredTrashLocation(cachedParent),
+                  !cachedParent.split(separator: "/").contains("..")
+            else { return nil }
+        }
+
+        let occupants = ItemMetadataRecord
             .filter(matchesParentURLAndFileName(parentURL: listed.serverUrl, fileName: listed.fileName))
             .filter(!ItemMetadataRecord.Columns.deleted && !ItemMetadataRecord.Columns.isLockFileOfLocalOrigin)
+        let occupantIDs = try occupants
             .select(ItemMetadataRecord.Columns.ocId, as: String.self)
             .fetchAll(db)
-        guard occupantIDs.allSatisfy(itemIDsToDelete.contains) else { return nil }
 
-        cached.updateLocation(parentURL: listed.serverUrl, fileName: cached.fileName, domainAccount: account)
+        if !occupantIDs.allSatisfy(itemIDsToDelete.contains) {
+            // Use the paged listing's usual eviction for uploaded rows at the exact
+            // returned path. Preserve local and in-flight rows and differently spelled paths.
+            let columns = ItemMetadataRecord.Columns.self
+            let protectedOccupants = occupants.filter(
+                !columns.uploaded
+                    || columns.status != Status.normal.rawValue
+                    || columns.serverUrl != listedParent
+                    || columns.fileName != listed.fileName
+            )
+            guard evictUploadedOccupantsAtListedPath, try protectedOccupants.isEmpty(db) else { return nil }
+            let evictedIDs = try evictLogicalDuplicates(of: listed, in: db)
+            guard occupantIDs.allSatisfy(evictedIDs.contains) else { throw NKError.invalidData }
+        }
+
+        cached.updateLocation(parentURL: listed.serverUrl, fileName: listed.fileName, domainAccount: account)
+        if !matchesCachedPath {
+            cached.fileNameView = listed.fileNameView
+            cached.name = listed.name
+            cached.syncTime = listed.syncTime
+            if cached.status == Status.downloadError.rawValue {
+                cached.status = Status.normal.rawValue
+                cached.sessionError = nil
+            }
+        }
         cached.lockToken = nil
         try cached.upsertRow(db)
         return cached

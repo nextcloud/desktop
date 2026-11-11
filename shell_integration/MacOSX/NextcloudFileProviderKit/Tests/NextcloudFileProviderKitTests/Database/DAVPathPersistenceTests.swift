@@ -46,6 +46,12 @@ struct DAVPathPersistenceTests {
         case absoluteParentURL
     }
 
+    enum FileTransferBeforeListing: Sendable {
+        case idle
+        case downloadFailed
+        case uploadFailed
+    }
+
     private static let oldAccount = Account(
         user: "old-login",
         id: "old-id",
@@ -305,50 +311,98 @@ struct DAVPathPersistenceTests {
         #expect(manager.itemMetadatas(account: earlier.ncKitAccount).contains { $0.ocId == unlisted.ocId })
     }
 
-    @Test(arguments: [false, true])
-    func ambiguousPreviousHostsPreservePendingUploadWhenListingShowsARename(paginated: Bool) async throws {
+    @Test(
+        arguments: [false, true],
+        [
+            (fileMoved: false, transfer: FileTransferBeforeListing.idle),
+            (fileMoved: true, transfer: .idle),
+            (fileMoved: false, transfer: .downloadFailed),
+            (fileMoved: true, transfer: .downloadFailed),
+            (fileMoved: false, transfer: .uploadFailed),
+            (fileMoved: true, transfer: .uploadFailed)
+        ]
+    )
+    func ambiguousPreviousHostsRecoverRenamedOrMovedFilesUnlessAnUploadIsPending(
+        paginated: Bool,
+        fileState: (fileMoved: Bool, transfer: FileTransferBeforeListing)
+    ) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
         let previous = Self.previousHostAccount
         _ = try writeUnboundStoreWithMaterializedItems(
             oldAccount: previous,
             additionalMetadata: [DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)],
-            fileUploadFailed: true
+            fileUploadFailed: fileState.transfer == .uploadFailed,
+            fileDownloadFailed: fileState.transfer == .downloadFailed
         )
         savePreviouslyConfiguredAccount(account)
 
         let manager = try openManager()
+        #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
         let remote = makeRemoteWithTeamFolder()
+        remote.pagination = paginated
         let folderURL = account.davFilesUrl + "/" + Self.folderName
-        let file = try #require(remote.rootItem?.children.first?.children.first)
-        file.name = "Renamed.txt"
-        file.remotePath = folderURL + "/" + file.name
+        let root = try #require(remote.rootItem)
+        let folder = try #require(root.children.first)
+        let file = try #require(folder.children.first)
+        let listedDirectoryURL: String
+        if fileState.fileMoved {
+            folder.children.removeAll()
+            root.children.append(file)
+            file.parent = root
+            listedDirectoryURL = account.davFilesUrl
+        } else {
+            file.name = "Renamed.txt"
+            listedDirectoryURL = folderURL
+        }
+        file.remotePath = listedDirectoryURL + "/" + file.name
 
         let listing = await listDirectory(
-            folderURL,
+            listedDirectoryURL,
             manager: manager,
             remote: remote,
             paginated: paginated
         )
-        #expect(listing.error != nil)
-        #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
-        let retained = try #require(manager.itemMetadatas(account: previous.ncKitAccount).first {
-            $0.ocId == Self.fileId
-        })
-        #expect(retained.fileName == Self.fileName)
-        #expect(retained.chunkUploadId == "pending-edit-upload")
-        #expect(retained.hasUnfinishedUpload)
-        #expect(retained.keepDownloaded)
-        #expect(retained.downloaded)
-        #expect(!retained.deleted)
+        if fileState.transfer == .uploadFailed {
+            #expect(listing.error != nil)
+            #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
+            let retained = try #require(manager.itemMetadatas(account: previous.ncKitAccount).first {
+                $0.ocId == Self.fileId
+            })
+            #expect(retained.remotePath() == previous.davFilesUrl + "/" + Self.folderName + "/" + Self.fileName)
+            #expect(retained.chunkUploadId == "pending-edit-upload")
+            #expect(retained.hasUnfinishedUpload)
+            #expect(retained.keepDownloaded)
+            #expect(retained.downloaded)
+            #expect(!retained.deleted)
+        } else {
+            #expect(listing.error == nil)
+            let reportedFile = try #require(listing.metadatas?.first { $0.ocId == Self.fileId })
+            #expect(reportedFile.remotePath() == file.remotePath)
+            #expect(reportedFile.fileNameView == file.name)
+            #expect(reportedFile.etag == Self.remoteETag)
+            #expect(reportedFile.keepDownloaded)
+            #expect(reportedFile.downloaded == (fileState.transfer != .downloadFailed))
+            let saved = try #require(manager.itemMetadata(ocId: Self.fileId))
+            #expect(saved.remotePath() == file.remotePath)
+            #expect(saved.fileNameView == file.name)
+            #expect(saved.urlBase == account.serverUrl)
+            #expect(saved.status == Status.normal.rawValue)
+            #expect(saved.sessionError == nil)
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: folderURL + "/" + Self.fileName) == nil)
+            if !paginated {
+                #expect(listing.changes?.updated.contains { $0.ocId == Self.fileId } == true)
+            }
+        }
     }
 
     @Test(arguments: [
         (paginated: false, occupantIsUploading: false),
         (paginated: true, occupantIsUploading: false),
-        (paginated: false, occupantIsUploading: true)
+        (paginated: false, occupantIsUploading: true),
+        (paginated: true, occupantIsUploading: true)
     ])
-    func ambiguousPreviousHostsRecoverAtOccupiedPathOnlyWhenListingRemovesOccupant(
+    func ambiguousPreviousHostsRecoverAtOccupiedPathUnlessOccupantIsUploading(
         listingMode: (paginated: Bool, occupantIsUploading: Bool)
     ) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -361,15 +415,24 @@ struct DAVPathPersistenceTests {
             account: account
         )
         occupant.uploaded = !listingMode.occupantIsUploading
+        occupant.downloaded = true
         if listingMode.occupantIsUploading {
             occupant.status = Status.uploading.rawValue
             occupant.chunkUploadId = "pending-occupant-upload"
         }
+        var unlistedSibling = DatabaseTestSuites.makeFile(
+            ocId: "unlisted-sibling-id",
+            fileName: "Unlisted.txt",
+            serverUrl: folderURL,
+            account: account
+        )
+        unlistedSibling.uploaded = true
         _ = try writeUnboundStoreWithMaterializedItems(
             oldAccount: Self.previousHostAccount,
             additionalMetadata: [
                 DatabaseTestSuites.makeFileFromEarlierServerURL(account: account),
-                occupant
+                occupant,
+                unlistedSibling
             ]
         )
         savePreviouslyConfiguredAccount(account)
@@ -378,16 +441,43 @@ struct DAVPathPersistenceTests {
         #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
         #expect(manager.itemMetadata(locatedAtRemoteUrl: occupant.remotePath())?.ocId == occupant.ocId)
         let remote = makeRemoteWithTeamFolder()
-        let listing = await listDirectory(
-            folderURL,
-            manager: manager,
-            remote: remote,
-            paginated: listingMode.paginated
-        )
+        let listingStartedAt = Date()
+        let listing: RemoteReadResult
+        if listingMode.paginated {
+            remote.pagination = true
+            let firstPage = await Enumerator.readServerUrl(
+                folderURL,
+                pageSettings: (page: nil, index: 0, size: 1),
+                account: account,
+                remoteInterface: remote,
+                dbManager: manager,
+                log: log
+            )
+            #expect(firstPage.error == nil)
+            #expect(firstPage.metadatas?.isEmpty == true)
+            #expect(manager.itemMetadata(ocId: occupant.ocId)?.deleted == false)
+            let nextPage = try #require(firstPage.nextPage)
+            let token = try #require(nextPage.token)
+            listing = await Enumerator.readServerUrl(
+                folderURL,
+                pageSettings: (page: NSFileProviderPage(Data(token.utf8)), index: nextPage.index, size: 1),
+                account: account,
+                remoteInterface: remote,
+                dbManager: manager,
+                log: log
+            )
+            #expect(manager.itemMetadata(ocId: unlistedSibling.ocId)?.deleted == false)
+        } else {
+            listing = await listDirectory(
+                folderURL,
+                manager: manager,
+                remote: remote
+            )
+        }
 
-        #expect(remote.readOperationCount == 1)
+        #expect(remote.readOperationCount == (listingMode.paginated ? 2 : 1))
         let savedOccupant = try #require(manager.itemMetadata(ocId: occupant.ocId))
-        if listingMode.paginated || listingMode.occupantIsUploading {
+        if listingMode.occupantIsUploading {
             #expect(listing.error != nil)
             #expect(manager.itemMetadata(ocId: Self.fileId) == nil)
             #expect(!savedOccupant.deleted)
@@ -395,8 +485,14 @@ struct DAVPathPersistenceTests {
             #expect(savedOccupant.chunkUploadId == occupant.chunkUploadId)
         } else {
             #expect(listing.error == nil)
-            #expect(listing.changes?.deleted.map(\.ocId) == [occupant.ocId])
-            #expect(listing.changes?.updated.contains { $0.ocId == Self.fileId } == true)
+            if listingMode.paginated {
+                #expect(listing.metadatas?.map(\.ocId) == [Self.fileId])
+                let pendingChanges = try #require(manager.pendingWorkingSetChanges(since: listingStartedAt))
+                #expect(pendingChanges.deleted.map(\.ocId) == [occupant.ocId])
+            } else {
+                #expect(Set(listing.changes?.deleted.map(\.ocId) ?? []) == [occupant.ocId, unlistedSibling.ocId])
+                #expect(listing.changes?.updated.contains { $0.ocId == Self.fileId } == true)
+            }
             #expect(savedOccupant.deleted)
             let recovered = try #require(manager.itemMetadata(locatedAtRemoteUrl: occupant.remotePath()))
             #expect(recovered.ocId == Self.fileId)
@@ -928,6 +1024,7 @@ struct DAVPathPersistenceTests {
         oldAccount: Account = Self.oldAccount,
         additionalMetadata: [SendableItemMetadata] = [],
         fileUploadFailed: Bool = false,
+        fileDownloadFailed: Bool = false,
         fileAccount: Account? = nil
     ) throws -> String {
         savePreviouslyConfiguredAccount(oldAccount)
@@ -955,6 +1052,10 @@ struct DAVPathPersistenceTests {
             file.uploaded = false
             file.status = Status.uploadError.rawValue
             file.chunkUploadId = "pending-edit-upload"
+        } else if fileDownloadFailed {
+            file.downloaded = false
+            file.status = Status.downloadError.rawValue
+            file.sessionError = "Old hostname unavailable"
         }
         return try FilesDatabaseManager.writeUnboundStoreForTesting(
             at: directory.appendingPathComponent(domain.rawValue).appendingPathExtension(DatabaseSchema.fileExtension),
