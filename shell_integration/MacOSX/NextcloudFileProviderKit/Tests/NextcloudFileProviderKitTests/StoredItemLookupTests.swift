@@ -54,8 +54,11 @@ struct StoredItemLookupTests {
 
         #expect(!hasItem)
         #expect(errorCode == (state == .live ? .cannotSynchronize : .noSuchItem))
-        if state == .live {
-            #expect(manager.itemMetadata(identifier)?.deleted == false)
+        #expect(manager.itemMetadata(identifier) == nil)
+        if state != .absent {
+            let retained = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == identifier.rawValue })
+            #expect(retained.userId == previous.id)
+            #expect(retained.deleted == (state == .deleted))
         }
     }
 }

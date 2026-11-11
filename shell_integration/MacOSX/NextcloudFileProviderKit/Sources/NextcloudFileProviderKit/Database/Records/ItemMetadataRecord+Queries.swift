@@ -8,7 +8,7 @@ import GRDB
 ///
 /// Predicates over the `itemMetadata` table which every lookup composes.
 ///
-/// Locations are compared on the normalized key columns, so callers pass raw strings and the normalization happens here, once. Dates are bound as the stored number, never as a `Date`, because a `Date` would be bound as text and never compare equal to a `REAL` column.
+/// Locations are compared on the normalized key columns, so callers pass stored locations and normalization happens here. Dates are bound as the stored number, never as a `Date`, because a `Date` would be bound as text and never compare equal to a `REAL` column.
 ///
 extension ItemMetadataRecord {
     typealias Columns = CodingKeys
@@ -17,6 +17,15 @@ extension ItemMetadataRecord {
     static var isFilesRoot: SQLExpression {
         Columns.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
             || (Columns.directory == true && Columns.fileName == SendableItemMetadata.filesRootPlaceholderName)
+    }
+
+    /// The parent is stored relative to the row's files or trash DAV root.
+    static var hasStoredDAVRelativeParent: SQLExpression {
+        SQL("""
+            \(Columns.serverUrl) IN ('files:', 'trash:')
+                OR \(Columns.serverUrl) GLOB 'files:/*'
+                OR \(Columns.serverUrl) GLOB 'trash:/*'
+            """).sqlExpression
     }
 
     /// Match the normalized stored parent location and normalized filename together.

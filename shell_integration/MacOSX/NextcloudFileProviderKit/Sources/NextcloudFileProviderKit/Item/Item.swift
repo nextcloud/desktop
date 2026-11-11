@@ -543,7 +543,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier),
+        guard let metadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(identifier, retryError: unresolvedParentError),
               !metadata.isFilesRootWithServerID,
               includeDeleted || !metadata.deleted
         else {

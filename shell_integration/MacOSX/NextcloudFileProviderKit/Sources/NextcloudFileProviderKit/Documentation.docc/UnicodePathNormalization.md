@@ -32,8 +32,7 @@ https://eclecticlight.co/2021/05/08/explainer-unicode-normalization-and-apfs/
 
 `ItemMetadataRecord` stores both the original values and comparison values:
 
-- `serverUrl` and `fileName` retain the spelling received from the server or
-  operating-system boundary.
+- The stored parent path and `fileName` retain the spelling of item path components received from the server or operating-system boundary. For items within the domain, the parent path is relative to a DAV root.
 - `normalizedServerUrl` and `normalizedFileName` contain NFC values produced
   by Foundation's `precomposedStringWithCanonicalMapping` property.
 
@@ -128,7 +127,7 @@ requests.
 
 When changing metadata persistence or adding a database predicate:
 
-1. Preserve the raw `serverUrl` and `fileName`.
+1. Preserve the spelling of the DAV-relative parent path and `fileName`.
 2. Populate or update their normalized counterparts in the same write.
 3. Use the parent location predicates or `hasSameLocation` instead of
    duplicating normalization logic.

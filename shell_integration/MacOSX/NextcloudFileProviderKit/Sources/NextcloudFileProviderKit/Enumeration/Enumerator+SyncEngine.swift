@@ -97,7 +97,7 @@ extension Enumerator {
         serverUrl: String,
         account: Account,
         dbManager: FilesDatabaseManager,
-        files filesFromResponse: [NKFile],
+        files: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
         log: any FileProviderLogging
@@ -114,7 +114,7 @@ extension Enumerator {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
             let (metadatas, error) = await dbManager.perform { dbManager in
                 handlePagedReadResults(
-                    files: filesFromResponse,
+                    files: files,
                     pageIndex: pageIndex,
                     dbManager: dbManager,
                     log: log
@@ -130,9 +130,9 @@ extension Enumerator {
         let convDirState = signposter.beginInterval(
             "ConvertDirectoryMetadata",
             id: signposter.makeSignpostID(),
-            "serverUrl=\(serverUrl, privacy: .public) files=\(filesFromResponse.count)"
+            "serverUrl=\(serverUrl, privacy: .public) files=\(files.count)"
         )
-        let convertedDirectory = await filesFromResponse.toSendableDirectoryMetadata(requestedDirectoryURL: serverUrl)
+        let convertedDirectory = await files.toSendableDirectoryMetadata(requestedDirectoryURL: serverUrl)
         signposter.endInterval("ConvertDirectoryMetadata", convDirState)
 
         guard var (directory, _, files) = convertedDirectory else {
@@ -155,13 +155,6 @@ extension Enumerator {
 
         directory.visitedDirectory = true
 
-        // Look up cached children by the URL the parser returned as well as the URL we requested.
-        let responseDirectoryURL = filesFromResponse.first { $0.matchesRequestedDirectoryURL(serverUrl) }.map {
-            directory.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
-                ? $0.serverUrl
-                : $0.serverUrl + "/" + $0.fileName
-        }
-
         files.insert(directory, at: 0)
 
         guard !Task.isCancelled else { return (nil, nil, .cancelled) }
@@ -178,8 +171,7 @@ extension Enumerator {
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
                 keepExistingDownloadState: true,
-                preserveDeletedTarget: preserveDeletedTarget,
-                responseDirectoryURL: responseDirectoryURL
+                preserveDeletedTarget: preserveDeletedTarget
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 

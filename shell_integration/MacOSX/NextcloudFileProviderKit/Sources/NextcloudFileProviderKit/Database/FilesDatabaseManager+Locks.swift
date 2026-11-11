@@ -8,13 +8,18 @@ import NextcloudKit
 ///
 /// Lock state of items addressed by the raw location an application's lock file names.
 ///
-/// These lookups compare the stored `serverUrl` and `fileName` columns as they are, without Unicode normalization and without excluding deleted items, because lock file handling matches the name an application wrote byte for byte.
+/// Lock files identify documents by name in the same directory. Compare the saved parent and
+/// filename without Unicode normalization, and include deleted items in the lookup.
 ///
 extension FilesDatabaseManager {
     /// The item stored at exactly this raw location, deleted or not. A live row wins over a deleted one.
     func itemMetadata(rawServerUrl: String, rawFileName: String) -> SendableItemMetadata? {
         read("Could not look up an item by its raw location.", [.url: rawServerUrl, .name: rawFileName]) { db in
-            try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db)?.metadata
+            try fetchItemMatchingParentAndFileName(
+                parentURL: rawServerUrl,
+                fileName: rawFileName,
+                in: db
+            )?.metadata
         } ?? nil
     }
 
@@ -25,7 +30,11 @@ extension FilesDatabaseManager {
     @discardableResult
     func applyLock(_ lock: NKLock, rawServerUrl: String, rawFileName: String) throws -> Bool {
         try write(durability: .full) { db in
-            guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
+            guard var target = try fetchItemMatchingParentAndFileName(
+                parentURL: rawServerUrl,
+                fileName: rawFileName,
+                in: db
+            ) else {
                 return false
             }
 
@@ -62,7 +71,11 @@ extension FilesDatabaseManager {
     @discardableResult
     func clearLock(rawServerUrl: String, rawFileName: String) throws -> Bool {
         try write(durability: .full) { db in
-            guard var target = try rawLocationMatch(serverUrl: rawServerUrl, fileName: rawFileName, in: db) else {
+            guard var target = try fetchItemMatchingParentAndFileName(
+                parentURL: rawServerUrl,
+                fileName: rawFileName,
+                in: db
+            ) else {
                 return false
             }
 
@@ -80,9 +93,15 @@ extension FilesDatabaseManager {
         }
     }
 
-    private func rawLocationMatch(serverUrl: String, fileName: String, in db: Database) throws -> ItemMetadataRecord? {
+    private func fetchItemMatchingParentAndFileName(
+        parentURL: String,
+        fileName: String,
+        in db: Database
+    ) throws -> ItemMetadataRecord? {
         try ItemMetadataRecord
-            .filter(ItemMetadataRecord.Columns.serverUrl == serverUrl && ItemMetadataRecord.Columns.fileName == fileName)
+            .filter(matchStoredParentLocation(for: parentURL) {
+                ItemMetadataRecord.Columns.serverUrl == $0 && ItemMetadataRecord.Columns.fileName == fileName
+            })
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
             .fetchRecord(db, logger: logger)
     }

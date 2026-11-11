@@ -101,7 +101,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         } else {
             // Finder opens the Files root with `.rootContainer` above. The server's root ocId
             // is kept for DAV metadata, so reject it as a Finder container identifier.
-            enumeratedItemMetadata = dbManager.itemMetadata(enumeratedItemIdentifier)
+            enumeratedItemMetadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(enumeratedItemIdentifier)
 
             guard let enumeratedItemMetadata,
                   !enumeratedItemMetadata.deleted,

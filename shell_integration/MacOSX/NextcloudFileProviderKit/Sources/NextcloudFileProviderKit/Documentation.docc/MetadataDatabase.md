@@ -18,7 +18,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 ## Storage choices
 
 - Dates are stored as `REAL` seconds since the reference date, the same number a `Date` holds, so they round-trip exactly. Predicates bind that number, never a `Date`, because GRDB would bind a `Date` as text.
-- The location keys `normalizedServerUrl` and `normalizedFileName` hold the NFC form of the raw location. See <doc:UnicodePathNormalization>.
+- SQLite's `serverUrl` column holds a DAV parent path such as `files:/Docs` or `trash:`. The row decoder combines that path with the server base URL and backend user ID to build the WebDAV request URL. If migration cannot identify a legacy row's DAV root, the row keeps its full parent URL in that column. See <doc:UnicodePathNormalization> for the lookup keys.
 - Items below a directory are matched with a byte-wise range over the location index rather than a pattern, so names with pattern characters or different case never match by accident.
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
@@ -51,13 +51,25 @@ On open, the higher of the two recorded versions is compared with the running bu
 
 The store version and the store identity are part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
 
+The first SQLite schema creates the final tables directly. SQLite files written by earlier test builds use different migration identifiers and are treated as unsupported by the version check.
+
 ## Store identity
 
 Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
+When the domain opens with different account details, the database can update rows it can match to the previous account. It changes their account fields, assigns a new store identity, and discards pending change batches saved for the previous account in one transaction. The rows keep their item IDs and local state. Writes and DAV reads check the store identity so a delayed response from the previous account cannot overwrite rows.
+
+## Recovering item metadata after a server URL change
+
+Older extensions saved the incoming account in the domain settings before opening the database. After a hostname change, the settings could therefore say `https://new.example.com` while cached rows still had `https://old.example.com` in their `urlBase` fields. The Realm import uses each row's account details to shorten its parent URL to a path like `files:/Team` and retains the row's `urlBase`.
+
+The bulk update uses the previous account from SQLite or the domain settings when available. During Realm import, if the settings already show the new URL, the import can use the old URL from the rows. All live DAV rows must agree on one old account, their parent URLs must have converted to relative paths, and their login and backend user ID must match the current account. The import updates those rows before publishing the database, so normal enumeration uses the new URL.
+
+When the rows disagree on the old account, startup leaves rows it cannot match alone. Requests for those items can retry, and the working set does not report a partial snapshot as complete.
+
 ## Import from Realm
 
-Builds before the switch kept the same tables in a Realm database, `<domain identifier>.realm`. When that file exists, it is imported before the SQLite database is opened: the Realm file is opened with the last Realm schema so Realm applies its own upgrades first, every table is copied into a staging file, and the staging file is moved into place in one step. The Realm files are removed only after the move succeeded, so a crash leaves either the untouched Realm file or a complete database behind. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
+Builds before the switch kept the metadata in a Realm database, `<domain identifier>.realm`. The importer opens it with the last Realm schema so Realm applies its own upgrades. It creates a staging SQLite file with the final schema, copies the rows and queued changes, and binds them to the current account in one transaction. It then moves the finished SQLite file into place and removes the Realm files. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
 
 A Realm file next to an existing SQLite database means an older, Realm-based build ran last, so its content replaces the SQLite database. Only a Realm file which cannot be read at all is set aside; a file Realm cannot open for a passing reason, such as a permission or lock problem, is left in place and the open fails until the import succeeds.
 

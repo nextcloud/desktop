@@ -441,7 +441,7 @@ struct EnumeratorPersistenceTests {
     private func expectWorkingSetToSkip404(at previousAccount: Account) async throws {
         try storeFolderAndFile(at: previousAccount)
         let stalePath = previousAccount.davFilesUrl + "/" + folder.name
-        let storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
+        let storedFolder = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == folder.identifier })
         try #require(storedFolder.urlBase == previousAccount.serverUrl)
         try #require(storedFolder.remotePath() == stalePath)
         remote.enumerateErrorBySuffix[stalePath] = NKError(statusCode: 404, fallbackDescription: "File not found")
@@ -450,12 +450,17 @@ struct EnumeratorPersistenceTests {
 
         try await observer.enumerateChanges(from: anchor)
 
-        #expect(remote.readOperationCount == 0)
         #expect(observer.changedItems.isEmpty)
         #expect(observer.deletedItemIdentifiers.isEmpty)
         #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
-        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
-        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+
+        let snapshot = try MockEnumerationObserver(enumerator: makeEnumerator(.workingSet))
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await snapshot.enumerateItems()
+        }
+        #expect(snapshot.items.isEmpty)
+        #expect(remote.readOperationCount == 0)
+        expectStaleRowsRetained()
     }
 
     @Test func containerSkipsAStaleURLThatWouldReturnAnEmpty207() async throws {
@@ -473,17 +478,18 @@ struct EnumeratorPersistenceTests {
         folder.userId = previousAccount.id
         folder.children = []
         remote.enumerateResponseStatusCode = 207
-        let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
 
         await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
+            defer {
+                #expect(observer.changedItems.isEmpty)
+                #expect(observer.deletedItemIdentifiers.isEmpty)
+            }
             try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
         }
 
         #expect(remote.readOperationCount == 0)
-        #expect(observer.changedItems.isEmpty)
-        #expect(observer.deletedItemIdentifiers.isEmpty)
-        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
-        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+        expectStaleRowsRetained()
     }
 
     @Test(arguments: [NSFileProviderItemIdentifier.rootContainer.rawValue, "server-root-id"])
@@ -529,6 +535,18 @@ struct EnumeratorPersistenceTests {
     @Test func workingSetReportsA404UnderTheCurrentDAVBaseAsADeletion() async throws {
         remote.enumerateErrorBySuffix = ["/folder": NKError(statusCode: 404, fallbackDescription: "File not found")]
         let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+        observer.beforeFinishEnumeratingChanges = {
+            // Finishing the batch acknowledges the deletion and removes the row.
+            let afterScan = Date()
+            let changes = manager.pendingWorkingSetChanges(since: anchorDate)
+            guard let deletion = changes?.deleted.first(where: { $0.ocId == folder.identifier }) else {
+                Issue.record("The working-set scan did not save a deletion after the incoming anchor.")
+                return
+            }
+            #expect(deletion.syncTime > anchorDate)
+            #expect(deletion.syncTime <= afterScan)
+            #expect(manager.pendingWorkingSetChanges(since: afterScan)?.deleted.isEmpty == true)
+        }
 
         try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
 
@@ -549,6 +567,14 @@ struct EnumeratorPersistenceTests {
         storedFile.account = account.ncKitAccount
         storedFile.serverUrl = storedFolder.remotePath()
         manager.addItemMetadata(storedFile)
+    }
+
+    private func expectStaleRowsRetained() {
+        let retained = manager.itemMetadatas(account: account.ncKitAccount)
+        for identifier in [folder.identifier, file.identifier] {
+            #expect(manager.itemMetadata(ocId: identifier) == nil)
+            #expect(retained.first { $0.ocId == identifier }?.deleted == false)
+        }
     }
 
     private func readFolder() async -> RemoteReadResult {

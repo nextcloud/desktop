@@ -51,6 +51,10 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                guard dbManager.hasCurrentDAVAccountBinding() else {
+                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                    return
+                }
                 // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
@@ -129,8 +133,8 @@ extension Enumerator {
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
-        let storedMaterialisedItems = dbManager.materialisedItemMetadatas()
-        let materialisedItems = (storedMaterialisedItems ?? [])
+        let workingSet = dbManager.itemMetadataForWorkingSet()
+        let materialisedItems = (workingSet?.items ?? [])
             .filter { !$0.deleted && !$0.isTrashed }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
@@ -141,7 +145,7 @@ extension Enumerator {
         // Track read failures so one unreadable folder no longer aborts the whole scan (see the
         // read-error branch below). `hadReadFailure` is returned to the caller so it can avoid
         // advancing the working-set sync point past changes this pass could not discover.
-        var hadReadFailure = storedMaterialisedItems == nil
+        var hadReadFailure = workingSet?.hasUnresolvedItems ?? true
         var failedItemIds = Set<String>()
 
         // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
@@ -302,7 +306,10 @@ extension Enumerator {
             var deleteMarked = deletedMetadata
             deleteMarked.deleted = true
             deleteMarked.syncTime = Date()
-            dbManager.addItemMetadata(deleteMarked)
+            guard dbManager.deleteItemMetadata(ocId: deleteMarked.ocId, syncTime: deleteMarked.syncTime) else {
+                hadReadFailure = true
+                continue
+            }
             reportedDeletions.append(deleteMarked)
         }
 

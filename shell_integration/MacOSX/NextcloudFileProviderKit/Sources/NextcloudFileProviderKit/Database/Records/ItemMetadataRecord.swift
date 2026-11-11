@@ -59,7 +59,12 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
     var quotaAvailableBytes: Int64
     var resourceType: String
     var richWorkspace: String?
+    /// Full parent URL used by WebDAV requests.
     var serverUrl: String
+
+    /// Parent path relative to the account's DAV root, such as files:/Docs or trash:.
+    /// A legacy row whose DAV root could not be identified has no relative path.
+    var storedParentPath: String?
     var session: String?
     var sessionError: String?
     var sessionTaskIdentifier: Int?
@@ -81,7 +86,7 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
     var user: String
     var userId: String
 
-    /// NFC form of `serverUrl`, maintained by this type.
+    /// NFC form of the stored parent location, maintained by this type.
     var normalizedServerUrl: String
 
     /// NFC form of `fileName`, maintained by this type.
@@ -134,7 +139,6 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         case note
         case ownerDisplayName
         case ownerId
-        case path
         case permissions
         case quotaAvailableBytes
         case quotaUsedBytes
@@ -162,7 +166,7 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         case visitedDirectory
     }
 
-    init(_ value: any ItemMetadata) {
+    init(_ value: any ItemMetadata, domainAccount: Account? = nil) {
         ocId = value.ocId
         account = value.account
         checksums = value.checksums
@@ -175,15 +179,12 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         date = value.date
         syncTime = value.syncTime
         deleted = value.deleted
-        directory = value.directory
         downloadURL = value.downloadURL
         e2eEncrypted = value.e2eEncrypted
         etag = value.etag
         fileProviderContentVersion = value.fileProviderContentVersion
         favorite = value.favorite
         fileId = value.fileId
-        fileName = value.fileName
-        fileNameView = value.fileNameView
         hasPreview = value.hasPreview
         hidden = value.hidden
         iconName = value.iconName
@@ -208,7 +209,6 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         quotaAvailableBytes = value.quotaAvailableBytes
         resourceType = value.resourceType
         richWorkspace = value.richWorkspace
-        serverUrl = value.serverUrl
         session = value.session
         sessionError = value.sessionError
         sessionTaskIdentifier = value.sessionTaskIdentifier
@@ -226,11 +226,79 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         trashbinOriginalLocation = value.trashbinOriginalLocation
         trashbinDeletionTime = value.trashbinDeletionTime
         uploadDate = value.uploadDate
-        urlBase = value.urlBase
+
+        // Save a parent relative to the account's Files or Trash root when it can be identified.
+        // Use the root placeholder even if the server names the Files root after the backend user ID.
+        let davRootComponents = Self.serverBaseURLAndBackendUserID(for: value, domainAccount: domainAccount)
+        let baseURL = davRootComponents?.serverBaseURL ?? value.urlBase
+        let backendUserID = davRootComponents?.backendUserID ?? value.userId
+        let isRoot = davRootComponents != nil
+            && Account.isFilesRootAddress(
+                parentURL: value.serverUrl,
+                fileName: value.fileName,
+                accountBaseURL: baseURL,
+                backendUserID: backendUserID,
+                acceptEquivalentResponseWebroot: true
+            )
+        directory = isRoot || value.directory
+        fileName = isRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileName
+        fileNameView = isRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileNameView
+        urlBase = baseURL
+        userId = backendUserID
         user = value.user
-        userId = value.userId
-        normalizedServerUrl = value.serverUrl.precomposedStringWithCanonicalMapping
-        normalizedFileName = value.fileName.precomposedStringWithCanonicalMapping
+        if user.isEmpty, let davRootComponents, account.hasSuffix(" " + davRootComponents.serverBaseURL) {
+            user = String(account.dropLast(davRootComponents.serverBaseURL.count + 1))
+        }
+        let relativeParentPath: String? = if isRoot {
+            Account.storedFilesRootLocation
+        } else if davRootComponents != nil {
+            Account.davRelativePath(
+                forURL: value.serverUrl,
+                accountBaseURL: baseURL,
+                backendUserID: backendUserID,
+                acceptEquivalentResponseWebroot: true
+            )
+        } else {
+            nil
+        }
+        storedParentPath = relativeParentPath
+        serverUrl = relativeParentPath.flatMap {
+            Account.absoluteURL(fromDAVRelativePath: $0, accountBaseURL: baseURL, backendUserID: backendUserID)
+        } ?? value.serverUrl
+        normalizedServerUrl = (relativeParentPath ?? value.serverUrl).precomposedStringWithCanonicalMapping
+        normalizedFileName = fileName.precomposedStringWithCanonicalMapping
+    }
+
+    /// Find the server base URL and backend user ID that identify this item's DAV roots.
+    /// The manager can fill in missing values for items that match its account.
+    static func serverBaseURLAndBackendUserID(
+        for metadata: any ItemMetadata,
+        domainAccount: Account?
+    ) -> (serverBaseURL: String, backendUserID: String)? {
+        if let domainAccount {
+            guard metadata.account == domainAccount.ncKitAccount,
+                  metadata.urlBase.isEmpty || metadata.urlBase.utf8.elementsEqual(domainAccount.serverUrl.utf8),
+                  metadata.userId.isEmpty || metadata.userId.utf8.elementsEqual(domainAccount.id.utf8)
+            else { return nil }
+        }
+        if !metadata.urlBase.isEmpty, !metadata.userId.isEmpty {
+            return (metadata.urlBase, metadata.userId)
+        }
+        if let domainAccount,
+           domainAccount.davRelativePath(forURL: metadata.serverUrl) != nil
+            || Account.isFilesRootAddress(
+                parentURL: metadata.serverUrl,
+                fileName: metadata.fileName,
+                accountBaseURL: domainAccount.serverUrl,
+                backendUserID: domainAccount.id
+            ) {
+            return (domainAccount.serverUrl, domainAccount.id)
+        }
+        return recoverServerBaseAndUserIDForLegacyContainer(
+            ocId: metadata.ocId,
+            account: metadata.account,
+            parentURL: metadata.serverUrl
+        )
     }
 
     /// The row as the value type handed to the rest of the extension.
@@ -238,11 +306,19 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, FetchableRecord, P
         SendableItemMetadata(value: self)
     }
 
-    /// Set the raw location and its normalized keys together.
-    mutating func updateLocation(serverUrl: String, fileName: String) {
-        self.serverUrl = serverUrl
+    /// Update the parent URL and filename together with their SQLite lookup keys.
+    /// The domain account supplies the WebDAV Files and Trash roots used to save the parent.
+    mutating func updateLocation(parentURL: String, fileName: String, domainAccount: Account) {
+        serverUrl = parentURL
         self.fileName = fileName
-        normalizedServerUrl = serverUrl.precomposedStringWithCanonicalMapping
+        storedParentPath = domainAccount.davRelativePath(forURL: parentURL)
+        if storedParentPath != nil {
+            account = domainAccount.ncKitAccount
+            urlBase = domainAccount.serverUrl
+            user = domainAccount.username
+            userId = domainAccount.id
+        }
+        normalizedServerUrl = (storedParentPath ?? parentURL).precomposedStringWithCanonicalMapping
         normalizedFileName = fileName.precomposedStringWithCanonicalMapping
     }
 }

@@ -65,13 +65,25 @@ extension FilesDatabaseManager {
             return []
         }
 
+        let davRootComponents = ItemMetadataRecord.serverBaseURLAndBackendUserID(for: incoming, domainAccount: account)
+        let storedParentLocation = davRootComponents.flatMap { components in
+            Account.davRelativePath(
+                forURL: incoming.serverUrl,
+                accountBaseURL: components.serverBaseURL,
+                backendUserID: components.backendUserID
+            )
+        } ?? incoming.serverUrl
         // Prepared once per connection: this runs for every row of a large directory write.
         let candidates = try ItemLogicalAddressRow.fetchAll(
             db.cachedStatement(sql: Self.logicalDuplicateCandidatesSQL),
             arguments: [
                 incoming.fileName.precomposedStringWithCanonicalMapping,
+                incoming.ocId,
                 incoming.serverUrl.precomposedStringWithCanonicalMapping,
-                incoming.ocId
+                storedParentLocation.precomposedStringWithCanonicalMapping,
+                incoming.account,
+                davRootComponents?.serverBaseURL,
+                davRootComponents?.backendUserID
             ]
         )
 
@@ -105,9 +117,21 @@ extension FilesDatabaseManager {
 
     /// Live, non-lock-file rows at a normalized location other than the given identifier, in the columns of ``ItemLogicalAddressRow``.
     private static let logicalDuplicateCandidatesSQL = """
-    SELECT ocId, serverUrl, fileName, normalizedServerUrl, normalizedFileName, deleted, isLockFileOfLocalOrigin, status, syncTime
+    SELECT ocId, account, serverUrl, fileName, normalizedServerUrl, normalizedFileName, deleted, isLockFileOfLocalOrigin, status, syncTime
     FROM itemMetadata
-    WHERE normalizedFileName = ? AND normalizedServerUrl = ? AND ocId <> ? AND deleted = 0 AND isLockFileOfLocalOrigin = 0
+    WHERE normalizedFileName = ?
+        AND ocId <> ?
+        AND deleted = 0
+        AND isLockFileOfLocalOrigin = 0
+        AND (
+            normalizedServerUrl = ?
+            OR (
+                normalizedServerUrl = ?
+                AND account = ?
+                AND urlBase = ?
+                AND userId = ?
+            )
+        )
     """
 
     private static let softDeleteSQL = "UPDATE itemMetadata SET deleted = 1, syncTime = ? WHERE ocId = ?"
@@ -128,17 +152,18 @@ extension FilesDatabaseManager {
     private func repairPersistedLogicalAddresses(in db: Database) throws -> (repaired: Int, evicted: Int) {
         let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
 
-        struct LogicalKey: Hashable {
-            let serverUrl: String
-            let fileName: String
+        struct ParentLocationAndFileName: Hashable {
+            let normalizedParentLocation: String
+            let normalizedFileName: String
+            let accountForRelativeParent: String?
         }
 
         var drifted: [ItemLogicalAddressRow] = []
-        var buckets: [LogicalKey: [ItemLogicalAddressRow]] = [:]
+        var rowsByParentLocationAndFileName: [ParentLocationAndFileName: [ItemLogicalAddressRow]] = [:]
 
         // Bucketing on the keys computed here rather than on the stored ones is what lets a
         // drifted row be repaired and deduplicated in the same walk.
-        let rows = try Row.fetchCursor(db, ItemLogicalAddressRow.all())
+        let rows = try Row.fetchCursor(db, ItemLogicalAddressRow.filter(matchesDomainDAVAccountIncludingLegacyURLs))
         while let rawRow = try rows.next() {
             let row: ItemLogicalAddressRow
             do {
@@ -149,10 +174,10 @@ extension FilesDatabaseManager {
                 continue
             }
 
-            let serverUrl = row.serverUrl.precomposedStringWithCanonicalMapping
-            let fileName = row.fileName.precomposedStringWithCanonicalMapping
+            let normalizedParentLocation = row.serverUrl.precomposedStringWithCanonicalMapping
+            let normalizedFileName = row.fileName.precomposedStringWithCanonicalMapping
 
-            if row.normalizedServerUrl != serverUrl || row.normalizedFileName != fileName {
+            if row.normalizedServerUrl != normalizedParentLocation || row.normalizedFileName != normalizedFileName {
                 drifted.append(row)
             }
 
@@ -165,10 +190,16 @@ extension FilesDatabaseManager {
                 continue
             }
 
-            buckets[LogicalKey(serverUrl: serverUrl, fileName: fileName), default: []].append(row)
+            let accountForRelativeParent = Account.isStoredDAVRelativeLocation(normalizedParentLocation) ? row.account : nil
+            let key = ParentLocationAndFileName(
+                normalizedParentLocation: normalizedParentLocation,
+                normalizedFileName: normalizedFileName,
+                accountForRelativeParent: accountForRelativeParent
+            )
+            rowsByParentLocationAndFileName[key, default: []].append(row)
         }
 
-        let collisions = buckets.values.filter { $0.count > 1 }
+        let collisions = rowsByParentLocationAndFileName.values.filter { $0.count > 1 }
 
         guard !drifted.isEmpty || !collisions.isEmpty else {
             return (0, 0)
