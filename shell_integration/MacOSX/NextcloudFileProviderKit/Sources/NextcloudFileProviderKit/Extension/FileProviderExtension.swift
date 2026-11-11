@@ -63,8 +63,11 @@ import OSLog
     private let databaseDirectory: URL?
     var thumbnailFetcher = NextcloudFileProviderKit.fetchThumbnails
 
-    var ncAccount: Account?
-    var dbManager: FilesDatabaseManager?
+    /// A request captures this manager once and uses the account it was opened with.
+    var dbManager: FilesDatabaseManager? {
+        setupLock.withLock { publishedDatabaseManager }
+    }
+
     var ignoredFiles: IgnoredFilesMatcher?
     lazy var ncKitBackground = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
 
@@ -74,6 +77,7 @@ import OSLog
 
     // Serialization state for `setupDomainAccount(…)`. See the method for details.
     private let setupLock = NSLock()
+    private var publishedDatabaseManager: FilesDatabaseManager?
     private var pendingAccount: Account?
     private var setupChain: Task<Void, Never> = Task {}
 
@@ -82,7 +86,7 @@ import OSLog
     ///
     private(set) var setupGeneration = 0
 
-    // Waiters parked in `awaitAccount(…)` until `ncAccount` is published.
+    // Waiters parked in `awaitDatabaseManager(…)` until account setup publishes the manager.
     let accountReadyLock = NSLock()
     private(set) var accountReadyWaiters = [UUID: CheckedContinuation<Void, Never>]()
 
@@ -201,26 +205,26 @@ import OSLog
         Task {
             // Same startup race as `fetchContents`, where answering `notAuthenticated` would
             // make the framework treat the item as unreachable rather than not-ready-yet.
-            let ncAccount: Account
+            let dbManager: FilesDatabaseManager
 
             do {
-                ncAccount = try await awaitAccount()
+                dbManager = try await awaitDatabaseManager()
             } catch {
                 logger.error("Not fetching item because account was never set up.", [.item: identifier])
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
                 return
             }
 
-            guard let dbManager else {
+            guard !dbManager.wasInvalidatedByDAVAccountChange else {
                 logger.debug("Not fetching item because database is unavailable.", [.item: identifier])
-                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                completionHandler(nil, NSFileProviderError(.cannotSynchronize))
                 return
             }
 
             do {
                 let item = try await Item.lookupResolvingParent(
                     identifier: identifier,
-                    account: ncAccount,
+                    account: dbManager.account,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
                     includeDeleted: false,
@@ -286,9 +290,9 @@ import OSLog
         // Wait for the account rather than failing outright: the system starts this process and
         // begins requesting content before the main app has handed the account over, and a
         // rejected fetch is a download the framework may never ask for again.
-        let ncAccount: Account
+        let dbManager: FilesDatabaseManager
         do {
-            ncAccount = try await awaitAccount()
+            dbManager = try await awaitDatabaseManager()
         } catch {
             if cancellation.isCancelled {
                 removeSyncAction(actionId)
@@ -303,7 +307,7 @@ import OSLog
             removeSyncAction(actionId)
             return (nil, nil, CocoaError(.userCancelled))
         }
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             logger.debug("Not fetching contents for item because database is unavailable.", [.item: itemIdentifier])
             insertErrorAction(actionId)
             return (nil, nil, NSFileProviderError(.cannotSynchronize))
@@ -313,7 +317,7 @@ import OSLog
         do {
             item = try await Item.lookupResolvingParent(
                 identifier: itemIdentifier,
-                account: ncAccount,
+                account: dbManager.account,
                 remoteInterface: ncKit,
                 dbManager: dbManager,
                 taskHandler: { cancellation.register(task: $0) },
@@ -360,7 +364,7 @@ import OSLog
         insertSyncAction(actionId)
         logger.debug("Received request to create item.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
 
-        guard let ncAccount else {
+        guard let dbManager else {
             logger.debug("Not creating item because account is not set up yet.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(itemTemplate, [], false, NSFileProviderError(.notAuthenticated))
@@ -374,7 +378,7 @@ import OSLog
             return Progress()
         }
 
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             logger.debug("Not creating item because database is unavailable.", [.item: itemTemplate.itemIdentifier])
             insertErrorAction(actionId)
             completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
@@ -389,7 +393,7 @@ import OSLog
                 contents: url,
                 request: request,
                 domain: self.domain,
-                account: ncAccount,
+                account: dbManager.account,
                 remoteInterface: ncKit,
                 ignoredFiles: ignoredFiles,
                 progress: progress,
@@ -440,7 +444,7 @@ import OSLog
         let identifier = item.itemIdentifier
         logger.debug("Received request to modify item.", [.item: item.itemIdentifier])
 
-        guard let ncAccount else {
+        guard let dbManager else {
             logger.debug("Not modifying item because account not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.notAuthenticated))
@@ -454,7 +458,7 @@ import OSLog
             return Progress()
         }
 
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             logger.debug("Not modifying item because the database is unavailable.")
             insertErrorAction(actionId)
             completionHandler(item, [], false, NSFileProviderError(.cannotSynchronize))
@@ -468,7 +472,7 @@ import OSLog
             do {
                 existingItem = try await Item.lookupResolvingParent(
                     identifier: identifier,
-                    account: ncAccount,
+                    account: dbManager.account,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
                     unresolvedParentError: Self.unresolvedParentMutationError,
@@ -523,7 +527,7 @@ import OSLog
 
         logger.debug("Received request to delete item.", [.item: identifier])
 
-        guard let ncAccount else {
+        guard let dbManager else {
             logger.debug("Not deleting item because account is not set up yet.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.notAuthenticated))
@@ -537,7 +541,7 @@ import OSLog
             return Progress()
         }
 
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             logger.debug("Not deleting item because database unavailable.", [.item: identifier])
             insertErrorAction(actionId)
             completionHandler(NSFileProviderError(.cannotSynchronize))
@@ -550,7 +554,7 @@ import OSLog
             do {
                 item = try await Item.lookupResolvingParent(
                     identifier: identifier,
-                    account: ncAccount,
+                    account: dbManager.account,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
                     unresolvedParentError: Self.unresolvedParentMutationError,
@@ -591,19 +595,14 @@ import OSLog
             throw NSFileProviderError(.serverUnreachable)
         }
 
-        guard let ncAccount else {
+        guard let dbManager else {
             logger.debug("Not providing enumerator for item because account is not set up yet.", [.item: containerItemIdentifier])
             throw NSFileProviderError(.notAuthenticated)
         }
 
-        guard let dbManager else {
-            logger.debug("Not providing enumerator for item because database is unavailable.", [.item: containerItemIdentifier])
-            throw NSFileProviderError(.cannotSynchronize)
-        }
-
         return try Enumerator(
             enumeratedItemIdentifier: containerItemIdentifier,
-            account: ncAccount,
+            account: dbManager.account,
             remoteInterface: ncKit,
             dbManager: dbManager,
             domain: domain,
@@ -612,13 +611,13 @@ import OSLog
     }
 
     public func materializedItemsDidChange(completionHandler: @escaping () -> Void) {
-        guard let ncAccount else {
+        guard let dbManager else {
             logger.debug("Not purging stale local file metadatas because account not set up.")
             completionHandler()
             return
         }
 
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             logger.debug("Not purging stale local file metadatas because database is not available.")
             completionHandler()
             return
@@ -631,7 +630,7 @@ import OSLog
         }
 
         let materialisedEnumerator = manager.enumeratorForMaterializedItems()
-        let materialisedObserver = MaterializedEnumerationObserver(account: ncAccount, dbManager: dbManager, log: log) { [weak self] materialized, evicted in
+        let materialisedObserver = MaterializedEnumerationObserver(account: dbManager.account, dbManager: dbManager, log: log) { [weak self] materialized, evicted in
             // Covers eviction (files going dataless) and out-of-band
             // materialization the observer discovers itself. Downloads via
             // `Item.fetchContents` are handled there instead, because they update
@@ -664,7 +663,7 @@ import OSLog
             return
         }
 
-        assert(ncAccount != nil)
+        guard dbManager != nil else { return }
 
         manager.signalErrorResolved(NSFileProviderError(.notAuthenticated)) { error in
             if error != nil {
@@ -709,12 +708,12 @@ import OSLog
         }
 
         guard let dbManager else {
-            logger.error("Cannot refresh framework cache because the database manager is not available.")
+            logger.error("Cannot refresh framework cache because the account is not set up.")
             return
         }
 
-        guard let ncAccount else {
-            logger.error("Cannot refresh framework cache because the account is not set up.")
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
+            logger.error("Cannot refresh framework cache because the database manager is not available.")
             return
         }
 
@@ -733,7 +732,7 @@ import OSLog
         }
 
         let items = dbManager
-            .itemMetadatas(account: ncAccount.ncKitAccount)
+            .itemMetadatas(account: dbManager.account.ncKitAccount)
             .filter { metadata in
                 !metadata.deleted
                     && metadata.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
@@ -767,7 +766,7 @@ import OSLog
             // paths (item(for:), explicit enumeration) once Finder touches them, because the
             // `metadataVersion` comparison still detects the mismatch on those paths.
             config.lastSeenExtensionVersion = currentVersion
-            logger.info("Framework cache refresh completed after extension version bump.", [.account: ncAccount])
+            logger.info("Framework cache refresh completed after extension version bump.", [.account: dbManager.account])
         }
     }
 
@@ -775,9 +774,8 @@ import OSLog
     /// Concurrent invocations of this method are serialized: at most one `performSetup(…)` runs
     /// at a time. Duplicate invocations — by value equality on ``Account`` — received while a
     /// setup is already in flight (tracked via ``pendingAccount``) or already completed (tracked
-    /// via ``ncAccount``) are dropped silently. This prevents concurrent XPC callers from each
-    /// opening their own NextcloudKit session and spinning up their own `FilesDatabaseManager`
-    /// (and hence their own database) for the same credentials.
+    /// via the published database manager) are dropped silently. This prevents concurrent XPC
+    /// callers from each opening a NextcloudKit session and database manager for the same account.
     ///
     /// - Parameters:
     ///     - completionHandler: An optional completion handler which will be provided an error, if any occurred. Omitting this completion handler is fine, but you won't get notified of errors.
@@ -820,7 +818,9 @@ import OSLog
 
         setupLock.lock()
 
-        if account == ncAccount || account == pendingAccount {
+        let accountIsAlreadySetUp = account == publishedDatabaseManager?.account
+            && publishedDatabaseManager?.wasInvalidatedByDAVAccountChange != true
+        if accountIsAlreadySetUp || account == pendingAccount {
             setupLock.unlock()
             logger.info("Cancelling domain account setup because of receiving the same account information repeatedly.")
             completionHandler?(nil)
@@ -890,9 +890,13 @@ import OSLog
     }
 
     ///
-    /// Publish the authenticated account, unless ``removeAccount()`` superseded the setup started at `generation`.
+    /// Make the database manager and its account available to requests.
+    /// A setup superseded by ``removeAccount()`` cannot publish its manager.
     ///
-    func publishAccount(_ account: Account, generation: Int) -> Bool {
+    func publishDatabaseManager(
+        _ databaseManager: FilesDatabaseManager,
+        generation: Int
+    ) -> Bool {
         setupLock.lock()
         defer { setupLock.unlock() }
 
@@ -900,7 +904,7 @@ import OSLog
             return false
         }
 
-        ncAccount = account
+        publishedDatabaseManager = databaseManager
 
         return true
     }
@@ -918,7 +922,8 @@ import OSLog
         setupGeneration += 1
         pendingAccount = nil
         config.accountForSetupRetry = nil
-        ncAccount = nil
+        publishedDatabaseManager?.invalidateForDAVAccountChange()
+        publishedDatabaseManager = nil
 
         return keychain.deletePassword()
     }
@@ -941,6 +946,13 @@ import OSLog
             return
         }
 
+        if let dbManager,
+           dbManager.account.ncKitAccount == account.ncKitAccount,
+           !dbManager.matchesDAVAccount(account)
+        {
+            // A backend ID change can replace the NextcloudKit session before SQLite is rebound.
+            dbManager.invalidateForDAVAccountChange()
+        }
         ncKit.appendSession(account: account, userAgent: userAgent)
 
         var authAttemptState = AuthenticationAttemptResultState.connectionError // default
@@ -1007,7 +1019,10 @@ import OSLog
         }
 
         await MainActor.run {
-            guard publishAccount(account, generation: generation) else {
+            guard publishDatabaseManager(
+                databaseManager,
+                generation: generation
+            ) else {
                 logger.info("Not publishing the authenticated account because it was removed meanwhile.")
                 completionHandler?(NSError(.missingAccountInformation))
                 return
@@ -1021,8 +1036,6 @@ import OSLog
                 dbManager: databaseManager,
                 logger: logger
             )
-            dbManager = databaseManager
-
             ncKit.setup(groupIdentifier: Bundle.main.bundleIdentifier!)
             signalAccountReady()
             completionHandler?(nil)
@@ -1031,18 +1044,18 @@ import OSLog
     }
 
     ///
-    /// The domain account, waiting up to `timeoutNanoseconds` for setup to publish it.
+    /// Wait up to `timeoutNanoseconds` for setup to publish the domain's database manager.
     ///
-    /// - Throws: `NSFileProviderError(.notAuthenticated)` when no account arrives within
+    /// - Throws: `NSFileProviderError(.notAuthenticated)` when setup publishes no manager within
     ///   `timeoutNanoseconds`, or `CancellationError` when the waiting task is cancelled.
     ///
-    func awaitAccount(
+    func awaitDatabaseManager(
         timeoutNanoseconds: UInt64 = 10_000_000_000,
         onWaiting: @Sendable () -> Void = {}
-    ) async throws -> Account {
+    ) async throws -> FilesDatabaseManager {
         try Task.checkCancellation()
-        if let ncAccount {
-            return ncAccount
+        if let dbManager {
+            return dbManager
         }
 
         let token = UUID()
@@ -1055,8 +1068,8 @@ import OSLog
                 accountReadyWaiters[token] = continuation
                 accountReadyLock.unlock()
 
-                // The account may have been published between the check above and the enqueue.
-                if ncAccount != nil || Task.isCancelled {
+                // Setup may have published the manager between the check above and the enqueue.
+                if dbManager != nil || Task.isCancelled {
                     resumeAccountWaiter(token)
                     return
                 }
@@ -1076,13 +1089,13 @@ import OSLog
         }
         try Task.checkCancellation()
 
-        // Read after the resume, not at the resume site: a timeout that races an account landing a
-        // moment later should still hand back the account rather than fail the request.
-        guard let account = ncAccount else {
+        // Read after resuming so the request can use a manager that setup published
+        // just as the wait timed out.
+        guard let dbManager else {
             throw NSFileProviderError(.notAuthenticated)
         }
 
-        return account
+        return dbManager
     }
 
     ///
@@ -1096,8 +1109,7 @@ import OSLog
     }
 
     ///
-    /// Release everything parked in ``awaitAccount(timeoutNanoseconds:)`` once setup has published
-    /// ``ncAccount``.
+    /// Release the requests waiting in ``awaitDatabaseManager(timeoutNanoseconds:onWaiting:)``.
     ///
     func signalAccountReady() {
         accountReadyLock.lock()

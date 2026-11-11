@@ -17,11 +17,11 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         ) -> Void,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
-        guard let ncAccount else {
+        guard let dbManager else {
             completionHandler(NSFileProviderError(.notAuthenticated))
             return Progress()
         }
-        guard let dbManager else {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -35,7 +35,7 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         return thumbnailFetcher(
             itemIdentifiers,
             size,
-            ncAccount,
+            dbManager.account,
             ncKit,
             dbManager,
             domain,

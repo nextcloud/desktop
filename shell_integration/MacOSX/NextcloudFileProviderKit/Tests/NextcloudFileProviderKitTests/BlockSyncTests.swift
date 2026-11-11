@@ -249,8 +249,7 @@ struct BlockSyncTests {
             defaults: DatabaseTestSuites.defaults
         )
         manager.addItemMetadata(metadata)
-        fileProviderExtension.ncAccount = account
-        fileProviderExtension.dbManager = manager
+        try #require(fileProviderExtension.publishDatabaseManager(manager, generation: fileProviderExtension.setupGeneration))
 
         UserDefaults.standard.set(true, forKey: Self.key)
         defer { UserDefaults.standard.removeObject(forKey: Self.key) }

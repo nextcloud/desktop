@@ -229,6 +229,10 @@ extension Enumerator {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        guard dbManager.matchesDAVAccount(account) else {
+            return RemoteReadResult(error: .davAccountChanged)
+        }
+
         guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
             logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
             return RemoteReadResult(error: .invalidData)

@@ -78,6 +78,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         pageSize: Int = 1000,
         log: any FileProviderLogging
     ) throws {
+        guard dbManager.matchesDAVAccount(account),
+              !dbManager.wasInvalidatedByDAVAccountChange
+        else {
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
         self.account = account

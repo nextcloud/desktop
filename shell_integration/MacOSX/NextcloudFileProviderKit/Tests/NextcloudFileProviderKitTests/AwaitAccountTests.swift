@@ -7,7 +7,7 @@ import Foundation
 import Testing
 
 ///
-/// Coverage for `awaitAccount`, which waits for account setup instead of failing the requests the
+/// Coverage for `awaitDatabaseManager`, which waits for account setup instead of failing the requests the
 /// framework makes before the main app has handed the account over.
 ///
 @Suite(.timeLimit(.minutes(1)))
@@ -39,7 +39,7 @@ struct AwaitAccountTests {
         let (waiting, continuation) = AsyncStream<Void>.makeStream()
         let task = Task<Bool, Never> {
             do {
-                _ = try await ext.awaitAccount(timeoutNanoseconds: UInt64.max) {
+                _ = try await ext.awaitDatabaseManager(timeoutNanoseconds: UInt64.max) {
                     continuation.yield(())
                 }
                 return false
@@ -79,13 +79,13 @@ struct AwaitAccountTests {
             }
             defer { progress.cancel() }
             try await waitForAccountWaiter(in: ext)
-            #expect(ext.ncAccount == nil)
+            #expect(ext.dbManager == nil)
             progress.cancel()
 
-            // The five-second test bound expires before awaitAccount's ten-second timeout.
+            // The five-second test bound expires before awaitDatabaseManager's ten-second timeout.
             let error = try #require(try await nextTestValue(from: completion))
             #expect((error as? CocoaError)?.code == .userCancelled)
-            #expect(ext.ncAccount == nil)
+            #expect(ext.dbManager == nil)
             #expect(progress.cancellationHandler == nil)
             #expect(ext.accountReadyLock.withLock { ext.accountReadyWaiters.isEmpty })
             #expect(ext.actionsLock.withLock { ext.syncActions.isEmpty && ext.errorActions.isEmpty })
@@ -93,33 +93,46 @@ struct AwaitAccountTests {
     }
 
     ///
-    /// An account already in place is returned without waiting at all.
+    /// A published database manager is available without waiting.
     ///
     @Test func returnsImmediatelyWhenAccountIsAlreadySetUp() async throws {
         let ext = makeExtension()
-        ext.ncAccount = Self.account
+        let manager = DatabaseTestSuites.makeManager(account: Self.account)
+        try #require(ext.publishDatabaseManager(manager, generation: ext.setupGeneration))
 
-        let account = try await ext.awaitAccount(timeoutNanoseconds: 0)
+        let publishedManager = try await ext.awaitDatabaseManager(timeoutNanoseconds: 0)
 
-        #expect(account == Self.account)
+        #expect(publishedManager === manager)
     }
 
     ///
-    /// The waiting case: a request arrives first, the account lands while it is parked, and the
-    /// request proceeds instead of failing.
+    /// A request that arrives before setup waits for the database manager and keeps that
+    /// manager's account if a later setup publishes a replacement.
     ///
     @Test func waitsForAnAccountThatArrivesLater() async throws {
         let ext = makeExtension()
+        let manager = DatabaseTestSuites.makeManager(account: Self.account)
 
-        async let awaited = ext.awaitAccount(timeoutNanoseconds: 10_000_000_000)
+        async let awaited = ext.awaitDatabaseManager(timeoutNanoseconds: 10_000_000_000)
 
-        try await Task.sleep(for: .milliseconds(200))
-        ext.ncAccount = Self.account
+        try await waitForAccountWaiter(in: ext)
+        try #require(ext.publishDatabaseManager(manager, generation: ext.setupGeneration))
         ext.signalAccountReady()
 
-        let account = try await awaited
+        let capturedManager = try await awaited
+        let newAccount = Account(
+            user: Self.account.username,
+            id: "new-backend-user-id",
+            serverUrl: Self.account.serverUrl,
+            password: Self.account.password
+        )
+        let newManager = DatabaseTestSuites.makeManager(account: newAccount)
+        try #require(ext.publishDatabaseManager(newManager, generation: ext.setupGeneration))
 
-        #expect(account == Self.account, "A request parked before setup must proceed once the account lands.")
+        #expect(capturedManager === manager)
+        #expect(capturedManager.account == Self.account)
+        #expect(ext.dbManager === newManager)
+        #expect(ext.dbManager?.account == newAccount)
     }
 
     ///
@@ -132,7 +145,7 @@ struct AwaitAccountTests {
         let started = ContinuousClock().now
 
         await #expect(throws: NSFileProviderError(.notAuthenticated)) {
-            try await ext.awaitAccount(timeoutNanoseconds: 300_000_000)
+            try await ext.awaitDatabaseManager(timeoutNanoseconds: 300_000_000)
         }
 
         #expect(ContinuousClock().now - started >= timeout)
@@ -143,17 +156,18 @@ struct AwaitAccountTests {
     ///
     @Test func releasesEveryParkedWaiter() async throws {
         let ext = makeExtension()
+        let manager = DatabaseTestSuites.makeManager(account: Self.account)
 
-        async let first = ext.awaitAccount(timeoutNanoseconds: 10_000_000_000)
-        async let second = ext.awaitAccount(timeoutNanoseconds: 10_000_000_000)
-        async let third = ext.awaitAccount(timeoutNanoseconds: 10_000_000_000)
+        async let first = ext.awaitDatabaseManager(timeoutNanoseconds: 10_000_000_000)
+        async let second = ext.awaitDatabaseManager(timeoutNanoseconds: 10_000_000_000)
+        async let third = ext.awaitDatabaseManager(timeoutNanoseconds: 10_000_000_000)
 
         try await Task.sleep(for: .milliseconds(200))
-        ext.ncAccount = Self.account
+        try #require(ext.publishDatabaseManager(manager, generation: ext.setupGeneration))
         ext.signalAccountReady()
 
         let results = try await [first, second, third]
 
-        #expect(results == [Self.account, Self.account, Self.account])
+        #expect(results.allSatisfy { $0 === manager })
     }
 }

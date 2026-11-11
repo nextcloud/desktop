@@ -30,8 +30,7 @@ struct StoredItemLookupTests {
         )
         let provider = FileProviderExtension(domain: domain)
         defer { provider.invalidate() }
-        provider.ncAccount = account
-        provider.dbManager = manager
+        try #require(provider.publishDatabaseManager(manager, generation: provider.setupGeneration))
 
         let identifier = NSFileProviderItemIdentifier("known-child")
         if state != .absent {
@@ -93,8 +92,7 @@ extension BlockSyncTests {
         let remote = NextcloudKit()
         let provider = FileProviderExtension(domain: domain, ncKit: remote)
         defer { provider.invalidate() }
-        provider.ncAccount = account
-        provider.dbManager = manager
+        try #require(provider.publishDatabaseManager(manager, generation: provider.setupGeneration))
         provider.ignoredFiles = IgnoredFilesMatcher(ignoreList: [], log: FileProviderLogMock())
 
         let identifier = NSFileProviderItemIdentifier("known-child")

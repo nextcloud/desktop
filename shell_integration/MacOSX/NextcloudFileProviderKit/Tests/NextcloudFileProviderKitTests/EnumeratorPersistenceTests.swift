@@ -70,6 +70,62 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
     }
 
+    @Test func refusesDAVReadWithPreviousAccountAndCurrentDatabaseManager() async {
+        let previousAccounts = [
+            Account(
+                user: account.username,
+                id: account.id,
+                serverUrl: "https://previous.example.invalid",
+                password: account.password
+            ),
+            Account(
+                user: account.username,
+                id: account.id + "-previous",
+                serverUrl: account.serverUrl,
+                password: account.password
+            )
+        ]
+
+        for previousAccount in previousAccounts {
+            let previous = Self(account: previousAccount)
+            previous.file.versionIdentifier = "stale-response"
+
+            #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+                try Enumerator(
+                    enumeratedItemIdentifier: .rootContainer,
+                    account: previousAccount,
+                    remoteInterface: previous.remote,
+                    dbManager: manager,
+                    log: FileProviderLogMock()
+                )
+            }
+
+            let result = await Enumerator.readServerUrl(
+                previous.file.remotePath,
+                account: previousAccount,
+                remoteInterface: previous.remote,
+                dbManager: manager,
+                depth: .target,
+                log: FileProviderLogMock()
+            )
+
+            #expect(result.error == .davAccountChanged)
+            #expect(previous.remote.readOperationCount == 0)
+            #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+        }
+    }
+
+    @Test func refusesDAVReadsBeforeReplacingTheAccountSession() async throws {
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator(.rootContainer))
+        manager.invalidateForDAVAccountChange()
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateItems()
+        }
+        #expect(remote.readOperationCount == 0)
+        #expect(observer.items.isEmpty)
+    }
+
     @Test func workingSetKeepsItsAnchorAndReportsTheChangeAfterRetry() async throws {
         folder.versionIdentifier = "folder-v2"
         file.versionIdentifier = "file-v2"

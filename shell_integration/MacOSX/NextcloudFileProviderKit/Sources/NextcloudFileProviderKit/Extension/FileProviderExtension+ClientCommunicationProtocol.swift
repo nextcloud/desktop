@@ -37,7 +37,6 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
     public func removeAccountConfig() {
         logger.info("Received request to remove account data.")
-        dbManager = nil
         removeAccount()
     }
 

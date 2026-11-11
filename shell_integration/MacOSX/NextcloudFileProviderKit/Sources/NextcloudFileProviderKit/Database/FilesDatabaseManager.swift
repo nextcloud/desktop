@@ -76,6 +76,7 @@ public final class FilesDatabaseManager: Sendable {
 
     let logger: FileProviderLogger
     let account: Account
+    private let invalidatedByDAVAccountChange = OSAllocatedUnfairLock(initialState: false)
     /// Share ownership and the starting ETag and path across managers accessing the same database.
     static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: ActiveDownload]]())
 
@@ -257,9 +258,22 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Check whether another database manager has since rebound this store to a different account.
+    func matchesDAVAccount(_ account: Account) -> Bool {
+        self.account.davAccountIdentity.matchesByteForByte(account.davAccountIdentity)
+    }
+
+    var wasInvalidatedByDAVAccountChange: Bool {
+        invalidatedByDAVAccountChange.withLock { $0 }
+    }
+
+    func invalidateForDAVAccountChange() {
+        invalidatedByDAVAccountChange.withLock { $0 = true }
+    }
+
+    /// Check whether the manager can still use the account to which it opened the database.
     func hasCurrentDAVAccountBinding() -> Bool {
-        read("Could not check the current DAV account binding.") { db in
+        guard !wasInvalidatedByDAVAccountChange else { return false }
+        return read("Could not check the current DAV account binding.") { db in
             try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity
         } ?? false
     }
@@ -303,10 +317,15 @@ public final class FilesDatabaseManager: Sendable {
         try db.inTransaction {
             // Rebinding changes the identity in the same transaction as the item rows.
             // A DAV response queued by the previous manager must not overwrite those rows.
-            guard try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity else {
+            guard !wasInvalidatedByDAVAccountChange,
+                  try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             result = try body(db)
+            guard !wasInvalidatedByDAVAccountChange else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
             return .commit
         }
 

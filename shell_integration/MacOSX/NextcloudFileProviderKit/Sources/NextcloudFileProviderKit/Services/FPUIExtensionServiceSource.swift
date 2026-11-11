@@ -59,7 +59,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     }
 
     func userAgent() async -> NSString? {
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+        guard let account = fpExtension.dbManager?.account.ncKitAccount else {
             return nil
         }
 
@@ -68,24 +68,15 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     }
 
     func credentials() async -> NSDictionary {
-        (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
+        (fpExtension.dbManager?.account.dictionary() ?? [:]) as NSDictionary
     }
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
         let rawIdentifier = identifier.rawValue
         logger.info("Fetching shares for item \(rawIdentifier)")
 
-        guard let baseUrl = fpExtension.ncAccount?.davFilesUrl else {
-            logger.error("Could not fetch shares as ncAccount on parent extension is nil")
-            return nil
-        }
-
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
-            logger.error("Could not fetch ncKitAccount on parent extension")
-            return nil
-        }
         guard let dbManager = fpExtension.dbManager else {
-            logger.error("Could not get db manager for \(account)")
+            logger.error("Could not fetch the item path because account setup has not published a database manager.", [.item: identifier])
             return nil
         }
         guard let item = dbManager.itemMetadata(identifier) else {
@@ -94,24 +85,23 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         }
 
         let completePath = item.serverUrl + "/" + item.fileName
-        return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
+        return completePath.replacingOccurrences(of: dbManager.account.davFilesUrl, with: "") as NSString
     }
 
     func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
-        guard let account = fpExtension.ncAccount else {
+        guard let dbManager = fpExtension.dbManager else {
             logger.error("Could not present unified sharing because the account is unavailable.", [.item: identifier])
             return false
         }
 
-        guard let dbManager = fpExtension.dbManager,
-              let metadata = dbManager.itemMetadata(identifier),
+        guard let metadata = dbManager.itemMetadata(identifier),
               !metadata.fileId.isEmpty
         else {
             logger.error("Could not present unified sharing because the item metadata or numeric file id is unavailable.", [.item: identifier])
             return false
         }
 
-        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: dbManager.account)
         guard error == .success else {
             logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
             return false

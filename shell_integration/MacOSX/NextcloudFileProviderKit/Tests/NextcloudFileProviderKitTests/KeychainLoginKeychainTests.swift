@@ -131,13 +131,16 @@ final class KeychainLoginKeychainTests: Sendable {
         try plantDecoy()
         let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
         let ext = FileProviderExtension(domain: domain)
-        ext.ncAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
+        let configuredAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
+        let databaseManager = DatabaseTestSuites.makeManager(account: configuredAccount)
+        try #require(ext.publishDatabaseManager(databaseManager, generation: ext.setupGeneration))
         #expect(ext.keychain.savePassword("x", for: account))
 
         ext.removeAccountConfig()
 
         #expect(LoginKeychainFixture.count(service: service) == 0)
-        #expect(ext.ncAccount == nil)
+        #expect(ext.dbManager == nil)
+        #expect(databaseManager.wasInvalidatedByDAVAccountChange)
         #expect(LoginKeychainFixture.password(service: decoyService, account: account) == "decoy-secret")
     }
 
@@ -146,6 +149,7 @@ final class KeychainLoginKeychainTests: Sendable {
         let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
         let ext = FileProviderExtension(domain: domain)
         let setupAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
+        let databaseManager = DatabaseTestSuites.makeManager(account: setupAccount)
         let staleGeneration = ext.setupGeneration
         defer { UserDefaults.standard.removeObject(forKey: domain.identifier.rawValue) }
         #expect(ext.storeAccount(setupAccount, generation: staleGeneration, awaitingDatabaseSetup: true))
@@ -160,9 +164,9 @@ final class KeychainLoginKeychainTests: Sendable {
         // A setup queued or authenticating before the removal neither stores nor publishes its account.
         #expect(ext.storeAccount(setupAccount, generation: staleGeneration, awaitingDatabaseSetup: true) == false)
         #expect(ext.config.accountForSetupRetry == nil)
-        #expect(ext.publishAccount(setupAccount, generation: staleGeneration) == false)
+        #expect(ext.publishDatabaseManager(databaseManager, generation: staleGeneration) == false)
         #expect(LoginKeychainFixture.count(service: service) == 0)
-        #expect(ext.ncAccount == nil)
+        #expect(ext.dbManager == nil)
 
         // A setup started afterwards works as usual.
         #expect(ext.storeAccount(setupAccount, generation: ext.setupGeneration))
