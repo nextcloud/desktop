@@ -157,6 +157,130 @@ struct LegacyDAVAccountTests {
         #expect(retained.keepDownloaded)
     }
 
+    @Test(arguments: [AccountChange.serverURL, .backendUserID])
+    func previousWorkingSetEnumeratorCannotReportAnEmptySnapshotAfterRebinding(change: AccountChange) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let previous = Self.previousAccount
+        let previousManager = try openDatabase(account: previous)
+        let (folder, remote) = cacheVisitedFolder(in: previousManager, account: previous)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: previous,
+            remoteInterface: remote,
+            dbManager: previousManager,
+            log: FileProviderLogMock()
+        )
+        let currentManager = try openDatabase(account: change.applying(to: previous))
+
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateItems()
+        }
+        #expect(observer.items.isEmpty)
+        #expect(observer.observedPages.isEmpty)
+        #expect(remote.readOperationCount == 0)
+        #expect(currentManager.itemMetadata(ocId: folder.ocId)?.visitedDirectory == true)
+    }
+
+    @Test(arguments: [AccountChange.serverURL, .backendUserID])
+    func previousFolderEnumeratorCannotReportDeletionAfterRebinding(change: AccountChange) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let previous = Self.previousAccount
+        let previousManager = try openDatabase(account: previous)
+        let (folder, remote) = cacheVisitedFolder(in: previousManager, account: previous)
+        remote.enumerateErrorBySuffix = ["/" + folder.fileName: NKError(statusCode: 404, fallbackDescription: "Missing folder")]
+        let paused = PausedDAVResponse(remote: remote)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(folder.ocId),
+            account: previous,
+            remoteInterface: remote,
+            dbManager: previousManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockChangeObserver(enumerator: enumerator)
+        let read = Task {
+            do {
+                try await observer.enumerateChanges()
+                return nil as NSFileProviderError.Code?
+            } catch let error as NSFileProviderError {
+                return error.code
+            } catch {
+                Issue.record("Unexpected enumeration error: \(error)")
+                return nil
+            }
+        }
+        defer {
+            read.cancel()
+            paused.releaseResponse.finish()
+        }
+        try #require(try await nextTestValue(from: paused.requestStarted) != nil)
+        let currentManager = try openDatabase(account: change.applying(to: previous))
+        paused.releaseResponse.finish()
+
+        #expect(try await testTaskValue(of: read) == .syncAnchorExpired)
+        #expect(remote.readOperationCount == 1)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(observer.finishes.isEmpty)
+        #expect(currentManager.itemMetadata(ocId: folder.ocId)?.deleted == false)
+    }
+
+    @Test(arguments: [AccountChange.serverURL, .backendUserID])
+    func previousSingleItemReadCannotReturnMetadataAfterRebinding(change: AccountChange) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let previous = Self.previousAccount
+        let previousManager = try openDatabase(account: previous)
+        let (folder, remote) = cacheVisitedFolder(in: previousManager, account: previous)
+        let paused = PausedDAVResponse(remote: remote)
+        let read = Task {
+            await Enumerator.readServerUrl(
+                folder.remotePath(),
+                account: previous,
+                remoteInterface: remote,
+                dbManager: previousManager,
+                depth: .target,
+                log: FileProviderLogMock()
+            )
+        }
+        defer {
+            read.cancel()
+            paused.releaseResponse.finish()
+        }
+        try #require(try await nextTestValue(from: paused.requestStarted) != nil)
+        let current = change.applying(to: previous)
+        let currentManager = try openDatabase(account: current)
+        paused.releaseResponse.finish()
+
+        let result = try await testTaskValue(of: read)
+        #expect(result.error == .davAccountChanged)
+        #expect(result.metadatas == nil)
+        #expect(result.changes == nil)
+        #expect(remote.readOperationCount == 1)
+        #expect(currentManager.itemMetadata(ocId: folder.ocId)?.remotePath() == current.davFilesUrl + "/" + folder.fileName)
+    }
+
+    private func cacheVisitedFolder(
+        in manager: FilesDatabaseManager,
+        account: Account
+    ) -> (SendableItemMetadata, MockRemoteInterface) {
+        let root = MockRemoteItem.rootItem(account: account)
+        let folder = MockRemoteItem(
+            identifier: "team-folder",
+            name: "Team",
+            remotePath: account.davFilesUrl + "/Team",
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        root.children = [folder]
+        folder.parent = root
+        var metadata = folder.toItemMetadata(account: account)
+        metadata.visitedDirectory = true
+        manager.addItemMetadata(metadata)
+        return (metadata, MockRemoteInterface(account: account, rootItem: root))
+    }
+
     private func openDatabase(account: Account) throws -> FilesDatabaseManager {
         try FilesDatabaseManager(
             account: account,

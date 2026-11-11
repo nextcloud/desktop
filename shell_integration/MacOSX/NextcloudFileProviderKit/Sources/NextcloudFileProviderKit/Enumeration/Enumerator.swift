@@ -33,7 +33,6 @@ import NextcloudKit
 ///
 public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    /// Internal (not private) so the concern-specific extensions in sibling files can read it.
     let enumeratedItemMetadata: SendableItemMetadata?
 
     private var enumeratingSystemIdentifier: Bool {
@@ -141,6 +140,11 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         logger.info("Received enumerate items request for enumerator with user", [.account: account.ncKitAccount, .url: serverUrl])
 
+        guard dbManager.hasCurrentDAVAccountBinding() else {
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
+
         if enumeratedItemIdentifier == .trashContainer {
             enumerateTrashItems(for: observer)
         } else if enumeratedItemIdentifier == .workingSet {
@@ -195,6 +199,6 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
-        completionHandler(currentAnchor)
+        completionHandler(dbManager.hasCurrentDAVAccountBinding() ? currentAnchor : nil)
     }
 }

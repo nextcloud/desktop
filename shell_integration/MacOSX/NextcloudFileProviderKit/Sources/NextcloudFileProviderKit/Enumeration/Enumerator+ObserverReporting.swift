@@ -32,11 +32,18 @@ extension Enumerator {
             )
             do {
                 let items = try await itemMetadatas.toFileProviderItems(
-                    account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    log: self.logger.log
                 )
                 signposter.endInterval("ToFileProviderItems", toItemsState)
 
                 Task { @MainActor in
+                    guard dbManager.hasCurrentDAVAccountBinding() else {
+                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                        return
+                    }
                     // Begin/end stay in this MainActor scope; both observer calls are synchronous.
                     let reportState = signposter.beginInterval(
                         "ObserverReport", id: signposter.makeSignpostID(), "items=\(items.count)"
@@ -48,6 +55,10 @@ extension Enumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 signposter.endInterval("ToFileProviderItems", toItemsState)
+                guard dbManager.hasCurrentDAVAccountBinding() else {
+                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                    return
+                }
                 guard handleInvalidParent else {
                     logger.info("Not handling invalid parent in enumeration.")
                     observer.finishEnumeratingWithError(error)
@@ -82,6 +93,10 @@ extension Enumerator {
     /// When the state cannot be read, the enumeration is finished with `cannotSynchronize` and `nil` is returned. Nothing is reset or acknowledged, so the framework asks again from the same anchor and the stored changes are neither re-derived nor discarded.
     ///
     func readDeliveryState<T>(reportingTo observer: NSFileProviderChangeObserver, _ lookup: () throws -> T) -> T? {
+        guard dbManager.hasCurrentDAVAccountBinding() else {
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return nil
+        }
         do {
             return try lookup()
         } catch {
@@ -162,15 +177,10 @@ extension Enumerator {
             logger.debug("Reporting deleted item in change batch.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        // Report deletions once, here — not inside the update path, so the invalid-parent retry below
-        // does not re-issue them.
-        if deletedFileProviderItemIdentifiers.isEmpty == false {
-            observer.didDeleteItems(withIdentifiers: deletedFileProviderItemIdentifiers)
-        }
-
-        reportBatchUpdates(
+        reportChangeBatch(
             observer,
             updated: updated,
+            deletedIdentifiers: deletedFileProviderItemIdentifiers,
             anchor: anchor,
             moreComing: moreComing,
             acknowledgement: acknowledgement,
@@ -181,12 +191,12 @@ extension Enumerator {
     }
 
     ///
-    /// Convert and report updated items, finish the batch, then acknowledge it.
-    /// If an update has a missing parent, recover the parent and retry once. Deletions are reported
-    /// separately by ``completeChangesBatch``.
-    private func reportBatchUpdates(
+    /// Convert updates before reporting the batch. If a parent is missing, recover it and retry
+    /// once. Deliver deletions before waiting for the main actor to finish the batch.
+    private func reportChangeBatch(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
+        deletedIdentifiers: [NSFileProviderItemIdentifier],
         anchor: NSFileProviderSyncAnchor,
         moreComing: Bool,
         acknowledgement: (sessionId: String, endSequence: Int)?,
@@ -199,7 +209,19 @@ extension Enumerator {
             do {
                 let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
+                guard dbManager.hasCurrentDAVAccountBinding() else {
+                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                    return
+                }
+                if !deletedIdentifiers.isEmpty {
+                    observer.didDeleteItems(withIdentifiers: deletedIdentifiers)
+                }
+
                 Task { @MainActor in
+                    guard dbManager.hasCurrentDAVAccountBinding() else {
+                        observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                        return
+                    }
                     if !updatedItems.isEmpty {
                         observer.didUpdate(updatedItems)
                     }
@@ -208,6 +230,10 @@ extension Enumerator {
                     changeBuffer.acknowledgeBatch(acknowledgement)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
+                guard dbManager.hasCurrentDAVAccountBinding() else {
+                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                    return
+                }
                 guard handleInvalidParent else {
                     logger.error("Not handling invalid parent in change enumeration!")
                     observer.finishEnumeratingWithError(error)
@@ -227,9 +253,10 @@ extension Enumerator {
 
                     // Prepend the recovered parent so it keeps the parent-before-child ordering within
                     // this batch, then retry once with recovery disabled.
-                    reportBatchUpdates(
+                    reportChangeBatch(
                         observer,
                         updated: [metadata] + updated,
+                        deletedIdentifiers: deletedIdentifiers,
                         anchor: anchor,
                         moreComing: moreComing,
                         acknowledgement: acknowledgement,

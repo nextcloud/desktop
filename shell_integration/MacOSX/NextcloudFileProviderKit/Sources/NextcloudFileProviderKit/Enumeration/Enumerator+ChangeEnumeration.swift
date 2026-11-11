@@ -14,12 +14,12 @@ extension Enumerator {
     /// Read the container from the server, diff it against the local database and report the
     /// resulting creations, updates and deletions to the change observer.
     ///
-    /// A 404 is treated as a deletion of the container itself (reported, not an error). A
-    /// "no changed etags" reply finishes cleanly with no changes. A `nil` change set means the
-    /// database write that derives the changes failed and is reported as an error.
+    /// A 404 from the folder listing reports a deletion once the database records it.
+    /// A `nil` change set means the database write that derives the changes failed.
     ///
     func enumerateContainerChanges(
-        for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor
+        for observer: NSFileProviderChangeObserver,
+        anchor: NSFileProviderSyncAnchor
     ) {
         logger.info("Enumerating changes in item.", [.url: serverUrl])
 
@@ -63,26 +63,32 @@ extension Enumerator {
             )
             let readError = readResult.error
 
-            guard readError == nil else {
+            guard dbManager.hasCurrentDAVAccountBinding() else {
+                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                return
+            }
+
+            if let readError {
                 logger.error("Finished enumerating changes.", [.url: serverUrl, .error: readError])
 
-                let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
+                let error = readError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
 
-                if readError!.isNotFoundError {
-                    logger.info("404 error means item no longer exists. Deleting metadata and reporting deletion without error.", [.url: serverUrl])
-
+                if readError.isNotFoundError {
                     guard let itemMetadata = enumeratedItemMetadata else {
-                        logger.error("Invalid enumeratedItemMetadata. Could not delete metadata nor report deletion.")
+                        logger.error("Missing folder metadata. Could not report deletion.")
                         observer.finishEnumeratingWithError(error)
                         return
                     }
 
-                    if itemMetadata.directory {
-                        if dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) == nil {
-                            logger.error("Something went wrong when recursively deleting directory. It's metadata was not found. Cannot report it as deleted.")
-                        }
+                    let recordedDeletion = if itemMetadata.directory {
+                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) != nil
                     } else {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                    }
+                    guard recordedDeletion else {
+                        logger.error("Could not record the deletion. Asking File Provider to retry.", [.item: itemMetadata.ocId])
+                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                        return
                     }
 
                     // A single deletion — small enough to report directly without buffering.
@@ -98,7 +104,7 @@ extension Enumerator {
                         dbManager: dbManager
                     )
                     return
-                } else if readError!.isNoChangesError { // All is well, just no changed etags
+                } else if readError.isNoChangesError { // All is well, just no changed etags
                     logger.info("Error was to say no changed files - not bad error. Finishing change enumeration.")
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                     return

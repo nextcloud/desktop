@@ -57,7 +57,7 @@ The first SQLite schema creates the final tables directly. SQLite files written 
 
 Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
-When the domain opens with different account details, the database can update rows it can match to the previous account. It changes their account fields, assigns a new store identity, and discards pending change batches saved for the previous account in one transaction. The rows keep their item IDs and local state. Writes and DAV reads check the store identity so a delayed response from the previous account cannot overwrite rows.
+When the domain opens with different account details, the database can update rows it can match to the previous account. It changes their account fields, assigns a new store identity, and discards pending change batches saved for the previous account in one transaction. The rows keep their item IDs and local state. Writes and enumeration callbacks check the store identity so a delayed response from the previous account cannot overwrite rows or report changes to Finder.
 
 ## Recovering item metadata after a server URL change
 
