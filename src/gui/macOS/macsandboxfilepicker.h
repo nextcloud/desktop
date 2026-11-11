@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QString>
+#include <QStringList>
 
 #include <functional>
 
@@ -26,5 +27,14 @@ void selectFileToSave(QWindow *parentWindow,
                       const QString &directory,
                       const QString &fileExtension,
                       std::function<void(const QString &)> completionHandler);
+
+/**
+ * Select an existing file with the native macOS open panel.
+ *
+ * The panel is shown as a sheet of parentWindow and only offers files with one of fileExtensions.
+ * completionHandler receives the chosen path, or an empty string if the user cancels.
+ * The sandbox access to the file ends when completionHandler returns, so read the file in it.
+ */
+void selectFileToOpen(QWindow *parentWindow, const QString &caption, const QStringList &fileExtensions, std::function<void(const QString &)> completionHandler);
 
 } // namespace OCC::Mac::SandboxFilePicker

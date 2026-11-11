@@ -75,4 +75,19 @@ void selectFileToSave(QWindow *parentWindow,
     beginFilePanel(panel, parentWindow, std::move(completionHandler));
 }
 
+void selectFileToOpen(QWindow *parentWindow, const QString &caption, const QStringList &fileExtensions, std::function<void(const QString &)> completionHandler)
+{
+    qCInfo(lcMacSandboxFilePicker) << "Opening native open panel." << "fileExtensions" << fileExtensions;
+
+    NSOpenPanel *const panel = [NSOpenPanel openPanel];
+    panel.message = caption.toNSString();
+    panel.canChooseFiles = YES;
+    panel.canChooseDirectories = NO;
+    panel.allowsMultipleSelection = NO;
+    panel.resolvesAliases = YES;
+    panel.allowedContentTypes = contentTypes(fileExtensions);
+
+    beginFilePanel(panel, parentWindow, std::move(completionHandler));
+}
+
 } // namespace OCC::Mac::SandboxFilePicker
