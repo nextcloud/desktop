@@ -109,6 +109,7 @@ target_link_libraries(SharingDialogTest PRIVATE nextcloudGuiSharing nextcloudGui
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
 nextcloud_add_test(SettingsDialog)
+nextcloud_add_test(AdvancedSettings)
 nextcloud_add_test(IconUtils)
 nextcloud_add_test(CustomStateIcons)
 target_compile_definitions(CustomStateIconsTest PRIVATE NEXTCLOUD_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
