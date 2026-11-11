@@ -13,6 +13,8 @@
 #include <QSignalSpy>
 #include <QTest>
 
+using namespace Qt::StringLiterals;
+
 namespace {
 static QByteArray fake200Response = R"({"ocs":{"meta":{"status":"success","statuscode":200},"data":[]}})";
 }
@@ -128,6 +130,144 @@ private Q_SLOTS:
     {
         QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
         QVERIFY(bodyReceivedAndParsed.isEmpty());
+    }
+
+    void testCurrentConflictsAndCleanup()
+    {
+        const auto oldest = QDateTime::currentMSecsSinceEpoch();
+        const auto snapshot = QVariantMap{{u"count"_s, 5}, {u"oldest"_s, oldest}};
+        account->setSyncConflictReport(snapshot);
+        for (auto i = 0; i < 10; ++i) {
+            account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ConflictCaseClash);
+        }
+        account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ServerError);
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QCOMPARE(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap(), snapshot);
+        const auto problems = bodyReceivedAndParsed.value(u"problems"_s).toMap();
+        QVERIFY(!problems.isEmpty());
+        bodyReceivedAndParsed.clear();
+
+        // A restart or reconciliation has no inventory yet, rather than zero conflicts.
+        account->setSyncConflictReport(std::nullopt);
+        account->setCapabilities({});
+        account->setCapabilities({{u"security_guard"_s, QVariantMap{{u"diagnostics"_s, true}}}});
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(bodyReceivedAndParsed.isEmpty());
+
+        // Restoring the same inventory must not submit another report.
+        account->setSyncConflictReport(snapshot);
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(bodyReceivedAndParsed.isEmpty());
+
+        // A malformed acknowledgement must not discard the report or suppress retries.
+        fake200Response = "{}";
+        account->setSyncConflictReport(QVariantMap{});
+        account->reportClientStatus(OCC::ClientStatusReportingStatus::DownloadError_ConflictCaseClash);
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(!bodyReceivedAndParsed.isEmpty());
+        QVERIFY(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap().isEmpty());
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap(), problems);
+        bodyReceivedAndParsed.clear();
+
+        fake200Response = R"({"ocs":{"meta":{"status":"failure","statuscode":500}}})";
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(!bodyReceivedAndParsed.isEmpty());
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap(), problems);
+        bodyReceivedAndParsed.clear();
+
+        fake200Response = R"({"ocs":{"meta":{"status":"success","statuscode":200},"data":[]}})";
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(!bodyReceivedAndParsed.isEmpty());
+        QVERIFY(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap().isEmpty());
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap(), problems);
+        bodyReceivedAndParsed.clear();
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(bodyReceivedAndParsed.isEmpty());
+        // Ordinary file conflicts need a report even without legacy conflict events.
+        account->setSyncConflictReport(snapshot);
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QCOMPARE(bodyReceivedAndParsed.value(u"sync_conflicts"_s).toMap(), snapshot);
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap(), problems);
+        bodyReceivedAndParsed.clear();
+        account->setSyncConflictReport(std::nullopt);
+    }
+
+    void testServerErrorCleanupPreservesOtherCategories_data()
+    {
+        QTest::addColumn<bool>("keepOtherProblems");
+        QTest::newRow("preserve other problems") << true;
+        QTest::newRow("empty problems category") << false;
+    }
+
+    void testServerErrorCleanupPreservesOtherCategories()
+    {
+        QFETCH(bool, keepOtherProblems);
+        OCC::ClientStatusReportingDatabase database(account);
+        const auto issue = QVariantMap{{u"count"_s, 3}, {u"oldest"_s, 10}};
+        const auto uploadKey = QString::fromUtf8(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::UploadError_ServerError));
+        const auto downloadKey = QString::fromUtf8(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::DownloadError_ServerError));
+        const auto hydrationKey =
+            QString::fromUtf8(OCC::clientStatusstatusStringFromNumber(OCC::ClientStatusReportingStatus::DownloadError_Virtual_File_Hydration_Failure));
+        const auto retainedProblems = keepOtherProblems ? QVariantMap{{hydrationKey, issue}, {u"Unknown.Error"_s, issue}} : QVariantMap{};
+        auto problems = retainedProblems;
+        problems.insert(uploadKey, issue);
+        problems.insert(downloadKey, issue);
+        const auto previousReport =
+            QVariantMap{{u"sync_conflicts"_s, QVariantMap{}}, {u"problems"_s, problems}, {u"e2ee_errors"_s, issue}, {u"virus_detected"_s, issue}};
+        database.setLastSentReport(previousReport);
+        database.setLastSentReportTimestamp(0);
+        account->setSyncConflictReport(QVariantMap{});
+        account->setServerErrorsResolvedAt(0);
+        bodyReceivedAndParsed.clear();
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QVERIFY(bodyReceivedAndParsed.isEmpty());
+
+        OCC::ClientStatusReportingRecord record;
+        record._status = static_cast<int>(OCC::ClientStatusReportingStatus::DownloadError_ServerError);
+        record._name = downloadKey.toUtf8();
+        record._lastOccurence = 10;
+        QVERIFY(database.setClientStatusReportingRecord(record).isValid());
+        account->setServerErrorsResolvedAt(20);
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        auto expectedReport = previousReport;
+        expectedReport[u"problems"_s] = retainedProblems;
+        QCOMPARE(bodyReceivedAndParsed, expectedReport);
+        QVERIFY(database.getClientStatusReportingRecords().isEmpty());
+        bodyReceivedAndParsed.clear();
+
+        // New failures after recovery must still be reported.
+        record._lastOccurence = 30;
+        QVERIFY(database.setClientStatusReportingRecord(record).isValid());
+        QTest::qWait(OCC::ClientStatusReportingNetwork::clientStatusReportingTrySendTimerInterval + OCC::ClientStatusReportingNetwork::repordSendIntervalMs);
+        QCOMPARE(bodyReceivedAndParsed.value(u"problems"_s).toMap().value(downloadKey).toMap().value(u"count"_s).toInt(), 1);
+        bodyReceivedAndParsed.clear();
+        account->setServerErrorsResolvedAt(0);
+        account->setSyncConflictReport(std::nullopt);
+    }
+
+    void testReportCacheIsAccountLocalAndPersistent()
+    {
+        const auto otherPath = dbFilePath + u".other"_s;
+        QFile::remove(otherPath);
+        OCC::ClientStatusReportingDatabase::dbPathForTesting = otherPath;
+        const auto report = QVariantMap{{u"sync_conflicts"_s, QVariantMap{{u"count"_s, 2}}}};
+        {
+            OCC::ClientStatusReportingDatabase otherDatabase(account);
+            QVERIFY(otherDatabase.isInitialized());
+            QVERIFY(otherDatabase.lastSentReport().isEmpty());
+            otherDatabase.setLastSentReport(report);
+            OCC::ClientStatusReportingDatabase::dbPathForTesting = dbFilePath;
+            OCC::ClientStatusReportingDatabase originalDatabase(account);
+            QVERIFY(originalDatabase.lastSentReport() != report);
+            QCOMPARE(otherDatabase.lastSentReport(), report);
+        }
+        OCC::ClientStatusReportingDatabase::dbPathForTesting = otherPath;
+        {
+            OCC::ClientStatusReportingDatabase reopenedDatabase(account);
+            QCOMPARE(reopenedDatabase.lastSentReport(), report);
+        }
+        OCC::ClientStatusReportingDatabase::dbPathForTesting = dbFilePath;
+        QFile::remove(otherPath);
     }
 
     void cleanupTestCase()

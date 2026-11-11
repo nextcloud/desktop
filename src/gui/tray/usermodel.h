@@ -12,6 +12,7 @@
 #include <QImage>
 #include <QPointer>
 #include <QQuickImageProvider>
+#include <QSet>
 #include <QStringList>
 #include <QTimer>
 #include <QVariantMap>
@@ -227,6 +228,7 @@ private:
     void updateSyncStatus();
     [[nodiscard]] QVariantMap buildAccountAlert() const;
     void refreshAccountAlert();
+    void updateSyncConflictReport();
 
     bool notificationAlreadyShown(const qint64 notificationId);
     bool canShowNotification(const qint64 notificationId);
@@ -235,7 +237,9 @@ private:
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
     QVariantMap _accountAlert;
-    
+    QSet<QString> _conflictInventoryFolders;
+    QHash<QString, quint64> _successfulFullSyncFolders;
+
     QVariantList _trayFolderInfos;
 
     QTimer _expiredActivitiesCheckTimer;

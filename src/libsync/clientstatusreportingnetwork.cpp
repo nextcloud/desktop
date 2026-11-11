@@ -9,6 +9,8 @@
 #include "clientstatusreportingrecord.h"
 #include <networkjobs.h>
 
+#include <algorithm>
+
 namespace
 {
 constexpr auto statusReportCategoryE2eErrors = "e2ee_errors";
@@ -19,6 +21,7 @@ constexpr auto statusReportCategoryVirus = "virus_detected";
 
 namespace OCC
 {
+using namespace Qt::StringLiterals;
 Q_LOGGING_CATEGORY(lcClientStatusReportingNetwork, "nextcloud.sync.clientstatusreportingnetwork", QtInfoMsg)
 
 ClientStatusReportingNetwork::ClientStatusReportingNetwork(Account *account, const QSharedPointer<ClientStatusReportingDatabase> database, QObject *parent)
@@ -57,12 +60,17 @@ void ClientStatusReportingNetwork::sendReportToServer()
         return;
     }
 
+    if (_reportJob || (_account->usesActivityConflictReports() && !_account->syncConflictReport())) {
+        return;
+    }
+
     const auto lastSentReportTime = _database->getLastSentReportTimestamp();
     if (QDateTime::currentDateTimeUtc().toMSecsSinceEpoch() - lastSentReportTime < repordSendIntervalMs) {
         qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because interval is not met";
         return;
     }
 
+    const auto hasQueuedRecords = !_database->getClientStatusReportingRecords().isEmpty();
     const auto report = prepareReport();
     if (report.isEmpty()) {
         qCDebug(lcClientStatusReportingNetwork) << "Skipped sending client status report because no records are queued";
@@ -74,17 +82,17 @@ void ClientStatusReportingNetwork::sendReportToServer()
     }
 
     const auto clientStatusReportingJob = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/apps/security_guard/diagnostics"));
+    _reportJob = clientStatusReportingJob;
     clientStatusReportingJob->setBody(QJsonDocument::fromVariant(report));
     clientStatusReportingJob->setVerb(SimpleApiJob::Verb::Put);
-    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, [this](const QJsonDocument &json, int statusCode) {
+    connect(clientStatusReportingJob, &JsonApiJob::jsonReceived, this, [this, report, hasQueuedRecords](const QJsonDocument &json, int statusCode) {
         const auto isSuccess = statusCode == HttpErrorCodeNone || statusCode == HttpErrorCodeSuccess || statusCode == HttpErrorCodeSuccessCreated
             || statusCode == HttpErrorCodeSuccessNoContent;
         if (isSuccess) {
             const auto metaFromJson = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("meta")).toObject();
             const auto codeFromJson = metaFromJson.value(QStringLiteral("statuscode")).toInt();
-            if (codeFromJson == HttpErrorCodeNone || codeFromJson == HttpErrorCodeSuccess || codeFromJson == HttpErrorCodeSuccessCreated
-                || codeFromJson == HttpErrorCodeSuccessNoContent) {
-                reportToServerSentSuccessfully();
+            if (codeFromJson == HttpErrorCodeSuccess || codeFromJson == HttpErrorCodeSuccessCreated || codeFromJson == HttpErrorCodeSuccessNoContent) {
+                reportToServerSentSuccessfully(report, hasQueuedRecords);
                 return;
             }
             qCWarning(lcClientStatusReportingNetwork) << "Received error when sending client status report statusCode:" << statusCode << "codeFromJson:" << codeFromJson;
@@ -93,20 +101,54 @@ void ClientStatusReportingNetwork::sendReportToServer()
     clientStatusReportingJob->start();
 }
 
-void ClientStatusReportingNetwork::reportToServerSentSuccessfully()
+void ClientStatusReportingNetwork::reportToServerSentSuccessfully(const QVariantMap &report, bool hasQueuedRecords)
 {
     qCInfo(lcClientStatusReportingNetwork) << "Succesfully sent client status report";
-    if (!_database->deleteClientStatusReportingRecords()) {
+    if (hasQueuedRecords && !_database->deleteClientStatusReportingRecords()) {
         qCWarning(lcClientStatusReportingNetwork) << "Could not delete records after sending the report";
     }
+    _database->setLastSentReport(report);
     _database->setLastSentReportTimestamp(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch());
 }
 
 QVariantMap ClientStatusReportingNetwork::prepareReport() const
 {
     const auto records = _database->getClientStatusReportingRecords();
-    if (records.isEmpty()) {
-        return {};
+    const auto previousReport = _database->lastSentReport();
+    const auto &conflictReport = _account->syncConflictReport();
+    const auto resolvedAt = _account->serverErrorsResolvedAt();
+    const auto isResolvedServerError = [resolvedAt](const auto &record) {
+        const auto status = static_cast<ClientStatusReportingStatus>(record._status);
+        return record._lastOccurence < resolvedAt
+            && (status == ClientStatusReportingStatus::UploadError_ServerError || status == ClientStatusReportingStatus::DownloadError_ServerError);
+    };
+    const auto clearResolvedServerErrors = [resolvedAt](QVariantMap &report) {
+        auto problems = report.value(statusReportCategoryProblems).toMap();
+        for (const auto status : {ClientStatusReportingStatus::UploadError_ServerError, ClientStatusReportingStatus::DownloadError_ServerError}) {
+            const auto key = QString::fromUtf8(clientStatusstatusStringFromNumber(status));
+            if (problems.value(key).toMap().value(u"oldest"_s).toULongLong() < resolvedAt) {
+                problems.remove(key);
+            }
+        }
+        report[statusReportCategoryProblems] = problems;
+    };
+    const auto hasOtherRecords = std::ranges::any_of(records, [&isResolvedServerError](const auto &record) {
+        return !isResolvedServerError(record) && classifyStatus(static_cast<ClientStatusReportingStatus>(record._status)) != statusReportCategorySyncConflicts;
+    });
+    if (records.isEmpty() || (conflictReport && !hasOtherRecords)) {
+        // Do not replace unknown server categories with an all-clear after an upgrade.
+        if (!conflictReport || (previousReport.isEmpty() && conflictReport->isEmpty())) {
+            return {};
+        }
+        auto report = previousReport;
+        if (report.isEmpty()) {
+            report[statusReportCategoryProblems] = QVariantMap{};
+            report[statusReportCategoryVirus] = QVariantMap{};
+            report[statusReportCategoryE2eErrors] = QVariantMap{};
+        }
+        report[statusReportCategorySyncConflicts] = *conflictReport;
+        clearResolvedServerErrors(report);
+        return report == previousReport ? QVariantMap{} : report;
     }
 
     QVariantMap report;
@@ -121,6 +163,9 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
     QVariantMap virusDetectedErrors;
 
     for (const auto &record : records) {
+        if (isResolvedServerError(record)) {
+            continue;
+        }
         const auto categoryKey = classifyStatus(static_cast<ClientStatusReportingStatus>(record._status));
 
         if (categoryKey.isEmpty()) {
@@ -148,6 +193,10 @@ QVariantMap ClientStatusReportingNetwork::prepareReport() const
             report[categoryKey] = virusDetectedErrors;
         }
     }
+    if (conflictReport) {
+        report[statusReportCategorySyncConflicts] = *conflictReport;
+    }
+    clearResolvedServerErrors(report);
     return report;
 }
 

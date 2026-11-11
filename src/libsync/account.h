@@ -38,6 +38,7 @@
 #endif
 
 #include <memory>
+#include <optional>
 
 class QSettings;
 class QNetworkReply;
@@ -350,6 +351,31 @@ public:
 
     void reportClientStatus(const ClientStatusReportingStatus status) const;
 
+    // An empty map means resolved; nullopt means the activity inventory is not ready.
+    void setSyncConflictReport(std::optional<QVariantMap> report)
+    {
+        _usesActivityConflictReports = true;
+        _syncConflictReport = std::move(report);
+    }
+    [[nodiscard]] bool usesActivityConflictReports() const
+    {
+        return _usesActivityConflictReports;
+    }
+    [[nodiscard]] const std::optional<QVariantMap> &syncConflictReport() const
+    {
+        return _syncConflictReport;
+    }
+
+    // Only server-error events older than this confirmed recovery may be cleared.
+    void setServerErrorsResolvedAt(quint64 timestamp)
+    {
+        _serverErrorsResolvedAt = timestamp;
+    }
+    [[nodiscard]] quint64 serverErrorsResolvedAt() const
+    {
+        return _serverErrorsResolvedAt;
+    }
+
     [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
@@ -537,6 +563,9 @@ private Q_SLOTS:
     void removeLockStatusChangeInprogress(const QString &serverRelativePath, const OCC::SyncFileItemEnums::LockStatus lockStatus);
 
 private:
+    std::optional<QVariantMap> _syncConflictReport;
+    bool _usesActivityConflictReports = false;
+    quint64 _serverErrorsResolvedAt = 0;
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
     void updateServerColors();

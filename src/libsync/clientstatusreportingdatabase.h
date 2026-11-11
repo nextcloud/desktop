@@ -9,12 +9,13 @@
 #include "clientstatusreportingcommon.h"
 #include "clientstatusreportingrecord.h"
 
-#include <QtGlobal>
 #include <QByteArray>
 #include <QMutex>
-#include <QString>
-#include <QVector>
 #include <QSqlDatabase>
+#include <QString>
+#include <QVariantMap>
+#include <QVector>
+#include <QtGlobal>
 
 namespace OCC {
 
@@ -29,6 +30,9 @@ public:
     [[nodiscard]] Result<void, QString> setClientStatusReportingRecord(const ClientStatusReportingRecord &record) const;
     [[nodiscard]] QVector<ClientStatusReportingRecord> getClientStatusReportingRecords() const;
     [[nodiscard]] Result<void, QString> deleteClientStatusReportingRecords() const;
+
+    [[nodiscard]] QVariantMap lastSentReport() const;
+    void setLastSentReport(const QVariantMap &report) const;
 
     void setLastSentReportTimestamp(const quint64 timestamp) const;
     [[nodiscard]] quint64 getLastSentReportTimestamp() const;
