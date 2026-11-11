@@ -150,6 +150,16 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         Self.davRelativePath(forURL: url, accountBaseURL: serverUrl, backendUserID: id)
     }
 
+    /// Check whether a request URL and a DAV response URL name the same item under this
+    /// account's Files or Trash root. NextcloudKit can return the server's spelling of the
+    /// installation path, so compare the paths after removing the recognized DAV roots.
+    func hasSameDAVPath(_ lhs: String, _ rhs: String) -> Bool {
+        guard let lhsPath = davRelativePath(forURL: lhs),
+              let rhsPath = davRelativePath(forURL: rhs)
+        else { return false }
+        return lhsPath == rhsPath
+    }
+
     /// Replace the full WebDAV files or trash root at the start of the URL with `files:` or `trash:`.
     /// For example, `https://cloud.example.com/nextcloud/remote.php/dav/files/alice/Team/Docs` becomes `files:/Team/Docs`.
     /// Returns `nil` if neither the configured roots nor the forms returned by the DAV response parser match.

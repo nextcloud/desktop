@@ -51,6 +51,12 @@ extension ItemMetadataRecord {
             || (Columns.directory == false && Columns.downloaded == true)
     }
 
+    static var hasUnfinishedUpload: SQLExpression {
+        Columns.status == Status.inUpload.rawValue
+            || Columns.status == Status.uploading.rawValue
+            || (Columns.status == Status.uploadError.rawValue && !Columns.uploaded)
+    }
+
     /// Files whose download may be removed: downloaded, live and not pinned.
     static var isEvictableFile: SQLExpression {
         Columns.directory == false
