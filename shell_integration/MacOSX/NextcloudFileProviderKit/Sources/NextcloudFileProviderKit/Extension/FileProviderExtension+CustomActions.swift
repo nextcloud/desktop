@@ -133,13 +133,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
         completionHandler: @Sendable @escaping ((any Error)?) -> Void
     ) -> Progress {
-        guard let dbManager else {
-            logger.error("Not setting keep offline for items, account not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-        guard !dbManager.wasInvalidatedByDAVAccountChange else {
-            logger.error("Cannot change which items are kept downloaded because the DAV account changed.")
+        guard let dbManager, !dbManager.wasInvalidatedByDAVAccountChange else {
+            logger.error("Cannot change which items are kept downloaded because the metadata database is unavailable.")
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -199,14 +194,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
     /// - For a **directory** (including the root): we evict each *evictable* (downloaded, non-pinned) descendant file individually rather than calling `evictItem` on the directory. This leaves individually-pinned descendants materialized (honouring the explicit per-item choice), never asks the framework to evict strict-pinned content (so it cannot hit -2008), and does not rely on `evictItem` recursing into a directory or the root pseudo-container.
     ///
     private func performEvictAction(onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier], completionHandler: @Sendable @escaping ((any Error)?) -> Void) -> Progress {
-        guard let dbManager else {
-            logger.error("Not removing downloads because account is not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard !dbManager.wasInvalidatedByDAVAccountChange else {
-            logger.error("Cannot remove downloads because the DAV account changed.")
+        guard let dbManager, !dbManager.wasInvalidatedByDAVAccountChange else {
+            logger.error("Cannot remove downloads because the metadata database is unavailable.")
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
