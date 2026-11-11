@@ -4,9 +4,9 @@
  */
 
 #include "macsandboxfolderpicker.h"
+#include "macsandboxpanelutils.h"
 
 #include <QLoggingCategory>
-#include <QWindow>
 
 #include <utility>
 
@@ -34,17 +34,6 @@ void select(QWindow *parentWindow, const QString &caption, const QString &initia
         panel.directoryURL = [NSURL fileURLWithPath:initialPath.toNSString() isDirectory:YES];
     }
 
-    // Use AppKit's asynchronous panel API instead of runModal(). Qt's Cocoa
-    // event dispatcher can dismiss a nested native modal loop immediately.
-    // Activating the parent first keeps the sheet on it while another app is in front.
-    NSWindow *sheetParent = nil;
-    if (parentWindow) {
-        parentWindow->requestActivate();
-        sheetParent = ((__bridge NSView *)reinterpret_cast<void *>(parentWindow->winId())).window;
-    }
-    if (!sheetParent) {
-        sheetParent = NSApp.keyWindow ?: NSApp.mainWindow;
-    }
     const auto completionHandlerBlock = ^(NSModalResponse response) {
         qCInfo(lcMacSandboxFolderPicker) << "Native folder panel returned." << static_cast<NSInteger>(response);
         FolderSelection selection;
@@ -87,11 +76,7 @@ void select(QWindow *parentWindow, const QString &caption, const QString &initia
         completionHandler(std::move(selection));
     };
 
-    if (sheetParent) {
-        [panel beginSheetModalForWindow:sheetParent completionHandler:completionHandlerBlock];
-    } else {
-        [panel beginWithCompletionHandler:completionHandlerBlock];
-    }
+    SandboxPanelUtils::beginSheet(panel, parentWindow, completionHandlerBlock);
 }
 
 } // namespace OCC::Mac::SandboxFolderPicker
