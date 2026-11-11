@@ -502,23 +502,22 @@ public extension Item {
 
         var newParentItemRemoteUrl: String
 
-        // The target parent should already be present in our database. The system will have synced
-        // remote changes and then, upon user interaction, will try to modify the item.
-        // That is, if the parent item has changed at all (it might not have)
         if newParentItemIdentifier == .rootContainer {
             newParentItemRemoteUrl = account.davFilesUrl
         } else if newParentItemIdentifier == .trashContainer {
             newParentItemRemoteUrl = account.trashUrl
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: newParentItemIdentifier.rawValue) else {
-                logger.error("Not modifying item, could not find metadata for target parentItemIdentifier \"\(newParentItemIdentifier.rawValue)\"!", [.item: modifiedItem])
-                return (
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            do {
+                let destination = try Self.destinationFolderMetadata(
+                    for: newParentItemIdentifier,
+                    account: account,
+                    dbManager: dbManager
                 )
+                newParentItemRemoteUrl = destination.metadata.remotePath()
+            } catch {
+                logger.error("Could not resolve the destination folder before modifying the item.", [.item: newParentItemIdentifier, .error: error])
+                return (nil, error)
             }
-
-            newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename

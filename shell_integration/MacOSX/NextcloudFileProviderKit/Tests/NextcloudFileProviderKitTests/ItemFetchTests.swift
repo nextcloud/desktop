@@ -3044,6 +3044,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
         let (localPathMaybe, fetchedItemMaybe, error) = await item.fetchContents(dbManager: Self.dbManager)
         XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
         let localPath = try XCTUnwrap(localPathMaybe)
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
         let contents = try Data(contentsOf: localPath)

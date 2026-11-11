@@ -601,6 +601,22 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         )
     }
 
+    /// Resolve a create or move destination using a live folder from the current account's Files root.
+    static func destinationFolderMetadata(
+        for identifier: NSFileProviderItemIdentifier,
+        account: Account,
+        dbManager: FilesDatabaseManager
+    ) throws -> (metadata: SendableItemMetadata, pathFromFilesRoot: String) {
+        guard let metadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(identifier),
+              metadata.directory,
+              !metadata.deleted,
+              let pathFromFilesRoot = account.filesRootRelativePath(for: metadata.remotePath()),
+              account.ownsDAVReadURL(metadata.remotePath(), sourceMetadata: metadata)
+        else { throw NSFileProviderError(.cannotSynchronize) }
+
+        return (metadata, pathFromFilesRoot)
+    }
+
     public func localUrlForContents(domain: NSFileProviderDomain) async -> URL? {
         guard isDownloaded else {
             logger.error("Unable to get local URL for item contents. Item is not materialised.", [.name: filename])

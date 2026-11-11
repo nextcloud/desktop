@@ -319,24 +319,19 @@ public extension Item {
             parentItemRemotePath = account.davFilesUrl
             parentItemRelativePath = "/"
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(
-                ocId: parentItemIdentifier.rawValue
-            ) else {
-                logger.error(
-                    """
-                    Not creating item: \(itemTemplate.itemIdentifier.rawValue),
-                        could not find metadata for parentItemIdentifier:
-                        \(parentItemIdentifier.rawValue)
-                    """
+            do {
+                let destination = try Self.destinationFolderMetadata(
+                    for: parentItemIdentifier,
+                    account: account,
+                    dbManager: dbManager
                 )
-                return (nil, NSFileProviderError(.cannotSynchronize))
+                parentKeepDownloaded = destination.metadata.keepDownloaded
+                parentItemRemotePath = destination.metadata.remotePath()
+                parentItemRelativePath = "/" + destination.pathFromFilesRoot
+            } catch {
+                logger.error("Could not resolve the parent folder before creating the item.", [.item: parentItemIdentifier, .error: error])
+                return (nil, error)
             }
-            parentKeepDownloaded = parentItemMetadata.keepDownloaded
-            parentItemRemotePath = parentItemMetadata.remotePath()
-            parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
-                of: account.davFilesUrl, with: ""
-            )
-            assert(parentItemRelativePath.starts(with: "/"))
         }
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
