@@ -216,6 +216,8 @@ The following details are important and only relevant when working on the deskto
 - To abstract macOS and Objective-C specific APIs, prefer to use Qt and C++ types in public identifiers declared in headers. Use and prefer Objective-C or native macOS features only internally in implementations. This rule applies only to the code in `src/gui/macOS`, though.
 - When writing code in Swift, respect strict concurrency rules and Swift 6 compatibility.
 - All Objective-C (`.m`) and Objective-C++ (`.mm`) files must be compiled with Automatic Reference Counting (ARC). Ensure ARC is enabled for every such source file in the build configuration (`-fobjc-arc` in CMake or `CLANG_ENABLE_OBJC_ARC = YES` in Xcode), and follow ARC ownership rules.
+- On macOS, never pick files or folders with `QFileDialog` or QML `FileDialog`/`FolderDialog`. Use the native `NSOpenPanel`/`NSSavePanel` helpers in `src/gui/macOS` (`Mac::SandboxFolderPicker`, `Mac::SandboxFilePicker`) and extend them when a panel type is missing; `QFileDialog` stays for other platforms. Since Qt 6.11, `QFileDialog` releases the sandbox access to the chosen item before it returns, so an `NSURL` rebuilt from the path has no access and no security-scoped bookmark can be created for it.
+- Do the file work, or create the security-scoped bookmark (`Utility::MacSandboxPersistentAccess`), inside the helper's completion handler: the helper releases the panel's access when the handler returns. Guard the asynchronous completion with `QPointer`.
 
 #### Code organization
 
