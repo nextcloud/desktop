@@ -1,10 +1,12 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+@preconcurrency import Alamofire
 import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+@testable import NextcloudKit
 import Testing
 
 ///
@@ -145,6 +147,9 @@ final class KeychainLoginKeychainTests: Sendable {
         let ext = FileProviderExtension(domain: domain)
         let setupAccount = Account(user: account, id: account, serverUrl: "https://mock.nc.com", password: "x")
         let staleGeneration = ext.setupGeneration
+        defer { UserDefaults.standard.removeObject(forKey: domain.identifier.rawValue) }
+        #expect(ext.storeAccount(setupAccount, generation: staleGeneration, awaitingDatabaseSetup: true))
+        #expect(ext.config.accountForSetupRetry != nil)
 
         if signOut {
             ext.removeAccountConfig()
@@ -153,7 +158,8 @@ final class KeychainLoginKeychainTests: Sendable {
         }
 
         // A setup queued or authenticating before the removal neither stores nor publishes its account.
-        #expect(ext.storeAccount(setupAccount, generation: staleGeneration) == false)
+        #expect(ext.storeAccount(setupAccount, generation: staleGeneration, awaitingDatabaseSetup: true) == false)
+        #expect(ext.config.accountForSetupRetry == nil)
         #expect(ext.publishAccount(setupAccount, generation: staleGeneration) == false)
         #expect(LoginKeychainFixture.count(service: service) == 0)
         #expect(ext.ncAccount == nil)
@@ -161,6 +167,137 @@ final class KeychainLoginKeychainTests: Sendable {
         // A setup started afterwards works as usual.
         #expect(ext.storeAccount(setupAccount, generation: ext.setupGeneration))
         #expect(LoginKeychainFixture.password(service: service, account: account) == "x")
+    }
+
+    @Test(arguments: [false, true])
+    func finderRetriesNewDAVAccountAfterFailedSetupAndRestart(authenticationSucceeds: Bool) async throws {
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
+        let previous = Account(
+            user: account,
+            id: "previous-id",
+            serverUrl: "https://" + service.lowercased() + ".previous.invalid",
+            password: "previous"
+        )
+        let current = Account(
+            user: account,
+            id: "current-id",
+            serverUrl: "https://" + service.lowercased() + ".current.invalid",
+            password: "current"
+        )
+        let previousDAVURL = try #require(URL(string: previous.davFilesUrl + "/"))
+        let currentDAVURL = try #require(URL(string: current.davFilesUrl + "/"))
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(service, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        // Opening SQLite below a regular file fails even after a successful authentication.
+        let blockedDatabaseDirectory = directory.appendingPathComponent("blocked")
+        try Data().write(to: blockedDatabaseDirectory)
+        let expectedError = NSError(authenticationSucceeds ? .databaseUnavailable : .invalidCredentials)
+        let multistatus = Data("""
+        <d:multistatus xmlns:d="DAV:">
+          <d:response>
+            <d:href>\(currentDAVURL.path)/</d:href>
+            <d:propstat>
+              <d:prop><d:resourcetype><d:collection/></d:resourcetype></d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+        </d:multistatus>
+        """.utf8)
+        MockHTTPURLProtocol.setResponse(for: previousDAVURL, statusCode: 401, body: Data())
+        MockHTTPURLProtocol.setResponse(
+            for: currentDAVURL,
+            statusCode: authenticationSucceeds ? 207 : 401,
+            body: authenticationSucceeds ? multistatus : Data()
+        )
+        defer {
+            MockHTTPURLProtocol.removeResponse(for: previousDAVURL)
+            MockHTTPURLProtocol.removeResponse(for: currentDAVURL)
+            UserDefaults.standard.removeObject(forKey: domain.identifier.rawValue)
+        }
+
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let sessions = [previous, current].map { identity in
+            NKSession(
+                nkCommonInstance: remote.nkCommonInstance,
+                urlBase: identity.serverUrl,
+                user: identity.username,
+                userId: identity.id,
+                password: "replace this in setup",
+                account: identity.ncKitAccount,
+                userAgent: "FileProvider-test",
+                groupIdentifier: "",
+                httpMaximumConnectionsPerHost: 1,
+                httpMaximumConnectionsPerHostInDownload: 1,
+                httpMaximumConnectionsPerHostInUpload: 1,
+                sessionDataOverride: Alamofire.Session(configuration: configuration)
+            )
+        }
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray(sessions)
+
+        let provider = FileProviderExtension(domain: domain, ncKit: remote, databaseDirectory: blockedDatabaseDirectory)
+        defer { provider.invalidate() }
+        #expect(provider.storeAccount(previous, generation: provider.setupGeneration))
+
+        let firstError: NSError? = await withCheckedContinuation { continuation in
+            provider.setupDomainAccount(
+                user: current.username,
+                userId: current.id,
+                serverUrl: current.serverUrl,
+                password: current.password
+            ) { error in
+                continuation.resume(returning: error)
+            }
+        }
+        try #require(firstError == expectedError)
+        #expect(provider.config.serverUrl == previous.serverUrl)
+        #expect(provider.config.userId == previous.id)
+        #expect(provider.storedAccountForAuthentication() == current)
+        try #require(MockHTTPURLProtocol.requests(for: currentDAVURL).count == 1)
+
+        let immediateRetryError = await FPUIExtensionServiceSource(fpExtension: provider).authenticate()
+        #expect(immediateRetryError == expectedError)
+
+        let restartedProvider = FileProviderExtension(domain: domain, ncKit: remote, databaseDirectory: blockedDatabaseDirectory)
+        defer { restartedProvider.invalidate() }
+        let retryError = await FPUIExtensionServiceSource(fpExtension: restartedProvider).authenticate()
+        #expect(retryError == expectedError)
+
+        let retryRequests = MockHTTPURLProtocol.requests(for: currentDAVURL)
+        #expect(retryRequests.map(\.httpMethod) == ["PROPFIND", "PROPFIND", "PROPFIND"])
+        let credentials = Data((current.username + ":" + current.password).utf8).base64EncodedString()
+        #expect(retryRequests.last?.value(forHTTPHeaderField: "Authorization") == "Basic " + credentials)
+        #expect(MockHTTPURLProtocol.requests(for: previousDAVURL).isEmpty)
+        #expect(restartedProvider.config.serverUrl == previous.serverUrl)
+        #expect(restartedProvider.config.userId == previous.id)
+    }
+
+    @Test func stagingAnAccountKeepsPriorSettingsUntilCommit() {
+        let domain = NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier(service), displayName: LoginKeychainFixture.label)
+        let ext = FileProviderExtension(domain: domain)
+        let previous = Account(user: account, id: account, serverUrl: "https://old.example.com", password: "old")
+        let current = Account(user: account, id: account, serverUrl: "https://new.example.com", password: "new")
+        let generation = ext.setupGeneration
+        defer { UserDefaults.standard.removeObject(forKey: domain.identifier.rawValue) }
+
+        #expect(ext.storeAccount(previous, generation: generation, awaitingDatabaseSetup: true))
+        #expect(ext.config.serverUrl == nil)
+        #expect(ext.storedAccountForAuthentication() == previous)
+
+        #expect(ext.storeAccount(previous, generation: generation))
+        #expect(ext.config.serverUrl == previous.serverUrl)
+        #expect(ext.config.accountForSetupRetry == nil)
+
+        #expect(ext.storeAccount(current, generation: generation, awaitingDatabaseSetup: true))
+        #expect(ext.config.serverUrl == previous.serverUrl)
+        #expect(ext.storedAccountForAuthentication() == current)
+
+        #expect(ext.storeAccount(current, generation: generation))
+        #expect(ext.config.serverUrl == current.serverUrl)
+        #expect(ext.config.accountForSetupRetry == nil)
+        #expect(ext.storedAccountForAuthentication() == current)
     }
 
     @Test func deletePasswordRequestRepliesAfterDeletion() throws {
