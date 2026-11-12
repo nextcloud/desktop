@@ -492,7 +492,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> Item? {
-        try? await resolveStoredItem(
+        try? await lookupItemAndFindParentIdentifier(
             identifier: identifier,
             account: account,
             remoteInterface: remoteInterface,
@@ -503,13 +503,13 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         )
     }
 
-    static func resolveStoredItem(
+    static func lookupItemAndFindParentIdentifier(
         identifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         includeDeleted: Bool = true,
-        unresolvedParentError: any Error = NSFileProviderError(.cannotSynchronize),
+        lookupRetryError: any Error = NSFileProviderError(.cannotSynchronize),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
@@ -543,7 +543,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier),
+        guard let metadata = try dbManager.itemMetadataIfCurrentDAVAccount(identifier, retryError: lookupRetryError),
               !metadata.isFilesRootWithServerID,
               includeDeleted || !metadata.deleted
         else {
@@ -565,7 +565,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         try checkCancellation()
         // A failed parent read says nothing about whether the cached child was removed.
         guard let parentItemIdentifier else {
-            throw unresolvedParentError
+            throw lookupRetryError
         }
 
         // Display File Actions

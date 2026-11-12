@@ -10,12 +10,7 @@ import NextcloudFileProviderKitMocks
 import Testing
 
 struct StoredItemLookupTests {
-    enum ChildState: CaseIterable {
-        case live, deleted, absent
-    }
-
-    @Test(arguments: ChildState.allCases)
-    func itemLookupDistinguishesAnUnresolvedParentFromAMissingChild(state: ChildState) async throws {
+    @Test func itemLookupIgnoresMetadataFromAnotherDAVRoot() async throws {
         let account = Account(user: UUID().uuidString, id: "current", serverUrl: "https://lookup.invalid", password: "password")
         let previous = Account(user: account.username, id: "previous", serverUrl: account.serverUrl, password: account.password)
         let domain = NSFileProviderDomain(identifier: .init(UUID().uuidString), displayName: "Lookup test")
@@ -34,17 +29,13 @@ struct StoredItemLookupTests {
         provider.dbManager = manager
 
         let identifier = NSFileProviderItemIdentifier("known-child")
-        if state != .absent {
-            var child = DatabaseTestSuites.makeFile(
-                ocId: identifier.rawValue,
-                fileName: "report.pdf",
-                serverUrl: previous.davFilesUrl + "/uncached-parent",
-                account: previous
-            )
-            child.deleted = state == .deleted
-            try manager.insertForTesting(child)
-            try #require(manager.parentItemIdentifierFromMetadata(child) == nil)
-        }
+        let child = DatabaseTestSuites.makeFile(
+            ocId: identifier.rawValue,
+            fileName: "report.pdf",
+            serverUrl: previous.davFilesUrl + "/uncached-parent",
+            account: previous
+        )
+        try manager.insertForTesting(child)
 
         let (hasItem, errorCode): (Bool, NSFileProviderError.Code?) = await withCheckedContinuation { continuation in
             _ = provider.item(for: identifier, request: NSFileProviderRequest()) { item, error in
@@ -53,10 +44,10 @@ struct StoredItemLookupTests {
         }
 
         #expect(!hasItem)
-        #expect(errorCode == (state == .live ? .cannotSynchronize : .noSuchItem))
-        if state == .live {
-            #expect(manager.itemMetadata(identifier)?.deleted == false)
-        }
+        #expect(errorCode == .noSuchItem)
+        let saved = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == identifier.rawValue })
+        #expect(saved.remotePath() == child.remotePath())
+        #expect(!saved.deleted)
     }
 }
 

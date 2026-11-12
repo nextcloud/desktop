@@ -3,9 +3,11 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import GRDB
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import RealmSwift
+import TestInterface
 import Testing
 
 ///
@@ -15,7 +17,12 @@ import Testing
 ///
 @Suite("Realm store import", .serialized)
 struct RealmStoreImporterTests {
-    static let account = DatabaseTestSuites.account
+    enum MissingAccountDetails: CaseIterable {
+        case accountKey
+        case davRoot
+        case accountKeyAndDAVRoot
+    }
+
 
     struct Fixture {
         let directory: URL
@@ -28,14 +35,29 @@ struct RealmStoreImporterTests {
             directory.appendingPathComponent(domain.rawValue).appendingPathExtension(DatabaseSchema.fileExtension)
         }
 
-        func openManager() throws -> FilesDatabaseManager {
-            try FilesDatabaseManager(account: account, databaseDirectory: directory, fileProviderDomainIdentifier: domain, log: FileProviderLogMock())
+        func openManager(account: Account = RealmStoreImporterTests.account) throws -> FilesDatabaseManager {
+            try FilesDatabaseManager(
+                account: account,
+                databaseDirectory: directory,
+                fileProviderDomainIdentifier: domain,
+                log: FileProviderLogMock(),
+                defaults: DatabaseTestSuites.defaults
+            )
+        }
+
+        func savePreviouslyConfiguredAccount(_ account: Account) {
+            var defaults = FileProviderDomainDefaults(identifier: domain, log: FileProviderLogMock(), defaults: DatabaseTestSuites.defaults)
+            defaults.serverUrl = account.serverUrl
+            defaults.user = account.username
+            defaults.userId = account.id
         }
 
         func exists(_ suffix: String = "") -> Bool {
             FileManager.default.fileExists(atPath: realmURL.path + suffix)
         }
     }
+
+    static let account = DatabaseTestSuites.account
 
     static func makeFixture() -> Fixture {
         let directory = FileManager.default.temporaryDirectory
@@ -63,6 +85,8 @@ struct RealmStoreImporterTests {
                 live.shareType = [0, 3]
                 live.chunkUploadId = "upload-1"
                 live.lockTime = Date(timeIntervalSinceReferenceDate: 790_000_001.5)
+                live.downloaded = true
+                live.keepDownloaded = true
                 realm.add(LegacyRealmItemMetadata(value: live))
 
                 var gone = DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt")
@@ -133,6 +157,328 @@ struct RealmStoreImporterTests {
         #expect(FileManager.default.fileExists(atPath: fixture.sqliteURL.path + RealmStoreImporter.stagingSuffix) == false)
     }
 
+    @Test func importedItemsUseTheCurrentDAVBase() throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        try Self.writeLegacyStore(at: fixture)
+        let currentAccount = Account(
+            user: "new-login",
+            id: "new-id",
+            serverUrl: "https://new.example.com/cloud",
+            password: "password"
+        )
+
+        let foreignAccount = Account(
+            user: "unrelated",
+            id: "unrelated-id",
+            serverUrl: Self.account.serverUrl,
+            password: "password"
+        )
+        var foreignFile = DatabaseTestSuites.makeFile(
+            ocId: "foreign",
+            fileName: "foreign.pdf",
+            serverUrl: foreignAccount.davFilesUrl + "/Docs",
+            account: foreignAccount
+        )
+        foreignFile.downloaded = true
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write { realm.add(LegacyRealmItemMetadata(value: foreignFile)) }
+        }
+        fixture.savePreviouslyConfiguredAccount(Self.account)
+
+        let manager = try fixture.openManager(account: currentAccount)
+
+        let live = try #require(manager.itemMetadata(ocId: "live"))
+        let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: "live"))
+        #expect(stored.parentLocation == "files:/Docs")
+        #expect(live.serverUrl == currentAccount.davFilesUrl + "/Docs")
+        #expect(live.account == currentAccount.ncKitAccount)
+        #expect(live.downloaded)
+        #expect(live.keepDownloaded)
+        #expect(live.syncTime == Self.preciseSyncTime)
+        #expect(manager.itemMetadata(ocId: foreignFile.ocId) == nil)
+        let retainedForeignFile = manager.itemMetadatas(account: foreignAccount.ncKitAccount).first { $0.ocId == foreignFile.ocId }
+        #expect(retainedForeignFile?.remotePath() == foreignFile.remotePath())
+        #expect(manager.itemMetadata(locatedAtRemoteUrl: currentAccount.davFilesUrl + "/Docs/" + foreignFile.fileName) == nil)
+        #expect(manager.materialisedItemMetadatas()?.contains { $0.ocId == foreignFile.ocId } == false)
+    }
+
+    @Test(arguments: [false, true], [false, true])
+    func importUpdatesItemsFromPreviousServerWhenSettingsAlreadyUseCurrentServer(
+        hasCurrentServerRows: Bool,
+        backendUserIDChanged: Bool
+    ) throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        try Self.writeLegacyStore(at: fixture)
+
+        let currentAccount = Account(
+            user: Self.account.username,
+            id: backendUserIDChanged ? "new-backend-id" : Self.account.id,
+            serverUrl: "https://new.example.com/cloud",
+            password: Self.account.password
+        )
+        fixture.savePreviouslyConfiguredAccount(currentAccount)
+        let domainDefaults = FileProviderDomainDefaults(
+            identifier: fixture.domain,
+            log: FileProviderLogMock(),
+            defaults: DatabaseTestSuites.defaults
+        )
+
+        var pending = DatabaseTestSuites.makeFile(
+            ocId: "pending-edit",
+            fileName: "draft.txt",
+            serverUrl: Self.account.davFilesUrl + "/Docs",
+            account: Self.account
+        )
+        pending.status = Status.uploadError.rawValue
+        pending.uploaded = false
+        pending.downloaded = true
+        pending.keepDownloaded = true
+        pending.chunkUploadId = "pending-upload"
+        pending.lockToken = "old-lock"
+        var alreadyRefreshed = DatabaseTestSuites.makeFile(
+            ocId: "already-refreshed",
+            fileName: "Listed before the upgrade.txt",
+            serverUrl: currentAccount.davFilesUrl + "/Docs",
+            account: currentAccount
+        )
+        alreadyRefreshed.uploaded = true
+        alreadyRefreshed.lockToken = "current-lock"
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write {
+                realm.add(LegacyRealmItemMetadata(value: pending))
+                if hasCurrentServerRows {
+                    realm.add(LegacyRealmItemMetadata(value: alreadyRefreshed))
+                }
+            }
+        }
+
+        let outcome = RealmStoreImporter.importIfNeeded(
+            realmURL: fixture.realmURL,
+            sqliteURL: fixture.sqliteURL,
+            account: currentAccount,
+            previouslyConfiguredAccount: domainDefaults.configuredDAVAccountIdentity,
+            logger: FileProviderLogger(category: "RealmStoreImporterTests", log: FileProviderLogMock())
+        )
+        guard case .imported = outcome else {
+            Issue.record("Expected the Realm database to be imported.")
+            return
+        }
+        #expect(fixture.exists() == false)
+
+        // Inspect the SQLite file before opening the manager, which can also save the current DAV account.
+        let database = try DatabaseQueue(path: fixture.sqliteURL.path)
+        let identity = try database.read { db in
+            let published = try #require(try ItemMetadataRecord.fetchOne(db, key: "pending-edit"))
+            #expect(published.urlBase == currentAccount.serverUrl)
+            #expect(published.userId == currentAccount.id)
+            #expect(published.serverUrl == currentAccount.davFilesUrl + "/Docs")
+            let savedDAVAccountFields = try #require(try Data.fetchOne(db, sql: "SELECT accountBinding FROM storeIdentity"))
+            #expect(try JSONDecoder().decode([String].self, from: savedDAVAccountFields) == currentAccount.davAccountIdentity.serializedFields)
+            return try #require(try StoreIdentityRecord.fetchOne(db)).identity
+        }
+
+        let manager = try fixture.openManager(account: currentAccount)
+        #expect(manager.storeIdentity == identity)
+        let live = try #require(manager.itemMetadata(ocId: "live"))
+        #expect(live.serverUrl == currentAccount.davFilesUrl + "/Docs")
+        #expect(live.downloaded)
+        #expect(live.keepDownloaded)
+        let saved = try #require(manager.itemMetadata(ocId: pending.ocId))
+        #expect(saved.hasUnfinishedUpload)
+        #expect(saved.chunkUploadId == pending.chunkUploadId)
+        #expect(saved.downloaded)
+        #expect(saved.keepDownloaded)
+        #expect(saved.lockToken == nil)
+        if hasCurrentServerRows {
+            let refreshed = try #require(manager.itemMetadata(ocId: alreadyRefreshed.ocId))
+            #expect(refreshed.remotePath() == alreadyRefreshed.remotePath())
+            #expect(refreshed.lockToken == alreadyRefreshed.lockToken)
+        }
+    }
+
+    @Test(arguments: [false, true])
+    func importedItemsAppearInTheWorkingSetBeforeAnyListing(settingsAlreadyCurrent: Bool) async throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        let previousAccount = Account(
+            user: Self.account.username,
+            id: Self.account.id,
+            serverUrl: "https://old.example.com",
+            password: Self.account.password
+        )
+        let earlierAccount = Account(
+            user: Self.account.username,
+            id: "earlier-backend-id",
+            serverUrl: "https://earlier.example.com/cloud",
+            password: Self.account.password
+        )
+        let foreignAccount = Account(
+            user: "unrelated-login",
+            id: "unrelated-backend-id",
+            serverUrl: previousAccount.serverUrl,
+            password: Self.account.password
+        )
+        var folder = DatabaseTestSuites.makeFile(
+            ocId: "cached-folder",
+            fileName: "re\u{0301}sume\u{0301}s",
+            account: previousAccount
+        )
+        folder.directory = true
+        folder.visitedDirectory = true
+        var child = DatabaseTestSuites.makeFile(
+            ocId: "downloaded-file",
+            fileName: "report.pdf",
+            serverUrl: earlierAccount.davFilesUrl + "/résumés",
+            account: earlierAccount
+        )
+        child.account = ""
+        child.downloaded = true
+        child.keepDownloaded = true
+        child.status = Status.uploading.rawValue
+        child.chunkUploadId = "pending-upload"
+        child.session = "interrupted-upload"
+        child.lockToken = "earlier-lock"
+        var foreignFile = DatabaseTestSuites.makeFile(
+            ocId: "foreign-file",
+            fileName: "foreign.pdf",
+            account: foreignAccount
+        )
+        foreignFile.downloaded = true
+        var invalidFile = DatabaseTestSuites.makeFile(
+            ocId: "invalid-file",
+            fileName: "invalid.pdf",
+            serverUrl: "https://unrelated.example.com" + Account.webDavFilesUrlSuffix + previousAccount.id,
+            account: previousAccount
+        )
+        invalidFile.downloaded = true
+        let sessionId = "earlier-server-changes"
+        let queuedDeletion = try JSONEncoder().encode(child)
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write {
+                for item in [folder, child, foreignFile, invalidFile] {
+                    realm.add(LegacyRealmItemMetadata(value: item))
+                }
+                realm.add(LegacyRealmChangeDeliverySession(
+                    sessionId: sessionId,
+                    containerKey: folder.ocId,
+                    currentAnchorKey: "old-anchor",
+                    finalAnchorRawValue: Data([7]),
+                    incomplete: true,
+                    hardRemoveDeleted: true
+                ))
+                realm.add(LegacyRealmChangeDeliveryItem(
+                    sessionId: sessionId,
+                    sequence: 0,
+                    metadataData: queuedDeletion,
+                    deleted: true
+                ))
+            }
+        }
+        fixture.savePreviouslyConfiguredAccount(settingsAlreadyCurrent ? Self.account : previousAccount)
+
+        let manager = try fixture.openManager()
+        #expect(manager.itemMetadata(ocId: folder.ocId)?.serverUrl == Self.account.davFilesUrl)
+        let savedChild = try #require(manager.itemMetadata(ocId: child.ocId))
+        #expect(savedChild.serverUrl == Self.account.davFilesUrl + "/résumés")
+        #expect(savedChild.account == Self.account.ncKitAccount)
+        #expect(savedChild.userId == Self.account.id)
+        #expect(savedChild.downloaded)
+        #expect(savedChild.keepDownloaded)
+        #expect(savedChild.hasUnfinishedUpload)
+        #expect(savedChild.chunkUploadId == child.chunkUploadId)
+        #expect(savedChild.session == "")
+        #expect(savedChild.lockToken == nil)
+        #expect(manager.itemMetadata(ocId: foreignFile.ocId) == nil)
+        #expect(manager.itemMetadata(ocId: invalidFile.ocId) == nil)
+        #expect(try manager.changeDeliverySession(sessionId: sessionId) == nil)
+        #expect(manager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: 1)?.isEmpty == true)
+        let remote = MockRemoteInterface(account: Self.account)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+        let snapshot = MockEnumerationObserver(enumerator: enumerator)
+        try await snapshot.enumerateItems()
+        #expect(Set(snapshot.items.map(\.itemIdentifier.rawValue)) == [folder.ocId, child.ocId])
+        let retainedChild = try #require(snapshot.items.first { $0.itemIdentifier.rawValue == child.ocId })
+        #expect(retainedChild.parentItemIdentifier.rawValue == folder.ocId)
+        #expect(remote.readOperationCount == 0)
+    }
+
+    @Test(arguments: MissingAccountDetails.allCases)
+    func importedRowWithMissingAccountDetailsUsesADAVRelativeParent(missing: MissingAccountDetails) throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        var file = DatabaseTestSuites.makeFile(
+            ocId: "legacy-report",
+            fileName: "report.pdf",
+            serverUrl: Self.account.davFilesUrl + "/Docs",
+            account: Self.account
+        )
+        if missing != .davRoot {
+            file.account = ""
+        }
+        if missing != .accountKey {
+            file.urlBase = ""
+            file.userId = ""
+        }
+        file.keepDownloaded = true
+
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write { realm.add(LegacyRealmItemMetadata(value: file)) }
+        }
+
+        let manager = try fixture.openManager()
+        let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+        let restored = try #require(manager.itemMetadata(locatedAtRemoteUrl: file.remotePath()))
+        #expect(stored.parentLocation == "files:/Docs")
+        #expect(restored.ocId == file.ocId)
+        #expect(restored.account == Self.account.ncKitAccount)
+        #expect(restored.userId == Self.account.id)
+        #expect(restored.keepDownloaded)
+    }
+
+    @Test func importedSDKWebrootAliasUsesADAVRelativeParent() throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        let account = Account(
+            user: "alice",
+            id: "alice",
+            serverUrl: "https://example.com/caf%C3%A9",
+            password: "password"
+        )
+        let file = DatabaseTestSuites.makeFile(
+            ocId: "legacy-report",
+            fileName: "report.pdf",
+            serverUrl: "https://example.com/cafe\u{0301}" + Account.webDavFilesUrlSuffix + account.id + "/Docs",
+            account: account
+        )
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write { realm.add(LegacyRealmItemMetadata(value: file)) }
+        }
+
+        let manager = try fixture.openManager(account: account)
+        let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+        let canonicalFileURL = account.davFilesUrl + "/Docs/" + file.fileName
+        #expect(stored.parentLocation == "files:/Docs")
+        #expect(manager.itemMetadata(locatedAtRemoteUrl: canonicalFileURL)?.ocId == file.ocId)
+    }
+
     @Test func anOlderSchemaIsUpgradedByRealmBeforeTheCopy() throws {
         let fixture = Self.makeFixture()
         let nfdServerUrl = "https://example.com/pre\u{0302}t"
@@ -163,6 +509,175 @@ struct RealmStoreImporterTests {
         let keys = try #require(manager.normalizedLocationForTesting(ocId: "migration-item"))
         #expect(keys.serverUrl == nfdServerUrl.precomposedStringWithCanonicalMapping)
         #expect(keys.fileName == nfdFileName.precomposedStringWithCanonicalMapping)
+    }
+
+    @Test func importedTrashItemCanBeRestoredBeforeAnyListing() async throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        let account = Self.account
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://old.example.com",
+            password: account.password
+        )
+        let foreignAccount = Account(
+            user: "different-login",
+            id: "different-id",
+            serverUrl: previousAccount.serverUrl,
+            password: account.password
+        )
+        let root = MockRemoteItem.rootItem(account: account)
+        let trash = MockRemoteItem.rootTrashItem(account: account)
+        let remoteFile = MockRemoteItem(
+            identifier: "trashed-report",
+            name: "report.pdf.d1760000000",
+            remotePath: account.trashUrl + "/report.pdf.d1760000000",
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl,
+            trashbinOriginalLocation: "report.pdf"
+        )
+        trash.children = [remoteFile]
+        remoteFile.parent = trash
+        let remote = MockRemoteInterface(account: account, rootItem: root, rootTrashItem: trash)
+        var cachedTrashEntry = remoteFile.toNKTrash().toItemMetadata(account: previousAccount)
+        cachedTrashEntry.serverUrl = previousAccount.trashUrl + "/"
+        cachedTrashEntry.downloaded = true
+        var foreignTrashEntry = remoteFile.toNKTrash().toItemMetadata(account: foreignAccount)
+        foreignTrashEntry.ocId = "foreign-trash"
+        let earlierFile = DatabaseTestSuites.makeFileFromEarlierServerURL(account: account)
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write {
+                for item in [cachedTrashEntry, foreignTrashEntry, earlierFile] {
+                    realm.add(LegacyRealmItemMetadata(value: item))
+                }
+            }
+        }
+        fixture.savePreviouslyConfiguredAccount(account)
+
+        let manager = try fixture.openManager(account: account)
+        let log = FileProviderLogMock()
+        let item = try await Item.lookupItemAndFindParentIdentifier(
+            identifier: .init(cachedTrashEntry.ocId),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: log
+        )
+        #expect(remote.readOperationCount == 0)
+        #expect(item.parentItemIdentifier == .trashContainer)
+        #expect(manager.parentItemIdentifierFromMetadata(item.metadata) == .trashContainer)
+        #expect(item.metadata.serverUrl == account.trashUrl + "/")
+        #expect(item.metadata.downloaded)
+        #expect(manager.itemMetadata(ocId: foreignTrashEntry.ocId) == nil)
+        #expect(manager.itemMetadata(ocId: earlierFile.ocId)?.remotePath() == account.davFilesUrl + "/" + earlierFile.fileName)
+
+        let (restored, error) = await Item.restoreFromTrash(
+            item,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            domain: nil,
+            log: log
+        )
+        #expect(error == nil)
+        #expect(restored.itemIdentifier.rawValue == cachedTrashEntry.ocId)
+        #expect(manager.itemMetadata(ocId: cachedTrashEntry.ocId)?.remotePath() == account.davFilesUrl + "/report.pdf")
+    }
+
+    @Test func ordinaryListingReconcilesServerRenameAfterImport() async throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        let account = Self.account
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://old.example.com",
+            password: account.password
+        )
+        let teamURL = account.davFilesUrl + "/Team"
+        var original = DatabaseTestSuites.makeFile(
+            ocId: "original-report",
+            fileName: "Report.txt",
+            serverUrl: previousAccount.davFilesUrl + "/Team",
+            account: previousAccount
+        )
+        original.downloaded = true
+        original.keepDownloaded = true
+        original.uploaded = true
+        let replacementID = "replacement-report"
+        let root = MockRemoteItem.rootItem(account: account)
+        let team = MockRemoteItem(
+            identifier: "team-folder",
+            name: "Team",
+            remotePath: teamURL,
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        root.children = [team]
+        team.parent = root
+        var directory = DatabaseTestSuites.makeFile(ocId: team.identifier, fileName: team.name, account: previousAccount)
+        directory.directory = true
+        directory.uploaded = true
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write {
+                for item in [original, directory] {
+                    realm.add(LegacyRealmItemMetadata(value: item))
+                }
+            }
+        }
+        fixture.savePreviouslyConfiguredAccount(account)
+
+        let manager = try fixture.openManager()
+        let imported = try #require(manager.itemMetadata(ocId: original.ocId))
+        #expect(imported.remotePath() == teamURL + "/" + original.fileName)
+        #expect(imported.downloaded)
+        #expect(imported.keepDownloaded)
+        #expect(!imported.deleted)
+        #expect(manager.itemMetadatas(account: previousAccount.ncKitAccount).isEmpty)
+
+        let currentNames = [(original.ocId, "Older report.txt"), (replacementID, original.fileName)]
+        for (identifier, name) in currentNames {
+            let item = MockRemoteItem(
+                identifier: identifier,
+                versionIdentifier: "file-version",
+                name: name,
+                remotePath: teamURL + "/" + name,
+                account: account.ncKitAccount,
+                username: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl
+            )
+            team.children.append(item)
+            item.parent = team
+        }
+        let remote = MockRemoteInterface(account: account, rootItem: root)
+        let listing = await Enumerator.readServerUrl(
+            teamURL,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        #expect(listing.error == nil)
+        #expect(listing.changes?.deleted.isEmpty == true)
+        #expect(remote.readOperationCount == 1)
+        let moved = try #require(manager.itemMetadata(ocId: original.ocId))
+        #expect(moved.remotePath() == teamURL + "/Older report.txt")
+        #expect(moved.downloaded)
+        #expect(moved.keepDownloaded)
+        #expect(manager.itemMetadata(ocId: replacementID)?.remotePath() == teamURL + "/" + original.fileName)
     }
 
     @Test func aRealmFileReplacesAnExistingDatabase() throws {
@@ -198,7 +713,14 @@ struct RealmStoreImporterTests {
     @Test func withoutARealmFileNothingIsImported() throws {
         let fixture = Self.makeFixture()
 
-        #expect(RealmStoreImporter.importIfNeeded(realmURL: fixture.realmURL, sqliteURL: fixture.sqliteURL, logger: FileProviderLogger(category: "test", log: FileProviderLogMock())) == .notNeeded)
+        let outcome = RealmStoreImporter.importIfNeeded(
+            realmURL: fixture.realmURL,
+            sqliteURL: fixture.sqliteURL,
+            account: Self.account,
+            previouslyConfiguredAccount: nil,
+            logger: FileProviderLogger(category: "RealmStoreImporterTests", log: FileProviderLogMock())
+        )
+        #expect(outcome == .notNeeded)
 
         let manager = try fixture.openManager()
         #expect(manager.allItemMetadatasForTesting().isEmpty)

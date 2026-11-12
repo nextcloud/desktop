@@ -204,7 +204,7 @@ extension FilesDatabaseManager {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
                         // Rebuild the row so its indexed location keys follow the listed path.
-                        try ItemMetadataRecord(metadata).upsertRow(db)
+                        try ItemMetadataRecord(metadata, domainAccount: self.account).upsertRow(db)
                     }
                     try operation.cancellation.checkCancellation()
                     // Register before commit so reconciliation protects these rows until File Provider confirms them.

@@ -283,7 +283,7 @@ extension FilesDatabaseManager {
             let movedServerUrl = oldServerUrl.replacingOccurrences(
                 of: oldDirectoryServerUrl, with: newDirectoryServerUrl
             )
-            childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
+            childItem.updateLocation(parentURL: movedServerUrl, fileName: childItem.fileName, domainAccount: account)
             childItem.lockToken = nil
             try childItem.upsertRow(db)
             logger.debug(
@@ -294,9 +294,12 @@ extension FilesDatabaseManager {
             )
         }
 
+        let destinationAccountKey = account.davRelativePath(forURL: newDirectoryServerUrl) == nil
+            ? directoryMetadata.account
+            : account.ncKitAccount
         return try ItemMetadataRecord
             .filter(
-                ItemMetadataRecord.Columns.account == directoryMetadata.account
+                ItemMetadataRecord.Columns.account == destinationAccountKey
                     && matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
