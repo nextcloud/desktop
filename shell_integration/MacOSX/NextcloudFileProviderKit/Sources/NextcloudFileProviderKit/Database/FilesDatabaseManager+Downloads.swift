@@ -186,7 +186,6 @@ extension FilesDatabaseManager {
                         metadata.fileNameView = listed.fileNameView
                         metadata.name = listed.name
                         metadata.serverUrl = listed.serverUrl
-                        metadata.path = listed.path
                         metadata.status = Status.normal.rawValue
                         metadata.deleted = false
                         metadata.downloaded = true

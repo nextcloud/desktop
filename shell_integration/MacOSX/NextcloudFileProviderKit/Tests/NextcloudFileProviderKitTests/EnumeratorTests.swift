@@ -2235,7 +2235,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             fileNameView: "file.txt",
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             serverUrl: Self.account.davFilesUrl,
             size: 0,
             urlBase: Self.account.serverUrl,

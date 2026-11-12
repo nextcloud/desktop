@@ -77,7 +77,6 @@ extension ItemMetadataRecord {
         lockTime = try (row.decode(Double?.self, forColumn: "lockTime")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockTimeOut = try (row.decode(Double?.self, forColumn: "lockTimeOut")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockToken = try row.decode(forColumn: "lockToken")
-        path = try row.decode(forColumn: "path")
         permissions = try row.decode(forColumn: "permissions")
         quotaUsedBytes = try row.decode(forColumn: "quotaUsedBytes")
         quotaAvailableBytes = try row.decode(forColumn: "quotaAvailableBytes")
@@ -149,7 +148,8 @@ extension ItemMetadataRecord {
         container["lockTime"] = lockTime?.timeIntervalSinceReferenceDate
         container["lockTimeOut"] = lockTimeOut?.timeIntervalSinceReferenceDate
         container["lockToken"] = lockToken
-        container["path"] = path
+        // Older v1 builds read this column to send the WebDAV parent path as remoteItemPath over XPC.
+        container["path"] = davParentPathWithoutOrigin
         container["permissions"] = permissions
         container["quotaUsedBytes"] = quotaUsedBytes
         container["quotaAvailableBytes"] = quotaAvailableBytes
@@ -226,7 +226,7 @@ extension ItemMetadataRecord {
             note,
             ownerDisplayName,
             ownerId,
-            path,
+            davParentPathWithoutOrigin,
             permissions,
             quotaAvailableBytes,
             quotaUsedBytes,

@@ -94,7 +94,6 @@ extension Item {
             mountType: "",
             ownerId: account.id,
             ownerDisplayName: "",
-            path: parentItemRemotePath + "/" + targetFileName,
             serverUrl: parentItemRemotePath,
             size: 0,
             status: Status.normal.rawValue,

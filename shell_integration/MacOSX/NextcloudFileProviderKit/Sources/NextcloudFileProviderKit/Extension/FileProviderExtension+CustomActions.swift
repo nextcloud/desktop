@@ -36,7 +36,12 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     let path = userVisibleURL.path
                     let domainIdentifier = domain.identifier.rawValue
                     logger.info("Telling main app to present file actions.", [.item: path, .domain: domainIdentifier])
-                    app?.presentFileActions(metadata.ocId, path: path, remoteItemPath: metadata.path, withDomainIdentifier: domainIdentifier)
+                    app?.presentFileActions(
+                        metadata.ocId,
+                        path: path,
+                        remoteItemPath: metadata.davParentPathWithoutOrigin,
+                        withDomainIdentifier: domainIdentifier
+                    )
                     completionHandler(nil)
                 }
 
@@ -68,8 +73,9 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 }
 
                 let domainIdentifier = domain.identifier.rawValue
-                logger.info("Telling main app to open item in browser.", [.item: metadata.path, .domain: domainIdentifier])
-                app?.openItemInBrowser(metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                let parentPathWithoutOrigin = metadata.davParentPathWithoutOrigin
+                logger.info("Telling main app to open item in browser.", [.item: parentPathWithoutOrigin, .domain: domainIdentifier])
+                app?.openItemInBrowser(metadata.fileId, remoteItemPath: parentPathWithoutOrigin, forDomainIdentifier: domainIdentifier)
                 completionHandler(nil)
 
                 return Progress()
@@ -100,8 +106,9 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 }
 
                 let domainIdentifier = domain.identifier.rawValue
-                logger.info("Telling main app to copy internal link.", [.item: metadata.path, .domain: domainIdentifier])
-                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                let parentPathWithoutOrigin = metadata.davParentPathWithoutOrigin
+                logger.info("Telling main app to copy internal link.", [.item: parentPathWithoutOrigin, .domain: domainIdentifier])
+                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: parentPathWithoutOrigin, forDomainIdentifier: domainIdentifier)
                 completionHandler(nil)
 
                 return Progress()

@@ -24,7 +24,6 @@ extension NKTrash {
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             serverUrl: account.trashUrl,
             sharePermissionsCollaborationServices: 0, // Default as not set in original code
             sharePermissionsCloudMesh: [], // Default as not set in original code
