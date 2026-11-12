@@ -601,6 +601,96 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(rootItem.children.first { $0.name == appFilename })
     }
 
+    /// A package on the ignore list, such as Keka's temporary `.kextraction` output, is excluded
+    /// without the bundle warning in the activity view.
+    func testCreateIgnoredBundleIsExcludedWithoutBundleReport() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "Archive.kextraction"
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: true, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == filename })
+        XCTAssertTrue(proxy.captured.isEmpty)
+    }
+
+    /// A package that is not on the ignore list still produces the bundle warning.
+    func testCreateBundleNotOnIgnoreListReportsExclusion() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "Presentation.key"
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: true, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == filename })
+        XCTAssertEqual(proxy.captured.map(\.fileName), [filename])
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .bundle))
+    }
+
+    /// An ignored plain file whose extension makes it count as a package, and whose name looks like an Office lock file, is excluded rather than handled as a lock file.
+    func testCreateIgnoredPlainFileWithPackageExtensionIsNotHandledAsLockFile() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "~$Report.app"
+
+        // A file the lock-file handling would pick as the target of the lock, by its name.
+        let lockTarget = MockRemoteItem(
+            identifier: "report-target",
+            name: "Report.app",
+            remotePath: Self.account.davFilesUrl + "/Report.app",
+            data: Data("report".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        lockTarget.parent = rootItem
+        rootItem.children = [lockTarget]
+        Self.dbManager.addItemMetadata(lockTarget.toItemMetadata(account: Self.account))
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: false, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertFalse(lockTarget.locked, "An ignored item must not lock another file on the server.")
+        XCTAssertNotEqual(Self.dbManager.itemMetadata(ocId: "\(filename)-id")?.isLockFileOfLocalOrigin, true, "An ignored item must not be stored as a lock file.")
+        XCTAssertTrue(proxy.captured.isEmpty)
+    }
+
+    private func createWithIgnoreList(named filename: String, isPackageFolder: Bool, appProxy: ExclusionCapturingAppProxy) async -> (Item?, Error?) {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var metadata = SendableItemMetadata(ocId: "\(filename)-id", fileName: filename, account: Self.account)
+        metadata.serverUrl = Self.account.davFilesUrl
+        if isPackageFolder {
+            metadata.directory = true
+            metadata.classFile = NKTypeClassFile.directory.rawValue
+            metadata.contentType = UTType.package.identifier
+        }
+
+        let template = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        return await Item.create(
+            basedOn: template,
+            contents: nil,
+            domain: NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier("test-domain-package"), displayName: "test"),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: IgnoredFilesMatcher(ignoreList: ["*.kextraction", "~$*"], log: FileProviderLogMock()),
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            appProxy: appProxy,
+            log: FileProviderLogMock()
+        )
+    }
+
     func testCreateFileChunked() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         var fileItemMetadata = SendableItemMetadata(

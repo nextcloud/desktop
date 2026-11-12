@@ -430,11 +430,17 @@ public extension Item {
         // through `modifyUnuploaded` (which returns `NSFileProviderError(.excludedFromSync)`),
         // and surface the situation in the activity view.
         // Tracked at https://github.com/nextcloud/desktop/issues/9827.
+        // A package on the ignore list that keeps its name and folder is excluded here too, but without the warning, because a rename or move may take it off the list.
+
+        let sourceRelativePath = account.filesRootRelativePath(for: modifiedItem.metadata.remotePath())
+        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
         if isBundleOrPackage {
             logger.info("Refusing to sync modification of bundle/package — feature not supported.", [.name: filename])
 
-            if let domain {
+            let staysExcluded = sourceIsExcluded && changedFields.isDisjoint(with: [.filename, .parentItemIdentifier])
+
+            if let domain, !staysExcluded {
                 let relativePath = (metadata.serverUrl + "/" + metadata.fileName).replacingOccurrences(of: account.davFilesUrl, with: "")
                 ItemExclusionReporter.report(relativePath: relativePath, fileName: filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: logger.log)
             }
@@ -468,8 +474,6 @@ public extension Item {
             )
         }
 
-        let sourceRelativePath = account.filesRootRelativePath(for: modifiedItem.metadata.remotePath())
-        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
         guard !sourceIsExcluded else {
             logger.info("File is in the ignore list. Any follow-up provider deletion will have no remote effect.", [.item: modifiedItem.itemIdentifier, .name: modifiedItem.filename])
 
