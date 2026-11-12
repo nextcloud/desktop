@@ -100,6 +100,49 @@ struct NetworkOperationCancellationTests {
     }
 
     @Test
+    func accountChangeResumesAnUploadAndPreventsAnotherPause() async throws {
+        let (suspended, notifySuspended) = AsyncStream<Void>.makeStream()
+        let (resumed, notifyResumed) = AsyncStream<Void>.makeStream()
+        let monitor = ClosureEventMonitor()
+        monitor.requestDidSuspend = { _ in notifySuspended.yield(()) }
+        monitor.requestDidResume = { _ in notifyResumed.yield(()) }
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let host = UUID().uuidString.lowercased() + ".example.invalid"
+        MockHTTPURLProtocol.setHandlers(forHost: host, start: { _ in }, stop: { _ in })
+        defer { MockHTTPURLProtocol.removeHandlers(forHost: host) }
+        let session = Session(
+            configuration: configuration,
+            startRequestsImmediately: false,
+            eventMonitors: [monitor]
+        )
+        let request = session.upload(Data(), to: "https://" + host + "/file")
+        defer { request.cancel() }
+        let progress = Progress()
+        let operations = SyncOperations()
+        let pendingOperation = operations.begin(resumeWrite: { progress.resume() })
+        let operation = try #require(pendingOperation)
+        try #require(operation.beginServerWrite())
+        defer { operation.finish() }
+
+        let resumedDuringChange = await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { cancellation in
+            cancellation.register(request: request, canPause: { operations.isAcceptingWork })
+            progress.pause()
+            guard (try? await nextTestValue(from: suspended)) != nil else { return false }
+
+            operations.stopAcceptingWork()
+            let drain = Task { await operations.waitForWrites() }
+            let resumedRequest: Void? = try? await nextTestValue(from: resumed)
+            progress.pausingHandler?()
+            let didResume = resumedRequest != nil && request.isResumed
+            operation.finish()
+            await drain.value
+            return didResume
+        }
+        #expect(resumedDuringChange)
+    }
+
+    @Test
     func requestRegisteredAfterCancellationIsCancelled() async throws {
         let (cancelledRequests, continuation) = AsyncStream<ObjectIdentifier>.makeStream()
         defer { continuation.finish() }
@@ -118,6 +161,24 @@ struct NetworkOperationCancellationTests {
             try #require(request.isCancelled)
             #expect(try await nextTestValue(from: cancelledRequests) == ObjectIdentifier(request))
         }
+    }
+
+    @Test
+    func stoppedReadCannotSendAWriteWhenAccountSetupResumes() async throws {
+        let operations = SyncOperations()
+        let operation = try #require(operations.begin())
+        defer { operation.finish() }
+
+        operations.stopAcceptingWork()
+        await operations.waitForWrites()
+        #expect(operations.resumeAcceptingWork())
+
+        #expect(operation.isStopped)
+        #expect(!operation.beginServerWrite())
+        #expect(!operation.beginDelivery())
+        let newOperation = try #require(operations.begin())
+        defer { newOperation.finish() }
+        #expect(newOperation.beginServerWrite())
     }
 
     @Test

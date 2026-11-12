@@ -59,59 +59,62 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     }
 
     func userAgent() async -> NSString? {
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
             return nil
         }
+        defer { operation.finish() }
 
-        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: account)
+        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: dbManager.account.ncKitAccount)
+        guard operation.beginDelivery() else { return nil }
         return nkSession?.userAgent as NSString?
     }
 
     func credentials() async -> NSDictionary {
-        (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
+            return [:]
+        }
+        defer { operation.finish() }
+        guard operation.beginDelivery() else { return [:] }
+        return dbManager.account.dictionary() as NSDictionary
     }
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
         let rawIdentifier = identifier.rawValue
         logger.info("Fetching shares for item \(rawIdentifier)")
 
-        guard let baseUrl = fpExtension.ncAccount?.davFilesUrl else {
-            logger.error("Could not fetch shares as ncAccount on parent extension is nil")
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
+            logger.error("Could not fetch the item path because the account is unavailable.", [.item: identifier])
             return nil
         }
-
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
-            logger.error("Could not fetch ncKitAccount on parent extension")
-            return nil
-        }
-        guard let dbManager = fpExtension.dbManager else {
-            logger.error("Could not get db manager for \(account)")
-            return nil
-        }
+        defer { operation.finish() }
         guard let item = dbManager.itemMetadata(identifier) else {
             logger.error("No item \(rawIdentifier) in db, no shares.")
             return nil
         }
 
+        guard operation.beginDelivery() else { return nil }
         let completePath = item.serverUrl + "/" + item.fileName
-        return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
+        return completePath.replacingOccurrences(of: dbManager.account.davFilesUrl, with: "") as NSString
     }
 
     func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
-        guard let account = fpExtension.ncAccount else {
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
             logger.error("Could not present unified sharing because the account is unavailable.", [.item: identifier])
             return false
         }
+        defer { operation.finish() }
 
-        guard let dbManager = fpExtension.dbManager,
-              let metadata = dbManager.itemMetadata(identifier),
+        guard let metadata = dbManager.itemMetadata(identifier),
               !metadata.fileId.isEmpty
         else {
             logger.error("Could not present unified sharing because the item metadata or numeric file id is unavailable.", [.item: identifier])
             return false
         }
 
-        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(
+            account: dbManager.account,
+            taskHandler: { operation.registerReadTask($0) }
+        )
         guard error == .success else {
             logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
             return false
@@ -126,6 +129,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             logger.error("Could not present unified sharing because the main app connection is unavailable.", [.item: identifier])
             return false
         }
+        guard operation.beginDelivery() else { return false }
 
         let domainIdentifier = fpExtension.domain.identifier.rawValue
         app.presentUnifiedSharing(

@@ -114,6 +114,9 @@ public extension Item {
             }
         }
 
+        guard SyncOperations.beginServerWrite() else {
+            return NSFileProviderError(.serverUnreachable)
+        }
         let (_, _, error) = await remoteInterface.delete(
             remotePath: serverFileNameUrl,
             account: account,
@@ -235,12 +238,14 @@ public extension Item {
     private func resolveTrashbinItemRemotePath(
         domain: NSFileProviderDomain?
     ) async -> TrashbinItemRemotePathResolution {
+        let operation = SyncOperations.Operation.current
         let (_, items, _, error) = await remoteInterface.listingTrashAsync(
             filename: nil,
             showHiddenFiles: true,
             account: account.ncKitAccount,
             options: .init(),
             taskHandler: { task in
+                operation?.registerReadTask(task)
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
                         task,

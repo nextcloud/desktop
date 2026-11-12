@@ -458,7 +458,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: metadata.ocId))
 
-        let read = await Enumerator.readServerUrl(rootItem.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let read = await Enumerator.readServerUrl(rootItem.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
         XCTAssertNil(read.error)
         XCTAssertTrue(try XCTUnwrap(read.metadatas).contains { $0.ocId == metadata.ocId })
         XCTAssertFalse(try XCTUnwrap(read.changes).createdAndUpdated.contains { $0.ocId == metadata.ocId })
@@ -795,7 +795,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(error)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
 
-        let read = await Enumerator.readServerUrl(rootItem.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let read = await Enumerator.readServerUrl(rootItem.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
         XCTAssertNil(read.error)
         XCTAssertTrue(try XCTUnwrap(read.metadatas).contains { $0.ocId == metadata.ocId })
         XCTAssertFalse(try XCTUnwrap(read.changes).createdAndUpdated.contains { $0.ocId == metadata.ocId })

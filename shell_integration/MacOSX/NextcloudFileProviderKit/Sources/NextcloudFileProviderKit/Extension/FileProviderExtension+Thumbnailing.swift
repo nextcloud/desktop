@@ -17,12 +17,12 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         ) -> Void,
         completionHandler: @escaping (Error?) -> Void
     ) -> Progress {
-        guard let ncAccount else {
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-        guard let dbManager else {
-            completionHandler(NSFileProviderError(.cannotSynchronize))
+        let dbManager: FilesDatabaseManager
+        let operation: SyncOperations.Operation
+        do {
+            (dbManager, operation) = try beginSyncOperation()
+        } catch {
+            completionHandler(error)
             return Progress()
         }
 
@@ -32,17 +32,29 @@ extension FileProviderExtension: NSFileProviderThumbnailing {
         let perItemBox = ThumbnailingUncheckedSendable(value: perThumbnailCompletionHandler)
         let finalBox = ThumbnailingUncheckedSendable(value: completionHandler)
 
-        return thumbnailFetcher(
+        let progress = thumbnailFetcher(
             itemIdentifiers,
             size,
-            ncAccount,
+            dbManager.account,
             ncKit,
             dbManager,
             domain,
-            { id, data, error in perItemBox.value(id, data, error) },
+            { id, data, error in
+                if operation.isStopped {
+                    perItemBox.value(id, nil, NSFileProviderError(.serverUnreachable))
+                } else {
+                    perItemBox.value(id, data, error)
+                }
+            },
             log,
-            { error in finalBox.value(error) }
+            { [self] error in
+                defer { operation.finish() }
+                guard !retryIfStopped(operation, completion: { finalBox.value($0) }) else { return }
+                finalBox.value(error)
+            }
         )
+        operation.cancelReadOnStop { progress.cancel() }
+        return progress
     }
 }
 

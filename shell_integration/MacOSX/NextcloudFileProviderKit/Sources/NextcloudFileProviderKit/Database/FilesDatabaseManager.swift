@@ -76,6 +76,7 @@ public final class FilesDatabaseManager: Sendable {
 
     let logger: FileProviderLogger
     let account: Account
+    let syncOperations = SyncOperations()
     /// Share ownership and the starting ETag and path across managers accessing the same database.
     static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: ActiveDownload]]())
 
@@ -89,8 +90,17 @@ public final class FilesDatabaseManager: Sendable {
     /// Location of the database file, `nil` when the database lives in memory.
     let databaseURL: URL?
 
-    /// Downloads of this domain which the system has not yet reported as materialized, kept here because one process can host several domains and each has its own manager.
-    let pendingMaterializations = PendingMaterializationRegistry()
+    /// Downloads the system has not yet reported as materialized. Managers opened by the extension share its registry across account setup.
+    let pendingMaterializations: PendingMaterializationRegistry
+
+    init(account: Account, continuingFrom previousManager: FilesDatabaseManager, storeIdentity: String) {
+        self.account = account
+        self.storeIdentity = storeIdentity
+        writer = previousManager.writer
+        databaseURL = previousManager.databaseURL
+        pendingMaterializations = previousManager.pendingMaterializations
+        logger = FileProviderLogger(category: "FilesDatabaseManager", log: previousManager.logger.log)
+    }
 
     ///
     /// Open the domain's database, creating, importing or migrating it as needed.
@@ -106,8 +116,33 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// - Throws: ``OpenError`` when no usable database can be opened. The caller must not set the domain up with a substitute, because nothing written to one would survive, and the next attempt may well succeed.
     ///
-    public init(account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) throws {
+    public convenience init(
+        account: Account,
+        databaseDirectory: URL? = nil,
+        fileProviderDomainIdentifier: NSFileProviderDomainIdentifier,
+        log: any FileProviderLogging,
+        defaults: UserDefaults = .standard
+    ) throws {
+        try self.init(
+            account: account,
+            databaseDirectory: databaseDirectory,
+            fileProviderDomainIdentifier: fileProviderDomainIdentifier,
+            log: log,
+            pendingMaterializations: PendingMaterializationRegistry(),
+            defaults: defaults
+        )
+    }
+
+    init(
+        account: Account,
+        databaseDirectory customDatabaseDirectory: URL?,
+        fileProviderDomainIdentifier: NSFileProviderDomainIdentifier,
+        log: any FileProviderLogging,
+        pendingMaterializations: PendingMaterializationRegistry,
+        defaults: UserDefaults = .standard
+    ) throws {
         self.account = account
+        self.pendingMaterializations = pendingMaterializations
         logger = FileProviderLogger(category: "FilesDatabaseManager", log: log)
 
         let defaultDatabaseDirectory = FileManager.default.fileProviderDomainSupportDirectory(for: fileProviderDomainIdentifier)
@@ -261,12 +296,12 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Check that this manager can still use the DAV account it opened the database with.
-    /// Another manager can switch the database to a different account and change its identifier.
-    func isForCurrentDAVAccount() -> Bool {
-        read("Could not check whether this database manager still uses the current DAV account.") { db in
-            try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity
-        } ?? false
+    var wasInvalidatedByDAVAccountChange: Bool {
+        syncOperations.isInvalidated
+    }
+
+    func invalidateForDAVAccountChange() {
+        syncOperations.invalidate()
     }
 
     /// Run a write in one transaction with the given durability; a failure is logged with `failure` and yields `nil`.
@@ -286,8 +321,9 @@ public final class FilesDatabaseManager: Sendable {
     /// The synchronization level is a property of the connection and cannot change inside a transaction, so it is set on the writer right before the transaction opens.
     ///
     func write<T>(durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
-        try writer.writeWithoutTransaction { db in
-            try writeTransaction(in: db, durability: durability, body)
+        let operation = SyncOperations.Operation.current
+        return try writer.writeWithoutTransaction { db in
+            try writeTransaction(in: db, durability: durability, operation: operation, body)
         }
     }
 
@@ -296,22 +332,34 @@ public final class FilesDatabaseManager: Sendable {
         durability: WriteDurability,
         _ body: @Sendable (Database) throws -> T
     ) async throws -> T {
-        try await writer.writeWithoutTransaction { db in
-            try self.writeTransaction(in: db, durability: durability, body)
+        let operation = SyncOperations.Operation.current
+        return try await writer.writeWithoutTransaction { db in
+            try self.writeTransaction(in: db, durability: durability, operation: operation, body)
         }
     }
 
-    private func writeTransaction<T>(in db: Database, durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
+    private func writeTransaction<T>(
+        in db: Database,
+        durability: WriteDurability,
+        operation: SyncOperations.Operation?,
+        _ body: (Database) throws -> T
+    ) throws -> T {
         try db.execute(sql: durability.pragma)
 
         var result: T?
         try db.inTransaction {
             // An account change updates the database identifier and the cached items together.
             // A DAV response queued by the previous manager must not overwrite those rows.
-            guard try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity else {
+            guard !wasInvalidatedByDAVAccountChange,
+                  operation?.isStopped != true,
+                  try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity
+            else {
                 throw NSFileProviderError(.cannotSynchronize)
             }
             result = try body(db)
+            guard !wasInvalidatedByDAVAccountChange, operation?.isStopped != true else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
             return .commit
         }
 
@@ -357,8 +405,12 @@ public final class FilesDatabaseManager: Sendable {
     public func perform<T: Sendable>(
         _ work: @escaping @Sendable (FilesDatabaseManager) -> T
     ) async -> T {
-        await withCheckedContinuation { continuation in
-            blockingCallQueue.async { continuation.resume(returning: work(self)) }
+        let operation = SyncOperations.Operation.current
+        return await withCheckedContinuation { continuation in
+            blockingCallQueue.async {
+                let result = SyncOperations.Operation.$current.withValue(operation) { work(self) }
+                continuation.resume(returning: result)
+            }
         }
     }
 
@@ -904,44 +956,99 @@ public final class FilesDatabaseManager: Sendable {
     /// If setting a downloading or uploading status, also modified the relevant boolean properties
     /// of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: SendableItemMetadata, status: Status
+        _ metadata: SendableItemMetadata,
+        status: Status
     ) -> SendableItemMetadata? {
-        write("Could not update status for item metadata.", [.item: metadata.ocId, .eTag: metadata.etag, .name: metadata.fileName]) { db in
-            guard var record = try itemMetadata(ocId: metadata.ocId, in: db) else {
-                logger.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId)")
-                return nil
-            }
-
-            record.status = status.rawValue
-            if record.isDownload {
-                record.downloaded = false
-            } else if record.isUpload {
-                record.uploaded = false
-            }
-
-            try record.upsertRow(db)
-
-            logger.debug("Updated status for item metadata.", [
+        do {
+            return try setStatusForItemMetadata(ocId: metadata.ocId, status: status)
+        } catch {
+            logger.error("Could not update status for item metadata.", [
                 .item: metadata.ocId,
                 .eTag: metadata.etag,
                 .name: metadata.fileName,
-                .syncTime: metadata.syncTime
+                .error: error
             ])
+            return nil
+        }
+    }
 
+    /// Report database failures separately from a missing item in the current account.
+    func setStatusForItemMetadata(ocId: String, status: Status) throws -> SendableItemMetadata? {
+        try write(durability: .full) { db in
+            guard var record = try itemMetadata(ocId: ocId, in: db), !record.deleted else { return nil }
+            try record.updateChanges(db) {
+                $0.status = status.rawValue
+                if $0.isDownload {
+                    $0.downloaded = false
+                } else if $0.isUpload {
+                    $0.uploaded = false
+                }
+            }
             return record.metadata
-        } ?? nil
+        }
+    }
+
+    /// Save the upload attempt ID in the existing session field before sending the edit.
+    func beginEditedItemUpload(ocId: String, uploadAttemptID: String) throws -> SendableItemMetadata? {
+        try write(durability: .full) { db in
+            guard var record = try itemMetadata(ocId: ocId, in: db), !record.deleted else { return nil }
+            try record.updateChanges(db) {
+                $0.status = Status.uploading.rawValue
+                $0.uploaded = false
+                $0.session = uploadAttemptID
+            }
+            return record.metadata
+        }
+    }
+
+    /// Save the server result for the exact upload attempt that sent the edit.
+    func completeEditedItemUpload(
+        ocId: String,
+        uploadAttemptID: String,
+        etag: String?,
+        date: Date?,
+        size: Int64?
+    ) throws -> SendableItemMetadata {
+        try write(durability: .full) { db in
+            guard var item = try itemMetadata(ocId: ocId, in: db),
+                  !item.deleted,
+                  item.status == Status.uploading.rawValue,
+                  item.session == uploadAttemptID
+            else { throw NSFileProviderError(.cannotSynchronize) }
+
+            try item.updateChanges(db) {
+                $0.status = Status.normal.rawValue
+                $0.date = date ?? $0.date
+                $0.etag = etag ?? $0.etag
+                $0.fileProviderContentVersion = $0.etag
+                $0.size = size ?? 0
+                $0.session = ""
+                $0.sessionError = ""
+                $0.sessionTaskIdentifier = 0
+                $0.downloaded = true
+                $0.uploaded = true
+            }
+            return item.metadata
+        }
     }
 
     /// Update the current upload state without writing back metadata captured before the transfer.
-    func recordUploadFailure(ocId: String, errorDescription: String, staleLockToken: String?) {
+    func recordUploadFailure(
+        ocId: String,
+        uploadAttemptID: String,
+        errorDescription: String,
+        staleLockToken: String?
+    ) {
         write("Could not record upload failure.", [.item: ocId]) { db in
             guard var record = try itemMetadata(ocId: ocId, in: db),
                   !record.deleted,
+                  record.session == uploadAttemptID,
                   record.status == Status.uploading.rawValue
             else { return }
 
             try record.updateChanges(db) {
                 $0.status = Status.uploadError.rawValue
+                $0.session = ""
                 $0.sessionError = errorDescription
                 if let staleLockToken, $0.lockToken == staleLockToken {
                     $0.lockToken = nil
@@ -1262,7 +1369,6 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierWithRemoteFallback(
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
-        account: Account,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled }
     ) async -> NSFileProviderItemIdentifier? {
@@ -1273,7 +1379,6 @@ public final class FilesDatabaseManager: Sendable {
 
         let readResult = await Enumerator.readServerUrl(
             metadata.serverUrl,
-            account: account,
             sourceMetadata: metadata,
             remoteInterface: remoteInterface,
             dbManager: self,

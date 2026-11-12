@@ -31,6 +31,9 @@ public extension Item {
         // It is not confirmed whether the File Provider daemon already does this internally when
         // processing didUpdate renames. If it does not, wrapping rename propagation in an
         // NSFileCoordinator coordinated write would notify registered presenters.
+        guard SyncOperations.beginServerWrite() else {
+            return (nil, NSFileProviderError(.serverUnreachable))
+        }
         let (_, _, _, createError) = await remoteInterface.createFolder(
             remotePath: remotePath, account: account, options: .init(), taskHandler: { task in
                 if let domain, let itemTemplate {

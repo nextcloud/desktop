@@ -333,14 +333,14 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                 for child in remoteItem.children {
                     child.remotePath = child.remotePath.replacingOccurrences(of: oldPath, with: remoteItem.remotePath)
                 }
-                let rename = await Enumerator.readServerUrl(Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                let rename = await Enumerator.readServerUrl(Self.account.davFilesUrl, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
                 XCTAssertNil(rename.error)
                 XCTAssertTrue(try XCTUnwrap(rename.changes).updated.contains { $0.ocId == remoteItem.identifier })
                 XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteItem.identifier)?.fileName, remoteItem.name)
 
                 remoteItem.versionIdentifier = "updated-content"
                 remoteItem.data = directory ? nil : Data("New server contents".utf8)
-                let contents = await Enumerator.readServerUrl(directory ? remoteItem.remotePath : Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                let contents = await Enumerator.readServerUrl(directory ? remoteItem.remotePath : Self.account.davFilesUrl, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
                 XCTAssertNil(contents.error)
                 XCTAssertTrue(try XCTUnwrap(contents.changes).updated.contains { $0.ocId == remoteItem.identifier })
                 let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
@@ -1279,7 +1279,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
         XCTAssertTrue(rootItem.children.contains { $0.identifier == directory.identifier })
         directory.versionIdentifier = "changed-after-exclusion"
-        let read = await Enumerator.readServerUrl(rootItem.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let read = await Enumerator.readServerUrl(rootItem.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
         XCTAssertNil(read.error)
         let restoredMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
         XCTAssertFalse(restoredMetadata.deleted)
@@ -1361,7 +1361,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             }
             let rename = await Enumerator.readServerUrl(
                 Self.account.davFilesUrl,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager,
                 log: FileProviderLogMock()
@@ -1735,7 +1734,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             directory.children.removeAll { $0.identifier == removedChild.identifier }
             let read = await Enumerator.readServerUrl(
                 directory.remotePath,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: FileProviderLogMock()
@@ -1806,7 +1804,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         movedChild.remotePath = destination.remotePath + "/" + movedChild.name
         let listing = await Enumerator.readServerUrl(
             destination.remotePath,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             log: FileProviderLogMock()
@@ -1976,7 +1973,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let listing = await Enumerator.readServerUrl(
             Self.account.davFilesUrl,
             pageSettings: (page: nil, index: 0, size: 5),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             log: FileProviderLogMock()
@@ -2029,7 +2025,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(move.error, .success)
             let listing = await Enumerator.readServerUrl(
                 parentPath,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: FileProviderLogMock()
@@ -2691,13 +2686,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let (item, remoteInterface, directory) = makeNestedFetchItem()
         let dbManager = Self.dbManager
         let metadata = item.metadata
-        let account = Self.account
         let lookup = Task<Bool, Never> { @Sendable in
             withUnsafeCurrentTask { $0?.cancel() }
             let parent = await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
-                remoteInterface: remoteInterface,
-                account: account
+                remoteInterface: remoteInterface
             )
             return parent == nil
         }

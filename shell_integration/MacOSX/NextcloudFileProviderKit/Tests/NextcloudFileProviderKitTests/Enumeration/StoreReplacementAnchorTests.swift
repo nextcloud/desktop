@@ -35,7 +35,6 @@ struct StoreReplacementAnchorTests {
         let account = DatabaseTestSuites.account
         return try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: account,
             remoteInterface: MockRemoteInterface(account: account, rootItem: MockRemoteItem.rootItem(account: account)),
             dbManager: manager,
             log: FileProviderLogMock()

@@ -341,12 +341,61 @@ extension NextcloudKit: RemoteInterface {
 
     public func tryAuthenticationAttempt(
         account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
     ) async -> AuthenticationAttemptResultState {
-        // Test by trying to fetch user profile
-        let (_, _, _, error) =
-            await enumerate(remotePath: account.davFilesUrl + "/", depth: .target, account: account)
+        await validateDAVCredentials(
+            account: account,
+            sessionKey: account.ncKitAccount,
+            options: options,
+            taskHandler: taskHandler
+        )
+    }
+
+    /// Give the credential check a private session and cookie jar before installing the real login.
+    func makeDAVValidationSession(account: Account, userAgent: String) -> String {
+        let key = UUID().uuidString
+        appendSession(
+            account: key,
+            urlBase: account.serverUrl,
+            user: key,
+            userId: account.id,
+            password: account.password,
+            userAgent: userAgent,
+            groupIdentifier: ""
+        )
+        // NextcloudKit chooses the cookie jar when the session is created. Updating the
+        // login here changes the Authorization header while keeping that private jar.
+        updateSession(account: key, user: account.username)
+        return key
+    }
+
+    func removeDAVValidationSession(_ key: String) {
+        if let session = nkCommonInstance.nksessions.session(forAccount: key) {
+            if let cookieStorage = session.sessionData.session.configuration.httpCookieStorage {
+                for cookie in cookieStorage.cookies ?? [] { cookieStorage.deleteCookie(cookie) }
+            }
+            session.sessionDownloadBackground.finishTasksAndInvalidate()
+            session.sessionUploadBackground.finishTasksAndInvalidate()
+            session.sessionUploadBackgroundWWan.finishTasksAndInvalidate()
+        }
+        nkCommonInstance.nksessions.remove(account: key)
+    }
+
+    func validateDAVCredentials(
+        account: Account,
+        sessionKey: String,
+        options: NKRequestOptions,
+        taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in }
+    ) async -> AuthenticationAttemptResultState {
+        let (_, _, _, error) = await readFileOrFolderAsync(
+            serverUrlFileName: account.davFilesUrl + "/",
+            depth: EnumerateDepth.target.rawValue,
+            showHiddenFiles: false,
+            account: sessionKey,
+            options: options,
+            taskHandler: taskHandler
+        )
 
         if error != .success {
             nkLog(error: "Error in auth check: \(error.errorDescription)")
@@ -354,10 +403,10 @@ extension NextcloudKit: RemoteInterface {
 
         if error == .success {
             return .success
-        } else if error.isCouldntConnectError {
-            return .connectionError
-        } else {
+        } else if error.isUnauthorizedError || error.isUnauthenticatedError {
             return .authenticationError
+        } else {
+            return .connectionError
         }
     }
 }

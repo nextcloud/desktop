@@ -70,6 +70,80 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
     }
 
+    @Test func refusesDAVReadsBeforeReplacingTheAccountSession() async throws {
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator(.rootContainer))
+        manager.invalidateForDAVAccountChange()
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateItems()
+        }
+        #expect(remote.readOperationCount == 0)
+        #expect(observer.items.isEmpty)
+    }
+
+    @Test func accountChangeCancelsActiveEnumerationWithoutWaitingForItsResponse() async throws {
+        file.versionIdentifier = "file-v2"
+        let (requestStarted, reportRequestStarted) = AsyncStream<Void>.makeStream()
+        let (resumeRead, releaseRead) = AsyncStream<Void>.makeStream()
+        defer { releaseRead.finish() }
+        let session = URLSession(configuration: .ephemeral)
+        defer { session.invalidateAndCancel() }
+        let url = try #require(URL(string: folder.remotePath))
+        let (networkTask, networkCompletion) = observedNetworkTask(in: session, url: url)
+        remote.enumerateCallHandler = { _, _, _, _, _, _, _, taskHandler in taskHandler(networkTask) }
+        remote.enumerateHandler = {
+            reportRequestStarted.yield(())
+            reportRequestStarted.finish()
+            // Simulate a response already queued for delivery when cancellation arrives.
+            await Task.detached {
+                var iterator = resumeRead.makeAsyncIterator()
+                _ = await iterator.next()
+            }.value
+            #expect(Task.isCancelled)
+        }
+
+        let enumerator = try makeEnumerator(.init(folder.identifier))
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = MockChangeObserver(enumerator: enumerator)
+        let enumeration = Task {
+            do {
+                try await observer.enumerateChanges(from: anchor)
+                return nil as NSFileProviderError.Code?
+            } catch {
+                return (error as? NSFileProviderError)?.code
+            }
+        }
+        defer { enumeration.cancel() }
+        try #require(try await nextTestValue(from: requestStarted) != nil)
+
+        let operations = manager.syncOperations
+        operations.stopAcceptingWork()
+        let rejected = MockChangeObserver(enumerator: enumerator)
+        await #expect(throws: NSFileProviderError(.serverUnreachable)) {
+            try await rejected.enumerateChanges(from: anchor)
+        }
+        #expect(remote.readOperationCount == 1)
+
+        let drain = Task { await operations.waitForWrites() }
+        try await testTaskValue(of: drain)
+        #expect(try await nextTestValue(from: networkCompletion) == NSURLErrorCancelled)
+        let incomingAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://replacement.example.invalid",
+            password: account.password
+        )
+        let replacement = try manager.replacingDAVAccount(with: incomingAccount)
+        manager.invalidateForDAVAccountChange()
+        releaseRead.finish()
+
+        #expect(try await testTaskValue(of: enumeration) == .syncAnchorExpired)
+        #expect(observer.finishes.isEmpty)
+        #expect(observer.changedItems.isEmpty)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(replacement.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+    }
+
     @Test func workingSetKeepsItsAnchorAndReportsTheChangeAfterRetry() async throws {
         folder.versionIdentifier = "folder-v2"
         file.versionIdentifier = "file-v2"
@@ -163,7 +237,6 @@ struct EnumeratorPersistenceTests {
         let result = await Enumerator.readServerUrl(
             listedFolderURL,
             pageSettings: (nil, 0, 10),
-            account: account,
             remoteInterface: remote,
             dbManager: manager,
             depth: .targetAndDirectChildren,
@@ -234,7 +307,6 @@ struct EnumeratorPersistenceTests {
 
         let result = await Enumerator.handleDepth1ReadFileOrFolder(
             serverUrl: requestedDirectoryURL,
-            account: account,
             dbManager: manager,
             files: [directory, report],
             pageIndex: nil,
@@ -312,7 +384,6 @@ struct EnumeratorPersistenceTests {
         let manager = DatabaseTestSuites.makeManager(account: account)
         let result = await Enumerator.readServerUrl(
             parsedURL.absoluteString,
-            account: account,
             sourceMetadata: metadata,
             remoteInterface: remote,
             dbManager: manager,
@@ -367,7 +438,6 @@ struct EnumeratorPersistenceTests {
         let manager = DatabaseTestSuites.makeManager(account: account)
         let result = await Enumerator.readServerUrl(
             directoryURL,
-            account: account,
             remoteInterface: nextcloudKitForDAVRead(account: account),
             dbManager: manager,
             depth: .targetAndDirectChildren,
@@ -566,15 +636,20 @@ struct EnumeratorPersistenceTests {
 
     private func readFolder() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
-            folder.remotePath, account: account, remoteInterface: remote,
-            dbManager: manager, depth: .targetAndDirectChildren, log: FileProviderLogMock()
+            folder.remotePath,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
         )
     }
 
     private func makeEnumerator(_ identifier: NSFileProviderItemIdentifier) throws -> Enumerator {
         try Enumerator(
-            enumeratedItemIdentifier: identifier, account: account,
-            remoteInterface: remote, dbManager: manager, log: FileProviderLogMock()
+            enumeratedItemIdentifier: identifier,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
         )
     }
 }

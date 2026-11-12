@@ -41,12 +41,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     let domain: NSFileProviderDomain?
     let dbManager: FilesDatabaseManager
+    var account: Account { dbManager.account }
 
     // Internal (not private) so the change-enumeration extensions in sibling files can read these.
     let currentAnchor: NSFileProviderSyncAnchor
     let pageItemCount: Int
     let logger: FileProviderLogger
-    let account: Account
     let remoteInterface: RemoteInterface
     let serverUrl: String
 
@@ -71,16 +71,18 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     public init(
         enumeratedItemIdentifier: NSFileProviderItemIdentifier,
-        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         pageSize: Int = 1000,
         log: any FileProviderLogging
     ) throws {
+        guard !dbManager.wasInvalidatedByDAVAccountChange else {
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
-        self.account = account
         self.dbManager = dbManager
         currentAnchor = Self.syncAnchor(at: Date(), storeIdentity: dbManager.storeIdentity)
         self.domain = domain
@@ -95,7 +97,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
         if Self.isSystemIdentifier(enumeratedItemIdentifier) {
             logger.info("Providing enumerator for a system defined container.", [.item: enumeratedItemIdentifier])
-            serverUrl = account.davFilesUrl
+            serverUrl = dbManager.account.davFilesUrl
             enumeratedItemMetadata = nil
         } else {
             // Finder opens the Files root with `.rootContainer` above. The server's root ocId
@@ -114,7 +116,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             serverUrl = enumeratedItemMetadata.remotePath()
         }
 
-        logger.info("Set up enumerator.", [.account: self.account.ncKitAccount, .url: serverUrl])
+        logger.info("Set up enumerator.", [.account: dbManager.account.ncKitAccount, .url: serverUrl])
         super.init()
     }
 
@@ -135,26 +137,68 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         return min(base, Self.maxBatchSize)
     }
 
+    /// Cancel async work such as a shared capabilities wait when account setup stops this read.
+    func runEnumerationTask(_ work: sending @escaping () async -> Void) {
+        let task = Task { await work() }
+        SyncOperations.Operation.current?.cancelReadOnStop { task.cancel() }
+    }
+
+    /// Reject an old anchor after the database changes. While setup is in progress, File Provider
+    /// can retry when the extension signals that the server is reachable again.
+    func enumerationErrorIfStopped(staleAccountError: NSFileProviderError.Code) -> NSFileProviderError? {
+        guard dbManager.isForCurrentDAVAccount() else { return NSFileProviderError(staleAccountError) }
+        return SyncOperations.Operation.current?.isStopped == true ? NSFileProviderError(.serverUnreachable) : nil
+    }
+
+    /// Claim the synchronous observer delivery so it cannot cross an account update.
+    func beginEnumerationDelivery(staleAccountError: NSFileProviderError.Code) -> NSFileProviderError? {
+        if let error = enumerationErrorIfStopped(staleAccountError: staleAccountError) { return error }
+        guard SyncOperations.Operation.current?.beginDelivery() != false else {
+            return enumerationErrorIfStopped(staleAccountError: staleAccountError) ?? NSFileProviderError(.serverUnreachable)
+        }
+        return nil
+    }
+
     // MARK: - Protocol methods
 
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         logger.info("Received enumerate items request for enumerator with user", [.account: account.ncKitAccount, .url: serverUrl])
+
+        guard let operation = dbManager.syncOperations.begin() else {
+            let error: NSFileProviderError.Code = dbManager.isForCurrentDAVAccount() ? .serverUnreachable : .cannotSynchronize
+            observer.finishEnumeratingWithError(NSFileProviderError(error))
+            return
+        }
 
         guard dbManager.isForCurrentDAVAccount() else {
             observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
             return
         }
 
-        if enumeratedItemIdentifier == .trashContainer {
-            enumerateTrashItems(for: observer)
-        } else if enumeratedItemIdentifier == .workingSet {
-            enumerateWorkingSetItems(for: observer, startingAt: page)
-        } else {
-            enumerateContainerItems(for: observer, startingAt: page)
+        SyncOperations.Operation.$current.withValue(operation) {
+            if enumeratedItemIdentifier == .trashContainer {
+                enumerateTrashItems(for: observer)
+            } else if enumeratedItemIdentifier == .workingSet {
+                enumerateWorkingSetItems(for: observer, startingAt: page)
+            } else {
+                enumerateContainerItems(for: observer, startingAt: page)
+            }
         }
     }
 
     public func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
+        guard let operation = dbManager.syncOperations.begin() else {
+            let error: NSFileProviderError.Code = dbManager.isForCurrentDAVAccount() ? .serverUnreachable : .syncAnchorExpired
+            observer.finishEnumeratingWithError(NSFileProviderError(error))
+            return
+        }
+
+        SyncOperations.Operation.$current.withValue(operation) {
+            dispatchChangeEnumeration(for: observer, from: anchor)
+        }
+    }
+
+    private func dispatchChangeEnumeration(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
         logger.debug("Enumerating changes (anchor: \(String(data: anchor.rawValue, encoding: .utf8) ?? "")).", [.url: serverUrl])
 
         let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
@@ -199,6 +243,11 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
-        completionHandler(dbManager.isForCurrentDAVAccount() ? currentAnchor : nil)
+        guard let operation = dbManager.syncOperations.begin() else {
+            completionHandler(nil)
+            return
+        }
+        defer { operation.finish() }
+        completionHandler(dbManager.isForCurrentDAVAccount() && operation.beginDelivery() ? currentAnchor : nil)
     }
 }

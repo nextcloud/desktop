@@ -9,8 +9,10 @@ extension Enumerator {
         files: [NKFile],
         pageIndex: Int,
         dbManager: FilesDatabaseManager,
+        isCancelled: @Sendable () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+        guard !isCancelled() else { return (nil, .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
         // First PROPFIND contains the target item, but we do not want to report this in the
         // retrieved metadatas (the enumeration observers don't expect you to enumerate the
@@ -55,14 +57,15 @@ extension Enumerator {
             id: signposter.makeSignpostID(),
             "pageIndex=\(pageIndex) files=\(files.count)"
         )
-
         let clock = ContinuousClock()
         var convAccum: Duration = .zero
         var dbAccum: Duration = .zero
         var metadatas: [SendableItemMetadata] = []
         metadatas.reserveCapacity(max(0, files.count - startIndex))
+        defer { signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)") }
 
         for file in files[startIndex...] {
+            guard !isCancelled() else { return (nil, .cancelled) }
             let convStart = clock.now
             let itemMetadata = file.toItemMetadata()
             convAccum += clock.now - convStart
@@ -77,8 +80,6 @@ extension Enumerator {
             }
             dbAccum += clock.now - dbStart
         }
-
-        signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)")
 
         let itemCount = metadatas.count
         let dbSeconds = dbAccum.fpSeconds
@@ -95,11 +96,11 @@ extension Enumerator {
     /// therefore only returns the acquired metadatas.
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
-        account: Account,
         dbManager: FilesDatabaseManager,
         files: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -107,8 +108,9 @@ extension Enumerator {
         readError: NKError?
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
+        let accountKey = dbManager.account.ncKitAccount
 
-        logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
+        logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(accountKey)")
 
         if let pageIndex {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
@@ -117,6 +119,7 @@ extension Enumerator {
                     files: files,
                     pageIndex: pageIndex,
                     dbManager: dbManager,
+                    isCancelled: isCancelled,
                     log: log
                 )
             }
@@ -157,7 +160,7 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        guard !Task.isCancelled else { return (nil, nil, .cancelled) }
+        guard !isCancelled() else { return (nil, nil, .cancelled) }
         let (listingWriteResult, batchElapsed) = await dbManager.perform { [files] dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
@@ -167,7 +170,7 @@ extension Enumerator {
                 "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
             )
             let listingWriteResult = dbManager.saveDepth1ListingMetadata(
-                account: account.ncKitAccount,
+                account: accountKey,
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
                 keepExistingDownloadState: true,
@@ -214,7 +217,6 @@ extension Enumerator {
     static func readServerUrl(
         _ serverUrl: String,
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
-        account: Account,
         sourceMetadata: SendableItemMetadata? = nil,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -226,9 +228,12 @@ extension Enumerator {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
-        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        let operation = SyncOperations.Operation.current
+        let readIsCancelled: @Sendable () -> Bool = { isCancelled() || operation?.isStopped == true }
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        let account = dbManager.account
         guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
             logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
             return RemoteReadResult(error: .invalidData)
@@ -236,11 +241,12 @@ extension Enumerator {
 
         let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
         guard isCurrent else { return RemoteReadResult(error: .davAccountChanged) }
-        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
 
         // The database can switch accounts while the server request or its write is in flight.
         func resultForCurrentDAVAccount(_ result: RemoteReadResult) async -> RemoteReadResult {
             let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
+            guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
             return isCurrent ? result : RemoteReadResult(error: .davAccountChanged)
         }
 
@@ -280,6 +286,7 @@ extension Enumerator {
             account: account,
             options: options,
             taskHandler: { task in
+                operation?.registerReadTask(task)
                 taskHandler(task)
                 if let domain, let enumeratedItemIdentifier {
                     NSFileProviderManager(for: domain)?.register(
@@ -298,6 +305,7 @@ extension Enumerator {
             [.url: serverUrl]
         )
 
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
         guard error == .success else {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
             // A 404 at the account's Files root means the domain could not be read. Let Finder retry.
@@ -314,7 +322,6 @@ extension Enumerator {
             return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
         }
 
-        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
             let target = files.first { $0.matchesRequestedDirectoryURL(serverUrl) }?.toItemMetadata()
@@ -340,7 +347,7 @@ extension Enumerator {
                 if let savedMetadata = try await dbManager.addItemMetadataFromRemoteRead(
                     metadata,
                     requestedURL: serverUrl,
-                    isCancelled: isCancelled
+                    isCancelled: readIsCancelled
                 ) {
                     let result = RemoteReadResult(
                         metadatas: [savedMetadata],
@@ -434,11 +441,11 @@ extension Enumerator {
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
-                account: account,
                 dbManager: dbManager,
                 files: files,
                 pageIndex: pageSettings?.index,
                 preserveDeletedTarget: expectedDirectoryOcId != nil,
+                isCancelled: readIsCancelled,
                 log: logger.log
             )
 
@@ -451,7 +458,11 @@ extension Enumerator {
             return await resultForCurrentDAVAccount(result)
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
+                files: files,
+                pageIndex: pageIndex,
+                dbManager: dbManager,
+                isCancelled: readIsCancelled,
+                log: log
             )
             let result = RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
             return await resultForCurrentDAVAccount(result)

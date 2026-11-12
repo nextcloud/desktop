@@ -355,6 +355,11 @@ struct DAVPathPersistenceTests {
         )
         file.etag = Self.storedETag
         original.addItemMetadata(file)
+        let interruptedUpload = try #require(try original.beginEditedItemUpload(
+            ocId: file.ocId,
+            uploadAttemptID: "previous-upload-attempt"
+        ))
+        #expect(interruptedUpload.session == "previous-upload-attempt")
         let staleSession = "pending-old-account-deletion"
         try #require(original.createChangeDeliverySession(
             sessionId: staleSession,
@@ -377,6 +382,9 @@ struct DAVPathPersistenceTests {
         #expect(try reopened.changeDeliverySession(sessionId: staleSession) == nil)
         let reopenedFile = try #require(reopened.itemMetadata(ocId: Self.fileId))
         #expect(!reopenedFile.deleted)
+        #expect(reopenedFile.hasUnfinishedUpload)
+        #expect(reopenedFile.status == Status.uploadError.rawValue)
+        #expect(reopenedFile.session == "")
         #expect(reopenedFile.etag == Self.storedETag)
         #expect(reopenedFile.davParentPathWithoutOrigin == Self.filesRootPathWithoutOrigin(for: currentAccount) + "/" + Self.folderName + "/")
         #expect(reopenedFile.remotePath() == currentAccount.davFilesUrl + "/" + Self.folderName + "/" + Self.fileName)
@@ -733,7 +741,6 @@ struct DAVPathPersistenceTests {
     ) async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             url,
-            account: Self.currentAccount,
             remoteInterface: remote,
             dbManager: manager,
             depth: .targetAndDirectChildren,
@@ -748,7 +755,6 @@ struct DAVPathPersistenceTests {
     ) async throws -> MockChangeObserver {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: container.identifier,
-            account: Self.currentAccount,
             remoteInterface: remote,
             dbManager: manager,
             log: log

@@ -12,6 +12,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     public let account: Account
     let dbManager: FilesDatabaseManager
     private let completionHandler: (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void
+    var syncOperation: SyncOperations.Operation?
 
     ///
     /// All materialized items enumerated by the system.
@@ -33,6 +34,10 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     public func finishEnumerating(upTo _: NSFileProviderPage?) {
+        guard syncOperation?.beginDelivery() != false else {
+            completionHandler([], [])
+            return
+        }
         logger.debug("Handling enumerated materialized items.")
         handleEnumeratedItems(enumeratedItems, account: account, dbManager: dbManager, completionHandler: completionHandler)
     }

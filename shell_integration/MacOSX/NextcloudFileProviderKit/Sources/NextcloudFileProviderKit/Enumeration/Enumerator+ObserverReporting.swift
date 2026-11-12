@@ -23,7 +23,11 @@ extension Enumerator {
         itemMetadatas: [SendableItemMetadata],
         handleInvalidParent: Bool = true
     ) {
-        Task {
+        runEnumerationTask { [self] in
+            if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             let signposter = EnumerationSignposter.signposter
             let toItemsState = signposter.beginInterval(
                 "ToFileProviderItems",
@@ -39,11 +43,12 @@ extension Enumerator {
                 )
                 signposter.endInterval("ToFileProviderItems", toItemsState)
 
-                Task { @MainActor in
-                    guard dbManager.isForCurrentDAVAccount() else {
-                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                await MainActor.run {
+                    if let error = beginEnumerationDelivery(staleAccountError: .cannotSynchronize) {
+                        observer.finishEnumeratingWithError(error)
                         return
                     }
+                    defer { SyncOperations.Operation.current?.finish() }
                     // Begin/end stay in this MainActor scope; both observer calls are synchronous.
                     let reportState = signposter.beginInterval(
                         "ObserverReport", id: signposter.makeSignpostID(), "items=\(items.count)"
@@ -55,8 +60,8 @@ extension Enumerator {
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
                 signposter.endInterval("ToFileProviderItems", toItemsState)
-                guard dbManager.isForCurrentDAVAccount() else {
-                    observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                    observer.finishEnumeratingWithError(error)
                     return
                 }
                 guard handleInvalidParent else {
@@ -69,7 +74,6 @@ extension Enumerator {
                     let metadata = try await attemptInvalidParentRecovery(
                         error: error,
                         itemMetadatas: itemMetadatas,
-                        account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
@@ -81,7 +85,7 @@ extension Enumerator {
                         handleInvalidParent: false
                     )
                 } catch {
-                    observer.finishEnumeratingWithError(error)
+                    observer.finishEnumeratingWithError(enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) ?? error)
                 }
             }
         }
@@ -93,8 +97,8 @@ extension Enumerator {
     /// When the state cannot be read, the enumeration is finished with `cannotSynchronize` and `nil` is returned. Nothing is reset or acknowledged, so the framework asks again from the same anchor and the stored changes are neither re-derived nor discarded.
     ///
     func readDeliveryState<T>(reportingTo observer: NSFileProviderChangeObserver, _ lookup: () throws -> T) -> T? {
-        guard dbManager.isForCurrentDAVAccount() else {
-            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+        if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+            observer.finishEnumeratingWithError(error)
             return nil
         }
         do {
@@ -118,6 +122,10 @@ extension Enumerator {
         finalAnchor: NSFileProviderSyncAnchor,
         suggested: Int?
     ) {
+        if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+            observer.finishEnumeratingWithError(error)
+            return
+        }
         guard let batch = changeBuffer.prepareChangeDeliveryBatch(maxItems: effectiveBatchSize(suggested: suggested)) else {
             // The stored changes stay put; the framework asks again later with the same anchor.
             logger.error("Could not prepare the next change batch. Finishing the enumeration with an error.", [.item: enumeratedItemIdentifier])
@@ -192,7 +200,8 @@ extension Enumerator {
 
     ///
     /// Convert updates before reporting the batch. If a parent is missing, recover it and retry
-    /// once. Deliver deletions before waiting for the main actor to finish the batch.
+    /// once. Claim delivery before reporting deletions and keep it until the observer finishes
+    /// and acknowledges the batch on the main actor.
     private func reportChangeBatch(
         _ observer: NSFileProviderChangeObserver,
         updated: [SendableItemMetadata],
@@ -205,21 +214,26 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         handleInvalidParent: Bool = true
     ) {
-        Task { [updated] in
+        runEnumerationTask { [self, updated] in
+            if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             do {
                 let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
 
-                guard dbManager.isForCurrentDAVAccount() else {
-                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
+                    observer.finishEnumeratingWithError(error)
                     return
                 }
+                defer { SyncOperations.Operation.current?.finish() }
                 if !deletedIdentifiers.isEmpty {
                     observer.didDeleteItems(withIdentifiers: deletedIdentifiers)
                 }
 
-                Task { @MainActor in
-                    guard dbManager.isForCurrentDAVAccount() else {
-                        observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                await MainActor.run {
+                    if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                        observer.finishEnumeratingWithError(error)
                         return
                     }
                     if !updatedItems.isEmpty {
@@ -230,8 +244,8 @@ extension Enumerator {
                     changeBuffer.acknowledgeBatch(acknowledgement)
                 }
             } catch let error as NSError { // This error can only mean a missing parent item identifier
-                guard dbManager.isForCurrentDAVAccount() else {
-                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                    observer.finishEnumeratingWithError(error)
                     return
                 }
                 guard handleInvalidParent else {
@@ -246,7 +260,6 @@ extension Enumerator {
                     let metadata = try await attemptInvalidParentRecovery(
                         error: error,
                         itemMetadatas: updated,
-                        account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
                     )
@@ -266,7 +279,7 @@ extension Enumerator {
                         handleInvalidParent: false
                     )
                 } catch {
-                    observer.finishEnumeratingWithError(error)
+                    observer.finishEnumeratingWithError(enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) ?? error)
                 }
             }
         }
@@ -275,7 +288,6 @@ extension Enumerator {
     func attemptInvalidParentRecovery(
         error: NSError,
         itemMetadatas: [SendableItemMetadata],
-        account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) async throws -> SendableItemMetadata {
@@ -295,7 +307,6 @@ extension Enumerator {
 
         let readResult = await Enumerator.readServerUrl(
             urlToEnumerate,
-            account: account,
             sourceMetadata: child,
             remoteInterface: remoteInterface,
             dbManager: dbManager,

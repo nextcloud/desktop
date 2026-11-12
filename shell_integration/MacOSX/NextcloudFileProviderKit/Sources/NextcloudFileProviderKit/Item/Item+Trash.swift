@@ -156,8 +156,7 @@ extension Item {
 
             guard let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: restoredItemMetadata,
-                remoteInterface: remoteInterface,
-                account: account
+                remoteInterface: remoteInterface
             ) else {
                 logger.error("Could not find parent item identifier for \(originalLocation)")
                 return (modifiedItem, NSFileProviderError(.cannotSynchronize))
@@ -186,6 +185,9 @@ extension Item {
             ), nil)
         }
 
+        guard SyncOperations.beginServerWrite() else {
+            return (modifiedItem, NSFileProviderError(.serverUnreachable))
+        }
         let (_, _, restoreError) = await modifiedItem.remoteInterface.restoreFromTrash(
             filename: modifiedItem.metadata.fileName,
             account: account,

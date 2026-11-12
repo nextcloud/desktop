@@ -244,7 +244,6 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -276,7 +275,6 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()

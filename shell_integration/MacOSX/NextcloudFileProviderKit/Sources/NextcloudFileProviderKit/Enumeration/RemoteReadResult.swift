@@ -5,7 +5,7 @@ import Foundation
 import NextcloudKit
 
 ///
-/// The outcome of reading a remote path via ``Enumerator/readServerUrl(_:pageSettings:account:remoteInterface:dbManager:domain:enumeratedItemIdentifier:depth:log:)``.
+/// The outcome of reading a remote path via ``Enumerator/readServerUrl``.
 ///
 /// Replaces the positional six-element tuple that callers used to destructure as
 /// `(_, _, _, _, _, error)`. Field access (`result.metadatas`, `result.error`, …) documents at

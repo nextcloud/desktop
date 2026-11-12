@@ -1050,7 +1050,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         let targetRead = await Enumerator.readServerUrl(
             targetRemote.remotePath,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             depth: .target,
@@ -1064,7 +1063,6 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         let laterRead = await Enumerator.readServerUrl(
             folderRemote.remotePath,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             depth: .targetAndDirectChildren,
