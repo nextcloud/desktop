@@ -6,9 +6,9 @@ import Foundation
 import GRDB
 
 ///
-/// Predicates over the `itemMetadata` table which every lookup composes.
+/// Query expressions for the `itemMetadata` table.
 ///
-/// Locations are compared on the normalized key columns, so callers pass raw strings and the normalization happens here, once. Dates are bound as the stored number, never as a `Date`, because a `Date` would be bound as text and never compare equal to a `REAL` column.
+/// Locations are compared on the normalized key columns, so callers pass stored locations and normalization happens here. Dates are bound as the stored number, never as a `Date`, because a `Date` would be bound as text and never compare equal to a `REAL` column.
 ///
 extension ItemMetadataRecord {
     typealias Columns = CodingKeys
@@ -17,6 +17,15 @@ extension ItemMetadataRecord {
     static var isFilesRoot: SQLExpression {
         Columns.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
             || (Columns.directory == true && Columns.fileName == SendableItemMetadata.filesRootPlaceholderName)
+    }
+
+    /// The parent is stored relative to the row's files or trash DAV root.
+    static var hasStoredDAVRelativeParent: SQLExpression {
+        SQL("""
+            \(Columns.serverUrl) IN ('files:', 'trash:')
+                OR \(Columns.serverUrl) GLOB 'files:/*'
+                OR \(Columns.serverUrl) GLOB 'trash:/*'
+            """).sqlExpression
     }
 
     /// Match the normalized stored parent location and normalized filename together.
@@ -55,6 +64,36 @@ extension ItemMetadataRecord {
         Columns.status == Status.inUpload.rawValue
             || Columns.status == Status.uploading.rawValue
             || (Columns.status == Status.uploadError.rawValue && !Columns.uploaded)
+    }
+
+    /// The transfers an account change can interrupt.
+    static var hasActiveTransfer: SQLExpression {
+        isDownloading || isUploading
+    }
+
+    /// Allow listings to refresh interrupted downloads and keep interrupted uploads pending.
+    /// Clear the upload attempt ID so a result from the old attempt cannot complete it.
+    static var interruptedTransferAssignments: [ColumnAssignment] {
+        let status = SQL("""
+            CASE
+                WHEN \(isDownloading) THEN \(Status.normal.rawValue)
+                WHEN \(isUploading) THEN \(Status.uploadError.rawValue)
+                ELSE \(Columns.status)
+            END
+            """).sqlExpression
+        let session = SQL("CASE WHEN \(isUploading) THEN '' ELSE \(Columns.session) END").sqlExpression
+        return [
+            Columns.status.set(to: status),
+            Columns.session.set(to: session)
+        ]
+    }
+
+    private static var isDownloading: SQLExpression {
+        [Status.inDownload.rawValue, Status.downloading.rawValue].contains(Columns.status)
+    }
+
+    private static var isUploading: SQLExpression {
+        Columns.status == Status.uploading.rawValue
     }
 
     /// Files whose download may be removed: downloaded, live and not pinned.

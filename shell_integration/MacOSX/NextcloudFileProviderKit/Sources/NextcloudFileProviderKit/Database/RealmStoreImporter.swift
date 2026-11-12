@@ -86,9 +86,16 @@ enum RealmStoreImporter {
 
     ///
     /// Import the Realm file at `realmURL` into a new SQLite database at `sqliteURL`, if the Realm file exists.
+    /// Update imported items to use the current DAV account before moving the SQLite file into place.
     ///
     @discardableResult
-    static func importIfNeeded(realmURL: URL, sqliteURL: URL, logger: FileProviderLogger) -> Outcome {
+    static func importIfNeeded(
+        realmURL: URL,
+        sqliteURL: URL,
+        account: Account,
+        previouslyConfiguredAccount: DAVAccountIdentity?,
+        logger: FileProviderLogger
+    ) -> Outcome {
         let fileManager = FileManager.default
 
         guard fileManager.fileExists(atPath: realmURL.path) else {
@@ -122,7 +129,12 @@ enum RealmStoreImporter {
             }
 
             do {
-                let rows = try copy(realm, to: stagingURL)
+                let rows = try copy(
+                    realm,
+                    to: stagingURL,
+                    account: account,
+                    previouslyConfiguredAccount: previouslyConfiguredAccount
+                )
                 return .imported(rows: rows)
             } catch {
                 logger.fault("Could not write the imported metadata database. The import is retried on the next start.", [.url: stagingURL.path, .error: error])
@@ -160,8 +172,13 @@ enum RealmStoreImporter {
         return outcome
     }
 
-    /// Copy every table into a fresh database at `stagingURL` in one transaction and return the number of rows written.
-    private static func copy(_ realm: Realm, to stagingURL: URL) throws -> Int {
+    /// Copy the tables and update items for the current DAV account in one transaction.
+    private static func copy(
+        _ realm: Realm,
+        to stagingURL: URL,
+        account: Account,
+        previouslyConfiguredAccount: DAVAccountIdentity?
+    ) throws -> Int {
         var configuration = Configuration()
         configuration.label = "RealmStoreImporter"
 
@@ -173,11 +190,7 @@ enum RealmStoreImporter {
 
             for row in realm.objects(LegacyRealmItemMetadata.self) {
                 try autoreleasepool {
-                    var record = ItemMetadataRecord(row)
-                    // The keys are copied as stored so the startup repair treats them exactly as it treated the Realm rows.
-                    record.normalizedServerUrl = row.normalizedServerUrl
-                    record.normalizedFileName = row.normalizedFileName
-                    try record.upsertRow(db)
+                    try ItemMetadataRecord(row).upsertRow(db)
                 }
                 rows += 1
             }
@@ -219,12 +232,17 @@ enum RealmStoreImporter {
                 try ChangeDeliveryItemRecord(
                     sessionId: row.sessionId,
                     sequence: row.sequence,
-                    metadataData: row.metadataData,
+                    metadataData: try ChangeDeliveryItemRecord.migrateLegacySnapshot(row.metadataData) ?? row.metadataData,
                     deleted: row.deleted
                 ).insert(db, onConflict: .ignore)
                 rows += 1
             }
 
+            _ = try StoreIdentityRecord.updateDatabaseForCurrentDAVAccount(
+                account,
+                previouslyConfiguredAccount: previouslyConfiguredAccount,
+                in: db
+            )
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
 
             return rows

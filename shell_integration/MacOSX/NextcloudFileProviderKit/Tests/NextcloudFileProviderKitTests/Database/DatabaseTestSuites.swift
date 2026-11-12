@@ -50,4 +50,21 @@ enum DatabaseTestSuites {
         metadata.serverUrl = serverUrl ?? account.davFilesUrl
         return metadata
     }
+
+    /// An online-only file left in the cache after an earlier server URL change.
+    static func makeFileFromEarlierServerURL(account: Account) -> SendableItemMetadata {
+        let earlierAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://earlier.example.invalid",
+            password: account.password
+        )
+        var metadata = makeFile(
+            ocId: "earlier-server-file",
+            fileName: "Earlier file.txt",
+            account: earlierAccount
+        )
+        metadata.uploaded = true
+        return metadata
+    }
 }

@@ -185,8 +185,9 @@ import OSLog
         }
     }
 
-    /// File Provider waits for an explicit resolution signal after a mutation returns cannotSynchronize.
-    private static let unresolvedParentMutationError = CocoaError(
+    /// Ask File Provider to retry a mutation when the item lookup is temporarily unavailable.
+    /// Returning cannotSynchronize would make File Provider wait for an explicit retry signal.
+    private static let itemLookupRetryErrorForMutations = CocoaError(
         .xpcConnectionReplyInvalid,
         userInfo: [NSUnderlyingErrorKey: NSFileProviderError(.cannotSynchronize) as NSError]
     )
@@ -218,7 +219,7 @@ import OSLog
             }
 
             do {
-                let item = try await Item.resolveStoredItem(
+                let item = try await Item.lookupItemAndFindParentIdentifier(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
@@ -310,7 +311,7 @@ import OSLog
 
         let item: Item
         do {
-            item = try await Item.resolveStoredItem(
+            item = try await Item.lookupItemAndFindParentIdentifier(
                 identifier: itemIdentifier,
                 account: ncAccount,
                 remoteInterface: ncKit,
@@ -324,7 +325,7 @@ import OSLog
                 removeSyncAction(actionId)
                 return (nil, nil, CocoaError(.userCancelled))
             }
-            logger.error("Could not resolve the item for content fetch.", [.item: itemIdentifier, .error: error])
+            logger.error("Could not look up the item for content fetch.", [.item: itemIdentifier, .error: error])
             insertErrorAction(actionId)
             return (nil, nil, error)
         }
@@ -465,16 +466,16 @@ import OSLog
         Task {
             let existingItem: Item
             do {
-                existingItem = try await Item.resolveStoredItem(
+                existingItem = try await Item.lookupItemAndFindParentIdentifier(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
-                    unresolvedParentError: Self.unresolvedParentMutationError,
+                    lookupRetryError: Self.itemLookupRetryErrorForMutations,
                     log: log
                 )
             } catch {
-                logger.error("Could not resolve the item for modification.", [.item: identifier, .error: error])
+                logger.error("Could not look up the item for modification.", [.item: identifier, .error: error])
                 insertErrorAction(actionId)
                 completionHandler(item, [], false, error)
                 return
@@ -547,16 +548,16 @@ import OSLog
         Task {
             let item: Item
             do {
-                item = try await Item.resolveStoredItem(
+                item = try await Item.lookupItemAndFindParentIdentifier(
                     identifier: identifier,
                     account: ncAccount,
                     remoteInterface: ncKit,
                     dbManager: dbManager,
-                    unresolvedParentError: Self.unresolvedParentMutationError,
+                    lookupRetryError: Self.itemLookupRetryErrorForMutations,
                     log: log
                 )
             } catch {
-                logger.error("Could not resolve the item for deletion.", [.item: identifier, .error: error])
+                logger.error("Could not look up the item for deletion.", [.item: identifier, .error: error])
                 insertErrorAction(actionId)
                 completionHandler(error)
                 return

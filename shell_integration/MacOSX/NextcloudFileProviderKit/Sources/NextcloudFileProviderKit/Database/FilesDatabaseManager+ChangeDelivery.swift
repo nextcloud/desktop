@@ -5,23 +5,6 @@ import Foundation
 import GRDB
 
 extension FilesDatabaseManager {
-    /// Encode item metadata for the SQLite v1 change queue.
-    /// Older v1 builds decode queued items as `SendableItemMetadata` with a required JSON `path` key.
-    /// Add the derived WebDAV parent path under that key so those builds can still replay the queue.
-    private struct VersionOneChangeSnapshot: Encodable {
-        private enum CodingKeys: String, CodingKey {
-            case path
-        }
-
-        let metadata: SendableItemMetadata
-
-        func encode(to encoder: any Encoder) throws {
-            try metadata.encode(to: encoder)
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(metadata.davParentPathWithoutOrigin, forKey: .path)
-        }
-    }
-
     typealias ChangeDeliverySessionState = (
         sessionId: String,
         containerKey: String,
@@ -51,7 +34,11 @@ extension FilesDatabaseManager {
         let allChanges: [(metadata: SendableItemMetadata, deleted: Bool)] =
             updated.map { (metadata: $0, deleted: false) } + deleted.map { (metadata: $0, deleted: true) }
         let encodedChanges: [(data: Data, deleted: Bool)] = allChanges.compactMap { change in
-            guard let metadataData = try? encoder.encode(VersionOneChangeSnapshot(metadata: change.metadata)) else {
+            guard let metadataData = try? ChangeDeliveryItemRecord.encodeMetadata(
+                change.metadata,
+                domainAccount: account,
+                using: encoder
+            ) else {
                 return nil
             }
             return (data: metadataData, deleted: change.deleted)
@@ -203,7 +190,7 @@ extension FilesDatabaseManager {
                 in: db
             ).compactMap { item -> String? in
                 guard item.deleted,
-                      let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData),
+                      let metadata = try? ChangeDeliveryItemRecord.decodeMetadata(item.metadataData, using: decoder),
                       !metadata.isFilesRoot
                 else { return nil }
                 return metadata.ocId

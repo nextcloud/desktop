@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import NextcloudKit
 @testable import NextcloudFileProviderKit
 import Testing
 import TestInterface
@@ -99,23 +100,52 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/" + decomposedName.precomposedStringWithCanonicalMapping)?.ocId == "parent")
         }
 
-        @Test func locationLookupFindsLegacyParentWithoutAnAccountKey() throws {
-            var folder = directory(ocId: "folder", fileName: "Docs", parent: root)
-            folder.account = ""
-            folder.keepDownloaded = true
-            try manager.insertForTesting(folder)
-
-            let child = DatabaseTestSuites.makeFile(ocId: "child", fileName: "Report.txt", serverUrl: folder.remotePath())
-            #expect(manager.itemMetadata(locatedAtRemoteUrl: folder.remotePath())?.ocId == folder.ocId)
-            #expect(manager.parentDirectoryMetadataForItem(child)?.ocId == folder.ocId)
-            #expect(manager.inheritedKeepDownloaded(for: child))
-        }
-
         @Test func locationLookupIsCaseSensitive() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "upper", fileName: "File.txt"))
 
             #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/File.txt")?.ocId == "upper")
             #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/file.txt") == nil)
+        }
+
+        @Test func locationLookupSupportsInternationalizedHostnamesAndLiteralNameCharacters() throws {
+            let account = Account(
+                user: "login",
+                id: "user-id",
+                serverUrl: "https://bücher.de:8443/instance",
+                password: "test"
+            )
+            let manager = DatabaseTestSuites.makeManager(account: account)
+            let sdkFilesRoot = "https://xn--bcher-kva.de:8443/instance/remote.php/dav/files/user-id"
+
+            // NextcloudKit supplies a Punycode host and decoded path components in DAV responses.
+            var folder = NKFile()
+            folder.account = account.ncKitAccount
+            folder.user = account.username
+            folder.userId = account.id
+            folder.urlBase = account.serverUrl
+            folder.serverUrl = sdkFilesRoot
+            folder.ocId = "folder"
+            folder.fileName = "Docs #?%20"
+            folder.directory = true
+
+            var file = folder
+            file.serverUrl += "/" + folder.fileName
+            file.ocId = "report"
+            file.fileName = "report #?%.txt"
+            file.directory = false
+
+            manager.addItemMetadata(folder.toItemMetadata())
+            manager.addItemMetadata(file.toItemMetadata())
+
+            let cachedFile = try #require(manager.itemMetadata(ocId: file.ocId))
+            let folderURL = account.davFilesUrl + "/" + folder.fileName
+            #expect(cachedFile.serverUrl == folderURL)
+            #expect(manager.parentDirectoryMetadataForItem(cachedFile)?.ocId == folder.ocId)
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: folderURL + "/" + file.fileName)?.ocId == file.ocId)
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: file.serverUrl + "/" + file.fileName)?.ocId == file.ocId)
+
+            let differentPortURL = folderURL.replacingOccurrences(of: ":8443/", with: ":9443/")
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: differentPortURL) == nil)
         }
 
         @Test func locationLookupPrefersTheLiveRowOverATombstone() throws {

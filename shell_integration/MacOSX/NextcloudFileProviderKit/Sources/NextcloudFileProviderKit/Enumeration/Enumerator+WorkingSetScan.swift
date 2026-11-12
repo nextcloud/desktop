@@ -51,6 +51,10 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                guard dbManager.isForCurrentDAVAccount() else {
+                    observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                    return
+                }
                 // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
@@ -328,6 +332,14 @@ extension Enumerator {
             if let deleteMarked {
                 reportedDeletions.append(deleteMarked)
             }
+            var deleteMarked = deletedMetadata
+            deleteMarked.deleted = true
+            deleteMarked.syncTime = Date()
+            guard dbManager.deleteItemMetadata(ocId: deleteMarked.ocId, syncTime: deleteMarked.syncTime) else {
+                hadReadFailure = true
+                continue
+            }
+            reportedDeletions.append(deleteMarked)
         }
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.

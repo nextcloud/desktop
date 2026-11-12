@@ -1,7 +1,6 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import Foundation
 import GRDB
 
 ///
@@ -27,7 +26,7 @@ enum DatabaseSchema {
     static var migrator: DatabaseMigrator {
         var migrator = DatabaseMigrator()
 
-        migrator.registerMigration("v1_initial") { db in
+        migrator.registerMigration("v1_metadata") { db in
             try db.create(table: ItemMetadataRecord.databaseTableName) { table in
                 table.primaryKey("ocId", .text)
 
@@ -51,7 +50,6 @@ enum DatabaseSchema {
                     "note",
                     "ownerDisplayName",
                     "ownerId",
-                    "path",
                     "permissions",
                     "resourceType",
                     "serverUrl",
@@ -193,6 +191,8 @@ enum DatabaseSchema {
             try db.create(table: StoreIdentityRecord.databaseTableName) { table in
                 table.primaryKey("id", .integer).check(sql: "id = 1")
                 table.column("identity", .text).notNull()
+                // The DAV login, server URL, and backend user ID last saved for this database.
+                table.column("accountBinding", .blob)
             }
         }
 

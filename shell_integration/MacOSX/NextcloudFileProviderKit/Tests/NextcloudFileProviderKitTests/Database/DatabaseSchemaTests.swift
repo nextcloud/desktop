@@ -15,13 +15,17 @@ extension DatabaseTestSuites {
     struct DatabaseSchemaTests {
         let manager = DatabaseTestSuites.makeManager()
 
-        @Test func migratorCreatesEveryTable() throws {
-            let tables = try manager.writer.read { db in
-                try DatabaseSchema.tableNames.map { try db.tableExists($0) }
+        @Test func migratorCreatesTheFinalSchemaInOneStep() throws {
+            try manager.writer.read { db in
+                let tables = try DatabaseSchema.tableNames.map { try db.tableExists($0) }
+                let itemColumns = try db.columns(in: ItemMetadataRecord.databaseTableName).map(\.name)
+                let identityColumns = try db.columns(in: StoreIdentityRecord.databaseTableName).map(\.name)
+                #expect(!tables.contains(false))
+                #expect(DatabaseSchema.tableNames.count == 7)
+                #expect(try DatabaseSchema.migrator.appliedIdentifiers(db) == ["v1_metadata"])
+                #expect(!itemColumns.contains("path"))
+                #expect(identityColumns.contains("accountBinding"))
             }
-
-            #expect(!tables.contains(false))
-            #expect(DatabaseSchema.tableNames.count == 7)
         }
 
         @Test func reopeningAnExistingDatabaseKeepsItsRows() throws {
@@ -40,6 +44,49 @@ extension DatabaseTestSuites {
             #expect(reopened.storeIdentity == manager.storeIdentity)
             let version = try reopened.writer.read { db in try Int.fetchOne(db, sql: "PRAGMA user_version") }
             #expect(version == StoreVersion.current)
+        }
+
+        @Test func anUnreadableItemDoesNotPreventFillingMissingAccountDetails() throws {
+            let directory = try #require(manager.databaseURL).deletingLastPathComponent()
+            let domain = UUID().uuidString
+            let url = directory.appendingPathComponent(domain).appendingPathExtension(DatabaseSchema.fileExtension)
+            func itemMissingAccountDetails(ocId: String, fileName: String) -> SendableItemMetadata {
+                var item = DatabaseTestSuites.makeFile(ocId: ocId, fileName: fileName)
+                item.account = ""
+                item.urlBase = ""
+                item.userId = ""
+                return item
+            }
+            let healthy = itemMissingAccountDetails(ocId: "healthy", fileName: "healthy.txt")
+            let damagedName = itemMissingAccountDetails(ocId: "damaged-name", fileName: "old-name.txt")
+            let damagedID = itemMissingAccountDetails(ocId: "damaged-id", fileName: "old-id.txt")
+            let invalidUTF8 = Data([0xff])
+            _ = try FilesDatabaseManager.writeDatabaseWithoutSavedDAVAccountForTesting(
+                at: url,
+                metadata: [healthy, damagedName, damagedID]
+            )
+
+            let legacy = try DatabaseQueue(path: url.path)
+            try legacy.write { db in
+                try db.execute(
+                    sql: "UPDATE itemMetadata SET fileName = ? WHERE ocId = ?",
+                    arguments: [invalidUTF8, damagedName.ocId]
+                )
+                try db.execute(
+                    sql: "UPDATE itemMetadata SET ocId = CAST(? AS TEXT) WHERE ocId = ?",
+                    arguments: [invalidUTF8, damagedID.ocId]
+                )
+            }
+
+            let reopened = try FilesDatabaseManager(
+                account: DatabaseTestSuites.account,
+                databaseDirectory: directory,
+                fileProviderDomainIdentifier: .init(domain),
+                log: FileProviderLogMock()
+            )
+
+            #expect(reopened.itemMetadata(locatedAtRemoteUrl: healthy.remotePath())?.ocId == healthy.ocId)
+            #expect(try reopened.storedParentLocationKeysForTesting(ocId: healthy.ocId)?.parentLocation == "files:")
         }
 
         @Test func aCorruptDatabaseFileIsSetAsideAndReplaced() throws {

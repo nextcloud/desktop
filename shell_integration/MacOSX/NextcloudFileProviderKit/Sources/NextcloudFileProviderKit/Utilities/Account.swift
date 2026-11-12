@@ -141,6 +141,32 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         return isStoredFilesRootLocation(relativePath ?? rootURL)
     }
 
+    /// Normalize a recorded DAV parent for SQLite, including either Files root response format.
+    static func normalizedDAVParent(
+        parentURL: String,
+        fileName: String,
+        accountBaseURL: String,
+        backendUserID: String
+    ) -> (path: String, isFilesRoot: Bool)? {
+        if isFilesRootAddress(
+            parentURL: parentURL,
+            fileName: fileName,
+            accountBaseURL: accountBaseURL,
+            backendUserID: backendUserID,
+            acceptEquivalentResponseWebroot: true
+        ) {
+            return (storedFilesRootLocation, true)
+        }
+
+        guard let path = davRelativePath(
+            forURL: parentURL,
+            accountBaseURL: accountBaseURL,
+            backendUserID: backendUserID,
+            acceptEquivalentResponseWebroot: true
+        ) else { return nil }
+        return (path, false)
+    }
+
     static func isStoredTrashLocation(_ location: String) -> Bool {
         pathSuffix(of: location, underRoot: DAVRoot.trash.rawValue) != nil
     }

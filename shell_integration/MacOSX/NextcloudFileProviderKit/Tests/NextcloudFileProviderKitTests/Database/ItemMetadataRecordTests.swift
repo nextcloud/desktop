@@ -152,7 +152,7 @@ extension DatabaseTestSuites {
             #expect(record.normalizedFileName == "résumé.txt".precomposedStringWithCanonicalMapping)
             #expect(record.normalizedServerUrl == "https://host/prêt".precomposedStringWithCanonicalMapping)
 
-            record.updateLocation(serverUrl: "https://host/plain", fileName: "plain.txt")
+            record.updateLocation(parentURL: "https://host/plain", fileName: "plain.txt", domainAccount: DatabaseTestSuites.account)
             #expect(record.normalizedServerUrl == "https://host/plain")
             #expect(record.normalizedFileName == "plain.txt")
         }
