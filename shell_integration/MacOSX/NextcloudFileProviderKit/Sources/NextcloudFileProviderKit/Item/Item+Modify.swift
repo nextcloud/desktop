@@ -280,6 +280,7 @@ public extension Item {
             )
 
             let shouldClearLockToken = error.isPreconditionFailedError || error.isLockedError || error.isNotFoundError
+            let serverVersionConflict = sentIfMatch && error.isPreconditionFailedError
             // A stopped quota or capabilities check may have already staged this attempt.
             // Clear that state even if account replacement fails and the old database stays active.
             // The write still checks the database and upload attempt IDs.
@@ -288,15 +289,16 @@ public extension Item {
                     ocId: ocId,
                     uploadAttemptID: uploadAttemptID,
                     errorDescription: error.errorDescription,
-                    staleLockToken: shouldClearLockToken ? metadata.lockToken : nil
+                    staleLockToken: shouldClearLockToken ? metadata.lockToken : nil,
+                    serverVersionConflict: serverVersionConflict
                 )
             }
             if SyncOperations.Operation.current?.isStopped == true {
                 return (nil, NSFileProviderError(.serverUnreachable))
             }
 
-            // A rejected If-Match upload leaves the server copy available for refresh.
-            if sentIfMatch, error.isPreconditionFailedError {
+            // Refresh the server version after its ETag no longer matches the edit's base.
+            if serverVersionConflict {
                 logger.error("Upload rejected: server version changed since last sync (If-Match precondition failed).", [.item: itemIdentifier, .name: filename])
                 if let domain, let manager = NSFileProviderManager(for: domain) {
                     Task {

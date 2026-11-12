@@ -724,8 +724,9 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             if let existingMetadata = existing {
+                let canRefreshFromServer = existingMetadata.status == Status.normal.rawValue || (existingMetadata.status == Status.uploadError.rawValue && existingMetadata.uploaded)
                 let sameRemoteState = existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
-                if existingMetadata.status == Status.normal.rawValue, !sameRemoteState {
+                if canRefreshFromServer, !sameRemoteState {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -1090,7 +1091,8 @@ public final class FilesDatabaseManager: Sendable {
         ocId: String,
         uploadAttemptID: String,
         errorDescription: String,
-        staleLockToken: String?
+        staleLockToken: String?,
+        serverVersionConflict: Bool
     ) {
         write("Could not record upload failure.", [.item: ocId]) { db in
             guard var record = try itemMetadata(ocId: ocId, in: db),
@@ -1103,6 +1105,10 @@ public final class FilesDatabaseManager: Sendable {
                 $0.status = Status.uploadError.rawValue
                 $0.session = ""
                 $0.sessionError = errorDescription
+                if serverVersionConflict {
+                    // File Provider keeps the rejected edit. The row can describe the server copy again.
+                    $0.uploaded = true
+                }
                 if let staleLockToken, $0.lockToken == staleLockToken {
                     $0.lockToken = nil
                 }

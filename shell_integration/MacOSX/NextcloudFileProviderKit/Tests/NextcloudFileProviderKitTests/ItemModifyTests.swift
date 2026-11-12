@@ -787,6 +787,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
         let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+        XCTAssertEqual(updatedMetadata?.hasUnfinishedUpload, true)
     }
 
     /// With conflict detection active, the content upload must carry an
