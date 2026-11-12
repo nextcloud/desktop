@@ -136,6 +136,10 @@ public extension ItemMetadata {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
+    internal var hasUnfinishedUpload: Bool {
+        isUpload || (!uploaded && status == Status.uploadError.rawValue)
+    }
+
     var isTrashed: Bool {
         let relativePath = Account.davRelativePath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)
         return Account.isStoredTrashLocation(relativePath ?? serverUrl)
