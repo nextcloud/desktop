@@ -638,6 +638,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
+    public private(set) var lastDeleteIfMatchHeader: String?
 
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
@@ -1375,10 +1376,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public func delete(
         remotePath: String,
         account: Account,
-        options _: NKRequestOptions = .init(),
+        options: NKRequestOptions = .init(),
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         lastDeleteRemotePath = remotePath
+        lastDeleteIfMatchHeader = options.customHeader?["If-Match"]
         deleteCallHandler?()
         deleteCallHandler?()
 
