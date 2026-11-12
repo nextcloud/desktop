@@ -79,8 +79,7 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     }
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
-        let rawIdentifier = identifier.rawValue
-        logger.info("Fetching shares for item \(rawIdentifier)")
+        logger.info("Looking up the item path for the File Provider UI.", [.item: identifier])
 
         guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
             logger.error("Could not fetch the item path because the account is unavailable.", [.item: identifier])
@@ -88,13 +87,18 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
         }
         defer { operation.finish() }
         guard let item = dbManager.itemMetadata(identifier) else {
-            logger.error("No item \(rawIdentifier) in db, no shares.")
+            logger.error("Could not fetch the item path because metadata is missing.", [.item: identifier])
             return nil
         }
 
+        let remotePath = item.remotePath()
+        let filesPath = item.isFilesRoot && !remotePath.hasSuffix("/") ? remotePath + "/" : remotePath
+        guard let relativePath = dbManager.account.filesRootRelativePath(for: filesPath) else {
+            logger.error("Could not fetch the item path because it is outside the account's Files root.", [.item: identifier])
+            return nil
+        }
         guard operation.beginDelivery() else { return nil }
-        let completePath = item.serverUrl + "/" + item.fileName
-        return completePath.replacingOccurrences(of: dbManager.account.davFilesUrl, with: "") as NSString
+        return ("/" + relativePath) as NSString
     }
 
     func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
