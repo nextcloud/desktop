@@ -59,14 +59,16 @@ extension FilesDatabaseManager {
     /// Register `operation` as the item's download owner and mark the item as downloading.
     /// For a folder child, first check `listedMetadata` from the parent listing against the current row.
     /// A listed package member can be staged while its row is still marked deleted.
+    /// Return nil if the item is missing or the cached metadata prevents the download.
+    /// Throw if an upload is pending or the database write fails.
     func beginDownload(
         _ operation: DownloadOperation,
         listedMetadata: SendableItemMetadata? = nil,
         allowsDeletedPackageMember: Bool = false
-    ) -> SendableItemMetadata? {
+    ) throws -> SendableItemMetadata? {
         let ocId = operation.ocId
-        let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = Self.downloadOperations.withLock { operations in
-            let metadata = write("Could not start download in database.", [.item: ocId]) { db -> SendableItemMetadata? in
+        let (metadata, supersededOperation): (SendableItemMetadata?, DownloadOperation?) = try Self.downloadOperations.withLock { operations in
+            let metadata = try write(durability: .full) { db -> SendableItemMetadata? in
                 guard var item = try itemMetadata(ocId: ocId, in: db) else { return nil }
                 if item.deleted {
                     guard allowsDeletedPackageMember,
@@ -75,6 +77,8 @@ extension FilesDatabaseManager {
                           canDownloadDeletedPackageMember(item)
                     else { return nil }
                 }
+                // Keep the transfer status the upload needs to save its result.
+                guard !item.hasUnfinishedUpload else { throw NSFileProviderError(.cannotSynchronize) }
                 if let listedMetadata {
                     // A sibling's transfer may have given another listing time to update this row.
                     guard item.serverUrl.precomposedStringWithCanonicalMapping == listedMetadata.serverUrl.precomposedStringWithCanonicalMapping else {
@@ -95,7 +99,7 @@ extension FilesDatabaseManager {
                     try item.upsertRow(db)
                 }
                 return item.metadata
-            } ?? nil
+            }
             guard let metadata else { return (nil, nil) }
             let supersededOperation = operations[storeIdentity]?[ocId]?.operation
             operations[storeIdentity, default: [:]][ocId] = (operation, metadata.etag, metadata.remotePath(), metadata.deleted)
@@ -157,6 +161,7 @@ extension FilesDatabaseManager {
                         }
                         guard let listed = metadatas[download.ocId],
                               listed.account == item.account,
+                              !item.hasUnfinishedUpload,
                               !started.wasDeleted || canDownloadDeletedPackageMember(item)
                         else {
                             throw NSFileProviderError(.cannotSynchronize)
@@ -265,6 +270,8 @@ extension FilesDatabaseManager {
                     else {
                         throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: NSFileProviderItemIdentifier(ocId))
                     }
+                    // Preserve the transfer status if an upload started during this download.
+                    guard !item.hasUnfinishedUpload else { throw NSFileProviderError(.cannotSynchronize) }
                     if started.wasDeleted {
                         // Only folder completion can publish a deleted package member.
                         guard !downloaded else { throw NSFileProviderError(.cannotSynchronize) }

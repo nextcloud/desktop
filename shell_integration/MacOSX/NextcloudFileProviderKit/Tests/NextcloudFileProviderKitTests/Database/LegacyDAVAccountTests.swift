@@ -26,6 +26,12 @@ struct LegacyDAVAccountTests {
         }
     }
 
+    enum DownloadInterruption: CaseIterable {
+        case beforeRequest
+        case oldRootReturns404
+        case cancelledAfterAccountChange
+    }
+
     private struct PausedDAVResponse {
         let requestStarted: AsyncStream<Void>
         let releaseResponse: AsyncStream<Void>.Continuation
@@ -193,6 +199,117 @@ struct LegacyDAVAccountTests {
         #expect(retained.remotePath() == current.davFilesUrl + "/" + file.fileName)
         #expect(retained.downloaded)
         #expect(retained.keepDownloaded)
+    }
+
+    @Test(arguments: [AccountChange.serverURL, .backendUserID], DownloadInterruption.allCases)
+    func fetchPreservesItemWhenDAVAccountChanges(
+        change: AccountChange,
+        interruption: DownloadInterruption
+    ) async throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let previous = Self.previousAccount
+        let current = change.applying(to: previous)
+        let previousManager = try openDatabase(account: previous)
+        var file = DatabaseTestSuites.makeFile(
+            ocId: "materialized-file",
+            fileName: "Report.txt",
+            account: previous
+        )
+        file.uploaded = true
+        file.downloaded = true
+        file.keepDownloaded = true
+        previousManager.addItemMetadata(file)
+
+        let remote = MockRemoteInterface(
+            account: previous,
+            rootItem: MockRemoteItem.rootItem(account: previous)
+        )
+        let item = try await Item.lookupItemAndFindParentIdentifier(
+            identifier: .init(file.ocId),
+            account: previous,
+            remoteInterface: remote,
+            dbManager: previousManager,
+            log: FileProviderLogMock()
+        )
+        let (started, notifyStarted) = AsyncStream<Void>.makeStream()
+        let (accountChanged, notifyAccountChanged) = AsyncStream<Void>.makeStream()
+        let progress = Progress()
+        let afterDownloadStarted = interruption != .beforeRequest
+        if afterDownloadStarted {
+            remote.downloadError = interruption == .cancelledAfterAccountChange
+                ? NKError(error: URLError(.cancelled))
+                : NKError(statusCode: 404, fallbackDescription: "The old DAV root has moved")
+            remote.downloadHandler = {
+                notifyStarted.yield(())
+                notifyStarted.finish()
+                var iterator = accountChanged.makeAsyncIterator()
+                _ = await iterator.next()
+            }
+        }
+        let inFlightFetch = afterDownloadStarted ? Task {
+            await item.fetchContents(progress: progress, dbManager: previousManager)
+        } : nil
+        defer {
+            notifyStarted.finish()
+            notifyAccountChanged.finish()
+            inFlightFetch?.cancel()
+        }
+        if afterDownloadStarted {
+            try #require(try await nextTestValue(from: started) != nil)
+        }
+        let currentManager = try openDatabase(account: current)
+        if interruption == .cancelledAfterAccountChange {
+            progress.cancel()
+        }
+        notifyAccountChanged.finish()
+
+        let (contents, fetched, error) = if let inFlightFetch {
+            try await testTaskValue(of: inFlightFetch)
+        } else {
+            await item.fetchContents(dbManager: previousManager)
+        }
+        #expect(contents == nil)
+        #expect(fetched == nil)
+        if interruption == .cancelledAfterAccountChange {
+            #expect((error as? CocoaError)?.code == .userCancelled)
+        } else {
+            #expect((error as? NSFileProviderError)?.code == .cannotSynchronize)
+        }
+        #expect(remote.downloadOperationCount == (afterDownloadStarted ? 1 : 0))
+        #expect(remote.readOperationCount == 0)
+
+        let retained = try #require(currentManager.itemMetadata(ocId: file.ocId))
+        #expect(retained.remotePath() == current.davFilesUrl + "/" + file.fileName)
+        #expect(!retained.deleted)
+        #expect(retained.keepDownloaded)
+        #expect(retained.downloaded == !afterDownloadStarted)
+        #expect(retained.status == Status.normal.rawValue)
+
+        let currentRoot = MockRemoteItem.rootItem(account: current)
+        let serverFile = MockRemoteItem(
+            identifier: file.ocId,
+            versionIdentifier: "new-etag",
+            name: file.fileName,
+            remotePath: retained.remotePath(),
+            data: Data("Current contents".utf8),
+            account: current.ncKitAccount,
+            username: current.username,
+            userId: current.id,
+            serverUrl: current.serverUrl
+        )
+        currentRoot.children = [serverFile]
+        serverFile.parent = currentRoot
+        let listing = await Enumerator.readServerUrl(
+            current.davFilesUrl,
+            remoteInterface: MockRemoteInterface(account: current, rootItem: currentRoot),
+            dbManager: currentManager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+        #expect(listing.error == nil)
+        let refreshed = try #require(currentManager.itemMetadata(ocId: file.ocId))
+        #expect(refreshed.etag == serverFile.versionIdentifier)
+        #expect(refreshed.keepDownloaded)
     }
 
     @Test(arguments: [AccountChange.serverURL, .backendUserID])
