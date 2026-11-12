@@ -51,7 +51,6 @@ extension DatabaseTestSuites {
             metadata.note = "note"
             metadata.ownerId = "ownerId"
             metadata.ownerDisplayName = "Owner Name"
-            metadata.path = "/path"
             metadata.permissions = "RGDNVW"
             metadata.quotaUsedBytes = 123
             metadata.quotaAvailableBytes = -3
@@ -153,7 +152,7 @@ extension DatabaseTestSuites {
             #expect(record.normalizedFileName == "résumé.txt".precomposedStringWithCanonicalMapping)
             #expect(record.normalizedServerUrl == "https://host/prêt".precomposedStringWithCanonicalMapping)
 
-            record.updateLocation(serverUrl: "https://host/plain", fileName: "plain.txt")
+            record.updateLocation(parentURL: "https://host/plain", fileName: "plain.txt", domainAccount: DatabaseTestSuites.account)
             #expect(record.normalizedServerUrl == "https://host/plain")
             #expect(record.normalizedFileName == "plain.txt")
         }
@@ -171,12 +170,12 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "same")?.etag == "changed")
         }
 
-        @Test func persistedJSONShapeOfTheValueTypeIsUnchanged() throws {
+        @Test func persistedJSONOmitsOnlyTheRedundantPath() throws {
             let metadata = makeFullMetadata()
             let data = try JSONEncoder().encode(metadata)
             let object = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
-            // Change-delivery sessions written by earlier builds decode with this key set. Normalized keys are not part of it.
+            // Earlier builds stored this set of keys in change-delivery snapshots.
             let expectedKeys: Set = [
                 "ocId", "account", "checksums", "chunkUploadId", "classFile", "commentsUnread", "contentType", "creationDate",
                 "dataFingerprint", "date", "syncTime", "deleted", "directory", "downloadURL", "e2eEncrypted", "etag",
@@ -188,8 +187,7 @@ extension DatabaseTestSuites {
                 "size", "status", "tags", "downloaded", "uploaded", "keepDownloaded", "visitedDirectory", "trashbinFileName",
                 "trashbinOriginalLocation", "trashbinDeletionTime", "uploadDate", "urlBase", "user", "userId"
             ]
-            #expect(Set(object.keys) == expectedKeys)
-            #expect(expectedKeys.count == 67)
+            #expect(Set(object.keys) == expectedKeys.subtracting(["path"]))
         }
     }
 }

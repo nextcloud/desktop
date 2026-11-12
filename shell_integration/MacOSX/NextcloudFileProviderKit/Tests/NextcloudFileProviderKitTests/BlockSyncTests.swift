@@ -1,10 +1,13 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+@preconcurrency import Alamofire
 import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
+@testable import NextcloudKit
+import os
 import Testing
 import UniformTypeIdentifiers
 
@@ -17,6 +20,12 @@ import UniformTypeIdentifiers
 ///
 @Suite("Blocking synchronization", .serialized)
 struct BlockSyncTests {
+    enum MutationDuringAccountSetup: CaseIterable {
+        case create
+        case modify
+        case delete
+    }
+
     ///
     /// The key as it is written by an administrator and read by the extension.
     ///
@@ -186,6 +195,93 @@ struct BlockSyncTests {
         #expect((error as? NSFileProviderError)?.code != .serverUnreachable)
     }
 
+    @Test(arguments: [false, true])
+    func blockedSyncPreventsDAVReadsForMissingParent(usesKeepDownloadedAction: Bool) async throws {
+        let host = "\(UUID().uuidString.lowercased()).example.invalid"
+        let account = Account(
+            user: DatabaseTestSuites.account.username,
+            id: DatabaseTestSuites.account.id,
+            serverUrl: "https://\(host)",
+            password: DatabaseTestSuites.account.password
+        )
+        let requestMethods = OSAllocatedUnfairLock(initialState: [String]())
+        MockHTTPURLProtocol.setHandlers(
+            forHost: host,
+            start: { request in
+                requestMethods.withLock { $0.append(request.request.httpMethod ?? "") }
+                request.respond(status: 404)
+            },
+            stop: { _ in }
+        )
+        defer { MockHTTPURLProtocol.removeHandlers(forHost: host) }
+
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = NKSession(
+            nkCommonInstance: remote.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "FileProvider-test",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: Alamofire.Session(configuration: configuration)
+        )
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        let domain = NSFileProviderDomain(identifier: .init(UUID().uuidString), displayName: "Test")
+        let fileProviderExtension = FileProviderExtension(domain: domain, ncKit: remote)
+        defer { fileProviderExtension.invalidate() }
+
+        let metadata = DatabaseTestSuites.makeFile(
+            ocId: "cached-item",
+            fileName: "Report.txt",
+            serverUrl: account.davFilesUrl + "/Team folder",
+            account: account
+        )
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent(fileProviderExtension.domain.identifier.rawValue, isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let manager = try FilesDatabaseManager(
+            account: account,
+            databaseDirectory: directory,
+            fileProviderDomainIdentifier: fileProviderExtension.domain.identifier,
+            log: FileProviderLogMock(),
+            defaults: DatabaseTestSuites.defaults
+        )
+        manager.addItemMetadata(metadata)
+        try #require(fileProviderExtension.publishDatabaseManager(manager, generation: fileProviderExtension.setupGeneration))
+
+        UserDefaults.standard.set(true, forKey: Self.key)
+        defer { UserDefaults.standard.removeObject(forKey: Self.key) }
+
+        let identifier = NSFileProviderItemIdentifier(metadata.ocId)
+        let error: (any Error)? = await withCheckedContinuation { continuation in
+            if usesKeepDownloadedAction {
+                _ = fileProviderExtension.performAction(
+                    identifier: .keepDownloaded,
+                    onItemsWithIdentifiers: [identifier]
+                ) { error in
+                    continuation.resume(returning: error)
+                }
+            } else {
+                _ = fileProviderExtension.item(for: identifier, request: NSFileProviderRequest()) { _, error in
+                    continuation.resume(returning: error)
+                }
+            }
+        }
+
+        #expect((error as? NSFileProviderError)?.code == .serverUnreachable)
+        #expect(requestMethods.withLock { $0.isEmpty })
+        #expect(manager.itemMetadata(ocId: metadata.ocId)?.remotePath() == metadata.remotePath())
+        #expect(manager.itemMetadata(locatedAtRemoteUrl: metadata.serverUrl) == nil)
+    }
+
     ///
     /// The value belongs to the process rather than to a domain, so two domains must see the same thing and neither may carry it in its own dictionary.
     ///
@@ -208,6 +304,55 @@ struct BlockSyncTests {
         let error = await withCheckedContinuation { continuation in
             _ = makeExtension().createItem(basedOn: StubItem(), fields: [], contents: nil, request: NSFileProviderRequest()) { _, _, _, error in
                 continuation.resume(returning: error)
+            }
+        }
+
+        #expect((error as? NSFileProviderError)?.code == .serverUnreachable)
+    }
+
+    @Test(arguments: MutationDuringAccountSetup.allCases)
+    func mutationsReportTemporaryUnavailabilityDuringAccountSetup(mutation: MutationDuringAccountSetup) async throws {
+        let fileProviderExtension = makeExtension()
+        defer { fileProviderExtension.invalidate() }
+        let manager = DatabaseTestSuites.makeManager()
+        try #require(fileProviderExtension.publishDatabaseManager(
+            manager,
+            generation: fileProviderExtension.setupGeneration
+        ))
+        fileProviderExtension.ignoredFiles = IgnoredFilesMatcher(ignoreList: [], log: FileProviderLogMock())
+        manager.invalidateForDAVAccountChange()
+
+        let item = StubItem()
+        let request = NSFileProviderRequest()
+        let error: (any Error)? = await withCheckedContinuation { continuation in
+            switch mutation {
+                case .create:
+                    _ = fileProviderExtension.createItem(
+                        basedOn: item,
+                        fields: [],
+                        contents: nil,
+                        request: request
+                    ) { _, _, _, error in
+                        continuation.resume(returning: error)
+                    }
+                case .modify:
+                    _ = fileProviderExtension.modifyItem(
+                        item,
+                        baseVersion: NSFileProviderItemVersion(),
+                        changedFields: [],
+                        contents: nil,
+                        request: request
+                    ) { _, _, _, error in
+                        continuation.resume(returning: error)
+                    }
+                case .delete:
+                    _ = fileProviderExtension.deleteItem(
+                        identifier: item.itemIdentifier,
+                        baseVersion: NSFileProviderItemVersion(),
+                        request: request
+                    ) { error in
+                        continuation.resume(returning: error)
+                    }
             }
         }
 

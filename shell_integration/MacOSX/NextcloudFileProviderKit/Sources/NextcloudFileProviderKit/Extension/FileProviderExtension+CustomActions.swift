@@ -36,7 +36,12 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     let path = userVisibleURL.path
                     let domainIdentifier = domain.identifier.rawValue
                     logger.info("Telling main app to present file actions.", [.item: path, .domain: domainIdentifier])
-                    app?.presentFileActions(metadata.ocId, path: path, remoteItemPath: metadata.path, withDomainIdentifier: domainIdentifier)
+                    app?.presentFileActions(
+                        metadata.ocId,
+                        path: path,
+                        remoteItemPath: metadata.davParentPathWithoutOrigin,
+                        withDomainIdentifier: domainIdentifier
+                    )
                     completionHandler(nil)
                 }
 
@@ -68,8 +73,9 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 }
 
                 let domainIdentifier = domain.identifier.rawValue
-                logger.info("Telling main app to open item in browser.", [.item: metadata.path, .domain: domainIdentifier])
-                app?.openItemInBrowser(metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                let parentPathWithoutOrigin = metadata.davParentPathWithoutOrigin
+                logger.info("Telling main app to open item in browser.", [.item: parentPathWithoutOrigin, .domain: domainIdentifier])
+                app?.openItemInBrowser(metadata.fileId, remoteItemPath: parentPathWithoutOrigin, forDomainIdentifier: domainIdentifier)
                 completionHandler(nil)
 
                 return Progress()
@@ -100,8 +106,9 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 }
 
                 let domainIdentifier = domain.identifier.rawValue
-                logger.info("Telling main app to copy internal link.", [.item: metadata.path, .domain: domainIdentifier])
-                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: metadata.path, forDomainIdentifier: domainIdentifier)
+                let parentPathWithoutOrigin = metadata.davParentPathWithoutOrigin
+                logger.info("Telling main app to copy internal link.", [.item: parentPathWithoutOrigin, .domain: domainIdentifier])
+                app?.copyInternalLink(forItem: metadata.fileId, remoteItemPath: parentPathWithoutOrigin, forDomainIdentifier: domainIdentifier)
                 completionHandler(nil)
 
                 return Progress()
@@ -126,13 +133,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
         completionHandler: @Sendable @escaping ((any Error)?) -> Void
     ) -> Progress {
-        guard let ncAccount else {
-            logger.error("Not setting keep offline for items, account not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-        guard let dbManager else {
-            logger.error("Not setting keep offline for items as database is unreachable.")
+        guard let dbManager, !dbManager.wasInvalidatedByDAVAccountChange else {
+            logger.error("Cannot change which items are kept downloaded because the metadata database is unavailable.")
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -157,18 +159,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     for identifier in itemIdentifiers {
                         group.addTask {
-                            // This task processes one item.
-                            guard let item = await Item.storedItem(
+                            let item = try await Item.lookupResolvingParent(
                                 identifier: identifier,
-                                account: ncAccount,
+                                account: dbManager.account,
                                 remoteInterface: localNcKit,
                                 dbManager: dbManager,
+                                allowsRemoteLookup: !self.blockSync,
                                 log: self.log
-                            ) else {
-                                throw NSError.fileProviderErrorForNonExistentItem(
-                                    withIdentifier: identifier
-                                )
-                            }
+                            )
                             try await item.set(keepDownloaded: keepDownloaded, domain: localDomain)
                         }
                     }
@@ -196,14 +194,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
     /// - For a **directory** (including the root): we evict each *evictable* (downloaded, non-pinned) descendant file individually rather than calling `evictItem` on the directory. This leaves individually-pinned descendants materialized (honouring the explicit per-item choice), never asks the framework to evict strict-pinned content (so it cannot hit -2008), and does not rely on `evictItem` recursing into a directory or the root pseudo-container.
     ///
     private func performEvictAction(onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier], completionHandler: @Sendable @escaping ((any Error)?) -> Void) -> Progress {
-        guard let ncAccount else {
-            logger.error("Not removing downloads because account is not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.error("Not removing downloads because database is unreachable.")
+        guard let dbManager, !dbManager.wasInvalidatedByDAVAccountChange else {
+            logger.error("Cannot remove downloads because the metadata database is unavailable.")
             completionHandler(NSFileProviderError(.cannotSynchronize))
             return Progress()
         }
@@ -232,9 +224,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     for identifier in itemIdentifiers {
                         group.addTask {
-                            guard let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: localNcKit, dbManager: dbManager, log: self.log) else {
-                                throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
-                            }
+                            let item = try await Item.lookupResolvingParent(
+                                identifier: identifier,
+                                account: dbManager.account,
+                                remoteInterface: localNcKit,
+                                dbManager: dbManager,
+                                allowsRemoteLookup: !self.blockSync,
+                                log: self.log
+                            )
 
                             if item.metadata.directory {
                                 // "Remove downloaded items" on a folder or the root: evict each

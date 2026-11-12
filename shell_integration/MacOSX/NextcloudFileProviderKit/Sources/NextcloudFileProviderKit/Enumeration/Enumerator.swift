@@ -33,7 +33,6 @@ import NextcloudKit
 ///
 public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     let enumeratedItemIdentifier: NSFileProviderItemIdentifier
-    /// Internal (not private) so the concern-specific extensions in sibling files can read it.
     let enumeratedItemMetadata: SendableItemMetadata?
 
     private var enumeratingSystemIdentifier: Bool {
@@ -79,6 +78,12 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
         pageSize: Int = 1000,
         log: any FileProviderLogging
     ) throws {
+        guard dbManager.matchesDAVAccount(account),
+              !dbManager.wasInvalidatedByDAVAccountChange
+        else {
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.remoteInterface = remoteInterface
         self.account = account
@@ -99,15 +104,20 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
             serverUrl = account.davFilesUrl
             enumeratedItemMetadata = nil
         } else {
-            enumeratedItemMetadata = dbManager.itemMetadata(enumeratedItemIdentifier)
+            // Finder opens the Files root with `.rootContainer` above. The server's root ocId
+            // is kept for DAV metadata, so reject it as a Finder container identifier.
+            enumeratedItemMetadata = try dbManager.itemMetadataOrRetryForOutdatedAccount(enumeratedItemIdentifier)
 
-            guard let enumeratedItemMetadata, enumeratedItemMetadata.deleted == false else {
+            guard let enumeratedItemMetadata,
+                  !enumeratedItemMetadata.deleted,
+                  !enumeratedItemMetadata.isFilesRootWithServerID
+            else {
                 logger.error("Could not find item with identifier.", [.item: enumeratedItemIdentifier])
                 throw NSFileProviderError(.noSuchItem)
             }
 
             logger.debug("Providing enumerator for item with identifier.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata.fileName])
-            serverUrl = enumeratedItemMetadata.serverUrl + "/" + enumeratedItemMetadata.fileName
+            serverUrl = enumeratedItemMetadata.remotePath()
         }
 
         logger.info("Set up enumerator.", [.account: self.account.ncKitAccount, .url: serverUrl])
@@ -135,6 +145,11 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
 
     public func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         logger.info("Received enumerate items request for enumerator with user", [.account: account.ncKitAccount, .url: serverUrl])
+
+        guard dbManager.hasCurrentDAVAccountBinding() else {
+            observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            return
+        }
 
         if enumeratedItemIdentifier == .trashContainer {
             enumerateTrashItems(for: observer)
@@ -190,6 +205,6 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
-        completionHandler(currentAnchor)
+        completionHandler(dbManager.hasCurrentDAVAccountBinding() ? currentAnchor : nil)
     }
 }

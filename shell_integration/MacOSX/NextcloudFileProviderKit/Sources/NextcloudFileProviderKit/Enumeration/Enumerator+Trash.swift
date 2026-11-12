@@ -26,12 +26,6 @@ extension Enumerator {
             return
         }
 
-        let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
-
-        if orphanedIdentifiers.isEmpty == false {
-            observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
-        }
-
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
@@ -40,6 +34,14 @@ extension Enumerator {
             anchor
         }
 
+        guard dbManager.hasCurrentDAVAccountBinding() else {
+            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            return
+        }
+        let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
+        if !orphanedIdentifiers.isEmpty {
+            observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
+        }
         observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
         changeBuffer.acknowledgeBatch(batch.acknowledgement)
 
@@ -78,6 +80,10 @@ extension Enumerator {
             // We only want to list items deleted on the local device.
             // That cannot happen before the initial content enumeration for a file provider domain because the latter does not exist yet.
             // Hence the initial trash content enumeration can be finished with an empty set.
+            guard dbManager.hasCurrentDAVAccountBinding() else {
+                observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                return
+            }
             observer.finishEnumerating(upTo: nil)
         }
     }

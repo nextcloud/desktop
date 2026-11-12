@@ -6,12 +6,50 @@ import Foundation
 import NextcloudKit
 
 extension NKFile {
-    func fullUrlMatches(_ urlString: String) -> Bool {
-        var fileUrl = serverUrl + "/" + fileName
-        if fileUrl.last == "/" { // This is likely the root container, as it has no filename
-            fileUrl.removeLast()
+    /// Use this response's server base URL and backend user ID to replace the matching files or trash
+    /// root in `url` with `files:` or `trash:`. For example,
+    /// `https://cloud.example.com/remote.php/dav/files/alice/Team/Docs` becomes `files:/Team/Docs`.
+    /// Returns `nil` if neither root matches.
+    private func davRelativePath(forResponseURL url: String) -> String? {
+        Account.davRelativePath(
+            forURL: url,
+            accountBaseURL: urlBase,
+            backendUserID: userId,
+            acceptEquivalentResponseWebroot: true
+        )
+    }
+
+    private var representsAccountFilesRoot: Bool {
+        Account.isFilesRootAddress(
+            parentURL: serverUrl,
+            fileName: fileName,
+            accountBaseURL: urlBase,
+            backendUserID: userId,
+            acceptEquivalentResponseWebroot: true
+        )
+    }
+
+    func matchesRequestedDirectoryURL(_ requestedURL: String) -> Bool {
+        let requestedPath = Account.davRelativePath(forURL: requestedURL, accountBaseURL: urlBase, backendUserID: userId)
+        if representsAccountFilesRoot {
+            return requestedPath.map(Account.isStoredFilesRootLocation) ?? false
         }
-        return fileUrl == urlString
+
+        guard directory else { return false }
+
+        let responseURL = serverUrl + "/" + fileName
+        if let requestedPath, let responsePath = davRelativePath(forResponseURL: responseURL) {
+            return responsePath == requestedPath
+        }
+        return responseURL.utf8.elementsEqual(requestedURL.utf8)
+    }
+
+    func matchesResponseItemURL(_ expectedURL: String) -> Bool {
+        var responseItemURL = serverUrl + "/" + fileName
+        if responseItemURL.last == "/" { // This is likely the root container, as it has no filename
+            responseItemURL.removeLast()
+        }
+        return responseItemURL == expectedURL
     }
 
     func toItemMetadata(uploaded: Bool = true) -> SendableItemMetadata {
@@ -24,14 +62,16 @@ extension NKFile {
 
         // Support for finding the correct filename for e2ee files should go here
 
-        // Don't ask me why, NextcloudKit renames and moves the root folder details
-        // Also don't ask me why, but, NextcloudKit marks the NKFile for this as not a directory
-        let rootServerUrl = urlBase + Account.webDavFilesUrlSuffix + userId
-        let rootRequiresFixup = serverUrl == rootServerUrl && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
-        let ocId = rootRequiresFixup ? NSFileProviderItemIdentifier.rootContainer.rawValue : ocId
-        let directory = rootRequiresFixup ? true : directory
-        let serverUrl = rootRequiresFixup ? rootServerUrl : serverUrl
-        let fileName = rootRequiresFixup ? NextcloudKit.shared.nkCommonInstance.rootFileName : fileName
+        let isFilesRoot = representsAccountFilesRoot
+        // Keep the existing identifier mapping for the SDK's synthetic root.
+        let usesSDKFilesRootPlaceholder = isFilesRoot && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
+        let ocId = usesSDKFilesRootPlaceholder ? NSFileProviderItemIdentifier.rootContainer.rawValue : ocId
+        let fileName = isFilesRoot ? SendableItemMetadata.filesRootPlaceholderName : fileName
+        let directory = isFilesRoot || directory
+        let relativeParentPath = isFilesRoot ? Account.storedFilesRootLocation : davRelativePath(forResponseURL: serverUrl)
+        let absoluteParentURL = relativeParentPath.flatMap {
+            Account.absoluteURL(fromDAVRelativePath: $0, accountBaseURL: urlBase, backendUserID: userId)
+        } ?? serverUrl
 
         return SendableItemMetadata(
             ocId: ocId,
@@ -68,13 +108,12 @@ extension NKFile {
             lockTime: lockTime,
             lockTimeOut: lockTimeOut,
             lockToken: nil, // This is not available at this point and must be fetched from the local persistence later.
-            path: path,
             permissions: permissions,
             quotaUsedBytes: quotaUsedBytes,
             quotaAvailableBytes: quotaAvailableBytes,
             resourceType: resourceType,
             richWorkspace: richWorkspace,
-            serverUrl: serverUrl,
+            serverUrl: absoluteParentURL,
             sharePermissionsCollaborationServices: sharePermissionsCollaborationServices,
             sharePermissionsCloudMesh: sharePermissionsCloudMesh,
             shareType: shareType,
@@ -124,32 +163,9 @@ private final actor DirectoryMetadataContainer: Sendable {
 }
 
 extension [NKFile] {
-    ///
-    /// Determine whether the given `NKFile` is the metadata object for the read remote directory.
-    ///
-    func isDirectoryToRead(_ file: NKFile, directoryToRead: String) -> Bool {
-        if file.serverUrl == directoryToRead, file.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName {
-            return true
-        }
-
-        if file.directory, directoryToRead == "\(file.serverUrl)/\(file.fileName)" {
-            return true
-        }
-
-        return false
-    }
-
-    ///
-    /// Convert an array of `NKFile` to `SendableItemMetadata`.
-    ///
-    /// - Parameters:
-    ///     - account: The account which the metadata belongs to.
-    ///     - directoryToRead: The root path of the directory which this metadata comes from. This is required to distinguish the correct item for the metadata of the read directory itself from its children.
-    ///
-    /// - Returns: A tuple consisting of the metadata for the read directory itself (`root`), any child directories (`directories`) and separately any directly containted files (`files`).
-    ///
-    func toSendableDirectoryMetadata(account _: Account, directoryToRead: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
-        guard let root = first(where: { isDirectoryToRead($0, directoryToRead: directoryToRead) })?.toItemMetadata() else {
+    /// Identify the requested directory in the DAV response and convert it and the remaining response entries to metadata.
+    func toSendableDirectoryMetadata(requestedDirectoryURL: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
+        guard let root = first(where: { $0.matchesRequestedDirectoryURL(requestedDirectoryURL) })?.toItemMetadata() else {
             return nil
         }
 
@@ -157,7 +173,7 @@ extension [NKFile] {
 
         if count > 1 {
             await concurrentChunkedForEach { file in
-                guard isDirectoryToRead(file, directoryToRead: directoryToRead) == false else {
+                guard file.matchesRequestedDirectoryURL(requestedDirectoryURL) == false else {
                     return
                 }
 

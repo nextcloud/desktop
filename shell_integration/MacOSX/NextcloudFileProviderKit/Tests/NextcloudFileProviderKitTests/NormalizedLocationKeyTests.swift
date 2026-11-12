@@ -9,7 +9,7 @@ import XCTest
 
 ///
 /// Guards for the assumption that lets logical-address lookups be answered from an index: every row
-/// carries normalized keys, so `hasLocation` never falls back to the unindexed raw columns.
+/// carries normalized keys, so `matchesStoredParentLocationAndFileName` never falls back to the unindexed raw columns.
 ///
 final class NormalizedLocationKeyTests: XCTestCase {
     private static let account = Account(
@@ -84,14 +84,14 @@ final class NormalizedLocationKeyTests: XCTestCase {
         try manager.insertForTesting(stranded, normalizedServerUrl: "", normalizedFileName: "")
 
         XCTAssertNil(
-            manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + "stranded.txt"),
+            manager.itemMetadata(locatedAtRemoteUrl: serverUrl + "/" + "stranded.txt"),
             "Precondition: without its normalized keys the row cannot be found by location."
         )
 
         // Opening the database again runs the repair.
         let reopened = makeManager()
 
-        let repaired = reopened.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + "stranded.txt")
+        let repaired = reopened.itemMetadata(locatedAtRemoteUrl: serverUrl + "/" + "stranded.txt")
         XCTAssertEqual(repaired?.ocId, "stranded", "The repair should make the row findable by location again.")
     }
 
@@ -169,7 +169,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
         let repaired = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "tombstone"))
 
         XCTAssertEqual(repaired.fileName, "gone.txt")
-        XCTAssertEqual(repaired.serverUrl, Self.account.davFilesUrl + "/folder")
+        XCTAssertEqual(repaired.serverUrl, "files:/folder")
     }
 
     /// Normalization is why the comparison can be an equality at all, since a decomposed name
@@ -190,7 +190,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
 
         manager.addItemMetadata(metadata(fileName: precomposed, serverUrl: serverUrl, ocId: "umlaut"))
 
-        let found = manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + decomposed)
+        let found = manager.itemMetadata(locatedAtRemoteUrl: serverUrl + "/" + decomposed)
 
         XCTAssertEqual(found?.ocId, "umlaut", "Lookup must match across Unicode normalization forms.")
     }
@@ -204,11 +204,11 @@ final class NormalizedLocationKeyTests: XCTestCase {
         manager.renameItemMetadata(ocId: "renamed", newServerUrl: serverUrl, newFileName: "after.txt")
 
         XCTAssertNil(
-            manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + "before.txt"),
+            manager.itemMetadata(locatedAtRemoteUrl: serverUrl + "/" + "before.txt"),
             "The old address should no longer resolve."
         )
         XCTAssertEqual(
-            manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: serverUrl + "/" + "after.txt")?.ocId,
+            manager.itemMetadata(locatedAtRemoteUrl: serverUrl + "/" + "after.txt")?.ocId,
             "renamed",
             "The new address should resolve to the same row."
         )

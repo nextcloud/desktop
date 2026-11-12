@@ -32,8 +32,7 @@ https://eclecticlight.co/2021/05/08/explainer-unicode-normalization-and-apfs/
 
 `ItemMetadataRecord` stores both the original values and comparison values:
 
-- `serverUrl` and `fileName` retain the spelling received from the server or
-  operating-system boundary.
+- The stored parent path and `fileName` retain the spelling of item path components received from the server or operating-system boundary. For items within the domain, the parent path is relative to a DAV root.
 - `normalizedServerUrl` and `normalizedFileName` contain NFC values produced
   by Foundation's `precomposedStringWithCanonicalMapping` property.
 
@@ -76,8 +75,8 @@ items refer to the same location:
 SQL predicates cannot call Swift methods, so the input is normalized in Swift
 before it is bound. The reusable query expressions in
 `ItemMetadataRecord+Queries.swift` centralize the persisted-field predicates:
-`hasLocation` compares the normalized parent URL and normalized file name;
-`hasServerUrl` compares an exact URL or a slash-delimited descendant path. Both
+`matchesStoredParentLocationAndFileName` compares the normalized parent location and filename;
+`matchesStoredParentLocation` matches a directory location and can include its descendants. Both
 helpers compare the normalized columns alone and are answered from the location
 index; the descendant form is a byte-wise range over that index, which keeps it
 case-sensitive and free of pattern characters.
@@ -128,9 +127,9 @@ requests.
 
 When changing metadata persistence or adding a database predicate:
 
-1. Preserve the raw `serverUrl` and `fileName`.
+1. Preserve the spelling of the DAV-relative parent path and `fileName`.
 2. Populate or update their normalized counterparts in the same write.
-3. Use `hasLocation`, `hasServerUrl`, or `hasSameLocation` instead of
+3. Use the parent location predicates or `hasSameLocation` instead of
    duplicating normalization logic.
 4. Keep slash boundaries when matching descendants so `folder` does not match
    `folder2`.

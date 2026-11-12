@@ -31,8 +31,7 @@ struct ThumbnailFetchingTests {
             fileProviderDomainIdentifier: ext.domain.identifier,
             log: FileProviderLogMock()
         )
-        ext.ncAccount = Self.account
-        ext.dbManager = database
+        try #require(ext.publishDatabaseManager(database, generation: ext.setupGeneration))
         let identifiers = [NSFileProviderItemIdentifier("thumbnail-item")]
         let size = CGSize(width: 64, height: 64)
         let data = serverError ? nil : Data("Thumbnail contents".utf8)
@@ -77,11 +76,13 @@ struct ThumbnailFetchingTests {
     }
 
     @Test(arguments: [false, true])
-    func unavailableSetupDoesNotStartThumbnailBatch(accountReady: Bool) async throws {
+    func unavailableSetupDoesNotStartThumbnailBatch(managerWasInvalidated: Bool) async throws {
         let ext = makeExtension()
         defer { ext.invalidate() }
-        if accountReady {
-            ext.ncAccount = Self.account
+        if managerWasInvalidated {
+            let manager = DatabaseTestSuites.makeManager(account: Self.account)
+            try #require(ext.publishDatabaseManager(manager, generation: ext.setupGeneration))
+            manager.invalidateForDAVAccountChange()
         }
         ext.thumbnailFetcher = { _, _, _, _, _, _, _, _, _ in
             Issue.record("Unavailable account or database must not start a thumbnail batch")
@@ -99,6 +100,6 @@ struct ThumbnailFetchingTests {
 
         var iterator = completion.makeAsyncIterator()
         let error: Error? = try #require(await iterator.next())
-        #expect((error as? NSFileProviderError)?.code == (accountReady ? .cannotSynchronize : .notAuthenticated))
+        #expect((error as? NSFileProviderError)?.code == (managerWasInvalidated ? .cannotSynchronize : .notAuthenticated))
     }
 }

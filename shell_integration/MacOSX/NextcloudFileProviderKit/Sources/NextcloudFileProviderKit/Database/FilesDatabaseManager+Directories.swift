@@ -6,20 +6,12 @@ import Foundation
 import GRDB
 
 public extension FilesDatabaseManager {
-    private func fullServerPathUrl(for metadata: any ItemMetadata) -> String {
-        if metadata.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            metadata.serverUrl
-        } else {
-            metadata.serverUrl + "/" + metadata.fileName
-        }
-    }
-
     func childItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
+                .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -31,11 +23,11 @@ public extension FilesDatabaseManager {
     /// this does not recurse into descendants.
     ///
     func immediateChildItems(directoryMetadata: SendableItemMetadata) -> [SendableItemMetadata] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false))
+                .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -47,7 +39,7 @@ public extension FilesDatabaseManager {
     /// carries the same `serverUrl` its children do.
     ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
         let account = directoryMetadata.account
         let ocId = directoryMetadata.ocId
 
@@ -57,7 +49,8 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.deleted == false
                         && ItemMetadataRecord.Columns.ocId != ocId
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false)
+                        && !ItemMetadataRecord.isFilesRoot
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false)
                 )
                 .fetchCount(db)
         } ?? 0
@@ -82,13 +75,13 @@ public extension FilesDatabaseManager {
     /// matching the directory `.../folder`.
     ///
     func hasEvictableDescendantFile(directoryMetadata: SendableItemMetadata) -> Bool {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not look up evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
             try !ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.isEvictableFile
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true)
                 )
                 .isEmpty(db)
         } ?? false
@@ -105,13 +98,13 @@ public extension FilesDatabaseManager {
     /// (#9891, #10085).
     ///
     func evictableDescendantFileIdentifiers(directoryMetadata: SendableItemMetadata) -> [NSFileProviderItemIdentifier] {
-        let directoryServerUrl = fullServerPathUrl(for: directoryMetadata)
+        let directoryServerUrl = directoryMetadata.remotePath()
 
         return read("Could not fetch evictable descendants of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.isEvictableFile
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true)
                 )
                 .select(ItemMetadataRecord.Columns.ocId, as: String.self)
                 .fetchAll(db)
@@ -129,7 +122,7 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.directory == false
                         && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.status < status.rawValue
-                        && ItemMetadataRecord.hasServerUrl(equalTo: remotePath, includingDescendants: true)
+                        && matchesParentDirectoryURL(remotePath, includingDescendants: true)
                 )
                 .select(ItemMetadataRecord.Columns.ocId, as: String.self)
                 .fetchAll(db)
@@ -180,7 +173,9 @@ public extension FilesDatabaseManager {
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: SendableItemMetadata) -> SendableItemMetadata? {
-        self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl)
+        read("Could not look up parent directory metadata.", [.item: itemMetadata.ocId, .url: itemMetadata.serverUrl]) { db in
+            try parentDirectoryMetadataForItem(itemMetadata, in: db)?.metadata
+        } ?? nil
     }
 
     func directoryMetadata(ocId: String) -> SendableItemMetadata? {
@@ -215,7 +210,7 @@ public extension FilesDatabaseManager {
             let results = try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.Columns.account == directoryAccount
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryUrlPath, includingDescendants: true)
                 )
                 .fetchRecords(db, logger: logger)
 
@@ -255,10 +250,10 @@ public extension FilesDatabaseManager {
 
 extension FilesDatabaseManager {
     func directoryMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
-        try ItemMetadataRecord
-            .filter(key: ocId)
-            .filter(ItemMetadataRecord.Columns.directory == true)
-            .fetchRecord(db, logger: logger)
+        guard let metadata = try itemMetadata(ocId: ocId, in: db),
+              metadata.directory
+        else { return nil }
+        return metadata
     }
 
     func renameDirectoryAndPropagateToChildren(
@@ -276,7 +271,7 @@ extension FilesDatabaseManager {
         let childItemResults = try ItemMetadataRecord
             .filter(
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
+                    && matchesParentDirectoryURL(oldDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
 
@@ -288,7 +283,7 @@ extension FilesDatabaseManager {
             let movedServerUrl = oldServerUrl.replacingOccurrences(
                 of: oldDirectoryServerUrl, with: newDirectoryServerUrl
             )
-            childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
+            childItem.updateLocation(parentURL: movedServerUrl, fileName: childItem.fileName, domainAccount: account)
             childItem.lockToken = nil
             try childItem.upsertRow(db)
             logger.debug(
@@ -299,10 +294,13 @@ extension FilesDatabaseManager {
             )
         }
 
+        let destinationAccountKey = account.davRelativePath(forURL: newDirectoryServerUrl) == nil
+            ? directoryMetadata.account
+            : account.ncKitAccount
         return try ItemMetadataRecord
             .filter(
-                ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
+                ItemMetadataRecord.Columns.account == destinationAccountKey
+                    && matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
             .map(\.metadata)

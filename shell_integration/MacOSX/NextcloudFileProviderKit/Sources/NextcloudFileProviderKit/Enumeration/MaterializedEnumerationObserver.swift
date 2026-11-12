@@ -45,7 +45,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     }
 
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
-        guard let metadataForMaterializedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
+        guard let metadataForMaterializedItems = dbManager.materialisedItemMetadatas() else {
             // Without the stored set nothing can be told apart; evicting on a guess would drop local state.
             logger.error("Could not read the materialized items; not reconciling this enumeration.", [.account: account.ncKitAccount])
             completionHandler([], [])
@@ -78,7 +78,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
                 switch enumeratedIdentifier {
                     case .rootContainer:
-                        metadata = dbManager.rootItemMetadata(account: account)
+                        metadata = dbManager.rootItemMetadata()
                     case .trashContainer:
                         continue // there is no placeholder item for the trash container in the database
                     default:

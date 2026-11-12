@@ -16,6 +16,11 @@ extension NKError {
     /// Local persistence failed. Maps to `cannotSynchronize`, not a server or quota error.
     static let metadataDatabaseWriteFailed = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The metadata database could not be updated.")
 
+    static let davAccountChanged = NKError(
+        errorCode: NSFileProviderError.cannotSynchronize.rawValue,
+        errorDescription: "The database no longer belongs to the WebDAV account used for this request."
+    )
+
     var isCancelledError: Bool {
         errorCode == NSURLErrorCancelled
     }
@@ -108,15 +113,15 @@ extension NKError {
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
         }
-        guard let collidingItemMetadata = dbManager.itemMetadata(
-            account: dbManager.account.ncKitAccount, locatedAtRemoteUrl: problemRemotePath
-        ), let collidingItem = await Item.storedItem(
-            identifier: .init(collidingItemMetadata.ocId),
-            account: dbManager.account,
-            remoteInterface: remoteInterface,
-            dbManager: dbManager,
-            log: log
-        ) else {
+        guard let collidingItemMetadata = dbManager.itemMetadata(locatedAtRemoteUrl: problemRemotePath),
+              let collidingItem = await Item.storedItem(
+                  identifier: .init(collidingItemMetadata.ocId),
+                  account: dbManager.account,
+                  remoteInterface: remoteInterface,
+                  dbManager: dbManager,
+                  log: log
+              )
+        else {
             return NSFileProviderError(.filenameCollision)
         }
         return NSError.fileProviderErrorForCollision(with: collidingItem)

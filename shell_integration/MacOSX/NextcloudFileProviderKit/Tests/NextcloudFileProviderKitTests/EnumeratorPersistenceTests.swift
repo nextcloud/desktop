@@ -70,6 +70,62 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
     }
 
+    @Test func refusesDAVReadWithPreviousAccountAndCurrentDatabaseManager() async {
+        let previousAccounts = [
+            Account(
+                user: account.username,
+                id: account.id,
+                serverUrl: "https://previous.example.invalid",
+                password: account.password
+            ),
+            Account(
+                user: account.username,
+                id: account.id + "-previous",
+                serverUrl: account.serverUrl,
+                password: account.password
+            )
+        ]
+
+        for previousAccount in previousAccounts {
+            let previous = Self(account: previousAccount)
+            previous.file.versionIdentifier = "stale-response"
+
+            #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+                try Enumerator(
+                    enumeratedItemIdentifier: .rootContainer,
+                    account: previousAccount,
+                    remoteInterface: previous.remote,
+                    dbManager: manager,
+                    log: FileProviderLogMock()
+                )
+            }
+
+            let result = await Enumerator.readServerUrl(
+                previous.file.remotePath,
+                account: previousAccount,
+                remoteInterface: previous.remote,
+                dbManager: manager,
+                depth: .target,
+                log: FileProviderLogMock()
+            )
+
+            #expect(result.error == .davAccountChanged)
+            #expect(previous.remote.readOperationCount == 0)
+            #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
+        }
+    }
+
+    @Test func refusesDAVReadsBeforeReplacingTheAccountSession() async throws {
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator(.rootContainer))
+        manager.invalidateForDAVAccountChange()
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateItems()
+        }
+        #expect(remote.readOperationCount == 0)
+        #expect(observer.items.isEmpty)
+    }
+
     @Test func workingSetKeepsItsAnchorAndReportsTheChangeAfterRetry() async throws {
         folder.versionIdentifier = "folder-v2"
         file.versionIdentifier = "file-v2"
@@ -136,6 +192,119 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v2")
     }
 
+    @Test(arguments: [false, true])
+    func paginatedListingOnlyReportsPendingUploadAtItsCachedPath(movedOnServer: Bool) async throws {
+        var pending = try #require(manager.itemMetadata(ocId: file.identifier))
+        pending.status = Status.uploadError.rawValue
+        pending.uploaded = false
+        pending.etag = "local-edit"
+        pending.chunkUploadId = "pending-edit-upload"
+        pending.keepDownloaded = true
+        manager.addItemMetadata(pending)
+        remote.pagination = true
+
+        let listedFolderURL = movedOnServer ? account.davFilesUrl + "/destination" : folder.remotePath
+        if movedOnServer {
+            let created = await remote.createFolder(remotePath: listedFolderURL, account: account)
+            try #require(created.error == .success)
+            let moved = await remote.move(
+                remotePathSource: file.remotePath,
+                remotePathDestination: listedFolderURL + "/" + file.name,
+                account: account
+            )
+            try #require(moved.error == .success)
+            #expect(file.identifier == pending.ocId)
+        }
+
+        let result = await Enumerator.readServerUrl(
+            listedFolderURL,
+            pageSettings: (nil, 0, 10),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        #expect(remote.readOperationCount == 1)
+        if movedOnServer {
+            #expect(result.error == .invalidData)
+            #expect(result.error?.fileProviderError?.code == .cannotSynchronize)
+            #expect(result.metadatas == nil)
+        } else {
+            #expect(result.error == nil)
+            let reported = try #require(result.metadatas?.first)
+            #expect(reported.ocId == pending.ocId)
+            #expect(reported.remotePath() == pending.remotePath())
+            #expect(reported.hasUnfinishedUpload)
+            #expect(reported.etag == pending.etag)
+        }
+
+        let saved = try #require(manager.itemMetadata(ocId: pending.ocId))
+        #expect(saved.remotePath() == pending.remotePath())
+        #expect(saved.hasUnfinishedUpload)
+        #expect(saved.etag == pending.etag)
+        #expect(saved.chunkUploadId == pending.chunkUploadId)
+        #expect(saved.keepDownloaded)
+    }
+
+    @Test func directoryListingPreservesChildrenStoredUnderTheDAVResponseURL() async throws {
+        let account = Account(
+            user: "login",
+            id: "backend-id",
+            serverUrl: "https://example.com/instance//nextcloud",
+            password: "test"
+        )
+        let responseFilesRoot = "https://example.com/instance/nextcloud" + Account.webDavFilesUrlSuffix + account.id
+        let responseDirectoryURL = responseFilesRoot + "/Docs"
+        let requestedDirectoryURL = account.davFilesUrl + "/Docs"
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        var cached = DatabaseTestSuites.makeFile(
+            ocId: "report-id",
+            fileName: "Report.txt",
+            serverUrl: responseDirectoryURL,
+            account: account
+        )
+        cached.uploaded = true
+        cached.downloaded = true
+        cached.keepDownloaded = true
+        cached.etag = "old-etag"
+        try manager.insertForTesting(cached)
+
+        var directory = NKFile()
+        directory.ocId = "docs-id"
+        directory.directory = true
+        directory.fileName = "Docs"
+        directory.serverUrl = responseFilesRoot
+        directory.account = account.ncKitAccount
+        directory.urlBase = account.serverUrl
+        directory.user = account.username
+        directory.userId = account.id
+
+        var report = directory
+        report.ocId = cached.ocId
+        report.directory = false
+        report.fileName = cached.fileName
+        report.serverUrl = responseDirectoryURL
+        report.etag = "new-etag"
+
+        let result = await Enumerator.handleDepth1ReadFileOrFolder(
+            serverUrl: requestedDirectoryURL,
+            account: account,
+            dbManager: manager,
+            files: [directory, report],
+            pageIndex: nil,
+            preserveDeletedTarget: false,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.readError == nil)
+        let stored = try #require(manager.itemMetadata(ocId: cached.ocId))
+        #expect(stored.etag == report.etag)
+        #expect(stored.downloaded)
+        #expect(stored.keepDownloaded)
+    }
+
     @Test func serverErrorIsPreserved() async {
         let error = NKError(statusCode: 503, fallbackDescription: "Unavailable")
         remote.enumerateErrorBySuffix = ["/folder": error]
@@ -164,8 +333,7 @@ struct EnumeratorPersistenceTests {
         let configuredURL = try #require(URL(string: account.serverUrl + filePath))
         let parsedURL = try #require(URL(string: origin + "/instance/nextcloud" + filePath))
         let ocId = "parser-file-id"
-        let body = Data("""
-        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+        let fileResponse = """
           <d:response>
             <d:href>\(responseWebroot)\(filePath)</d:href>
             <d:propstat>
@@ -176,6 +344,10 @@ struct EnumeratorPersistenceTests {
               <d:status>HTTP/1.1 200 OK</d:status>
             </d:propstat>
           </d:response>
+        """
+        let body = Data("""
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+        \(fileResponse)
         </d:multistatus>
         """.utf8)
         MockHTTPURLProtocol.setResponse(for: configuredURL, statusCode: 207, body: body)
@@ -185,33 +357,17 @@ struct EnumeratorPersistenceTests {
             MockHTTPURLProtocol.removeResponse(for: parsedURL)
         }
 
-        let remote = NextcloudKit()
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.protocolClasses = [MockHTTPURLProtocol.self]
-        let session = NKSession(
-            nkCommonInstance: remote.nkCommonInstance,
-            urlBase: account.serverUrl,
-            user: account.username,
-            userId: account.id,
-            password: account.password,
-            account: account.ncKitAccount,
-            userAgent: "FileProvider-test",
-            groupIdentifier: "",
-            httpMaximumConnectionsPerHost: 1,
-            httpMaximumConnectionsPerHostInDownload: 1,
-            httpMaximumConnectionsPerHostInUpload: 1,
-            sessionDataOverride: Alamofire.Session(configuration: configuration)
-        )
-        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        let remote = nextcloudKitForDAVRead(account: account)
         let initialRead = await remote.enumerate(remotePath: configuredURL.absoluteString, depth: .target, account: account)
         try #require(initialRead.error == .success)
-        let metadata = try #require(initialRead.files.first).toItemMetadata()
+        let file = try #require(initialRead.files.first)
+        try #require(file.matchesResponseItemURL(parsedURL.absoluteString))
+        let metadata = file.toItemMetadata()
         try #require(metadata.urlBase == account.serverUrl)
-        try #require(metadata.remotePath() == parsedURL.absoluteString)
 
         let manager = DatabaseTestSuites.makeManager(account: account)
         let result = await Enumerator.readServerUrl(
-            metadata.remotePath(),
+            parsedURL.absoluteString,
             account: account,
             sourceMetadata: metadata,
             remoteInterface: remote,
@@ -219,10 +375,74 @@ struct EnumeratorPersistenceTests {
             depth: .target,
             log: FileProviderLogMock()
         )
-
-        #expect(MockHTTPURLProtocol.requests(for: parsedURL).map(\.httpMethod) == ["PROPFIND"])
         #expect(result.error == nil)
         #expect(result.metadatas?.map(\.ocId) == [ocId])
+    }
+
+    @Test(arguments: [(false, true), (true, true), (false, false), (true, false)])
+    func directoryReadAcceptsEquivalentWebrootWithMatchingBackendID(filesRoot: Bool, matchingBackendID: Bool) async throws {
+        let origin = "https://\(UUID().uuidString.lowercased()).example.invalid"
+        let account = Account(
+            user: "login",
+            id: "backénd",
+            serverUrl: origin + "/N%C3%A9xt",
+            password: "test"
+        )
+        let directorySuffix = filesRoot ? "" : "/Docs"
+        let directoryURL = account.davFilesUrl + directorySuffix
+        let requestURL = try #require(URL(string: directoryURL))
+        let responseBackendID = matchingBackendID ? "back%C3%A9nd" : "backe%CC%81nd"
+        let responsePath = "/Ne%CC%81xt" + Account.webDavFilesUrlSuffix + responseBackendID + directorySuffix
+        let body = Data("""
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:response>
+            <d:href>\(responsePath)/</d:href>
+            <d:propstat>
+              <d:prop>
+                <oc:id>directory-id</oc:id>
+                <d:resourcetype><d:collection/></d:resourcetype>
+              </d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+          <d:response>
+            <d:href>\(responsePath)/report.txt</d:href>
+            <d:propstat>
+              <d:prop>
+                <oc:id>file-id</oc:id>
+                <d:getcontenttype>text/plain</d:getcontenttype>
+              </d:prop>
+              <d:status>HTTP/1.1 200 OK</d:status>
+            </d:propstat>
+          </d:response>
+        </d:multistatus>
+        """.utf8)
+        MockHTTPURLProtocol.setResponse(for: requestURL, statusCode: 207, body: body)
+        defer { MockHTTPURLProtocol.removeResponse(for: requestURL) }
+
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let result = await Enumerator.readServerUrl(
+            directoryURL,
+            account: account,
+            remoteInterface: nextcloudKitForDAVRead(account: account),
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        let requests = MockHTTPURLProtocol.requests(for: requestURL)
+        #expect(requests.map(\.httpMethod) == ["PROPFIND"])
+        #expect(requests.first?.value(forHTTPHeaderField: "Depth") == "1")
+        if matchingBackendID {
+            #expect(result.error == nil)
+            #expect(result.metadatas?.map(\.ocId) == ["directory-id", "file-id"])
+            let storedFile = manager.itemMetadata(locatedAtRemoteUrl: directoryURL + "/report.txt")
+            #expect(storedFile?.ocId == "file-id")
+            #expect(storedFile?.serverUrl.utf8.elementsEqual(directoryURL.utf8) == true)
+        } else {
+            #expect(result.error == .invalidData)
+            #expect(manager.itemMetadata(ocId: "file-id") == nil)
+        }
     }
 
     @Test func workingSetSkipsAStaleURLThatWouldReturn404() async throws {
@@ -252,10 +472,32 @@ struct EnumeratorPersistenceTests {
         try await fixture.expectWorkingSetToSkip404(at: previousAccount)
     }
 
+    private func nextcloudKitForDAVRead(account: Account) -> NextcloudKit {
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = NKSession(
+            nkCommonInstance: remote.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "FileProvider-test",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: Alamofire.Session(configuration: configuration)
+        )
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        return remote
+    }
+
     private func expectWorkingSetToSkip404(at previousAccount: Account) async throws {
         try storeFolderAndFile(at: previousAccount)
         let stalePath = previousAccount.davFilesUrl + "/" + folder.name
-        let storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
+        let storedFolder = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == folder.identifier })
         try #require(storedFolder.urlBase == previousAccount.serverUrl)
         try #require(storedFolder.remotePath() == stalePath)
         remote.enumerateErrorBySuffix[stalePath] = NKError(statusCode: 404, fallbackDescription: "File not found")
@@ -264,12 +506,17 @@ struct EnumeratorPersistenceTests {
 
         try await observer.enumerateChanges(from: anchor)
 
-        #expect(remote.readOperationCount == 0)
         #expect(observer.changedItems.isEmpty)
         #expect(observer.deletedItemIdentifiers.isEmpty)
         #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
-        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
-        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+
+        let snapshot = try MockEnumerationObserver(enumerator: makeEnumerator(.workingSet))
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await snapshot.enumerateItems()
+        }
+        #expect(snapshot.items.isEmpty)
+        #expect(remote.readOperationCount == 0)
+        expectStaleRowsRetained()
     }
 
     @Test func containerSkipsAStaleURLThatWouldReturnAnEmpty207() async throws {
@@ -287,22 +534,75 @@ struct EnumeratorPersistenceTests {
         folder.userId = previousAccount.id
         folder.children = []
         remote.enumerateResponseStatusCode = 207
-        let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
 
         await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            let observer = try MockChangeObserver(enumerator: makeEnumerator(.init(folder.identifier)))
+            defer {
+                #expect(observer.changedItems.isEmpty)
+                #expect(observer.deletedItemIdentifiers.isEmpty)
+            }
             try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
         }
 
         #expect(remote.readOperationCount == 0)
-        #expect(observer.changedItems.isEmpty)
+        expectStaleRowsRetained()
+    }
+
+    @Test(arguments: [NSFileProviderItemIdentifier.rootContainer.rawValue, "server-root-id"])
+    func workingSetRetriesA404ForTheFilesRoot(rootID: String) async throws {
+        var root = DatabaseTestSuites.makeFile(
+            ocId: rootID,
+            fileName: SendableItemMetadata.filesRootPlaceholderName,
+            serverUrl: account.davFilesUrl,
+            account: account
+        )
+        root.directory = true
+        root.visitedDirectory = true
+        root.keepDownloaded = true
+        root.syncTime = Date(timeIntervalSinceNow: -120)
+        manager.addItemMetadata(root)
+        remote.enumerateErrorBySuffix[account.davFilesUrl] = NKError(statusCode: 404, fallbackDescription: "File not found")
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(remote.readOperationCount == 2)
         #expect(observer.deletedItemIdentifiers.isEmpty)
-        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
-        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
+        #expect(observer.finishes.last?.anchor.rawValue == anchor.rawValue)
+        let savedRoot = try #require(manager.itemMetadata(ocId: rootID))
+        #expect(!savedRoot.deleted)
+        #expect(savedRoot.keepDownloaded)
+    }
+
+    @Test func rootContainerReturnsARetryableErrorWhenDAVReturns404() async throws {
+        remote.enumerateErrorBySuffix[account.davFilesUrl] = NKError(statusCode: 404, fallbackDescription: "File not found")
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.rootContainer))
+
+        await #expect(throws: NSFileProviderError(.cannotSynchronize)) {
+            try await observer.enumerateChanges(from: anchor)
+        }
+
+        #expect(remote.readOperationCount == 1)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
     }
 
     @Test func workingSetReportsA404UnderTheCurrentDAVBaseAsADeletion() async throws {
         remote.enumerateErrorBySuffix = ["/folder": NKError(statusCode: 404, fallbackDescription: "File not found")]
         let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+        observer.beforeFinishEnumeratingChanges = {
+            // Finishing the batch acknowledges the deletion and removes the row.
+            let afterScan = Date()
+            let changes = manager.pendingWorkingSetChanges(since: anchorDate)
+            guard let deletion = changes?.deleted.first(where: { $0.ocId == folder.identifier }) else {
+                Issue.record("The working-set scan did not save a deletion after the incoming anchor.")
+                return
+            }
+            #expect(deletion.syncTime > anchorDate)
+            #expect(deletion.syncTime <= afterScan)
+            #expect(manager.pendingWorkingSetChanges(since: afterScan)?.deleted.isEmpty == true)
+        }
 
         try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity))
 
@@ -313,13 +613,24 @@ struct EnumeratorPersistenceTests {
     private func storeFolderAndFile(at previousAccount: Account) throws {
         var storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
         storedFolder.apply(account: previousAccount)
+        // Keep the domain's account key while simulating a row with an outdated DAV root.
+        storedFolder.account = account.ncKitAccount
         storedFolder.serverUrl = previousAccount.davFilesUrl
         manager.addItemMetadata(storedFolder)
 
         var storedFile = try #require(manager.itemMetadata(ocId: file.identifier))
         storedFile.apply(account: previousAccount)
+        storedFile.account = account.ncKitAccount
         storedFile.serverUrl = storedFolder.remotePath()
         manager.addItemMetadata(storedFile)
+    }
+
+    private func expectStaleRowsRetained() {
+        let retained = manager.itemMetadatas(account: account.ncKitAccount)
+        for identifier in [folder.identifier, file.identifier] {
+            #expect(manager.itemMetadata(ocId: identifier) == nil)
+            #expect(retained.first { $0.ocId == identifier }?.deleted == false)
+        }
     }
 
     private func readFolder() async -> RemoteReadResult {

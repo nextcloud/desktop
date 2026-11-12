@@ -22,6 +22,39 @@ extension DatabaseTestSuites {
             try manager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: maxItems) { "a\($0)" }
         }
 
+        @Test func queuedSnapshotsUseTheStoreVersionFormat() throws {
+            let account = DatabaseTestSuites.account
+            let folder = "Docs #?%20"
+            let file = DatabaseTestSuites.makeFile(ocId: "report", fileName: "Report.txt")
+            manager.addItemMetadata(file)
+            #expect(try manager.storedParentLocationKeysForTesting(ocId: file.ocId)?.parentLocation == "files:")
+            manager.renameItemMetadata(
+                ocId: file.ocId,
+                newServerUrl: account.davFilesUrl + "/" + folder,
+                newFileName: file.fileName
+            )
+            let movedFile = try #require(manager.itemMetadata(ocId: file.ocId))
+            let movedParentPath = "files:/" + folder
+            #expect(try manager.storedParentLocationKeysForTesting(ocId: file.ocId)?.parentLocation == movedParentPath)
+            try #require(manager.createChangeDeliverySession(
+                sessionId: "s",
+                containerKey: "c",
+                anchorKey: "a0",
+                finalAnchorRawValue: Data(),
+                updated: [movedFile],
+                deleted: [],
+                incomplete: false,
+                hardRemoveDeleted: true
+            ))
+
+            let item = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 1)?.first)
+            let fields = try #require(JSONSerialization.jsonObject(with: item.metadataData) as? [String: Any])
+            #expect(fields["ocId"] as? String == file.ocId)
+            #expect(fields["serverUrl"] == nil)
+            #expect(fields["path"] == nil)
+            #expect(fields["parentDAVPath"] as? String == movedParentPath)
+        }
+
         @Test func itemsAreReturnedInSequenceOrderUpToTheLimit() throws {
             let updated = makeRows(count: 4)
             let deleted = [DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt")]
@@ -34,7 +67,7 @@ extension DatabaseTestSuites {
             let tail = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 4, limit: 10))
             #expect(tail.map(\.sequence) == [4])
             #expect(tail.first?.deleted == true)
-            #expect(try JSONDecoder().decode(SendableItemMetadata.self, from: #require(tail.first?.metadataData)).ocId == "gone")
+            #expect(try ChangeDeliveryItemRecord.decodeMetadata(#require(tail.first?.metadataData)).ocId == "gone")
 
             let session = try #require(try manager.changeDeliverySession(forContinuationKey: "a0", containerKey: "c"))
             #expect(session.sessionId == "s")

@@ -34,7 +34,11 @@ extension FilesDatabaseManager {
         let allChanges: [(metadata: SendableItemMetadata, deleted: Bool)] =
             updated.map { (metadata: $0, deleted: false) } + deleted.map { (metadata: $0, deleted: true) }
         let encodedChanges: [(data: Data, deleted: Bool)] = allChanges.compactMap { change in
-            guard let metadataData = try? encoder.encode(change.metadata) else {
+            guard let metadataData = try? ChangeDeliveryItemRecord.encodeMetadata(
+                change.metadata,
+                domainAccount: account,
+                using: encoder
+            ) else {
                 return nil
             }
             return (data: metadataData, deleted: change.deleted)
@@ -184,8 +188,12 @@ extension FilesDatabaseManager {
                 fromSequence: session.nextSequence,
                 limit: endSequence - session.nextSequence,
                 in: db
-            ).compactMap { item in
-                item.deleted ? try? decoder.decode(SendableItemMetadata.self, from: item.metadataData).ocId : nil
+            ).compactMap { item -> String? in
+                guard item.deleted,
+                      let metadata = try? ChangeDeliveryItemRecord.decodeMetadata(item.metadataData, using: decoder),
+                      !metadata.isFilesRoot
+                else { return nil }
+                return metadata.ocId
             }
 
             for chunk in deletedOcIds.chunked(into: Self.inClauseChunkSize) {

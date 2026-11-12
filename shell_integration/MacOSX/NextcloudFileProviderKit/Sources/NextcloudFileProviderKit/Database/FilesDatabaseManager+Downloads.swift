@@ -186,7 +186,6 @@ extension FilesDatabaseManager {
                         metadata.fileNameView = listed.fileNameView
                         metadata.name = listed.name
                         metadata.serverUrl = listed.serverUrl
-                        metadata.path = listed.path
                         metadata.status = Status.normal.rawValue
                         metadata.deleted = false
                         metadata.downloaded = true
@@ -197,7 +196,7 @@ extension FilesDatabaseManager {
                     for metadata in items {
                         // Enumeration can leave an in-flight row at an address now occupied by another item.
                         let addressAvailable = try ItemMetadataRecord
-                            .filter(ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName))
+                            .filter(matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName))
                             .filter(ItemMetadataRecord.Columns.account == metadata.account && ItemMetadataRecord.Columns.ocId != metadata.ocId)
                             .filter(ItemMetadataRecord.Columns.deleted == false && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false)
                             .isEmpty(db)
@@ -205,7 +204,7 @@ extension FilesDatabaseManager {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
                         // Rebuild the row so its indexed location keys follow the listed path.
-                        try ItemMetadataRecord(metadata).upsertRow(db)
+                        try ItemMetadataRecord(metadata, domainAccount: self.account).upsertRow(db)
                     }
                     try operation.cancellation.checkCancellation()
                     // Register before commit so reconciliation protects these rows until File Provider confirms them.

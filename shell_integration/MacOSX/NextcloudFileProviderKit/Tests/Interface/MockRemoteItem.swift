@@ -206,7 +206,6 @@ public class MockRemoteItem: Equatable {
             lockOwnerDisplayName: lockOwner == account.username ? account.username : "other user",
             lockTime: nil, // Default as not set in original code
             lockTimeOut: lockTimeOut,
-            path: "", // Placeholder as not set in original code
             serverUrl: trimmedServerUrl,
             size: size,
             uploaded: true,

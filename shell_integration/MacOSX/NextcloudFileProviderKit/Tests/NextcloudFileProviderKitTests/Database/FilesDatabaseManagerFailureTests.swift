@@ -106,7 +106,7 @@ extension DatabaseTestSuites {
             #expect(stored.shareType == [])
             #expect(stored.sharePermissionsCloudMesh == [])
             #expect(stored.fileName == "tagged.txt")
-            #expect(manager.materialisedItemMetadatas(account: "")?.map(\.ocId) == ["tagged"])
+            #expect(manager.materialisedItemMetadatas()?.map(\.ocId) == ["tagged"])
         }
 
         @Test func aMistypedScalarReadsAsItsZeroValueAndKeepsTheResult() throws {
@@ -121,7 +121,7 @@ extension DatabaseTestSuites {
             }
 
             // SQLite coerces a mistyped value to the column's zero value, so the row stays readable and the result complete.
-            #expect(manager.materialisedItemMetadatas(account: "")?.map(\.ocId) == ["healthy", "damaged"])
+            #expect(manager.materialisedItemMetadatas()?.map(\.ocId) == ["healthy", "damaged"])
             let stored = try #require(manager.itemMetadata(ocId: "damaged"))
             #expect(stored.creationDate == Date(timeIntervalSinceReferenceDate: 0))
             #expect(stored.size == 0)
@@ -133,11 +133,11 @@ extension DatabaseTestSuites {
         }
 
         @Test func materialisedItemsReportFailureAsNil() throws {
-            #expect(manager.materialisedItemMetadatas(account: "") == [])
+            #expect(manager.materialisedItemMetadatas() == [])
 
             try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
 
-            #expect(manager.materialisedItemMetadatas(account: "") == nil)
+            #expect(manager.materialisedItemMetadatas() == nil)
         }
 
         @Test func pendingWorkingSetChangesReportFailureAsNil() throws {

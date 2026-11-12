@@ -12,13 +12,68 @@ import Testing
 /// This is the only place in the test target which touches the storage engine. Tests seed and inspect rows through these methods so that an engine change touches one file.
 ///
 extension FilesDatabaseManager {
+    /// Seed the current schema before startup records which account owns the database.
+    /// This is the SQLite state produced by the Realm import's item row conversion.
+    static func writeUnboundStoreForTesting(
+        at url: URL,
+        metadata: [SendableItemMetadata]
+    ) throws -> String {
+        let queue = try DatabaseQueue(path: url.path)
+        try DatabaseSchema.migrator.migrate(queue)
+
+        return try queue.write { db in
+            try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
+            for item in metadata {
+                try ItemMetadataRecord(item).upsertRow(db)
+            }
+            return try StoreIdentityRecord.ensure(in: db)
+        }
+    }
+
+    func storedParentLocationKeysForTesting(ocId: String) throws -> (parentLocation: String, normalizedParentLocation: String)? {
+        try writer.read { db in
+            try Row.fetchOne(
+                db,
+                sql: "SELECT serverUrl, normalizedServerUrl FROM itemMetadata WHERE ocId = ?",
+                arguments: [ocId]
+            ).map { ($0["serverUrl"], $0["normalizedServerUrl"]) }
+        }
+    }
+
+    /// Seed a pending change alongside the imported item before startup binds the account.
+    static func writeUnboundStoreWithQueuedUpdateForTesting(
+        at url: URL,
+        metadata: SendableItemMetadata,
+        sessionId: String
+    ) throws -> String {
+        let identity = try writeUnboundStoreForTesting(at: url, metadata: [metadata])
+        let queue = try DatabaseQueue(path: url.path)
+        try queue.write { db in
+            try ChangeDeliverySessionRecord(
+                sessionId: sessionId,
+                containerKey: "working-set",
+                currentAnchorKey: "old-anchor",
+                finalAnchorRawValue: Data(),
+                incomplete: false,
+                hardRemoveDeleted: false
+            ).insert(db)
+            try ChangeDeliveryItemRecord(
+                sessionId: sessionId,
+                sequence: 0,
+                metadataData: try ChangeDeliveryItemRecord.encodeMetadata(metadata),
+                deleted: false
+            ).insert(db)
+        }
+        return identity
+    }
+
     ///
     /// Store a row exactly as given, bypassing duplicate eviction and the inheritance of local flags.
     ///
     /// The normalized location keys are derived from the raw location unless overridden, which builds rows whose keys drifted.
     ///
     func insertForTesting(_ metadata: SendableItemMetadata, normalizedServerUrl: String? = nil, normalizedFileName: String? = nil) throws {
-        var record = ItemMetadataRecord(metadata)
+        var record = ItemMetadataRecord(metadata, domainAccount: account)
 
         if let normalizedServerUrl {
             record.normalizedServerUrl = normalizedServerUrl
@@ -251,7 +306,6 @@ extension SendableItemMetadata {
             fileNameView: "",
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             permissions: "",
             serverUrl: "",
             size: 0,

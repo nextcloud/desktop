@@ -77,13 +77,11 @@ extension ItemMetadataRecord {
         lockTime = try (row.decode(Double?.self, forColumn: "lockTime")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockTimeOut = try (row.decode(Double?.self, forColumn: "lockTimeOut")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockToken = try row.decode(forColumn: "lockToken")
-        path = try row.decode(forColumn: "path")
         permissions = try row.decode(forColumn: "permissions")
         quotaUsedBytes = try row.decode(forColumn: "quotaUsedBytes")
         quotaAvailableBytes = try row.decode(forColumn: "quotaAvailableBytes")
         resourceType = try row.decode(forColumn: "resourceType")
         richWorkspace = try row.decode(forColumn: "richWorkspace")
-        serverUrl = try row.decode(forColumn: "serverUrl")
         session = try row.decode(forColumn: "session")
         sessionError = try row.decode(forColumn: "sessionError")
         sessionTaskIdentifier = try row.decode(forColumn: "sessionTaskIdentifier")
@@ -106,6 +104,17 @@ extension ItemMetadataRecord {
         userId = try row.decode(forColumn: "userId")
         normalizedServerUrl = try row.decode(forColumn: "normalizedServerUrl")
         normalizedFileName = try row.decode(forColumn: "normalizedFileName")
+
+        // SQLite can save a parent as a path such as files:/Team. Rebuild the full URL
+        // for WebDAV requests, or keep a legacy absolute URL as it was saved.
+        let storedParent: String = try row.decode(forColumn: "serverUrl")
+        let absoluteParentURL = Account.absoluteURL(
+            fromDAVRelativePath: storedParent,
+            accountBaseURL: urlBase,
+            backendUserID: userId
+        )
+        storedParentPath = absoluteParentURL == nil ? nil : storedParent
+        serverUrl = absoluteParentURL ?? storedParent
     }
 
     func encode(to container: inout PersistenceContainer) throws {
@@ -149,13 +158,12 @@ extension ItemMetadataRecord {
         container["lockTime"] = lockTime?.timeIntervalSinceReferenceDate
         container["lockTimeOut"] = lockTimeOut?.timeIntervalSinceReferenceDate
         container["lockToken"] = lockToken
-        container["path"] = path
         container["permissions"] = permissions
         container["quotaUsedBytes"] = quotaUsedBytes
         container["quotaAvailableBytes"] = quotaAvailableBytes
         container["resourceType"] = resourceType
         container["richWorkspace"] = richWorkspace
-        container["serverUrl"] = serverUrl
+        container["serverUrl"] = storedParentPath ?? serverUrl
         container["session"] = session
         container["sessionError"] = sessionError
         container["sessionTaskIdentifier"] = sessionTaskIdentifier
@@ -226,13 +234,12 @@ extension ItemMetadataRecord {
             note,
             ownerDisplayName,
             ownerId,
-            path,
             permissions,
             quotaAvailableBytes,
             quotaUsedBytes,
             resourceType,
             richWorkspace,
-            serverUrl,
+            storedParentPath ?? serverUrl,
             session,
             sessionError,
             sessionTaskIdentifier,
