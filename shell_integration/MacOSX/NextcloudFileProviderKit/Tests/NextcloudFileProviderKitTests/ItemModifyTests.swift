@@ -451,6 +451,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1, "The upload only reads the destination quota.")
         let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
 
         XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
@@ -1189,6 +1190,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertEqual(modifiedItem?.filename, "item.blend1")
         XCTAssertEqual(remoteInterface.lastDeleteRemotePath, itemMetadata.remotePath())
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
         XCTAssertTrue(markerRecorder.wasPresent)
         XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteItem.identifier })
         XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))

@@ -250,10 +250,10 @@ public extension FilesDatabaseManager {
 
 extension FilesDatabaseManager {
     func directoryMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
-        try ItemMetadataRecord
-            .filter(key: ocId)
-            .filter(ItemMetadataRecord.Columns.directory == true)
-            .fetchRecord(db, logger: logger)
+        guard let metadata = try itemMetadata(ocId: ocId, in: db),
+              metadata.directory
+        else { return nil }
+        return metadata
     }
 
     func renameDirectoryAndPropagateToChildren(
