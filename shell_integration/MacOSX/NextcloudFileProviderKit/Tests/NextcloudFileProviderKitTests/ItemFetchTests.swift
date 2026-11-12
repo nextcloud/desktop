@@ -2309,6 +2309,117 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
     }
 
+    func testFolderFetchPreservesChildUploadInProgress() async throws {
+        let (folder, remote, directory) = makeFetchItem(directory: true)
+        let child = try XCTUnwrap(directory.children.first)
+        directory.children = [child]
+        let dbManager = Self.dbManager
+        child.versionIdentifier = "previous-version"
+        var childMetadata = child.toItemMetadata(account: Self.account)
+        childMetadata.downloaded = true
+        childMetadata.uploaded = true
+        dbManager.addItemMetadata(childMetadata)
+        let childItem = Item(
+            metadata: childMetadata,
+            parentItemIdentifier: NSFileProviderItemIdentifier(directory.identifier),
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: dbManager
+        )
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let editedContents = Data("Edited contents".utf8)
+        try editedContents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+
+        let (uploadStarted, notifyUploadStarted) = AsyncStream<Void>.makeStream()
+        let (resumeUpload, notifyResumeUpload) = AsyncStream<Void>.makeStream()
+        remote.uploadHandler = {
+            notifyUploadStarted.yield(())
+            notifyUploadStarted.finish()
+            var iterator = resumeUpload.makeAsyncIterator()
+            _ = await iterator.next()
+        }
+        let upload = Task {
+            await childItem.modify(
+                itemTarget: childItem,
+                changedFields: [.contents],
+                contents: contentsURL,
+                dbManager: dbManager
+            )
+        }
+        defer {
+            notifyUploadStarted.finish()
+            notifyResumeUpload.finish()
+            upload.cancel()
+        }
+        let started = try await nextTestValue(from: uploadStarted)
+        XCTAssertNotNil(started)
+        let uploading = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(uploading.status, Status.uploading.rawValue)
+
+        let (contents, fetched, fetchError) = await folder.fetchContents(dbManager: dbManager)
+        defer {
+            if let contents {
+                try? FileManager.default.removeItem(at: contents)
+            }
+        }
+
+        XCTAssertNil(contents)
+        XCTAssertNil(fetched)
+        XCTAssertEqual((fetchError as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remote.downloadOperationCount, 0)
+        let stillUploading = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(stillUploading.status, Status.uploading.rawValue)
+        XCTAssertEqual(stillUploading.session, uploading.session)
+
+        let uploadedETag = "edited-version"
+        child.versionIdentifier = uploadedETag
+        notifyResumeUpload.finish()
+        let (modified, uploadError) = try await testTaskValue(of: upload)
+        XCTAssertNil(uploadError)
+        XCTAssertEqual(modified?.metadata.etag, uploadedETag)
+        XCTAssertEqual(remote.uploadOperationCount, 1)
+        XCTAssertEqual(child.data, editedContents)
+        let completed = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(completed.status, Status.normal.rawValue)
+        XCTAssertEqual(completed.etag, uploadedETag)
+        XCTAssertTrue(completed.uploaded)
+    }
+
+    func testFolderFetchDoesNotPublishContentsIfPendingChildWasRenamed() async throws {
+        let (folder, remote, directory) = makeFetchItem(directory: true)
+        let child = try XCTUnwrap(directory.children.first)
+        var pending = child.toItemMetadata(account: Self.account)
+        pending.status = Status.uploadError.rawValue
+        pending.uploaded = false
+        pending.downloaded = true
+        pending.chunkUploadId = "pending-child-edit"
+        let dbManager = Self.dbManager
+        dbManager.addItemMetadata(pending)
+        let moved = await remote.move(
+            remotePathSource: child.remotePath,
+            remotePathDestination: directory.remotePath + "/Renamed.txt",
+            account: Self.account
+        )
+        XCTAssertEqual(moved.error, .success)
+
+        let (contents, fetched, error) = await folder.fetchContents(dbManager: dbManager)
+        defer {
+            if let contents {
+                try? FileManager.default.removeItem(at: contents)
+            }
+        }
+
+        XCTAssertNil(contents)
+        XCTAssertNil(fetched)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remote.downloadOperationCount, 0)
+        let saved = try XCTUnwrap(dbManager.itemMetadata(ocId: pending.ocId))
+        XCTAssertEqual(saved.remotePath(), pending.remotePath())
+        XCTAssertEqual(saved.chunkUploadId, pending.chunkUploadId)
+        XCTAssertTrue(saved.hasUnfinishedUpload)
+    }
+
     func testDiscardedFolderDownloadLeavesCompletedChildrenDataless() async throws {
         for cancelProgress in [false, true] {
             let (item, remoteInterface, directory) = makeFetchItem(directory: true)
