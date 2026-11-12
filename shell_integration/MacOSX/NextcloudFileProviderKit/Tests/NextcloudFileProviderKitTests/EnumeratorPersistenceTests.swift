@@ -70,6 +70,80 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v1")
     }
 
+    @Test(arguments: [false, true])
+    func singleItemReadReportsMergedUpdate(saveFails: Bool) async throws {
+        var cached = file.toItemMetadata(account: account)
+        cached.downloaded = true
+        cached.keepDownloaded = true
+        manager.addItemMetadata(cached)
+        file.versionIdentifier = "file-v2"
+        try manager.setItemMetadataWriteFailureForTesting(saveFails)
+
+        let result = await Enumerator.readServerUrl(
+            file.remotePath,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.error == nil)
+        let reported = try #require(result.metadatas?.first)
+        let changes = try #require(result.changes)
+        #expect(changes.created.isEmpty)
+        #expect(changes.updated == [reported])
+        #expect(reported.downloaded)
+        #expect(reported.keepDownloaded)
+        #expect(reported.etag == "file-v2")
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == (saveFails ? "file-v1" : "file-v2"))
+    }
+
+    @Test(arguments: [false, true])
+    func singleItemReadReportsCreatedItemWithInheritedPin(saveFails: Bool) async throws {
+        manager.removeItemMetadata(ocId: file.identifier)
+        _ = try manager.set(keepDownloaded: true, for: folder.toItemMetadata(account: account))
+        try manager.setItemMetadataWriteFailureForTesting(saveFails)
+
+        let result = await Enumerator.readServerUrl(
+            file.remotePath,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.error == nil)
+        let reported = try #require(result.metadatas?.first)
+        let changes = try #require(result.changes)
+        #expect(changes.created == [reported])
+        #expect(changes.updated.isEmpty)
+        #expect(reported.keepDownloaded)
+        let saved = manager.itemMetadata(ocId: file.identifier)
+        if saveFails {
+            #expect(saved == nil)
+        } else {
+            #expect(saved?.keepDownloaded == true)
+        }
+    }
+
+    @Test func folderListingReportsNewTargetWithInheritedPin() async throws {
+        var root = try #require(folder.parent).toItemMetadata(account: account)
+        root.keepDownloaded = true
+        manager.addItemMetadata(root)
+        manager.removeItemMetadata(ocId: folder.identifier)
+
+        let result = await readFolder()
+
+        #expect(result.error == nil)
+        let reported = try #require(result.metadatas?.first)
+        let saved = try #require(manager.itemMetadata(ocId: folder.identifier))
+        #expect(reported.ocId == folder.identifier)
+        #expect(reported.keepDownloaded)
+        #expect(reported.visitedDirectory)
+        #expect(saved.keepDownloaded)
+        #expect(saved.visitedDirectory)
+    }
+
     @Test func refusesDAVReadsBeforeReplacingTheAccountSession() async throws {
         let observer = try MockEnumerationObserver(enumerator: makeEnumerator(.rootContainer))
         manager.invalidateForDAVAccountChange()
@@ -210,59 +284,146 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "file-v2")
     }
 
-    @Test(arguments: [false, true])
-    func paginatedListingOnlyReportsPendingUploadAtItsCachedPath(movedOnServer: Bool) async throws {
+    @Test(
+        arguments: [false, true],
+        [
+            (renamed: false, moved: false, replacedAtOldName: false),
+            (renamed: true, moved: false, replacedAtOldName: false),
+            (renamed: false, moved: true, replacedAtOldName: false),
+            (renamed: true, moved: false, replacedAtOldName: true)
+        ]
+    )
+    func listingPreservesPendingUploadAndReportsSiblings(
+        paginated: Bool,
+        serverChange: (renamed: Bool, moved: Bool, replacedAtOldName: Bool)
+    ) async throws {
         var pending = try #require(manager.itemMetadata(ocId: file.identifier))
         pending.status = Status.uploadError.rawValue
         pending.uploaded = false
         pending.etag = "local-edit"
         pending.chunkUploadId = "pending-edit-upload"
         pending.keepDownloaded = true
+        pending.downloaded = true
         manager.addItemMetadata(pending)
-        remote.pagination = true
+        remote.pagination = paginated
 
-        let listedFolderURL = movedOnServer ? account.davFilesUrl + "/destination" : folder.remotePath
-        if movedOnServer {
+        let listedFolderURL = serverChange.moved ? account.davFilesUrl + "/destination" : folder.remotePath
+        if serverChange.moved {
             let created = await remote.createFolder(remotePath: listedFolderURL, account: account)
             try #require(created.error == .success)
+        }
+        if serverChange.moved || serverChange.renamed {
+            let serverName = serverChange.renamed ? "renamed.txt" : file.name
             let moved = await remote.move(
                 remotePathSource: file.remotePath,
-                remotePathDestination: listedFolderURL + "/" + file.name,
+                remotePathDestination: listedFolderURL + "/" + serverName,
                 account: account
             )
             try #require(moved.error == .success)
             #expect(file.identifier == pending.ocId)
         }
+        let listedFolder = try #require(remote.rootItem?.children.first { $0.remotePath == listedFolderURL })
+        let siblingID = "sibling"
+        let replacementID = "replacement"
+        var otherItems = [(siblingID, "sibling.txt")]
+        if serverChange.replacedAtOldName {
+            otherItems.append((replacementID, pending.fileName))
+        }
+        for (id, name) in otherItems {
+            let item = MockRemoteItem(
+                identifier: id,
+                name: name,
+                remotePath: listedFolderURL + "/" + name,
+                account: account.ncKitAccount,
+                username: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl
+            )
+            item.parent = listedFolder
+            listedFolder.children.append(item)
+        }
 
+        // The replacement arrives on a later page than the renamed item.
+        let splitAcrossPages = paginated && serverChange.replacedAtOldName
+        let pageSize = splitAcrossPages ? 3 : 10
         let result = await Enumerator.readServerUrl(
             listedFolderURL,
-            pageSettings: (nil, 0, 10),
+            pageSettings: paginated ? (nil, 0, pageSize) : nil,
             remoteInterface: remote,
             dbManager: manager,
             depth: .targetAndDirectChildren,
             log: FileProviderLogMock()
         )
 
-        #expect(remote.readOperationCount == 1)
-        if movedOnServer {
-            #expect(result.error == .invalidData)
-            #expect(result.error?.fileProviderError?.code == .cannotSynchronize)
-            #expect(result.metadatas == nil)
+        #expect(result.error == nil)
+        var reportedItems = try #require(result.metadatas)
+        if splitAcrossPages {
+            let continuation = try #require(result.nextPage)
+            let token = try #require(continuation.token)
+            let nextPage = NSFileProviderPage(Data(token.utf8))
+            let lastResult = await Enumerator.readServerUrl(
+                listedFolderURL,
+                pageSettings: (nextPage, continuation.index, pageSize),
+                remoteInterface: remote,
+                dbManager: manager,
+                depth: .targetAndDirectChildren,
+                log: FileProviderLogMock()
+            )
+            #expect(lastResult.error == nil)
+            #expect(lastResult.nextPage == nil)
+            reportedItems += try #require(lastResult.metadatas)
+        }
+        #expect(remote.readOperationCount == (splitAcrossPages ? 2 : 1))
+        #expect(reportedItems.contains { $0.ocId == siblingID })
+        #expect(!reportedItems.contains { $0.ocId == replacementID })
+        if serverChange.replacedAtOldName {
+            let replacement = try #require(manager.itemMetadata(ocId: replacementID))
+            #expect(!replacement.deleted)
+            #expect(!replacement.downloaded)
+            #expect(replacement.remotePath() == pending.remotePath())
+        }
+        if serverChange.moved {
+            #expect(!reportedItems.contains { $0.ocId == pending.ocId })
         } else {
-            #expect(result.error == nil)
-            let reported = try #require(result.metadatas?.first)
-            #expect(reported.ocId == pending.ocId)
+            let reported = try #require(reportedItems.first { $0.ocId == pending.ocId })
             #expect(reported.remotePath() == pending.remotePath())
             #expect(reported.hasUnfinishedUpload)
             #expect(reported.etag == pending.etag)
         }
+        #expect(result.changes?.deleted.contains { $0.ocId == pending.ocId } != true)
 
         let saved = try #require(manager.itemMetadata(ocId: pending.ocId))
         #expect(saved.remotePath() == pending.remotePath())
         #expect(saved.hasUnfinishedUpload)
+        #expect(!saved.deleted)
         #expect(saved.etag == pending.etag)
         #expect(saved.chunkUploadId == pending.chunkUploadId)
         #expect(saved.keepDownloaded)
+    }
+
+    @Test func workingSetDoesNotReadOldPathOfRenamedPendingUpload() async throws {
+        var pending = try #require(manager.itemMetadata(ocId: file.identifier))
+        pending.status = Status.uploadError.rawValue
+        pending.uploaded = false
+        pending.downloaded = true
+        manager.addItemMetadata(pending)
+        let moved = await remote.move(
+            remotePathSource: file.remotePath,
+            remotePathDestination: folder.remotePath + "/renamed.txt",
+            account: account
+        )
+        try #require(moved.error == .success)
+
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(observer.error == nil)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+        #expect(remote.readOperationCount == 1)
+        let saved = try #require(manager.itemMetadata(ocId: pending.ocId))
+        #expect(saved.remotePath() == pending.remotePath())
+        #expect(saved.hasUnfinishedUpload)
     }
 
     @Test func directoryListingPreservesChildrenStoredUnderTheDAVResponseURL() async throws {

@@ -13,6 +13,11 @@ import os
 /// Every method enters the database exactly once, through ``read(_:_:)`` or ``write(_:_:)``, and does its work in a worker which takes the open `Database`. Workers call only other workers, because the database access methods are not reentrant. Results leave the database as value types.
 ///
 public final class FilesDatabaseManager: Sendable {
+    private enum PendingUploadInDirectoryListing {
+        case reportCached(SendableItemMetadata)
+        case omitServerItem
+    }
+
     public enum ErrorCode: Int {
         case metadataNotFound = -1000
         case parentMetadataNotFound = -1001
@@ -616,12 +621,6 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// Falls back to the synthetic root's pin when the parent row is missing.
     ///
-    func inheritedKeepDownloaded(for metadata: SendableItemMetadata) -> Bool {
-        read("Could not look up the inherited keep-downloaded flag.", [.item: metadata.ocId]) { db in
-            try inheritedKeepDownloaded(for: metadata, in: db)
-        } ?? false
-    }
-
     func inheritedKeepDownloaded(for metadata: SendableItemMetadata, in db: Database) throws -> Bool {
         guard !metadata.isFilesRoot else { return false }
 
@@ -680,17 +679,20 @@ public final class FilesDatabaseManager: Sendable {
         existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
+        requiresCompleteListing: Bool,
         in db: Database
     ) throws -> (
         newMetadatas: [SendableItemMetadata],
         updatedMetadatas: [SendableItemMetadata],
         directoriesNeedingRename: [SendableItemMetadata],
-        itemMetadataToReportByID: [String: SendableItemMetadata]
+        itemMetadataToReportByID: [String: SendableItemMetadata],
+        itemIDsToOmitFromListing: Set<String>
     ) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
         var itemMetadataToReportByID: [String: SendableItemMetadata] = [:]
+        var itemIDsToOmitFromListing: Set<String> = []
 
         // Keyed once up front; the first occurrence of an identifier wins.
         var existingByOcId: [String: ItemMetadataRecord] = [:]
@@ -705,32 +707,40 @@ public final class FilesDatabaseManager: Sendable {
         var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
 
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
-                if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existingMetadata, listed: updatedMetadata) {
-                    itemMetadataToReportByID[pendingUpload.ocId] = pendingUpload
-                    continue
+            let existing = existingByOcId[updatedMetadata.ocId]
+            let cachedItem = try existing ?? itemMetadata(ocId: updatedMetadata.ocId, in: db)
+            if let pendingUpload = pendingUploadInDirectoryListing(
+                updatedMetadata,
+                cachedItem: cachedItem,
+                requireExactCachedPath: requiresCompleteListing
+            ) {
+                switch pendingUpload {
+                    case .reportCached(let metadata):
+                        itemMetadataToReportByID[metadata.ocId] = metadata
+                    case .omitServerItem:
+                        itemIDsToOmitFromListing.insert(updatedMetadata.ocId)
                 }
+                continue
+            }
 
-                if updatedMetadata.etag == existingMetadata.etag {
-                    updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
-                }
-
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+            if let existingMetadata = existing {
+                let sameRemoteState = existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                if existingMetadata.status == Status.normal.rawValue, !sameRemoteState {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
 
-                    if keepExistingDownloadState {
-                        updatedMetadata.downloaded = existingMetadata.downloaded
-                    }
-
-                    updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
-                    updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
-                    updatedMetadata.lockToken = pathChanged ? nil : existingMetadata.lockToken
+                    mergeLocalFields(
+                        into: &updatedMetadata,
+                        from: existingMetadata,
+                        preserveDownloaded: keepExistingDownloadState,
+                        lockToken: pathChanged ? nil : existingMetadata.lockToken
+                    )
 
                     returningUpdatedMetadatas.append(updatedMetadata)
+                    itemMetadataToReportByID[updatedMetadata.ocId] = updatedMetadata
 
                     logger.debug("Updated existing item metadata.", [
                         .item: updatedMetadata.ocId,
@@ -739,6 +749,9 @@ public final class FilesDatabaseManager: Sendable {
                         .syncTime: updatedMetadata.syncTime.description
                     ])
                 } else {
+                    if sameRemoteState, !existingMetadata.deleted, existingMetadata.hasSameLocation(as: updatedMetadata) {
+                        itemMetadataToReportByID[updatedMetadata.ocId] = existingMetadata.metadata
+                    }
                     logger.debug("Skipping item metadata update; same as existing, or still in transit.", [
                         .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
@@ -747,11 +760,6 @@ public final class FilesDatabaseManager: Sendable {
                     ])
                 }
 
-            } else if let pendingUpload = try pendingUploadMetadataMatchingListingItem(
-                itemMetadata(ocId: updatedMetadata.ocId, in: db),
-                listed: updatedMetadata
-            ) {
-                itemMetadataToReportByID[pendingUpload.ocId] = pendingUpload
             } else { // This is a new metadata
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
                 if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
@@ -768,24 +776,49 @@ public final class FilesDatabaseManager: Sendable {
             }
         }
 
+        // Save distinct server rows even if a pending edit keeps the name in this listing.
+        let pendingUploadNames = Set(itemMetadataToReportByID.values.lazy.filter(\.hasUnfinishedUpload).map(\.fileName))
+        itemIDsToOmitFromListing.formUnion(
+            updatedMetadatas.lazy.filter {
+                itemMetadataToReportByID[$0.ocId]?.hasUnfinishedUpload != true && pendingUploadNames.contains($0.fileName)
+            }.map(\.ocId)
+        )
+
         return (
             returningNewMetadatas,
             returningUpdatedMetadatas,
             directoriesNeedingRename,
-            itemMetadataToReportByID
+            itemMetadataToReportByID,
+            itemIDsToOmitFromListing
         )
+    }
+
+    /// Report a pending edit under its cached name while it still belongs to the listed folder.
+    private func pendingUploadInDirectoryListing(
+        _ listed: SendableItemMetadata,
+        cachedItem: ItemMetadataRecord?,
+        requireExactCachedPath: Bool = false
+    ) -> PendingUploadInDirectoryListing? {
+        guard let cached = cachedItem, !cached.deleted, cached.hasUnfinishedUpload else { return nil }
+
+        let isInListedFolder = cached.serverUrl == listed.serverUrl || account.hasSameDAVPath(cached.serverUrl, listed.serverUrl)
+        let canReportCachedPath = !requireExactCachedPath || cached.hasSameLocation(as: listed)
+        guard cached.directory == listed.directory,
+              isInListedFolder,
+              canReportCachedPath
+        else { return .omitServerItem }
+        return .reportCached(cached.metadata)
     }
 
     private func pendingUploadMetadataMatchingListingItem(
         _ existing: ItemMetadataRecord?,
         listed: SendableItemMetadata
     ) throws -> SendableItemMetadata? {
-        guard let existing, !existing.deleted, existing.hasUnfinishedUpload else { return nil }
-        // The server may have renamed or moved this ID while the local edit is still pending.
-        guard existing.directory == listed.directory,
-              existing.hasSameLocation(as: listed)
-        else { throw NKError.invalidData }
-        return existing.metadata
+        switch pendingUploadInDirectoryListing(listed, cachedItem: existing, requireExactCachedPath: true) {
+            case .reportCached(let metadata): return metadata
+            case .omitServerItem: throw NKError.invalidData
+            case nil: return nil
+        }
     }
 
     /// ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
@@ -808,14 +841,20 @@ public final class FilesDatabaseManager: Sendable {
         )?.changes
     }
 
-    /// Save the directory listing and return pending upload metadata to report in place of the server copies.
+    /// Save the listing and return the requested folder's metadata with its local flags.
+    /// Return replacement metadata or omit entries as needed to keep pending uploads at their cached paths.
     func saveDepth1ListingMetadata(
         account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
-        preserveDeletedTarget: Bool
-    ) -> (changes: ChangeSet, itemMetadataToReportByID: [String: SendableItemMetadata])? {
+        preserveDeletedTarget: Bool,
+        requiresCompleteListing: Bool = false
+    ) -> (
+        changes: ChangeSet,
+        itemMetadataToReportByID: [String: SendableItemMetadata],
+        itemIDsToOmitFromListing: Set<String>
+    )? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // A listing can include the server's older copy of a pending upload.
             // Include the pending rows so the merge keeps the local edits.
@@ -859,8 +898,13 @@ public final class FilesDatabaseManager: Sendable {
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas,
                 keepExistingDownloadState: keepExistingDownloadState,
+                requiresCompleteListing: requiresCompleteListing,
                 in: db
             )
+            // A folder download publishes the contents as a unit. It cannot skip a pending edit.
+            if requiresCompleteListing, !metadatasToChange.itemIDsToOmitFromListing.isEmpty {
+                throw NKError.invalidData
+            }
 
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             var metadatasToCreate = metadatasToChange.newMetadatas
@@ -885,12 +929,24 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.visitedDirectory = true
                 }
 
-                if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
-                    if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existing, listed: readTargetMetadata) {
-                        itemMetadataToReportByID[pendingUpload.ocId] = pendingUpload
+                let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db)
+                let pendingUpload = try pendingUploadMetadataMatchingListingItem(
+                    existing,
+                    listed: readTargetMetadata
+                )
+                if var pendingUpload {
+                    if pendingUpload.directory, !pendingUpload.visitedDirectory {
+                        visitToRecord = pendingUpload.ocId
+                        pendingUpload.visitedDirectory = true
                     }
+                    readTargetMetadata = pendingUpload
+                } else if let existing {
                     // A folder fetch publishes a deleted directory only after its downloads succeed.
                     let canUpdateTarget = !preserveDeletedTarget || !existing.deleted
+                    if keepExistingDownloadState {
+                        readTargetMetadata.downloaded = existing.downloaded
+                    }
+                    readTargetMetadata.keepDownloaded = existing.keepDownloaded
                     if readTargetMetadata.etag == existing.etag {
                         readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
                     }
@@ -907,10 +963,6 @@ public final class FilesDatabaseManager: Sendable {
                        !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
-                        if keepExistingDownloadState {
-                            readTargetMetadata.downloaded = existing.downloaded
-                        }
-                        readTargetMetadata.keepDownloaded = existing.keepDownloaded
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
@@ -919,6 +971,7 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.keepDownloaded = try inheritedKeepDownloaded(for: readTargetMetadata, in: db)
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
+                itemMetadataToReportByID[readTargetMetadata.ocId] = readTargetMetadata
             }
 
             // Evict any logical-address duplicates before persisting fresh
@@ -949,7 +1002,7 @@ public final class FilesDatabaseManager: Sendable {
                 updated: metadatasToUpdate,
                 deleted: metadatasToDelete
             )
-            return (changes, itemMetadataToReportByID)
+            return (changes, itemMetadataToReportByID, metadatasToChange.itemIDsToOmitFromListing)
         }
     }
 
@@ -1067,27 +1120,77 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Save a single-item DAV response, keeping the local metadata if an upload is still pending.
+    /// Save a single-item DAV response with the local fields current at the time of the write.
+    /// Return the merged metadata and whether it was newly added. Leave pending uploads intact.
     /// Roll back if cancellation is detected before commit.
     func addItemMetadataFromRemoteRead(
         _ metadata: SendableItemMetadata,
         requestedURL: String,
         isCancelled: @Sendable @escaping () -> Bool
-    ) async throws -> SendableItemMetadata? {
+    ) async throws -> (metadata: SendableItemMetadata, isNew: Bool) {
         try await write(durability: .full) { db in
             guard !isCancelled() else { throw CancellationError() }
+            let currentItem = try self.itemMetadata(ocId: metadata.ocId, in: db)
             if let pendingUpload = try self.pendingUploadMetadataMatchingListingItem(
-                self.itemMetadata(ocId: metadata.ocId, in: db),
+                currentItem,
                 listed: metadata
             ) {
                 guard self.account.hasSameDAVPath(metadata.remotePath(), requestedURL) else { throw NKError.invalidData }
-                return pendingUpload
+                return (pendingUpload, false)
             }
-            try self.insertItemMetadata(metadata, in: db)
+
+            let merged = try self.mergeLocalFieldsIntoRemoteRead(metadata, currentItem: currentItem, in: db)
+            try self.insertItemMetadata(merged.metadata, in: db)
             // Progress can be cancelled before its handler cancels the Swift task.
             guard !isCancelled() else { throw CancellationError() }
-            return nil
+            return merged
         }
+    }
+
+    /// Read the local fields when a single-item DAV response can be returned despite a write failure.
+    func itemMetadataFromRemoteReadWithoutSaving(
+        _ metadata: SendableItemMetadata
+    ) -> (metadata: SendableItemMetadata, isNew: Bool) {
+        read("Could not read local fields for a remote item.", [.item: metadata.ocId]) { db in
+            let currentItem = try itemMetadata(ocId: metadata.ocId, in: db)
+            return try mergeLocalFieldsIntoRemoteRead(metadata, currentItem: currentItem, in: db)
+        } ?? (metadata, true)
+    }
+
+    private func mergeLocalFieldsIntoRemoteRead(
+        _ metadata: SendableItemMetadata,
+        currentItem: ItemMetadataRecord?,
+        in db: Database
+    ) throws -> (metadata: SendableItemMetadata, isNew: Bool) {
+        var merged = metadata
+        if let currentItem {
+            mergeLocalFields(
+                into: &merged,
+                from: currentItem,
+                lockToken: currentItem.hasSameLocation(as: metadata) ? currentItem.lockToken : nil
+            )
+        } else {
+            merged.keepDownloaded = try inheritedKeepDownloaded(for: metadata, in: db)
+        }
+        return (merged, currentItem == nil)
+    }
+
+    private func mergeLocalFields(
+        into metadata: inout SendableItemMetadata,
+        from cached: ItemMetadataRecord,
+        preserveDownloaded: Bool = true,
+        preserveVisitedDirectory: Bool = true,
+        lockToken: String?
+    ) {
+        if preserveDownloaded {
+            metadata.downloaded = cached.downloaded
+        }
+        if preserveVisitedDirectory {
+            metadata.visitedDirectory = cached.visitedDirectory
+        }
+        metadata.keepDownloaded = cached.keepDownloaded
+        metadata.lockToken = lockToken
+        metadata.fileProviderContentVersion = metadata.etag == cached.etag ? cached.fileProviderContentVersion : nil
     }
 
     /// Set the given `downloaded` and `visitedDirectory` values of several rows in one write transaction, leaving every other column and every missing row untouched; a failure discards the whole batch.
@@ -1188,38 +1291,49 @@ public final class FilesDatabaseManager: Sendable {
     @discardableResult
     public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
         do {
-            return try persistItemMetadataFromPagedListing(metadata, preserveVisitedDirectory: preserveVisitedDirectory)
+            return try persistItemMetadataFromPagedListing(metadata, preserveVisitedDirectory: preserveVisitedDirectory) ?? metadata
         } catch {
             logger.error("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl, .error: error])
             return metadata
         }
     }
 
+    /// Return nil for a listed child whose server entry would hide a pending local edit.
     func persistItemMetadataFromPagedListing(
         _ metadata: SendableItemMetadata,
-        preserveVisitedDirectory: Bool = true
-    ) throws -> SendableItemMetadata {
-        var toWrite = metadata
-
+        preserveVisitedDirectory: Bool = true,
+        isChildInDirectoryListing: Bool = false
+    ) throws -> SendableItemMetadata? {
         // The local flags carried over from the old row were committed durably when set.
         try write(durability: .relaxed) { db in
-            if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
-                if let pendingUpload = try pendingUploadMetadataMatchingListingItem(existing, listed: metadata) {
-                    toWrite = pendingUpload
-                    return
+            var toWrite = metadata
+            let currentItem = try itemMetadata(ocId: metadata.ocId, in: db)
+            if isChildInDirectoryListing {
+                if let pendingUpload = pendingUploadInDirectoryListing(metadata, cachedItem: currentItem) {
+                    switch pendingUpload {
+                        case .reportCached(let cached): return cached
+                        case .omitServerItem: return nil
+                    }
                 }
+            } else if let pendingUpload = try pendingUploadMetadataMatchingListingItem(currentItem, listed: metadata) {
+                return pendingUpload
+            }
 
-                toWrite.downloaded = existing.downloaded
-                toWrite.keepDownloaded = existing.keepDownloaded
+            // The renamed item can be on another page. Its pending edit keeps the cached
+            // name in Finder, even as we save the distinct server row at that path.
+            let omitFromListing = try isChildInDirectoryListing && !ItemMetadataRecord
+                .filter(matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName))
+                .filter(!ItemMetadataRecord.Columns.deleted)
+                .filter(ItemMetadataRecord.hasUnfinishedUpload)
+                .isEmpty(db)
 
-                if preserveVisitedDirectory {
-                    toWrite.visitedDirectory = existing.visitedDirectory
-                }
-
-                toWrite.lockToken = existing.lockToken
-                if toWrite.etag == existing.etag {
-                    toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                }
+            if let existing = currentItem {
+                mergeLocalFields(
+                    into: &toWrite,
+                    from: existing,
+                    preserveVisitedDirectory: preserveVisitedDirectory,
+                    lockToken: existing.lockToken
+                )
 
                 // An ocId lookup can find a moved or deleted row, so check location and deletion state.
                 // Compare visitedDirectory separately because it is local-only.
@@ -1231,7 +1345,7 @@ public final class FilesDatabaseManager: Sendable {
                    existing.visitedDirectory == toWrite.visitedDirectory
                 {
                     logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
-                    return
+                    return omitFromListing ? nil : toWrite
                 }
             } else {
                 // The ocId lookup missed. Before falling back to defaults from the
@@ -1254,18 +1368,13 @@ public final class FilesDatabaseManager: Sendable {
                     )
                     .fetchRecords(db, logger: logger)
 
-                if logicalCandidates.count == 1, let existing = logicalCandidates.first {
-                    toWrite.downloaded = existing.downloaded
-                    toWrite.keepDownloaded = existing.keepDownloaded
-
-                    if preserveVisitedDirectory {
-                        toWrite.visitedDirectory = existing.visitedDirectory
-                    }
-
-                    toWrite.lockToken = existing.lockToken
-                    if toWrite.etag == existing.etag {
-                        toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                    }
+                if !omitFromListing, logicalCandidates.count == 1, let existing = logicalCandidates.first {
+                    mergeLocalFields(
+                        into: &toWrite,
+                        from: existing,
+                        preserveVisitedDirectory: preserveVisitedDirectory,
+                        lockToken: existing.lockToken
+                    )
                 } else {
                     // No prior row at this ocId or logical address: this is a
                     // genuinely new item. Inherit the parent's "Always keep
@@ -1277,9 +1386,8 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             try insertItemMetadata(toWrite, in: db)
+            return omitFromListing ? nil : toWrite
         }
-
-        return toWrite
     }
 
     ///

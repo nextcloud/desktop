@@ -27,6 +27,9 @@ struct RemoteReadResult {
     ///
     var changes: ChangeSet?
 
+    /// IDs the server listed at a path that would replace or relocate a pending local edit.
+    var omittedPendingUploadIDs: Set<String>
+
     ///
     /// The pagination continuation, present only when the server returned a page token.
     ///
@@ -40,11 +43,13 @@ struct RemoteReadResult {
     init(
         metadatas: [SendableItemMetadata]? = nil,
         changes: ChangeSet? = nil,
+        omittedPendingUploadIDs: Set<String> = [],
         nextPage: EnumeratorPageResponse? = nil,
         error: NKError? = nil
     ) {
         self.metadatas = metadatas
         self.changes = changes
+        self.omittedPendingUploadIDs = omittedPendingUploadIDs
         self.nextPage = nextPage
         self.error = error
     }
