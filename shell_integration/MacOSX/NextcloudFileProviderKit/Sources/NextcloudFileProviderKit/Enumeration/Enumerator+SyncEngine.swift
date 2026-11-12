@@ -6,8 +6,12 @@ import NextcloudKit
 
 extension Enumerator {
     static func handlePagedReadResults(
-        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager, log: any FileProviderLogging
+        files: [NKFile],
+        pageIndex: Int,
+        dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+        let logger = FileProviderLogger(category: "Enumerator", log: log)
         // First PROPFIND contains the target item, but we do not want to report this in the
         // retrieved metadatas (the enumeration observers don't expect you to enumerate the
         // target item, hence why we always strip the target item out)
@@ -17,14 +21,13 @@ extension Enumerator {
             var metadata = firstFile.toItemMetadata()
 
             if metadata.directory {
-                // Mark the directory as visited in this request, then persist
-                // while preserving the rest of the local-only state. Skip
-                // preservation of `visitedDirectory` so the just-set `true`
-                // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
-            } else {
-                dbManager.addItemMetadataPreservingLocalState(metadata)
+            }
+            do {
+                _ = try dbManager.persistItemMetadataFromPagedListing(metadata, preserveVisitedDirectory: !metadata.directory)
+            } catch {
+                logger.error("Could not persist the listed directory.", [.item: metadata.ocId, .error: error])
+                return (nil, .invalidData)
             }
         }
 
@@ -43,7 +46,7 @@ extension Enumerator {
         //
         // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
         // line splits CPU spent building metadata from CPU spent in the database. Today each item opens its
-        // own write transaction inside `addItemMetadataPreservingLocalState`; `db_items_per_s` is the
+        // own write transaction inside `persistItemMetadataFromPagedListing`; `db_items_per_s` is the
         // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
         // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
         let signposter = EnumerationSignposter.signposter
@@ -65,7 +68,13 @@ extension Enumerator {
             convAccum += clock.now - convStart
 
             let dbStart = clock.now
-            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata))
+            do {
+                let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(itemMetadata)
+                metadatas.append(savedMetadata)
+            } catch {
+                logger.error("Could not persist the listed item.", [.item: itemMetadata.ocId, .error: error])
+                return (nil, .invalidData)
+            }
             dbAccum += clock.now - dbStart
         }
 
@@ -74,7 +83,7 @@ extension Enumerator {
         let itemCount = metadatas.count
         let dbSeconds = dbAccum.fpSeconds
         let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
-        FileProviderLogger(category: "Enumerator", log: log).performance(
+        logger.performance(
             "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
         )
 
@@ -104,7 +113,12 @@ extension Enumerator {
         if let pageIndex {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
             let (metadatas, error) = await dbManager.perform { dbManager in
-                handlePagedReadResults(files: filesFromResponse, pageIndex: pageIndex, dbManager: dbManager, log: log)
+                handlePagedReadResults(
+                    files: filesFromResponse,
+                    pageIndex: pageIndex,
+                    dbManager: dbManager,
+                    log: log
+                )
             }
             return (metadatas, nil, error)
         }
@@ -151,7 +165,7 @@ extension Enumerator {
         files.insert(directory, at: 0)
 
         guard !Task.isCancelled else { return (nil, nil, .cancelled) }
-        let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
+        let (listingWriteResult, batchElapsed) = await dbManager.perform { [files] dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
             let batchWriteState = signposter.beginInterval(
@@ -159,7 +173,7 @@ extension Enumerator {
                 id: signposter.makeSignpostID(),
                 "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
             )
-            let changes = dbManager.depth1ReadUpdateItemMetadatas(
+            let listingWriteResult = dbManager.saveDepth1ListingMetadata(
                 account: account.ncKitAccount,
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
@@ -169,7 +183,7 @@ extension Enumerator {
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
-            return (changes, batchClock.now - batchStart)
+            return (listingWriteResult, batchClock.now - batchStart)
         }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
@@ -182,12 +196,13 @@ extension Enumerator {
             [.url: serverUrl]
         )
 
-        guard let changes else {
+        guard let listingWriteResult else {
             logger.error("Could not persist directory metadata.", [.url: serverUrl])
             return (nil, nil, .metadataDatabaseWriteFailed)
         }
 
-        return (files, changes, nil)
+        let listedItems = files.map { listingWriteResult.itemMetadataToReportByID[$0.ocId] ?? $0 }
+        return (listedItems, listingWriteResult.changes, nil)
     }
 
     /// READ THIS CAREFULLY.
@@ -225,6 +240,16 @@ extension Enumerator {
         guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
             logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
             return RemoteReadResult(error: .invalidData)
+        }
+
+        let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
+        guard isCurrent else { return RemoteReadResult(error: .davAccountChanged) }
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+
+        // The database can switch accounts while the server request or its write is in flight.
+        func resultForCurrentDAVAccount(_ result: RemoteReadResult) async -> RemoteReadResult {
+            let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
+            return isCurrent ? result : RemoteReadResult(error: .davAccountChanged)
         }
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -289,12 +314,12 @@ extension Enumerator {
                Account.isStoredFilesRootLocation(davPath) {
                 return RemoteReadResult(error: .invalidData)
             }
-            return RemoteReadResult(error: error)
+            return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
         }
 
         guard let data else {
             logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
-            return RemoteReadResult(error: error)
+            return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
         }
 
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
@@ -315,19 +340,35 @@ extension Enumerator {
             logger.error("Received no items.", [.url: serverUrl])
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
-            return RemoteReadResult(metadatas: [], nextPage: nextPage)
+            return await resultForCurrentDAVAccount(RemoteReadResult(metadatas: [], nextPage: nextPage))
         }
 
         func finishTargetRead(_ metadata: SendableItemMetadata, changes: ChangeSet) async -> RemoteReadResult {
             do {
-                try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
+                if let savedMetadata = try await dbManager.addItemMetadataFromRemoteRead(
+                    metadata,
+                    requestedURL: serverUrl,
+                    isCancelled: isCancelled
+                ) {
+                    let result = RemoteReadResult(
+                        metadatas: [savedMetadata],
+                        changes: ChangeSet(updated: [savedMetadata]),
+                        nextPage: nextPage
+                    )
+                    return await resultForCurrentDAVAccount(result)
+                }
             } catch is CancellationError {
                 return RemoteReadResult(error: .cancelled)
+            } catch let error as NSFileProviderError where error.code == .cannotSynchronize {
+                return RemoteReadResult(error: .davAccountChanged)
+            } catch let error as NKError {
+                return RemoteReadResult(error: error)
             } catch {
                 // A single-item lookup can still return the server result if caching fails.
                 logger.error("Could not persist remote item metadata.", [.item: metadata.ocId, .error: error])
             }
-            return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
+            let result = RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
+            return await resultForCurrentDAVAccount(result)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
@@ -343,8 +384,7 @@ extension Enumerator {
                 let received = receivedFile.toItemMetadata()
 
                 // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
-                let (metadata, newItems, updatedItems) = await dbManager.perform {
-                    dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+                let (metadata, changes) = await dbManager.perform { dbManager in
                     var metadata = received
                     let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                     let isNew = existing == nil
@@ -364,10 +404,10 @@ extension Enumerator {
                         metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                     }
 
-                    return (metadata, newItems, updatedItems)
+                    return (metadata, ChangeSet(created: newItems, updated: updatedItems))
                 }
 
-                return await finishTargetRead(metadata, changes: ChangeSet(created: newItems, updated: updatedItems))
+                return await finishTargetRead(metadata, changes: changes)
             }
         }
 
@@ -376,8 +416,7 @@ extension Enumerator {
 
             // Read and merge off the cooperative pool: see
             // `FilesDatabaseManager.perform(_:)`.
-            let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
-                dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+            let (metadata, changes) = await dbManager.perform { dbManager in
                 var metadata = received
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                 let isNew = existing == nil
@@ -396,10 +435,10 @@ extension Enumerator {
                     metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                 }
 
-                return (metadata, newMetadatas, updatedMetadatas)
+                return (metadata, ChangeSet(created: newMetadatas, updated: updatedMetadatas))
             }
 
-            return await finishTargetRead(metadata, changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas))
+            return await finishTargetRead(metadata, changes: changes)
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
@@ -411,17 +450,19 @@ extension Enumerator {
                 log: logger.log
             )
 
-            return RemoteReadResult(
+            let result = RemoteReadResult(
                 metadatas: depth1Read.metadatas,
                 changes: depth1Read.changes,
                 nextPage: nextPage,
                 error: depth1Read.readError
             )
+            return await resultForCurrentDAVAccount(result)
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
                 files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
             )
-            return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
+            let result = RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
+            return await resultForCurrentDAVAccount(result)
         } else {
             // Infinite depth unpaged reads are a bad idea
             logger.error("Infinite depth read requested.")

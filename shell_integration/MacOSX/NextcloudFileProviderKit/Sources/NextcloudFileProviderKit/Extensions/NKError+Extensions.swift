@@ -16,6 +16,11 @@ extension NKError {
     /// Local persistence failed. Maps to `cannotSynchronize`, not a server or quota error.
     static let metadataDatabaseWriteFailed = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The metadata database could not be updated.")
 
+    static let davAccountChanged = NKError(
+        errorCode: NSFileProviderError.cannotSynchronize.rawValue,
+        errorDescription: "The database no longer belongs to the WebDAV account used for this request."
+    )
+
     var isCancelledError: Bool {
         errorCode == NSURLErrorCancelled
     }
