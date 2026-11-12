@@ -358,23 +358,27 @@ public final class FilesDatabaseManager: Sendable {
         } ?? nil
     }
 
-    ///
-    /// Fetch the metadata object for the root container of the given account.
-    ///
-    /// This is useful for when you have only the `NSFileProviderItemIdentifier.rootContainer` but no `ocId` to look up metadata by.
-    ///
+    /// Fetch metadata for the files root when File Provider supplies `.rootContainer` without a server item ID.
     public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
         read("Could not look up the root item metadata.", [.account: account.ncKitAccount]) { db in
-            try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.account == account.ncKitAccount
-                        && ItemMetadataRecord.Columns.directory == true
-                        && ItemMetadataRecord.Columns.path == Account.webDavFilesUrlSuffix
-                )
-                .order(ItemMetadataRecord.Columns.ocId)
-                .fetchRecord(db, logger: logger)?
-                .metadata
+            try fetchFilesRootRecord(account: account, in: db)?.metadata
         } ?? nil
+    }
+
+    private func fetchFilesRootRecord(account: Account, in db: Database) throws -> ItemMetadataRecord? {
+        let rootURL = account.davFilesUrl
+        let splitRootParentURL = String(rootURL.dropLast(account.id.count + 1))
+        let normalizedRootParent = ItemMetadataRecord.matchesStoredParentLocation(rootURL, includingDescendants: false)
+        let legacySplitRoot = ItemMetadataRecord.matchesStoredParentLocationAndFileName(
+            parentLocation: splitRootParentURL,
+            fileName: account.id
+        )
+        return try ItemMetadataRecord
+            .filter(ItemMetadataRecord.Columns.account == account.ncKitAccount)
+            .filter(ItemMetadataRecord.Columns.directory == true)
+            .filter((ItemMetadataRecord.isFilesRoot && normalizedRootParent) || legacySplitRoot)
+            .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
+            .fetchRecord(db, logger: logger)
     }
 
     public func itemMetadatas(account: String) -> [SendableItemMetadata] {
@@ -416,6 +420,12 @@ public final class FilesDatabaseManager: Sendable {
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
     func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
+        if account == self.account.ncKitAccount,
+           let relativePath = self.account.davRelativePath(forURL: rawRemoteURL),
+           Account.isStoredFilesRootLocation(relativePath) {
+            return try fetchFilesRootRecord(account: self.account, in: db)
+        }
+
         guard var urlComponents = URLComponents(string: rawRemoteURL) else {
             logger.error("Failed to create URL components from raw remote URL.", [.account: account, .url: rawRemoteURL])
             return nil
@@ -460,7 +470,20 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: any ItemMetadata, in db: Database) throws -> ItemMetadataRecord? {
-        try self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
+        guard !itemMetadata.isFilesRoot else { return nil }
+
+        let parent = try self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
+        // Finder stores the root's pin on the synthetic root row.
+        if parent?.isFilesRootWithServerID == true,
+           let syntheticRoot = try self.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, in: db),
+           syntheticRoot.account == account.ncKitAccount,
+           syntheticRoot.directory,
+           !syntheticRoot.deleted
+        {
+            return syntheticRoot
+        }
+
+        return parent
     }
 
     ///
@@ -488,6 +511,8 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     func inheritedKeepDownloaded(for metadata: SendableItemMetadata, in db: Database) throws -> Bool {
+        guard !metadata.isFilesRoot else { return false }
+
         if let parent = try parentDirectoryMetadataForItem(metadata, in: db) {
             return parent.keepDownloaded
         }
@@ -630,8 +655,8 @@ public final class FilesDatabaseManager: Sendable {
 
             let existingMetadatas = try ItemMetadataRecord
                 .filter(
-                    // Don't worry — root will be updated at the end of this method if is the target
-                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                    // The root can share its stored parent with its own children.
+                    !ItemMetadataRecord.isFilesRoot
                         && matchesReadDirectory
                         && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.uploaded == true
@@ -1066,11 +1091,12 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let parentDAVPath = Account.davRelativePath(forURL: metadata.serverUrl, accountBaseURL: metadata.urlBase, backendUserID: metadata.userId)
+        let relativePath = Account.davRelativePath(forURL: metadata.serverUrl, accountBaseURL: metadata.urlBase, backendUserID: metadata.userId)
+        let location = relativePath ?? metadata.serverUrl
 
-        if parentDAVPath.map(Account.isStoredFilesRootLocation) == true {
+        if Account.isStoredFilesRootLocation(location) {
             return .rootContainer
-        } else if parentDAVPath == "trash:" {
+        } else if location == "trash:" {
             return .trashContainer
         }
 

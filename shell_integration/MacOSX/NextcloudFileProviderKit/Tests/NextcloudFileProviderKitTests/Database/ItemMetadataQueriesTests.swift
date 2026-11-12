@@ -1,9 +1,11 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
 import Testing
+import TestInterface
 
 extension DatabaseTestSuites {
     ///
@@ -13,6 +15,50 @@ extension DatabaseTestSuites {
     struct ItemMetadataQueriesTests {
         let manager = DatabaseTestSuites.makeManager()
         let root = DatabaseTestSuites.account.davFilesUrl
+
+        @Test(arguments: [false, true])
+        func unpinningTopLevelItemUsesSyntheticRootPin(storesServerRoot: Bool) throws {
+            let account = DatabaseTestSuites.account
+            let child = DatabaseTestSuites.makeFile(ocId: "child", fileName: "Report.txt")
+            let sibling = DatabaseTestSuites.makeFile(ocId: "sibling", fileName: "Sibling.txt")
+
+            if storesServerRoot {
+                // The server's root item ID can sort before File Provider's synthetic root ID.
+                let serverRoot = directory(ocId: "00000001", fileName: SendableItemMetadata.filesRootPlaceholderName, parent: root)
+                manager.addItemMetadata(serverRoot)
+                #expect(manager.parentDirectoryMetadataForItem(child)?.ocId == serverRoot.ocId)
+                #expect(manager.parentDirectoryMetadataForItem(serverRoot) == nil)
+            }
+
+            var syntheticRoot = directory(
+                ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+                fileName: SendableItemMetadata.filesRootPlaceholderName,
+                parent: root
+            )
+            syntheticRoot.keepDownloaded = true
+            manager.addItemMetadata(syntheticRoot)
+            manager.addItemMetadata(child)
+            manager.addItemMetadata(sibling)
+
+            #expect(manager.inheritedKeepDownloaded(for: child))
+            let parent = try #require(manager.parentDirectoryMetadataForItem(child))
+            try #require(parent.ocId == syntheticRoot.ocId)
+            try #require(manager.parentDirectoryMetadataForItem(parent) == nil)
+
+            let item = Item(
+                metadata: child,
+                parentItemIdentifier: .rootContainer,
+                account: account,
+                remoteInterface: MockRemoteInterface(account: account),
+                dbManager: manager
+            )
+            let outcome = item.fragmentPathToRootInDatabase()
+
+            #expect(outcome.unpinnedAncestors.map(\.ocId) == [syntheticRoot.ocId])
+            #expect(outcome.newlyPinnedCousins.map(\.ocId) == [sibling.ocId])
+            #expect(manager.itemMetadata(ocId: syntheticRoot.ocId)?.keepDownloaded == false)
+            #expect(manager.itemMetadata(ocId: sibling.ocId)?.keepDownloaded == true)
+        }
 
         private func directory(ocId: String, fileName: String, parent: String) -> SendableItemMetadata {
             var metadata = DatabaseTestSuites.makeFile(ocId: ocId, fileName: fileName, serverUrl: parent)

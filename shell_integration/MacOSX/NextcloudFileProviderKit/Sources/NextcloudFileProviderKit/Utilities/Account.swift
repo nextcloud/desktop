@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Foundation
+import NextcloudKit
 
 let AccountDictUsernameKey = "usernameKey"
 let AccountDictIdKey = "idKey"
@@ -81,7 +82,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     /// Paths outside the files root, such as trash paths, do not have a sync-relative path.
     public func filesRootRelativePath(for remotePath: String) -> String? {
         let prefix = DAVRoot.files.rawValue + "/"
-        guard let davPath = Self.davRelativePath(forURL: remotePath, accountBaseURL: serverUrl, backendUserID: id),
+        guard let davPath = davRelativePath(forURL: remotePath),
               davPath.hasPrefix(prefix)
         else { return nil }
         return String(davPath.dropFirst(prefix.count))
@@ -98,28 +99,74 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         guard let sourceMetadata,
               sourceMetadata.urlBase.utf8.elementsEqual(serverUrl.utf8),
               sourceMetadata.userId.utf8.elementsEqual(id.utf8),
-              let davPath = Self.davRelativePath(forURL: url, accountBaseURL: serverUrl, backendUserID: id)
+              let davPath = davRelativePath(forURL: url)
         else {
             return false
         }
         return !davPath.split(separator: "/").contains("..")
     }
 
+    static func isStoredDAVRelativeLocation(_ location: String) -> Bool {
+        DAVRoot.allCases.contains { pathSuffix(of: location, underRoot: $0.rawValue) != nil }
+    }
+
+    static var storedFilesRootLocation: String { DAVRoot.files.rawValue }
+
     static func isStoredFilesRootLocation(_ location: String) -> Bool {
         location == DAVRoot.files.rawValue || location == DAVRoot.files.rawValue + "/"
+    }
+
+    /// The SDK either supplies the full root URL with a placeholder name or splits off the backend user ID.
+    static func isFilesRootAddress(
+        parentURL: String,
+        fileName: String,
+        accountBaseURL: String,
+        backendUserID: String,
+        acceptEquivalentResponseWebroot: Bool = false
+    ) -> Bool {
+        let rootURL: String
+        switch fileName {
+            case SendableItemMetadata.filesRootPlaceholderName, NextcloudKit.shared.nkCommonInstance.rootFileName:
+                rootURL = parentURL
+            default:
+                guard !backendUserID.isEmpty, fileName.utf8.elementsEqual(backendUserID.utf8) else { return false }
+                rootURL = parentURL + "/" + fileName
+        }
+        let relativePath = davRelativePath(
+            forURL: rootURL,
+            accountBaseURL: accountBaseURL,
+            backendUserID: backendUserID,
+            acceptEquivalentResponseWebroot: acceptEquivalentResponseWebroot
+        )
+        return isStoredFilesRootLocation(relativePath ?? rootURL)
     }
 
     static func isStoredTrashLocation(_ location: String) -> Bool {
         pathSuffix(of: location, underRoot: DAVRoot.trash.rawValue) != nil
     }
 
+    /// Replace this account's WebDAV files or trash root with `files:` or `trash:`, keeping the rest of the path.
+    func davRelativePath(forURL url: String) -> String? {
+        Self.davRelativePath(forURL: url, accountBaseURL: serverUrl, backendUserID: id)
+    }
+
     /// Replace the full WebDAV files or trash root at the start of the URL with `files:` or `trash:`.
     /// For example, `https://cloud.example.com/nextcloud/remote.php/dav/files/alice/Team/Docs` becomes `files:/Team/Docs`.
     /// Returns `nil` if neither the configured roots nor the forms returned by the DAV response parser match.
-    static func davRelativePath(forURL url: String, accountBaseURL: String, backendUserID: String) -> String? {
+    ///
+    /// Set `acceptEquivalentResponseWebroot` for URLs from DAV responses, including cached responses.
+    /// A response can use different Unicode bytes for the installation path before `/remote.php`,
+    /// such as `/caf\u{00E9}` and `/cafe\u{0301}`. The scheme, host, port and backend user ID
+    /// still have to match byte for byte.
+    static func davRelativePath(
+        forURL url: String,
+        accountBaseURL: String,
+        backendUserID: String,
+        acceptEquivalentResponseWebroot: Bool = false
+    ) -> String? {
         guard !backendUserID.isEmpty else { return nil }
 
-        func relativeLocation(underAccountBaseURL base: String) -> String? {
+        func pathRelativeToDAVRoot(underAccountBaseURL base: String) -> String? {
             for root in DAVRoot.allCases {
                 if let suffix = pathSuffix(of: url, underRoot: root.rootURL(accountBaseURL: base, backendUserID: backendUserID)) {
                     return root.rawValue + suffix
@@ -128,13 +175,13 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             return nil
         }
 
-        if let location = relativeLocation(underAccountBaseURL: accountBaseURL) {
-            return location
+        if let davPath = pathRelativeToDAVRoot(underAccountBaseURL: accountBaseURL) {
+            return davPath
         }
 
         let decodedAccountBaseURL = percentDecodedAccountBaseURL(accountBaseURL)
-        if decodedAccountBaseURL != accountBaseURL, let location = relativeLocation(underAccountBaseURL: decodedAccountBaseURL) {
-            return location
+        if decodedAccountBaseURL != accountBaseURL, let davPath = pathRelativeToDAVRoot(underAccountBaseURL: decodedAccountBaseURL) {
+            return davPath
         }
 
         // NextcloudKit builds the response URL from the origin and the decoded DAV href.
@@ -149,13 +196,26 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         let origin = "\(scheme)://\(host)\(port)"
         let installationPathComponents = configuredURL.path(percentEncoded: true).split(separator: "/")
 
-        func parserBaseURL(forPathComponents pathComponents: [Substring]) -> String? {
+        func pathRelativeToDAVRoot(decodingInstallationPath pathComponents: [Substring]) -> String? {
             guard let decoded = pathComponents.joined(separator: "/").removingPercentEncoding else { return nil }
-            return decoded.isEmpty ? origin : origin + "/" + decoded
+            guard !decoded.isEmpty else { return pathRelativeToDAVRoot(underAccountBaseURL: origin) }
+
+            let webroot = "/" + decoded
+            if let davPath = pathRelativeToDAVRoot(underAccountBaseURL: origin + webroot) {
+                return davPath
+            }
+
+            guard acceptEquivalentResponseWebroot,
+                  let responsePath = pathSuffix(of: url, underRoot: origin),
+                  let responseWebroot = responsePath.range(of: webroot, options: .anchored)
+            else {
+                return nil
+            }
+            return pathRelativeToDAVRoot(underAccountBaseURL: origin + responsePath[responseWebroot])
         }
 
-        if let base = parserBaseURL(forPathComponents: installationPathComponents), let location = relativeLocation(underAccountBaseURL: base) {
-            return location
+        if let davPath = pathRelativeToDAVRoot(decodingInstallationPath: installationPathComponents) {
+            return davPath
         }
 
         // A reverse proxy may also resolve dot segments in the configured webroot.
@@ -170,10 +230,10 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             }
         }
         guard dotResolvedPathComponents != installationPathComponents else { return nil }
-        return parserBaseURL(forPathComponents: dotResolvedPathComponents).flatMap(relativeLocation(underAccountBaseURL:))
+        return pathRelativeToDAVRoot(decodingInstallationPath: dotResolvedPathComponents)
     }
 
-    /// Expand a `files:` or `trash:` path into an absolute URL for the account.
+    /// Expand a files: or trash: path into a WebDAV request URL.
     static func absoluteURL(fromDAVRelativePath path: String, accountBaseURL: String, backendUserID: String) -> String? {
         for root in DAVRoot.allCases {
             if let suffix = pathSuffix(of: path, underRoot: root.rawValue) {

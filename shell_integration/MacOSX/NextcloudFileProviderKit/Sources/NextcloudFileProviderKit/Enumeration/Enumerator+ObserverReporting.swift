@@ -149,14 +149,16 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) {
-        let deletedFileProviderItemIdentifiers = deleted.map { NSFileProviderItemIdentifier($0.ocId) }
+        // An older version could queue a root deletion after a failed read of the Files endpoint.
+        let deletedItemsToReport = deleted.filter { !$0.isFilesRoot }
+        let deletedFileProviderItemIdentifiers = deletedItemsToReport.map { NSFileProviderItemIdentifier($0.ocId) }
 
         // Per-item trace so a debug archive can reconstruct exactly which items each batch carried.
         for metadata in updated {
             logger.debug("Reporting updated item in change batch.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 
-        for metadata in deleted {
+        for metadata in deletedItemsToReport {
             logger.debug("Reporting deleted item in change batch.", [.item: metadata.ocId, .name: metadata.fileName])
         }
 

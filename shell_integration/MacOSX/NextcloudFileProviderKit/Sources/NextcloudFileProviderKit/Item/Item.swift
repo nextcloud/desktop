@@ -372,8 +372,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
             fileId: "", // Placeholder as not set in original code
-            fileName: "/",
-            fileNameView: "/",
+            fileName: SendableItemMetadata.filesRootPlaceholderName,
+            fileNameView: SendableItemMetadata.filesRootPlaceholderName,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
             mountType: "", // Placeholder as not set in original code
@@ -545,7 +545,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier), includeDeleted || !metadata.deleted else {
+        guard let metadata = dbManager.itemMetadata(identifier),
+              !metadata.isFilesRootWithServerID,
+              includeDeleted || !metadata.deleted
+        else {
             throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
