@@ -88,7 +88,7 @@ extension Enumerator {
         serverUrl: String,
         account: Account,
         dbManager: FilesDatabaseManager,
-        files: [NKFile],
+        files filesFromResponse: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
         log: any FileProviderLogging
@@ -104,7 +104,7 @@ extension Enumerator {
         if let pageIndex {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
             let (metadatas, error) = await dbManager.perform { dbManager in
-                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+                handlePagedReadResults(files: filesFromResponse, pageIndex: pageIndex, dbManager: dbManager, log: log)
             }
             return (metadatas, nil, error)
         }
@@ -116,9 +116,9 @@ extension Enumerator {
         let convDirState = signposter.beginInterval(
             "ConvertDirectoryMetadata",
             id: signposter.makeSignpostID(),
-            "serverUrl=\(serverUrl, privacy: .public) files=\(files.count)"
+            "serverUrl=\(serverUrl, privacy: .public) files=\(filesFromResponse.count)"
         )
-        let convertedDirectory = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl)
+        let convertedDirectory = await filesFromResponse.toSendableDirectoryMetadata(account: account, requestedDirectoryURL: serverUrl)
         signposter.endInterval("ConvertDirectoryMetadata", convDirState)
 
         guard var (directory, _, files) = convertedDirectory else {
@@ -141,6 +141,13 @@ extension Enumerator {
 
         directory.visitedDirectory = true
 
+        // Look up cached children by the URL the parser returned as well as the URL we requested.
+        let responseDirectoryURL = filesFromResponse.first { $0.matchesRequestedDirectoryURL(serverUrl) }.map {
+            directory.ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
+                ? $0.serverUrl
+                : $0.serverUrl + "/" + $0.fileName
+        }
+
         files.insert(directory, at: 0)
 
         guard !Task.isCancelled else { return (nil, nil, .cancelled) }
@@ -157,7 +164,8 @@ extension Enumerator {
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
                 keepExistingDownloadState: true,
-                preserveDeletedTarget: preserveDeletedTarget
+                preserveDeletedTarget: preserveDeletedTarget,
+                responseDirectoryURL: responseDirectoryURL
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
@@ -286,7 +294,7 @@ extension Enumerator {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
-            let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
+            let target = files.first { $0.matchesRequestedDirectoryURL(serverUrl) }?.toItemMetadata()
             guard let target, target.directory, target.ocId == expectedDirectoryOcId, target.account == account.ncKitAccount else {
                 logger.error("Read directory no longer matches the download's item.", [.item: expectedDirectoryOcId, .url: serverUrl])
                 return RemoteReadResult(error: .invalidData)
@@ -322,7 +330,7 @@ extension Enumerator {
         if !isFollowUpPaginatedRequest {
             guard receivedFile.directory ||
                 serverUrl == dbManager.account.davFilesUrl ||
-                receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
+                receivedFile.matchesResponseItemURL(dbManager.account.davFilesUrl + "/.") ||
                 (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])

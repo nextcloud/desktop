@@ -9,7 +9,7 @@ extension FilesDatabaseManager {
             try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.Columns.account == account.ncKitAccount
-                        && ItemMetadataRecord.hasServerUrl(equalTo: account.trashUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(account.trashUrl, includingDescendants: true)
                 )
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)

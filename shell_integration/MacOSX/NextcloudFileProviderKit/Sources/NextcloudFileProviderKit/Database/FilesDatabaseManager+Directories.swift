@@ -19,7 +19,7 @@ public extension FilesDatabaseManager {
 
         return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true))
+                .filter(matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -35,7 +35,7 @@ public extension FilesDatabaseManager {
 
         return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false))
+                .filter(matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false))
                 .fetchRecords(db, logger: logger)
                 .map(\.metadata)
         } ?? []
@@ -57,7 +57,7 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.deleted == false
                         && ItemMetadataRecord.Columns.ocId != ocId
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false)
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false)
                 )
                 .fetchCount(db)
         } ?? 0
@@ -88,7 +88,7 @@ public extension FilesDatabaseManager {
             try !ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.isEvictableFile
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true)
                 )
                 .isEmpty(db)
         } ?? false
@@ -111,7 +111,7 @@ public extension FilesDatabaseManager {
             try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.isEvictableFile
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true)
                 )
                 .select(ItemMetadataRecord.Columns.ocId, as: String.self)
                 .fetchAll(db)
@@ -129,7 +129,7 @@ public extension FilesDatabaseManager {
                     ItemMetadataRecord.Columns.directory == false
                         && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.status < status.rawValue
-                        && ItemMetadataRecord.hasServerUrl(equalTo: remotePath, includingDescendants: true)
+                        && matchesParentDirectoryURL(remotePath, includingDescendants: true)
                 )
                 .select(ItemMetadataRecord.Columns.ocId, as: String.self)
                 .fetchAll(db)
@@ -215,7 +215,7 @@ public extension FilesDatabaseManager {
             let results = try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.Columns.account == directoryAccount
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
+                        && matchesParentDirectoryURL(directoryUrlPath, includingDescendants: true)
                 )
                 .fetchRecords(db, logger: logger)
 
@@ -276,7 +276,7 @@ extension FilesDatabaseManager {
         let childItemResults = try ItemMetadataRecord
             .filter(
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
+                    && matchesParentDirectoryURL(oldDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
 
@@ -302,7 +302,7 @@ extension FilesDatabaseManager {
         return try ItemMetadataRecord
             .filter(
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
+                    && matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
             .map(\.metadata)

@@ -115,9 +115,9 @@ extension DatabaseTestSuites {
         @Test func locationQueriesUseTheLocationIndex() throws {
             let plans = try manager.writer.read { db in
                 try [
-                    ItemMetadataRecord.filter(ItemMetadataRecord.hasLocation(serverUrl: "https://a/b", fileName: "c")),
-                    ItemMetadataRecord.filter(ItemMetadataRecord.hasServerUrl(equalTo: "https://a/b", includingDescendants: false)),
-                    ItemMetadataRecord.filter(ItemMetadataRecord.hasServerUrl(equalTo: "https://a/b", includingDescendants: true))
+                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocationAndFileName(parentLocation: "https://a/b", fileName: "c")),
+                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocation("https://a/b", includingDescendants: false)),
+                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocation("https://a/b", includingDescendants: true))
                 ].map { request -> String in
                     let statement = try request.makePreparedRequest(db).statement
                     return try Row

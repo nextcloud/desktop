@@ -138,7 +138,8 @@ public extension ItemMetadata {
     }
 
     var isTrashed: Bool {
-        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
+        let parentDAVPath = Account.davRelativePath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)
+        return parentDAVPath.map(Account.isStoredTrashLocation) == true
     }
 
     mutating func apply(fileName: String) {

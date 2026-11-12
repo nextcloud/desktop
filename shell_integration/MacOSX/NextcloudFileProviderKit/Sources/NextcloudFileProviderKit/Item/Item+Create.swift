@@ -95,7 +95,7 @@ public extension Item {
             ))
         }
 
-        guard var (directory, _, _) = await files.toSendableDirectoryMetadata(account: account, directoryToRead: remotePath) else {
+        guard var (directory, _, _) = await files.toSendableDirectoryMetadata(account: account, requestedDirectoryURL: remotePath) else {
             logger.error("Failed to resolve directory metadata on item conversion!")
             return (nil, NSFileProviderError(.cannotSynchronize))
         }
