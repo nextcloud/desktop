@@ -6,6 +6,7 @@ import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudKit
+import os
 import Testing
 @testable import TestInterface
 
@@ -165,6 +166,41 @@ extension DatabaseTestSuites {
             #expect(result.error == nil)
             #expect(manager.itemMetadata(ocId: "folder")?.fileName == "oud")
             expectDescendantsMoved(to: filesUrl + "/dst/oud")
+        }
+
+        @Test func cancellationRollsBackCompletedMoveReconciliation() async {
+            seedFolderBelowSource()
+            let sourcePath = filesUrl + "/src/Ontwerp"
+            let destinationParent = filesUrl + "/dst"
+            let destinationPath = destinationParent + "/oud"
+            store(
+                metadata("old-folder", "oud", at: destinationParent, directory: true),
+                metadata("old-file", "old.indd", at: destinationPath)
+            )
+
+            // Let the transaction change both subtrees before reporting cancellation.
+            let didCheckCancellation = OSAllocatedUnfairLock(initialState: false)
+            await #expect(throws: CancellationError.self) {
+                _ = try await manager.reconcileCompletedMove(
+                    ocId: "folder",
+                    sourcePath: sourcePath,
+                    newServerUrl: destinationParent,
+                    newFileName: "oud",
+                    isCancelled: {
+                        didCheckCancellation.withLock { didCheck in
+                            defer { didCheck = true }
+                            return didCheck
+                        }
+                    }
+                )
+            }
+
+            #expect(manager.itemMetadata(ocId: "folder")?.remotePath() == sourcePath)
+            expectDescendantsStayBelowSource()
+            #expect(manager.itemMetadata(ocId: "subfolder")?.serverUrl == sourcePath)
+            #expect(manager.itemMetadata(ocId: "old-folder")?.remotePath() == destinationPath)
+            #expect(manager.itemMetadata(ocId: "old-folder")?.deleted == false)
+            #expect(manager.itemMetadata(ocId: "old-file")?.serverUrl == destinationPath)
         }
 
         /// A user hit by the original bug has the folder row at its new path and the descendants still at the old one.

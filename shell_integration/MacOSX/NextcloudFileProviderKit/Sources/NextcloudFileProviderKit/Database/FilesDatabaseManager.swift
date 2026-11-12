@@ -1107,6 +1107,38 @@ public final class FilesDatabaseManager: Sendable {
         logger.debug("Renamed item \(oldFileName) to \(newFileName), moved from serverUrl: \(oldServerUrl) to serverUrl: \(newServerUrl)")
     }
 
+    func reconcileCompletedMove(
+        ocId: String,
+        sourcePath: String,
+        newServerUrl: String,
+        newFileName: String,
+        isCancelled: @Sendable @escaping () -> Bool
+    ) async throws -> SendableItemMetadata {
+        try await writer.writeWithoutTransaction { db in
+            try self.writeTransaction(in: db, durability: .full) { db in
+                guard !isCancelled() else { throw CancellationError() }
+                guard var metadata = try self.itemMetadata(ocId: ocId, in: db)?.metadata, !metadata.deleted else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+                if metadata.hasSameRemotePath(as: newServerUrl + "/" + newFileName) {
+                    return metadata
+                }
+                guard metadata.hasSameRemotePath(as: sourcePath) else {
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+
+                metadata.serverUrl = newServerUrl
+                metadata.fileName = newFileName
+                metadata.fileNameView = newFileName
+                metadata.lockToken = nil
+                _ = try self.placeDirectory(metadata, in: db)
+                try self.insertItemMetadata(metadata, in: db)
+                guard !isCancelled() else { throw CancellationError() }
+                return metadata
+            }
+        }
+    }
+
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
