@@ -184,8 +184,12 @@ extension FilesDatabaseManager {
                 fromSequence: session.nextSequence,
                 limit: endSequence - session.nextSequence,
                 in: db
-            ).compactMap { item in
-                item.deleted ? try? decoder.decode(SendableItemMetadata.self, from: item.metadataData).ocId : nil
+            ).compactMap { item -> String? in
+                guard item.deleted,
+                      let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData),
+                      !metadata.isFilesRoot
+                else { return nil }
+                return metadata.ocId
             }
 
             for chunk in deletedOcIds.chunked(into: Self.inClauseChunkSize) {

@@ -10,36 +10,38 @@ extension NKFile {
     /// root in `url` with `files:` or `trash:`. For example,
     /// `https://cloud.example.com/remote.php/dav/files/alice/Team/Docs` becomes `files:/Team/Docs`.
     /// Returns `nil` if neither root matches.
-    private func davRelativePath(forURL url: String) -> String? {
-        Account.davRelativePath(forURL: url, accountBaseURL: urlBase, backendUserID: userId)
+    private func davRelativePath(forResponseURL url: String) -> String? {
+        Account.davRelativePath(
+            forURL: url,
+            accountBaseURL: urlBase,
+            backendUserID: userId,
+            acceptEquivalentResponseWebroot: true
+        )
     }
 
-    // For an href of /remote.php/dav/files/<backendUserID>/, NextcloudKit puts the
-    // full root URL in serverUrl and uses rootFileName as a placeholder.
-    private func hasSDKFilesRootPlaceholder(at parentDAVPath: String?) -> Bool {
-        guard let parentDAVPath else { return false }
-        return fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && Account.isStoredFilesRootLocation(parentDAVPath)
+    private var representsAccountFilesRoot: Bool {
+        Account.isFilesRootAddress(
+            parentURL: serverUrl,
+            fileName: fileName,
+            accountBaseURL: urlBase,
+            backendUserID: userId,
+            acceptEquivalentResponseWebroot: true
+        )
     }
 
     func matchesRequestedDirectoryURL(_ requestedURL: String) -> Bool {
-        guard directory || fileName == NextcloudKit.shared.nkCommonInstance.rootFileName else { return false }
-
-        let requestedDAVPath = davRelativePath(forURL: requestedURL)
-        if hasSDKFilesRootPlaceholder(at: davRelativePath(forURL: serverUrl)) {
-            return requestedDAVPath.map(Account.isStoredFilesRootLocation) == true
+        let requestedPath = Account.davRelativePath(forURL: requestedURL, accountBaseURL: urlBase, backendUserID: userId)
+        if representsAccountFilesRoot {
+            return requestedPath.map(Account.isStoredFilesRootLocation) ?? false
         }
 
         guard directory else { return false }
 
-        // Some root responses put the backend user ID in fileName. Join it
-        // to serverUrl before comparing the directory returned by the server.
         let responseURL = serverUrl + "/" + fileName
-        let responseDAVPath = davRelativePath(forURL: responseURL)
-        if let requestedDAVPath, let responseDAVPath {
-            let bothPathsAreFilesRoots = Account.isStoredFilesRootLocation(responseDAVPath) && Account.isStoredFilesRootLocation(requestedDAVPath)
-            return responseDAVPath == requestedDAVPath || bothPathsAreFilesRoots
+        if let requestedPath, let responsePath = davRelativePath(forResponseURL: responseURL) {
+            return responsePath == requestedPath
         }
-        return requestedDAVPath == nil && responseDAVPath == nil && responseURL == requestedURL
+        return responseURL.utf8.elementsEqual(requestedURL.utf8)
     }
 
     func matchesResponseItemURL(_ expectedURL: String) -> Bool {
@@ -60,15 +62,14 @@ extension NKFile {
 
         // Support for finding the correct filename for e2ee files should go here
 
-        // File Provider's root identifier tells remotePath() to use serverUrl
-        // directly, since the synthetic name is a placeholder. Mark this entry
-        // as a directory even when the DAV response omits the collection type.
-        let parentDAVPath = davRelativePath(forURL: serverUrl)
-        let usesSDKFilesRootPlaceholder = hasSDKFilesRootPlaceholder(at: parentDAVPath)
+        let isFilesRoot = representsAccountFilesRoot
+        // Keep the existing identifier mapping for the SDK's synthetic root.
+        let usesSDKFilesRootPlaceholder = isFilesRoot && fileName == NextcloudKit.shared.nkCommonInstance.rootFileName
         let ocId = usesSDKFilesRootPlaceholder ? NSFileProviderItemIdentifier.rootContainer.rawValue : ocId
-        let directory = usesSDKFilesRootPlaceholder || directory
-        // Use the configured base for subsequent requests and path comparisons.
-        let absoluteParentURL = parentDAVPath.flatMap {
+        let fileName = isFilesRoot ? SendableItemMetadata.filesRootPlaceholderName : fileName
+        let directory = isFilesRoot || directory
+        let relativeParentPath = isFilesRoot ? Account.storedFilesRootLocation : davRelativePath(forResponseURL: serverUrl)
+        let absoluteParentURL = relativeParentPath.flatMap {
             Account.absoluteURL(fromDAVRelativePath: $0, accountBaseURL: urlBase, backendUserID: userId)
         } ?? serverUrl
 
@@ -163,16 +164,8 @@ private final actor DirectoryMetadataContainer: Sendable {
 }
 
 extension [NKFile] {
-    ///
-    /// Convert an array of `NKFile` to `SendableItemMetadata`.
-    ///
-    /// - Parameters:
-    ///     - account: The account which the metadata belongs to.
-    ///     - requestedDirectoryURL: Identifies the directory entry among the returned children.
-    ///
-    /// - Returns: The requested directory, its child directories, and all immediate children.
-    ///
-    func toSendableDirectoryMetadata(account _: Account, requestedDirectoryURL: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
+    /// Identify the requested directory in the DAV response and convert it and the remaining response entries to metadata.
+    func toSendableDirectoryMetadata(requestedDirectoryURL: String) async -> (root: SendableItemMetadata, directories: [SendableItemMetadata], files: [SendableItemMetadata])? {
         guard let root = first(where: { $0.matchesRequestedDirectoryURL(requestedDirectoryURL) })?.toItemMetadata() else {
             return nil
         }

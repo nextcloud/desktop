@@ -138,8 +138,8 @@ public extension ItemMetadata {
     }
 
     var isTrashed: Bool {
-        let parentDAVPath = Account.davRelativePath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)
-        return parentDAVPath.map(Account.isStoredTrashLocation) == true
+        let relativePath = Account.davRelativePath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)
+        return Account.isStoredTrashLocation(relativePath ?? serverUrl)
     }
 
     mutating func apply(fileName: String) {
@@ -199,15 +199,16 @@ public extension ItemMetadata {
             ])
     }
 
-    /// Whether the row is a parked directory or below one, so its path exists only in the database.
-    var isAtHoldingPath: Bool {
-        remotePath().contains(FilesDatabaseManager.holdingNameSeparator)
+    internal var isFilesRoot: Bool {
+        ocId == NSFileProviderItemIdentifier.rootContainer.rawValue || (directory && fileName == SendableItemMetadata.filesRootPlaceholderName)
+    }
+
+    internal var isFilesRootWithServerID: Bool {
+        isFilesRoot && ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
     }
 
     func remotePath() -> String {
-        if ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            // For the root container the fileName is defined by NextcloudKit.shared.nkCommonInstance.rootFileName.
-            // --> appending the fileName to that is not correct, as it most likely won't exist.
+        if isFilesRoot {
             return serverUrl
         }
 
