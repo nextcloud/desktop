@@ -49,6 +49,52 @@ You can run the following command in the root of the package repository clone:
 swift package plugin --allow-writing-to-package-directory swiftformat --verbose --cache ignore
 ```
 
+### Performance tests
+
+The `NextcloudFileProviderKitPerformanceTests` target counts how much work this package does, without a server or any setup.
+The production `Enumerator` and a real database run in the test process against `MockRemoteInterface`, which stands in for the server.
+
+Each scenario counts four things per pass:
+
+- **requests:** PROPFIND requests sent to the server
+- **commits:** database transactions committed
+- **row changes:** database rows inserted, updated or deleted
+- **reported:** items reported to the system
+
+The counts are the same on every machine and in every build configuration, so a claim that a change does less work is held to them.
+The tests time nothing.
+
+#### What CI checks
+
+CI runs the target on every pull request.
+Each scenario checks that every pass did the same work and that no count is above its ceiling in `EnumerationBenchmarks.swift`.
+
+- If your change makes a count go up, CI fails. Raise the ceiling in the same pull request and explain why in its description.
+- If your change makes a count go down, lower the ceiling to the new value. The diff then shows the numbers before and after.
+
+#### Adding a scenario
+
+Write a `@Test` in the target that calls `Benchmark.measure` with a `prepare` that sets up one pass, a `run` that returns the number of items it reported, and a `cleanUp` that removes its `TemporaryDatabase`.
+Check the counts it returns with `expectWithin`.
+To find the ceilings, start with zeros and run `swift test --filter NextcloudFileProviderKitPerformanceTests`. Each failing expectation shows the count to put in its place.
+For working-set scenarios, start from `BrowsedTreeFixture`.
+
+#### What is not measured
+
+Automated performance tests are only useful when they are reproducible, and only what this package controls can be reproduced.
+Network conditions, server response times and how `fileproviderd`, the file provider daemon of macOS, takes in reported items are outside its control. They also differ from one run to the next, so the tests leave them out on purpose.
+
+The server is a mock in the same process, so there is no HTTP, no XML parsing, no network latency and no server work.
+The daemon is not involved either. Its work on the reported items is missing, and so is how often it asks for an enumeration.
+Network cost shows in the request count, which holds for any server. The daemon's cost shows only in the reported count.
+Listings paged by the server (Nextcloud 31 and later) are covered for one page only. For a second page this package sends its encoded page cursor as the server's token, which the mock rejects.
+
+#### Claiming that users wait less
+
+The counts show that a change does less work, not how much sooner users see the result.
+If your pull request claims that users wait less, measure the installed app, built in release, against a real server, before and after your change.
+Nobody can repeat that measurement exactly, so describe it well enough for a reviewer to check it: client and server versions, folder sizes, network, how many runs you made and how much they varied.
+
 ### Localization
 
 Transifex is used for localization.

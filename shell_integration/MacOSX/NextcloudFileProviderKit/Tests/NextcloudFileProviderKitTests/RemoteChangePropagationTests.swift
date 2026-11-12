@@ -41,25 +41,6 @@ import NextcloudKit
 @testable import TestInterface
 import XCTest
 
-/// Thread-safe collector for the remote paths a working-set scan issues PROPFINDs for. The mock's
-/// `enumerateCallHandler` may run off the test's thread, so guard the storage with a lock.
-private final class EnumeratePathRecorder: @unchecked Sendable {
-    private let lock = NSLock()
-    private var storage: [String] = []
-
-    func add(_ path: String) {
-        lock.lock()
-        defer { lock.unlock() }
-        storage.append(path)
-    }
-
-    var paths: [String] {
-        lock.lock()
-        defer { lock.unlock() }
-        return storage
-    }
-}
-
 final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"

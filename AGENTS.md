@@ -162,14 +162,20 @@ Contributors can sign automatically with `git commit -s` after configuring `user
 
 Performance claims can frequently be negligible, fictional, or confined to edge cases, so they must be backed by evidence rather than assertion.
 
+Automated performance tests only make sense when they are reproducible, and only what this project controls can be reproduced. Network conditions, server response times and how the operating system takes in the client's results, such as `fileproviderd` on macOS, are outside its control and differ from one run to the next. Durations measured in a test process are no evidence either: they leave out exactly those costs, and debug and release builds can differ a lot.
+
 A change may be presented as a performance optimisation only if **both** of the following are true:
 
-- **It is covered by a benchmark test.** A test exercising the optimised code path on a realistic workload must be added to the branch and run before and after the change. This same test must both verify the before/after improvement and reproduce it to catch regressions. The measured numbers - metric, workload, and variance - must be reported honestly, including when the improvement is within noise or only appears in an edge case.
-- **The evidence ships in the working branch.** The benchmark test must live in the PR branch, alongside the optimisation. Evidence that exists only outside the branch or only in the PR description does not satisfy this requirement.
+- **It is covered by a test that counts the work.** A test must run the optimised code path on a deterministic, realistic workload and assert how much work it does, for example requests sent, database transactions committed, rows written or items reported. Such counts are the same on every machine and in every build configuration. The test must fail when the work goes up again. For the file provider, add or extend a scenario in the `NextcloudFileProviderKitPerformanceTests` target and lower its ceilings, as described under "Performance tests" in `shell_integration/MacOSX/NextcloudFileProviderKit/README.md`.
+- **The evidence ships in the working branch.** The test must live in the PR branch, alongside the optimisation, and its diff must show the counts before and after. Evidence that exists only outside the branch or only in the PR description does not satisfy this requirement.
 
-When performance optimisation is your primary task, you must actively pursue this evidence - add the benchmark test, run it before and after the change, and ensure it fails on regression - rather than producing an optimisation and leaving verification to the contributor or reviewers.
+A change which does the same counted work with less processor time, such as a cheaper algorithm, needs a count of the operation it saves. If the code offers no such count, present the change as a refactoring, not as an optimisation.
 
-When you are assisting with a change that asserts a performance improvement but ships no benchmark test, surface the gap explicitly and do not silently proceed. State that the claim is unverifiable as submitted and that, per the rules above, a benchmark test must be added before the user can claim a performance improvement.
+A claim that users wait less additionally needs an end-to-end measurement of the installed release build against a real server, before and after the change. The PR description must state the setup (client and server versions, data sizes, network), the number of runs and how much they varied, so that reviewers can repeat the measurement by hand. Report it honestly, including when the difference is within noise or only appears in an edge case.
+
+When performance optimisation is your primary task, you must actively pursue this evidence - add or extend the counting test, run it before and after the change, and ensure it fails on regression - rather than producing an optimisation and leaving verification to the contributor or reviewers. If you cannot run the end-to-end measurement yourself, say so explicitly and never derive a claim about waiting time from counts alone.
+
+When you are assisting with a change that asserts a performance improvement but ships no counting test, surface the gap explicitly and do not silently proceed. State that the claim is unverifiable as submitted and that, per the rules above, such a test must be added before the user can claim a performance improvement.
 
 ## C++ Specifics
 

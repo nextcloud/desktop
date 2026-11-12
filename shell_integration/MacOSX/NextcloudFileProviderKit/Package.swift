@@ -69,6 +69,15 @@ let package = Package(
         .testTarget(
             name: "NextcloudFileProviderKitTests",
             dependencies: ["NextcloudFileProviderKit", "TestInterface"]
+        ),
+        .testTarget(
+            name: "NextcloudFileProviderKitPerformanceTests",
+            dependencies: [
+                "NextcloudFileProviderKit",
+                "NextcloudFileProviderKitMocks",
+                "TestInterface",
+                .product(name: "GRDB", package: "GRDB.swift")
+            ]
         )
     ]
 )

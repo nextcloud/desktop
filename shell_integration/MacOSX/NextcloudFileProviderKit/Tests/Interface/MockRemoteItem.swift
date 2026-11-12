@@ -125,6 +125,23 @@ public class MockRemoteItem: Equatable {
         self.trashbinOriginalLocation = trashbinOriginalLocation
     }
 
+    ///
+    /// Give the item a new version and bump every ancestor's version, as the server propagates an etag change up to the root.
+    ///
+    public func changeVersion(to newVersion: String) {
+        versionIdentifier = newVersion
+        modificationDate = Date()
+        parent?.bumpVersion()
+    }
+
+    ///
+    /// Bump this item's version and every ancestor's, as the server does when the item's contents change.
+    ///
+    public func bumpVersion() {
+        versionIdentifier += "+"
+        parent?.bumpVersion()
+    }
+
     public func toNKFile() -> NKFile {
         let isRoot = identifier == NSFileProviderItemIdentifier.rootContainer.rawValue
         var file = NKFile()
