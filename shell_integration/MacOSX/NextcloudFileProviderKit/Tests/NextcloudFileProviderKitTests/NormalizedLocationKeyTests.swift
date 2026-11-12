@@ -9,7 +9,7 @@ import XCTest
 
 ///
 /// Guards for the assumption that lets logical-address lookups be answered from an index: every row
-/// carries normalized keys, so `hasLocation` never falls back to the unindexed raw columns.
+/// carries normalized keys, so `matchesStoredParentLocationAndFileName` never falls back to the unindexed raw columns.
 ///
 final class NormalizedLocationKeyTests: XCTestCase {
     private static let account = Account(

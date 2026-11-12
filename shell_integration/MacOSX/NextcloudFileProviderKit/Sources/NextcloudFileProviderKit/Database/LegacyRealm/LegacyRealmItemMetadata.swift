@@ -55,7 +55,7 @@ final class LegacyRealmItemMetadata: Object, ItemMetadata {
     @Persisted var permissions = ""
     @Persisted(indexed: true) var normalizedServerUrl = ""
     // Indexed because it is the selective key for logical-address lookups
-    // (`RealmItemMetadata.hasLocation`) within a single directory. `normalizedServerUrl`'s index is
+    // by parent location and filename within a single directory. `normalizedServerUrl`'s index is
     // useless for a large *flat* folder — every child shares the parent url, so it narrows to the whole
     // sibling set — whereas the (near-unique) file name lets Realm's planner drive off this index
     // instead of scanning all siblings. This is what collapses the O(N²) per-item eviction/dedup scans
