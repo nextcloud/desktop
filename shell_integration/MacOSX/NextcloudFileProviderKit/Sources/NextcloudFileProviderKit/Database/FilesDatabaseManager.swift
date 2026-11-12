@@ -836,6 +836,60 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    func reconcileCompletedMove(
+        ocId: String,
+        sourcePath: String,
+        newServerUrl: String,
+        newFileName: String,
+        isCancelled: () -> Bool
+    ) throws -> SendableItemMetadata {
+        let database = ncDatabase()
+        let destinationPath = newServerUrl + "/" + newFileName
+        return try database.write {
+            guard !isCancelled() else { throw CancellationError() }
+            guard let item = database.object(ofType: RealmItemMetadata.self, forPrimaryKey: ocId), !item.deleted else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            if item.hasSameRemotePath(as: destinationPath) {
+                return SendableItemMetadata(value: item)
+            }
+            guard item.hasSameRemotePath(as: sourcePath) else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+
+            let accountItems = database.objects(RealmItemMetadata.self).where { $0.account == item.account }
+            let destinationItems = accountItems.where {
+                RealmItemMetadata.hasLocation($0, serverUrl: newServerUrl, fileName: newFileName)
+            }
+            let destinationDescendants = accountItems.where {
+                RealmItemMetadata.hasServerUrl($0, equalTo: destinationPath, includingDescendants: true)
+            }
+            // Realm cannot distinguish the descendants of folders that share a cached path.
+            guard destinationItems.isEmpty, destinationDescendants.isEmpty else {
+                logger.info("Move recovery found cached metadata at the destination.", [.item: ocId, .url: destinationPath])
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            if item.directory {
+                let otherSourceDirectories = accountItems.where { otherItem in
+                    otherItem.directory
+                        && otherItem.ocId != ocId
+                        && RealmItemMetadata.hasLocation(otherItem, serverUrl: item.serverUrl, fileName: item.fileName)
+                }
+                guard otherSourceDirectories.isEmpty else {
+                    logger.info("Move recovery found another cached directory at the source.", [.item: ocId, .url: sourcePath])
+                    throw NSFileProviderError(.cannotSynchronize)
+                }
+                renameDirectoryDescendants(from: item.remotePath(), to: destinationPath, account: item.account, in: database)
+            }
+
+            item.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
+            item.fileNameView = newFileName
+            item.lockToken = nil
+            guard !isCancelled() else { throw CancellationError() }
+            return SendableItemMetadata(value: item)
+        }
+    }
+
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {

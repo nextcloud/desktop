@@ -5,6 +5,7 @@
 import Foundation
 import NextcloudFileProviderXPC
 import NextcloudKit
+import os
 
 public extension Item {
     private enum RemoteDeletionResult {
@@ -63,74 +64,93 @@ public extension Item {
 
     func move(
         newFileName: String,
-        newRemotePath: String,
         newParentItemIdentifier: NSFileProviderItemIdentifier,
         newParentItemRemotePath: String,
         domain: NSFileProviderDomain? = nil,
+        progress: Progress,
         dbManager: FilesDatabaseManager
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
-        let isFolder = contentType.conforms(to: .directory)
         let oldRemotePath = metadata.serverUrl + "/" + filename
+        let newRemotePath = newParentItemRemotePath + "/" + newFileName
+        let registerTask: @Sendable (URLSessionTask) -> Void = { task in
+            if let domain {
+                NSFileProviderManager(for: domain)?.register(
+                    task,
+                    forItemWithIdentifier: self.itemIdentifier,
+                    completionHandler: { _ in }
+                )
+            }
+        }
         let (_, _, moveError) = await remoteInterface.move(
             remotePathSource: oldRemotePath,
             remotePathDestination: newRemotePath,
             overwrite: false,
             account: account,
             options: .init(),
-            taskHandler: { task in
-                if let domain {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: self.itemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }
+            taskHandler: registerTask
         )
 
-        guard moveError == .success else {
-            logger.error(
-                """
-                Could not move file or folder: \(oldRemotePath)
-                    to \(newRemotePath),
-                    received error: \(moveError.errorCode)
-                    \(moveError.errorDescription)
-                """
+        let newMetadata: SendableItemMetadata
+        if moveError.isPreconditionFailedError {
+            logger.info(
+                "Checking the move after the server reported a precondition failure.",
+                [.item: itemIdentifier, .url: newRemotePath, .error: moveError]
             )
-            return await (nil, moveError.fileProviderError(
-                handlingCollisionAgainstItemInRemotePath: newRemotePath,
-                dbManager: dbManager,
-                remoteInterface: remoteInterface,
-                log: logger.log
-            ))
-        }
-
-        if isFolder {
-            _ = dbManager.renameDirectoryAndPropagateToChildren(
-                ocId: ocId,
-                newServerUrl: newParentItemRemotePath,
-                newFileName: newFileName
-            )
+            do {
+                newMetadata = try await withTaskCancellationHandler {
+                    try await recoverMove(
+                        from: oldRemotePath,
+                        to: newRemotePath,
+                        newFileName: newFileName,
+                        newParentItemRemotePath: newParentItemRemotePath,
+                        registerTask: registerTask,
+                        progress: progress,
+                        dbManager: dbManager
+                    )
+                } onCancel: {
+                    progress.cancel()
+                }
+                logger.info("Reconciled the completed move.", [.item: itemIdentifier, .url: newRemotePath])
+            } catch {
+                return (nil, error)
+            }
         } else {
-            dbManager.renameItemMetadata(
-                ocId: ocId,
-                newServerUrl: newParentItemRemotePath,
-                newFileName: newFileName
-            )
-        }
+            guard moveError == .success else {
+                logger.error(
+                    "Could not move the item.",
+                    [.item: itemIdentifier, .url: newRemotePath, .error: moveError]
+                )
+                return await (nil, moveError.fileProviderError(
+                    handlingCollisionAgainstItemInRemotePath: newRemotePath,
+                    dbManager: dbManager,
+                    remoteInterface: remoteInterface,
+                    log: logger.log
+                ))
+            }
 
-        guard let newMetadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.error(
-                """
-                Could not acquire metadata of item with identifier: \(ocId),
-                    cannot correctly inform of modification
-                """
-            )
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-            )
+            if contentType.conforms(to: .directory) {
+                _ = dbManager.renameDirectoryAndPropagateToChildren(
+                    ocId: ocId,
+                    newServerUrl: newParentItemRemotePath,
+                    newFileName: newFileName
+                )
+            } else {
+                dbManager.renameItemMetadata(
+                    ocId: ocId,
+                    newServerUrl: newParentItemRemotePath,
+                    newFileName: newFileName
+                )
+            }
+
+            guard let storedMetadata = dbManager.itemMetadata(ocId: ocId) else {
+                logger.error("Could not acquire the moved item's metadata.", [.item: itemIdentifier])
+                return (
+                    nil,
+                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+                )
+            }
+            newMetadata = storedMetadata
         }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
@@ -146,6 +166,106 @@ public extension Item {
             log: logger.log
         )
         return (modifiedItem, nil)
+    }
+
+    private func recoverMove(
+        from sourcePath: String,
+        to destinationPath: String,
+        newFileName: String,
+        newParentItemRemotePath: String,
+        registerTask: @Sendable @escaping (URLSessionTask) -> Void,
+        progress: Progress,
+        dbManager: FilesDatabaseManager
+    ) async throws -> SendableItemMetadata {
+        func checkCancellation() throws {
+            if progress.isCancelled || Task.isCancelled {
+                throw CocoaError(.userCancelled)
+            }
+        }
+
+        func identifier(at remotePath: String) async throws -> String? {
+            try checkCancellation()
+            let activeTask = OSAllocatedUnfairLock<URLSessionTask?>(initialState: nil)
+            progress.cancellationHandler = { activeTask.withLock { $0 }?.cancel() }
+            defer { progress.cancellationHandler = nil }
+            let (_, files, _, error) = await remoteInterface.enumerate(
+                remotePath: remotePath,
+                depth: .target,
+                showHiddenFiles: true,
+                includeHiddenFiles: [],
+                requestBody: nil,
+                account: account,
+                options: .init(),
+                taskHandler: { task in
+                    activeTask.withLock { $0 = task }
+                    if progress.isCancelled {
+                        task.cancel()
+                    }
+                    registerTask(task)
+                }
+            )
+            try checkCancellation()
+            if error.errorCode == NSURLErrorCancelled {
+                throw CocoaError(.userCancelled)
+            }
+            if error.isNotFoundError {
+                return nil
+            }
+            guard error == .success else {
+                logger.error("Could not look up the move path.", [.item: itemIdentifier, .url: remotePath, .error: error])
+                // A failed PROPFIND provides no evidence of a filename collision.
+                if let lookupError = error.fileProviderError, [.serverUnreachable, .notAuthenticated].contains(lookupError.code) {
+                    throw lookupError
+                }
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            guard files.count == 1,
+                  let file = files.first,
+                  file.fullUrlMatches(remotePath)
+            else {
+                logger.error("The move path lookup did not return exactly the requested item.", [.item: itemIdentifier, .url: remotePath])
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+
+            let ocId = file.ocId.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !ocId.isEmpty else {
+                logger.error("The move path lookup returned an empty item identifier.", [.item: itemIdentifier, .url: remotePath])
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            return ocId
+        }
+
+        guard let destinationId = try await identifier(at: destinationPath) else {
+            logger.error("The move destination was missing during recovery.", [.item: itemIdentifier, .url: destinationPath])
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+        let sourceId = try await identifier(at: sourcePath)
+        let ocId = itemIdentifier.rawValue
+
+        if sourceId == ocId, destinationId != ocId {
+            logger.info("Confirmed the move destination is occupied by another item.", [.item: itemIdentifier, .url: destinationPath])
+            throw NSFileProviderError(.filenameCollision)
+        }
+        // A shared item can have the same identifier at both locations.
+        guard destinationId == ocId, sourceId != ocId else {
+            logger.error("The server paths did not confirm a completed move.", [.item: itemIdentifier, .url: destinationPath])
+            throw NSFileProviderError(.cannotSynchronize)
+        }
+
+        do {
+            return try dbManager.reconcileCompletedMove(
+                ocId: ocId,
+                sourcePath: sourcePath,
+                newServerUrl: newParentItemRemotePath,
+                newFileName: newFileName,
+                isCancelled: { progress.isCancelled || Task.isCancelled }
+            )
+        } catch is CancellationError {
+            throw CocoaError(.userCancelled)
+        } catch {
+            logger.error("Could not reconcile the completed move.", [.item: itemIdentifier, .url: destinationPath, .error: error])
+            throw NSFileProviderError(.cannotSynchronize)
+        }
     }
 
     private func modifyContents(
@@ -672,8 +792,14 @@ public extension Item {
             // Rename the item if necessary before doing the trashing procedures
             if changedFields.contains(.filename) {
                 let currentParentItemRemotePath = modifiedItem.metadata.serverUrl
-                let preTrashingRenamedRemotePath = currentParentItemRemotePath + "/" + itemTarget.filename
-                let (renameModifiedItem, renameError) = await modifiedItem.move(newFileName: itemTarget.filename, newRemotePath: preTrashingRenamedRemotePath, newParentItemIdentifier: modifiedItem.parentItemIdentifier, newParentItemRemotePath: currentParentItemRemotePath, dbManager: dbManager)
+                let (renameModifiedItem, renameError) = await modifiedItem.move(
+                    newFileName: itemTarget.filename,
+                    newParentItemIdentifier: modifiedItem.parentItemIdentifier,
+                    newParentItemRemotePath: currentParentItemRemotePath,
+                    domain: domain,
+                    progress: progress,
+                    dbManager: dbManager
+                )
 
                 guard renameError == nil, let renameModifiedItem else {
                     logger.error("Could not rename pre-trash item.", [.item: modifiedItem.itemIdentifier, .error: error])
@@ -718,9 +844,10 @@ public extension Item {
             {
                 let (renameModifiedItem, renameError) = await modifiedItem.move(
                     newFileName: itemTarget.filename,
-                    newRemotePath: newServerUrlFileName,
                     newParentItemIdentifier: newParentItemIdentifier,
                     newParentItemRemotePath: newParentItemRemoteUrl,
+                    domain: domain,
+                    progress: progress,
                     dbManager: dbManager
                 )
 
