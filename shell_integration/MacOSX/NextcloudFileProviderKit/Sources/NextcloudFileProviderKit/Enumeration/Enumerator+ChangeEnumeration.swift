@@ -27,7 +27,7 @@ extension Enumerator {
 
         // No matter what happens here we finish enumeration in some way, either from the error
         // handling below or from draining the change buffer.
-        Task { [weak self] in
+        runEnumerationTask { [weak self] in
             guard let self else {
                 return
             }
@@ -61,8 +61,7 @@ extension Enumerator {
             let readPath = currentItem?.remotePath() ?? serverUrl
 
             let readResult = await Self.readServerUrl(
-                readPath,
-                account: account,
+                serverUrl,
                 sourceMetadata: enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -70,8 +69,8 @@ extension Enumerator {
             )
             let readError = readResult.error
 
-            guard dbManager.isForCurrentDAVAccount() else {
-                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+            if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(error)
                 return
             }
 
@@ -112,6 +111,11 @@ extension Enumerator {
                     )
                     return
                 } else if readError.isNoChangesError { // All is well, just no changed etags
+                    if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
+                        observer.finishEnumeratingWithError(error)
+                        return
+                    }
+                    defer { SyncOperations.Operation.current?.finish() }
                     logger.info("Error was to say no changed files - not bad error. Finishing change enumeration.")
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                     return

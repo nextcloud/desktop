@@ -6,8 +6,12 @@ import Foundation
 import NextcloudKit
 import OSLog
 
-let AuthenticationTimeouts: [UInt64] = [ // Have progressively longer timeouts to not hammer the server
-    3_000_000_000, 6_000_000_000, 30_000_000_000, 60_000_000_000, 120_000_000_000, 300_000_000_000
+let AuthenticationRetryDelays: [UInt64] = [
+    3_000_000_000,
+    6_000_000_000,
+    30_000_000_000,
+    60_000_000_000,
+    120_000_000_000
 ]
 
 extension FileProviderExtension: NSFileProviderServicing {

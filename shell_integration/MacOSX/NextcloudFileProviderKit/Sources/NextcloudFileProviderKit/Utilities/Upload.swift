@@ -83,7 +83,7 @@ func upload(
             options: options,
             log: log,
             requestHandler: { request in
-                cancellation.register(request: request)
+                cancellation.register(request: request, canPause: { dbManager.syncOperations.isAcceptingWork })
                 requestHandler(request)
             },
             taskHandler: { task in
@@ -185,6 +185,9 @@ private func performUpload(
     }
 
     guard fileSize > chunkSize else {
+        guard SyncOperations.beginServerWrite() else {
+            return (nil, nil, nil, nil, NKError(error: URLError(.cancelled)))
+        }
         let (_, ocId, etag, date, size, _, remoteError) = await remoteInterface.upload(
             remotePath: remotePath,
             localPath: localFilePath,
@@ -225,6 +228,10 @@ private func performUpload(
                 logger: uploadLogger
             )
         }
+    }
+
+    guard SyncOperations.beginServerWrite() else {
+        return (nil, nil, nil, nil, NKError(error: URLError(.cancelled)))
     }
 
     // A prior interrupted upload of different content has a different identifier. Remove its local

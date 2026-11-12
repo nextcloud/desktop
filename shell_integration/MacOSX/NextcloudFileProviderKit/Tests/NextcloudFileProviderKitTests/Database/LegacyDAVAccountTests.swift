@@ -122,6 +122,44 @@ struct LegacyDAVAccountTests {
         #expect(saved.lockToken == (change == .unchanged ? file.lockToken : nil))
     }
 
+    @Test
+    func replacingPasswordResetsInterruptedTransfersWithoutChangingStoreIdentity() throws {
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let previous = Self.previousAccount
+        let newCredentials = Account(
+            user: previous.username,
+            id: previous.id,
+            serverUrl: previous.serverUrl,
+            password: "new-password"
+        )
+        let manager = try openDatabase(account: previous)
+        let transfers: [(before: Status, after: Status)] = [
+            (.inDownload, .normal),
+            (.downloading, .normal),
+            (.uploading, .uploadError),
+            (.inUpload, .inUpload)
+        ]
+        for (before, _) in transfers {
+            var item = DatabaseTestSuites.makeFile(
+                ocId: "item-\(before.rawValue)",
+                fileName: "File \(before.rawValue).txt",
+                account: previous
+            )
+            item.status = before.rawValue
+            item.session = before == .uploading ? "upload-attempt" : nil
+            manager.addItemMetadata(item)
+        }
+
+        let replacement = try manager.replacingDAVAccount(with: newCredentials)
+
+        #expect(replacement.storeIdentity == manager.storeIdentity)
+        for (before, after) in transfers {
+            let item = try #require(replacement.itemMetadata(ocId: "item-\(before.rawValue)"))
+            #expect(item.status == after.rawValue)
+            #expect(item.session == (before == .uploading ? "" : nil))
+        }
+    }
+
     @Test(arguments: [AccountChange.serverURL, .backendUserID])
     func previousManagerCannotSaveADAVResponseAfterDAVAccountChange(change: AccountChange) async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -165,7 +203,6 @@ struct LegacyDAVAccountTests {
         let (folder, remote) = cacheVisitedFolder(in: previousManager, account: previous)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: previous,
             remoteInterface: remote,
             dbManager: previousManager,
             log: FileProviderLogMock()
@@ -192,7 +229,6 @@ struct LegacyDAVAccountTests {
         let paused = PausedDAVResponse(remote: remote)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(folder.ocId),
-            account: previous,
             remoteInterface: remote,
             dbManager: previousManager,
             log: FileProviderLogMock()
@@ -234,7 +270,6 @@ struct LegacyDAVAccountTests {
         let read = Task {
             await Enumerator.readServerUrl(
                 folder.remotePath(),
-                account: previous,
                 remoteInterface: remote,
                 dbManager: previousManager,
                 depth: .target,

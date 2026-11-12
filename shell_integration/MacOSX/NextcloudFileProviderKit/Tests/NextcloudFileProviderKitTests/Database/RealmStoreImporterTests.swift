@@ -403,7 +403,6 @@ struct RealmStoreImporterTests {
         let remote = MockRemoteInterface(account: Self.account)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remote,
             dbManager: manager,
             log: FileProviderLogMock()
@@ -663,7 +662,6 @@ struct RealmStoreImporterTests {
         let remote = MockRemoteInterface(account: account, rootItem: root)
         let listing = await Enumerator.readServerUrl(
             teamURL,
-            account: account,
             remoteInterface: remote,
             dbManager: manager,
             depth: .targetAndDirectChildren,

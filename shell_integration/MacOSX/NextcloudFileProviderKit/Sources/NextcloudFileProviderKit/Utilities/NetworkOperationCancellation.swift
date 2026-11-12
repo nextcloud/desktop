@@ -49,11 +49,19 @@ final class NetworkOperationCancellation: @unchecked Sendable {
         sessionTask?.cancel()
     }
 
-    func register(request: Request) {
+    func register(
+        request: Request,
+        canPause: @escaping @Sendable () -> Bool = { true }
+    ) {
         lock.lock()
         if !finished {
             self.request = request
-            progress?.pausingHandler = { request.suspend() }
+            progress?.pausingHandler = {
+                guard canPause() else { return }
+                request.suspend()
+                // Setup may have resumed the upload while this pause callback was running.
+                if !canPause() { request.resume() }
+            }
             progress?.resumingHandler = { request.resume() }
         }
         let cancelled = cancelled || finished

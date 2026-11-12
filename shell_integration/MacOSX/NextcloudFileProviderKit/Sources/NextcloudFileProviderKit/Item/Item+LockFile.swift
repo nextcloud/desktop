@@ -104,6 +104,9 @@ extension Item {
             userId: account.id
         )
 
+        guard SyncOperations.beginServerWrite() else {
+            return (nil, NSFileProviderError(.serverUnreachable))
+        }
         dbManager.addItemMetadata(metadata)
         var errorToReturn: Error?
 
@@ -218,21 +221,25 @@ extension Item {
     }
 
     func deleteLockFile(domain: NSFileProviderDomain? = nil, dbManager: FilesDatabaseManager) async -> Error? {
-        // Always drop the local lock metadata first so it is never orphaned, even when the
-        // server lacks the locking capability or the guarded document cannot be determined.
-        dbManager.deleteItemMetadata(ocId: metadata.ocId)
-
         guard await Self.assertRequiredCapabilities(account: account, remoteInterface: remoteInterface, logger: logger) else {
+            dbManager.deleteItemMetadata(ocId: metadata.ocId)
             logger.info("Server does not support locking; removed local lock metadata without contacting the server.", [.name: metadata.fileName])
             return nil
         }
 
         guard let originalFileName = lockFileTargetName(forLockFileName: metadata.fileName, parentServerUrl: metadata.serverUrl, dbManager: dbManager) else {
+            dbManager.deleteItemMetadata(ocId: metadata.ocId)
             logger.error("Could not get original filename from lock file filename so will not unlock target file.", [.name: metadata.fileName])
             return nil
         }
 
+        guard SyncOperations.beginServerWrite() else {
+            return NSFileProviderError(.serverUnreachable)
+        }
+
         // (Newer versions of) AutoCAD creates .dwl and .dwl2 as a pair. Only unlock when both are gone.
+        // Remove this row before checking its sibling so two concurrent deletions cannot both skip the unlock.
+        dbManager.deleteItemMetadata(ocId: metadata.ocId)
         if isAutoCADLockFileName(metadata.fileName),
            autoCADSiblingLockFileExists(lockFilename: metadata.fileName, parentServerUrl: metadata.serverUrl, dbManager: dbManager)
         {

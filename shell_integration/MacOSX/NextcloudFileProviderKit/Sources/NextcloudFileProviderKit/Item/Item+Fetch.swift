@@ -88,7 +88,6 @@ public extension Item {
             let remoteDirectoryPath = directory.metadata.remotePath()
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
-                account: account,
                 sourceMetadata: directory.metadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -169,12 +168,14 @@ public extension Item {
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
                         let cancelled = error.errorCode == NSURLErrorCancelled
-                        _ = try? dbManager.finishDownload(
-                            childOperation,
-                            status: cancelled ? .normal : .downloadError,
-                            downloaded: false,
-                            error: cancelled ? nil : error.errorDescription
-                        )
+                        SyncOperations.Operation.$current.withValue(nil) {
+                            _ = try? dbManager.finishDownload(
+                                childOperation,
+                                status: cancelled ? .normal : .downloadError,
+                                downloaded: false,
+                                error: cancelled ? nil : error.errorDescription
+                            )
+                        }
                         throw operation.error(for: fetchError(error))
                     }
                     try dbManager.validateDownload(childOperation)
@@ -252,16 +253,20 @@ public extension Item {
         var fetchWasCancelled = false
         defer {
             if !contentsReturned {
-                for childOperation in childOperations {
-                    _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                // Release our download rows even if setup cancelled the request.
+                // The database still checks the manager's identity and download ownership.
+                SyncOperations.Operation.$current.withValue(nil) {
+                    for childOperation in childOperations {
+                        _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                    }
+                    let cancelled = fetchWasCancelled || cancellation.isCancelled || Task.isCancelled
+                    _ = try? dbManager.finishDownload(
+                        operation,
+                        status: cancelled ? .normal : .downloadError,
+                        downloaded: false,
+                        error: cancelled ? nil : fetchErrorDescription
+                    )
                 }
-                let cancelled = fetchWasCancelled || cancellation.isCancelled || Task.isCancelled
-                _ = try? dbManager.finishDownload(
-                    operation,
-                    status: cancelled ? .normal : .downloadError,
-                    downloaded: false,
-                    error: cancelled ? nil : fetchErrorDescription
-                )
                 do {
                     try FileManager.default.removeItem(at: localPath)
                 } catch CocoaError.fileNoSuchFile {
@@ -351,7 +356,6 @@ public extension Item {
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: updatedMetadata,
             remoteInterface: remoteInterface,
-            account: account,
             taskHandler: { cancellation.register(task: $0) },
             isCancelled: { cancellation.isCancelled }
         )
@@ -373,6 +377,9 @@ public extension Item {
 
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         guard !progress.isCancelled, !Task.isCancelled else {
+            return (nil, nil, operation.error(for: CocoaError(.userCancelled)))
+        }
+        guard SyncOperations.Operation.current?.beginDelivery() != false else {
             return (nil, nil, operation.error(for: CocoaError(.userCancelled)))
         }
         do {

@@ -14,18 +14,23 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     return Progress()
                 }
 
-                guard let dbManager else {
-                    logger.error("Cannot fetch metadata for item file actions due to database manager not being available.", [.item: itemIdentifier])
-                    completionHandler(NSFileProviderError(.cannotSynchronize))
-                    return Progress()
-                }
-
                 Task {
-                    guard let userVisibleURL = try await manager?.getUserVisibleURL(for: itemIdentifier) else {
+                    // Account setup only needs to wait for the metadata lookup below.
+                    let userVisibleURL: URL?
+                    do {
+                        userVisibleURL = try await manager?.getUserVisibleURL(for: itemIdentifier)
+                    } catch {
+                        completionHandler(error)
+                        return
+                    }
+                    guard let userVisibleURL else {
                         logger.error("Failed to get user-visible URL for item.", [.item: itemIdentifier])
                         completionHandler(NSFileProviderError(.noSuchItem))
                         return
                     }
+
+                    guard let (dbManager, operation) = beginCustomAction(completionHandler) else { return }
+                    defer { operation.finish() }
 
                     guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
                         logger.error("Failed to get metadata for item.", [.item: itemIdentifier])
@@ -53,11 +58,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     return Progress()
                 }
 
-                guard let dbManager else {
-                    logger.error("Cannot fetch metadata for open in browser action due to database manager not being available.", [.item: itemIdentifier])
-                    completionHandler(NSFileProviderError(.cannotSynchronize))
-                    return Progress()
-                }
+                guard let (dbManager, operation) = beginCustomAction(completionHandler) else { return Progress() }
+                defer { operation.finish() }
 
                 guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
                     logger.error("Failed to get metadata for open in browser action.", [.item: itemIdentifier])
@@ -86,11 +88,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     return Progress()
                 }
 
-                guard let dbManager else {
-                    logger.error("Cannot fetch metadata for copy internal link action due to database manager not being available.", [.item: itemIdentifier])
-                    completionHandler(NSFileProviderError(.cannotSynchronize))
-                    return Progress()
-                }
+                guard let (dbManager, operation) = beginCustomAction(completionHandler) else { return Progress() }
+                defer { operation.finish() }
 
                 guard let metadata = dbManager.itemMetadata(itemIdentifier) else {
                     logger.error("Failed to get metadata for copy internal link action.", [.item: itemIdentifier])
@@ -128,21 +127,21 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         }
     }
 
+    private func beginCustomAction(_ completionHandler: (Error?) -> Void) -> (FilesDatabaseManager, SyncOperations.Operation)? {
+        do {
+            return try beginSyncOperation()
+        } catch {
+            completionHandler(error)
+            return nil
+        }
+    }
+
     private func performKeepDownloadedAction(
         keepDownloaded: Bool,
         onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier],
         completionHandler: @Sendable @escaping ((any Error)?) -> Void
     ) -> Progress {
-        guard let ncAccount else {
-            logger.error("Not setting keep offline for items, account not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-        guard let dbManager else {
-            logger.error("Not setting keep offline for items as database is unreachable.")
-            completionHandler(NSFileProviderError(.cannotSynchronize))
-            return Progress()
-        }
+        guard let (dbManager, operation) = beginCustomAction(completionHandler) else { return Progress() }
 
         let progress = Progress()
 
@@ -150,13 +149,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
         if itemIdentifiers.isEmpty {
             logger.info("No items to process for keepDownloaded action.")
             completionHandler(nil)
+            operation.finish()
             return progress
         }
 
         // Explicitly set totalUnitCount for clarity, though addChild with pendingUnitCount also defines this.
         progress.totalUnitCount = Int64(itemIdentifiers.count)
 
-        Task {
+        operation.run { [self] in
             let localNcKit = self.ncKit
             let localDomain = self.domain
 
@@ -166,12 +166,14 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                         group.addTask {
                             let item = try await Item.lookupItemAndFindParentIdentifier(
                                 identifier: identifier,
-                                account: ncAccount,
+                                account: dbManager.account,
                                 remoteInterface: localNcKit,
                                 dbManager: dbManager,
                                 allowsRemoteLookup: !self.blockSync,
+                                taskHandler: { operation.registerReadTask($0) },
                                 log: self.log
                             )
+                            guard !operation.isStopped else { throw NSFileProviderError(.serverUnreachable) }
                             try await item.set(keepDownloaded: keepDownloaded, domain: localDomain)
                         }
                     }
@@ -180,9 +182,11 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                         progress.completedUnitCount += 1
                     }
                 }
+                guard !retryIfStopped(operation, completion: completionHandler) else { return }
                 logger.info("All items successfully processed for keepDownloaded=\(keepDownloaded)")
                 completionHandler(nil)
             } catch {
+                guard !retryIfStopped(operation, completion: completionHandler) else { return }
                 logger.error("Error during keepDownloaded=\(keepDownloaded) action: \(error.localizedDescription)")
                 completionHandler(error)
             }
@@ -199,18 +203,6 @@ extension FileProviderExtension: NSFileProviderCustomAction {
     /// - For a **directory** (including the root): we evict each *evictable* (downloaded, non-pinned) descendant file individually rather than calling `evictItem` on the directory. This leaves individually-pinned descendants materialized (honouring the explicit per-item choice), never asks the framework to evict strict-pinned content (so it cannot hit -2008), and does not rely on `evictItem` recursing into a directory or the root pseudo-container.
     ///
     private func performEvictAction(onItemsWithIdentifiers itemIdentifiers: [NSFileProviderItemIdentifier], completionHandler: @Sendable @escaping ((any Error)?) -> Void) -> Progress {
-        guard let ncAccount else {
-            logger.error("Not removing downloads because account is not set up yet.")
-            completionHandler(NSFileProviderError(.notAuthenticated))
-            return Progress()
-        }
-
-        guard let dbManager else {
-            logger.error("Not removing downloads because database is unreachable.")
-            completionHandler(NSFileProviderError(.cannotSynchronize))
-            return Progress()
-        }
-
         guard let manager else {
             logger.error("Not removing downloads because file provider manager is not available.")
             completionHandler(NSFileProviderError(.providerNotFound))
@@ -227,7 +219,8 @@ extension FileProviderExtension: NSFileProviderCustomAction {
 
         progress.totalUnitCount = Int64(itemIdentifiers.count)
 
-        Task {
+        guard let (dbManager, operation) = beginCustomAction(completionHandler) else { return progress }
+        operation.run { [self] in
             let localNcKit = self.ncKit
             let localDomain = self.domain
 
@@ -235,37 +228,30 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                 try await withThrowingTaskGroup(of: Void.self) { group in
                     for identifier in itemIdentifiers {
                         group.addTask {
+                            let itemsToEvict: [NSFileProviderItemIdentifier]
                             let item = try await Item.lookupItemAndFindParentIdentifier(
                                 identifier: identifier,
-                                account: ncAccount,
+                                account: dbManager.account,
                                 remoteInterface: localNcKit,
                                 dbManager: dbManager,
                                 allowsRemoteLookup: !self.blockSync,
+                                taskHandler: { operation.registerReadTask($0) },
                                 log: self.log
                             )
-
+                            guard !operation.isStopped else { throw NSFileProviderError(.serverUnreachable) }
                             if item.metadata.directory {
-                                // "Remove downloaded items" on a folder or the root: evict each
-                                // evictable (downloaded, non-pinned) descendant file individually.
-                                // This leaves individually-pinned descendants materialized —
-                                // honoring the user's explicit "Always keep downloaded" — and never
-                                // asks the framework to evict strict-pinned content, so it cannot hit
-                                // -2008 NonEvictable (#9891). It also does not depend on `evictItem`
-                                // recursing into a directory (incl. the root pseudo-container) (#10085).
-                                for descendant in dbManager.evictableDescendantFileIdentifiers(directoryMetadata: item.metadata) {
-                                    try await manager.evictItem(identifier: descendant)
-                                }
+                                // Leave individually pinned files downloaded.
+                                itemsToEvict = dbManager.evictableDescendantFileIdentifiers(directoryMetadata: item.metadata)
                             } else {
-                                // "Remove download" on a single file. Clear keep-downloaded first so
-                                // contentPolicy changes from `.downloadEagerlyAndKeepDownloaded` back
-                                // to `.inherited`; `set(keepDownloaded:)` awaits the framework's
-                                // acknowledgement, so the policy refresh has propagated by the time it
-                                // returns (#9891).
                                 if item.keepDownloaded {
                                     try await item.set(keepDownloaded: false, domain: localDomain)
                                 }
+                                itemsToEvict = [identifier]
+                            }
 
-                                try await manager.evictItem(identifier: identifier)
+                            for itemIdentifier in itemsToEvict {
+                                guard !operation.isStopped else { throw NSFileProviderError(.serverUnreachable) }
+                                try await manager.evictItem(identifier: itemIdentifier)
                             }
                         }
                     }
@@ -275,9 +261,11 @@ extension FileProviderExtension: NSFileProviderCustomAction {
                     }
                 }
 
+                guard !retryIfStopped(operation, completion: completionHandler) else { return }
                 logger.info("All items successfully processed by evict action.")
                 completionHandler(nil)
             } catch {
+                guard !retryIfStopped(operation, completion: completionHandler) else { return }
                 logger.error("Error during eviction: \(error.localizedDescription)")
                 completionHandler(error)
             }

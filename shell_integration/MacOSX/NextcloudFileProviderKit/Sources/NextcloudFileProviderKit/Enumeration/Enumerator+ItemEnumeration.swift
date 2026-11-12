@@ -71,7 +71,7 @@ extension Enumerator {
 
         logger.debug("Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")", [.account: account.ncKitAccount, .url: serverUrl])
 
-        Task {
+        runEnumerationTask { [self] in
             // Bound the synchronous page work (cursor decode + capabilities + network + convert +
             // persist) for a trace, and record its wall-clock for the JSONL fallback. The `defer` ends
             // the interval on every exit — including the error returns below — so no interval dangles.
@@ -87,6 +87,10 @@ extension Enumerator {
             let pageWorkClock = ContinuousClock()
             let pageWorkStart = pageWorkClock.now
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             let cursor = paginationCursor(from: page)
 
             // Check server version to determine if pagination should be enabled.
@@ -111,7 +115,6 @@ extension Enumerator {
             let readResult = await Self.readServerUrl(
                 serverUrl,
                 pageSettings: pageSettings,
-                account: account,
                 sourceMetadata: enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -123,6 +126,10 @@ extension Enumerator {
             let readError = readResult.error
             var nextPage = readResult.nextPage
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             guard readError == nil else {
                 logger.error("Finishing enumeration for page with error.", [.account: self.account.ncKitAccount, .error: readError, .url: self.serverUrl])
 

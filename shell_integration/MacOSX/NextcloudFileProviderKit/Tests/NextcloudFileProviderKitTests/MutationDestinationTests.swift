@@ -129,6 +129,19 @@ struct MutationDestinationTests {
             }
         }
 
+        let stoppedRequest = try #require(manager.syncOperations.begin())
+        defer { stoppedRequest.finish() }
+        manager.syncOperations.stopAcceptingWork()
+        await manager.syncOperations.waitForWrites()
+        let (stoppedItem, stopError) = await SyncOperations.Operation.$current.withValue(stoppedRequest) {
+            await mutate()
+        }
+        #expect(stoppedItem == nil)
+        #expect((stopError as? NSFileProviderError)?.code == .serverUnreachable)
+        #expect(folder.children.isEmpty)
+        #expect(remote.readOperationCount == 0)
+        try #require(manager.syncOperations.resumeAcceptingWork())
+
         let (modified, error) = await mutate()
         #expect(error == nil)
         let newFolderReads = mutation == .createFolder ? 1 : 0

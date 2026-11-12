@@ -37,13 +37,12 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
     public func removeAccountConfig() {
         logger.info("Received request to remove account data.")
-        dbManager = nil
         removeAccount()
     }
 
     public func deletePassword(completionHandler: ((Bool) -> Void)?) {
         logger.info("Received request to delete the stored password.")
-        let deleted = removeAccount()
+        let deleted = removeAccount(drainSyncOperations: false)
         completionHandler?(deleted)
     }
 

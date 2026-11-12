@@ -129,7 +129,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     ) async throws -> MockChangeObserver {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -248,7 +247,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let inputAnchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let firstEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -272,7 +270,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
 
         let secondEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -755,7 +752,6 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         let inputAnchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: Self.dbManager.storeIdentity)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()

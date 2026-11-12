@@ -34,10 +34,11 @@ extension Enumerator {
             anchor
         }
 
-        guard dbManager.isForCurrentDAVAccount() else {
-            observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+        if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
+            observer.finishEnumeratingWithError(error)
             return
         }
+        defer { SyncOperations.Operation.current?.finish() }
         let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
         if !orphanedIdentifiers.isEmpty {
             observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
@@ -58,13 +59,17 @@ extension Enumerator {
     func enumerateTrashItems(for observer: NSFileProviderEnumerationObserver) {
         logger.info("Enumerating items in trash.", [.account: account.ncKitAccount, .url: serverUrl])
 
-        Task { [weak self] in
+        runEnumerationTask { [weak self] in
             guard let self else {
                 return
             }
 
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
+            if let stopError = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(stopError)
+                return
+            }
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                 observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
@@ -80,10 +85,11 @@ extension Enumerator {
             // We only want to list items deleted on the local device.
             // That cannot happen before the initial content enumeration for a file provider domain because the latter does not exist yet.
             // Hence the initial trash content enumeration can be finished with an empty set.
-            guard dbManager.isForCurrentDAVAccount() else {
-                observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+            if let error = beginEnumerationDelivery(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
                 return
             }
+            defer { SyncOperations.Operation.current?.finish() }
             observer.finishEnumerating(upTo: nil)
         }
     }
@@ -98,7 +104,7 @@ extension Enumerator {
 
         let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
 
-        Task { [weak self] in
+        runEnumerationTask { [weak self] in
             guard let self else {
                 return
             }
@@ -122,6 +128,10 @@ extension Enumerator {
 
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
+            if let stopError = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(stopError)
+                return
+            }
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                 observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
@@ -139,6 +149,7 @@ extension Enumerator {
 
             let domain = domain
             let enumeratedItemIdentifier = enumeratedItemIdentifier
+            let operation = SyncOperations.Operation.current
 
             let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
                 filename: nil,
@@ -146,6 +157,7 @@ extension Enumerator {
                 account: account.ncKitAccount,
                 options: .init(),
                 taskHandler: { task in
+                    operation?.registerReadTask(task)
                     if let domain {
                         NSFileProviderManager(for: domain)?.register(
                             task,
@@ -156,6 +168,10 @@ extension Enumerator {
                 }
             )
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             guard trashReadError == .success else {
                 let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
                 observer.finishEnumeratingWithError(error)

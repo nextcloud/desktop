@@ -1691,8 +1691,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let retrievedParentIdentifier = await Self.dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: remoteItemMetadata,
-            remoteInterface: remoteInterface,
-            account: Self.account
+            remoteInterface: remoteInterface
         )
 
         let unwrappedParentIdentifier = try XCTUnwrap(retrievedParentIdentifier)
