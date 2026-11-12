@@ -232,7 +232,6 @@ public extension Item {
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             serverUrl: parentItemRemotePath,
             size: size ?? 0,
             status: Status.normal.rawValue,

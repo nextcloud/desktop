@@ -379,7 +379,6 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             permissions: "RGDNVCK",
             serverUrl: account.davFilesUrl,
             size: 0, // Default as not set in original code
@@ -435,7 +434,6 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             permissions: "RGDNVCK",
             serverUrl: account.trashUrl,
             size: 0, // Default as not set in original code

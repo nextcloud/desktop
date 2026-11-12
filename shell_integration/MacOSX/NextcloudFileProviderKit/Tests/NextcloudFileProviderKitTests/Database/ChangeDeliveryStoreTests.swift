@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
 import Foundation
+import GRDB
 @testable import NextcloudFileProviderKit
 import Testing
 
@@ -20,6 +21,46 @@ extension DatabaseTestSuites {
         /// Prepare the next batch with continuation keys of the form `a<end sequence>`, as the buffer does with its prefix.
         private func prepare(_ sessionId: String, maxItems: Int) throws -> (items: [(metadataData: Data, deleted: Bool)], endSequence: Int, nextAnchorKey: String?, moreComing: Bool)? {
             try manager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: maxItems) { "a\($0)" }
+        }
+
+        @Test func queuedSnapshotsUseTheStoreVersionFormat() throws {
+            let account = DatabaseTestSuites.account
+            let folder = "Docs #?%20"
+            let file = DatabaseTestSuites.makeFile(ocId: "report", fileName: "Report.txt")
+            let rootPath = Account.webDavFilesUrlSuffix + account.id + "/"
+
+            func storedParentPath() throws -> String? {
+                try manager.writer.read { db in
+                    try String.fetchOne(db, sql: "SELECT path FROM itemMetadata WHERE ocId = ?", arguments: [file.ocId])
+                }
+            }
+
+            manager.addItemMetadata(file)
+            #expect(try storedParentPath() == rootPath)
+            manager.renameItemMetadata(
+                ocId: file.ocId,
+                newServerUrl: account.davFilesUrl + "/" + folder,
+                newFileName: file.fileName
+            )
+            let movedFile = try #require(manager.itemMetadata(ocId: file.ocId))
+            let movedParentPath = rootPath + folder + "/"
+            #expect(try storedParentPath() == movedParentPath)
+            try #require(manager.createChangeDeliverySession(
+                sessionId: "s",
+                containerKey: "c",
+                anchorKey: "a0",
+                finalAnchorRawValue: Data(),
+                updated: [movedFile],
+                deleted: [],
+                incomplete: false,
+                hardRemoveDeleted: true
+            ))
+
+            let item = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 1)?.first)
+            let fields = try #require(JSONSerialization.jsonObject(with: item.metadataData) as? [String: Any])
+            #expect(fields["ocId"] as? String == file.ocId)
+            #expect(fields["serverUrl"] as? String == movedFile.serverUrl)
+            #expect(fields["path"] as? String == movedParentPath)
         }
 
         @Test func itemsAreReturnedInSequenceOrderUpToTheLimit() throws {

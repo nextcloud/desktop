@@ -323,7 +323,7 @@ struct EnumeratorPersistenceTests {
         if matchingBackendID {
             #expect(result.error == nil)
             #expect(result.metadatas?.map(\.ocId) == ["directory-id", "file-id"])
-            let storedFile = manager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: directoryURL + "/report.txt")
+            let storedFile = manager.itemMetadata(locatedAtRemoteUrl: directoryURL + "/report.txt")
             #expect(storedFile?.ocId == "file-id")
             #expect(storedFile?.serverUrl.utf8.elementsEqual(directoryURL.utf8) == true)
         } else {
@@ -482,11 +482,14 @@ struct EnumeratorPersistenceTests {
     private func storeFolderAndFile(at previousAccount: Account) throws {
         var storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
         storedFolder.apply(account: previousAccount)
+        // Keep the domain's account key while simulating a row with an outdated DAV root.
+        storedFolder.account = account.ncKitAccount
         storedFolder.serverUrl = previousAccount.davFilesUrl
         manager.addItemMetadata(storedFolder)
 
         var storedFile = try #require(manager.itemMetadata(ocId: file.identifier))
         storedFile.apply(account: previousAccount)
+        storedFile.account = account.ncKitAccount
         storedFile.serverUrl = storedFolder.remotePath()
         manager.addItemMetadata(storedFile)
     }

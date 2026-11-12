@@ -96,14 +96,26 @@ extension DatabaseTestSuites {
             precomposedParent.fileName = decomposedName.precomposedStringWithCanonicalMapping
 
             #expect(manager.childItems(directoryMetadata: precomposedParent).map(\.ocId) == ["child"])
-            #expect(manager.itemMetadata(account: parent.account, locatedAtRemoteUrl: root + "/" + decomposedName.precomposedStringWithCanonicalMapping)?.ocId == "parent")
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/" + decomposedName.precomposedStringWithCanonicalMapping)?.ocId == "parent")
+        }
+
+        @Test func locationLookupFindsLegacyParentWithoutAnAccountKey() throws {
+            var folder = directory(ocId: "folder", fileName: "Docs", parent: root)
+            folder.account = ""
+            folder.keepDownloaded = true
+            try manager.insertForTesting(folder)
+
+            let child = DatabaseTestSuites.makeFile(ocId: "child", fileName: "Report.txt", serverUrl: folder.remotePath())
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: folder.remotePath())?.ocId == folder.ocId)
+            #expect(manager.parentDirectoryMetadataForItem(child)?.ocId == folder.ocId)
+            #expect(manager.inheritedKeepDownloaded(for: child))
         }
 
         @Test func locationLookupIsCaseSensitive() throws {
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "upper", fileName: "File.txt"))
 
-            #expect(manager.itemMetadata(account: "", locatedAtRemoteUrl: root + "/File.txt")?.ocId == "upper")
-            #expect(manager.itemMetadata(account: "", locatedAtRemoteUrl: root + "/file.txt") == nil)
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/File.txt")?.ocId == "upper")
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/file.txt") == nil)
         }
 
         @Test func locationLookupPrefersTheLiveRowOverATombstone() throws {
@@ -112,7 +124,7 @@ extension DatabaseTestSuites {
             try manager.insertForTesting(tombstone)
             try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "zzz-live", fileName: "same.txt"))
 
-            #expect(manager.itemMetadata(account: "", locatedAtRemoteUrl: root + "/same.txt")?.ocId == "zzz-live")
+            #expect(manager.itemMetadata(locatedAtRemoteUrl: root + "/same.txt")?.ocId == "zzz-live")
         }
 
         @Test func suffixLookupIsCaseSensitiveAndTakesPatternCharactersLiterally() throws {
@@ -129,6 +141,22 @@ extension DatabaseTestSuites {
             #expect(manager.itemsMetadataByFileNameSuffix(suffix: "%.txt").map(\.ocId) == ["percent"])
             #expect(manager.itemsMetadataByFileNameSuffix(suffix: "_.txt").isEmpty)
             #expect(Set(manager.itemsMetadataByFileNameSuffix(suffix: "").map(\.ocId)) == ["lower", "upper", "bracket", "percent"])
+        }
+
+        @Test func desktopAppParentPathFollowsMovesAndPreservesFolderNames() throws {
+            let account = DatabaseTestSuites.account
+            let file = DatabaseTestSuites.makeFile(ocId: "report", fileName: "Report.txt")
+            manager.addItemMetadata(file)
+
+            let folder = "Docs #?%20"
+            manager.renameItemMetadata(
+                ocId: file.ocId,
+                newServerUrl: account.davFilesUrl + "/" + folder,
+                newFileName: file.fileName
+            )
+
+            let moved = try #require(manager.itemMetadata(ocId: file.ocId))
+            #expect(moved.davParentPathWithoutOrigin == Account.webDavFilesUrlSuffix + account.id + "/" + folder + "/")
         }
 
         @Test func fileIdMembershipHandlesMoreThanOneChunkOfIdentifiers() throws {

@@ -29,23 +29,23 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     func testChildItemsMatchesDirectChildButNotSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-A")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "photos"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/photos"
         childMetadata.fileName = "pic.jpg"
 
         var nestedChild = SendableItemMetadata.rawRow(ocId: "nested-1")
-        nestedChild.account = "TestAccount"
+        nestedChild.account = Self.account.ncKitAccount
         nestedChild.serverUrl = "https://cloud.example.com/files/photos/vacation"
         nestedChild.fileName = "beach.jpg"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-1")
-        siblingMetadata.account = "TestAccount"
+        siblingMetadata.account = Self.account.ncKitAccount
         siblingMetadata.serverUrl = "https://cloud.example.com/files/photos-backup"
         siblingMetadata.fileName = "old.jpg"
 
@@ -64,18 +64,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     func testChildItemCountExcludesSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-B")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "docs"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-2")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/docs"
         childMetadata.fileName = "report.pdf"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-2")
-        siblingMetadata.account = "TestAccount"
+        siblingMetadata.account = Self.account.ncKitAccount
         siblingMetadata.serverUrl = "https://cloud.example.com/files/docs-archive"
         siblingMetadata.fileName = "old-report.pdf"
 
@@ -89,18 +89,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteDirectoryDoesNotDeleteSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-C")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "work"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-3")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/work"
         childMetadata.fileName = "task.txt"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-3")
-        siblingMetadata.account = "TestAccount"
+        siblingMetadata.account = Self.account.ncKitAccount
         siblingMetadata.serverUrl = "https://cloud.example.com/files/work-old"
         siblingMetadata.fileName = "task-old.txt"
 
@@ -119,18 +119,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     func testRenameDirectoryDoesNotRenameSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-D")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "alpha"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-4")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/alpha"
         childMetadata.fileName = "file.txt"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-4")
-        siblingMetadata.account = "TestAccount"
+        siblingMetadata.account = Self.account.ncKitAccount
         siblingMetadata.serverUrl = "https://cloud.example.com/files/alphabet"
         siblingMetadata.fileName = "a.txt"
 
@@ -167,17 +167,17 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
     func testItemMetadatasUnderServerUrlExcludesSiblingPrefix() throws {
         var directChild = SendableItemMetadata.rawRow(ocId: "under-1")
-        directChild.account = "TestAccount"
+        directChild.account = Self.account.ncKitAccount
         directChild.serverUrl = "https://cloud.example.com/files/project"
         directChild.fileName = "readme.md"
 
         var nestedChild = SendableItemMetadata.rawRow(ocId: "under-2")
-        nestedChild.account = "TestAccount"
+        nestedChild.account = Self.account.ncKitAccount
         nestedChild.serverUrl = "https://cloud.example.com/files/project/src"
         nestedChild.fileName = "main.swift"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "under-3")
-        siblingMetadata.account = "TestAccount"
+        siblingMetadata.account = Self.account.ncKitAccount
         siblingMetadata.serverUrl = "https://cloud.example.com/files/project-v2"
         siblingMetadata.fileName = "readme.md"
 
@@ -186,7 +186,7 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         try Self.dbManager.insertForTesting(siblingMetadata)
 
         let results = Self.dbManager.itemMetadatas(
-            account: "TestAccount",
+            account: Self.account.ncKitAccount,
             underServerUrl: "https://cloud.example.com/files/project"
         )
         let resultOcIds = Set(results.map(\.ocId))

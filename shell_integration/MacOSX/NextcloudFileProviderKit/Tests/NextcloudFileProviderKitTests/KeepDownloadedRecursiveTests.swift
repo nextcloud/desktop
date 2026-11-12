@@ -38,24 +38,24 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     ///
     private func seedTree() throws -> SendableItemMetadata {
         var folder = SendableItemMetadata.rawRow(ocId: "folder-1")
-        folder.account = "TestAccount"
+        folder.account = Self.account.ncKitAccount
         folder.serverUrl = "https://cloud.example.com/files"
         folder.fileName = "documents"
         folder.directory = true
 
         var directChildFile = SendableItemMetadata.rawRow(ocId: "direct-child-file")
-        directChildFile.account = "TestAccount"
+        directChildFile.account = Self.account.ncKitAccount
         directChildFile.serverUrl = "https://cloud.example.com/files/documents"
         directChildFile.fileName = "report.pdf"
 
         var subfolder = SendableItemMetadata.rawRow(ocId: "subfolder-1")
-        subfolder.account = "TestAccount"
+        subfolder.account = Self.account.ncKitAccount
         subfolder.serverUrl = "https://cloud.example.com/files/documents"
         subfolder.fileName = "nested"
         subfolder.directory = true
 
         var deepFile = SendableItemMetadata.rawRow(ocId: "deep-file")
-        deepFile.account = "TestAccount"
+        deepFile.account = Self.account.ncKitAccount
         deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
         deepFile.fileName = "note.txt"
 
@@ -206,7 +206,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         _ = try seedTree()
 
         var levelOneSibling = SendableItemMetadata.rawRow(ocId: "level-1-sibling")
-        levelOneSibling.account = "TestAccount"
+        levelOneSibling.account = Self.account.ncKitAccount
         levelOneSibling.serverUrl = "https://cloud.example.com/files/documents/nested"
         levelOneSibling.fileName = "level-1-sibling.txt"
 
@@ -284,7 +284,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         // An off-path sibling at the deepest level that was added to the DB
         // *after* the original recursive pin and so missed it.
         var lateCousin = SendableItemMetadata.rawRow(ocId: "late-cousin")
-        lateCousin.account = "TestAccount"
+        lateCousin.account = Self.account.ncKitAccount
         lateCousin.serverUrl = "https://cloud.example.com/files/documents/nested"
         lateCousin.fileName = "late-cousin.txt"
         // No keepDownloaded set — defaults to false.
@@ -420,7 +420,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let folderMetadata = try seedTree()
 
         var sibling = SendableItemMetadata.rawRow(ocId: "sibling-file")
-        sibling.account = "TestAccount"
+        sibling.account = Self.account.ncKitAccount
         sibling.serverUrl = "https://cloud.example.com/files"
         sibling.fileName = "documents-archive.zip"
         // Same parent ("/files") as the target folder, but NOT inside the

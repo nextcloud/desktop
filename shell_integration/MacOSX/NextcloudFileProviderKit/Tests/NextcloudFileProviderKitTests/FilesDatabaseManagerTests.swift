@@ -329,7 +329,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testUpdateItemMetadatas() {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
         var metadata = SendableItemMetadata(ocId: "test", fileName: "test", account: account)
         metadata.downloaded = true
         metadata.uploaded = true
@@ -376,7 +376,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testUpdateRenamesDirectoryAndPropagatesToChildren() {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: Self.account)
         rootMetadata.directory = true
@@ -428,7 +428,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testTransitItemIsNotUpdated() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Simulate existing item in transit
         var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
@@ -461,7 +461,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testTransitItemIsDeleted() {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Simulate existing item in transit
         var transit = SendableItemMetadata(ocId: "transit1", fileName: "temp", account: account)
@@ -505,7 +505,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let metadata = SendableItemMetadata(
             ocId: "unique-id-123",
             fileName: "b",
-            account: .init(user: "t", id: "t", serverUrl: "b", password: "")
+            account: Self.account
         )
         Self.dbManager.addItemMetadata(metadata)
 
@@ -552,14 +552,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var existingMetadata1 = SendableItemMetadata.rawRow(ocId: "id-1")
         existingMetadata1.serverUrl = "https://example.com"
         existingMetadata1.fileName = "Existing.pdf"
-        existingMetadata1.account = "TestAccount"
+        existingMetadata1.account = Self.account.ncKitAccount
         existingMetadata1.downloaded = true
         existingMetadata1.uploaded = true
 
         var existingMetadata2 = SendableItemMetadata.rawRow(ocId: "id-2")
         existingMetadata2.serverUrl = "https://example.com"
         existingMetadata2.fileName = "Existing2.pdf"
-        existingMetadata2.account = "TestAccount"
+        existingMetadata2.account = Self.account.ncKitAccount
         existingMetadata2.downloaded = true
         existingMetadata2.uploaded = true
 
@@ -567,7 +567,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Different child path.
         existingMetadata3.serverUrl = "https://example.com/folder"
         existingMetadata3.fileName = "Existing3.pdf"
-        existingMetadata3.account = "TestAccount"
+        existingMetadata3.account = Self.account.ncKitAccount
         existingMetadata3.downloaded = true
         existingMetadata3.uploaded = true
 
@@ -579,14 +579,15 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let updatedMetadatas = [existingMetadata1, existingMetadata3] // Only include 2 of the 3
 
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: "TestAccount",
+            account: Self.account.ncKitAccount,
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas,
             keepExistingDownloadState: true
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
-            account: "TestAccount", underServerUrl: "https://example.com"
+            account: Self.account.ncKitAccount,
+            underServerUrl: "https://example.com"
         )
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
         XCTAssertEqual(remainingMetadatas.count(where: { !$0.deleted }), 2)
@@ -596,14 +597,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testProcessItemMetadatasToUpdate_NewAndUpdatedSeparation() throws {
-        let account = Account(
-            user: "TestAccount", id: "taid", serverUrl: "https://example.com", password: "pass"
-        )
+        let account = Self.account
 
         var parent = SendableItemMetadata.rawRow(ocId: "parent")
         parent.serverUrl = "https://example.com"
         parent.fileName = "Parent"
-        parent.account = "TestAccount"
+        parent.account = Self.account.ncKitAccount
         parent.directory = true
         parent.downloaded = true
         parent.uploaded = true
@@ -612,7 +611,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
         existingMetadata.serverUrl = "https://example.com/Parent"
         existingMetadata.fileName = "File.pdf"
-        existingMetadata.account = "TestAccount"
+        existingMetadata.account = Self.account.ncKitAccount
         existingMetadata.downloaded = true
         existingMetadata.uploaded = true
 
@@ -632,7 +631,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         try Self.dbManager.insertForTesting(existingMetadata)
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: "TestAccount",
+            account: Self.account.ncKitAccount,
             serverUrl: "https://example.com/Parent",
             updatedMetadatas: [updatedParent, updatedMetadata, newMetadata],
             keepExistingDownloadState: true
@@ -719,7 +718,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDirectoryMetadataRetrieval() throws {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let serverUrl = "https://cloud.example.com/files/documents"
         let directoryFileName = "documents"
         var metadata = SendableItemMetadata.rawRow(ocId: "dir-1")
@@ -730,9 +729,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         try Self.dbManager.insertForTesting(metadata)
 
-        let retrievedMetadata = Self.dbManager.itemMetadata(
-            account: account, locatedAtRemoteUrl: serverUrl
-        )
+        let retrievedMetadata = Self.dbManager.itemMetadata(locatedAtRemoteUrl: serverUrl)
         XCTAssertNotNil(retrievedMetadata, "Should retrieve directory metadata")
         XCTAssertEqual(
             retrievedMetadata?.fileName, directoryFileName, "Should match the directory file name"
@@ -741,13 +738,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testChildItemsForDirectory() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
         childMetadata.fileName = "report.pdf"
 
@@ -798,13 +795,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteDirectoryAndSubdirectoriesMetadata() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
         childMetadata.fileName = "report.pdf"
 
@@ -820,13 +817,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testRenameDirectoryAndPropagateToChildren() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/documents"
         childMetadata.fileName = "report.pdf"
 
@@ -878,9 +875,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testErrorOnDirectoryMetadataNotFound() {
         let nonExistentServerUrl = "https://cloud.example.com/nonexistent"
-        let directoryMetadata = Self.dbManager.itemMetadata(
-            account: "TestAccount", locatedAtRemoteUrl: nonExistentServerUrl
-        )
+        let directoryMetadata = Self.dbManager.itemMetadata(locatedAtRemoteUrl: nonExistentServerUrl)
         XCTAssertNil(directoryMetadata, "Should return nil when directory metadata is not found")
     }
 
@@ -888,16 +883,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let rootMetadata = SendableItemMetadata(
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             fileName: "",
-            account: Account(
-                user: "TestAccount",
-                id: "ta",
-                serverUrl: "https://cloud.example.com/files",
-                password: ""
-            )
+            account: Self.account
         ) // Do not write, we do not track root container
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
+        childMetadata.urlBase = Self.account.serverUrl
+        childMetadata.userId = Self.account.id
         childMetadata.serverUrl = rootMetadata.serverUrl
         childMetadata.fileName = "report.pdf"
 
@@ -915,19 +907,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testDeleteNestedDirectoriesAndSubdirectoriesMetadata() throws {
         // Create nested directories and their child items
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.account = Self.account.ncKitAccount
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
-        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.account = Self.account.ncKitAccount
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
         childMetadata.fileName = "report.pdf"
 
@@ -949,19 +941,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testRecursiveRenameOfDirectoriesAndChildItems() throws {
         // Setup a complex directory structure
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.account = Self.account.ncKitAccount
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
-        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.account = Self.account.ncKitAccount
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
-        childMetadata.account = "TestAccount"
+        childMetadata.account = Self.account.ncKitAccount
         childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
         childMetadata.fileName = "report.pdf"
 
@@ -985,7 +977,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeletingDirectoryWithNoChildren() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        directoryMetadata.account = "TestAccount"
+        directoryMetadata.account = Self.account.ncKitAccount
         directoryMetadata.serverUrl = "https://cloud.example.com/files"
         directoryMetadata.fileName = "empty"
         directoryMetadata.directory = true
@@ -1009,19 +1001,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testRenamingDirectoryWithComplexNestedStructure() throws {
         // Create a complex nested directory structure
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
-        rootDirectoryMetadata.account = "TestAccount"
+        rootDirectoryMetadata.account = Self.account.ncKitAccount
         rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
         rootDirectoryMetadata.fileName = "dir-1"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
-        nestedDirectoryMetadata.account = "TestAccount"
+        nestedDirectoryMetadata.account = Self.account.ncKitAccount
         nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1"
         nestedDirectoryMetadata.fileName = "dir-2"
         nestedDirectoryMetadata.directory = true
 
         var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-3")
-        deepNestedDirectoryMetadata.account = "TestAccount"
+        deepNestedDirectoryMetadata.account = Self.account.ncKitAccount
         deepNestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1/dir-2"
         deepNestedDirectoryMetadata.fileName = "dir-3"
         deepNestedDirectoryMetadata.directory = true
@@ -1045,7 +1037,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testFindingItemBasedOnRemotePath() throws {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let filename = "super duper new file"
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
@@ -1058,11 +1050,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
-        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(locatedAtRemoteUrl: fullUrl))
     }
 
     func testFindingItemBasedOnRemotePathInDirectoryWithHashtagInName() throws {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let filename = "super duper new file"
         let parentUrl = "https://cloud.example.com/files/my great and # dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
@@ -1075,11 +1067,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
-        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(locatedAtRemoteUrl: fullUrl))
     }
 
     func testFindingItemBasedOnRemotePathInDirectoryWithQuestionMarkInName() throws {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let filename = "super duper new file"
         let parentUrl = "https://cloud.example.com/files/my great and incredible dir ?/dir-2"
         let fullUrl = parentUrl + "/" + filename
@@ -1092,11 +1084,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         try Self.dbManager.insertForTesting(deepNestedDirectoryMetadata)
 
-        XCTAssertNotNil(Self.dbManager.itemMetadata(account: account, locatedAtRemoteUrl: fullUrl))
+        XCTAssertNotNil(Self.dbManager.itemMetadata(locatedAtRemoteUrl: fullUrl))
     }
 
     func testFindingItemBasedOnCanonicallyEquivalentRemotePath() {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let parentUrl = "https://cloud.example.com/files"
         let nfcFileName = "pr\u{00EA}t.pdf"
         let nfdFileName = "pre\u{0302}t.pdf"
@@ -1106,17 +1098,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.addItemMetadata(metadata)
 
-        let result = Self.dbManager.itemMetadata(
-            account: account,
-            locatedAtRemoteUrl: parentUrl + "/" + nfdFileName
-        )
+        let result = Self.dbManager.itemMetadata(locatedAtRemoteUrl: parentUrl + "/" + nfdFileName)
 
         XCTAssertEqual(result?.ocId, metadata.ocId)
         XCTAssertEqual(result?.fileName, nfcFileName)
     }
 
     func testCanonicalPathDeduplicationPreservesIncomingRemoteSpelling() {
-        let account = "TestAccount"
+        let account = Self.account.ncKitAccount
         let parentUrl = "https://cloud.example.com/files"
         let nfcFileName = "pr\u{00EA}t.pdf"
         let nfdFileName = "pre\u{0302}t.pdf"
@@ -1141,7 +1130,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testKeepDownloadedSetting() throws {
         var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
         existingMetadata.fileName = "File.pdf"
-        existingMetadata.account = "TestAccount"
+        existingMetadata.account = Self.account.ncKitAccount
         existingMetadata.serverUrl = "https://example.com"
         XCTAssertFalse(existingMetadata.keepDownloaded)
 
@@ -1159,7 +1148,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedRetainedDuringDepth1ReadUpdate() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Create initial metadata with keepDownloaded = true
         var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded", fileName: "test.txt", account: account)
@@ -1202,7 +1191,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedRetainedWithKeepExistingDownloadStateFalse() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Create initial metadata with keepDownloaded = true
         var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded-false", fileName: "test.txt", account: account)
@@ -1235,7 +1224,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedRetainedInReadTargetMetadata() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Create existing metadata with keepDownloaded = true
         var existingMetadata = SendableItemMetadata(ocId: "read-target-test", fileName: "target.txt", account: account)
@@ -1266,7 +1255,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedNotInheritedWhenNoPinnedAncestor() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Create completely new metadata (not existing in database) with no
         // pinned ancestor: neither a parent row nor a pinned root container.
@@ -1293,7 +1282,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedInheritedFromPinnedParentForNewMetadata() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Parent folder under the user's home, pinned.
         var parentFolder = SendableItemMetadata(ocId: "pinned-parent", fileName: "pinned", account: account)
@@ -1328,7 +1317,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataPreservingLocalState_InheritsPinnedParentForNewItem() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Pinned parent folder.
         var parentFolder = SendableItemMetadata(ocId: "preserving-parent", fileName: "pinned", account: account)
@@ -1353,7 +1342,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataPreservingLocalState_DoesNotInheritFromUnpinnedParent() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Unpinned parent folder.
         var parentFolder = SendableItemMetadata(ocId: "unpinned-parent", fileName: "regular", account: account)
@@ -1376,7 +1365,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedRetainedWithMultipleItems() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var parentFolder = SendableItemMetadata(ocId: "pf", fileName: "pf", account: account)
         parentFolder.uploaded = true
@@ -1542,7 +1531,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(sDirD)
 
         let materialized =
-            try XCTUnwrap(Self.dbManager.materialisedItemMetadatas(account: Self.account.ncKitAccount))
+            try XCTUnwrap(Self.dbManager.materialisedItemMetadatas())
         XCTAssertEqual(materialized.count, 5)
 
         let materialisedOcIds = materialized.map(\.ocId)
@@ -1554,7 +1543,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testKeepDownloadedRetainedDuringUpdate() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // Create initial metadata with keepDownloaded = true
         var initialMetadata = SendableItemMetadata(ocId: "test-keep-downloaded", fileName: "test.txt", account: account)
@@ -1757,7 +1746,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     // MARK: - Logical-address deduplication
 
     func testAddItemMetadataEvictsLogicalDuplicateWithDifferentOcId() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var rowA = SendableItemMetadata(ocId: "A", fileName: "shared.txt", account: account)
         rowA.syncTime = Date(timeIntervalSince1970: 1000)
@@ -1781,7 +1770,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // server-confirmed row at the same logical path. Persisting that tombstone
         // must NOT soft-delete the live sibling, or the freshly recreated file
         // vanishes from Finder.
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         // The live, server-confirmed row for the recreated file.
         var live = SendableItemMetadata(ocId: "104", fileName: "TEST 1.pdf", account: account)
@@ -1803,7 +1792,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataSameOcIdSameLogicalPathIsNormalUpsert() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var rowA = SendableItemMetadata(ocId: "A", fileName: "shared.txt", account: account)
         rowA.etag = "v1"
@@ -1818,7 +1807,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDepth1ReadEvictsStaleLogicalSiblingOnFreshOcId() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: account)
         rootMetadata.directory = true
@@ -1830,6 +1819,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // the new eviction code can remove it.
         var oldRow = SendableItemMetadata.rawRow(ocId: "oldOcId")
         oldRow.account = account.ncKitAccount
+        oldRow.urlBase = account.serverUrl
+        oldRow.userId = account.id
         oldRow.serverUrl = account.davFilesUrl
         oldRow.fileName = "TOOLS and WORKFLOWS"
         oldRow.directory = true
@@ -1856,7 +1847,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testDepth1ReadDoesNotEvictInFlightSibling() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: account)
         rootMetadata.directory = true
@@ -1865,6 +1856,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var inFlightRow = SendableItemMetadata.rawRow(ocId: "uploading")
         inFlightRow.account = account.ncKitAccount
+        inFlightRow.urlBase = account.serverUrl
+        inFlightRow.userId = account.id
         inFlightRow.serverUrl = account.davFilesUrl
         inFlightRow.fileName = "upload-in-progress.bin"
         inFlightRow.uploaded = false
@@ -1889,7 +1882,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupDeduplicatesSeededDuplicate() throws {
-        let testAccount = "TestAccount"
+        let testAccount = Self.account.ncKitAccount
         let testServerUrl = "https://example.com"
         let fileName = "dup.txt"
 
@@ -1930,7 +1923,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupDeduplicatesCanonicallyEquivalentPaths() throws {
-        let testAccount = "TestAccount"
+        let testAccount = Self.account.ncKitAccount
         let nfcName = "pr\u{00EA}t.pdf"
         let nfdName = "pre\u{0302}t.pdf"
         let serverUrl = "https://example.com"
@@ -1961,7 +1954,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupTiebreakOnEqualSyncTime() throws {
-        let testAccount = "TestAccount"
+        let testAccount = Self.account.ncKitAccount
         let testServerUrl = "https://example.com"
         let fileName = "tie.txt"
         let sameTime = Date(timeIntervalSince1970: 5000)
@@ -2003,7 +1996,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupNoOpWhenNoDuplicates() throws {
-        let testAccount = "TestAccount"
+        let testAccount = Self.account.ncKitAccount
 
         var a = SendableItemMetadata.rawRow(ocId: "one")
         a.account = testAccount
@@ -2049,7 +2042,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testStartupCleanupSkipsInTransitDuplicate() throws {
-        let testAccount = "TestAccount"
+        let testAccount = Self.account.ncKitAccount
         let testServerUrl = "https://example.com"
         let fileName = "in-flight.bin"
 
@@ -2092,11 +2085,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testEvictionRespectsLockFileOfLocalOrigin() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
         let fileName = "~$doc.docx"
 
         var localLock = SendableItemMetadata.rawRow(ocId: "local-lock")
         localLock.account = account.ncKitAccount
+        localLock.urlBase = account.serverUrl
+        localLock.userId = account.id
         localLock.serverUrl = account.davFilesUrl
         localLock.fileName = fileName
         localLock.isLockFileOfLocalOrigin = true
@@ -2113,7 +2108,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testEvictedRowSurfacesInPendingWorkingSetChanges() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
         let anchor = Date()
 
         var preExisting = SendableItemMetadata.rawRow(ocId: "preExisting")
@@ -2137,7 +2132,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataPreservingLocalStateFallsBackOnOcIdRotation() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var original = SendableItemMetadata(ocId: "originalOcId", fileName: "rotated.txt", account: account)
         original.keepDownloaded = true
@@ -2163,7 +2158,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
 
         var original = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
         original.etag = "etag-after-lock"
@@ -2183,11 +2178,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
-        let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
+        let account = Self.account
         let fileName = "duped.txt"
 
         var a1 = SendableItemMetadata.rawRow(ocId: "A1")
         a1.account = account.ncKitAccount
+        a1.urlBase = account.serverUrl
+        a1.userId = account.id
         a1.serverUrl = account.davFilesUrl
         a1.fileName = fileName
         a1.keepDownloaded = true
@@ -2197,6 +2194,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var a2 = SendableItemMetadata.rawRow(ocId: "A2")
         a2.account = account.ncKitAccount
+        a2.urlBase = account.serverUrl
+        a2.userId = account.id
         a2.serverUrl = account.davFilesUrl
         a2.fileName = fileName
         a2.keepDownloaded = true

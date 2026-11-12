@@ -44,7 +44,6 @@ extension Item {
             mountType: "",
             ownerId: account.id,
             ownerDisplayName: "",
-            path: "",
             serverUrl: parentItemRemotePath,
             size: itemTemplate.documentSize??.int64Value ?? 0,
             status: Status.normal.rawValue,

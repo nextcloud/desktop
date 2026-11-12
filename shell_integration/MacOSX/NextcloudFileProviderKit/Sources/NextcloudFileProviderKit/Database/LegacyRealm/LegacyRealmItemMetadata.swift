@@ -164,7 +164,6 @@ final class LegacyRealmItemMetadata: Object, ItemMetadata {
         lockTime = value.lockTime
         lockTimeOut = value.lockTimeOut
         lockToken = value.lockToken
-        path = value.path
         permissions = value.permissions
         quotaUsedBytes = value.quotaUsedBytes
         quotaAvailableBytes = value.quotaAvailableBytes
