@@ -23,6 +23,11 @@ struct RealmStoreImporterTests {
         case accountKeyAndDAVRoot
     }
 
+    enum DAVReadMode: CaseIterable {
+        case item
+        case completeListing
+        case pagedListing
+    }
 
     struct Fixture {
         let directory: URL
@@ -448,6 +453,82 @@ struct RealmStoreImporterTests {
         #expect(restored.account == Self.account.ncKitAccount)
         #expect(restored.userId == Self.account.id)
         #expect(restored.keepDownloaded)
+    }
+
+    @Test(arguments: [false, true], DAVReadMode.allCases)
+    func davReadPreservesLocalStateOfImportedLegacyItem(isDirectory: Bool, readMode: DAVReadMode) async throws {
+        let fixture = Self.makeFixture()
+        defer { try? FileManager.default.removeItem(at: fixture.directory) }
+        let account = Self.account
+        let previousAccount = Account(
+            user: account.username,
+            id: account.id,
+            serverUrl: "https://previous.example.com",
+            password: account.password
+        )
+        var item = DatabaseTestSuites.makeFile(
+            ocId: "cached-item",
+            fileName: isDirectory ? "Reports" : "Report.txt",
+            serverUrl: previousAccount.davFilesUrl,
+            account: previousAccount
+        )
+        item.directory = isDirectory
+        item.downloaded = true
+        item.keepDownloaded = true
+        item.visitedDirectory = isDirectory
+        item.uploaded = true
+        item.etag = "cached-etag"
+        item.fileProviderContentVersion = "cached-version"
+        item.lockToken = "previous-lock"
+        try autoreleasepool {
+            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
+            defer { realm.invalidate() }
+            try realm.write { realm.add(LegacyRealmItemMetadata(value: item)) }
+        }
+        fixture.savePreviouslyConfiguredAccount(account)
+        let manager = try fixture.openManager()
+        let imported = try #require(manager.itemMetadata(ocId: item.ocId))
+        #expect(imported.serverUrl == account.davFilesUrl)
+        #expect(imported.keepDownloaded)
+        #expect(imported.downloaded)
+        #expect(imported.lockToken == nil)
+
+        let root = MockRemoteItem.rootItem(account: account)
+        let listedItem = MockRemoteItem(
+            identifier: item.ocId,
+            versionIdentifier: item.etag,
+            name: item.fileName,
+            remotePath: account.davFilesUrl + "/" + item.fileName,
+            directory: isDirectory,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        root.children = [listedItem]
+        listedItem.parent = root
+        let remote = MockRemoteInterface(account: account, rootItem: root)
+        remote.pagination = readMode == .pagedListing
+        let listing = await Enumerator.readServerUrl(
+            readMode == .item ? listedItem.remotePath : account.davFilesUrl,
+            pageSettings: readMode == .pagedListing ? (page: nil, index: 0, size: 100) : nil,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: readMode == .item ? .target : .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+
+        #expect(listing.error == nil)
+        let reported = try #require(listing.metadatas?.first { $0.ocId == item.ocId })
+        let saved = try #require(manager.itemMetadata(ocId: item.ocId))
+        #expect(reported.keepDownloaded)
+        #expect(reported.downloaded)
+        #expect(reported.visitedDirectory == isDirectory)
+        #expect(reported.fileProviderContentVersion == item.fileProviderContentVersion)
+        #expect(reported.lockToken == nil)
+        #expect(saved == reported)
+        #expect(saved.remotePath() == listedItem.remotePath)
+        #expect(manager.itemMetadatas(account: previousAccount.ncKitAccount).isEmpty)
     }
 
     @Test func importedSDKWebrootAliasUsesADAVRelativeParent() throws {

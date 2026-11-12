@@ -41,7 +41,10 @@ extension DatabaseTestSuites {
             manager.addItemMetadata(child)
             manager.addItemMetadata(sibling)
 
-            #expect(manager.inheritedKeepDownloaded(for: child))
+            let inheritedPin = manager.read("Could not look up the inherited pin.") { db in
+                try manager.inheritedKeepDownloaded(for: child, in: db)
+            }
+            #expect(inheritedPin == true)
             let parent = try #require(manager.parentDirectoryMetadataForItem(child))
             try #require(parent.ocId == syntheticRoot.ocId)
             try #require(manager.parentDirectoryMetadataForItem(parent) == nil)
