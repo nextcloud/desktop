@@ -34,15 +34,17 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     public static let webDavFilesUrlSuffix = "/remote.php/dav/files/"
     public static let webDavTrashUrlSuffix = "/remote.php/dav/trashbin/"
 
-    public let username: String
-    public let id: String
+    let davAccountIdentity: DAVAccountIdentity
     public let password: String
     public let ncKitAccount: String
-    public let serverUrl: String
     public let davFilesUrl: String
     public let trashUrl: String
     public let trashRestoreUrl: String
     public let fileName: String
+
+    public var username: String { davAccountIdentity.username }
+    public var id: String { davAccountIdentity.backendUserID }
+    public var serverUrl: String { davAccountIdentity.serverBaseURL }
 
     public var description: String {
         ncKitAccount // Custom textual representation to avoid password leakage.
@@ -53,11 +55,18 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     }
 
     public init(user: String, id: String, serverUrl: String, password: String) {
-        username = user
-        self.id = id
+        self.init(
+            davAccountIdentity: DAVAccountIdentity(username: user, serverBaseURL: serverUrl, backendUserID: id),
+            password: password
+        )
+    }
+
+    init(davAccountIdentity: DAVAccountIdentity, password: String) {
+        self.davAccountIdentity = davAccountIdentity
         self.password = password
-        ncKitAccount = Self.ncKitAccountString(from: user, serverUrl: serverUrl)
-        self.serverUrl = serverUrl
+        ncKitAccount = davAccountIdentity.accountKey
+        let serverUrl = davAccountIdentity.serverBaseURL
+        let id = davAccountIdentity.backendUserID
         let davAccountBaseURL = Self.percentDecodedAccountBaseURL(serverUrl)
         davFilesUrl = DAVRoot.files.rootURL(accountBaseURL: davAccountBaseURL, backendUserID: id)
         trashUrl = DAVRoot.trash.rootURL(accountBaseURL: davAccountBaseURL, backendUserID: id)
@@ -204,11 +213,9 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
             return nil
         }
 
-        self.username = username
-        self.id = id
+        davAccountIdentity = DAVAccountIdentity(username: username, serverBaseURL: serverUrl, backendUserID: id)
         self.password = password
         self.ncKitAccount = ncKitAccount
-        self.serverUrl = serverUrl
         self.davFilesUrl = davFilesUrl
         self.trashUrl = trashUrl
         self.trashRestoreUrl = trashRestoreUrl

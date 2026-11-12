@@ -54,6 +54,7 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
             account?.trashRestoreUrl, "https://example.com/remote.php/dav/trashbin/user/restore"
         )
         XCTAssertEqual(account?.fileName, "userId_example_com")
+        XCTAssertEqual(account?.dictionary(), dictionary)
     }
 
     func testInitializationFromIncompleteDictionary() {
@@ -144,6 +145,14 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(differentUser.userId, account.id)
         XCTAssertFalse(account.ownsDAVReadURL(url, sourceMetadata: differentUser))
     }
+}
+
+@Test func accountEqualityAndDatabaseMatchingUseDifferentUnicodeRules() {
+    let precomposed = Account(user: "caf\u{00E9}", id: "backend-id", serverUrl: "https://example.com", password: "password")
+    let decomposed = Account(user: "cafe\u{0301}", id: "backend-id", serverUrl: "https://example.com", password: "password")
+
+    #expect(precomposed == decomposed)
+    #expect(!precomposed.davAccountIdentity.matchesByteForByte(decomposed.davAccountIdentity))
 }
 
 @Test func recognizesDecodedDAVResponseRoots() {

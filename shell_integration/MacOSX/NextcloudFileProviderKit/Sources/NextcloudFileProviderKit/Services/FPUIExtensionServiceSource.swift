@@ -41,13 +41,18 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     func authenticate() async -> NSError? {
         logger.info("Authenticating.")
 
-        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = fpExtension.keychain.getPassword(for: user) else {
+        guard let account = fpExtension.storedAccountForAuthentication() else {
             logger.error("Cannot authenticate because account information is missing.", [.domain: fpExtension.domain.identifier.rawValue])
             return NSError(.missingAccountInformation)
         }
 
         return await withCheckedContinuation { continuation in
-            fpExtension.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password) { error in
+            fpExtension.setupDomainAccount(
+                user: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl,
+                password: account.password
+            ) { error in
                 continuation.resume(returning: error)
             }
         }
