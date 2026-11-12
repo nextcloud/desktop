@@ -14,13 +14,12 @@ extension Enumerator {
     /// Read the container from the server, diff it against the local database and report the
     /// resulting creations, updates and deletions to the change observer.
     ///
-    /// A 404 is treated as a deletion of the container itself (reported, not an error) when its
-    /// parent can be read and no longer lists it; otherwise the enumeration finishes with no
-    /// changes. A "no changed etags" reply finishes cleanly with no changes. A `nil` change set
-    /// means the database write that derives the changes failed and is reported as an error.
+    /// A 404 from the folder listing reports a deletion once the database records it.
+    /// A `nil` change set means the database write that derives the changes failed.
     ///
     func enumerateContainerChanges(
-        for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor
+        for observer: NSFileProviderChangeObserver,
+        anchor: NSFileProviderSyncAnchor
     ) {
         logger.info("Enumerating changes in item.", [.url: serverUrl])
 
@@ -71,35 +70,32 @@ extension Enumerator {
             )
             let readError = readResult.error
 
-            guard readError == nil else {
-                logger.error("Finished enumerating changes.", [.url: readPath, .error: readError])
+            guard dbManager.isForCurrentDAVAccount() else {
+                observer.finishEnumeratingWithError(NSFileProviderError(.syncAnchorExpired))
+                return
+            }
 
-                let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
+            if let readError {
+                logger.error("Finished enumerating changes.", [.url: serverUrl, .error: readError])
 
-                if readError!.isNotFoundError {
-                    guard let itemMetadata = currentItem ?? enumeratedItemMetadata else {
-                        logger.error("Invalid enumeratedItemMetadata. Could not delete metadata nor report deletion.")
+                let error = readError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
+
+                if readError.isNotFoundError {
+                    guard let itemMetadata = enumeratedItemMetadata else {
+                        logger.error("Missing folder metadata. Could not report deletion.")
                         observer.finishEnumeratingWithError(error)
                         return
                     }
 
-                    // A 404 alone cannot tell a deletion from a rename in place or a move of an ancestor, so the parent must be readable and no longer list the item, which a move to another parent also satisfies.
-                    let (parentListing, parentError) = await Self.listedIdentifiers(at: itemMetadata.serverUrl, depth: .targetAndDirectChildren, account: account, remoteInterface: remoteInterface)
-
-                    guard parentError == .success, !parentListing.contains(itemMetadata.ocId) else {
-                        logger.info("Not deleting an item whose parent could not confirm the deletion.", [.item: itemMetadata.ocId, .url: readPath, .error: parentError])
-                        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
-                        return
-                    }
-
-                    logger.info("404 error and a parent without the item mean the item no longer exists. Deleting metadata and reporting deletion without error.", [.url: readPath])
-
-                    if itemMetadata.directory {
-                        if dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) == nil {
-                            logger.error("Something went wrong when recursively deleting directory. It's metadata was not found. Cannot report it as deleted.")
-                        }
+                    let recordedDeletion = if itemMetadata.directory {
+                        dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) != nil
                     } else {
                         dbManager.deleteItemMetadata(ocId: itemMetadata.ocId)
+                    }
+                    guard recordedDeletion else {
+                        logger.error("Could not record the deletion. Asking File Provider to retry.", [.item: itemMetadata.ocId])
+                        observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
+                        return
                     }
 
                     // A single deletion — small enough to report directly without buffering.
@@ -115,7 +111,7 @@ extension Enumerator {
                         dbManager: dbManager
                     )
                     return
-                } else if readError!.isNoChangesError { // All is well, just no changed etags
+                } else if readError.isNoChangesError { // All is well, just no changed etags
                     logger.info("Error was to say no changed files - not bad error. Finishing change enumeration.")
                     observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                     return

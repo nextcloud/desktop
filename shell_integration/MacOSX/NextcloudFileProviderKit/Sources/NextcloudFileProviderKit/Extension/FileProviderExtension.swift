@@ -225,6 +225,7 @@ import OSLog
                     remoteInterface: ncKit,
                     dbManager: dbManager,
                     includeDeleted: false,
+                    allowsRemoteLookup: !blockSync,
                     log: log
                 )
                 progress.completedUnitCount = 1
