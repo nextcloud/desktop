@@ -169,7 +169,7 @@ final class NormalizedLocationKeyTests: XCTestCase {
         let repaired = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "tombstone"))
 
         XCTAssertEqual(repaired.fileName, "gone.txt")
-        XCTAssertEqual(repaired.serverUrl, "files:/folder")
+        XCTAssertEqual(repaired.serverUrl, "/folder")
     }
 
     /// Normalization is why the comparison can be an equality at all, since a decomposed name

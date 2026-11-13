@@ -27,8 +27,12 @@ extension ItemMetadataRecord {
         }
         guard !backendUserID.isEmpty, !backendUserID.contains("/") else { return nil }
 
-        let location = Account.davRelativePath(forURL: parentURL, accountBaseURL: serverBaseURL, backendUserID: String(backendUserID))
-        guard location == (isRoot ? "files:" : "trash:") else { return nil }
+        let parent = Account.davPath(
+            forURL: parentURL,
+            accountBaseURL: serverBaseURL,
+            backendUserID: String(backendUserID)
+        )
+        guard parent?.root == (isRoot ? .files : .trash), parent?.path == "" else { return nil }
         return (serverBaseURL, String(backendUserID))
     }
 }

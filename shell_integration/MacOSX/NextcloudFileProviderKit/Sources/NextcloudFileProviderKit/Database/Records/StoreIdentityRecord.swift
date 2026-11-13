@@ -29,7 +29,6 @@ struct StoreIdentityRecord: Codable, Sendable, FetchableRecord, PersistableRecor
             // Old lock tokens and active transfer attempts belong to the previous DAV account.
             let lockToken = ItemMetadataRecord.Columns.lockToken
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.hasStoredDAVRelativeParent)
                 .filter(lockToken != nil || ItemMetadataRecord.hasActiveTransfer)
                 .updateAll(db, [lockToken.set(to: nil)] + ItemMetadataRecord.interruptedTransferAssignments)
         }

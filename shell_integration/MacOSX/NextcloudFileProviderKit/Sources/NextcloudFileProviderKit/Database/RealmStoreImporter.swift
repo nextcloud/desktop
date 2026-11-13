@@ -300,17 +300,28 @@ enum RealmStoreImporter {
         metadata.user = sourceAccount.username
         metadata.urlBase = sourceAccount.serverBaseURL
         metadata.userId = sourceAccount.backendUserID
-        var record = ItemMetadataRecord(metadata)
-        guard let parentPath = record.storedParentPath,
-              !parentPath.split(separator: "/").contains(where: { $0 == "." || $0 == ".." })
-        else {
+        var record: ItemMetadataRecord
+        do {
+            record = try ItemMetadataRecord(metadata)
+        } catch {
+            logSkippedItem(
+                row,
+                message: "Skipping a Realm item that could not be converted to a metadata record.",
+                error: error,
+                logger: logger
+            )
+            return nil
+        }
+
+        let parent = record.storedDAVParent
+        guard !parent.path.split(separator: "/").contains(where: { $0 == "." || $0 == ".." }) else {
             logSkippedItem(row, message: "Skipping a Realm item with an invalid DAV parent path.", logger: logger)
             return nil
         }
 
         let isFilesRoot = record.directory
             && record.fileName == SendableItemMetadata.filesRootPlaceholderName
-            && Account.isStoredFilesRootLocation(parentPath)
+            && parent.isFilesRoot
         let isValidFileName = !["", ".", ".."].contains(record.fileName) && !record.fileName.contains("/")
         guard isFilesRoot || isValidFileName else {
             logSkippedItem(row, message: "Skipping a Realm item with an invalid file name.", logger: logger)
@@ -332,9 +343,10 @@ enum RealmStoreImporter {
     private static func logSkippedItem(
         _ row: LegacyRealmItemMetadata,
         message: String,
+        error: (any Error)? = nil,
         logger: FileProviderLogger
     ) {
-        let details: [FileProviderLogDetailKey: (any Sendable)?] = [.item: row.ocId]
+        let details: [FileProviderLogDetailKey: (any Sendable)?] = [.item: row.ocId, .error: error]
         if row.hasUnfinishedUpload {
             logger.fault(message, details)
         } else {

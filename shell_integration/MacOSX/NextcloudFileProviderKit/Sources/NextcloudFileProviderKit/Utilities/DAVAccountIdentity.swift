@@ -2,9 +2,8 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 /// The login, server URL and backend user ID used for Finder setup retries.
-/// When converting absolute WebDAV parent URLs to paths such as `files:/Team`, the database
-/// needs these fields to match the previous account's rows even after its Keychain password
-/// is deleted or replaced.
+/// Realm import needs these fields to identify the previous account's DAV roots even after
+/// its Keychain password is deleted or replaced.
 struct DAVAccountIdentity: Equatable, Sendable {
     let username: String
     let serverBaseURL: String

@@ -98,10 +98,12 @@ extension FilesDatabaseManager {
         fileName: String,
         in db: Database
     ) throws -> ItemMetadataRecord? {
-        try ItemMetadataRecord
-            .filter(matchStoredParentLocation(for: parentURL) {
-                ItemMetadataRecord.Columns.serverUrl == $0 && ItemMetadataRecord.Columns.fileName == fileName
-            })
+        guard let parent = account.davPath(forURL: parentURL) else { return nil }
+        let columns = ItemMetadataRecord.Columns.self
+        return try ItemMetadataRecord
+            .filter(columns.davRoot == parent.root.rawValue)
+            .filter(columns.parentPath == parent.path)
+            .filter(columns.fileName == fileName)
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
             .fetchRecord(db, account: account, logger: logger)
     }

@@ -120,17 +120,17 @@ final class ContainerRetryLoopTests: NextcloudFileProviderKitTestCase {
     /// holding subfolders disagrees with the framework's own count on every read.
     ///
     func testChildItemCountCountsDirectChildrenOnly() throws {
-        var directory = row(ocId: "dir", serverUrl: "https://cloud.example.com/files", fileName: "docs")
+        var directory = row(ocId: "dir", serverUrl: Self.account.davFilesUrl, fileName: "docs")
         directory.directory = true
-        var subdirectory = row(ocId: "subdirectory", serverUrl: "https://cloud.example.com/files/docs", fileName: "nested")
+        var subdirectory = row(ocId: "subdirectory", serverUrl: Self.account.davFilesUrl + "/docs", fileName: "nested")
         subdirectory.directory = true
-        var tombstone = row(ocId: "tombstone", serverUrl: "https://cloud.example.com/files/docs", fileName: "gone.txt")
+        var tombstone = row(ocId: "tombstone", serverUrl: Self.account.davFilesUrl + "/docs", fileName: "gone.txt")
         tombstone.deleted = true
         for metadata in [
             directory,
-            row(ocId: "direct-child", serverUrl: "https://cloud.example.com/files/docs", fileName: "report.pdf"),
+            row(ocId: "direct-child", serverUrl: Self.account.davFilesUrl + "/docs", fileName: "report.pdf"),
             subdirectory,
-            row(ocId: "grandchild", serverUrl: "https://cloud.example.com/files/docs/nested", fileName: "deep.txt"),
+            row(ocId: "grandchild", serverUrl: Self.account.davFilesUrl + "/docs/nested", fileName: "deep.txt"),
             tombstone
         ] {
             try dbManager.insertForTesting(metadata)

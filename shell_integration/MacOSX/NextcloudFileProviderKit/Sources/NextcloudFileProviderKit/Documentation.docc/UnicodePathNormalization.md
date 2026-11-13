@@ -33,8 +33,9 @@ https://eclecticlight.co/2021/05/08/explainer-unicode-normalization-and-apfs/
 `ItemMetadataRecord` stores both the original values and comparison values:
 
 - The stored parent path and `fileName` retain the spelling of item path components received from the server or operating-system boundary. For items within the domain, the parent path is relative to a DAV root.
-- `normalizedServerUrl` and `normalizedFileName` contain NFC values produced
+- `normalizedParentPath` and `normalizedFileName` contain NFC values produced
   by Foundation's `precomposedStringWithCanonicalMapping` property.
+- Lookups and duplicate detection include `davRoot` so Files and Trash can hold the same path and filename.
 
 The original values must not be replaced globally. They are used for server
 requests, downloads, uploads, deletes, logging, and user-visible metadata.

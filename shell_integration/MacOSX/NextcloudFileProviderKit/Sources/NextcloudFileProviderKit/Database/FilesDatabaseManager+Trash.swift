@@ -7,7 +7,7 @@ extension FilesDatabaseManager {
     func trashedItemMetadatas() -> [SendableItemMetadata] {
         read("Could not fetch the trashed item metadata.", [.account: account.ncKitAccount]) { db in
             try ItemMetadataRecord
-                .filter(matchesParentDirectoryURL(account.trashUrl, includingDescendants: true))
+                .filter(ItemMetadataRecord.Columns.davRoot == DAVRoot.trash.rawValue)
                 .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []

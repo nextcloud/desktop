@@ -19,34 +19,36 @@ extension ItemMetadataRecord {
             || (Columns.directory == true && Columns.fileName == SendableItemMetadata.filesRootPlaceholderName)
     }
 
-    /// The parent is stored as a path below the domain's Files or Trash DAV root.
-    static var hasStoredDAVRelativeParent: SQLExpression {
-        SQL("""
-            \(Columns.serverUrl) IN ('files:', 'trash:')
-                OR \(Columns.serverUrl) GLOB 'files:/*'
-                OR \(Columns.serverUrl) GLOB 'trash:/*'
-            """).sqlExpression
-    }
-
-    /// Match the normalized stored parent location and normalized filename together.
-    static func matchesStoredParentLocationAndFileName(parentLocation: String, fileName: String) -> SQLExpression {
-        Columns.normalizedFileName == fileName.precomposedStringWithCanonicalMapping
-            && Columns.normalizedServerUrl == parentLocation.precomposedStringWithCanonicalMapping
+    /// Match the root, normalized parent path, and normalized filename together.
+    static func matchesStoredParentLocationAndFileName(
+        davRoot: DAVRoot,
+        parentPath: String,
+        fileName: String
+    ) -> SQLExpression {
+        Columns.davRoot == davRoot.rawValue
+            && Columns.normalizedParentPath == parentPath.precomposedStringWithCanonicalMapping
+            && Columns.normalizedFileName == fileName.precomposedStringWithCanonicalMapping
     }
 
     /// Rows in a directory, optionally including everything beneath it.
     ///
     /// Descendants are matched with a half-open range over the indexed key: every key starting with `<directory>/` sorts between `<directory>/` and `<directory>0`, as `0` is the code point after `/`. The comparison is byte-wise, so it is case-sensitive and needs no pattern escaping.
     ///
-    static func matchesStoredParentLocation(_ parentLocation: String, includingDescendants: Bool) -> SQLExpression {
-        let normalizedParentLocation = parentLocation.precomposedStringWithCanonicalMapping
+    static func matchesStoredParentLocation(davRoot: DAVRoot, parentPath: String, includingDescendants: Bool) -> SQLExpression {
+        let normalizedParentPath = parentPath.precomposedStringWithCanonicalMapping
+        let matchesRoot = Columns.davRoot == davRoot.rawValue
+        let matchesParent = Columns.normalizedParentPath == normalizedParentPath
 
         guard includingDescendants else {
-            return Columns.normalizedServerUrl == normalizedParentLocation
+            return matchesRoot && matchesParent
         }
 
-        return Columns.normalizedServerUrl == normalizedParentLocation
-            || (Columns.normalizedServerUrl >= normalizedParentLocation + "/" && Columns.normalizedServerUrl < normalizedParentLocation + "0")
+        // Bound the combined lookup so SQLite can search both the DAV root and path in the index.
+        // Within those bounds, keep the directory itself and paths starting with its next slash.
+        return matchesRoot
+            && Columns.normalizedParentPath >= normalizedParentPath
+            && Columns.normalizedParentPath < normalizedParentPath + "0"
+            && (matchesParent || Columns.normalizedParentPath >= normalizedParentPath + "/")
     }
 
     /// Rows synchronized after the given moment.

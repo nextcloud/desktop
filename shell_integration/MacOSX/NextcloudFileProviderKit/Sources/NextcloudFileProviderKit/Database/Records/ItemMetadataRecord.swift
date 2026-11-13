@@ -3,6 +3,7 @@
 
 import Foundation
 import GRDB
+import NextcloudKit
 
 ///
 /// Row of the `itemMetadata` table.
@@ -23,6 +24,7 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
         case creationDate
         case dataFingerprint
         case date
+        case davRoot
         case deleted
         case directory
         case downloaded
@@ -52,16 +54,16 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
         case mountType
         case name
         case normalizedFileName
-        case normalizedServerUrl
+        case normalizedParentPath
         case note
         case ownerDisplayName
         case ownerId
+        case parentPath
         case permissions
         case quotaAvailableBytes
         case quotaUsedBytes
         case resourceType
         case richWorkspace
-        case serverUrl
         case session
         case sessionError
         case sessionTaskIdentifier
@@ -129,9 +131,8 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
     /// Full parent URL used by WebDAV requests.
     var serverUrl: String
 
-    /// Parent path relative to the account's DAV root, such as files:/Docs or trash:.
-    /// An unrecognized parent URL has no relative path.
-    var storedParentPath: String?
+    /// The Files or Trash root and the path of the parent beneath it.
+    var storedDAVParent: DAVPath
     var session: String?
     var sessionError: String?
     var sessionTaskIdentifier: Int?
@@ -156,8 +157,11 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
     var user: String
     var userId: String
 
-    /// NFC form of the stored parent location, maintained by this type.
-    var normalizedServerUrl: String
+    /// The path below the saved DAV root.
+    var parentPath: String { storedDAVParent.path }
+
+    /// NFC form of `parentPath`, maintained by this type.
+    var normalizedParentPath: String
 
     /// NFC form of `fileName`, maintained by this type.
     var normalizedFileName: String
@@ -168,7 +172,19 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
     init(
         _ value: any ItemMetadata,
         domainAccount: Account? = nil
-    ) {
+    ) throws {
+        let davRootComponents = domainAccount.map { (serverBaseURL: $0.serverUrl, backendUserID: $0.id) }
+            ?? Self.serverBaseURLAndBackendUserID(for: value)
+        // Use the root placeholder even if the server names the Files root after the backend user ID.
+        guard let davRootComponents,
+              let normalizedParent = Account.normalizedDAVParent(
+                  parentURL: value.serverUrl,
+                  fileName: value.fileName,
+                  accountBaseURL: davRootComponents.serverBaseURL,
+                  backendUserID: davRootComponents.backendUserID
+              )
+        else { throw NKError.invalidData }
+
         ocId = value.ocId
         checksums = value.checksums
         chunkUploadId = value.chunkUploadId
@@ -228,39 +244,24 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
         trashbinDeletionTime = value.trashbinDeletionTime
         uploadDate = value.uploadDate
 
-        // Save a parent relative to the account's Files or Trash root when it can be identified.
-        // Use the root placeholder even if the server names the Files root after the backend user ID.
-        let davRootComponents = domainAccount.map { (serverBaseURL: $0.serverUrl, backendUserID: $0.id) }
-            ?? Self.serverBaseURLAndBackendUserID(for: value)
-        let baseURL = davRootComponents?.serverBaseURL ?? value.urlBase
-        let backendUserID = davRootComponents?.backendUserID ?? value.userId
-        let normalizedParent = davRootComponents.flatMap {
-            Account.normalizedDAVParent(
-                parentURL: value.serverUrl,
-                fileName: value.fileName,
-                accountBaseURL: $0.serverBaseURL,
-                backendUserID: $0.backendUserID
-            )
-        }
-        let isRoot = normalizedParent?.isFilesRoot == true
-        directory = isRoot || value.directory
-        fileName = isRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileName
-        fileNameView = isRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileNameView
-        let relativeParentPath = normalizedParent?.path
-        storedParentPath = relativeParentPath
-        serverUrl = relativeParentPath.flatMap {
-            Account.absoluteURL(fromDAVRelativePath: $0, accountBaseURL: baseURL, backendUserID: backendUserID)
-        } ?? value.serverUrl
-        normalizedServerUrl = (relativeParentPath ?? value.serverUrl).precomposedStringWithCanonicalMapping
+        directory = normalizedParent.isFilesRoot || value.directory
+        fileName = normalizedParent.isFilesRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileName
+        fileNameView = normalizedParent.isFilesRoot ? SendableItemMetadata.filesRootPlaceholderName : value.fileNameView
+        storedDAVParent = normalizedParent.parent
+        serverUrl = Account.absoluteURL(
+            for: normalizedParent.parent,
+            accountBaseURL: davRootComponents.serverBaseURL,
+            backendUserID: davRootComponents.backendUserID
+        )
+        normalizedParentPath = normalizedParent.parent.path.precomposedStringWithCanonicalMapping
         normalizedFileName = fileName.precomposedStringWithCanonicalMapping
 
         account = domainAccount?.ncKitAccount ?? value.account
-        urlBase = baseURL
-        userId = backendUserID
+        urlBase = davRootComponents.serverBaseURL
+        userId = davRootComponents.backendUserID
         user = domainAccount?.username ?? value.user
         if domainAccount == nil,
            user.isEmpty,
-           let davRootComponents,
            account.hasSuffix(" " + davRootComponents.serverBaseURL) {
             user = String(account.dropLast(davRootComponents.serverBaseURL.count + 1))
         }
@@ -285,11 +286,13 @@ struct ItemMetadataRecord: ItemMetadata, Equatable, Sendable, PersistableRecord 
 
     /// Update the parent URL and filename together with their SQLite lookup keys.
     /// The domain account supplies the WebDAV Files and Trash roots used to save the parent.
-    mutating func updateLocation(parentURL: String, fileName: String, domainAccount: Account) {
-        serverUrl = parentURL
+    mutating func updateLocation(parentURL: String, fileName: String, domainAccount: Account) throws {
+        guard let parent = domainAccount.davPath(forURL: parentURL) else { throw NKError.invalidData }
+
+        serverUrl = Account.absoluteURL(for: parent, accountBaseURL: domainAccount.serverUrl, backendUserID: domainAccount.id)
         self.fileName = fileName
-        storedParentPath = domainAccount.davRelativePath(forURL: parentURL)
-        normalizedServerUrl = (storedParentPath ?? parentURL).precomposedStringWithCanonicalMapping
+        storedDAVParent = parent
+        normalizedParentPath = parentPath.precomposedStringWithCanonicalMapping
         normalizedFileName = fileName.precomposedStringWithCanonicalMapping
     }
 }
