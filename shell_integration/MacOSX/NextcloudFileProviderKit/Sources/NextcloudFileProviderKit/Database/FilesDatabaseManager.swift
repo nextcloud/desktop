@@ -1023,6 +1023,7 @@ public final class FilesDatabaseManager: Sendable {
                     // Writing other non-normal rows resets their state.
                     if existing.visitedDirectory == toWrite.visitedDirectory {
                         logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+
                         return
                     }
                 }
@@ -1132,6 +1133,8 @@ public final class FilesDatabaseManager: Sendable {
         itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
         itemMetadata.fileNameView = newFileName
         itemMetadata.lockToken = nil
+        // Stamped, so a listing of the new parent started before the move does not take the row for one it never returned.
+        itemMetadata.syncTime = Date()
 
         try itemMetadata.upsertRow(db)
 
