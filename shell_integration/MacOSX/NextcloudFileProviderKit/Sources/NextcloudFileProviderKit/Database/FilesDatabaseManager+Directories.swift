@@ -204,6 +204,52 @@ public extension FilesDatabaseManager {
             try deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId, stampingSyncTime: stampingSyncTime, in: db)
         } ?? nil
     }
+
+    ///
+    /// Tombstone the live children of a directory which a complete paginated listing did not return.
+    ///
+    /// A paginated listing writes each page as it arrives and cannot compare a page with the stored rows. Every row a page writes carries a fresh `syncTime`, so a live child whose `syncTime` predates the listing's first request was in no page: the server no longer has it there. Rows the server never confirmed, rows in transit and lock files of local origin are left alone, as the depth-1 write leaves them, and a directory takes its subtree along. Every tombstone is stamped with one time, so the working-set derivation finds the deletions by date.
+    ///
+    /// - Parameters:
+    ///   - directoryServerUrl: The directory's full remote path.
+    ///   - listingStart: When the listing's first page was requested.
+    /// - Returns: The rows as they were before, or `nil` when the write fails.
+    ///
+    func deleteChildrenNotListed(of directoryServerUrl: String, account: String, since listingStart: Date) -> [SendableItemMetadata]? {
+        write("Could not tombstone the children a paginated listing no longer returns.", [.url: directoryServerUrl], durability: .relaxed) { db in
+            let missing = try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false)
+                        && ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.uploaded == true
+                        && ItemMetadataRecord.Columns.deleted == false
+                        && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
+                        && ItemMetadataRecord.Columns.status == Status.normal.rawValue
+                        && ItemMetadataRecord.syncedBefore(listingStart)
+                )
+                .fetchRecords(db, logger: logger)
+
+            let deletionTime = Date()
+            var deleted: [SendableItemMetadata] = []
+
+            for var row in missing {
+                if row.directory {
+                    deleted += try deleteDirectoryAndSubdirectoriesMetadata(ocId: row.ocId, stampingSyncTime: deletionTime, in: db) ?? []
+                    continue
+                }
+
+                deleted.append(row.metadata)
+                row.deleted = true
+                row.syncTime = deletionTime
+                try row.upsertRow(db)
+                logger.debug("Tombstoned a child a paginated listing did not return.", [.item: row.ocId, .name: row.fileName])
+            }
+
+            return deleted
+        }
+    }
+
     private func deleteDirectoryAndSubdirectoriesMetadata(
         ocId: String, stampingSyncTime: Date?, in db: Database
     ) throws -> [SendableItemMetadata]? {
