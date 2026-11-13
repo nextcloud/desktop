@@ -211,7 +211,7 @@ extension DatabaseTestSuites {
             relisted.syncTime = Date(timeIntervalSinceReferenceDate: 1100)
             manager.addItemMetadataPreservingLocalState(relisted)
 
-            #expect(manager.reportedSyncTimeForTesting(ocId: "row") == row.syncTime, "A listing which changes nothing does not rewrite the row, so the mark still covers it.")
+            #expect(manager.reportedSyncTimeForTesting(ocId: "row") == relisted.syncTime, "The mark follows the stamp a listing moves, because the system has this state.")
             #expect(try #require(manager.pendingWorkingSetChanges(since: anchor)).updated.isEmpty)
 
             var changed = relisted
@@ -219,7 +219,7 @@ extension DatabaseTestSuites {
             changed.syncTime = Date(timeIntervalSinceReferenceDate: 1200)
             manager.addItemMetadataPreservingLocalState(changed)
 
-            #expect(manager.reportedSyncTimeForTesting(ocId: "row") == row.syncTime, "A remote change keeps the previous mark.")
+            #expect(manager.reportedSyncTimeForTesting(ocId: "row") == relisted.syncTime, "A remote change keeps the previous mark.")
             #expect(manager.pendingWorkingSetChanges(since: anchor)?.updated.map(\.ocId) == ["row"])
         }
 
