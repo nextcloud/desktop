@@ -19,7 +19,7 @@ extension ItemMetadataRecord {
             || (Columns.directory == true && Columns.fileName == SendableItemMetadata.filesRootPlaceholderName)
     }
 
-    /// The parent is stored relative to the row's files or trash DAV root.
+    /// The parent is stored as a path below the domain's Files or Trash DAV root.
     static var hasStoredDAVRelativeParent: SQLExpression {
         SQL("""
             \(Columns.serverUrl) IN ('files:', 'trash:')

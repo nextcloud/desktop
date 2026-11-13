@@ -9,47 +9,6 @@ import NextcloudFileProviderKitMocks
 @testable import NextcloudKit
 import Testing
 
-struct StoredItemLookupTests {
-    @Test func itemLookupIgnoresMetadataFromAnotherDAVRoot() async throws {
-        let account = Account(user: UUID().uuidString, id: "current", serverUrl: "https://lookup.invalid", password: "password")
-        let previous = Account(user: account.username, id: "previous", serverUrl: account.serverUrl, password: account.password)
-        let domain = NSFileProviderDomain(identifier: .init(UUID().uuidString), displayName: "Lookup test")
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let manager = try FilesDatabaseManager(
-            account: account,
-            databaseDirectory: directory,
-            fileProviderDomainIdentifier: domain.identifier,
-            log: FileProviderLogMock()
-        )
-        let provider = FileProviderExtension(domain: domain)
-        defer { provider.invalidate() }
-        try #require(provider.publishDatabaseManager(manager, generation: provider.setupGeneration))
-
-        let identifier = NSFileProviderItemIdentifier("known-child")
-        let child = DatabaseTestSuites.makeFile(
-            ocId: identifier.rawValue,
-            fileName: "report.pdf",
-            serverUrl: previous.davFilesUrl + "/uncached-parent",
-            account: previous
-        )
-        try manager.insertForTesting(child)
-
-        let (hasItem, errorCode): (Bool, NSFileProviderError.Code?) = await withCheckedContinuation { continuation in
-            _ = provider.item(for: identifier, request: NSFileProviderRequest()) { item, error in
-                continuation.resume(returning: (item != nil, (error as? NSFileProviderError)?.code))
-            }
-        }
-
-        #expect(!hasItem)
-        #expect(errorCode == .noSuchItem)
-        let saved = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == identifier.rawValue })
-        #expect(saved.remotePath() == child.remotePath())
-        #expect(!saved.deleted)
-    }
-}
-
 /// The mutation callbacks read the same process-wide blockSync setting as the tests in this serialized suite.
 extension BlockSyncTests {
     enum StoredItemMutation {

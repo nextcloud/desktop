@@ -819,7 +819,7 @@ import OSLog
         }
 
         let items = dbManager
-            .itemMetadatas(account: dbManager.account.ncKitAccount)
+            .itemMetadatas()
             .filter { metadata in
                 !metadata.deleted
                     && metadata.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue

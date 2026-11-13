@@ -620,17 +620,17 @@ struct EnumeratorPersistenceTests {
         }
     }
 
-    @Test func workingSetSkipsAStaleURLThatWouldReturn404() async throws {
+    @Test func davReadRejectsThePreviousServerURL() async throws {
         let previousAccount = Account(
             user: account.username,
             id: account.id,
             serverUrl: "https://previous.example.com",
             password: account.password
         )
-        try await expectWorkingSetToSkip404(at: previousAccount)
+        try await expectDAVReadToRejectStaleURL(at: previousAccount)
     }
 
-    @Test func workingSetSkipsAStaleURLThatMatchesTheDAVResponseRoot() async throws {
+    @Test func davReadRejectsThePreviousURLThatMatchesTheResponseWebroot() async throws {
         let currentAccount = Account(
             user: account.username,
             id: account.id,
@@ -644,7 +644,7 @@ struct EnumeratorPersistenceTests {
             password: account.password
         )
         let fixture = Self(account: currentAccount)
-        try await fixture.expectWorkingSetToSkip404(at: previousAccount)
+        try await fixture.expectDAVReadToRejectStaleURL(at: previousAccount)
     }
 
     private func nextcloudKitForDAVRead(account: Account) -> NextcloudKit {
@@ -669,45 +669,25 @@ struct EnumeratorPersistenceTests {
         return remote
     }
 
-    private func expectWorkingSetToSkip404(at previousAccount: Account) async throws {
-        try storeFolderAndFile(at: previousAccount)
-        let stalePath = previousAccount.davFilesUrl + "/" + folder.name
-        let storedFolder = try #require(manager.itemMetadatas(account: account.ncKitAccount).first { $0.ocId == folder.identifier })
-        try #require(storedFolder.urlBase == previousAccount.serverUrl)
-        try #require(storedFolder.remotePath() == stalePath)
+    private func expectDAVReadToRejectStaleURL(at previousAccount: Account) async throws {
+        var staleFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
+        staleFolder.apply(account: previousAccount)
+        staleFolder.serverUrl = previousAccount.davFilesUrl
+        let stalePath = staleFolder.remotePath()
         remote.enumerateErrorBySuffix[stalePath] = NKError(statusCode: 404, fallbackDescription: "File not found")
-        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
-        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
 
-        try await observer.enumerateChanges(from: anchor)
-
-        #expect(observer.changedItems.isEmpty)
-        #expect(observer.deletedItemIdentifiers.isEmpty)
-        let finalAnchor = try #require(observer.finishes.last?.anchor)
-        #expect(finalAnchor.rawValue != anchor.rawValue)
-
-        let snapshot = try MockEnumerationObserver(enumerator: makeEnumerator(.workingSet))
-        try await snapshot.enumerateItems()
-        #expect(snapshot.items.isEmpty)
-        #expect(remote.readOperationCount == 0)
-        expectStaleRowsRetained()
-    }
-
-    @Test func containerSkipsAnItemOutsideTheCurrentDAVRoot() throws {
-        let previousAccount = Account(
-            user: account.username,
-            id: account.id + "-previous",
-            serverUrl: account.serverUrl,
-            password: account.password
+        let result = await Enumerator.readServerUrl(
+            stalePath,
+            sourceMetadata: staleFolder,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
         )
-        try storeFolderAndFile(at: previousAccount)
 
-        #expect(throws: NSFileProviderError(.noSuchItem)) {
-            _ = try makeEnumerator(.init(folder.identifier))
-        }
-
+        #expect(result.error == .invalidData)
         #expect(remote.readOperationCount == 0)
-        expectStaleRowsRetained()
+        #expect(manager.itemMetadata(ocId: folder.identifier)?.deleted == false)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.deleted == false)
     }
 
     @Test(arguments: [NSFileProviderItemIdentifier.rootContainer.rawValue, "server-root-id"])
@@ -770,29 +750,6 @@ struct EnumeratorPersistenceTests {
 
         #expect(remote.readOperationCount == 1)
         #expect(observer.deletedItemIdentifiers == [.init(folder.identifier)])
-    }
-
-    private func storeFolderAndFile(at previousAccount: Account) throws {
-        var storedFolder = try #require(manager.itemMetadata(ocId: folder.identifier))
-        storedFolder.apply(account: previousAccount)
-        // Keep the domain's account key while simulating a row with an outdated DAV root.
-        storedFolder.account = account.ncKitAccount
-        storedFolder.serverUrl = previousAccount.davFilesUrl
-        manager.addItemMetadata(storedFolder)
-
-        var storedFile = try #require(manager.itemMetadata(ocId: file.identifier))
-        storedFile.apply(account: previousAccount)
-        storedFile.account = account.ncKitAccount
-        storedFile.serverUrl = storedFolder.remotePath()
-        manager.addItemMetadata(storedFile)
-    }
-
-    private func expectStaleRowsRetained() {
-        let retained = manager.itemMetadatas(account: account.ncKitAccount)
-        for identifier in [folder.identifier, file.identifier] {
-            #expect(manager.itemMetadata(ocId: identifier) == nil)
-            #expect(retained.first { $0.ocId == identifier }?.deleted == false)
-        }
     }
 
     private func readFolder() async -> RemoteReadResult {

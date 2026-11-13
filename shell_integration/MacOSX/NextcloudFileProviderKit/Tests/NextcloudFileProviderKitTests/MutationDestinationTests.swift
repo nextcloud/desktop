@@ -42,12 +42,17 @@ struct MutationDestinationTests {
         var cachedFolder = DatabaseTestSuites.makeFile(ocId: folderID, fileName: folderName, account: previous)
         cachedFolder.directory = true
         cachedFolder.uploaded = true
-        let storeURL = directory.appendingPathComponent(domain.rawValue).appendingPathExtension(DatabaseSchema.fileExtension)
-        _ = try FilesDatabaseManager.writeDatabaseWithoutSavedDAVAccountForTesting(
-            at: storeURL,
-            metadata: [cachedFolder]
-        )
         let log = FileProviderLogMock()
+        do {
+            let previousManager = try FilesDatabaseManager(
+                account: previous,
+                databaseDirectory: directory,
+                fileProviderDomainIdentifier: domain,
+                log: log,
+                defaults: DatabaseTestSuites.defaults
+            )
+            previousManager.addItemMetadata(cachedFolder)
+        }
         let manager = try FilesDatabaseManager(
             account: account,
             databaseDirectory: directory,

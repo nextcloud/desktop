@@ -126,23 +126,19 @@ final class ContainerRetryLoopTests: NextcloudFileProviderKitTestCase {
         subdirectory.directory = true
         var tombstone = row(ocId: "tombstone", serverUrl: "https://cloud.example.com/files/docs", fileName: "gone.txt")
         tombstone.deleted = true
-        var otherAccountChild = row(ocId: "other-account-child", serverUrl: "https://cloud.example.com/files/docs", fileName: "theirs.txt")
-        otherAccountChild.account = "someoneElse"
-
         for metadata in [
             directory,
             row(ocId: "direct-child", serverUrl: "https://cloud.example.com/files/docs", fileName: "report.pdf"),
             subdirectory,
             row(ocId: "grandchild", serverUrl: "https://cloud.example.com/files/docs/nested", fileName: "deep.txt"),
-            tombstone,
-            otherAccountChild
+            tombstone
         ] {
             try dbManager.insertForTesting(metadata)
         }
 
         let count = dbManager.childItemCount(directoryMetadata: directory)
 
-        XCTAssertEqual(count, 2, "Only the direct child and the subdirectory count; not the grandchild, the tombstone, or the other account's row.")
+        XCTAssertEqual(count, 2, "Only the live direct child and its sibling subdirectory count.")
     }
 
     ///

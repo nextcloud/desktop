@@ -57,6 +57,18 @@ struct RealmStoreImporterTests {
             defaults.userId = account.id
         }
 
+        func writeItems(_ items: [SendableItemMetadata]) throws {
+            try autoreleasepool {
+                let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: realmURL))
+                defer { realm.invalidate() }
+                try realm.write {
+                    for item in items {
+                        realm.add(LegacyRealmItemMetadata(value: item))
+                    }
+                }
+            }
+        }
+
         func exists(_ suffix: String = "") -> Bool {
             FileManager.default.fileExists(atPath: realmURL.path + suffix)
         }
@@ -176,7 +188,7 @@ struct RealmStoreImporterTests {
         let foreignAccount = Account(
             user: "unrelated",
             id: "unrelated-id",
-            serverUrl: Self.account.serverUrl,
+            serverUrl: "https://unrelated.example.com/cloud",
             password: "password"
         )
         var foreignFile = DatabaseTestSuites.makeFile(
@@ -186,11 +198,7 @@ struct RealmStoreImporterTests {
             account: foreignAccount
         )
         foreignFile.downloaded = true
-        try autoreleasepool {
-            let realm = try Realm(configuration: RealmStoreImporter.legacyConfiguration(fileURL: fixture.realmURL))
-            defer { realm.invalidate() }
-            try realm.write { realm.add(LegacyRealmItemMetadata(value: foreignFile)) }
-        }
+        try fixture.writeItems([foreignFile])
         fixture.savePreviouslyConfiguredAccount(Self.account)
 
         let manager = try fixture.openManager(account: currentAccount)
@@ -204,8 +212,7 @@ struct RealmStoreImporterTests {
         #expect(live.keepDownloaded)
         #expect(live.syncTime == Self.preciseSyncTime)
         #expect(manager.itemMetadata(ocId: foreignFile.ocId) == nil)
-        let retainedForeignFile = manager.itemMetadatas(account: foreignAccount.ncKitAccount).first { $0.ocId == foreignFile.ocId }
-        #expect(retainedForeignFile?.remotePath() == foreignFile.remotePath())
+        #expect(try manager.storedParentLocationKeysForTesting(ocId: foreignFile.ocId) == nil)
         #expect(manager.itemMetadata(locatedAtRemoteUrl: currentAccount.davFilesUrl + "/Docs/" + foreignFile.fileName) == nil)
         #expect(manager.materialisedItemMetadatas()?.contains { $0.ocId == foreignFile.ocId } == false)
     }
@@ -279,10 +286,12 @@ struct RealmStoreImporterTests {
         // Inspect the SQLite file before opening the manager, which can also save the current DAV account.
         let database = try DatabaseQueue(path: fixture.sqliteURL.path)
         let identity = try database.read { db in
-            let published = try #require(try ItemMetadataRecord.fetchOne(db, key: "pending-edit"))
-            #expect(published.urlBase == currentAccount.serverUrl)
-            #expect(published.userId == currentAccount.id)
-            #expect(published.serverUrl == currentAccount.davFilesUrl + "/Docs")
+            let publishedParent = try String.fetchOne(
+                db,
+                sql: "SELECT serverUrl FROM itemMetadata WHERE ocId = ?",
+                arguments: ["pending-edit"]
+            )
+            #expect(publishedParent == "files:/Docs")
             let savedDAVAccountFields = try #require(try Data.fetchOne(db, sql: "SELECT accountBinding FROM storeIdentity"))
             #expect(try JSONDecoder().decode([String].self, from: savedDAVAccountFields) == currentAccount.davAccountIdentity.serializedFields)
             return try #require(try StoreIdentityRecord.fetchOne(db)).identity
@@ -528,7 +537,6 @@ struct RealmStoreImporterTests {
         #expect(reported.lockToken == nil)
         #expect(saved == reported)
         #expect(saved.remotePath() == listedItem.remotePath)
-        #expect(manager.itemMetadatas(account: previousAccount.ncKitAccount).isEmpty)
     }
 
     @Test func importedSDKWebrootAliasUsesADAVRelativeParent() throws {
@@ -561,7 +569,7 @@ struct RealmStoreImporterTests {
 
     @Test func anOlderSchemaIsUpgradedByRealmBeforeTheCopy() throws {
         let fixture = Self.makeFixture()
-        let nfdServerUrl = "https://example.com/pre\u{0302}t"
+        let nfdServerUrl = Self.account.davFilesUrl + "/pre\u{0302}t"
         let nfdFileName = "pre\u{0302}t.pdf"
 
         try autoreleasepool {
@@ -587,7 +595,7 @@ struct RealmStoreImporterTests {
         let migrated = try #require(manager.itemMetadata(ocId: "migration-item"))
         #expect(migrated.serverUrl == nfdServerUrl)
         let keys = try #require(manager.normalizedLocationForTesting(ocId: "migration-item"))
-        #expect(keys.serverUrl == nfdServerUrl.precomposedStringWithCanonicalMapping)
+        #expect(keys.serverUrl == "files:/prêt")
         #expect(keys.fileName == nfdFileName.precomposedStringWithCanonicalMapping)
     }
 
@@ -723,7 +731,6 @@ struct RealmStoreImporterTests {
         #expect(imported.downloaded)
         #expect(imported.keepDownloaded)
         #expect(!imported.deleted)
-        #expect(manager.itemMetadatas(account: previousAccount.ncKitAccount).isEmpty)
 
         let currentNames = [(original.ocId, "Older report.txt"), (replacementID, original.fileName)]
         for (identifier, name) in currentNames {

@@ -101,8 +101,8 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             let clock = ContinuousClock()
             startMeasuring()
             let start = clock.now
-            let coldChangeSet = manager.depth1ReadUpdateItemMetadatas(account: Self.account.ncKitAccount, serverUrl: folderUrl, updatedMetadatas: cold, keepExistingDownloadState: true)
-            let warmChangeSet = manager.depth1ReadUpdateItemMetadatas(account: Self.account.ncKitAccount, serverUrl: folderUrl, updatedMetadatas: warm, keepExistingDownloadState: true)
+            let coldChangeSet = manager.depth1ReadUpdateItemMetadatas(serverUrl: folderUrl, updatedMetadatas: cold, keepExistingDownloadState: true)
+            let warmChangeSet = manager.depth1ReadUpdateItemMetadatas(serverUrl: folderUrl, updatedMetadatas: warm, keepExistingDownloadState: true)
             durations.append(clock.now - start)
             stopMeasuring()
 
@@ -136,7 +136,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             durations.append(clock.now - start)
             stopMeasuring()
 
-            XCTAssertEqual(manager.itemMetadatas(account: Self.account.ncKitAccount).count, Self.preservingLocalStateRowCount)
+            XCTAssertEqual(manager.itemMetadatas().count, Self.preservingLocalStateRowCount)
         }
 
         report("AddItemMetadataPreservingLocalState", items: 2 * Self.preservingLocalStateRowCount, durations: durations)

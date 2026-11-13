@@ -29,8 +29,8 @@ extension FilesDatabaseManager {
     /// visibility.
     ///
     /// - Parameters:
-    ///   - incoming: The metadata about to be persisted; its `(account,
-    ///     serverUrl, fileName)` defines the logical address used for the
+    ///   - incoming: The metadata about to be persisted; its parent path and name define the
+    ///     logical address used for the
     ///     collision query, while its `ocId` is excluded from candidates so
     ///     that the normal same-`ocId` upsert is unaffected.
     ///   - db: The open database.
@@ -57,7 +57,7 @@ extension FilesDatabaseManager {
         // A soft-deleted incoming row is a tombstone, not an authoritative live
         // occupant of its logical address, so it must never evict a live sibling.
         // A deletion is authoritative only about its own ocId; if another live row
-        // shares the (account, serverUrl, fileName) it is the current truth and
+        // shares the parent path and name it is the current truth and
         // must survive. Without this, persisting the tombstone of a stale ocId
         // after an app "safe save" (create -> delete -> recreate, which rotates the
         // ocId) soft-deletes the freshly recreated live file. (Ticket 96101301)
@@ -65,25 +65,21 @@ extension FilesDatabaseManager {
             return []
         }
 
-        let davRootComponents = ItemMetadataRecord.serverBaseURLAndBackendUserID(for: incoming, domainAccount: account)
-        let storedParentLocation = davRootComponents.flatMap { components in
-            Account.davRelativePath(
-                forURL: incoming.serverUrl,
-                accountBaseURL: components.serverBaseURL,
-                backendUserID: components.backendUserID
-            )
-        } ?? incoming.serverUrl
+        let parent = Account.normalizedDAVParent(
+            parentURL: incoming.serverUrl,
+            fileName: incoming.fileName,
+            accountBaseURL: account.serverUrl,
+            backendUserID: account.id
+        )
+        if parent?.isFilesRoot == true { return [] }
+        let storedParentLocation = parent?.path ?? incoming.serverUrl
         // Prepared once per connection: this runs for every row of a large directory write.
         let candidates = try ItemLogicalAddressRow.fetchAll(
             db.cachedStatement(sql: Self.logicalDuplicateCandidatesSQL),
             arguments: [
                 incoming.fileName.precomposedStringWithCanonicalMapping,
                 incoming.ocId,
-                incoming.serverUrl.precomposedStringWithCanonicalMapping,
-                storedParentLocation.precomposedStringWithCanonicalMapping,
-                incoming.account,
-                davRootComponents?.serverBaseURL,
-                davRootComponents?.backendUserID
+                storedParentLocation.precomposedStringWithCanonicalMapping
             ]
         )
 
@@ -117,21 +113,21 @@ extension FilesDatabaseManager {
 
     /// Live, non-lock-file rows at a normalized location other than the given identifier, in the columns of ``ItemLogicalAddressRow``.
     private static let logicalDuplicateCandidatesSQL = """
-    SELECT ocId, account, serverUrl, fileName, normalizedServerUrl, normalizedFileName, deleted, isLockFileOfLocalOrigin, status, syncTime
+    SELECT ocId,
+           serverUrl,
+           fileName,
+           normalizedServerUrl,
+           normalizedFileName,
+           deleted,
+           isLockFileOfLocalOrigin,
+           status,
+           syncTime
     FROM itemMetadata
     WHERE normalizedFileName = ?
         AND ocId <> ?
         AND deleted = 0
         AND isLockFileOfLocalOrigin = 0
-        AND (
-            normalizedServerUrl = ?
-            OR (
-                normalizedServerUrl = ?
-                AND account = ?
-                AND urlBase = ?
-                AND userId = ?
-            )
-        )
+        AND normalizedServerUrl = ?
     """
 
     private static let softDeleteSQL = "UPDATE itemMetadata SET deleted = 1, syncTime = ? WHERE ocId = ?"
@@ -162,7 +158,7 @@ extension FilesDatabaseManager {
 
         // Bucketing on the keys computed here rather than on the stored ones is what lets a
         // drifted row be repaired and deduplicated in the same walk.
-        let rows = try Row.fetchCursor(db, ItemLogicalAddressRow.filter(matchesDomainDAVAccountIncludingLegacyURLs))
+        let rows = try Row.fetchCursor(db, ItemLogicalAddressRow.all())
         while let rawRow = try rows.next() {
             let row: ItemLogicalAddressRow
             do {

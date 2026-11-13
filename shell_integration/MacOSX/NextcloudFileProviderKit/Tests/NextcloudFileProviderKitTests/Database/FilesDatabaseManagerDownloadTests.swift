@@ -76,7 +76,6 @@ extension DatabaseTestSuites {
             manager.addItemMetadata(child)
 
             let deletion = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent],
                 keepExistingDownloadState: true
@@ -91,7 +90,6 @@ extension DatabaseTestSuites {
             received.lockToken = nil
             received.fileProviderContentVersion = ""
             let read = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent, received],
                 keepExistingDownloadState: true
@@ -108,7 +106,6 @@ extension DatabaseTestSuites {
             #expect(stored.fileProviderContentVersion == child.fileProviderContentVersion)
 
             let repeated = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent, received],
                 keepExistingDownloadState: true
@@ -132,7 +129,6 @@ extension DatabaseTestSuites {
             received.keepDownloaded = false
             received.fileProviderContentVersion = ""
             let changes = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: DatabaseTestSuites.account.ncKitAccount,
                 serverUrl: directory.remotePath(),
                 updatedMetadatas: [received],
                 keepExistingDownloadState: true
@@ -164,7 +160,6 @@ extension DatabaseTestSuites {
                     received.status = Status.normal.rawValue
                     received.sessionError = ""
                     let changes = try #require(manager.depth1ReadUpdateItemMetadatas(
-                        account: DatabaseTestSuites.account.ncKitAccount,
                         serverUrl: metadata.serverUrl,
                         updatedMetadatas: [received],
                         keepExistingDownloadState: true

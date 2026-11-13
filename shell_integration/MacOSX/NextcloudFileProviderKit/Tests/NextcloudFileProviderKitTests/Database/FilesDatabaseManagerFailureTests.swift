@@ -150,7 +150,7 @@ extension DatabaseTestSuites {
 
             #expect(manager.pendingWorkingSetChanges(since: Date(timeIntervalSince1970: 0)) == nil)
             #expect(manager.itemMetadata(ocId: "changed") == nil)
-            #expect(manager.itemMetadatas(account: DatabaseTestSuites.account.ncKitAccount).isEmpty)
+            #expect(manager.itemMetadatas().isEmpty)
         }
     }
 }

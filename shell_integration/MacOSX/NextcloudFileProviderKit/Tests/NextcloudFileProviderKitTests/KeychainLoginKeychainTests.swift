@@ -485,7 +485,8 @@ final class KeychainLoginKeychainTests: Sendable {
         )
         defer { provider.invalidate() }
         #expect(provider.storeAccount(previous, generation: provider.setupGeneration))
-        let cachedFile = DatabaseTestSuites.makeFile(ocId: "cached", fileName: "Cached.txt", account: previous)
+        var cachedFile = DatabaseTestSuites.makeFile(ocId: "cached", fileName: "Cached.txt", account: previous)
+        cachedFile.lockToken = "previous-account-lock"
         if hasPublishedAccount {
             let previousManager = try FilesDatabaseManager(
                 account: previous,
@@ -496,7 +497,7 @@ final class KeychainLoginKeychainTests: Sendable {
             try #require(provider.publishDatabaseManager(previousManager, generation: provider.setupGeneration))
             previousManager.addItemMetadata(cachedFile)
             if failure == .unavailableDatabase {
-                // An actual SQLite write failure must roll back the account and all item addresses.
+                // Clearing the previous lock token fails and must roll back the account change.
                 try previousManager.setItemMetadataWriteFailureForTesting(true)
             }
             _ = try provider.enumerator(for: .workingSet, request: NSFileProviderRequest())
@@ -525,6 +526,7 @@ final class KeychainLoginKeychainTests: Sendable {
             #expect(manager.account == previous)
             #expect(manager.isForCurrentDAVAccount())
             #expect(manager.itemMetadata(ocId: cachedFile.ocId)?.remotePath() == cachedFile.remotePath())
+            #expect(manager.itemMetadata(ocId: cachedFile.ocId)?.lockToken == cachedFile.lockToken)
             #expect(provider.storedAccountForAuthentication() == previous)
             #expect(provider.keychain.getPassword(for: previous.username) == previous.password)
             let result = await remote.enumerate(

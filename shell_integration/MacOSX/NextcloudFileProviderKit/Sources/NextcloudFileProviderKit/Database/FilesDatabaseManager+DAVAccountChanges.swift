@@ -14,15 +14,10 @@ extension FilesDatabaseManager {
                 // A credentials-only change keeps the same DAV paths. Cancelled transfers
                 // still need their status cleared before the old manager is invalidated.
                 try ItemMetadataRecord
-                    .filter(matchesDomainDAVAccountIncludingLegacyURLs)
                     .filter(ItemMetadataRecord.hasActiveTransfer)
                     .updateAll(db, ItemMetadataRecord.interruptedTransferAssignments)
             }
-            return try StoreIdentityRecord.updateDatabaseForCurrentDAVAccount(
-                account,
-                previouslyConfiguredAccount: self.account.davAccountIdentity,
-                in: db
-            )
+            return try StoreIdentityRecord.updateDatabaseForCurrentDAVAccount(account, in: db)
         }
         return FilesDatabaseManager(account: account, continuingFrom: self, storeIdentity: storeIdentity)
     }

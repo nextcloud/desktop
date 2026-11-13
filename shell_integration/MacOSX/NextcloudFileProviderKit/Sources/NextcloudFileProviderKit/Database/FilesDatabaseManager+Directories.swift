@@ -12,7 +12,7 @@ public extension FilesDatabaseManager {
         return read("Could not fetch the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: true))
-                .fetchRecords(db, logger: logger)
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
@@ -28,26 +28,24 @@ public extension FilesDatabaseManager {
         return read("Could not fetch the immediate children of a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(!ItemMetadataRecord.isFilesRoot && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false))
-                .fetchRecords(db, logger: logger)
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
 
     ///
     /// The number of **direct** children of a directory, as vended by `Item.childItemCount`,
-    /// excluding tombstones, other accounts' rows and the container's own row, which for the root
+    /// excluding tombstones and the container's own row, which for the root
     /// carries the same `serverUrl` its children do.
     ///
     func childItemCount(directoryMetadata: SendableItemMetadata) -> Int {
         let directoryServerUrl = directoryMetadata.remotePath()
-        let account = directoryMetadata.account
         let ocId = directoryMetadata.ocId
 
         return read("Could not count the items below a directory.", [.url: directoryServerUrl]) { db in
             try ItemMetadataRecord
                 .filter(
-                    ItemMetadataRecord.Columns.account == account
-                        && ItemMetadataRecord.Columns.deleted == false
+                    ItemMetadataRecord.Columns.deleted == false
                         && ItemMetadataRecord.Columns.ocId != ocId
                         && !ItemMetadataRecord.isFilesRoot
                         && matchesParentDirectoryURL(directoryServerUrl, includingDescendants: false)
@@ -115,12 +113,11 @@ public extension FilesDatabaseManager {
     ///
     /// Identifiers of the files below a directory whose status is below `status`, for example everything which is not part of an upload in progress.
     ///
-    func descendantFileOcIds(underRemotePath remotePath: String, account: String, statusBelow status: Status) -> [String] {
+    func descendantFileOcIds(underRemotePath remotePath: String, statusBelow status: Status) -> [String] {
         read("Could not fetch the files below a directory.", [.url: remotePath]) { db in
             try ItemMetadataRecord
                 .filter(
                     ItemMetadataRecord.Columns.directory == false
-                        && ItemMetadataRecord.Columns.account == account
                         && ItemMetadataRecord.Columns.status < status.rawValue
                         && matchesParentDirectoryURL(remotePath, includingDescendants: true)
                 )
@@ -197,7 +194,6 @@ public extension FilesDatabaseManager {
             let directoryMetadataCopy = directoryMetadata.metadata
             let directoryOcId = directoryMetadata.ocId
             let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-            let directoryAccount = directoryMetadata.account
             let directoryEtag = directoryMetadata.etag
 
             logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
@@ -208,11 +204,8 @@ public extension FilesDatabaseManager {
             var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
 
             let results = try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.account == directoryAccount
-                        && matchesParentDirectoryURL(directoryUrlPath, includingDescendants: true)
-                )
-                .fetchRecords(db, logger: logger)
+                .filter(matchesParentDirectoryURL(directoryUrlPath, includingDescendants: true))
+                .fetchRecords(db, account: account, logger: logger)
 
             // TODO: Parent is deleted even when a child upload is pending. The child will
             // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
@@ -269,11 +262,8 @@ extension FilesDatabaseManager {
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
         let childItemResults = try ItemMetadataRecord
-            .filter(
-                ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && matchesParentDirectoryURL(oldDirectoryServerUrl, includingDescendants: true)
-            )
-            .fetchRecords(db, logger: logger)
+            .filter(matchesParentDirectoryURL(oldDirectoryServerUrl, includingDescendants: true))
+            .fetchRecords(db, account: account, logger: logger)
 
         try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
@@ -294,15 +284,9 @@ extension FilesDatabaseManager {
             )
         }
 
-        let destinationAccountKey = account.davRelativePath(forURL: newDirectoryServerUrl) == nil
-            ? directoryMetadata.account
-            : account.ncKitAccount
         return try ItemMetadataRecord
-            .filter(
-                ItemMetadataRecord.Columns.account == destinationAccountKey
-                    && matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true)
-            )
-            .fetchRecords(db, logger: logger)
+            .filter(matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true))
+            .fetchRecords(db, account: account, logger: logger)
             .map(\.metadata)
     }
 }

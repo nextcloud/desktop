@@ -121,7 +121,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let databaseURL = databaseDirectory
             .appendingPathComponent(domainIdentifier.rawValue)
             .appendingPathExtension("realm")
-        let nfdServerUrl = "https://example.com/pre\u{0302}t"
+        let nfdServerUrl = Self.account.davFilesUrl + "/pre\u{0302}t"
         let nfdFileName = "pre\u{0302}t.pdf"
 
         autoreleasepool {
@@ -153,7 +153,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(migrated.fileName, nfdFileName)
 
         let migratedLocation = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "migration-item"))
-        XCTAssertEqual(migratedLocation.serverUrl, nfdServerUrl.precomposedStringWithCanonicalMapping)
+        XCTAssertEqual(migratedLocation.serverUrl, "files:/prêt")
         XCTAssertEqual(migratedLocation.fileName, nfdFileName.precomposedStringWithCanonicalMapping)
     }
 
@@ -297,22 +297,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(ids, ["file-a", "deep-file"])
     }
 
-    func testAnyItemMetadatasForAccount() throws {
-        // Insert test data
-        let expected = true
-        let testAccount = "TestAccount"
-        var metadata = SendableItemMetadata.rawRow(ocId: "")
-        metadata.account = testAccount
+    func testHasItemMetadata() throws {
+        XCTAssertFalse(Self.dbManager.hasItemMetadata())
 
-        try Self.dbManager.insertForTesting(metadata)
+        try Self.dbManager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "file", fileName: "Report.txt"))
 
-        // Perform test
-        let result = Self.dbManager.anyItemMetadatasForAccount(testAccount)
-        XCTAssertEqual(
-            result,
-            expected,
-            "anyItemMetadatasForAccount should return \(expected) for existing account"
-        )
+        XCTAssertTrue(Self.dbManager.hasItemMetadata())
     }
 
     func testItemMetadataFromOcId() throws {
@@ -335,7 +325,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         metadata.uploaded = true
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
             keepExistingDownloadState: true
@@ -348,7 +337,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         metadata.etag = "new and shiny"
 
         let result2 = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
             keepExistingDownloadState: true
@@ -364,7 +352,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         metadata.etag = "new and shiny, but keeping original download state"
 
         let result3 = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [metadata],
             keepExistingDownloadState: true
@@ -410,7 +397,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         renamedParent.etag = "etag-changed"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [rootMetadata, renamedParent],
             keepExistingDownloadState: true
@@ -446,7 +432,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         incoming.etag = "new-etag"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [incoming],
             keepExistingDownloadState: true
@@ -471,7 +456,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.addItemMetadata(transit)
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [],
             keepExistingDownloadState: true
@@ -579,14 +563,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let updatedMetadatas = [existingMetadata1, existingMetadata3] // Only include 2 of the 3
 
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: Self.account.ncKitAccount,
             serverUrl: "https://example.com",
             updatedMetadatas: updatedMetadatas,
             keepExistingDownloadState: true
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
-            account: Self.account.ncKitAccount,
             underServerUrl: "https://example.com"
         )
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
@@ -631,7 +613,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         try Self.dbManager.insertForTesting(existingMetadata)
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: Self.account.ncKitAccount,
             serverUrl: "https://example.com/Parent",
             updatedMetadatas: [updatedParent, updatedMetadata, newMetadata],
             keepExistingDownloadState: true
@@ -687,7 +668,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let updatedMetadatasFromServer = [rootMetadata]
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: testAccount,
             serverUrl: testServerUrl,
             updatedMetadatas: updatedMetadatasFromServer,
             keepExistingDownloadState: true // Value doesn't strictly matter for this test logic
@@ -789,7 +769,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         try Self.dbManager.insertForTesting(metadata)
 
-        let trashedItems = Self.dbManager.trashedItemMetadatas(account: Self.account)
+        let trashedItems = Self.dbManager.trashedItemMetadatas()
         XCTAssertEqual(trashedItems.map(\.ocId), ["canonical-trash-item"])
     }
 
@@ -1170,7 +1150,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         updatedMetadata.keepDownloaded = false // This would be the case when converting from NKFile
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [updatedMetadata],
             keepExistingDownloadState: true
@@ -1209,7 +1188,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         updatedMetadata.downloaded = false // Set to false to test keepDownloaded retention
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [updatedMetadata],
             keepExistingDownloadState: false // Even when not keeping download state
@@ -1243,7 +1221,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // This simulates the path in depth1ReadUpdateItemMetadatas where readTargetMetadata
         // is processed and existing properties should be retained
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [readTargetMetadata],
             keepExistingDownloadState: true
@@ -1264,7 +1241,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         newMetadata.keepDownloaded = false
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [newMetadata],
             keepExistingDownloadState: true
@@ -1303,7 +1279,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         newChild.keepDownloaded = false
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: parentRemotePath,
             updatedMetadatas: [parentFolder, newChild],
             keepExistingDownloadState: true
@@ -1415,7 +1390,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         updatedItem3.keepDownloaded = false
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl.appending("/pf"),
             updatedMetadatas: [updatedParentFolder, updatedItem1, updatedItem2, updatedItem3],
             keepExistingDownloadState: true
@@ -1564,7 +1538,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         updatedMetadata.keepDownloaded = false // This would be the case when converting from NKFile
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [updatedMetadata],
             keepExistingDownloadState: true
@@ -1832,7 +1805,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         freshDir.uploaded = true
 
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [rootMetadata, freshDir],
             keepExistingDownloadState: true
@@ -1867,7 +1839,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         fresh.uploaded = true
 
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl,
             updatedMetadatas: [rootMetadata, fresh],
             keepExistingDownloadState: true

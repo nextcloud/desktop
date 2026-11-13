@@ -160,7 +160,6 @@ extension FilesDatabaseManager {
                             throw NSFileProviderError(.cannotSynchronize)
                         }
                         guard let listed = metadatas[download.ocId],
-                              listed.account == item.account,
                               !item.hasUnfinishedUpload,
                               !started.wasDeleted || canDownloadDeletedPackageMember(item)
                         else {
@@ -202,7 +201,7 @@ extension FilesDatabaseManager {
                         // Enumeration can leave an in-flight row at an address now occupied by another item.
                         let addressAvailable = try ItemMetadataRecord
                             .filter(matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName))
-                            .filter(ItemMetadataRecord.Columns.account == metadata.account && ItemMetadataRecord.Columns.ocId != metadata.ocId)
+                            .filter(ItemMetadataRecord.Columns.ocId != metadata.ocId)
                             .filter(ItemMetadataRecord.Columns.deleted == false && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false)
                             .isEmpty(db)
                         guard addressAvailable else {

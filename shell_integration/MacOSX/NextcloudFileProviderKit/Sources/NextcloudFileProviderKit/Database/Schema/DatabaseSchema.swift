@@ -31,7 +31,6 @@ enum DatabaseSchema {
                 table.primaryKey("ocId", .text)
 
                 for name in [
-                    "account",
                     "checksums",
                     "classFile",
                     "contentType",
@@ -54,10 +53,7 @@ enum DatabaseSchema {
                     "resourceType",
                     "serverUrl",
                     "trashbinFileName",
-                    "trashbinOriginalLocation",
-                    "urlBase",
-                    "user",
-                    "userId"
+                    "trashbinOriginalLocation"
                 ] {
                     table.column(name, .text).notNull().defaults(to: "")
                 }

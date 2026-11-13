@@ -186,7 +186,6 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         try Self.dbManager.insertForTesting(siblingMetadata)
 
         let results = Self.dbManager.itemMetadatas(
-            account: Self.account.ncKitAccount,
             underServerUrl: "https://cloud.example.com/files/project"
         )
         let resultOcIds = Set(results.map(\.ocId))

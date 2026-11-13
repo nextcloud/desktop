@@ -11,12 +11,12 @@ import GRDB
 ///
 extension QueryInterfaceRequest<ItemMetadataRecord> {
     /// Every decodable row of the request.
-    func fetchRecords(_ db: Database, logger: FileProviderLogger) throws -> [ItemMetadataRecord] {
+    func fetchRecords(_ db: Database, account: Account, logger: FileProviderLogger) throws -> [ItemMetadataRecord] {
         var records: [ItemMetadataRecord] = []
         let rows = try Row.fetchCursor(db, self)
 
         while let row = try rows.next() {
-            if let record = ItemMetadataRecord.decode(row, logger: logger) {
+            if let record = ItemMetadataRecord.decode(row, account: account, logger: logger) {
                 records.append(record)
             }
         }
@@ -25,11 +25,11 @@ extension QueryInterfaceRequest<ItemMetadataRecord> {
     }
 
     /// The first decodable row of the request.
-    func fetchRecord(_ db: Database, logger: FileProviderLogger) throws -> ItemMetadataRecord? {
+    func fetchRecord(_ db: Database, account: Account, logger: FileProviderLogger) throws -> ItemMetadataRecord? {
         let rows = try Row.fetchCursor(db, self)
 
         while let row = try rows.next() {
-            if let record = ItemMetadataRecord.decode(row, logger: logger) {
+            if let record = ItemMetadataRecord.decode(row, account: account, logger: logger) {
                 return record
             }
         }
@@ -40,11 +40,11 @@ extension QueryInterfaceRequest<ItemMetadataRecord> {
 
 extension ItemMetadataRecord {
     /// The record for the row, or `nil` after logging why it cannot be decoded. Array columns which decoded as empty are logged as well.
-    static func decode(_ row: Row, logger: FileProviderLogger) -> ItemMetadataRecord? {
+    static func decode(_ row: Row, account: Account, logger: FileProviderLogger) -> ItemMetadataRecord? {
         let ocId = try? row.decode(String?.self, forColumn: "ocId")
 
         do {
-            let record = try ItemMetadataRecord(row: row)
+            let record = try ItemMetadataRecord(row: row, account: account)
 
             for column in record.unreadableColumns {
                 logger.error("A stored list of an item could not be decoded and is treated as empty.", [.item: ocId, .name: column])

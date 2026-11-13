@@ -12,39 +12,6 @@ import Testing
 /// This is the only place in the test target which touches the storage engine. Tests seed and inspect rows through these methods so that an engine change touches one file.
 ///
 extension FilesDatabaseManager {
-    /// Seed the current schema before startup saves the DAV account in SQLite.
-    /// This is the SQLite state produced by the Realm import's item row conversion.
-    static func writeDatabaseWithoutSavedDAVAccountForTesting(
-        at url: URL,
-        metadata: [SendableItemMetadata]
-    ) throws -> String {
-        try writeDatabaseForTesting(at: url, metadata: metadata)
-    }
-
-    /// Seed SQLite as it looked after an earlier startup, with the saved account
-    /// and item metadata supplied independently.
-    static func writeDatabaseForTesting(
-        at url: URL,
-        metadata: [SendableItemMetadata],
-        boundTo account: Account? = nil
-    ) throws -> String {
-        let queue = try DatabaseQueue(path: url.path)
-        try DatabaseSchema.migrator.migrate(queue)
-
-        return try queue.write { db in
-            try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
-            for item in metadata {
-                try ItemMetadataRecord(item).upsertRow(db)
-            }
-            var store = try StoreIdentityRecord.fetchOne(db) ?? StoreIdentityRecord(identity: UUID().uuidString)
-            if let account {
-                store.accountBinding = try JSONEncoder().encode(account.davAccountIdentity.serializedFields)
-            }
-            try store.upsert(db)
-            return store.identity
-        }
-    }
-
     func storedParentLocationKeysForTesting(ocId: String) throws -> (parentLocation: String, normalizedParentLocation: String)? {
         try writer.read { db in
             try Row.fetchOne(
@@ -53,33 +20,6 @@ extension FilesDatabaseManager {
                 arguments: [ocId]
             ).map { ($0["serverUrl"], $0["normalizedServerUrl"]) }
         }
-    }
-
-    /// Seed a pending change alongside the imported item before startup saves the DAV account in SQLite.
-    static func writeDatabaseWithQueuedUpdateAndNoSavedDAVAccountForTesting(
-        at url: URL,
-        metadata: SendableItemMetadata,
-        sessionId: String
-    ) throws -> String {
-        let identity = try writeDatabaseWithoutSavedDAVAccountForTesting(at: url, metadata: [metadata])
-        let queue = try DatabaseQueue(path: url.path)
-        try queue.write { db in
-            try ChangeDeliverySessionRecord(
-                sessionId: sessionId,
-                containerKey: "working-set",
-                currentAnchorKey: "old-anchor",
-                finalAnchorRawValue: Data(),
-                incomplete: false,
-                hardRemoveDeleted: false
-            ).insert(db)
-            try ChangeDeliveryItemRecord(
-                sessionId: sessionId,
-                sequence: 0,
-                metadataData: try ChangeDeliveryItemRecord.encodeMetadata(metadata),
-                deleted: false
-            ).insert(db)
-        }
-        return identity
     }
 
     ///
@@ -108,7 +48,8 @@ extension FilesDatabaseManager {
     ///
     func normalizedLocationForTesting(ocId: String) -> (serverUrl: String, fileName: String)? {
         let record = try? writer.read { db in
-            try ItemMetadataRecord.fetchOne(db, key: ocId)
+            try ItemMetadataRecord.filter(ItemMetadataRecord.Columns.ocId == ocId)
+                .fetchRecord(db, account: account, logger: logger)
         }
 
         guard let record = record ?? nil else {
@@ -123,7 +64,8 @@ extension FilesDatabaseManager {
     ///
     func allItemMetadatasForTesting() -> [SendableItemMetadata] {
         let rows = try? writer.read { db in
-            try ItemMetadataRecord.order(ItemMetadataRecord.Columns.ocId).fetchAll(db)
+            try ItemMetadataRecord.order(ItemMetadataRecord.Columns.ocId)
+                .fetchRecords(db, account: account, logger: logger)
         }
 
         return (rows ?? []).map(\.metadata)
