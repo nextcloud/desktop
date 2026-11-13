@@ -157,16 +157,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(migratedLocation.fileName, nfdFileName.precomposedStringWithCanonicalMapping)
     }
 
-    func testContainsAnyItemMetadataFileIds() throws {
-        var metadata = SendableItemMetadata.rawRow(ocId: UUID().uuidString)
-        metadata.fileId = "11915767"
-
-        try Self.dbManager.insertForTesting(metadata)
-
-        XCTAssertTrue(Self.dbManager.containsAnyItemMetadata(fileIds: ["11915767", "13347012"]))
-        XCTAssertFalse(Self.dbManager.containsAnyItemMetadata(fileIds: ["13347012"]))
-    }
-
     /// `ancestorContainerIdentifiers` returns every directory on a file's path to
     /// the root (root excluded) — the set of folders whose "Remove download"
     /// visibility must be refreshed when that file materializes (#10085).

@@ -60,6 +60,7 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
         guard fileIds.isEmpty == false else {
             logger.info("Received file change notification without file IDs. Signalling enumerator.")
+            remoteChangeTargets.requestFullWalk()
             notifyChange()
             completionHandler(true)
             return
@@ -67,6 +68,7 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
         guard let dbManager else {
             logger.info("Received file ID changes before database setup. Signalling enumerator.")
+            remoteChangeTargets.requestFullWalk()
             notifyChange()
             completionHandler(true)
             return
@@ -74,12 +76,21 @@ extension FileProviderExtension: ClientCommunicationProtocol {
 
         let changedFileIds = Set(fileIds.map(\.stringValue))
 
-        guard dbManager.containsAnyItemMetadata(fileIds: changedFileIds) else {
+        guard let targets = dbManager.targetsForPushedFileIds(changedFileIds) else {
+            logger.error("Could not look up the changed file IDs. Signalling enumerator.")
+            remoteChangeTargets.requestFullWalk()
+            notifyChange()
+            completionHandler(true)
+            return
+        }
+
+        guard !targets.isEmpty else {
             logger.debug("Ignoring file ID changes because no locally known metadata matched.")
             completionHandler(true)
             return
         }
 
+        remoteChangeTargets.record(targets: targets)
         logger.info("Received file ID changes for locally known metadata. Signalling enumerator.")
         notifyChange()
         completionHandler(true)

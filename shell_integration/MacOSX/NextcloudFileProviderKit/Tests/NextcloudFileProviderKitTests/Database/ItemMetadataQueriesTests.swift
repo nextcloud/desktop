@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
 import Testing
@@ -85,7 +86,7 @@ extension DatabaseTestSuites {
             #expect(Set(manager.itemsMetadataByFileNameSuffix(suffix: "").map(\.ocId)) == ["lower", "upper", "bracket", "percent"])
         }
 
-        @Test func fileIdMembershipHandlesMoreThanOneChunkOfIdentifiers() throws {
+        @Test func pushedFileIdsResolveAcrossMoreThanOneChunkOfIdentifiers() throws {
             try manager.insertForTesting({
                 var metadata = DatabaseTestSuites.makeFile(ocId: "known", fileName: "known.txt")
                 metadata.fileId = "999999"
@@ -93,11 +94,11 @@ extension DatabaseTestSuites {
             }())
 
             var ids = Set((0 ..< 1200).map(String.init))
-            #expect(manager.containsAnyItemMetadata(fileIds: ids) == false)
+            #expect(manager.targetsForPushedFileIds(ids) == [])
 
             ids.insert("999999")
-            #expect(manager.containsAnyItemMetadata(fileIds: ids))
-            #expect(manager.containsAnyItemMetadata(fileIds: []) == false)
+            #expect(manager.targetsForPushedFileIds(ids) == [NSFileProviderItemIdentifier("known"), .rootContainer])
+            #expect(manager.targetsForPushedFileIds([]) == [])
         }
     }
 }

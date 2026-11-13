@@ -30,13 +30,21 @@ The enumerator has a different change source for each container type.
 
 | Container | Change source | Final anchor |
 | --- | --- | --- |
-| Working set | Scans materialised items on the server and combines those results with pending local changes. | A new current anchor when the scan completes. If a remote read fails, the incoming anchor is retained. |
+| Working set | Scans the items pushes named, or all materialised items, on the server and combines those results with pending local changes. | A new current anchor when the scan completes. If a remote read fails, the incoming anchor is retained. |
 | Regular directory | Reads the directory from WebDAV and compares it with local metadata. | The incoming anchor. |
 | Trash | Lists the server trash and finds local trash rows that no longer exist there. | The incoming anchor. |
 
 Only the working set is signalled by remote-change notifications. A working-set
 scan can read changed descendants of materialised directories, so it may find
 changes that are not represented by the local pending-change query alone.
+
+A push that names known file IDs makes the next scan start from those items
+instead of every materialised item. `RemoteChangeTargets` decides when a scan
+walks everything instead: after launch and account setup, after a push without
+IDs, after the extension's own signal, when nothing was pushed, and at least ten
+minutes after the start of the last complete full walk. A scan that started from pushed items
+deletes an item it did not find only when a read in the same scan confirms it,
+and otherwise continues with a full walk.
 
 ## Normal sync anchors
 

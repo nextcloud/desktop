@@ -19,7 +19,7 @@ extension Enumerator {
     /// Derive and report the working-set changes since `date`.
     ///
     /// Combines the changes discovered by scanning the materialised items directly against the
-    /// server (``scanMaterialisedItemsForRemoteChanges()``) with the pending local changes
+    /// server (``scanMaterialisedItemsForRemoteChanges(startingFrom:)``) with the pending local changes
     /// re-derived from the database (``FilesDatabaseManager/pendingWorkingSetChanges(since:)``). The
     /// server scan is what surfaces remote changes the database-only reconstruction misses:
     /// non-materialised items, and items whose own parent directory did not itself change.
@@ -50,15 +50,48 @@ extension Enumerator {
                 changeBuffer.reset()
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
-                let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                let scanStarted = Date()
+                let scope = remoteChangeTargets.takeScope(now: scanStarted)
+                var scans = switch scope {
+                    case .fullWalk:
+                        await [scanMaterialisedItemsForRemoteChanges()]
+                    case let .targets(targets):
+                        await [scanMaterialisedItemsForRemoteChanges(startingFrom: targets)]
+                }
+
+                if scans[0].needsFullWalk {
+                    let fullWalk = await scanMaterialisedItemsForRemoteChanges()
+
+                    // A deletion always wins the merge below, so one that the full walk disproved is dropped here.
+                    let foundOcIds = Set(fullWalk.updated.filter { !$0.deleted }.map(\.ocId))
+                    scans[0].deleted.removeAll { foundOcIds.contains($0.ocId) }
+
+                    // The full walk goes first so its state of an item both scans report wins the merge below.
+                    scans.insert(fullWalk, at: 0)
+                }
+
+                let serverHadFailure = scans.contains(where: \.hadFailure)
+
+                if scans.contains(where: \.materialisedItemsUnreadable) {
+                    // The materialised items could not be read, so nothing is known about what this scan missed.
+                    remoteChangeTargets.requestFullWalk()
+                } else {
+                    // A failed read is retried on its own, so one folder that keeps failing does not turn every scan into a full walk.
+                    remoteChangeTargets.record(targets: scans.flatMap(\.failedOcIds).map { NSFileProviderItemIdentifier($0) })
+
+                    if scope == .fullWalk || scans.count > 1 {
+                        remoteChangeTargets.noteFullWalkCompleted(startedAt: scanStarted)
+                    }
+                }
+
                 // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
-                let hadFailure = serverChanges.hadFailure || localChanges == nil
+                let hadFailure = serverHadFailure || localChanges == nil
 
                 let changes = ChangeSet(
-                    mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
-                    deleted: [serverChanges.deleted, pendingLocalChanges.deleted]
+                    mergingUpdated: scans.map(\.updated) + [pendingLocalChanges.updated],
+                    deleted: scans.map(\.deleted) + [pendingLocalChanges.deleted]
                 )
 
                 // Sort created+updated by remote-path length (ascending) so parent directories are
@@ -109,12 +142,12 @@ extension Enumerator {
     /// directory did not change, because that reconstruction is gated on the materialised set and
     /// `syncTime`.
     ///
-    /// - Returns: The discovered creations and updates (combined into `updated`) and the items that
-    ///   were marked deleted.
+    /// - Parameter targets: The items to start the walk from, or `nil` for all materialised items.
+    /// - Returns: What the scan found, read and failed to read.
     ///
-    func scanMaterialisedItemsForRemoteChanges() async -> (
-        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], hadFailure: Bool
-    ) {
+    func scanMaterialisedItemsForRemoteChanges(
+        startingFrom targets: Set<NSFileProviderItemIdentifier>? = nil
+    ) async -> WorkingSetScanResult {
         logger.debug("Checking materialised items for changes on the server...")
 
         defer {
@@ -160,11 +193,45 @@ extension Enumerator {
         // activated domain triggers a full recursive PROPFIND of every changed branch down to its
         // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
         // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
-        var scanQueue = Dictionary(grouping: materialisedItems, by: remotePathDepth)
-        var enqueuedDirectoryIds = Set(materialisedItems.filter(\.directory).map(\.ocId))
+        // `materialisedItems` stays the full set below, because the descendant checks consult it; only the seed of the walk narrows.
+        var seedItems = materialisedItems
+        if let targets {
+            let targetOcIds = Set(targets.map(\.rawValue))
+            seedItems = materialisedItems.filter { targetOcIds.contains($0.ocId) }
+
+            // A target folder that is not materialised is read when it would be queued as a changed child, so its listing can show where a materialised item moved.
+            let materialisedOcIds = Set(materialisedItems.map(\.ocId))
+            for ocId in targetOcIds.subtracting(materialisedOcIds) {
+                guard let folder = dbManager.itemMetadata(ocId: ocId), folder.directory, !folder.deleted, !folder.isTrashed else {
+                    continue
+                }
+
+                if folder.keepDownloaded || materialisedItems.contains(where: { $0.isDescendant(of: folder.remotePath()) }) {
+                    seedItems.append(folder)
+                }
+            }
+
+            logger.info("Scanning the items pushes named instead of the whole materialised set.", [.targetCount: seedItems.count])
+        } else {
+            logger.info("Scanning the whole materialised set.", [.targetCount: seedItems.count])
+        }
+        var seededOcIds = Set(seedItems.map(\.ocId))
+        var scanQueue = Dictionary(grouping: seedItems, by: remotePathDepth)
+        let materialisedDirectoryIds = Set(materialisedItems.filter(\.directory).map(\.ocId))
+        var enqueuedDirectoryIds = Set(seedItems.filter(\.directory).map(\.ocId))
 
         // Items a successful read listed, which exist on the server whatever their own read at an older path returned.
         var listedOcIds = Set<String>()
+
+        // Paths of the directories this scan read successfully, or whose deletion a successful read listed.
+        var confirmedDirectoryPaths = Set<String>()
+
+        // A targeted scan reads the materialised items below a folder that is gone, which a full walk reads as its own starting points.
+        func queueMaterialisedItems(below path: String) {
+            for descendant in materialisedItems where descendant.isDescendant(of: path) && seededOcIds.insert(descendant.ocId).inserted {
+                scanQueue[remotePathDepth(descendant), default: []].append(descendant)
+            }
+        }
 
         while let waveDepth = scanQueue.keys.min() {
             let wave = scanQueue.removeValue(forKey: waveDepth) ?? []
@@ -184,14 +251,15 @@ extension Enumerator {
 
             guard !toRead.isEmpty else { continue }
 
-            await concurrentlyReadForWorkingSetScan(toRead) { itemToScan, readResult in
+            await concurrentlyReadForWorkingSetScan(toRead, checkingIdentity: targets != nil) { itemToScan, readResult in
                 // A sibling merged earlier in this wave covers this item when the server moved it into that sibling or onto its path.
                 guard !scannedItemIds.contains(itemToScan.ocId) else { return }
 
                 let itemRemoteUrl = itemToScan.remotePath()
                 let changes = readResult.changes ?? ChangeSet()
 
-                if readResult.error?.errorCode == 404 {
+                // In a scan that checks identity, a path that now holds a different folder means the item is not there, like a 404.
+                if readResult.error?.errorCode == 404 || (targets != nil && readResult.error == .invalidData) {
                     accumulatedDeletions.append(itemToScan)
                     notFoundOcIds.insert(itemToScan.ocId)
                     scannedItemIds.insert(itemToScan.ocId)
@@ -221,6 +289,15 @@ extension Enumerator {
                     // Reading a directory's children does not by itself require scanning each child's own
                     // children. Track which children this read has already accounted for.
                     var childrenCoveredByThisRead = Set<String>()
+
+                    if itemToScan.directory {
+                        confirmedDirectoryPaths.insert(itemRemoteUrl.precomposedStringWithCanonicalMapping)
+                    }
+
+                    for goneDirectory in changes.deleted where targets != nil && goneDirectory.directory {
+                        confirmedDirectoryPaths.insert(goneDirectory.remotePath().precomposedStringWithCanonicalMapping)
+                        queueMaterialisedItems(below: goneDirectory.remotePath())
+                    }
 
                     if let readItems = readResult.metadatas, let readTarget = readItems.first {
                         listedOcIds.formUnion(readItems.map(\.ocId))
@@ -258,7 +335,8 @@ extension Enumerator {
                                         .itemMetadata(ocId: childDirectory.ocId)?
                                         .keepDownloaded == true
 
-                                    if childHasMaterialisedDescendant || childIsPinned,
+                                    // A materialised child is queued even when it is not a starting point, so a targeted scan does not store its new etag without reading it.
+                                    if materialisedDirectoryIds.contains(childDirectory.ocId) || childHasMaterialisedDescendant || childIsPinned,
                                        enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
                                     {
                                         scanQueue[remotePathDepth(childDirectory), default: []].append(childDirectory)
@@ -300,6 +378,27 @@ extension Enumerator {
             .union(listedOcIds)
 
         accumulatedDeletions.removeAll { survivingOcIds.contains($0.ocId) }
+
+        // A walk that did not read everything only deletes a missing item when the listing of its parent, or the parent's own deletion, confirms it.
+        var needsFullWalk = false
+        if targets != nil {
+            var confirmedPaths = confirmedDirectoryPaths
+            var unconfirmedOcIds = Set<String>()
+
+            for missing in accumulatedDeletions.filter({ notFoundOcIds.contains($0.ocId) }).sorted(by: { $0.remotePath().count < $1.remotePath().count }) {
+                if confirmedPaths.contains(missing.serverUrl.precomposedStringWithCanonicalMapping) {
+                    confirmedPaths.insert(missing.remotePath().precomposedStringWithCanonicalMapping)
+                } else {
+                    unconfirmedOcIds.insert(missing.ocId)
+                }
+            }
+
+            if !unconfirmedOcIds.isEmpty {
+                logger.info("Leaving items that were not found to a full walk, because no read showed whether they were deleted or moved.")
+                accumulatedDeletions.removeAll { unconfirmedOcIds.contains($0.ocId) }
+                needsFullWalk = true
+            }
+        }
 
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
@@ -347,12 +446,23 @@ extension Enumerator {
             )
         }
 
-        return (updated: discoveredUpdates, deleted: reportedDeletions, hadFailure: hadReadFailure)
+        return WorkingSetScanResult(
+            updated: discoveredUpdates,
+            deleted: reportedDeletions,
+            hadFailure: hadReadFailure,
+            failedOcIds: failedItemIds,
+            materialisedItemsUnreadable: storedMaterialisedItems == nil,
+            needsFullWalk: needsFullWalk
+        )
     }
 
     /// Read `items` from the server, at most ``workingSetScanConcurrency`` at a time, handing each result to `merge` as it arrives.
+    ///
+    /// - Parameter checkingIdentity: Whether a directory read fails with `.invalidData` when its path now holds a different folder.
+    ///
     private func concurrentlyReadForWorkingSetScan(
         _ items: [SendableItemMetadata],
+        checkingIdentity: Bool,
         merge: (SendableItemMetadata, RemoteReadResult) -> Void
     ) async {
         await withTaskGroup(of: (SendableItemMetadata, RemoteReadResult).self) { group in
@@ -367,6 +477,7 @@ extension Enumerator {
                         account: self.account,
                         remoteInterface: self.remoteInterface,
                         dbManager: self.dbManager,
+                        expectedDirectoryOcId: checkingIdentity && item.directory ? item.ocId : nil,
                         depth: item.directory ? .targetAndDirectChildren : .target,
                         log: self.logger.log
                     )
