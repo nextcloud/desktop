@@ -573,6 +573,8 @@ void Systray::setupContextMenu()
         _contextMenu->addAction(tr("Open %1 Desktop", "Open Nextcloud main window. Placeholer will be the application name. Please keep it.").arg(APPLICATION_NAME), this, [this]{ showActivitiesWindow(); });
     }
 
+    auto syncNowAction = _contextMenu->addAction(tr("Sync now"), this, &Systray::syncAllFoldersNow);
+    syncNowAction->setObjectName(u"traySyncNowAction"_s);
     auto pauseAction = _contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
     auto resumeAction = _contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
     _contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
@@ -581,6 +583,10 @@ void Systray::setupContextMenu()
 
     connect(_contextMenu, &QMenu::aboutToShow, [=] {
         const auto folders = FolderMan::instance()->map();
+
+        const auto syncNowAvailable = canSyncNow();
+        syncNowAction->setVisible(syncNowAvailable);
+        syncNowAction->setEnabled(syncNowAvailable);
 
         const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
         const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
@@ -1184,6 +1190,19 @@ void Systray::setSyncIsPaused(const bool syncIsPaused)
     } else {
         slotUnpauseAllFolders();
     }
+}
+
+void Systray::syncAllFoldersNow()
+{
+    FolderMan::instance()->forceSyncForAllFolders();
+}
+
+bool Systray::canSyncNow() const
+{
+    const auto folders = FolderMan::instance()->map();
+    return std::any_of(std::cbegin(folders), std::cend(folders), [](const Folder *folder) {
+        return folder->canSync();
+    });
 }
 
 Systray::SyncControlState Systray::syncControlState() const

@@ -809,6 +809,24 @@ void FolderMan::forceSyncForFolder(Folder *folder)
     scheduleFolderNext(folder);
 }
 
+void FolderMan::forceSyncForAllFolders()
+{
+    const auto folders = map();
+    for (const auto folder : folders) {
+        if (folder->isSyncRunning()) {
+            folder->slotTerminateSync();
+        }
+    }
+
+    for (const auto folder : folders) {
+        if (!folder->canSync()) {
+            continue;
+        }
+        folder->slotWipeErrorBlacklist(); // issue #6757
+        scheduleFolderNext(folder);
+    }
+}
+
 void FolderMan::removeE2eFiles(const AccountPtr &account) const
 {
     Q_ASSERT(!account->e2e()->isInitialized());
