@@ -254,15 +254,17 @@ public extension Item {
     /// item, so it must succeed there.
     ///
     private func enumerateSubtreeBreadthFirst(domain: NSFileProviderDomain) async throws {
-        var remoteDirectoryPaths: [String] = [metadata.remotePath()]
+        var remoteDirectories = [metadata]
         var isTopLevel = true
 
-        while !remoteDirectoryPaths.isEmpty {
-            let remoteDirectoryPath = remoteDirectoryPaths.removeFirst()
+        while !remoteDirectories.isEmpty {
+            let directory = remoteDirectories.removeFirst()
+            let remoteDirectoryPath = directory.remotePath()
 
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
                 account: account,
+                sourceMetadata: directory,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 domain: domain,
@@ -294,7 +296,7 @@ public extension Item {
             }
 
             for child in metadatas where child.directory {
-                remoteDirectoryPaths.append(child.remotePath())
+                remoteDirectories.append(child)
             }
         }
     }
