@@ -12,7 +12,7 @@ public class MockEnumerationObserver: NSObject, NSFileProviderEnumerationObserve
     @objc public var suggestedPageSize: Int = 0
     public private(set) var error: Error?
     public private(set) var page: NSFileProviderPage?
-    private var isComplete = false
+    public private(set) var isComplete = false
     private var currentPageComplete = false
     private var enumerator: NSFileProviderEnumerator
 
