@@ -256,9 +256,16 @@ extension ItemMetadataRecord {
     }
 
     /// `INSERT ... ON CONFLICT(ocId) DO UPDATE` over every column, prepared once per connection.
+    ///
+    /// `syncTime` never goes backwards: a writer which stores a value it built before another write landed (a download finishing during a listing, a mirror of the materialised items) keeps the row's newer stamp, so "stamped before" keeps meaning "not written since". A write which has to backdate a row for a test uses `insertForTesting`.
+    ///
     private static let upsertSQL: String = {
         let columns = Columns.allCases.map(\.rawValue)
-        let assignments = columns.dropFirst().map { "\($0) = excluded.\($0)" }
+        let assignments = columns.dropFirst().map { column in
+            column == Columns.syncTime.rawValue
+                ? "\(column) = MAX(excluded.\(column), \(databaseTableName).\(column))"
+                : "\(column) = excluded.\(column)"
+        }
         return "INSERT INTO \(databaseTableName) (\(columns.joined(separator: ", "))) VALUES (\(columns.map { _ in "?" }.joined(separator: ", "))) ON CONFLICT(ocId) DO UPDATE SET \(assignments.joined(separator: ", "))"
     }()
 
