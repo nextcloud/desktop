@@ -1,11 +1,10 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-@preconcurrency import FileProvider
 import Foundation
 @testable import NextcloudFileProviderKit
-import NextcloudFileProviderKitMocks
 import Testing
+import TestInterface
 
 ///
 /// Umbrella for the Swift Testing suites which exercise ``FilesDatabaseManager`` directly, with the fixtures they share.
@@ -29,17 +28,7 @@ enum DatabaseTestSuites {
     /// A database manager on a fresh temporary directory, so one test cannot see another's rows.
     ///
     static func makeManager(account: Account = account) -> FilesDatabaseManager {
-        let directory = FileManager.default.temporaryDirectory
-            .appendingPathComponent("DatabaseTestSuites-\(UUID().uuidString)", isDirectory: true)
-        try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-
-        return try! FilesDatabaseManager(
-            account: account,
-            databaseDirectory: directory,
-            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test-\(UUID().uuidString)"),
-            log: FileProviderLogMock(),
-            defaults: defaults
-        )
+        try! TemporaryDatabase(account: account, defaults: defaults).manager
     }
 
     ///

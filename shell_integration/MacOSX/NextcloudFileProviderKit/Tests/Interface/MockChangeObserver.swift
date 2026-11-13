@@ -66,6 +66,8 @@ public class MockChangeObserver: NSObject, NSFileProviderChangeObserver, @unchec
             while !batchComplete {
                 try await Task.sleep(nanoseconds: 1_000_000)
             }
+            // The enumerator acknowledges a batch on the main actor right after finishing it, so wait for that before the next batch or the caller reads the database.
+            await MainActor.run {}
             if let error {
                 throw error
             }
