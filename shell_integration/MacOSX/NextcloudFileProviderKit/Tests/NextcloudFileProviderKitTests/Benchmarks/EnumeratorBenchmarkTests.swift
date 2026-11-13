@@ -24,6 +24,9 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
     static let downloadedLeafStride = 10
     static let unvisitedDirectoryCount = 50
 
+    /// What one listing costs when the server is not in the same process.
+    static let listingLatency = Duration.milliseconds(5)
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         try XCTSkipUnless(
@@ -264,5 +267,48 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
         BenchmarkReport.print("SystemWalkOfVisitedDirectories", items: fixture.visitedDirectories.count, durations: [walkDuration], requests: fixture.visitedDirectories.count)
         BenchmarkReport.print("WorkingSetScanFirstPassAfterSystemWalk", items: fixture.itemCount, durations: [firstDuration], requests: firstRequests)
         BenchmarkReport.print("WorkingSetScanIdlePassAfterSystemWalk", items: fixture.itemCount, durations: [idleDuration], requests: idleRequests)
+    }
+
+    ///
+    /// The cold pass with a round trip charged for every listing, which is what a pass against a real server spends.
+    ///
+    /// The mock otherwise answers in process, so the benchmarks above measure local work and cannot see how much
+    /// of a pass is spent waiting. Here each listing costs ``listingLatency``, so a pass which reads one directory
+    /// at a time cannot finish before `requests * listingLatency`, and what reading siblings together saves is the
+    /// difference. The effective concurrency reported below is that round-trip cost over the measured time; one
+    /// means every listing waited for the one before it.
+    ///
+    func testBenchmarkWorkingSetScanColdPassWithLatency() async throws {
+        var durations: [Duration] = []
+        var requests = 0
+        var itemCount = 0
+        let clock = ContinuousClock()
+
+        for _ in 0 ..< Self.iterationCount {
+            let fixture = makeFixture()
+            itemCount = fixture.itemCount
+            fixture.remoteInterface.enumerateLatencyBySuffix = ["": Self.listingLatency]
+
+            let start = clock.now
+            _ = try await runPass(fixture, from: Enumerator.syncAnchor(at: Date(), storeIdentity: fixture.dbManager.storeIdentity))
+            durations.append(clock.now - start)
+            requests = fixture.recorder.count
+        }
+
+        let seconds = durations.map(\.fpSeconds).sorted()
+        let median = seconds[seconds.count / 2]
+        let roundTripCost = Double(requests) * Self.listingLatency.fpSeconds
+        let effectiveConcurrency = median > 0 ? roundTripCost / median : 0
+
+        XCTAssertLessThan(
+            median, roundTripCost,
+            "A pass which reads one directory at a time cannot finish before its round trips have: \(requests) listings at \(Self.listingLatency)."
+        )
+
+        BenchmarkReport.print("WorkingSetScanColdPassWithLatency", items: itemCount, durations: durations, requests: requests)
+        print(String(
+            format: "PERF-BENCH WorkingSetScanColdPassRoundTrips requests=%d latency_ms=%.0f round_trip_s=%.2f median_s=%.2f effective_concurrency=%.2f",
+            requests, Self.listingLatency.fpSeconds * 1000, roundTripCost, median, effectiveConcurrency
+        ))
     }
 }

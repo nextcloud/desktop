@@ -811,7 +811,8 @@ extension DatabaseTestSuites {
             let remoteDestination = remoteItem("dst", "dst", at: filesUrl, directory: true)
             let atDestination = remoteItem("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)
             let laterItem = remoteItem("later", "later", at: filesUrl + "/src", directory: true)
-            // The destination is listed first, so the folder is found there before its row is removed.
+            // The destination is listed before the source, and one listing at a time, so the folder is found
+            // at its destination before the read of the source removes its row.
             root.children = [remoteDestination, source]
             source.parent = root
             source.children = [laterItem]
@@ -826,7 +827,10 @@ extension DatabaseTestSuites {
                 }
             }
 
-            let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
+            let scan = try await Enumerator(
+                enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager,
+                scanLimits: WorkingSetScanLimits(listingBudget: .seconds(20), resumeDelay: .seconds(5), concurrentListings: 1), log: log
+            ).scanMaterialisedItemsForRemoteChanges()
 
             #expect(scan.storeUnreadable)
             #expect(!scan.updated.map(\.ocId).contains("folder"))

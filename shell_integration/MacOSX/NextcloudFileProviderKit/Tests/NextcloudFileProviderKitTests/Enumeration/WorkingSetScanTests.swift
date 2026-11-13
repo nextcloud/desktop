@@ -131,6 +131,47 @@ struct WorkingSetScanTests {
         return try #require(warm.anchor)
     }
 
+    ///
+    /// The subtrees below one listing are read together, so a pass waits for one round trip, not for each.
+    ///
+    @Test func theSubtreesOfOneListingAreReadTogether() async throws {
+        for name in ["a", "b", "c", "d"] {
+            let folder = makeFolder(name, in: rootItem)
+            makeFile("f-\(name)", in: folder)
+        }
+        seedTree()
+        // Long enough that a subtree cannot be answered before the ones beside it have started.
+        remoteInterface.enumerateLatencyBySuffix = ["/a": .milliseconds(300), "/b": .milliseconds(300), "/c": .milliseconds(300), "/d": .milliseconds(300)]
+
+        let cold = try await pass()
+
+        #expect(cold.observer.error == nil)
+        #expect(Set(cold.paths) == ["", "/a", "/b", "/c", "/d"])
+        #expect(remoteInterface.peakInFlightEnumerations > 1, "The subtrees below the root were read together, not one after another.")
+    }
+
+    ///
+    /// What the budget stops once several subtrees are in flight is the next one to start, not the ones running.
+    ///
+    @Test func aPassWithSeveralListingsInFlightStartsNoSubtreeAfterItsBudget() async throws {
+        for name in ["a", "b", "c"] {
+            let folder = makeFolder(name, in: rootItem)
+            makeFile("f-\(name)", in: folder)
+        }
+        seedTree()
+        // The subtree listings outlast the budget, so the two started together use it up and the third never
+        // starts. The root is answered at once, or its own listing would spend the budget before any child.
+        remoteInterface.enumerateLatencyBySuffix = ["/a": .milliseconds(600), "/b": .milliseconds(600), "/c": .milliseconds(600)]
+
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .milliseconds(300), resumeDelay: .zero, concurrentListings: 2))
+
+        #expect(cut.observer.error == nil)
+        #expect(cut.paths.contains(""), "The root is always listed.")
+        #expect(cut.paths.count < 4, "No subtree was started once the budget was spent. Got: \(cut.paths)")
+        #expect(remoteInterface.peakInFlightEnumerations <= 2, "Never more in flight than the pass was allowed.")
+        #expect(manager.scannedRemoteStateForTesting(ocId: "c") == nil, "The subtree which never started keeps no state.")
+    }
+
     /// A delivered batch is acknowledged right after the observer's finish, on the main actor, so its effect on the store can trail the pass by a moment.
     private func waitUntil(_ comment: Comment, _ condition: @escaping () -> Bool) async throws {
         for _ in 0 ..< 200 where !condition() {
@@ -494,7 +535,7 @@ struct WorkingSetScanTests {
         remoteInterface.enumerateLatencyBySuffix = ["/a": .seconds(2)]
         let signals = SignalCount()
 
-        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero), signalling: signals)
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero, concurrentListings: 1), signalling: signals)
 
         #expect(cut.observer.error == nil)
         #expect(cut.paths == ["", "/a", "/a/b"])
@@ -521,7 +562,7 @@ struct WorkingSetScanTests {
         seedTree()
         // Every pass: a's listing alone outlasts the budget.
         remoteInterface.enumerateLatencyBySuffix = ["/a": .seconds(2)]
-        let limits = WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero)
+        let limits = WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero, concurrentListings: 1)
 
         let first = try await pass(limits: limits)
         #expect(first.paths == ["", "/a", "/a/b"], "The first descent below a listed directory is taken past the budget.")
@@ -540,15 +581,17 @@ struct WorkingSetScanTests {
         d.move(to: q)
         remoteInterface.enumerateLatencyBySuffix = ["/p": .seconds(2)]
 
-        let cut = try await pass(from: warmAnchor, limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero))
+        let cut = try await pass(from: warmAnchor, limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero, concurrentListings: 1))
 
         #expect(cut.paths == ["", "/p"])
         #expect(cut.deleted.isEmpty, "A pass which did not reach q cannot tell the move from a deletion.")
         #expect(manager.itemMetadata(ocId: "d")?.deleted == false, "The tombstone is revived.")
         #expect(manager.scannedRemoteStateForTesting(ocId: "p") == nil, "p is forgotten, so the next pass lists it again.")
 
+        // Serial again, so the listings are exactly the walk's: p and q read together would also have p's
+        // row of d checked at its stored path, because q lists it before p's listing has tombstoned it.
         remoteInterface.enumerateLatencyBySuffix = [:]
-        let resumed = try await pass(from: cut.anchor)
+        let resumed = try await pass(from: cut.anchor, limits: WorkingSetScanLimits(listingBudget: .seconds(20), resumeDelay: .zero, concurrentListings: 1))
 
         #expect(resumed.paths == ["", "/p", "/q"])
         #expect(resumed.deleted.isEmpty, "d was met alive under q.")
@@ -592,7 +635,7 @@ struct WorkingSetScanTests {
         // The listing of b, the last below a, outlasts the budget: a is complete, c is not started.
         remoteInterface.enumerateLatencyBySuffix = ["/b": .seconds(2)]
 
-        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero))
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .seconds(1), resumeDelay: .zero, concurrentListings: 1))
 
         #expect(cut.paths == ["", "/a", "/a/b"])
         #expect(manager.scannedRemoteStateForTesting(ocId: "a") != nil, "Everything below a was listed.")
