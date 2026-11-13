@@ -102,12 +102,22 @@ QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
 
 QString Utility::vfsPinActionText()
 {
+    // Title case on macOS and Linux, sentence case on Windows (nextcloud/desktop#10525).
+#if defined(Q_OS_WIN)
     return QCoreApplication::translate("utility", "Make always available locally");
+#else
+    return QCoreApplication::translate("utility", "Make Always Available Locally");
+#endif
 }
 
 QString Utility::vfsFreeSpaceActionText()
 {
+    // Title case on macOS and Linux, sentence case on Windows (nextcloud/desktop#10525).
+#if defined(Q_OS_WIN)
     return QCoreApplication::translate("utility", "Free up local space");
+#else
+    return QCoreApplication::translate("utility", "Free Up Local Space");
+#endif
 }
 
 void Utility::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
