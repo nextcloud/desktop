@@ -98,7 +98,10 @@ extension DatabaseTestSuites {
         }
 
         @Test func acknowledgingWithHardRemovalDeletesTheRows() throws {
-            try manager.insertForTesting(DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt"))
+            // A reported deletion is a tombstone at derivation time.
+            var tombstone = DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt")
+            tombstone.deleted = true
+            try manager.insertForTesting(tombstone)
             #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: [], deleted: [DatabaseTestSuites.makeFile(ocId: "hard", fileName: "hard.txt")], incomplete: false, hardRemoveDeleted: true))
             let batch = try #require(try prepare("s", maxItems: 1))
             #expect(batch.items.map(\.deleted) == [true])
@@ -151,6 +154,23 @@ extension DatabaseTestSuites {
             #expect(replayed.endSequence == first.endSequence)
             #expect(replayed.nextAnchorKey == first.nextAnchorKey)
             #expect(replayed.items.map(\.metadataData) == first.items.map(\.metadataData))
+        }
+
+        @Test func acknowledgingWithHardRemovalKeepsARowWhichCameBackAlive() throws {
+            var tombstone = DatabaseTestSuites.makeFile(ocId: "back", fileName: "back.txt")
+            tombstone.deleted = true
+            try manager.insertForTesting(tombstone)
+            #expect(manager.createChangeDeliverySession(sessionId: "s", containerKey: "c", anchorKey: "a0", finalAnchorRawValue: Data(), updated: [], deleted: [tombstone], incomplete: false, hardRemoveDeleted: true))
+            let batch = try #require(try prepare("s", maxItems: 1))
+
+            // The item reappeared on the server before the batch was acknowledged.
+            var alive = tombstone
+            alive.deleted = false
+            manager.addItemMetadata(alive)
+
+            #expect(manager.acknowledgeChangeDeliveryBatch(sessionId: "s", endSequence: batch.endSequence))
+
+            #expect(manager.itemMetadata(ocId: "back")?.deleted == false, "Only a row still marked deleted is removed.")
         }
 
         @Test func removingTheSessionsOfAContainerRemovesTheirItems() throws {
