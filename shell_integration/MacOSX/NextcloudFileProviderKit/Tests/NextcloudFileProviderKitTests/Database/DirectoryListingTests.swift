@@ -58,5 +58,28 @@ extension DatabaseTestSuites {
             #expect(second.deleted.isEmpty, "A row already marked deleted was reported when it went missing.")
             #expect(manager.itemMetadata(ocId: "gone")?.syncTime == tombstone.syncTime)
         }
+
+        @Test func deletingASubtreeCanStampEveryRow() throws {
+            let directory = makeDirectory(ocId: "dir", fileName: "Dir")
+            let child = makeChild(ocId: "child", fileName: "child.txt", of: directory)
+            var grandchildDirectory = makeDirectory(ocId: "sub", fileName: "Sub", serverUrl: directory.serverUrl + "/Dir")
+            grandchildDirectory.visitedDirectory = true
+            let grandchild = makeChild(ocId: "grand", fileName: "grand.txt", of: grandchildDirectory)
+            for row in [directory, child, grandchildDirectory, grandchild] {
+                try manager.insertForTesting(row)
+            }
+
+            let unstamped = try #require(manager.deleteDirectoryAndSubdirectoriesMetadata(ocId: "dir"))
+            #expect(Set(unstamped.map(\.ocId)) == ["dir", "child", "sub", "grand"])
+            #expect(manager.itemMetadata(ocId: "grand")?.syncTime == old, "The default leaves the stamps alone.")
+
+            let stamp = Date(timeIntervalSinceReferenceDate: 5000)
+            _ = manager.deleteDirectoryAndSubdirectoriesMetadata(ocId: "dir", stampingSyncTime: stamp)
+            for ocId in ["dir", "child", "sub", "grand"] {
+                let row = try #require(manager.itemMetadata(ocId: ocId))
+                #expect(row.deleted)
+                #expect(row.syncTime == stamp)
+            }
+        }
     }
 }
