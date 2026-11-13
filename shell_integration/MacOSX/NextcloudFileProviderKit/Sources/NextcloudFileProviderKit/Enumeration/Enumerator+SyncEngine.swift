@@ -6,73 +6,46 @@ import NextcloudKit
 
 extension Enumerator {
     static func handlePagedReadResults(
-        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager, log: any FileProviderLogging
+        files: [NKFile],
+        pageIndex: Int,
+        dbManager: FilesDatabaseManager,
+        log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
-        // First PROPFIND contains the target item, but we do not want to report this in the
-        // retrieved metadatas (the enumeration observers don't expect you to enumerate the
-        // target item, hence why we always strip the target item out)
-        let startIndex = pageIndex > 0 ? 0 : 1
-        if pageIndex == 0 {
-            guard let firstFile = files.first else { return (nil, .invalidResponseError) }
-            var metadata = firstFile.toItemMetadata()
-
-            if metadata.directory {
-                // Mark the directory as visited in this request, then persist
-                // while preserving the rest of the local-only state. Skip
-                // preservation of `visitedDirectory` so the just-set `true`
-                // is not overwritten by the existing row's value.
-                metadata.visitedDirectory = true
-                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false, keepPermissionsListedByParent: true)
-            } else {
-                dbManager.addItemMetadataPreservingLocalState(metadata)
-            }
+        let isFirstPage = pageIndex == 0
+        guard !isFirstPage || !files.isEmpty else {
+            return (nil, .invalidResponseError)
         }
 
-        // Persist children — including those on follow-up pages — while
-        // carrying over any local-only state previously set on existing rows
-        // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
-        // enable). A plain `addItemMetadata` would clobber those flags via
-        // a full-row upsert, which is the root cause of #9923.
-        //
-        // Use the merged metadata returned by the helper for both the DB
-        // write and the value reported back to the framework. Returning the
-        // pre-merge fresh-from-server metadata would tell the framework
-        // `keepDownloaded == false` for items that are pinned in the
-        // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
-        // out of sync with the local truth.
-        //
-        // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
-        // line splits CPU spent building metadata from CPU spent in the database. Today each item opens its
-        // own write transaction inside `addItemMetadataPreservingLocalState`; `db_items_per_s` is the
-        // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
-        // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
         let signposter = EnumerationSignposter.signposter
         let convAndPersistState = signposter.beginInterval(
             "ConvertAndPersistPage",
             id: signposter.makeSignpostID(),
             "pageIndex=\(pageIndex) files=\(files.count)"
         )
+        var itemCount = 0
+        defer { signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(itemCount)") }
 
         let clock = ContinuousClock()
-        var convAccum: Duration = .zero
-        var dbAccum: Duration = .zero
-        var metadatas: [SendableItemMetadata] = []
-        metadatas.reserveCapacity(max(0, files.count - startIndex))
-
-        for file in files[startIndex...] {
-            let convStart = clock.now
-            let itemMetadata = file.toItemMetadata()
-            convAccum += clock.now - convStart
-
-            let dbStart = clock.now
-            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata))
-            dbAccum += clock.now - dbStart
+        let conversionStart = clock.now
+        var target: SendableItemMetadata?
+        if isFirstPage {
+            // The initial response includes the target. Persist its visit with the page and report only children.
+            var metadata = files[0].toItemMetadata()
+            if metadata.directory {
+                metadata.visitedDirectory = true
+            }
+            target = metadata
         }
 
-        signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)")
+        let children = files.dropFirst(isFirstPage ? 1 : 0).map { $0.toItemMetadata() }
+        let dbStart = clock.now
+        guard let metadatas = dbManager.persistPaginatedMetadata(target: target, children: children) else {
+            return (nil, .metadataDatabaseWriteFailed)
+        }
 
-        let itemCount = metadatas.count
-        let dbSeconds = dbAccum.fpSeconds
+        itemCount = metadatas.count
+        let convAccum = dbStart - conversionStart
+        let dbSeconds = (clock.now - dbStart).fpSeconds
         let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
         FileProviderLogger(category: "Enumerator", log: log).performance(
             "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
@@ -111,7 +84,7 @@ extension Enumerator {
 
         // Non-paginated path (older servers / change enumeration): conversion is parallelized and the
         // persist is a single batched transaction. Signpost each so its cost is comparable, in a trace,
-        // against the paginated path's per-item behavior.
+        // against the paginated path.
         let signposter = EnumerationSignposter.signposter
         let convDirState = signposter.beginInterval(
             "ConvertDirectoryMetadata",

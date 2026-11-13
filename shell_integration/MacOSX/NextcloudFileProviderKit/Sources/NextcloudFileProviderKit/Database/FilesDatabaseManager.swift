@@ -876,120 +876,122 @@ public final class FilesDatabaseManager: Sendable {
         } ?? false
     }
 
-    ///
-    /// Add or replace `metadata` while carrying over local-only fields the
-    /// server payload cannot know about: ``keepDownloaded``, ``downloaded``,
-    /// ``visitedDirectory``, ``lockToken``, and the content version File Provider has already seen.
-    ///
-    /// Mirrors the preservation set applied by
-    /// ``processItemMetadatasToUpdate`` for non-paginated reads. Use this from
-    /// any code path that ingests fresh PROPFIND results (e.g. paginated
-    /// enumeration); plain ``addItemMetadata(_:)`` would otherwise overwrite
-    /// these fields back to their defaults, silently undoing user-visible
-    /// state such as "Always keep downloaded" (#9923).
-    ///
-    /// Returns the metadata to report to File Provider, including the existing
-    /// row when the item has an unfinished upload. Callers must report this
-    /// value so File Provider sees local state such as ``keepDownloaded``.
-    /// Incoming server metadata uses defaults for these local-only fields.
-    ///
-    /// - Parameters:
-    ///   - metadata: The freshly-built metadata to persist.
-    ///   - preserveVisitedDirectory: When `false`, do not carry over
-    ///     ``visitedDirectory`` from the existing row. Callers that have just
-    ///     visited the directory in the current request should pass `false`
-    ///     and pre-set `metadata.visitedDirectory = true`, so the visit is
-    ///     recorded rather than overwritten by a stale `false` from the DB.
-    ///   - keepPermissionsListedByParent: Pass `true` when `metadata` is a folder's own read, so the permissions its parent listed are kept.
-    ///
-    @discardableResult
-    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true, keepPermissionsListedByParent: Bool = false) -> SendableItemMetadata {
-        var toWrite = metadata
-
-        // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
-        write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
-            if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
-                let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
-                // A listing describes the server copy while the local edit is still pending.
-                if !existing.deleted, existing.isUpload || hasFailedUpload {
-                    toWrite = existing.metadata
-                    return
+    /// Stores a page and its optional target in one transaction, preserving local metadata.
+    /// Returns the metadata for the children after commit, or `nil` if the transaction fails.
+    func persistPaginatedMetadata(target: SendableItemMetadata?, children: [SendableItemMetadata]) -> [SendableItemMetadata]? {
+        var currentItem: SendableItemMetadata?
+        do {
+            return try write(durability: .relaxed) { db in
+                if let target {
+                    currentItem = target
+                    _ = try addItemMetadataPreservingLocalState(
+                        target,
+                        isTargetDirectory: target.directory,
+                        in: db
+                    )
                 }
 
+                let savedChildren = try children.map { child in
+                    currentItem = child
+                    return try addItemMetadataPreservingLocalState(child, in: db)
+                }
+                currentItem = nil
+                return savedChildren
+            }
+        } catch {
+            logger.error("Failed to persist paginated item metadata.", [
+                .item: currentItem?.ocId,
+                .name: currentItem?.fileName,
+                .url: currentItem?.serverUrl ?? target?.remotePath() ?? children.first?.serverUrl,
+                .error: error
+            ])
+            return nil
+        }
+    }
+
+    private func addItemMetadataPreservingLocalState(
+        _ metadata: SendableItemMetadata,
+        isTargetDirectory: Bool = false,
+        in db: Database
+    ) throws -> SendableItemMetadata {
+        var toWrite = metadata
+        if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
+            let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
+            // A listing describes the server copy while the local edit is still pending.
+            if !existing.deleted, existing.isUpload || hasFailedUpload {
+                return existing.metadata
+            }
+
+            toWrite.downloaded = existing.downloaded
+            toWrite.keepDownloaded = existing.keepDownloaded
+
+            if isTargetDirectory {
+                toWrite.keepPermissionsListedByParent(from: existing)
+            } else {
+                toWrite.visitedDirectory = existing.visitedDirectory
+            }
+
+            toWrite.lockToken = existing.lockToken
+            if toWrite.etag == existing.etag {
+                toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
+            }
+
+            // An ocId lookup can find a moved or deleted row, so check location and deletion state.
+            // Compare visitedDirectory separately because it is local-only.
+            // Writing other non-normal rows resets their state.
+            if !existing.deleted,
+               existing.status == Status.normal.rawValue,
+               existing.hasSameLocation(as: toWrite),
+               existing.isInSameDatabaseStoreableRemoteState(toWrite),
+               existing.visitedDirectory == toWrite.visitedDirectory
+            {
+                logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
+                return toWrite
+            }
+        } else {
+            // The ocId lookup missed. Before falling back to defaults from the
+            // server payload, look for a single non-deleted, non-local-lock row
+            // at the same logical address — an ocId rotation (restore-from-
+            // trash, recreate during reconnect, upload finalizer assigning a
+            // new server-side ocId) leaves the local-only state on the previous
+            // row, and #9923's preservation contract would otherwise silently
+            // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
+            // `lockToken`. Only carry over when exactly one candidate exists:
+            // multiple candidates mean the DB is already in the duplicated
+            // state and choosing one would risk merging from the row about to
+            // be evicted. Eviction in `insertItemMetadata` will then prune the
+            // prior row in the same write that persists the fresh one.
+            let logicalCandidates = try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
+                        && ItemMetadataRecord.Columns.deleted == false
+                        && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
+                )
+                .fetchRecords(db, logger: logger)
+
+            if logicalCandidates.count == 1, let existing = logicalCandidates.first {
                 toWrite.downloaded = existing.downloaded
                 toWrite.keepDownloaded = existing.keepDownloaded
 
-                if preserveVisitedDirectory {
+                if !isTargetDirectory {
                     toWrite.visitedDirectory = existing.visitedDirectory
-                }
-
-                if keepPermissionsListedByParent {
-                    toWrite.keepPermissionsListedByParent(from: existing)
                 }
 
                 toWrite.lockToken = existing.lockToken
                 if toWrite.etag == existing.etag {
                     toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
                 }
-
-                // An ocId lookup can find a moved or deleted row, so check location and deletion state.
-                // Compare visitedDirectory separately because it is local-only.
-                // Writing other non-normal rows resets their state.
-                if !existing.deleted,
-                   existing.status == Status.normal.rawValue,
-                   existing.hasSameLocation(as: toWrite),
-                   existing.isInSameDatabaseStoreableRemoteState(toWrite),
-                   existing.visitedDirectory == toWrite.visitedDirectory
-                {
-                    logger.debug("Skipping item metadata write; database already holds this remote state.", [.item: toWrite.ocId, .name: toWrite.fileName])
-                    return
-                }
             } else {
-                // The ocId lookup missed. Before falling back to defaults from the
-                // server payload, look for a single non-deleted, non-local-lock row
-                // at the same logical address — an ocId rotation (restore-from-
-                // trash, recreate during reconnect, upload finalizer assigning a
-                // new server-side ocId) leaves the local-only state on the previous
-                // row, and #9923's preservation contract would otherwise silently
-                // drop `keepDownloaded`, `downloaded`, `visitedDirectory`, and
-                // `lockToken`. Only carry over when exactly one candidate exists:
-                // multiple candidates mean the DB is already in the duplicated
-                // state and choosing one would risk merging from the row about to
-                // be evicted. Eviction in `insertItemMetadata` will then prune the
-                // prior row in the same write that persists the fresh one.
-                let logicalCandidates = try ItemMetadataRecord
-                    .filter(
-                        ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
-                            && ItemMetadataRecord.Columns.deleted == false
-                            && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
-                    )
-                    .fetchRecords(db, logger: logger)
-
-                if logicalCandidates.count == 1, let existing = logicalCandidates.first {
-                    toWrite.downloaded = existing.downloaded
-                    toWrite.keepDownloaded = existing.keepDownloaded
-
-                    if preserveVisitedDirectory {
-                        toWrite.visitedDirectory = existing.visitedDirectory
-                    }
-
-                    toWrite.lockToken = existing.lockToken
-                    if toWrite.etag == existing.etag {
-                        toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                    }
-                } else {
-                    // No prior row at this ocId or logical address: this is a
-                    // genuinely new item. Inherit the parent's "Always keep
-                    // downloaded" flag so a file surfacing here via remote
-                    // enumeration acquires the same pin as its already-pinned
-                    // siblings (#10054).
-                    toWrite.keepDownloaded = try inheritedKeepDownloaded(for: metadata, in: db)
-                }
+                // No prior row at this ocId or logical address: this is a
+                // genuinely new item. Inherit the parent's "Always keep
+                // downloaded" flag so a file surfacing here via remote
+                // enumeration acquires the same pin as its already-pinned
+                // siblings (#10054).
+                toWrite.keepDownloaded = try inheritedKeepDownloaded(for: metadata, in: db)
             }
-
-            try insertItemMetadata(toWrite, in: db)
         }
 
+        try insertItemMetadata(toWrite, in: db)
         return toWrite
     }
 
