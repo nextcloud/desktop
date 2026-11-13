@@ -548,7 +548,10 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
     qDebug(lcCfApiWrapper) << "Fetch placeholders callback called. File size:" << callbackInfo->FileSize.QuadPart;
     qDebug(lcCfApiWrapper) << "Desktop client proccess id:" << QCoreApplication::applicationPid();
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested by proccess id:" << callbackInfo->ProcessInfo->ProcessId;
-    qDebug(lcCfApiWrapper) << "Fetch placeholders requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId));
+    qDebug(lcCfApiWrapper) << "Fetch placeholders requested by application id:" << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ApplicationId))
+                           << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->PackageName))
+                           << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->ImagePath))
+                           << QString(QString::fromWCharArray(callbackInfo->ProcessInfo->CommandLine));
     qDebug(lcCfApiWrapper) << "Fetch placeholders requested for path" << path;
     if (callbackParameters->FetchPlaceholders.Pattern) {
         qDebug(lcCfApiWrapper) << "Fetch placeholders requested with pattern:"
