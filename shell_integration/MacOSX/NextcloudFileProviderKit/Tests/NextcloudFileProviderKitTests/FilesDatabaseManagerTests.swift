@@ -2249,10 +2249,16 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let rescanned = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
         let returned = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
 
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertEqual(
-            Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, firstSeen,
+            stored?.isInSameDatabaseStoreableRemoteState(rescanned), true,
             "An unchanged row must not be rewritten."
         )
+        XCTAssertEqual(
+            stored?.syncTime, rescanned.syncTime,
+            "Only the stamp moves, so a listing can tell the children it returned from the ones it did not."
+        )
+        XCTAssertGreaterThan(rescanned.syncTime, firstSeen, "Precondition: the listing is newer than the stored row.")
         XCTAssertEqual(returned.ocId, ocId, "The merged metadata must still be returned to the caller.")
         XCTAssertEqual(returned.etag, "v1")
     }
