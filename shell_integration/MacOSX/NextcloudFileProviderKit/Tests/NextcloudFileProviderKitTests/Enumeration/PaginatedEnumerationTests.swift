@@ -15,8 +15,8 @@ import TestInterface
 ///
 @Suite("Paginated enumeration")
 struct PaginatedEnumerationTests {
-    let account = DatabaseTestSuites.account
-    let manager = DatabaseTestSuites.makeManager()
+    let account = DatabaseTestSuites.isolatedAccount()
+    let manager: FilesDatabaseManager
     let rootItem: MockRemoteItem
     let remoteInterface: MockRemoteInterface
     let folder: MockRemoteItem
@@ -24,6 +24,7 @@ struct PaginatedEnumerationTests {
     static let pageSize = 3
 
     init() {
+        manager = DatabaseTestSuites.makeManager(account: account)
         rootItem = MockRemoteItem.rootItem(account: account)
         remoteInterface = MockRemoteInterface(account: account, rootItem: rootItem, pagination: true)
         remoteInterface.capabilities = remoteInterface.capabilities.replacingOccurrences(of: ##""major": 28"##, with: ##""major": 31"##)
@@ -53,14 +54,14 @@ struct PaginatedEnumerationTests {
         var folderRow = folder.toItemMetadata(account: account)
         folderRow.visitedDirectory = true
         seed(folderRow)
-        var gone = DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt", serverUrl: folder.remotePath)
+        var gone = DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt", serverUrl: folder.remotePath, account: account)
         gone.downloaded = true
         seed(gone)
-        var goneDirectory = DatabaseTestSuites.makeFile(ocId: "goneDir", fileName: "GoneDir", serverUrl: folder.remotePath)
+        var goneDirectory = DatabaseTestSuites.makeFile(ocId: "goneDir", fileName: "GoneDir", serverUrl: folder.remotePath, account: account)
         goneDirectory.directory = true
         goneDirectory.visitedDirectory = true
         seed(goneDirectory)
-        var deep = DatabaseTestSuites.makeFile(ocId: "deep", fileName: "deep.txt", serverUrl: folder.remotePath + "/GoneDir")
+        var deep = DatabaseTestSuites.makeFile(ocId: "deep", fileName: "deep.txt", serverUrl: folder.remotePath + "/GoneDir", account: account)
         deep.downloaded = true
         seed(deep)
         return (gone, goneDirectory, deep)
@@ -153,7 +154,7 @@ struct PaginatedEnumerationTests {
 
     @Test func anItemMovedIntoTheFolderDuringTheListingIsKept() async throws {
         _ = seedStaleChildren()
-        var elsewhere = DatabaseTestSuites.makeFile(ocId: "moved", fileName: "moved.txt", serverUrl: rootItem.remotePath + "/elsewhere")
+        var elsewhere = DatabaseTestSuites.makeFile(ocId: "moved", fileName: "moved.txt", serverUrl: rootItem.remotePath + "/elsewhere", account: account)
         elsewhere.downloaded = true
         seed(elsewhere)
         let observer = try MockEnumerationObserver(enumerator: makeEnumerator())
@@ -173,7 +174,7 @@ struct PaginatedEnumerationTests {
         var folderRow = folder.toItemMetadata(account: account)
         folderRow.visitedDirectory = true
         seed(folderRow)
-        var gone = DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt", serverUrl: folder.remotePath)
+        var gone = DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt", serverUrl: folder.remotePath, account: account)
         gone.downloaded = true
         seed(gone)
         let rootEnumerator = try Enumerator(
