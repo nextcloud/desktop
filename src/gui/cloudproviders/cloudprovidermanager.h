@@ -6,6 +6,9 @@
 #ifndef CLOUDPROVIDERMANAGER_H
 #define CLOUDPROVIDERMANAGER_H
 
+#include <gio/gio.h>
+#include <glib.h>
+#include <cloudprovidersproviderexporter.h>
 #include <QObject>
 #include "folder.h"
 
@@ -18,7 +21,10 @@ class CloudProviderManager : public QObject
     Q_OBJECT
 public:
     explicit CloudProviderManager(QObject *parent = nullptr);
+    ~CloudProviderManager() override;
+    void registerProvider(GDBusConnection *connection);
     void registerSignals();
+    void unregisterProvider();
 
 Q_SIGNALS:
 
@@ -28,6 +34,8 @@ public Q_SLOTS:
 private:
     QMap<QString, CloudProviderWrapper*> _map;
     unsigned int _folder_index;
+    guint _busOwnerId = 0;
+    CloudProvidersProviderExporter *_providerExporter = nullptr;
 };
 
 #endif // CLOUDPROVIDERMANAGER_H
