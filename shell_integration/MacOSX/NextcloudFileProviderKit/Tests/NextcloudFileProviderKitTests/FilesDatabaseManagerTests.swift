@@ -427,6 +427,237 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(updatedChild?.serverUrl, account.davFilesUrl + "/newContainerFolder/newDir")
     }
 
+    func testDepth1ChildReconciliationPreservesMergePolicy() throws {
+        for changesPath in [false, true] {
+            for keepExistingDownloadState in [false, true] {
+                for unchangedEtag in [false, true] {
+                    let suffix = "\(changesPath)-\(keepExistingDownloadState)-\(unchangedEtag)"
+                    var folder = SendableItemMetadata(ocId: "folder-\(suffix)", fileName: "folder-\(suffix)", account: Self.account)
+                    folder.directory = true
+                    folder.visitedDirectory = true
+                    try Self.dbManager.insertForTesting(folder)
+                    var original = SendableItemMetadata(ocId: "child-\(suffix)", fileName: "child.txt", account: Self.account)
+                    original.serverUrl = folder.remotePath()
+                    original.uploaded = true
+                    original.downloaded = true
+                    original.keepDownloaded = true
+                    original.visitedDirectory = true
+                    original.lockToken = "stored-lock"
+                    original.etag = "stored-etag"
+                    original.fileProviderContentVersion = changesPath ? nil : "stored-content-version"
+                    try Self.dbManager.insertForTesting(original)
+
+                    var incoming = original
+                    incoming.apply(fileName: changesPath ? "renamed.txt" : original.fileName)
+                    incoming.downloaded = false
+                    incoming.keepDownloaded = false
+                    incoming.visitedDirectory = false
+                    incoming.lockToken = "incoming-lock"
+                    incoming.etag = unchangedEtag ? original.etag : "new-etag"
+                    incoming.fileProviderContentVersion = "incoming-content-version"
+                    incoming.size = original.size + 1
+
+                    let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                        account: Self.account.ncKitAccount, serverUrl: folder.remotePath(),
+                        updatedMetadatas: [folder, incoming], keepExistingDownloadState: keepExistingDownloadState
+                    ))
+
+                    var expected = incoming
+                    expected.downloaded = keepExistingDownloadState
+                    expected.keepDownloaded = true
+                    expected.visitedDirectory = false
+                    expected.lockToken = changesPath ? nil : original.lockToken
+                    expected.fileProviderContentVersion = unchangedEtag ? original.fileProviderContentVersion : incoming.fileProviderContentVersion
+                    XCTAssertEqual(changes.updated, [expected], "Unexpected changed child for \(suffix)")
+                    XCTAssertTrue(changes.created.isEmpty)
+                    XCTAssertTrue(changes.deleted.isEmpty)
+                    XCTAssertEqual(Self.dbManager.itemMetadata(ocId: original.ocId), expected, "Persisted child differs for \(suffix)")
+                }
+            }
+        }
+    }
+
+    func testDepth1ChildReconciliationSkipsUnchangedAndNonNormalRows() throws {
+        for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
+            var folder = SendableItemMetadata(ocId: "folder-\(status.rawValue)", fileName: "folder-\(status.rawValue)", account: Self.account)
+            folder.directory = true
+            folder.visitedDirectory = true
+            try Self.dbManager.insertForTesting(folder)
+            var original = SendableItemMetadata(ocId: "child-\(status.rawValue)", fileName: "child.txt", account: Self.account)
+            original.serverUrl = folder.remotePath()
+            original.uploaded = true
+            original.downloaded = true
+            original.keepDownloaded = true
+            original.visitedDirectory = true
+            original.lockToken = "stored-lock"
+            original.etag = "stored-etag"
+            original.fileProviderContentVersion = "stored-content-version"
+            original.status = status.rawValue
+            try Self.dbManager.insertForTesting(original)
+            var incoming = original
+            incoming.downloaded = false
+            incoming.keepDownloaded = false
+            incoming.visitedDirectory = false
+            incoming.lockToken = nil
+            incoming.fileProviderContentVersion = "incoming-content-version"
+            incoming.status = Status.normal.rawValue
+            if status != .normal {
+                incoming.etag = "new-etag"
+            }
+
+            let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                account: Self.account.ncKitAccount, serverUrl: folder.remotePath(),
+                updatedMetadatas: [folder, incoming], keepExistingDownloadState: false
+            ))
+
+            XCTAssertTrue(changes.updated.isEmpty)
+            XCTAssertTrue(changes.created.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: original.ocId), original)
+        }
+    }
+
+    func testDepth1TargetReconciliationPreservesMergePolicy() throws {
+        let cases: [(
+            preserveDownloadState: Bool, keepDownloaded: Bool, visitedDirectory: Bool,
+            unchangedEtag: Bool, contentVersion: String?, incomingLockToken: String?
+        )] = [
+            (false, false, false, false, nil, nil),
+            (true, true, true, false, "stored-version", "incoming-lock"),
+            (false, true, true, true, nil, "incoming-lock"),
+            (true, false, false, true, "stored-version", nil)
+        ]
+        for (index, testCase) in cases.enumerated() {
+            var existing = SendableItemMetadata(ocId: "target-\(index)", fileName: "target-\(index)", account: Self.account)
+            existing.serverUrl = Self.account.davFilesUrl
+            existing.directory = true
+            existing.uploaded = true
+            existing.downloaded = true
+            existing.keepDownloaded = testCase.keepDownloaded
+            existing.visitedDirectory = testCase.visitedDirectory
+            existing.lockToken = "stored-lock"
+            existing.etag = "stored-etag"
+            existing.fileProviderContentVersion = testCase.contentVersion
+            try Self.dbManager.insertForTesting(existing)
+
+            var incoming = existing
+            incoming.downloaded = false
+            incoming.keepDownloaded = !existing.keepDownloaded
+            incoming.visitedDirectory = false
+            incoming.lockToken = testCase.incomingLockToken
+            incoming.etag = testCase.unchangedEtag ? existing.etag : "new-etag"
+            incoming.fileProviderContentVersion = "incoming-version"
+            incoming.size = existing.size + 1
+
+            let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
+                updatedMetadatas: [incoming], keepExistingDownloadState: testCase.preserveDownloadState
+            ))
+
+            var expected = incoming
+            expected.downloaded = testCase.preserveDownloadState
+            expected.keepDownloaded = existing.keepDownloaded
+            expected.visitedDirectory = true
+            expected.fileProviderContentVersion = testCase.unchangedEtag ? existing.fileProviderContentVersion : incoming.fileProviderContentVersion
+            XCTAssertEqual(changes.updated, [expected], "Unexpected target update for case \(index)")
+            XCTAssertTrue(changes.created.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), expected, "Unexpected persisted target for case \(index)")
+        }
+    }
+
+    func testDepth1TargetReconciliationRecordsVisitsWithoutReportingSkippedRows() throws {
+        for status in [Status.normal, .inDownload, .downloading, .downloadError, .inUpload, .uploading, .uploadError] {
+            for alreadyVisited in [false, true] {
+                let suffix = "\(status.rawValue)-\(alreadyVisited)"
+                var existing = SendableItemMetadata(ocId: "target-\(suffix)", fileName: "target-\(suffix)", account: Self.account)
+                existing.serverUrl = Self.account.davFilesUrl
+                existing.directory = true
+                existing.uploaded = true
+                existing.downloaded = true
+                existing.keepDownloaded = true
+                existing.visitedDirectory = alreadyVisited
+                existing.lockToken = "stored-lock"
+                existing.etag = "stored-etag"
+                existing.fileProviderContentVersion = "stored-version"
+                existing.status = status.rawValue
+                try Self.dbManager.insertForTesting(existing)
+
+                var incoming = existing
+                incoming.downloaded = false
+                incoming.keepDownloaded = false
+                incoming.visitedDirectory = false
+                incoming.lockToken = alreadyVisited ? nil : "incoming-lock"
+                incoming.fileProviderContentVersion = alreadyVisited ? "incoming-version" : nil
+                incoming.status = Status.normal.rawValue
+                if status != .normal {
+                    incoming.etag = "new-etag"
+                    incoming.size = existing.size + 1
+                }
+
+                let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                    account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
+                    updatedMetadatas: [incoming], keepExistingDownloadState: false
+                ))
+
+                var expected = existing
+                expected.visitedDirectory = true
+                XCTAssertTrue(changes.updated.isEmpty, "Unexpected target update for \(suffix)")
+                XCTAssertTrue(changes.created.isEmpty)
+                XCTAssertTrue(changes.deleted.isEmpty)
+                XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), expected, "Unexpected persisted target for \(suffix)")
+            }
+        }
+    }
+
+    func testDepth1TargetReconciliationCreatesVisitedTargetWithInheritedParentPin() throws {
+        for parentPinned in [false, true] {
+            var parent = SendableItemMetadata(ocId: "parent-\(parentPinned)", fileName: "parent-\(parentPinned)", account: Self.account)
+            parent.serverUrl = Self.account.davFilesUrl
+            parent.directory = true
+            parent.uploaded = true
+            parent.keepDownloaded = parentPinned
+            try Self.dbManager.insertForTesting(parent)
+            var incoming = SendableItemMetadata(ocId: "target-\(parentPinned)", fileName: "target", account: Self.account)
+            incoming.serverUrl = parent.remotePath()
+            incoming.directory = true
+            incoming.uploaded = true
+            incoming.etag = "new-etag"
+
+            let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+                account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
+                updatedMetadatas: [incoming], keepExistingDownloadState: true
+            ))
+
+            var expected = incoming
+            expected.keepDownloaded = parentPinned
+            expected.visitedDirectory = true
+            XCTAssertEqual(changes.created, [expected])
+            XCTAssertTrue(changes.updated.isEmpty)
+            XCTAssertTrue(changes.deleted.isEmpty)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: incoming.ocId), expected)
+            XCTAssertEqual(Self.dbManager.itemMetadata(ocId: parent.ocId), parent)
+        }
+    }
+
+    func testDepth1TargetReconciliationDoesNotRecordVisitForEmptyListing() throws {
+        var existing = SendableItemMetadata(ocId: "target", fileName: "target", account: Self.account)
+        existing.serverUrl = Self.account.davFilesUrl
+        existing.directory = true
+        existing.uploaded = true
+        existing.lockToken = "stored-lock"
+        existing.fileProviderContentVersion = "stored-version"
+        try Self.dbManager.insertForTesting(existing)
+
+        let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount, serverUrl: existing.remotePath(),
+            updatedMetadatas: [], keepExistingDownloadState: false
+        ))
+
+        XCTAssertTrue(changes.isEmpty)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: existing.ocId), existing)
+    }
+
     func testTransitItemIsNotUpdated() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
@@ -2160,6 +2391,53 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(storedRotated.deleted)
         XCTAssertTrue(storedRotated.keepDownloaded, "Persisted row should reflect the merged state")
         XCTAssertTrue(storedRotated.downloaded)
+    }
+
+    func testPreservingUpsertReturnsAndStoresMergedMetadataForBothIdentityLookups() throws {
+        for rotatesIdentifier in [false, true] {
+            for preserveVisitedDirectory in [false, true] {
+                for unchangedEtag in [false, true] {
+                    let suffix = "\(rotatesIdentifier)-\(preserveVisitedDirectory)-\(unchangedEtag)"
+                    var original = SendableItemMetadata(ocId: "original-\(suffix)", fileName: "\(suffix).txt", account: Self.account)
+                    original.directory = true
+                    original.downloaded = true
+                    original.keepDownloaded = false
+                    original.visitedDirectory = false
+                    original.lockToken = "stored-lock"
+                    original.etag = "stored-etag"
+                    original.fileProviderContentVersion = "stored-content-version"
+                    try Self.dbManager.insertForTesting(original)
+
+                    var incoming = original
+                    if rotatesIdentifier {
+                        incoming.ocId = "rotated-\(suffix)"
+                    }
+                    incoming.downloaded = false
+                    incoming.keepDownloaded = true
+                    incoming.visitedDirectory = true
+                    incoming.lockToken = "incoming-lock"
+                    incoming.etag = unchangedEtag ? original.etag : "new-etag"
+                    incoming.fileProviderContentVersion = "incoming-content-version"
+                    incoming.size = 1024
+                    incoming.status = Status.uploadError.rawValue
+                    incoming.chunkUploadId = "incoming-upload"
+
+                    let merged = Self.dbManager.addItemMetadataPreservingLocalState(incoming, preserveVisitedDirectory: preserveVisitedDirectory)
+
+                    var expected = incoming
+                    expected.downloaded = true
+                    expected.keepDownloaded = false
+                    expected.visitedDirectory = !preserveVisitedDirectory
+                    expected.lockToken = original.lockToken
+                    expected.fileProviderContentVersion = unchangedEtag ? original.fileProviderContentVersion : incoming.fileProviderContentVersion
+                    XCTAssertEqual(merged, expected, "Unexpected merge for \(suffix)")
+                    XCTAssertEqual(Self.dbManager.itemMetadata(ocId: incoming.ocId), expected, "Persisted metadata differs for \(suffix)")
+                    if rotatesIdentifier {
+                        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: original.ocId)?.deleted, true)
+                    }
+                }
+            }
+        }
     }
 
     func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
