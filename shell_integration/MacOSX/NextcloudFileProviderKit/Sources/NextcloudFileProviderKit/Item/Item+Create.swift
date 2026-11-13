@@ -309,6 +309,7 @@ public extension Item {
         // immediate parent is sufficient because that recursive enable sets the
         // flag on every then-known descendant of the pinned ancestor.
         let parentKeepDownloaded: Bool
+        var parentIsParked = false
 
         if parentItemIdentifier == .rootContainer {
             // Mirrors the lookup `Item.rootContainer(...)` uses to merge persisted
@@ -332,6 +333,8 @@ public extension Item {
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
+
+            parentIsParked = parentItemMetadata.isAtHoldingPath
             parentKeepDownloaded = parentItemMetadata.keepDownloaded
             parentItemRemotePath = parentItemMetadata.remotePath()
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
@@ -343,6 +346,10 @@ public extension Item {
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
         let isOnIgnoreList = ignoredFiles?.isExcluded(relativePath) ?? false
+        let refusalInParkedFolder = { () -> (Item?, Error?) in
+            logger.info("Not creating an item in a folder that waits to be placed again by a listing.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
 
         // Bundles and packages (`.app`, `.key`, `.pages`, `.fcpbundle`, …) are folders that the
         // system presents as atomic files. WebDAV cannot represent the full bundle layout
@@ -365,6 +372,10 @@ public extension Item {
         }
 
         guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
+            guard !parentIsParked else {
+                return refusalInParkedFolder()
+            }
+
             return await Item.createLockFile(
                 basedOn: itemTemplate,
                 parentItemIdentifier: parentItemIdentifier,
@@ -389,6 +400,10 @@ public extension Item {
                 dbManager: dbManager,
                 log: log
             )
+        }
+
+        guard !parentIsParked else {
+            return refusalInParkedFolder()
         }
 
         let fileNameLocalPath = url?.path ?? ""

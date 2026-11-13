@@ -639,6 +639,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
 
+    /// The source path of the most recent move request.
+    public private(set) var lastMoveRemotePathSource: String?
+
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
 
@@ -1087,6 +1090,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         print("Moving \(remotePathSource) to \(remotePathDestination)")
+        lastMoveRemotePathSource = remotePathSource
 
         let isTrashed = remotePathSource.hasPrefix(account.trashUrl)
         let isTrashing = remotePathDestination.hasPrefix(account.trashUrl)

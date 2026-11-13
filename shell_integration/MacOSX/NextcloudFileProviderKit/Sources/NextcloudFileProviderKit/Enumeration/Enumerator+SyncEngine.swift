@@ -212,6 +212,11 @@ extension Enumerator {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        guard !serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) else {
+            logger.info("Not reading a folder that waits to be placed again by a listing.", [.url: serverUrl])
+            return RemoteReadResult(error: .parkedFolderPath)
+        }
+
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 
         let options: NKRequestOptions = if let pageSettings {
@@ -239,7 +244,18 @@ extension Enumerator {
         let networkClock = ContinuousClock()
         let networkStart = networkClock.now
 
-        let (_, files, data, error) = await remoteInterface.enumerate(
+        let registeringTaskHandler: @Sendable (URLSessionTask) -> Void = { task in
+            taskHandler(task)
+            if let domain, let enumeratedItemIdentifier {
+                NSFileProviderManager(for: domain)?.register(
+                    task,
+                    forItemWithIdentifier: enumeratedItemIdentifier,
+                    completionHandler: { _ in }
+                )
+            }
+        }
+
+        let (_, enumeratedFiles, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
             showHiddenFiles: true,
@@ -247,18 +263,10 @@ extension Enumerator {
             requestBody: nil,
             account: account,
             options: options,
-            taskHandler: { task in
-                taskHandler(task)
-                if let domain, let enumeratedItemIdentifier {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: enumeratedItemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }
+            taskHandler: registeringTaskHandler
         )
 
+        var files = enumeratedFiles
         let networkElapsed = networkClock.now - networkStart
         signposter.endInterval("PROPFIND", propfindState, "files=\(files.count)")
         logger.performance(
@@ -350,7 +358,26 @@ extension Enumerator {
             }
         }
 
+        // A listed folder stored at another path was either moved here or is a second mount of the same folder, which shares its identifier (#10106).
+        let listsTarget = depth != .target && !isFollowUpPaginatedRequest
+        guard let secondMounts = await secondMountedDirectories(
+            among: listsTarget ? Array(files.dropFirst()) : files,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            taskHandler: registeringTaskHandler,
+            isCancelled: isCancelled,
+            logger: logger
+        ) else {
+            return RemoteReadResult(error: .cancelled)
+        }
+        files.removeAll { secondMounts[$0.ocId] != nil }
+
         if depth == .target {
+            if let storedMetadata = secondMounts[receivedFile.ocId] {
+                return RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+            }
+
             let received = receivedFile.toItemMetadata()
 
             // Read and merge off the cooperative pool: see
@@ -406,5 +433,126 @@ extension Enumerator {
             logger.error("Infinite depth read requested.")
             return RemoteReadResult(error: .cancelled)
         }
+    }
+
+    ///
+    /// The listed folders to keep at their stored path, keyed by identifier, because the server still lists them there.
+    ///
+    /// Only a folder stored at the root or below another live parent can be a second mount. A single such folder below a parent
+    /// is read at its stored path, several are checked with one listing of their stored parent, and a folder the server no
+    /// longer has there, or whose check fails, was moved. Up to ``workingSetScanConcurrency`` stored parents are checked at once.
+    ///
+    /// - Returns: `nil` when the read was cancelled.
+    ///
+    private static func secondMountedDirectories(
+        among files: [NKFile],
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
+        isCancelled: @Sendable () -> Bool,
+        logger: FileProviderLogger
+    ) async -> [String: SendableItemMetadata]? {
+        let listedDirectories = files.filter(\.directory)
+
+        guard !listedDirectories.isEmpty else {
+            return [:]
+        }
+
+        let candidates = await dbManager.perform { manager in
+            let storedByOcId = manager.itemMetadatas(ocIds: listedDirectories.map(\.ocId)) ?? [:]
+
+            return listedDirectories.compactMap { listed -> SendableItemMetadata? in
+                guard let stored = storedByOcId[listed.ocId], stored.directory, !stored.deleted, !stored.isTrashed, !stored.isAtHoldingPath,
+                      stored.serverUrl.precomposedStringWithCanonicalMapping != listed.serverUrl.precomposedStringWithCanonicalMapping,
+                      stored.serverUrl == account.davFilesUrl || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
+                else {
+                    return nil
+                }
+
+                return stored
+            }
+        }
+
+        var secondMounts: [String: SendableItemMetadata] = [:]
+
+        await withTaskGroup(of: [SendableItemMetadata].self) { group in
+            for (index, (storedParentPath, storedDirectories)) in Dictionary(grouping: candidates, by: \.serverUrl).enumerated() {
+                if index >= workingSetScanConcurrency, let kept = await group.next() {
+                    kept.forEach { secondMounts[$0.ocId] = $0 }
+                }
+
+                guard !isCancelled() else {
+                    group.cancelAll()
+                    break
+                }
+
+                group.addTask {
+                    await foldersStillListed(among: storedDirectories, storedAt: storedParentPath, account: account, remoteInterface: remoteInterface, taskHandler: taskHandler, logger: logger)
+                }
+            }
+
+            for await kept in group {
+                kept.forEach { secondMounts[$0.ocId] = $0 }
+            }
+        }
+
+        return isCancelled() ? nil : secondMounts
+    }
+
+    /// The folders among `storedDirectories`, all stored below `storedParentPath`, that the server still lists there.
+    private static func foldersStillListed(
+        among storedDirectories: [SendableItemMetadata],
+        storedAt storedParentPath: String,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
+        logger: FileProviderLogger
+    ) async -> [SendableItemMetadata] {
+        // A single folder is read on its own, so a large stored parent is not downloaded on every listing.
+        let checksSingleFolder = storedDirectories.count == 1
+        let checkedPath = checksSingleFolder ? storedDirectories[0].remotePath() : storedParentPath
+        let (listedAtStoredLocation, error) = await listedIdentifiers(
+            at: checkedPath,
+            depth: checksSingleFolder ? .target : .targetAndDirectChildren,
+            account: account,
+            remoteInterface: remoteInterface,
+            taskHandler: taskHandler
+        )
+
+        guard error == .success else {
+            logger.info("Treated folders as moved because their stored location could not be read.", [.url: checkedPath, .error: error])
+            return []
+        }
+
+        let kept = storedDirectories.filter { listedAtStoredLocation.contains($0.ocId) }
+
+        for stored in kept {
+            logger.info("Kept a folder at its stored path because the server still lists it there.", [.item: stored.ocId, .url: storedParentPath])
+        }
+
+        return kept
+    }
+
+    /// The identifiers the server lists at `remotePath` to the given depth, or the error of the read.
+    static func listedIdentifiers(
+        at remotePath: String,
+        depth: EnumerateDepth,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> (ocIds: Set<String>, error: NKError) {
+        let (_, files, _, error) = await remoteInterface.enumerate(
+            remotePath: remotePath,
+            depth: depth,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: taskHandler
+        )
+
+        return (Set(files.map(\.ocId)), error)
     }
 }

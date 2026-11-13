@@ -5,9 +5,9 @@
 import Foundation
 
 ///
-/// How many working-set scan reads may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share, so on an HTTP/1.1 server a transfer started during a scan waits for a scan read to finish.
+/// How many working-set scan reads, and separately how many stored-path checks of one listing, may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share.
 ///
-private let workingSetScanConcurrency = 6
+let workingSetScanConcurrency = 6
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
@@ -131,7 +131,7 @@ extension Enumerator {
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
         let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
         let materialisedItems = (storedMaterialisedItems ?? [])
-            .filter { !$0.deleted && !$0.isTrashed }
+            .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var accumulatedCreations = [SendableItemMetadata]()
@@ -332,8 +332,33 @@ extension Enumerator {
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.
         var seenUpdatedOcIds = Set<String>()
-        let discoveredUpdates = (accumulatedCreations + accumulatedUpdates).filter {
+        let firstCopies = (accumulatedCreations + accumulatedUpdates).filter {
             seenUpdatedOcIds.insert($0.ocId).inserted
+        }
+
+        // Each read reports rows as stored after it, so a row that a later read moved again or deleted is reported as it is stored now.
+        let storedRows = dbManager.itemMetadatas(ocIds: firstCopies.map(\.ocId))
+        var discoveredUpdates = [SendableItemMetadata]()
+        for copy in firstCopies {
+            let stored: SendableItemMetadata
+
+            if let storedRows {
+                // A row missing since its read was removed meanwhile or never written, so it is not reported and the scan counts as incomplete.
+                guard let row = storedRows[copy.ocId] else {
+                    hadReadFailure = true
+                    continue
+                }
+
+                stored = row
+            } else {
+                stored = copy
+            }
+
+            if stored.deleted {
+                reportedDeletions.append(stored)
+            } else {
+                discoveredUpdates.append(stored)
+            }
         }
 
         if discoveredUpdates.isEmpty, reportedDeletions.isEmpty {
