@@ -400,6 +400,7 @@ extension FilesDatabaseManager {
             )
             childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
             childItem.lockToken = nil
+            childItem.syncTime = Date()
             try childItem.upsertRow(db)
             movedChildren.append(childItem.metadata)
             logger.debug(
