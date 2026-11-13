@@ -168,7 +168,6 @@ extension Enumerator {
                 "serverUrl=\(serverUrl, privacy: .public) items=\(listingMetadata.count)"
             )
             let listingWriteResult = dbManager.saveDepth1ListingMetadata(
-                account: accountKey,
                 serverUrl: serverUrl,
                 updatedMetadatas: listingMetadata,
                 keepExistingDownloadState: true,

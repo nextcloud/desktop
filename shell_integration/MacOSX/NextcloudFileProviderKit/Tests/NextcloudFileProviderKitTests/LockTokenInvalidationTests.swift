@@ -112,7 +112,6 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         renamed.etag = "etag-2"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl + "/parentDir",
             updatedMetadatas: [updatedParent, renamed],
             keepExistingDownloadState: true
@@ -155,7 +154,6 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         updated.etag = "etag-2"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl + "/parentDir",
             updatedMetadatas: [updatedParent, updated],
             keepExistingDownloadState: true

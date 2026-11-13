@@ -184,7 +184,6 @@ public extension Item {
         // deliberately preserves.
         return dbManager.descendantFileOcIds(
             underRemotePath: metadata.remotePath(),
-            account: metadata.account,
             statusBelow: .inUpload
         )
     }

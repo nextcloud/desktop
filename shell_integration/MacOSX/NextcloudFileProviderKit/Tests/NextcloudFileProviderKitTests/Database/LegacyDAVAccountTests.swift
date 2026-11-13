@@ -65,50 +65,6 @@ struct LegacyDAVAccountTests {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
 
-    @Test(arguments: [AccountChange.serverURL, .backendUserID])
-    func currentAccountCannotReplacePendingUploadWithMismatchingLegacyDetails(change: AccountChange) throws {
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let previous = Self.previousAccount
-        let current = change.applying(to: previous)
-        var pending = DatabaseTestSuites.makeFile(
-            ocId: "pending-file",
-            fileName: "Report.txt",
-            account: previous
-        )
-        pending.account = current.ncKitAccount
-        pending.downloaded = true
-        pending.uploaded = false
-        pending.status = Status.uploadError.rawValue
-        pending.chunkUploadId = "pending-edit-upload"
-        // Leave one account field missing so the imported row retains its absolute parent URL.
-        if change == .serverURL {
-            pending.userId = ""
-        } else {
-            pending.urlBase = ""
-        }
-        _ = try FilesDatabaseManager.writeDatabaseWithoutSavedDAVAccountForTesting(
-            at: directory.appendingPathComponent(domain.rawValue).appendingPathExtension(DatabaseSchema.fileExtension),
-            metadata: [pending]
-        )
-
-        let manager = try openDatabase(account: current)
-        #expect(manager.itemMetadata(ocId: pending.ocId) == nil)
-        #expect(manager.itemMetadata(locatedAtRemoteUrl: pending.remotePath()) == nil)
-        #expect(manager.materialisedItemMetadatas()?.isEmpty == true)
-
-        var listed = DatabaseTestSuites.makeFile(ocId: pending.ocId, fileName: pending.fileName, account: current)
-        listed.uploaded = true
-        #expect(throws: NKError.invalidData) {
-            try manager.persistItemMetadataFromPagedListing(listed)
-        }
-        manager.addItemMetadata(listed)
-
-        let saved = try #require(manager.itemMetadatas(account: current.ncKitAccount).first { $0.ocId == pending.ocId })
-        #expect(saved.remotePath() == pending.remotePath())
-        #expect(saved.status == Status.uploadError.rawValue)
-        #expect(saved.chunkUploadId == pending.chunkUploadId)
-    }
-
     @Test(arguments: AccountChange.allCases)
     func reopeningClearsLockTokenWhenTheDAVAccountChanges(change: AccountChange) throws {
         defer { try? FileManager.default.removeItem(at: directory) }

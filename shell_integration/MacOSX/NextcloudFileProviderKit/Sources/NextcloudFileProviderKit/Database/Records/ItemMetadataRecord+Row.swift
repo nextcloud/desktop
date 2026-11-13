@@ -36,9 +36,8 @@ extension ItemMetadataRecord {
         }
     }
 
-    init(row: Row) throws {
+    init(row: Row, account domainAccount: Account) throws {
         ocId = try row.decode(forColumn: "ocId")
-        account = try row.decode(forColumn: "account")
         checksums = try row.decode(forColumn: "checksums")
         chunkUploadId = try row.decode(forColumn: "chunkUploadId")
         classFile = try row.decode(forColumn: "classFile")
@@ -99,14 +98,15 @@ extension ItemMetadataRecord {
         trashbinOriginalLocation = try row.decode(forColumn: "trashbinOriginalLocation")
         trashbinDeletionTime = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "trashbinDeletionTime"))
         uploadDate = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "uploadDate"))
-        urlBase = try row.decode(forColumn: "urlBase")
-        user = try row.decode(forColumn: "user")
-        userId = try row.decode(forColumn: "userId")
         normalizedServerUrl = try row.decode(forColumn: "normalizedServerUrl")
         normalizedFileName = try row.decode(forColumn: "normalizedFileName")
 
-        // SQLite can save a parent as a path such as files:/Team. Rebuild the full URL
-        // for WebDAV requests, or keep a legacy absolute URL as it was saved.
+        // The database belongs to one domain. Use its current account to build request URLs
+        // from stored parent paths such as files:/Team. Keep an absolute parent URL as saved.
+        account = domainAccount.ncKitAccount
+        urlBase = domainAccount.serverUrl
+        user = domainAccount.username
+        userId = domainAccount.id
         let storedParent: String = try row.decode(forColumn: "serverUrl")
         let absoluteParentURL = Account.absoluteURL(
             fromDAVRelativePath: storedParent,
@@ -119,7 +119,6 @@ extension ItemMetadataRecord {
 
     func encode(to container: inout PersistenceContainer) throws {
         container["ocId"] = ocId
-        container["account"] = account
         container["checksums"] = checksums
         container["chunkUploadId"] = chunkUploadId
         container["classFile"] = classFile
@@ -181,9 +180,6 @@ extension ItemMetadataRecord {
         container["trashbinOriginalLocation"] = trashbinOriginalLocation
         container["trashbinDeletionTime"] = trashbinDeletionTime.timeIntervalSinceReferenceDate
         container["uploadDate"] = uploadDate.timeIntervalSinceReferenceDate
-        container["urlBase"] = urlBase
-        container["user"] = user
-        container["userId"] = userId
         container["normalizedServerUrl"] = normalizedServerUrl
         container["normalizedFileName"] = normalizedFileName
     }
@@ -192,7 +188,6 @@ extension ItemMetadataRecord {
     func databaseValues() throws -> [(any DatabaseValueConvertible)?] {
         try [
             ocId,
-            account,
             checksums,
             chunkUploadId,
             classFile,
@@ -255,9 +250,6 @@ extension ItemMetadataRecord {
             trashbinOriginalLocation,
             uploadDate.timeIntervalSinceReferenceDate,
             uploaded,
-            urlBase,
-            user,
-            userId,
             visitedDirectory
         ]
     }

@@ -18,7 +18,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 ## Storage choices
 
 - Dates are stored as `REAL` seconds since the reference date, the same number a `Date` holds, so they round-trip exactly. Predicates bind that number, never a `Date`, because GRDB would bind a `Date` as text.
-- SQLite's `serverUrl` column holds a DAV parent path such as `files:/Docs` or `trash:`. The row decoder combines that path with the server base URL and backend user ID to build the WebDAV request URL. If migration cannot identify a legacy row's DAV root, the row keeps its full parent URL in that column. See <doc:UnicodePathNormalization> for the lookup keys.
+- SQLite's `serverUrl` column holds a DAV parent path such as `files:/Docs` or `trash:`. The database manager uses the domain's current account to turn the path into a WebDAV URL. Item rows do not store account details. See <doc:UnicodePathNormalization> for the lookup keys.
 - Items below a directory are matched with a byte-wise range over the location index rather than a pattern, so names with pattern characters or different case never match by accident.
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
@@ -53,23 +53,23 @@ On open, the higher of the two recorded versions is compared with the running bu
 
 The store version and the store identity are part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
 
-The first SQLite schema creates the final tables directly. SQLite files written by earlier test builds use different migration identifiers and are treated as unsupported by the version check.
+The first SQLite schema creates the final tables directly.
 
 ## Store identity
 
 Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
-The extension identifies the DAV account by its server URL, login, and backend user ID. When the domain opens with different DAV account details, the database updates cached items it can match to the previous DAV account. In the same transaction it saves the current DAV account, assigns a new store identity, and discards change batches queued for the previous account. The cached items keep their IDs, download flags, and pins. Lock tokens from the previous account are cleared and interrupted uploads remain pending. Writes and enumeration callbacks check the store identity so a delayed response from the previous account cannot overwrite rows or report changes to Finder.
+The database stores the last configured server URL, login, and backend user ID once per domain. When these details change, setup assigns a new store identity, discards change batches from the previous account, and clears old lock tokens in one transaction. Item paths and identifiers stay the same, as do download flags and pins. Interrupted uploads remain pending. Writes and enumeration callbacks check the store identity so a delayed response from the previous account cannot overwrite rows or report changes to Finder.
 
 When the extension is already running, it checks the incoming credentials in a separate session while the current account continues syncing. Once the check succeeds, it stops accepting sync requests and cancels DAV reads and downloads, including reads that prepare a write. A request that has started a server write can finish and save the result before the switch. Results already being delivered to File Provider also finish before setup continues. The extension updates the account in one SQLite transaction, publishes the replacement, and tells File Provider to retry interrupted requests. If the transaction fails, the previous manager resumes accepting work while it still owns the database.
 
 ## Updating cached DAV paths during account setup
 
-Older extensions could save a new server URL or backend user ID in the domain settings while cached rows still pointed to earlier DAV roots. The extension assumes a change to the DAV root preserves the same sync location and history. During account setup, before the domain starts syncing, the Realm import checks each row's Files or Trash parent URL against the DAV root recorded on that row. It saves eligible items with a relative path such as `files:/Team` and the current account details. Normal enumeration then reconciles server moves, replacements, and deletions by item ID.
+Older extensions could save a new server URL or backend user ID in the domain settings while cached rows still pointed to earlier DAV roots. The extension assumes a change to the DAV root preserves the same sync location and history. During account setup, before the domain starts syncing, the Realm import uses the details on each row to strip its old Files or Trash root. It saves matching items with a relative parent path such as `files:/Team`. Normal enumeration then reconciles server moves, replacements, and deletions by item ID.
 
 ## Import from Realm
 
-Builds before the switch kept the metadata in a Realm database, `<domain identifier>.realm`. The importer opens it with the last Realm schema so Realm applies its own upgrades. It creates a staging SQLite file with the final schema, then copies the rows and queued changes and updates eligible cached items in one transaction. Queued changes from a previous DAV account are discarded. It then moves the finished SQLite file into place and removes the Realm files. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
+Builds before the switch kept the metadata in a Realm database, `<domain identifier>.realm`. The importer opens it with the last Realm schema so Realm applies its own upgrades. It creates a staging SQLite file with the final schema, then imports item paths and queued changes in one transaction. Queued changes from a previous DAV account are discarded. It then moves the finished SQLite file into place and removes the Realm files. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
 
 A Realm file next to an existing SQLite database means an older, Realm-based build ran last, so its content replaces the SQLite database. Only a Realm file which cannot be read at all is set aside; a file Realm cannot open for a passing reason, such as a permission or lock problem, is left in place and the open fails until the import succeeds.
 

@@ -28,7 +28,7 @@ extension DatabaseTestSuites {
 
             let manager = manager
             async let write: ChangeSet? = Task.detached {
-                manager.depth1ReadUpdateItemMetadatas(account: DatabaseTestSuites.account.ncKitAccount, serverUrl: folderUrl, updatedMetadatas: [folder] + children, keepExistingDownloadState: true)
+                manager.depth1ReadUpdateItemMetadatas(serverUrl: folderUrl, updatedMetadatas: [folder] + children, keepExistingDownloadState: true)
             }.value
 
             var reads = 0
@@ -57,7 +57,7 @@ extension DatabaseTestSuites {
                 second.addItemMetadata(DatabaseTestSuites.makeFile(ocId: "second-\(index)", fileName: "second-\(index).txt"))
             }
 
-            #expect(manager.itemMetadatas(account: DatabaseTestSuites.account.ncKitAccount).count == 100)
+            #expect(manager.itemMetadatas().count == 100)
             #expect(second.itemMetadata(ocId: "first-49") != nil)
             #expect(manager.itemMetadata(ocId: "second-49") != nil)
         }

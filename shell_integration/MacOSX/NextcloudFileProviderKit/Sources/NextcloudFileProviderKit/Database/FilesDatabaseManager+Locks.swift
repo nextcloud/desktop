@@ -103,6 +103,6 @@ extension FilesDatabaseManager {
                 ItemMetadataRecord.Columns.serverUrl == $0 && ItemMetadataRecord.Columns.fileName == fileName
             })
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
-            .fetchRecord(db, logger: logger)
+            .fetchRecord(db, account: account, logger: logger)
     }
 }

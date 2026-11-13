@@ -181,7 +181,7 @@ extension Enumerator {
             // Orphans = local trash rows absent from the remote trash listing = permanently deleted
             // remotely. Derive once, then drain in batches.
             let remoteSet = Set((trashedItems ?? []).map(\.ocId))
-            let orphans = dbManager.trashedItemMetadatas(account: account)
+            let orphans = dbManager.trashedItemMetadatas()
                 .filter { !remoteSet.contains($0.ocId) }
 
             for orphan in orphans {

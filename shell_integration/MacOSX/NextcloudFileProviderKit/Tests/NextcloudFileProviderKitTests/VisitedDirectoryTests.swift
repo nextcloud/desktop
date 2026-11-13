@@ -47,7 +47,6 @@ final class VisitedDirectoryTests: XCTestCase {
 
     private func ingest() -> ChangeSet? {
         dbManager.depth1ReadUpdateItemMetadatas(
-            account: Self.account.ncKitAccount,
             serverUrl: Self.account.davFilesUrl + "/2026_Project",
             updatedMetadatas: [folder],
             keepExistingDownloadState: true
