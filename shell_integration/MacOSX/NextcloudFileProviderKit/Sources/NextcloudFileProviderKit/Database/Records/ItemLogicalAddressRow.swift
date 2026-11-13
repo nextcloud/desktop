@@ -9,13 +9,14 @@ struct ItemLogicalAddressRow: Codable, Sendable, FetchableRecord, TableRecord {
     static let databaseTableName = ItemMetadataRecord.databaseTableName
     static var databaseSelection: [any SQLSelectable] {
         [
+            Column("davRoot"),
             Column("deleted"),
             Column("fileName"),
             Column("isLockFileOfLocalOrigin"),
             Column("normalizedFileName"),
-            Column("normalizedServerUrl"),
+            Column("normalizedParentPath"),
             Column("ocId"),
-            Column("serverUrl"),
+            Column("parentPath"),
             Column("status"),
             Column("syncTime")
         ]
@@ -26,9 +27,10 @@ struct ItemLogicalAddressRow: Codable, Sendable, FetchableRecord, TableRecord {
     }
 
     var ocId: String
-    var serverUrl: String
+    var davRoot: String
+    var parentPath: String
     var fileName: String
-    var normalizedServerUrl: String
+    var normalizedParentPath: String
     var normalizedFileName: String
     var deleted: Bool
     var isLockFileOfLocalOrigin: Bool

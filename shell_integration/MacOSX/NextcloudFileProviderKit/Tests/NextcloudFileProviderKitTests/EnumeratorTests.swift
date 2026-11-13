@@ -377,26 +377,30 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let parentNKFile = remoteFolder.toNKFile()
         let childrenNKFiles = (0 ..< 5).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
         let followUpChildrenNKFiles = (5 ..< 10).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         // --- Scenario A: First Page (pageIndex == 0) ---
@@ -487,21 +491,24 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let pinnedChildren = ["pagedChild0", "pagedChild2"]
         for ocId in pinnedChildren {
             var seeded = SendableItemMetadata(ocId: ocId, fileName: "\(ocId).txt", account: Self.account)
+            seeded.serverUrl = remoteFolder.remotePath
             seeded.keepDownloaded = true
             dbManager.addItemMetadata(seeded)
         }
 
         let parentNKFile = remoteFolder.toNKFile()
         let childrenNKFiles = (0 ..< 3).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
@@ -538,19 +545,22 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let dbManager = Self.dbManager
 
         var seeded = SendableItemMetadata(ocId: "pagedChild5", fileName: "pagedChild5.txt", account: Self.account)
+        seeded.serverUrl = remoteFolder.remotePath
         seeded.keepDownloaded = true
         dbManager.addItemMetadata(seeded)
 
         let followUpChildrenNKFiles = (5 ..< 8).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
@@ -2022,6 +2032,40 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             "local-lock-token-123",
             "lockToken must be preserved across target-depth reads"
         )
+    }
+
+    func testTargetReadRejectsAResponseWithAParentOutsideTheAccountDAVRoots() async throws {
+        let oldMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(oldMetadata)
+        let unexpectedParent = MockRemoteItem(
+            identifier: "unexpected-parent",
+            name: "elsewhere",
+            remotePath: Self.account.serverUrl + "/elsewhere",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        // The mock uses remotePath to find the requested item and parent to build the response URL.
+        remoteItemA.parent = unexpectedParent
+        remoteItemA.versionIdentifier = "unexpected-version"
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let result = await Enumerator.readServerUrl(
+            oldMetadata.remotePath(),
+            remoteInterface: remote,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(remote.readOperationCount, 1)
+        XCTAssertEqual(result.error, .invalidData)
+        XCTAssertNil(result.metadatas)
+        let saved = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: oldMetadata.ocId))
+        XCTAssertEqual(saved.remotePath(), oldMetadata.remotePath())
+        XCTAssertEqual(saved.etag, oldMetadata.etag)
     }
 
     func testNewFileInheritsItsParentsPinDuringTargetDepthRead() async {

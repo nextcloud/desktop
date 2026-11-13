@@ -141,8 +141,7 @@ public extension ItemMetadata {
     }
 
     var isTrashed: Bool {
-        let relativePath = Account.davRelativePath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)
-        return Account.isStoredTrashLocation(relativePath ?? serverUrl)
+        Account.davPath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)?.root == .trash
     }
 
     mutating func apply(fileName: String) {

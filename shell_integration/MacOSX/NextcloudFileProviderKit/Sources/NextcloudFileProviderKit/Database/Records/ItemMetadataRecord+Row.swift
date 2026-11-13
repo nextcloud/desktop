@@ -98,23 +98,31 @@ extension ItemMetadataRecord {
         trashbinOriginalLocation = try row.decode(forColumn: "trashbinOriginalLocation")
         trashbinDeletionTime = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "trashbinDeletionTime"))
         uploadDate = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "uploadDate"))
-        normalizedServerUrl = try row.decode(forColumn: "normalizedServerUrl")
+        normalizedParentPath = try row.decode(forColumn: "normalizedParentPath")
         normalizedFileName = try row.decode(forColumn: "normalizedFileName")
 
-        // The database belongs to one domain. Use its current account to build request URLs
-        // from stored parent paths such as files:/Team. Keep an absolute parent URL as saved.
+        // Build the parent URL from the saved Files or Trash root and the domain's current account.
         account = domainAccount.ncKitAccount
         urlBase = domainAccount.serverUrl
         user = domainAccount.username
         userId = domainAccount.id
-        let storedParent: String = try row.decode(forColumn: "serverUrl")
-        let absoluteParentURL = Account.absoluteURL(
-            fromDAVRelativePath: storedParent,
-            accountBaseURL: urlBase,
-            backendUserID: userId
-        )
-        storedParentPath = absoluteParentURL == nil ? nil : storedParent
-        serverUrl = absoluteParentURL ?? storedParent
+        let storedPath: String = try row.decode(forColumn: "parentPath")
+        let rootValue: String = try row.decode(forColumn: "davRoot")
+        guard let davRoot = DAVRoot(rawValue: rootValue) else {
+            throw DecodingError.dataCorrupted(.init(
+                codingPath: [CodingKeys.davRoot],
+                debugDescription: "Unknown DAV root."
+            ))
+        }
+        guard storedPath.isEmpty || storedPath.hasPrefix("/") else {
+            throw DecodingError.dataCorrupted(.init(
+                codingPath: [CodingKeys.parentPath],
+                debugDescription: "A parent path below a DAV root must start with a slash."
+            ))
+        }
+        let davParent = DAVPath(root: davRoot, path: storedPath)
+        storedDAVParent = davParent
+        serverUrl = Account.absoluteURL(for: davParent, accountBaseURL: urlBase, backendUserID: userId)
     }
 
     func encode(to container: inout PersistenceContainer) throws {
@@ -127,6 +135,7 @@ extension ItemMetadataRecord {
         container["creationDate"] = creationDate.timeIntervalSinceReferenceDate
         container["dataFingerprint"] = dataFingerprint
         container["date"] = date.timeIntervalSinceReferenceDate
+        container["davRoot"] = storedDAVParent.root.rawValue
         container["syncTime"] = syncTime.timeIntervalSinceReferenceDate
         container["deleted"] = deleted
         container["directory"] = directory
@@ -162,7 +171,7 @@ extension ItemMetadataRecord {
         container["quotaAvailableBytes"] = quotaAvailableBytes
         container["resourceType"] = resourceType
         container["richWorkspace"] = richWorkspace
-        container["serverUrl"] = storedParentPath ?? serverUrl
+        container["parentPath"] = parentPath
         container["session"] = session
         container["sessionError"] = sessionError
         container["sessionTaskIdentifier"] = sessionTaskIdentifier
@@ -180,7 +189,7 @@ extension ItemMetadataRecord {
         container["trashbinOriginalLocation"] = trashbinOriginalLocation
         container["trashbinDeletionTime"] = trashbinDeletionTime.timeIntervalSinceReferenceDate
         container["uploadDate"] = uploadDate.timeIntervalSinceReferenceDate
-        container["normalizedServerUrl"] = normalizedServerUrl
+        container["normalizedParentPath"] = normalizedParentPath
         container["normalizedFileName"] = normalizedFileName
     }
 
@@ -196,6 +205,7 @@ extension ItemMetadataRecord {
             creationDate.timeIntervalSinceReferenceDate,
             dataFingerprint,
             date.timeIntervalSinceReferenceDate,
+            storedDAVParent.root.rawValue,
             deleted,
             directory,
             downloaded,
@@ -225,16 +235,16 @@ extension ItemMetadataRecord {
             mountType,
             name,
             normalizedFileName,
-            normalizedServerUrl,
+            normalizedParentPath,
             note,
             ownerDisplayName,
             ownerId,
+            parentPath,
             permissions,
             quotaAvailableBytes,
             quotaUsedBytes,
             resourceType,
             richWorkspace,
-            storedParentPath ?? serverUrl,
             session,
             sessionError,
             sessionTaskIdentifier,

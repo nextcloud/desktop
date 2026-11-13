@@ -30,23 +30,23 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     func testChildItemsMatchesDirectChildButNotSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-A")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "photos"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/photos"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/photos"
         childMetadata.fileName = "pic.jpg"
 
         var nestedChild = SendableItemMetadata.rawRow(ocId: "nested-1")
         nestedChild.account = Self.account.ncKitAccount
-        nestedChild.serverUrl = "https://cloud.example.com/files/photos/vacation"
+        nestedChild.serverUrl = Self.account.davFilesUrl + "/photos/vacation"
         nestedChild.fileName = "beach.jpg"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-1")
         siblingMetadata.account = Self.account.ncKitAccount
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/photos-backup"
+        siblingMetadata.serverUrl = Self.account.davFilesUrl + "/photos-backup"
         siblingMetadata.fileName = "old.jpg"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -65,18 +65,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     func testChildItemCountExcludesSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-B")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "docs"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-2")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/docs"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/docs"
         childMetadata.fileName = "report.pdf"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-2")
         siblingMetadata.account = Self.account.ncKitAccount
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/docs-archive"
+        siblingMetadata.serverUrl = Self.account.davFilesUrl + "/docs-archive"
         siblingMetadata.fileName = "old-report.pdf"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -90,18 +90,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     func testDeleteDirectoryDoesNotDeleteSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-C")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "work"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-3")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/work"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/work"
         childMetadata.fileName = "task.txt"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-3")
         siblingMetadata.account = Self.account.ncKitAccount
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/work-old"
+        siblingMetadata.serverUrl = Self.account.davFilesUrl + "/work-old"
         siblingMetadata.fileName = "task-old.txt"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -120,18 +120,18 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     func testRenameDirectoryDoesNotRenameSiblingWithSharedPrefix() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-D")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "alpha"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "child-4")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/alpha"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/alpha"
         childMetadata.fileName = "file.txt"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "sibling-4")
         siblingMetadata.account = Self.account.ncKitAccount
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/alphabet"
+        siblingMetadata.serverUrl = Self.account.davFilesUrl + "/alphabet"
         siblingMetadata.fileName = "a.txt"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -140,7 +140,7 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
 
         let updated = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-D",
-            newServerUrl: "https://cloud.example.com/files",
+            newServerUrl: Self.account.davFilesUrl,
             newFileName: "beta"
         )
 
@@ -153,14 +153,14 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         let renamedChild = Self.dbManager.itemMetadata(ocId: "child-4")
         XCTAssertEqual(
             renamedChild?.serverUrl,
-            "https://cloud.example.com/files/beta",
+            Self.account.davFilesUrl + "/beta",
             "Direct child's serverUrl should be updated"
         )
 
         let sibling = Self.dbManager.itemMetadata(ocId: "sibling-4")
         XCTAssertEqual(
             sibling?.serverUrl,
-            "https://cloud.example.com/files/alphabet",
+            Self.account.davFilesUrl + "/alphabet",
             "Sibling with shared prefix should not have its serverUrl changed"
         )
     }
@@ -168,17 +168,17 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
     func testItemMetadatasUnderServerUrlExcludesSiblingPrefix() throws {
         var directChild = SendableItemMetadata.rawRow(ocId: "under-1")
         directChild.account = Self.account.ncKitAccount
-        directChild.serverUrl = "https://cloud.example.com/files/project"
+        directChild.serverUrl = Self.account.davFilesUrl + "/project"
         directChild.fileName = "readme.md"
 
         var nestedChild = SendableItemMetadata.rawRow(ocId: "under-2")
         nestedChild.account = Self.account.ncKitAccount
-        nestedChild.serverUrl = "https://cloud.example.com/files/project/src"
+        nestedChild.serverUrl = Self.account.davFilesUrl + "/project/src"
         nestedChild.fileName = "main.swift"
 
         var siblingMetadata = SendableItemMetadata.rawRow(ocId: "under-3")
         siblingMetadata.account = Self.account.ncKitAccount
-        siblingMetadata.serverUrl = "https://cloud.example.com/files/project-v2"
+        siblingMetadata.serverUrl = Self.account.davFilesUrl + "/project-v2"
         siblingMetadata.fileName = "readme.md"
 
         try Self.dbManager.insertForTesting(directChild)
@@ -186,7 +186,7 @@ final class PathBoundaryPrefixTests: NextcloudFileProviderKitTestCase {
         try Self.dbManager.insertForTesting(siblingMetadata)
 
         let results = Self.dbManager.itemMetadatas(
-            underServerUrl: "https://cloud.example.com/files/project"
+            underServerUrl: Self.account.davFilesUrl + "/project"
         )
         let resultOcIds = Set(results.map(\.ocId))
         XCTAssertTrue(resultOcIds.contains("under-1"), "Direct child should be included")

@@ -18,7 +18,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 ## Storage choices
 
 - Dates are stored as `REAL` seconds since the reference date, the same number a `Date` holds, so they round-trip exactly. Predicates bind that number, never a `Date`, because GRDB would bind a `Date` as text.
-- SQLite's `serverUrl` column holds a DAV parent path such as `files:/Docs` or `trash:`. The database manager uses the domain's current account to turn the path into a WebDAV URL. Item rows do not store account details. See <doc:UnicodePathNormalization> for the lookup keys.
+- SQLite stores the DAV root (`files` or `trash`) in `davRoot` and the path below it (such as `/Docs`) in `parentPath`. The database manager uses the domain's current account to build the WebDAV URL. Item parents must be under one of those roots. See <doc:UnicodePathNormalization> for the lookup keys.
 - Items below a directory are matched with a byte-wise range over the location index rather than a pattern, so names with pattern characters or different case never match by accident.
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
@@ -65,7 +65,7 @@ When the extension is already running, it checks the incoming credentials in a s
 
 ## Updating cached DAV paths during account setup
 
-Older extensions could save a new server URL or backend user ID in the domain settings while cached rows still pointed to earlier DAV roots. The extension assumes a change to the DAV root preserves the same sync location and history. During account setup, before the domain starts syncing, the Realm import uses the details on each row to strip its old Files or Trash root. It saves matching items with a relative parent path such as `files:/Team`. Normal enumeration then reconciles server moves, replacements, and deletions by item ID.
+Older extensions could save a new server URL or backend user ID in the domain settings while cached rows still pointed to earlier DAV roots. The extension assumes a change to the DAV root preserves the same sync location and history. During account setup, before the domain starts syncing, the Realm import uses the details on each row to strip its old Files or Trash root. It saves the root and parent path separately, for example `files` and `/Team`. Normal enumeration then reconciles server moves, replacements, and deletions by item ID.
 
 ## Import from Realm
 

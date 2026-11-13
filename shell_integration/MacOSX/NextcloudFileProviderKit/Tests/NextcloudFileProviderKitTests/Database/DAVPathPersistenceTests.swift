@@ -89,11 +89,14 @@ struct DAVPathPersistenceTests {
         let parentUrl = Self.currentAccount.davFilesUrl + "/" + Self.folderName
         let storedFolder = try #require(try manager.storedParentLocationKeysForTesting(ocId: Self.folderId))
         let storedFile = try #require(try manager.storedParentLocationKeysForTesting(ocId: Self.fileId))
+        let parentPath = "/" + Self.folderName
 
         #expect(manager.storeIdentity != identity)
-        #expect(storedFolder.parentLocation == "files:")
-        #expect(storedFile.parentLocation == "files:/" + Self.folderName)
-        #expect(storedFile.normalizedParentLocation.utf8.elementsEqual(("files:/" + Self.folderName).precomposedStringWithCanonicalMapping.utf8))
+        #expect(storedFolder.davRoot == .files)
+        #expect(storedFolder.parentPath.isEmpty)
+        #expect(storedFile.davRoot == .files)
+        #expect(storedFile.parentPath.utf8.elementsEqual(parentPath.utf8))
+        #expect(storedFile.normalizedParentPath.utf8.elementsEqual(parentPath.precomposedStringWithCanonicalMapping.utf8))
         #expect(folder.serverUrl == Self.currentAccount.davFilesUrl)
         #expect(folder.visitedDirectory)
         #expect(file.serverUrl == parentUrl)
@@ -112,7 +115,7 @@ struct DAVPathPersistenceTests {
 
         #expect(reopened.storeIdentity == manager.storeIdentity)
         #expect(reopened.itemMetadata(ocId: Self.fileId)?.remotePath() == file.remotePath())
-        #expect(try reopened.storedParentLocationKeysForTesting(ocId: Self.fileId)?.parentLocation == storedFile.parentLocation)
+        #expect(try reopened.storedParentLocationKeysForTesting(ocId: Self.fileId)?.parentPath == storedFile.parentPath)
     }
 
     @Test(arguments: [false, true])
@@ -225,7 +228,8 @@ struct DAVPathPersistenceTests {
         ))
 
         let stored = try #require(try original.storedParentLocationKeysForTesting(ocId: Self.fileId))
-        #expect(stored.parentLocation == "files:/" + Self.folderName)
+        #expect(stored.davRoot == .files)
+        #expect(stored.parentPath == "/" + Self.folderName)
 
         let currentAccount = change.accountAfterChange
         let reopened = try openManager(account: currentAccount)
@@ -274,7 +278,8 @@ struct DAVPathPersistenceTests {
         let change = try #require(manager.changeDeliveryItems(sessionId: sessionId, fromSequence: 0, limit: 1)?.first)
         let snapshot = try #require(JSONSerialization.jsonObject(with: change.metadataData) as? [String: Any])
         #expect(snapshot["serverUrl"] == nil)
-        #expect(snapshot["parentDAVPath"] as? String == "files:/Docs")
+        #expect(snapshot["davRoot"] as? String == "files")
+        #expect(snapshot["parentDAVPath"] as? String == "/Docs")
         try expectQueuedUpdateReplays(from: manager, file: file, sessionId: sessionId)
     }
 
@@ -317,8 +322,10 @@ struct DAVPathPersistenceTests {
         let storedFileParent = try manager.storedParentLocationKeysForTesting(ocId: file.ocId)
         let storedRootParent = try manager.storedParentLocationKeysForTesting(ocId: root.ocId)
 
-        #expect(storedFileParent?.parentLocation == (shouldConvert ? "files:/Docs" : nil))
-        #expect(storedRootParent?.parentLocation == (shouldConvert ? "files:" : nil))
+        #expect(storedFileParent?.davRoot == (shouldConvert ? .files : nil))
+        #expect(storedFileParent?.parentPath == (shouldConvert ? "/Docs" : nil))
+        #expect(storedRootParent?.davRoot == (shouldConvert ? .files : nil))
+        #expect(storedRootParent?.parentPath == (shouldConvert ? "" : nil))
 
         let byURL = manager.itemMetadata(locatedAtRemoteUrl: account.davFilesUrl + "/Docs/" + file.fileName)
         #expect(byURL?.ocId == (shouldConvert ? file.ocId : nil))
@@ -395,7 +402,8 @@ struct DAVPathPersistenceTests {
         let migrated = try #require(manager.rootItemMetadata())
         let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: root.ocId))
 
-        #expect(stored.parentLocation == "files:")
+        #expect(stored.davRoot == .files)
+        #expect(stored.parentPath.isEmpty)
         #expect(migrated.account == account.ncKitAccount)
         #expect(migrated.ocId == root.ocId)
         #expect(migrated.directory)

@@ -205,7 +205,8 @@ struct RealmStoreImporterTests {
 
         let live = try #require(manager.itemMetadata(ocId: "live"))
         let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: "live"))
-        #expect(stored.parentLocation == "files:/Docs")
+        #expect(stored.davRoot == .files)
+        #expect(stored.parentPath == "/Docs")
         #expect(live.serverUrl == currentAccount.davFilesUrl + "/Docs")
         #expect(live.account == currentAccount.ncKitAccount)
         #expect(live.downloaded)
@@ -286,12 +287,13 @@ struct RealmStoreImporterTests {
         // Inspect the SQLite file before opening the manager, which can also save the current DAV account.
         let database = try DatabaseQueue(path: fixture.sqliteURL.path)
         let identity = try database.read { db in
-            let publishedParent = try String.fetchOne(
+            let published = try #require(try Row.fetchOne(
                 db,
-                sql: "SELECT serverUrl FROM itemMetadata WHERE ocId = ?",
+                sql: "SELECT davRoot, parentPath FROM itemMetadata WHERE ocId = ?",
                 arguments: ["pending-edit"]
-            )
-            #expect(publishedParent == "files:/Docs")
+            ))
+            #expect(published["davRoot"] as String? == "files")
+            #expect(published["parentPath"] as String? == "/Docs")
             let savedDAVAccountFields = try #require(try Data.fetchOne(db, sql: "SELECT accountBinding FROM storeIdentity"))
             #expect(try JSONDecoder().decode([String].self, from: savedDAVAccountFields) == currentAccount.davAccountIdentity.serializedFields)
             return try #require(try StoreIdentityRecord.fetchOne(db)).identity
@@ -457,7 +459,8 @@ struct RealmStoreImporterTests {
         let manager = try fixture.openManager()
         let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
         let restored = try #require(manager.itemMetadata(locatedAtRemoteUrl: file.remotePath()))
-        #expect(stored.parentLocation == "files:/Docs")
+        #expect(stored.davRoot == .files)
+        #expect(stored.parentPath == "/Docs")
         #expect(restored.ocId == file.ocId)
         #expect(restored.account == Self.account.ncKitAccount)
         #expect(restored.userId == Self.account.id)
@@ -563,7 +566,8 @@ struct RealmStoreImporterTests {
         let manager = try fixture.openManager(account: account)
         let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
         let canonicalFileURL = account.davFilesUrl + "/Docs/" + file.fileName
-        #expect(stored.parentLocation == "files:/Docs")
+        #expect(stored.davRoot == .files)
+        #expect(stored.parentPath == "/Docs")
         #expect(manager.itemMetadata(locatedAtRemoteUrl: canonicalFileURL)?.ocId == file.ocId)
     }
 
@@ -595,7 +599,7 @@ struct RealmStoreImporterTests {
         let migrated = try #require(manager.itemMetadata(ocId: "migration-item"))
         #expect(migrated.serverUrl == nfdServerUrl)
         let keys = try #require(manager.normalizedLocationForTesting(ocId: "migration-item"))
-        #expect(keys.serverUrl == "files:/prêt")
+        #expect(keys.serverUrl == "/prêt")
         #expect(keys.fileName == nfdFileName.precomposedStringWithCanonicalMapping)
     }
 

@@ -946,8 +946,8 @@ import OSLog
     }
 
     /// Save the password in the Keychain. With `awaitingDatabaseSetup: true`, save the incoming
-    /// account separately for Finder retries so the migration from absolute WebDAV parent URLs
-    /// to paths such as `files:/Team` can still read the previous account.
+    /// account separately for Finder retries so Realm import can still identify the previous
+    /// account's DAV root in cached parent URLs.
     /// With `false`, replace the domain's configured account and clear the retry details.
     func storeAccount(_ account: Account, generation: Int, awaitingDatabaseSetup: Bool = false) -> Bool {
         setupLock.lock()

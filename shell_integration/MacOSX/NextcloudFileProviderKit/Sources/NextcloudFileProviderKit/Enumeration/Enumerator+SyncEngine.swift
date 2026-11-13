@@ -311,8 +311,7 @@ extension Enumerator {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
             // A 404 at the account's Files root means the domain could not be read. Let Finder retry.
             if error.isNotFoundError,
-               let davPath = account.davRelativePath(forURL: serverUrl),
-               Account.isStoredFilesRootLocation(davPath) {
+               account.davPath(forURL: serverUrl)?.isFilesRoot == true {
                 return RemoteReadResult(error: .invalidData)
             }
             return await resultForCurrentDAVAccount(RemoteReadResult(error: error))

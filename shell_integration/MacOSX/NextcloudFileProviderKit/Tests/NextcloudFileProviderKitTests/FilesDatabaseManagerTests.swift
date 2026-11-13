@@ -153,12 +153,12 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(migrated.fileName, nfdFileName)
 
         let migratedLocation = try XCTUnwrap(manager.normalizedLocationForTesting(ocId: "migration-item"))
-        XCTAssertEqual(migratedLocation.serverUrl, "files:/prêt")
+        XCTAssertEqual(migratedLocation.serverUrl, "/prêt")
         XCTAssertEqual(migratedLocation.fileName, nfdFileName.precomposedStringWithCanonicalMapping)
     }
 
     func testContainsAnyItemMetadataFileIds() throws {
-        var metadata = SendableItemMetadata.rawRow(ocId: UUID().uuidString)
+        var metadata = SendableItemMetadata.rawRow(ocId: UUID().uuidString, account: Self.account)
         metadata.fileId = "11915767"
 
         try Self.dbManager.insertForTesting(metadata)
@@ -173,29 +173,29 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testAncestorContainerIdentifiersForMaterializedFile() throws {
         var folder = SendableItemMetadata.rawRow(ocId: "folder-1")
         folder.account = Self.account.ncKitAccount
-        folder.serverUrl = "https://cloud.example.com/files"
+        folder.serverUrl = Self.account.davFilesUrl
         folder.fileName = "documents"
         folder.directory = true
 
         var subfolder = SendableItemMetadata.rawRow(ocId: "subfolder-1")
         subfolder.account = Self.account.ncKitAccount
-        subfolder.serverUrl = "https://cloud.example.com/files/documents"
+        subfolder.serverUrl = Self.account.davFilesUrl + "/documents"
         subfolder.fileName = "nested"
         subfolder.directory = true
 
         var deepFile = SendableItemMetadata.rawRow(ocId: "deep-file")
         deepFile.account = Self.account.ncKitAccount
-        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
+        deepFile.serverUrl = Self.account.davFilesUrl + "/documents/nested"
         deepFile.fileName = "note.txt"
 
         try Self.dbManager.insertForTesting(folder)
         try Self.dbManager.insertForTesting(subfolder)
         try Self.dbManager.insertForTesting(deepFile)
 
-        // Every directory on the deep file's path, root excluded.
+        // Include every directory on the path to the Files root.
         XCTAssertEqual(
             Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["deep-file"]),
-            [NSFileProviderItemIdentifier("subfolder-1"), NSFileProviderItemIdentifier("folder-1")]
+            [NSFileProviderItemIdentifier("subfolder-1"), NSFileProviderItemIdentifier("folder-1"), .rootContainer]
         )
 
         // Directory ocIds are ignored — only a file's materialization feeds an
@@ -263,7 +263,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     /// items" handler evicts individually (#10085). Pinned, dataless, tombstoned,
     /// and directory rows are excluded; deep descendants are included.
     func testEvictableDescendantFileIdentifiers() throws {
-        let base = "https://cloud.example.com/files"
+        let base = Self.account.davFilesUrl
         let dir = base + "/documents"
 
         func seed(_ ocId: String, _ name: String, url: String, directory: Bool = false, downloaded: Bool = false, deleted: Bool = false, keepDownloaded: Bool = false) -> SendableItemMetadata {
@@ -307,7 +307,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testItemMetadataFromOcId() throws {
         let ocId = "unique-id-123"
-        let metadata = SendableItemMetadata.rawRow(ocId: ocId)
+        let metadata = SendableItemMetadata.rawRow(ocId: ocId, account: Self.account)
 
         try Self.dbManager.insertForTesting(metadata)
 
@@ -469,7 +469,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testSetStatusForItemMetadata() throws {
         // Create and add a test metadata to the database
-        var metadata = SendableItemMetadata.rawRow(ocId: "unique-id-123")
+        var metadata = SendableItemMetadata.rawRow(ocId: "unique-id-123", account: Self.account)
         metadata.status = Status.normal.rawValue
 
         try Self.dbManager.insertForTesting(metadata)
@@ -499,7 +499,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteItemMetadata() throws {
         let ocId = "unique-id-123"
-        let metadata = SendableItemMetadata.rawRow(ocId: ocId)
+        let metadata = SendableItemMetadata.rawRow(ocId: ocId, account: Self.account)
 
         try Self.dbManager.insertForTesting(metadata)
 
@@ -515,9 +515,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testRenameItemMetadata() throws {
         let ocId = "unique-id-123"
         let newFileName = "newFileName.pdf"
-        let newServerUrl = "https://new.example.com"
+        let newServerUrl = Self.account.davFilesUrl + "/new"
         var metadata = SendableItemMetadata.rawRow(ocId: ocId)
-        metadata.serverUrl = "https://old.example.com"
+        metadata.serverUrl = Self.account.davFilesUrl + "/old"
         metadata.fileName = "oldFileName.pdf"
 
         try Self.dbManager.insertForTesting(metadata)
@@ -534,14 +534,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testDeleteItemMetadatasBasedOnUpdate() throws {
         // Existing metadata in the database
         var existingMetadata1 = SendableItemMetadata.rawRow(ocId: "id-1")
-        existingMetadata1.serverUrl = "https://example.com"
+        existingMetadata1.serverUrl = Self.account.davFilesUrl
         existingMetadata1.fileName = "Existing.pdf"
         existingMetadata1.account = Self.account.ncKitAccount
         existingMetadata1.downloaded = true
         existingMetadata1.uploaded = true
 
         var existingMetadata2 = SendableItemMetadata.rawRow(ocId: "id-2")
-        existingMetadata2.serverUrl = "https://example.com"
+        existingMetadata2.serverUrl = Self.account.davFilesUrl
         existingMetadata2.fileName = "Existing2.pdf"
         existingMetadata2.account = Self.account.ncKitAccount
         existingMetadata2.downloaded = true
@@ -549,7 +549,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var existingMetadata3 = SendableItemMetadata.rawRow(ocId: "id-3")
         // Different child path.
-        existingMetadata3.serverUrl = "https://example.com/folder"
+        existingMetadata3.serverUrl = Self.account.davFilesUrl + "/folder"
         existingMetadata3.fileName = "Existing3.pdf"
         existingMetadata3.account = Self.account.ncKitAccount
         existingMetadata3.downloaded = true
@@ -563,13 +563,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let updatedMetadatas = [existingMetadata1, existingMetadata3] // Only include 2 of the 3
 
         _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            serverUrl: "https://example.com",
+            serverUrl: Self.account.davFilesUrl,
             updatedMetadatas: updatedMetadatas,
             keepExistingDownloadState: true
         )
 
         let remainingMetadatas = Self.dbManager.itemMetadatas(
-            underServerUrl: "https://example.com"
+            underServerUrl: Self.account.davFilesUrl
         )
         XCTAssertEqual(remainingMetadatas.filter(\.deleted).count, 1)
         XCTAssertEqual(remainingMetadatas.count(where: { !$0.deleted }), 2)
@@ -582,7 +582,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let account = Self.account
 
         var parent = SendableItemMetadata.rawRow(ocId: "parent")
-        parent.serverUrl = "https://example.com"
+        parent.serverUrl = Self.account.davFilesUrl
         parent.fileName = "Parent"
         parent.account = Self.account.ncKitAccount
         parent.directory = true
@@ -591,7 +591,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         // Simulate existing metadata in the database
         var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
-        existingMetadata.serverUrl = "https://example.com/Parent"
+        existingMetadata.serverUrl = Self.account.davFilesUrl + "/Parent"
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = Self.account.ncKitAccount
         existingMetadata.downloaded = true
@@ -603,17 +603,17 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var updatedMetadata =
             SendableItemMetadata(ocId: "id-1", fileName: "UpdatedFile.pdf", account: account)
-        updatedMetadata.serverUrl = "https://example.com/Parent"
+        updatedMetadata.serverUrl = Self.account.davFilesUrl + "/Parent"
 
         var newMetadata =
             SendableItemMetadata(ocId: "id-2", fileName: "NewFile.pdf", account: account)
-        newMetadata.serverUrl = "https://example.com/Parent"
+        newMetadata.serverUrl = Self.account.davFilesUrl + "/Parent"
 
         try Self.dbManager.insertForTesting(parent)
         try Self.dbManager.insertForTesting(existingMetadata)
 
         let results = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            serverUrl: "https://example.com/Parent",
+            serverUrl: Self.account.davFilesUrl + "/Parent",
             updatedMetadatas: [updatedParent, updatedMetadata, newMetadata],
             keepExistingDownloadState: true
         )
@@ -699,11 +699,11 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testDirectoryMetadataRetrieval() throws {
         let account = Self.account.ncKitAccount
-        let serverUrl = "https://cloud.example.com/files/documents"
+        let serverUrl = Self.account.davFilesUrl + "/documents"
         let directoryFileName = "documents"
         var metadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         metadata.account = account
-        metadata.serverUrl = "https://cloud.example.com/files"
+        metadata.serverUrl = Self.account.davFilesUrl
         metadata.fileName = directoryFileName
         metadata.directory = true
 
@@ -719,13 +719,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testChildItemsForDirectory() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/documents"
         childMetadata.fileName = "report.pdf"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -776,13 +776,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testDeleteDirectoryAndSubdirectoriesMetadata() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/documents"
         childMetadata.fileName = "report.pdf"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -798,13 +798,13 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testRenameDirectoryAndPropagateToChildren() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "documents"
         directoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/documents"
         childMetadata.fileName = "report.pdf"
 
         try Self.dbManager.insertForTesting(directoryMetadata)
@@ -812,7 +812,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
-            newServerUrl: "https://cloud.example.com/office",
+            newServerUrl: Self.account.davFilesUrl + "/office",
             newFileName: "files"
         )
 
@@ -820,7 +820,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(updatedChildren?.count, 1, "Should include one child")
         XCTAssertEqual(
             updatedChildren?.first?.serverUrl,
-            "https://cloud.example.com/office/files",
+            Self.account.davFilesUrl + "/office/files",
             "Should update serverUrl of child items"
         )
     }
@@ -854,7 +854,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testErrorOnDirectoryMetadataNotFound() {
-        let nonExistentServerUrl = "https://cloud.example.com/nonexistent"
+        let nonExistentServerUrl = Self.account.davFilesUrl + "/nonexistent"
         let directoryMetadata = Self.dbManager.itemMetadata(locatedAtRemoteUrl: nonExistentServerUrl)
         XCTAssertNil(directoryMetadata, "Should return nil when directory metadata is not found")
     }
@@ -888,19 +888,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Create nested directories and their child items
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = Self.account.ncKitAccount
-        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.serverUrl = Self.account.davFilesUrl
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = Self.account.ncKitAccount
-        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.serverUrl = Self.account.davFilesUrl + "/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/documents/projects"
         childMetadata.fileName = "report.pdf"
 
         try Self.dbManager.insertForTesting(rootDirectoryMetadata)
@@ -922,19 +922,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Setup a complex directory structure
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = Self.account.ncKitAccount
-        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.serverUrl = Self.account.davFilesUrl
         rootDirectoryMetadata.fileName = "documents"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = Self.account.ncKitAccount
-        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/documents"
+        nestedDirectoryMetadata.serverUrl = Self.account.davFilesUrl + "/documents"
         nestedDirectoryMetadata.fileName = "projects"
         nestedDirectoryMetadata.directory = true
 
         var childMetadata = SendableItemMetadata.rawRow(ocId: "item-1")
         childMetadata.account = Self.account.ncKitAccount
-        childMetadata.serverUrl = "https://cloud.example.com/files/documents/projects"
+        childMetadata.serverUrl = Self.account.davFilesUrl + "/documents/projects"
         childMetadata.fileName = "report.pdf"
 
         try Self.dbManager.insertForTesting(rootDirectoryMetadata)
@@ -943,7 +943,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
-            newServerUrl: "https://cloud.example.com/storage",
+            newServerUrl: Self.account.davFilesUrl + "/storage",
             newFileName: "files"
         )
 
@@ -958,7 +958,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testDeletingDirectoryWithNoChildren() throws {
         var directoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         directoryMetadata.account = Self.account.ncKitAccount
-        directoryMetadata.serverUrl = "https://cloud.example.com/files"
+        directoryMetadata.serverUrl = Self.account.davFilesUrl
         directoryMetadata.fileName = "empty"
         directoryMetadata.directory = true
 
@@ -982,19 +982,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         // Create a complex nested directory structure
         var rootDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-1")
         rootDirectoryMetadata.account = Self.account.ncKitAccount
-        rootDirectoryMetadata.serverUrl = "https://cloud.example.com/files"
+        rootDirectoryMetadata.serverUrl = Self.account.davFilesUrl
         rootDirectoryMetadata.fileName = "dir-1"
         rootDirectoryMetadata.directory = true
 
         var nestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-2")
         nestedDirectoryMetadata.account = Self.account.ncKitAccount
-        nestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1"
+        nestedDirectoryMetadata.serverUrl = Self.account.davFilesUrl + "/dir-1"
         nestedDirectoryMetadata.fileName = "dir-2"
         nestedDirectoryMetadata.directory = true
 
         var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: "dir-3")
         deepNestedDirectoryMetadata.account = Self.account.ncKitAccount
-        deepNestedDirectoryMetadata.serverUrl = "https://cloud.example.com/files/dir-1/dir-2"
+        deepNestedDirectoryMetadata.serverUrl = Self.account.davFilesUrl + "/dir-1/dir-2"
         deepNestedDirectoryMetadata.fileName = "dir-3"
         deepNestedDirectoryMetadata.directory = true
 
@@ -1004,7 +1004,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let updatedChildren = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "dir-1",
-            newServerUrl: "https://cloud.example.com/storage",
+            newServerUrl: Self.account.davFilesUrl + "/storage",
             newFileName: "archives"
         )
 
@@ -1019,7 +1019,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testFindingItemBasedOnRemotePath() throws {
         let account = Self.account.ncKitAccount
         let filename = "super duper new file"
-        let parentUrl = "https://cloud.example.com/files/my great and incredible dir/dir-2"
+        let parentUrl = Self.account.davFilesUrl + "/my great and incredible dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
         var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
@@ -1036,7 +1036,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testFindingItemBasedOnRemotePathInDirectoryWithHashtagInName() throws {
         let account = Self.account.ncKitAccount
         let filename = "super duper new file"
-        let parentUrl = "https://cloud.example.com/files/my great and # dir/dir-2"
+        let parentUrl = Self.account.davFilesUrl + "/my great and # dir/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
         var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
@@ -1053,7 +1053,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     func testFindingItemBasedOnRemotePathInDirectoryWithQuestionMarkInName() throws {
         let account = Self.account.ncKitAccount
         let filename = "super duper new file"
-        let parentUrl = "https://cloud.example.com/files/my great and incredible dir ?/dir-2"
+        let parentUrl = Self.account.davFilesUrl + "/my great and incredible dir ?/dir-2"
         let fullUrl = parentUrl + "/" + filename
 
         var deepNestedDirectoryMetadata = SendableItemMetadata.rawRow(ocId: filename)
@@ -1069,7 +1069,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testFindingItemBasedOnCanonicallyEquivalentRemotePath() {
         let account = Self.account.ncKitAccount
-        let parentUrl = "https://cloud.example.com/files"
+        let parentUrl = Self.account.davFilesUrl
         let nfcFileName = "pr\u{00EA}t.pdf"
         let nfdFileName = "pre\u{0302}t.pdf"
         var metadata = SendableItemMetadata(ocId: "nfc-item", fileName: nfcFileName, account: Self.account)
@@ -1086,7 +1086,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testCanonicalPathDeduplicationPreservesIncomingRemoteSpelling() {
         let account = Self.account.ncKitAccount
-        let parentUrl = "https://cloud.example.com/files"
+        let parentUrl = Self.account.davFilesUrl
         let nfcFileName = "pr\u{00EA}t.pdf"
         let nfdFileName = "pre\u{0302}t.pdf"
         var existing = SendableItemMetadata(ocId: "nfc-item", fileName: nfcFileName, account: Self.account)
@@ -1111,7 +1111,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var existingMetadata = SendableItemMetadata.rawRow(ocId: "id-1")
         existingMetadata.fileName = "File.pdf"
         existingMetadata.account = Self.account.ncKitAccount
-        existingMetadata.serverUrl = "https://example.com"
+        existingMetadata.serverUrl = Self.account.davFilesUrl
         XCTAssertFalse(existingMetadata.keepDownloaded)
 
         try Self.dbManager.insertForTesting(existingMetadata)
@@ -1458,20 +1458,14 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     func testMaterialisedFiles() throws {
-        var itemA = SendableItemMetadata.rawRow(ocId: "itemA")
-        var itemB = SendableItemMetadata.rawRow(ocId: "itemB")
-        var folderA = SendableItemMetadata.rawRow(ocId: "folderA")
-        var folderB = SendableItemMetadata.rawRow(ocId: "folderB")
-        var notFolderA = SendableItemMetadata.rawRow(ocId: "notFolderA")
+        var itemA = SendableItemMetadata.rawRow(ocId: "itemA", account: Self.account)
+        var itemB = SendableItemMetadata.rawRow(ocId: "itemB", account: Self.account)
+        var folderA = SendableItemMetadata.rawRow(ocId: "folderA", account: Self.account)
+        var folderB = SendableItemMetadata.rawRow(ocId: "folderB", account: Self.account)
+        var notFolderA = SendableItemMetadata.rawRow(ocId: "notFolderA", account: Self.account)
 
         folderA.directory = true
         folderB.directory = true
-
-        itemA.account = Self.account.ncKitAccount
-        itemB.account = Self.account.ncKitAccount
-        folderA.account = Self.account.ncKitAccount
-        folderB.account = Self.account.ncKitAccount
-        notFolderA.account = Self.account.ncKitAccount
 
         itemA.downloaded = true
         itemB.downloaded = false
@@ -1853,7 +1847,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testStartupCleanupDeduplicatesSeededDuplicate() throws {
         let testAccount = Self.account.ncKitAccount
-        let testServerUrl = "https://example.com"
+        let testServerUrl = Self.account.davFilesUrl
         let fileName = "dup.txt"
 
         var older = SendableItemMetadata.rawRow(ocId: "older")
@@ -1863,7 +1857,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         older.syncTime = Date(timeIntervalSince1970: 1000)
         try Self.dbManager.insertForTesting(
             older,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -1874,7 +1868,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         newer.syncTime = Date(timeIntervalSince1970: 2000)
         try Self.dbManager.insertForTesting(
             newer,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -1896,7 +1890,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let testAccount = Self.account.ncKitAccount
         let nfcName = "pr\u{00EA}t.pdf"
         let nfdName = "pre\u{0302}t.pdf"
-        let serverUrl = "https://example.com"
+        let serverUrl = Self.account.davFilesUrl
 
         var older = SendableItemMetadata.rawRow(ocId: "older-canonical")
         older.account = testAccount
@@ -1925,7 +1919,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testStartupCleanupTiebreakOnEqualSyncTime() throws {
         let testAccount = Self.account.ncKitAccount
-        let testServerUrl = "https://example.com"
+        let testServerUrl = Self.account.davFilesUrl
         let fileName = "tie.txt"
         let sameTime = Date(timeIntervalSince1970: 5000)
 
@@ -1936,7 +1930,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         a.syncTime = sameTime
         try Self.dbManager.insertForTesting(
             a,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -1947,7 +1941,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         b.syncTime = sameTime
         try Self.dbManager.insertForTesting(
             b,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -1970,32 +1964,32 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var a = SendableItemMetadata.rawRow(ocId: "one")
         a.account = testAccount
-        a.serverUrl = "https://example.com"
+        a.serverUrl = Self.account.davFilesUrl
         a.fileName = "one.txt"
         try Self.dbManager.insertForTesting(
             a,
-            normalizedServerUrl: a.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: a.fileName.precomposedStringWithCanonicalMapping
         )
 
         var b = SendableItemMetadata.rawRow(ocId: "two")
         b.account = testAccount
-        b.serverUrl = "https://example.com"
+        b.serverUrl = Self.account.davFilesUrl
         b.fileName = "two.txt"
         try Self.dbManager.insertForTesting(
             b,
-            normalizedServerUrl: b.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: b.fileName.precomposedStringWithCanonicalMapping
         )
 
         // Same fileName but different serverUrl — not a logical duplicate.
         var c = SendableItemMetadata.rawRow(ocId: "three")
         c.account = testAccount
-        c.serverUrl = "https://example.com/folder"
+        c.serverUrl = Self.account.davFilesUrl + "/folder"
         c.fileName = "one.txt"
         try Self.dbManager.insertForTesting(
             c,
-            normalizedServerUrl: c.serverUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "/folder",
             normalizedFileName: c.fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -2013,7 +2007,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     func testStartupCleanupSkipsInTransitDuplicate() throws {
         let testAccount = Self.account.ncKitAccount
-        let testServerUrl = "https://example.com"
+        let testServerUrl = Self.account.davFilesUrl
         let fileName = "in-flight.bin"
 
         var uploading = SendableItemMetadata.rawRow(ocId: "uploading")
@@ -2024,7 +2018,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         uploading.syncTime = Date(timeIntervalSince1970: 5000)
         try Self.dbManager.insertForTesting(
             uploading,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 
@@ -2036,7 +2030,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         settled.syncTime = Date(timeIntervalSince1970: 1000)
         try Self.dbManager.insertForTesting(
             settled,
-            normalizedServerUrl: testServerUrl.precomposedStringWithCanonicalMapping,
+            normalizedServerUrl: "",
             normalizedFileName: fileName.precomposedStringWithCanonicalMapping
         )
 

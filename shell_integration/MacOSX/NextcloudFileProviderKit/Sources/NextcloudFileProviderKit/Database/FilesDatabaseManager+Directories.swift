@@ -273,7 +273,7 @@ extension FilesDatabaseManager {
             let movedServerUrl = oldServerUrl.replacingOccurrences(
                 of: oldDirectoryServerUrl, with: newDirectoryServerUrl
             )
-            childItem.updateLocation(parentURL: movedServerUrl, fileName: childItem.fileName, domainAccount: account)
+            try childItem.updateLocation(parentURL: movedServerUrl, fileName: childItem.fileName, domainAccount: account)
             childItem.lockToken = nil
             try childItem.upsertRow(db)
             logger.debug(

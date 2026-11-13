@@ -39,24 +39,24 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
     private func seedTree() throws -> SendableItemMetadata {
         var folder = SendableItemMetadata.rawRow(ocId: "folder-1")
         folder.account = Self.account.ncKitAccount
-        folder.serverUrl = "https://cloud.example.com/files"
+        folder.serverUrl = Self.account.davFilesUrl
         folder.fileName = "documents"
         folder.directory = true
 
         var directChildFile = SendableItemMetadata.rawRow(ocId: "direct-child-file")
         directChildFile.account = Self.account.ncKitAccount
-        directChildFile.serverUrl = "https://cloud.example.com/files/documents"
+        directChildFile.serverUrl = Self.account.davFilesUrl + "/documents"
         directChildFile.fileName = "report.pdf"
 
         var subfolder = SendableItemMetadata.rawRow(ocId: "subfolder-1")
         subfolder.account = Self.account.ncKitAccount
-        subfolder.serverUrl = "https://cloud.example.com/files/documents"
+        subfolder.serverUrl = Self.account.davFilesUrl + "/documents"
         subfolder.fileName = "nested"
         subfolder.directory = true
 
         var deepFile = SendableItemMetadata.rawRow(ocId: "deep-file")
         deepFile.account = Self.account.ncKitAccount
-        deepFile.serverUrl = "https://cloud.example.com/files/documents/nested"
+        deepFile.serverUrl = Self.account.davFilesUrl + "/documents/nested"
         deepFile.fileName = "note.txt"
 
         try Self.dbManager.insertForTesting(folder)
@@ -207,7 +207,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
 
         var levelOneSibling = SendableItemMetadata.rawRow(ocId: "level-1-sibling")
         levelOneSibling.account = Self.account.ncKitAccount
-        levelOneSibling.serverUrl = "https://cloud.example.com/files/documents/nested"
+        levelOneSibling.serverUrl = Self.account.davFilesUrl + "/documents/nested"
         levelOneSibling.fileName = "level-1-sibling.txt"
 
         try Self.dbManager.insertForTesting(levelOneSibling)
@@ -285,7 +285,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         // *after* the original recursive pin and so missed it.
         var lateCousin = SendableItemMetadata.rawRow(ocId: "late-cousin")
         lateCousin.account = Self.account.ncKitAccount
-        lateCousin.serverUrl = "https://cloud.example.com/files/documents/nested"
+        lateCousin.serverUrl = Self.account.davFilesUrl + "/documents/nested"
         lateCousin.fileName = "late-cousin.txt"
         // No keepDownloaded set — defaults to false.
 
@@ -421,7 +421,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
 
         var sibling = SendableItemMetadata.rawRow(ocId: "sibling-file")
         sibling.account = Self.account.ncKitAccount
-        sibling.serverUrl = "https://cloud.example.com/files"
+        sibling.serverUrl = Self.account.davFilesUrl
         sibling.fileName = "documents-archive.zip"
         // Same parent ("/files") as the target folder, but NOT inside the
         // target folder. A naive prefix match against "/files/documents"
@@ -467,7 +467,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let parent = MockRemoteItem(
             identifier: "files-parent",
             name: "files",
-            remotePath: "https://cloud.example.com/files",
+            remotePath: Self.account.davFilesUrl,
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
@@ -477,7 +477,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let folderMock = MockRemoteItem(
             identifier: "folder-1",
             name: "documents",
-            remotePath: "https://cloud.example.com/files/documents",
+            remotePath: Self.account.davFilesUrl + "/documents",
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,
@@ -488,7 +488,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let directChildMock = MockRemoteItem(
             identifier: "direct-child-file",
             name: "report.pdf",
-            remotePath: "https://cloud.example.com/files/documents/report.pdf",
+            remotePath: Self.account.davFilesUrl + "/documents/report.pdf",
             account: Self.account.ncKitAccount,
             username: Self.account.username,
             userId: Self.account.id,
@@ -498,7 +498,7 @@ final class KeepDownloadedRecursiveTests: NextcloudFileProviderKitTestCase {
         let subfolderMock = MockRemoteItem(
             identifier: "subfolder-1",
             name: "nested",
-            remotePath: "https://cloud.example.com/files/documents/nested",
+            remotePath: Self.account.davFilesUrl + "/documents/nested",
             directory: true,
             account: Self.account.ncKitAccount,
             username: Self.account.username,

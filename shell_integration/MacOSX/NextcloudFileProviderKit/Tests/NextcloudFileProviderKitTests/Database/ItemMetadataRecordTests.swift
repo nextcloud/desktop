@@ -85,7 +85,7 @@ extension DatabaseTestSuites {
             #expect(stored.creationDate.timeIntervalSinceReferenceDate == metadata.creationDate.timeIntervalSinceReferenceDate)
             #expect(stored.date.timeIntervalSinceReferenceDate == metadata.date.timeIntervalSinceReferenceDate)
             #expect(stored == metadata)
-            #expect(ItemMetadataRecord(metadata).metadata == metadata)
+            #expect(try ItemMetadataRecord(metadata, domainAccount: manager.account).metadata == metadata)
         }
 
         @Test func optionalFieldsRoundTripAsNil() throws {
@@ -147,14 +147,68 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "arrays")?.shareType == [0, 3])
         }
 
-        @Test func normalizedKeysFollowTheRawLocation() {
-            var record = ItemMetadataRecord(DatabaseTestSuites.makeFile(ocId: "nfd", fileName: "re\u{0301}sume\u{0301}.txt", serverUrl: "https://host/pre\u{0302}t"))
+        @Test func normalizedKeysFollowTheRawLocation() throws {
+            let account = DatabaseTestSuites.account
+            let metadata = DatabaseTestSuites.makeFile(
+                ocId: "nfd",
+                fileName: "re\u{0301}sume\u{0301}.txt",
+                serverUrl: account.davFilesUrl + "/pre\u{0302}t"
+            )
+            var record = try ItemMetadataRecord(metadata, domainAccount: account)
             #expect(record.normalizedFileName == "résumé.txt".precomposedStringWithCanonicalMapping)
-            #expect(record.normalizedServerUrl == "https://host/prêt".precomposedStringWithCanonicalMapping)
+            #expect(record.normalizedParentPath == "/prêt".precomposedStringWithCanonicalMapping)
 
-            record.updateLocation(parentURL: "https://host/plain", fileName: "plain.txt", domainAccount: DatabaseTestSuites.account)
-            #expect(record.normalizedServerUrl == "https://host/plain")
+            try record.updateLocation(parentURL: account.davFilesUrl + "/plain", fileName: "plain.txt", domainAccount: account)
+            #expect(record.normalizedParentPath == "/plain")
             #expect(record.normalizedFileName == "plain.txt")
+        }
+
+        @Test func filesAndTrashCanContainTheSameParentPathAndFileName() throws {
+            let account = DatabaseTestSuites.account
+            let folderName = "Team.d1700000000"
+            var filesFolder = DatabaseTestSuites.makeFile(
+                ocId: "files-folder",
+                fileName: folderName,
+                serverUrl: account.davFilesUrl
+            )
+            filesFolder.directory = true
+            var trashFolder = DatabaseTestSuites.makeFile(
+                ocId: "trash-folder",
+                fileName: folderName,
+                serverUrl: account.trashUrl
+            )
+            trashFolder.directory = true
+            let filesItem = DatabaseTestSuites.makeFile(
+                ocId: "files-report",
+                fileName: "Report.txt",
+                serverUrl: filesFolder.remotePath()
+            )
+            let trashItem = DatabaseTestSuites.makeFile(
+                ocId: "trash-report",
+                fileName: filesItem.fileName,
+                serverUrl: trashFolder.remotePath()
+            )
+
+            for item in [filesFolder, trashFolder, filesItem, trashItem] {
+                manager.addItemMetadata(item)
+            }
+            #expect(manager.repairPersistedLogicalAddresses().evicted == 0)
+
+            let filesParent = try #require(try manager.storedParentLocationKeysForTesting(ocId: filesItem.ocId))
+            let trashParent = try #require(try manager.storedParentLocationKeysForTesting(ocId: trashItem.ocId))
+            #expect(filesParent.davRoot == .files)
+            #expect(trashParent.davRoot == .trash)
+            #expect(filesParent.parentPath == "/" + folderName)
+            #expect(trashParent.parentPath == filesParent.parentPath)
+
+            let savedFilesItem = try #require(manager.itemMetadata(locatedAtRemoteUrl: filesItem.remotePath()))
+            let savedTrashItem = try #require(manager.itemMetadata(locatedAtRemoteUrl: trashItem.remotePath()))
+            #expect(savedFilesItem.ocId == filesItem.ocId)
+            #expect(savedTrashItem.ocId == trashItem.ocId)
+            #expect(!savedFilesItem.deleted)
+            #expect(!savedTrashItem.deleted)
+            #expect(manager.immediateChildItems(directoryMetadata: filesFolder).map(\.ocId) == [filesItem.ocId])
+            #expect(manager.childItems(directoryMetadata: trashFolder).map(\.ocId) == [trashItem.ocId])
         }
 
         @Test func upsertKeepsTheRowIdentity() throws {

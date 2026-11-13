@@ -22,20 +22,30 @@ extension DatabaseTestSuites {
             try manager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: maxItems) { "a\($0)" }
         }
 
-        @Test func queuedSnapshotsUseTheStoreVersionFormat() throws {
+        @Test(arguments: DAVRoot.allCases)
+        func queuedSnapshotsStoreTheDAVRootAndParentPathSeparately(root: DAVRoot) throws {
             let account = DatabaseTestSuites.account
             let folder = "Docs #?%20"
-            let file = DatabaseTestSuites.makeFile(ocId: "report", fileName: "Report.txt")
+            let rootURL = root == .files ? account.davFilesUrl : account.trashUrl
+            let file = DatabaseTestSuites.makeFile(
+                ocId: "report",
+                fileName: "Report.txt",
+                serverUrl: rootURL
+            )
             manager.addItemMetadata(file)
-            #expect(try manager.storedParentLocationKeysForTesting(ocId: file.ocId)?.parentLocation == "files:")
+            let original = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+            #expect(original.davRoot == root)
+            #expect(original.parentPath.isEmpty)
             manager.renameItemMetadata(
                 ocId: file.ocId,
-                newServerUrl: account.davFilesUrl + "/" + folder,
+                newServerUrl: rootURL + "/" + folder,
                 newFileName: file.fileName
             )
             let movedFile = try #require(manager.itemMetadata(ocId: file.ocId))
-            let movedParentPath = "files:/" + folder
-            #expect(try manager.storedParentLocationKeysForTesting(ocId: file.ocId)?.parentLocation == movedParentPath)
+            let movedParentPath = "/" + folder
+            let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+            #expect(stored.davRoot == root)
+            #expect(stored.parentPath == movedParentPath)
             try #require(manager.createChangeDeliverySession(
                 sessionId: "s",
                 containerKey: "c",
@@ -52,7 +62,9 @@ extension DatabaseTestSuites {
             #expect(fields["ocId"] as? String == file.ocId)
             #expect(fields["serverUrl"] == nil)
             #expect(fields["path"] == nil)
+            #expect(fields["davRoot"] as? String == root.rawValue)
             #expect(fields["parentDAVPath"] as? String == movedParentPath)
+            #expect(try ChangeDeliveryItemRecord.decodeMetadata(item.metadataData).serverUrl == movedFile.serverUrl)
         }
 
         @Test func itemsAreReturnedInSequenceOrderUpToTheLimit() throws {

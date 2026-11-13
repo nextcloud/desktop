@@ -6,12 +6,10 @@ import Foundation
 import NextcloudKit
 
 extension NKFile {
-    /// Use this response's server base URL and backend user ID to replace the matching files or trash
-    /// root in `url` with `files:` or `trash:`. For example,
-    /// `https://cloud.example.com/remote.php/dav/files/alice/Team/Docs` becomes `files:/Team/Docs`.
-    /// Returns `nil` if neither root matches.
-    private func davRelativePath(forResponseURL url: String) -> String? {
-        Account.davRelativePath(
+    /// Identify the Files or Trash root of a URL from this response and return the path below it.
+    /// Uses the response's account details, accepting equivalent Unicode spellings of the server installation path.
+    private func davPath(forResponseURL url: String) -> DAVPath? {
+        Account.davPath(
             forURL: url,
             accountBaseURL: urlBase,
             backendUserID: userId,
@@ -30,15 +28,15 @@ extension NKFile {
     }
 
     func matchesRequestedDirectoryURL(_ requestedURL: String) -> Bool {
-        let requestedPath = Account.davRelativePath(forURL: requestedURL, accountBaseURL: urlBase, backendUserID: userId)
+        let requestedPath = Account.davPath(forURL: requestedURL, accountBaseURL: urlBase, backendUserID: userId)
         if representsAccountFilesRoot {
-            return requestedPath.map(Account.isStoredFilesRootLocation) ?? false
+            return requestedPath?.isFilesRoot == true
         }
 
         guard directory else { return false }
 
         let responseURL = serverUrl + "/" + fileName
-        if let requestedPath, let responsePath = davRelativePath(forResponseURL: responseURL) {
+        if let requestedPath, let responsePath = davPath(forResponseURL: responseURL) {
             return responsePath == requestedPath
         }
         return responseURL.utf8.elementsEqual(requestedURL.utf8)
@@ -68,9 +66,9 @@ extension NKFile {
         let ocId = usesSDKFilesRootPlaceholder ? NSFileProviderItemIdentifier.rootContainer.rawValue : ocId
         let fileName = isFilesRoot ? SendableItemMetadata.filesRootPlaceholderName : fileName
         let directory = isFilesRoot || directory
-        let relativeParentPath = isFilesRoot ? Account.storedFilesRootLocation : davRelativePath(forResponseURL: serverUrl)
-        let absoluteParentURL = relativeParentPath.flatMap {
-            Account.absoluteURL(fromDAVRelativePath: $0, accountBaseURL: urlBase, backendUserID: userId)
+        let parentDAVPath = isFilesRoot ? DAVPath(root: .files, path: "") : davPath(forResponseURL: serverUrl)
+        let absoluteParentURL = parentDAVPath.map {
+            Account.absoluteURL(for: $0, accountBaseURL: urlBase, backendUserID: userId)
         } ?? serverUrl
 
         return SendableItemMetadata(

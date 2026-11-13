@@ -45,13 +45,13 @@ enum DatabaseSchema {
                     "mountType",
                     "name",
                     "normalizedFileName",
-                    "normalizedServerUrl",
+                    "normalizedParentPath",
                     "note",
                     "ownerDisplayName",
                     "ownerId",
+                    "parentPath",
                     "permissions",
                     "resourceType",
-                    "serverUrl",
                     "trashbinFileName",
                     "trashbinOriginalLocation"
                 ] {
@@ -72,6 +72,8 @@ enum DatabaseSchema {
                 ] {
                     table.column(name, .text)
                 }
+
+                table.column("davRoot", .text).notNull().check { DAVRoot.allCases.map(\.rawValue).contains($0) }
 
                 for name in [
                     "commentsUnread",
@@ -126,11 +128,15 @@ enum DatabaseSchema {
                 }
             }
 
-            // Serves the location lookup (both columns) and the directory lookups (leading column, equality and range).
+            // Exact lookup uses all three columns. Directory lookup matches the root and searches a path range.
             try db.create(
                 index: "itemMetadata_on_location",
                 on: ItemMetadataRecord.databaseTableName,
-                columns: ["normalizedServerUrl", "normalizedFileName"]
+                columns: [
+                    "davRoot",
+                    "normalizedParentPath",
+                    "normalizedFileName"
+                ]
             )
 
             // Serves the push-notification lookup by server file identifier, which arrives in batches of thousands.

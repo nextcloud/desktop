@@ -18,12 +18,15 @@ extension DatabaseTestSuites {
         @Test func migratorCreatesTheFinalSchemaInOneStep() throws {
             try manager.writer.read { db in
                 let tables = try DatabaseSchema.tableNames.map { try db.tableExists($0) }
-                let itemColumns = try db.columns(in: ItemMetadataRecord.databaseTableName).map(\.name)
+                let columns = try db.columns(in: ItemMetadataRecord.databaseTableName)
+                let itemColumns = Set(columns.map(\.name))
                 let identityColumns = try db.columns(in: StoreIdentityRecord.databaseTableName).map(\.name)
                 #expect(!tables.contains(false))
                 #expect(DatabaseSchema.tableNames.count == 7)
                 #expect(try DatabaseSchema.migrator.appliedIdentifiers(db) == ["v1_metadata"])
-                #expect(Set(itemColumns).isDisjoint(with: ["account", "urlBase", "user", "userId", "path"]))
+                #expect(itemColumns.isDisjoint(with: ["account", "urlBase", "user", "userId", "path", "serverUrl", "normalizedServerUrl"]))
+                #expect(itemColumns.isSuperset(of: ["davRoot", "parentPath", "normalizedParentPath"]))
+                #expect(columns.first { $0.name == "davRoot" }?.isNotNull == true)
                 #expect(identityColumns.contains("accountBinding"))
             }
         }
@@ -117,11 +120,12 @@ extension DatabaseTestSuites {
         }
 
         @Test func locationQueriesUseTheLocationIndex() throws {
+            let parentURL = DatabaseTestSuites.account.davFilesUrl + "/Team"
             let plans = try manager.writer.read { db in
                 try [
-                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocationAndFileName(parentLocation: "https://a/b", fileName: "c")),
-                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocation("https://a/b", includingDescendants: false)),
-                    ItemMetadataRecord.filter(ItemMetadataRecord.matchesStoredParentLocation("https://a/b", includingDescendants: true))
+                    ItemMetadataRecord.filter(manager.matchesParentURLAndFileName(parentURL: parentURL, fileName: "report.txt")),
+                    ItemMetadataRecord.filter(manager.matchesParentDirectoryURL(parentURL, includingDescendants: false)),
+                    ItemMetadataRecord.filter(manager.matchesParentDirectoryURL(parentURL, includingDescendants: true))
                 ].map { request -> String in
                     let statement = try request.makePreparedRequest(db).statement
                     return try Row
@@ -133,6 +137,8 @@ extension DatabaseTestSuites {
 
             for plan in plans {
                 #expect(plan.contains("itemMetadata_on_location"), "Plan: \(plan)")
+                #expect(plan.contains("davRoot=?"), "Plan: \(plan)")
+                #expect(plan.contains("normalizedParentPath"), "Plan: \(plan)")
                 #expect(!plan.contains("SCAN itemMetadata"), "Plan: \(plan)")
             }
         }

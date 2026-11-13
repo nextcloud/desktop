@@ -279,14 +279,13 @@ enum RealmStoreImporter {
         metadata.user = sourceAccount.username
         metadata.urlBase = sourceAccount.serverBaseURL
         metadata.userId = sourceAccount.backendUserID
-        var record = ItemMetadataRecord(metadata)
-        guard let parentPath = record.storedParentPath,
-              !parentPath.split(separator: "/").contains(where: { $0 == "." || $0 == ".." })
-        else { return nil }
+        guard var record = try? ItemMetadataRecord(metadata) else { return nil }
+        let parent = record.storedDAVParent
+        guard !parent.path.split(separator: "/").contains(where: { $0 == "." || $0 == ".." }) else { return nil }
 
         let isFilesRoot = record.directory
             && record.fileName == SendableItemMetadata.filesRootPlaceholderName
-            && Account.isStoredFilesRootLocation(parentPath)
+            && parent.isFilesRoot
         let isValidFileName = !["", ".", ".."].contains(record.fileName) && !record.fileName.contains("/")
         guard isFilesRoot || isValidFileName else { return nil }
 

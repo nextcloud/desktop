@@ -12,13 +12,17 @@ import Testing
 /// This is the only place in the test target which touches the storage engine. Tests seed and inspect rows through these methods so that an engine change touches one file.
 ///
 extension FilesDatabaseManager {
-    func storedParentLocationKeysForTesting(ocId: String) throws -> (parentLocation: String, normalizedParentLocation: String)? {
+    func storedParentLocationKeysForTesting(ocId: String) throws -> (davRoot: DAVRoot, parentPath: String, normalizedParentPath: String)? {
         try writer.read { db in
             try Row.fetchOne(
                 db,
-                sql: "SELECT serverUrl, normalizedServerUrl FROM itemMetadata WHERE ocId = ?",
+                sql: "SELECT davRoot, parentPath, normalizedParentPath FROM itemMetadata WHERE ocId = ?",
                 arguments: [ocId]
-            ).map { ($0["serverUrl"], $0["normalizedServerUrl"]) }
+            ).map { row in
+                let rawValue: String = try row.decode(forColumn: "davRoot")
+                let root = try #require(DAVRoot(rawValue: rawValue))
+                return (root, row["parentPath"], row["normalizedParentPath"])
+            }
         }
     }
 
@@ -28,10 +32,10 @@ extension FilesDatabaseManager {
     /// The normalized location keys are derived from the raw location unless overridden, which builds rows whose keys drifted.
     ///
     func insertForTesting(_ metadata: SendableItemMetadata, normalizedServerUrl: String? = nil, normalizedFileName: String? = nil) throws {
-        var record = ItemMetadataRecord(metadata, domainAccount: account)
+        var record = try ItemMetadataRecord(metadata, domainAccount: account)
 
         if let normalizedServerUrl {
-            record.normalizedServerUrl = normalizedServerUrl
+            record.normalizedParentPath = normalizedServerUrl
         }
 
         if let normalizedFileName {
@@ -56,7 +60,7 @@ extension FilesDatabaseManager {
             return nil
         }
 
-        return (record.normalizedServerUrl, record.normalizedFileName)
+        return (record.normalizedParentPath, record.normalizedFileName)
     }
 
     ///
@@ -244,14 +248,14 @@ extension FilesDatabaseManager {
 
 extension SendableItemMetadata {
     ///
-    /// A row carrying only the storage defaults: empty strings, `false`, zero and the current date.
+    /// A row carrying only the storage defaults, with a Files root when given an account.
     ///
     /// Use it where a test used to build a bare database object and set a handful of fields, so the untouched fields keep the values the engine would have given them.
     ///
-    static func rawRow(ocId: String) -> SendableItemMetadata {
+    static func rawRow(ocId: String, account: Account? = nil) -> SendableItemMetadata {
         SendableItemMetadata(
             ocId: ocId,
-            account: "",
+            account: account?.ncKitAccount ?? "",
             classFile: "",
             contentType: "",
             creationDate: Date(),
@@ -264,11 +268,11 @@ extension SendableItemMetadata {
             ownerId: "",
             ownerDisplayName: "",
             permissions: "",
-            serverUrl: "",
+            serverUrl: account?.davFilesUrl ?? "",
             size: 0,
-            urlBase: "",
-            user: "",
-            userId: ""
+            urlBase: account?.serverUrl ?? "",
+            user: account?.username ?? "",
+            userId: account?.id ?? ""
         )
     }
 }

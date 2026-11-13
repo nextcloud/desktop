@@ -497,23 +497,21 @@ public final class FilesDatabaseManager: Sendable {
     // MARK: - Lookup workers
 
     func matchesParentURLAndFileName(parentURL: String, fileName: String) -> SQLExpression {
-        matchStoredParentLocation(for: parentURL) {
-            ItemMetadataRecord.matchesStoredParentLocationAndFileName(parentLocation: $0, fileName: fileName)
-        }
+        guard let parent = account.davPath(forURL: parentURL) else { return false.sqlExpression }
+        return ItemMetadataRecord.matchesStoredParentLocationAndFileName(
+            davRoot: parent.root,
+            parentPath: parent.path,
+            fileName: fileName
+        )
     }
 
     func matchesParentDirectoryURL(_ directoryURL: String, includingDescendants: Bool) -> SQLExpression {
-        matchStoredParentLocation(for: directoryURL) {
-            ItemMetadataRecord.matchesStoredParentLocation($0, includingDescendants: includingDescendants)
-        }
-    }
-
-    /// Remove the domain's DAV root from the parent URL before comparing it with SQLite paths.
-    func matchStoredParentLocation(
-        for parentURL: String,
-        matching predicate: (String) -> SQLExpression
-    ) -> SQLExpression {
-        predicate(account.davRelativePath(forURL: parentURL) ?? parentURL)
+        guard let parent = account.davPath(forURL: directoryURL) else { return false.sqlExpression }
+        return ItemMetadataRecord.matchesStoredParentLocation(
+            davRoot: parent.root,
+            parentPath: parent.path,
+            includingDescendants: includingDescendants
+        )
     }
 
     func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
@@ -524,8 +522,7 @@ public final class FilesDatabaseManager: Sendable {
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
     func itemMetadata(locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
-        if let relativePath = account.davRelativePath(forURL: rawRemoteURL),
-           Account.isStoredFilesRootLocation(relativePath) {
+        if account.davPath(forURL: rawRemoteURL)?.isFilesRoot == true {
             return try fetchFilesRootRecord(in: db)
         }
 
@@ -601,8 +598,9 @@ public final class FilesDatabaseManager: Sendable {
 
     /// Persist `metadata`, evicting any other live row at its logical address first.
     func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
-        try evictLogicalDuplicates(of: metadata, in: db)
-        try ItemMetadataRecord(metadata, domainAccount: self.account).upsertRow(db)
+        let record = try ItemMetadataRecord(metadata, domainAccount: account)
+        try evictLogicalDuplicates(of: record, in: db)
+        try record.upsertRow(db)
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
     }
 
@@ -922,16 +920,22 @@ public final class FilesDatabaseManager: Sendable {
             // payloads, so an ocId rotation (or rename whose target collides
             // with a third row) does not leave two non-deleted siblings at
             // the same parent path and name.
-            for metadata in metadatasToCreate {
-                try evictLogicalDuplicates(of: metadata, in: db)
+            let recordsToCreate = try metadatasToCreate.map {
+                try ItemMetadataRecord($0, domainAccount: account)
             }
-            for metadata in metadatasToUpdate {
-                try evictLogicalDuplicates(of: metadata, in: db)
+            let recordsToUpdate = try metadatasToUpdate.map {
+                try ItemMetadataRecord($0, domainAccount: account)
+            }
+            for record in recordsToCreate + recordsToUpdate {
+                try evictLogicalDuplicates(of: record, in: db)
             }
 
             // Do not delete the metadatas that have been deleted
-            for metadata in metadatasToDelete + metadatasToUpdate + metadatasToCreate {
+            for metadata in metadatasToDelete {
                 try ItemMetadataRecord(metadata, domainAccount: self.account).upsertRow(db)
+            }
+            for record in recordsToUpdate + recordsToCreate {
+                try record.upsertRow(db)
             }
 
             if let visitToRecord {
@@ -1393,7 +1397,7 @@ public final class FilesDatabaseManager: Sendable {
         let oldFileName = itemMetadata.fileName
         let oldServerUrl = itemMetadata.serverUrl
 
-        itemMetadata.updateLocation(parentURL: newServerUrl, fileName: newFileName, domainAccount: account)
+        try itemMetadata.updateLocation(parentURL: newServerUrl, fileName: newFileName, domainAccount: account)
         itemMetadata.fileNameView = newFileName
         itemMetadata.lockToken = nil
 
@@ -1405,12 +1409,8 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let location = account.davRelativePath(forURL: metadata.serverUrl) ?? metadata.serverUrl
-
-        if Account.isStoredFilesRootLocation(location) {
-            return .rootContainer
-        } else if location == "trash:" || location == "trash:/" {
-            return .trashContainer
+        if let parent = account.davPath(forURL: metadata.serverUrl), parent.isRoot {
+            return parent.root == .files ? .rootContainer : .trashContainer
         }
 
         guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
