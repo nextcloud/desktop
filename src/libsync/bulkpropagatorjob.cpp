@@ -467,15 +467,15 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
 
     // the file id should only be empty for new files up- or downloaded
     computeFileId(singleFile._item, fileReply);
+    singleFile._item->_fileId = getHeaderFromJsonReply(fileReply, "fileid");
 
     if (SyncJournalFileRecord oldRecord; propagator()->_journal->getFileRecord(singleFile._item->destination(), &oldRecord) && oldRecord.isValid()) {
-        if (oldRecord._etag != singleFile._item->_etag) {
+        if (oldRecord._fileId != singleFile._item->_fileId || oldRecord._etag != singleFile._item->_etag) {
             singleFile._item->updateLockStateFromDbRecord(oldRecord);
         }
     }
 
     singleFile._item->_etag = etag;
-    singleFile._item->_fileId = getHeaderFromJsonReply(fileReply, "fileid");
     singleFile._item->_remotePerm = RemotePermissions::fromServerString(getHeaderFromJsonReply(fileReply, "permissions"));
     singleFile._item->_isShared = singleFile._item->_remotePerm.hasPermission(RemotePermissions::IsShared) || singleFile._item->_sharedByMe;
     singleFile._item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
