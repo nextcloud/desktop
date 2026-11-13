@@ -16,13 +16,29 @@ import Testing
 ///
 @Suite("Enumerated directory reconciliation")
 struct EnumeratedDirectoryReconciliationTests {
-    let account = DatabaseTestSuites.account
-    let manager = DatabaseTestSuites.makeManager()
+    let account = DatabaseTestSuites.isolatedAccount()
+    let manager: FilesDatabaseManager
     let rootItem: MockRemoteItem
     let remoteInterface: MockRemoteInterface
     let recorder = EnumeratePathRecorder()
 
+    ///
+    /// Seed the capabilities cache of this suite's own account with what `interface` answers.
+    ///
+    /// Capabilities are cached per account for the whole process, so a suite which fetched them through an
+    /// interface of its own would otherwise decide for every other suite on that account which server they
+    /// are talking to, depending on which one ran first.
+    ///
+    private func usePaginatedServer(_ interface: MockRemoteInterface) async {
+        guard let capabilities = interface.directMockCapabilities() else {
+            return
+        }
+
+        await RetrievedCapabilitiesActor.shared.setCapabilities(forAccount: account.ncKitAccount, capabilities: capabilities)
+    }
+
     init() {
+        manager = DatabaseTestSuites.makeManager(account: account)
         rootItem = MockRemoteItem.rootItem(account: account)
         remoteInterface = MockRemoteInterface(account: account, rootItem: rootItem)
         recorder.record(on: remoteInterface)
@@ -175,6 +191,7 @@ struct EnumeratedDirectoryReconciliationTests {
         // The mock serves one paginated listing at a time, so only x is read through the paginating interface; both read the same tree.
         try await enumerate(rootItem)
         try await enumerate(p)
+        await usePaginatedServer(paginating)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: NSFileProviderItemIdentifier(x.identifier), account: account, remoteInterface: paginating, dbManager: manager,
             pageSize: 3, log: FileProviderLogMock()
