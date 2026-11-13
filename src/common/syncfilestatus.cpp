@@ -35,6 +35,16 @@ bool SyncFileStatus::shared() const
     return _shared;
 }
 
+void SyncFileStatus::setDehydrated(bool isDehydrated)
+{
+    _dehydrated = isDehydrated;
+}
+
+bool SyncFileStatus::dehydrated() const
+{
+    return _dehydrated;
+}
+
 QString SyncFileStatus::toSocketAPIString() const
 {
     QString statusString;
@@ -66,6 +76,9 @@ QString SyncFileStatus::toSocketAPIString() const
     if (canBeShared && _shared) {
         statusString += QLatin1String("+SWM");
     }
+    if (_tag == StatusUpToDate && _dehydrated) {
+        statusString += QLatin1String("+VIRT");
+    }
 
     return statusString;
 }
@@ -75,6 +88,6 @@ QDebug &operator<<(QDebug &debug, const OCC::SyncFileStatus &item)
 {
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
-    debug << u"OCC::SyncFileStatus(shared=" << item.shared() << u", tag=" << item.tag() << u")";
+    debug << u"OCC::SyncFileStatus(shared=" << item.shared() << u", dehydrated=" << item.dehydrated() << u", tag=" << item.tag() << u")";
     return debug;
 }
