@@ -5,7 +5,7 @@
 import Foundation
 
 /// How many reads of one kind run at a time, so a sweep over many directories does not open one connection per directory.
-let workingSetScanConcurrency = 6
+public let workingSetScanConcurrency = 6
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
@@ -164,12 +164,15 @@ extension Enumerator {
         )
 
         let rootMetadata = dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)
+        let readLimiter = ScanReadLimiter(limit: scanLimits.concurrentListings)
         _ = await listDirectory(
             at: account.davFilesUrl,
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             metadata: rootMetadata,
             remoteStateAsListed: nil,
             ancestorOcIds: [],
+            startsChainBelowParent: true,
+            readLimiter: readLimiter,
             state: &state
         )
 
@@ -257,11 +260,23 @@ extension Enumerator {
         metadata: SendableItemMetadata?,
         remoteStateAsListed: String?,
         ancestorOcIds: [String],
+        startsChainBelowParent: Bool,
+        readLimiter: ScanReadLimiter,
         state: inout WorkingSetScanState
     ) async -> Bool {
+        // Past the deadline the first directory below each listing is still read, so every pass completes a
+        // chain; its siblings wait for the next pass. The chain up to here keeps no reconciled state, so the
+        // next pass descends to this point again and skips what this one completed.
+        guard startsChainBelowParent || ContinuousClock.now < state.deadline else {
+            logger.debug("Not starting another listing in this pass; the listing budget is spent.", [.url: remotePath])
+            state.stoppedAtDeadline = true
+            return false
+        }
+
         logger.debug("Listing a directory for working-set changes.", [.url: remotePath])
         state.listedCount += 1
 
+        await readLimiter.acquire()
         let readResult = await Enumerator.readServerUrl(
             remotePath,
             account: account,
@@ -271,6 +286,7 @@ extension Enumerator {
             recordVisit: false,
             log: logger.log
         )
+        await readLimiter.release()
 
         let isRoot = ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
 
@@ -324,7 +340,7 @@ extension Enumerator {
         state.survivingOcIds.formUnion(listedRows.map(\.ocId))
 
         var allDescentsSucceeded = true
-        var descendedBelowThisDirectory = false
+        var toDescend: [SendableItemMetadata] = []
 
         for child in listedRows.dropFirst() where child.directory {
             guard !isLockFileName(child.fileName), state.listedOcIds.insert(child.ocId).inserted else {
@@ -348,31 +364,89 @@ extension Enumerator {
                     state.skippedCount += 1
                     continue
                 case .descend:
-                    break
+                    toDescend.append(child)
             }
+        }
 
-            // Past the deadline the first descent below each directory just listed is still taken, so every pass completes a chain; further siblings wait. The chain up to here keeps no reconciled state, so the next pass descends to this point again and skips what this one completed.
-            guard !descendedBelowThisDirectory || ContinuousClock.now < state.deadline else {
-                logger.debug("Not starting another listing in this pass; the listing budget is spent.", [.url: childPath])
-                state.stoppedAtDeadline = true
-                allDescentsSucceeded = false
-                break
-            }
-
-            descendedBelowThisDirectory = true
-            let descended = await listDirectory(
-                at: childPath,
-                ocId: child.ocId,
-                metadata: child,
-                remoteStateAsListed: FilesDatabaseManager.scanRemoteState(of: child),
-                ancestorOcIds: ancestorOcIds + [ocId],
-                state: &state
+        if !toDescend.isEmpty {
+            let descents = await descend(
+                into: toDescend, below: ocId, ancestorOcIds: ancestorOcIds, readLimiter: readLimiter, state: &state
             )
-            allDescentsSucceeded = allDescentsSucceeded && descended
+            allDescentsSucceeded = descents
         }
 
         if allDescentsSucceeded, let remoteStateAsListed {
             state.reconciled[ocId] = remoteStateAsListed
+        }
+
+        return allDescentsSucceeded
+    }
+
+    ///
+    /// Walk the subtrees below the children of one listing, several at a time.
+    ///
+    /// The children of one listing are subtrees of their own: nothing one of them finds decides what another
+    /// descends into, so their listings go out together. Each walks a state of its own, and what they
+    /// accumulated is taken over in the order the children were listed, so the pass reports the same thing
+    /// however the subtrees interleave. `readLimiter` keeps the listings of the whole pass within the
+    /// connection limit, however deep it has recursed, and the window below keeps the number of subtrees
+    /// being walked at once from growing with the tree.
+    ///
+    /// The listing budget is decided by the listing itself, not here: a task whose turn comes after the
+    /// deadline reads nothing and reports its subtree as unfinished, so adding the tasks ahead of time
+    /// does not spend budget the pass no longer has.
+    ///
+    /// - Returns: Whether every subtree was walked to its end.
+    ///
+    private func descend(
+        into children: [SendableItemMetadata],
+        below ocId: String,
+        ancestorOcIds: [String],
+        readLimiter: ScanReadLimiter,
+        state: inout WorkingSetScanState
+    ) async -> Bool {
+        let seed = state.forSubtree()
+        let ancestors = ancestorOcIds + [ocId]
+        var started = 0
+        var results: [Int: (succeeded: Bool, state: WorkingSetScanState)] = [:]
+
+        await withTaskGroup(of: (offset: Int, succeeded: Bool, state: WorkingSetScanState).self) { group in
+            for (offset, child) in children.enumerated() {
+                if started >= scanLimits.concurrentListings, let finished = await group.next() {
+                    results[finished.offset] = (finished.succeeded, finished.state)
+                }
+
+                started += 1
+                group.addTask { [self] in
+                    var subtree = seed
+                    let succeeded = await listDirectory(
+                        at: child.remotePath(),
+                        ocId: child.ocId,
+                        metadata: child,
+                        remoteStateAsListed: FilesDatabaseManager.scanRemoteState(of: child),
+                        ancestorOcIds: ancestors,
+                        startsChainBelowParent: offset == 0,
+                        readLimiter: readLimiter,
+                        state: &subtree
+                    )
+                    return (offset, succeeded, subtree)
+                }
+            }
+
+            for await finished in group {
+                results[finished.offset] = (finished.succeeded, finished.state)
+            }
+        }
+
+        var allDescentsSucceeded = true
+
+        for offset in results.keys.sorted() {
+            guard let result = results[offset] else {
+                continue
+            }
+
+            state.merge(result.state)
+            allDescentsSucceeded = allDescentsSucceeded && result.succeeded
         }
 
         return allDescentsSucceeded

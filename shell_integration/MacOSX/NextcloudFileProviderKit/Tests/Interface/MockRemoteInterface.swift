@@ -616,6 +616,15 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         readOperationCountLock.withLock { lockedReadOperationCount }
     }
 
+    private let inFlightEnumerationsLock = NSLock()
+    private var lockedInFlightEnumerations = 0
+    private var lockedPeakInFlightEnumerations = 0
+
+    /// The most enumerations this interface ever had in flight at once, for a caller which reads several at a time.
+    public var peakInFlightEnumerations: Int {
+        inFlightEnumerationsLock.withLock { lockedPeakInFlightEnumerations }
+    }
+
     /// When non-nil, the upload mock truncates the modification date returned to
     /// the caller to this precision (in seconds) — simulating Nextcloud's
     /// `Last-Modified` IMF-fixdate, which is second-precision even when we sent
@@ -1268,6 +1277,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
         // Increment read operation counter
         readOperationCountLock.withLock { lockedReadOperationCount += 1 }
+        inFlightEnumerationsLock.withLock {
+            lockedInFlightEnumerations += 1
+            lockedPeakInFlightEnumerations = max(lockedPeakInFlightEnumerations, lockedInFlightEnumerations)
+        }
+        defer { inFlightEnumerationsLock.withLock { lockedInFlightEnumerations -= 1 } }
 
         var remotePath = remotePath
 

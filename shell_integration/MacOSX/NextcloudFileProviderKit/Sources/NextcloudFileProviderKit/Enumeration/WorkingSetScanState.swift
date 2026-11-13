@@ -6,7 +6,9 @@ import Foundation
 ///
 /// Everything one working-set scan pass accumulates while it walks the directory tree.
 ///
-/// Passed `inout` through the recursion, so nothing is captured by a closure and the pass stays one task.
+/// Passed `inout` through the recursion. The children of one listing are walked together, each with a state
+/// of its own seeded by ``forSubtree()``, and what they accumulated is taken over by ``merge(_:)`` in the order
+/// the children were listed, so what a pass reports does not depend on which subtree finished first.
 ///
 struct WorkingSetScanState {
     /// The remote state at which each directory was reconciled by an earlier pass, keyed by identifier.
@@ -45,4 +47,34 @@ struct WorkingSetScanState {
     var listedCount = 0
     var skippedCount = 0
     var failedCount = 0
+
+    ///
+    /// A state for the subtree below one child, carrying what the pass has decided but nothing it accumulated.
+    ///
+    /// The directories listed so far come along, so a subtree does not list again what an ancestor or an
+    /// earlier sibling of an ancestor already listed. Two subtrees walked at the same time cannot see each
+    /// other's listings, so a directory which moved into both of them during the pass is listed by each; the
+    /// listings agree, and the pass reports the item once.
+    ///
+    func forSubtree() -> WorkingSetScanState {
+        var subtree = WorkingSetScanState(scannedRemoteStates: scannedRemoteStates, deadline: deadline)
+        subtree.listedOcIds = listedOcIds
+        return subtree
+    }
+
+    /// Take over what the subtree below one child accumulated.
+    mutating func merge(_ subtree: WorkingSetScanState) {
+        stoppedAtDeadline = stoppedAtDeadline || subtree.stoppedAtDeadline
+        tombstoningChains.formUnion(subtree.tombstoningChains)
+        listedOcIds.formUnion(subtree.listedOcIds)
+        createdAndUpdated.append(contentsOf: subtree.createdAndUpdated)
+        survivingOcIds.formUnion(subtree.survivingOcIds)
+        missing.append(contentsOf: subtree.missing)
+        notFoundOcIds.formUnion(subtree.notFoundOcIds)
+        reconciled.merge(subtree.reconciled) { _, fromSubtree in fromSubtree }
+        forgotten.formUnion(subtree.forgotten)
+        listedCount += subtree.listedCount
+        skippedCount += subtree.skippedCount
+        failedCount += subtree.failedCount
+    }
 }
