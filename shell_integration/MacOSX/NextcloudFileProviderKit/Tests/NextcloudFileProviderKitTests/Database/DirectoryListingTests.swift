@@ -40,6 +40,51 @@ extension DatabaseTestSuites {
             )
         }
 
+        @Test func aPaginatedListingTombstonesTheChildrenNoPageReturned() throws {
+            let directory = makeDirectory(ocId: "dir", fileName: "Dir")
+            let kept = makeChild(ocId: "kept", fileName: "kept.txt", of: directory)
+            let gone = makeChild(ocId: "gone", fileName: "gone.txt", of: directory)
+            var goneDirectory = makeChild(ocId: "goneDir", fileName: "GoneDir", of: directory)
+            goneDirectory.directory = true
+            goneDirectory.visitedDirectory = true
+            var deep = makeChild(ocId: "deep", fileName: "deep.txt", of: goneDirectory)
+            deep.downloaded = true
+            var local = makeChild(ocId: "local", fileName: "local.txt", of: directory)
+            local.uploaded = false
+            var uploading = makeChild(ocId: "uploading", fileName: "uploading.txt", of: directory)
+            uploading.status = Status.inUpload.rawValue
+            var lockFile = makeChild(ocId: "lock", fileName: ".~lock.kept.txt#", of: directory)
+            lockFile.isLockFileOfLocalOrigin = true
+            for row in [directory, kept, gone, goneDirectory, deep, local, uploading, lockFile] {
+                try manager.insertForTesting(row)
+            }
+            let listingStart = Date()
+            var keptAsListed = kept
+            keptAsListed.syncTime = Date() // A page's rows are converted, and stamped, after the listing started.
+            manager.addItemMetadataPreservingLocalState(keptAsListed)
+
+            let tombstoned = try #require(manager.deleteChildrenNotListed(of: directory.serverUrl + "/" + directory.fileName, account: account.ncKitAccount, since: listingStart))
+
+            #expect(Set(tombstoned.map(\.ocId)) == ["gone", "goneDir", "deep"])
+            for ocId in ["gone", "goneDir", "deep"] {
+                let row = try #require(manager.itemMetadata(ocId: ocId))
+                #expect(row.deleted)
+                #expect(row.syncTime >= listingStart, "Stamped, so the working-set derivation finds the deletion by date.")
+            }
+            for ocId in ["kept", "local", "uploading", "lock"] {
+                #expect(manager.itemMetadata(ocId: ocId)?.deleted == false, "\(ocId) is not the server's to drop.")
+            }
+            #expect(manager.itemMetadata(ocId: "dir")?.deleted == false, "The listed directory itself is not a child.")
+        }
+
+        @Test func aPaginatedListingWhichTombstonesNothingReturnsNoRows() throws {
+            let directory = makeDirectory(ocId: "dir", fileName: "Dir")
+            try manager.insertForTesting(directory)
+            try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+            #expect(manager.deleteChildrenNotListed(of: directory.serverUrl + "/" + directory.fileName, account: account.ncKitAccount, since: Date()) == nil)
+        }
+
         @Test func aMissingChildIsTombstonedOnceAndStamped() throws {
             let directory = makeDirectory(ocId: "dir", fileName: "Dir")
             let kept = makeChild(ocId: "kept", fileName: "kept.txt", of: directory)

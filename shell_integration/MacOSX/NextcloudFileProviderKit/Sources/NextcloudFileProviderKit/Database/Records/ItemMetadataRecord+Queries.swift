@@ -38,6 +38,10 @@ extension ItemMetadataRecord {
         Columns.syncTime > date.timeIntervalSinceReferenceDate
     }
 
+    static func syncedBefore(_ date: Date) -> SQLExpression {
+        Columns.syncTime < date.timeIntervalSinceReferenceDate
+    }
+
     /// The `syncTime` of the row state last handed to the system. Not part of the record, see `FilesDatabaseManager.markReported(_:)`.
     static let reportedSyncTimeColumn = Column("reportedSyncTime")
 
