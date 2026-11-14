@@ -22,4 +22,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
+Name[id]=@APPLICATION_NAME@ Desktop
+Comment[id]=Klien sinkronisasi desktop @APPLICATION_NAME@
 GenericName[id]=Sinkronisasi Folder
+Icon[id]=@APPLICATION_ICON_NAME@
