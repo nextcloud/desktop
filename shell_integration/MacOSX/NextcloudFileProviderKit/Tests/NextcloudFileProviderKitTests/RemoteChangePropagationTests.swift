@@ -41,25 +41,6 @@ import NextcloudKit
 @testable import TestInterface
 import XCTest
 
-/// Thread-safe collector for the remote paths a working-set scan issues PROPFINDs for. The mock's
-/// `enumerateCallHandler` may run off the test's thread, so guard the storage with a lock.
-private final class EnumeratePathRecorder: @unchecked Sendable {
-    private let lock = NSLock()
-    private var storage: [String] = []
-
-    func add(_ path: String) {
-        lock.lock()
-        defer { lock.unlock() }
-        storage.append(path)
-    }
-
-    var paths: [String] {
-        lock.lock()
-        defer { lock.unlock() }
-        return storage
-    }
-}
-
 final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
@@ -1080,5 +1061,82 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(observer.deletedItemIdentifiers.map(\.rawValue).contains(file.identifier), "A file that a listing in this scan returned must not be reported deleted.")
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.serverUrl, Self.account.davFilesUrl + "/A")
+    }
+
+    /// `Ontwerp` moved from the visited `Projects` into the unvisited `Archive`, so the scan tombstones its downloaded file at the old path, and `Archive` is listed before the deletion is acknowledged.
+    func testAFolderMovedIntoAnUnvisitedFolderGetsItsFileBackWhenListed() async throws {
+        let projects = makeFolder(name: "Projects", parent: rootItem, etag: "projects-v1")
+        let archive = makeFolder(name: "Archive", parent: rootItem, etag: "archive-v1")
+        let ontwerp = makeFolder(name: "Ontwerp", parent: projects, etag: "ontwerp-v1")
+        let file = makeFile(name: "a.indd", parent: ontwerp, etag: "file-v1")
+        seed(projects, visitedDirectory: true)
+        seed(archive)
+        seed(ontwerp, visitedDirectory: true)
+        seed(file, downloaded: true)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        _ = await remoteInterface.move(remotePathSource: ontwerp.remotePath, remotePathDestination: archive.remotePath + "/Ontwerp", account: Self.account)
+        projects.versionIdentifier = "projects-v2"
+        archive.versionIdentifier = "archive-v2"
+
+        let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock()).scanMaterialisedItemsForRemoteChanges()
+        XCTAssertFalse(scan.hadFailure)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, true, "Nothing in the scan lists the file at its new path.")
+        _ = await Enumerator.readServerUrl(archive.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let inFolder = await Enumerator.readServerUrl(ontwerp.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+
+        XCTAssertTrue(inFolder.changes?.updated.contains { $0.ocId == file.identifier } == true, "The file must be reported where it is listed.")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.serverUrl, ontwerp.remotePath)
+    }
+
+    /// `sub` moved into `Active` and then `Ontwerp` into `Archive`, so the read of `Archive` moves `sub` with `Ontwerp` and the later read of `Active` moves it again.
+    func testASubfolderMovedTwiceInOneScanIsReportedWhereItIsNow() async throws {
+        let archive = makeFolder(name: "Archive", parent: rootItem, etag: "archive-v1")
+        let projects = makeFolder(name: "Projects", parent: rootItem, etag: "projects-v1")
+        let active = makeFolder(name: "Active", parent: projects, etag: "active-v1")
+        let ontwerp = makeFolder(name: "Ontwerp", parent: projects, etag: "ontwerp-v1")
+        let sub = makeFolder(name: "sub", parent: ontwerp, etag: "sub-v1")
+        let file = makeFile(name: "b.indd", parent: sub, etag: "file-v1")
+        for folder in [archive, projects, active, ontwerp] {
+            seed(folder, visitedDirectory: true)
+        }
+        seed(sub)
+        seed(file)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        _ = await remoteInterface.move(remotePathSource: sub.remotePath, remotePathDestination: active.remotePath + "/sub", account: Self.account)
+        _ = await remoteInterface.move(remotePathSource: ontwerp.remotePath, remotePathDestination: archive.remotePath + "/Ontwerp", account: Self.account)
+        for folder in [archive, projects, active, ontwerp] {
+            folder.versionIdentifier += "-v2"
+        }
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertNil(observer.error)
+        XCTAssertEqual(observer.changedItems.first { $0.itemIdentifier.rawValue == sub.identifier }?.parentItemIdentifier.rawValue, active.identifier)
+        XCTAssertEqual(observer.changedItems.first { $0.itemIdentifier.rawValue == file.identifier }?.parentItemIdentifier.rawValue, sub.identifier)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.serverUrl, sub.remotePath)
+    }
+
+    /// `Ontwerp` moved from `Projects` into the visited `Archive` and `sub` was deleted, so the read of `Archive` moves `sub` along and the later read of the pinned `Ontwerp` at its new path deletes it.
+    func testASubfolderDeletedByALaterReadInOneScanIsReportedDeleted() async throws {
+        let archive = makeFolder(name: "Archive", parent: rootItem, etag: "archive-v1")
+        let projects = makeFolder(name: "Projects", parent: rootItem, etag: "projects-v1")
+        let ontwerp = makeFolder(name: "Ontwerp", parent: projects, etag: "ontwerp-v1")
+        let sub = makeFolder(name: "sub", parent: ontwerp, etag: "sub-v1")
+        seed(archive, visitedDirectory: true)
+        seed(projects)
+        seed(ontwerp, keepDownloaded: true)
+        seed(sub, keepDownloaded: true)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        _ = await remoteInterface.move(remotePathSource: ontwerp.remotePath, remotePathDestination: archive.remotePath + "/Ontwerp", account: Self.account)
+        ontwerp.children.removeAll { $0 === sub }
+        archive.versionIdentifier = "archive-v2"
+        ontwerp.versionIdentifier = "ontwerp-v2"
+
+        let observer = try await runWorkingSetChanges(remoteInterface)
+
+        XCTAssertNil(observer.error)
+        XCTAssertTrue(observer.deletedItemIdentifiers.map(\.rawValue).contains(sub.identifier), "The read that deleted the subfolder comes after the read that moved it.")
+        XCTAssertFalse(reportedIds(observer).contains(sub.identifier))
     }
 }

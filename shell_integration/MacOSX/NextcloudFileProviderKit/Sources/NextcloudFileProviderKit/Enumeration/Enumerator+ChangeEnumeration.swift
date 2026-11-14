@@ -14,9 +14,10 @@ extension Enumerator {
     /// Read the container from the server, diff it against the local database and report the
     /// resulting creations, updates and deletions to the change observer.
     ///
-    /// A 404 is treated as a deletion of the container itself (reported, not an error). A
-    /// "no changed etags" reply finishes cleanly with no changes. A `nil` change set means the
-    /// database write that derives the changes failed and is reported as an error.
+    /// A 404 is treated as a deletion of the container itself (reported, not an error) when its
+    /// parent can be read and no longer lists it; otherwise the enumeration finishes with no
+    /// changes. A "no changed etags" reply finishes cleanly with no changes. A `nil` change set
+    /// means the database write that derives the changes failed and is reported as an error.
     ///
     func enumerateContainerChanges(
         for observer: NSFileProviderChangeObserver, anchor: NSFileProviderSyncAnchor
@@ -53,8 +54,15 @@ extension Enumerator {
             }
             changeBuffer.reset()
 
+            // A listing can have moved or parked the folder since this enumerator was created, so its row says where to read it now.
+            let enumeratedOcId = enumeratedItemMetadata?.ocId
+            let currentItem = await dbManager.perform { manager in
+                enumeratedOcId.flatMap { manager.itemMetadata(ocId: $0) }
+            }
+            let readPath = currentItem?.remotePath() ?? serverUrl
+
             let readResult = await Self.readServerUrl(
-                serverUrl,
+                readPath,
                 account: account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -63,18 +71,27 @@ extension Enumerator {
             let readError = readResult.error
 
             guard readError == nil else {
-                logger.error("Finished enumerating changes.", [.url: serverUrl, .error: readError])
+                logger.error("Finished enumerating changes.", [.url: readPath, .error: readError])
 
                 let error = readError?.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError!.isNotFoundError {
-                    logger.info("404 error means item no longer exists. Deleting metadata and reporting deletion without error.", [.url: serverUrl])
-
-                    guard let itemMetadata = enumeratedItemMetadata else {
+                    guard let itemMetadata = currentItem ?? enumeratedItemMetadata else {
                         logger.error("Invalid enumeratedItemMetadata. Could not delete metadata nor report deletion.")
                         observer.finishEnumeratingWithError(error)
                         return
                     }
+
+                    // A 404 alone cannot tell a deletion from a rename in place or a move of an ancestor, so the parent must be readable and no longer list the item, which a move to another parent also satisfies.
+                    let (parentListing, parentError) = await Self.listedIdentifiers(at: itemMetadata.serverUrl, depth: .targetAndDirectChildren, account: account, remoteInterface: remoteInterface)
+
+                    guard parentError == .success, !parentListing.contains(itemMetadata.ocId) else {
+                        logger.info("Not deleting an item whose parent could not confirm the deletion.", [.item: itemMetadata.ocId, .url: readPath, .error: parentError])
+                        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
+                        return
+                    }
+
+                    logger.info("404 error and a parent without the item mean the item no longer exists. Deleting metadata and reporting deletion without error.", [.url: readPath])
 
                     if itemMetadata.directory {
                         if dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: itemMetadata.ocId) == nil {
@@ -116,7 +133,7 @@ extension Enumerator {
                 return
             }
 
-            logger.info("Finished reading remote changes.", [.account: account.ncKitAccount, .url: serverUrl])
+            logger.info("Finished reading remote changes.", [.account: account.ncKitAccount, .url: readPath])
 
             // Sort created+updated parents-before-children (see completeChangesBatch) and buffer the
             // full set so it can be delivered one batch at a time across the framework's moreComing

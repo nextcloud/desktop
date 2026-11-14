@@ -318,6 +318,13 @@ public final class FilesDatabaseManager: Sendable {
         } ?? nil
     }
 
+    /// The stored rows for the given identifiers, keyed by identifier, with identifiers without a row absent, or `nil` when the read failed.
+    func itemMetadatas(ocIds: [String]) -> [String: SendableItemMetadata]? {
+        read("Could not look up item metadata by identifiers.") { db in
+            try itemMetadatas(ocIds: ocIds, in: db).mapValues(\.metadata)
+        }
+    }
+
     public func itemMetadata(_ identifier: NSFileProviderItemIdentifier) -> SendableItemMetadata? {
         itemMetadata(ocId: identifier.rawValue)
     }
@@ -400,6 +407,18 @@ public final class FilesDatabaseManager: Sendable {
 
     func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
         try ItemMetadataRecord.filter(key: ocId).fetchRecord(db, logger: logger)
+    }
+
+    func itemMetadatas(ocIds: [String], in db: Database) throws -> [String: ItemMetadataRecord] {
+        var recordsByOcId: [String: ItemMetadataRecord] = [:]
+
+        for chunk in ocIds.chunked(into: Self.inClauseChunkSize) {
+            for record in try ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.ocId)).fetchRecords(db, logger: logger) {
+                recordsByOcId[record.ocId] = record
+            }
+        }
+
+        return recordsByOcId
     }
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
@@ -529,13 +548,21 @@ public final class FilesDatabaseManager: Sendable {
         // (each a DB query) to one per distinct parent.
         var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
 
+        // Rows of listed items stored outside the listed folder, fetched in one pass instead of once per item.
+        let storedElsewhereByOcId = try itemMetadatas(ocIds: updatedMetadatas.map(\.ocId).filter { existingByOcId[$0] == nil }, in: db)
+
         for var updatedMetadata in updatedMetadatas {
-            if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
+            let listedHere = existingByOcId[updatedMetadata.ocId]
+
+            // A listed item stored at another path was moved here by the server: it keeps downloaded, visited and the pin, and like a new item it takes the server's transfer status.
+            if let existingMetadata = listedHere ?? storedElsewhereByOcId[updatedMetadata.ocId],
+               listedHere != nil || !existingMetadata.hasSameLocation(as: updatedMetadata)
+            {
                 if updatedMetadata.etag == existingMetadata.etag {
                     updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
                 }
 
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+                if listedHere == nil || (existingMetadata.status == Status.normal.rawValue && !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -566,7 +593,6 @@ public final class FilesDatabaseManager: Sendable {
                         .syncTime: updatedMetadata.syncTime.description
                     ])
                 }
-
             } else { // This is a new metadata
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
                 if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
@@ -608,16 +634,6 @@ public final class FilesDatabaseManager: Sendable {
                 cleanServerUrl.removeLast()
             }
 
-            let existingMetadatas = try ItemMetadataRecord
-                .filter(
-                    // Don't worry — root will be updated at the end of this method if is the target
-                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
-                        && ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
-                        && ItemMetadataRecord.Columns.account == account
-                        && ItemMetadataRecord.Columns.uploaded == true
-                )
-                .fetchRecords(db, logger: logger)
-
             var updatedChildMetadatas = updatedMetadatas
 
             let readTargetMetadata: SendableItemMetadata? = if let targetMetadata = updatedMetadatas.first {
@@ -629,6 +645,25 @@ public final class FilesDatabaseManager: Sendable {
             } else {
                 nil
             }
+
+            let placesReadTarget = try readTargetMetadata.map { target in
+                try target.directory && (!preserveDeletedTarget || itemMetadata(ocId: target.ocId, in: db)?.deleted != true)
+            } ?? false
+
+            // Another folder stored at the path read is parked before the stored children are collected, so its children are not taken for those of the folder read.
+            if placesReadTarget, let readTargetMetadata {
+                try parkDirectories(at: readTargetMetadata.serverUrl, fileName: readTargetMetadata.fileName, otherThan: readTargetMetadata.ocId, in: db)
+            }
+
+            let existingMetadatas = try ItemMetadataRecord
+                .filter(
+                    // Don't worry — root will be updated at the end of this method if is the target
+                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                        && ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
+                        && ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.uploaded == true
+                )
+                .fetchRecords(db, logger: logger)
 
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
@@ -650,14 +685,29 @@ public final class FilesDatabaseManager: Sendable {
             var metadatasToCreate = metadatasToChange.newMetadatas
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
-            for metadata in directoriesNeedingRename {
-                if let updatedDirectoryChildren = try renameDirectoryAndPropagateToChildren(
-                    ocId: metadata.ocId,
-                    newServerUrl: metadata.serverUrl,
-                    newFileName: metadata.fileName,
-                    in: db
-                ) {
-                    metadatasToUpdate += updatedDirectoryChildren
+            var movedDescendants: [SendableItemMetadata] = []
+
+            // Its placement moves the stored row of the folder read, so whether that row moves is taken first to report the move.
+            let readTargetMoved = try placesReadTarget && readTargetMetadata.map { target in
+                try target.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue && directoryMetadata(ocId: target.ocId, in: db).map { !$0.hasSameLocation(as: target) } == true
+            } == true
+
+            // The folder read is placed first, so its own descendants are below it before its listed subfolders are placed.
+            if placesReadTarget, let readTargetMetadata {
+                movedDescendants += try placeDirectory(readTargetMetadata, in: db)
+            }
+
+            // A moved folder takes its own descendants along, and a folder moved or created here first parks any other folder stored at its path.
+            for metadata in directoriesNeedingRename + metadatasToCreate where metadata.directory {
+                movedDescendants += try placeDirectory(metadata, in: db)
+            }
+
+            // A moved descendant is reported as stored once every folder is placed, unless it is written as listed, deleted, or moved on by a later placement.
+            var reportedOcIds = Set((updatedChildMetadatas + metadatasToDelete).map(\.ocId))
+            let storedDescendants = try itemMetadatas(ocIds: movedDescendants.map(\.ocId), in: db)
+            metadatasToUpdate += movedDescendants.compactMap { moved in
+                storedDescendants[moved.ocId].flatMap { stored in
+                    !stored.deleted && stored.hasSameLocation(as: moved) && reportedOcIds.insert(moved.ocId).inserted ? stored.metadata : nil
                 }
             }
 
@@ -686,7 +736,7 @@ public final class FilesDatabaseManager: Sendable {
 
                     if canUpdateTarget,
                        existing.status == Status.normal.rawValue,
-                       !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
+                       readTargetMoved || !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
                         if keepExistingDownloadState {
@@ -714,8 +764,14 @@ public final class FilesDatabaseManager: Sendable {
                 try evictLogicalDuplicates(of: metadata, in: db)
             }
 
-            // Do not delete the metadatas that have been deleted
-            for metadata in metadatasToDelete + metadatasToUpdate + metadatasToCreate {
+            // Mark deletions by key, so a row parked above keeps the location it was parked at.
+            for chunk in metadatasToDelete.map(\.ocId).chunked(into: Self.inClauseChunkSize) {
+                try ItemMetadataRecord
+                    .filter(keys: chunk)
+                    .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
+            }
+
+            for metadata in metadatasToUpdate + metadatasToCreate {
                 try ItemMetadataRecord(metadata).upsertRow(db)
             }
 
@@ -725,8 +781,11 @@ public final class FilesDatabaseManager: Sendable {
                     .updateAll(db, ItemMetadataRecord.Columns.visitedDirectory.set(to: true))
             }
 
+            // Deletions are returned as stored, so a caller that writes them back keeps a parked folder at its holding name.
+            let storedDeletions = try itemMetadatas(ocIds: metadatasToDelete.map(\.ocId), in: db)
+
             return ChangeSet(
-                created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete
+                created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete.map { storedDeletions[$0.ocId]?.metadata ?? $0 }
             )
         }
     }
@@ -799,6 +858,7 @@ public final class FilesDatabaseManager: Sendable {
         try await writer.writeWithoutTransaction { db in
             try self.writeTransaction(in: db, durability: .full) { db in
                 guard !isCancelled() else { throw CancellationError() }
+                _ = try self.placeDirectory(metadata, in: db)
                 try self.insertItemMetadata(metadata, in: db)
                 // Progress can be cancelled before its handler cancels the Swift task.
                 guard !isCancelled() else { throw CancellationError() }
@@ -987,6 +1047,7 @@ public final class FilesDatabaseManager: Sendable {
                 }
             }
 
+            _ = try placeDirectory(toWrite, in: db)
             try insertItemMetadata(toWrite, in: db)
         }
 
