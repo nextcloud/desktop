@@ -565,7 +565,12 @@ private Q_SLOTS:
         auto user1 = createAccount("user1");
         auto user2 = createAccount("user2");
 
-        const auto addFolderForTesting = [this, &dirPath](AccountState * const account, const QString &alias, const QString &localPath, const QString &targetPath, const int rootFileId, const QList<qint64> &fileIds) -> void {
+        const auto addFolderForTesting = [this, &dirPath](AccountState *account,
+                                                          const QString &alias,
+                                                          const QString &localPath,
+                                                          const QString &targetPath,
+                                                          const QByteArray &instanceId,
+                                                          const QList<qint64> &fileIds) {
             FolderDefinition definition;
             definition.alias = alias;
             definition.localPath = dirPath + localPath;
@@ -574,12 +579,10 @@ private Q_SLOTS:
             auto folder = _fm->addFolder(account, definition);
             QVERIFY(folder);
 
-            Q_EMIT folder->syncEngine().rootFileIdReceived(rootFileId);
-
             auto journal = folder->journalDb();
             for (const auto &fileId : fileIds) {
                 SyncJournalFileRecord record;
-                record._fileId = u"%1oc123xyz987e"_s.arg(fileId, 8, 10, '0'_L1).toLocal8Bit();
+                record._fileId = u"%1"_s.arg(fileId, 8, 10, '0'_L1).toLatin1() + instanceId;
                 record._modtime = QDateTime::currentSecsSinceEpoch();
                 record._path = u"item%1"_s.arg(fileId).toLocal8Bit();
                 record._type = ItemTypeFile;
@@ -615,26 +618,49 @@ private Q_SLOTS:
             QCOMPARE(folderAliasesToBeSynced, expectedFolderAliasesToSync);
         };
 
-        addFolderForTesting(user1, "0", "/user1_root",      "/",          10, {11, 12, 13, 50});
-        addFolderForTesting(user1, "1", "/user1_subfolder", "/subfolder", 15, {16, 17, 18, 50});
-        addFolderForTesting(user2, "2", "/user2_root",      "/",          20, {21, 22, 23, 50});
+        const auto digitLeadingInstanceId = "123xyz987e"_ba;
+        const auto numericInstanceId = "123"_ba;
+        addFolderForTesting(user1, u"0"_s, u"/user1_root"_s, u"/"_s, digitLeadingInstanceId, {11, 12, 13, 50, 603493314});
+        addFolderForTesting(user1, u"1"_s, u"/user1_subfolder"_s, u"/subfolder"_s, digitLeadingInstanceId, {16, 17, 18, 50});
+        addFolderForTesting(user2, u"2"_s, u"/user2_root"_s, u"/"_s, numericInstanceId, {21, 22, 23, 50});
 
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {10},                  {"0"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11},                  {"0"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {13, 11},              {"0"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15},                  {"1"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {16},                  {"1"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {18, 16},              {"1"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15, 11},              {"0", "1"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11, 16, 21},          {"0", "1"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {50},                  {"0", "1"});
+        const auto root1 = _fm->folder(u"0"_s);
+        const auto subfolder1 = _fm->folder(u"1"_s);
+        const auto root2 = _fm->folder(u"2"_s);
+        QVERIFY(root1);
+        QVERIFY(subfolder1);
+        QVERIFY(root2);
+
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {404}, {});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {}, {});
+
+        Q_EMIT root1->syncEngine().rootFileIdReceived(10, {});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {404}, {});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11}, {});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {10}, {u"0"_s});
+
+        Q_EMIT root1->syncEngine().rootFileIdReceived(10, digitLeadingInstanceId);
+        Q_EMIT subfolder1->syncEngine().rootFileIdReceived(15, digitLeadingInstanceId);
+        Q_EMIT root2->syncEngine().rootFileIdReceived(20, numericInstanceId);
+
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {10}, {u"0"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11}, {u"0"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {13, 11}, {u"0"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {603493314}, {u"0"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11123}, {});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15}, {u"1"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {16}, {u"1"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {18, 16}, {u"1"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {15, 11}, {u"0"_s, u"1"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {11, 16, 21}, {u"0"_s, u"1"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {50}, {u"0"_s, u"1"_s});
         verifyFolderSyncChangesOnReceivedFileIdNotification(user1, {20, 21, 22, 23, 404}, {});
 
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {20},                  {"2"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {21},                  {"2"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {23, 21},              {"2"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {11, 16, 21},          {"2"});
-        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {50},                  {"2"});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {20}, {u"2"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {21}, {u"2"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {23, 21}, {u"2"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {11, 16, 21}, {u"2"_s});
+        verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {50}, {u"2"_s});
         verifyFolderSyncChangesOnReceivedFileIdNotification(user2, {10, 11, 17, 18, 404}, {});
     }
 
