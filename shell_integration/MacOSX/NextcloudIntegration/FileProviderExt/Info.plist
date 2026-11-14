@@ -57,7 +57,7 @@
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
-				<string>SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.userInfo.displayEvict == true ).@count &gt; 0</string>
+				<string>fileproviderItems.@count &gt; 0 &amp;&amp; SUBQUERY ( fileproviderItems, $fileproviderItem, $fileproviderItem.isDownloaded == true &amp;&amp; $fileproviderItem.isUploaded == true &amp;&amp; $fileproviderItem.userInfo.displayAllowAutoEvicting == false &amp;&amp; !($fileproviderItem.contentType.identifier UTI-CONFORMS-TO "public.directory") ).@count == fileproviderItems.@count</string>
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
