@@ -339,6 +339,54 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    // #10580: reading lock state opens the file, so discovery reads it only where it can change
+    // the outcome. A file still in the state the journal recorded, in a directory the server
+    // reports unchanged, resolves to no action: an application holding it open leaves the sync
+    // untouched.
+    void testDiscoverySkipsLockStateOfUnchangedFiles()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QVERIFY(fakeFolder.syncOnce());
+
+        QStringList seenLockedFiles;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::seenLockedFile, &fakeFolder.syncEngine(),
+                [&](const QString &file) { seenLockedFiles.append(file); });
+
+        const auto handle = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(handle != INVALID_HANDLE_VALUE);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        const auto syncResult = fakeFolder.syncOnce();
+        CloseHandle(handle);
+
+        QVERIFY(syncResult);
+        QVERIFY(seenLockedFiles.isEmpty());
+        QVERIFY(completeSpy.findItem(QStringLiteral("A/a1"))->_file.isEmpty());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // The boundary of the above: a change anywhere in the directory makes every entry in it a
+    // possible sync candidate again, so the lock state of an unchanged file is read and honoured.
+    void testDiscoveryReadsLockStateWhenServerReportsChanges()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QVERIFY(fakeFolder.syncOnce());
+
+        QStringList seenLockedFiles;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::seenLockedFile, &fakeFolder.syncEngine(),
+                [&](const QString &file) { seenLockedFiles.append(file); });
+
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
+        const auto handle = makeHandle(fakeFolder.localPath() + QStringLiteral("A/a1"), 0);
+        QVERIFY(handle != INVALID_HANDLE_VALUE);
+
+        const auto syncResult = fakeFolder.syncOnce();
+        CloseHandle(handle);
+
+        QVERIFY(syncResult);
+        QCOMPARE(seenLockedFiles, QStringList{fakeFolder.localPath() + QStringLiteral("A/a1")});
+    }
+
     void testPartialRecursiveRemoteRemovalNormalisesJournalPaths()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
