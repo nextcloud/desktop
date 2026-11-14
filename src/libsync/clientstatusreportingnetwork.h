@@ -8,16 +8,18 @@
 #include <common/result.h>
 #include "clientstatusreportingcommon.h"
 
-#include <QtGlobal>
 #include <QByteArray>
 #include <QObject>
+#include <QPointer>
 #include <QSharedPointer>
 #include <QString>
 #include <QTimer>
+#include <QtGlobal>
 
 namespace OCC {
 
 class Account;
+class JsonApiJob;
 class ClientStatusReportingDatabase;
 struct ClientStatusReportingRecord;
 
@@ -32,7 +34,7 @@ private:
     void init();
 
     [[nodiscard]] QVariantMap prepareReport() const;
-    void reportToServerSentSuccessfully();
+    void reportToServerSentSuccessfully(const QVariantMap &report, bool hasQueuedRecords);
 
 private Q_SLOTS:
     void sendReportToServer();
@@ -49,6 +51,7 @@ public:
 
 private:
     Account *_account = nullptr;
+    QPointer<JsonApiJob> _reportJob;
 
     QSharedPointer<ClientStatusReportingDatabase> _database;
 
