@@ -109,11 +109,13 @@ extension Enumerator {
     /// domain costs one request. Files are never read on their own, their parent's listing carries
     /// their state.
     ///
-    /// The reconciled state is remembered per directory in `scannedRemoteState`, written only after
+    /// The reconciled state is remembered per directory in `scannedRemoteState`, as the parent's
+    /// listing reports it (the server rewrites a mount point's permissions there), written only after
     /// the whole pass, and only for directories whose descended children all succeeded. A failed
     /// listing forgets the state of the directory and its ancestors, so the next pass descends there
-    /// again from the root. Directories on external storages are listed on every pass, because the
-    /// server notices changes made behind its back only when the directory is read.
+    /// again from the root. Directories on external storages are listed on every pass, with
+    /// everything above and below them, because the server notices changes made behind its back only
+    /// when the directory is read. See ``ScanDescentDecision``.
     ///
     /// The returned changes are reported to the working-set change observer directly. Relying on
     /// ``FilesDatabaseManager/pendingWorkingSetChanges(since:)`` alone to re-derive the report from
@@ -134,32 +136,24 @@ extension Enumerator {
             logger.debug("Completed checking materialised items for changes on the server.")
         }
 
-        guard let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
+        // Trashed rows are not below the account root: trashing moves `serverUrl` to the trashbin.
+        guard let somethingIsMaterialised = dbManager.hasMaterialisedItem(below: account.davFilesUrl) else {
             return (updated: [], deleted: [], storeUnreadable: true, failedListingCount: 0)
         }
 
-        // Trashed rows are excluded because trashing moves `serverUrl` to the trashbin without
-        // setting `deleted`, and the ordinary DAV path 404s there, which the scan would read as a
-        // deletion of the row trash reconciliation needs.
-        let materialisedItems = storedMaterialisedItems.filter { !$0.deleted && !$0.isTrashed }
-
-        guard !materialisedItems.isEmpty else {
+        guard somethingIsMaterialised else {
             logger.info("Nothing is materialised, so there is nothing to check on the server.")
             return (updated: [], deleted: [], storeUnreadable: false, failedListingCount: 0)
         }
 
-        var state = WorkingSetScanState(
-            scannedRemoteStates: dbManager.scannedRemoteStates() ?? [:],
-            alwaysListedPrefixes: materialisedItems
-                .filter { $0.directory && $0.mountType == Self.externalMountType }
-                .map { $0.remotePath().precomposedStringWithCanonicalMapping }
-        )
+        var state = WorkingSetScanState(scannedRemoteStates: dbManager.scannedRemoteStates() ?? [:])
 
         let rootMetadata = dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)
         _ = await listDirectory(
             at: account.davFilesUrl,
             ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
             metadata: rootMetadata,
+            remoteStateAsListed: nil,
             ancestorOcIds: [],
             state: &state
         )
@@ -209,19 +203,20 @@ extension Enumerator {
         return (updated: discoveredUpdates, deleted: deletions, storeUnreadable: storeUnreadable, failedListingCount: state.failedCount)
     }
 
-    /// The mount type the server reports for a directory on an external storage.
-    static let externalMountType = "external"
-
     ///
     /// List one directory, descend into the changed directories below it which hold something
     /// materialized, and remember the directory's state when everything below it succeeded.
     ///
+    /// - Parameters:
+    ///   - remoteStateAsListed: The directory's state as its parent's listing reported it, the state
+    ///     the next pass compares against; `nil` for the root, which is listed on every pass.
     /// - Returns: Whether this directory and every directory it descended into were listed.
     ///
     private func listDirectory(
         at remotePath: String,
         ocId: String,
         metadata: SendableItemMetadata?,
+        remoteStateAsListed: String?,
         ancestorOcIds: [String],
         state: inout WorkingSetScanState
     ) async -> Bool {
@@ -293,40 +288,38 @@ extension Enumerator {
             }
 
             let childPath = child.remotePath()
-            let canonicalChildPath = childPath.precomposedStringWithCanonicalMapping
             // A failed read descends: better one listing too many than a subtree never checked.
-            let holdsMaterialisedItem = dbManager.hasMaterialisedItem(below: childPath) ?? true
+            let decision = ScanDescentDecision(
+                child: child,
+                holdsMaterialisedItem: dbManager.hasMaterialisedItem(below: childPath) ?? true,
+                holdsExternalStorage: dbManager.hasExternalStorage(below: childPath) ?? true,
+                reconciledState: state.scannedRemoteStates[child.ocId]
+            )
 
-            // "Always keep downloaded" asks for the whole subtree, so a directory created on the server
-            // inside a pinned folder is read although nothing inside it is known yet.
-            guard child.visitedDirectory || child.keepDownloaded || holdsMaterialisedItem else {
-                // Nothing tracked below: the directory's own row is written and reported by this listing already.
-                continue
-            }
-
-            let remoteState = FilesDatabaseManager.scanRemoteState(of: child)
-            let reconciledState = state.scannedRemoteStates[child.ocId]
-            let alwaysListed = state.alwaysListedPrefixes.contains { canonicalChildPath == $0 || canonicalChildPath.hasPrefix($0 + "/") }
-
-            // A directory never reconciled is listed once, whatever its etag: only the scan's own state says the subtree was checked.
-            if !alwaysListed, child.status == Status.normal.rawValue, reconciledState == remoteState {
-                logger.debug("Skipping a directory whose subtree is unchanged since the last scan.", [.url: childPath, .eTag: child.etag])
-                state.skippedCount += 1
-                continue
+            switch decision {
+                case .nothingTracked:
+                    continue
+                case .unchanged:
+                    logger.debug("Skipping a directory whose subtree is unchanged since the last scan.", [.url: childPath, .eTag: child.etag])
+                    state.skippedCount += 1
+                    continue
+                case .descend:
+                    break
             }
 
             let descended = await listDirectory(
                 at: childPath,
                 ocId: child.ocId,
                 metadata: child,
+                remoteStateAsListed: FilesDatabaseManager.scanRemoteState(of: child),
                 ancestorOcIds: ancestorOcIds + [ocId],
                 state: &state
             )
             allDescentsSucceeded = allDescentsSucceeded && descended
         }
 
-        if allDescentsSucceeded {
-            state.reconciled[ocId] = FilesDatabaseManager.scanRemoteState(of: listedTarget)
+        if allDescentsSucceeded, let remoteStateAsListed {
+            state.reconciled[ocId] = remoteStateAsListed
         }
 
         return allDescentsSucceeded

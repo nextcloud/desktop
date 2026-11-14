@@ -7,10 +7,13 @@ import GRDB
 ///
 /// What the working-set scan remembers between passes and asks while it walks.
 ///
-/// `scannedRemoteState` is the etag and permissions of a directory at the moment the scan had reconciled everything materialized below it. It is written by the scan alone: every other writer of a directory's etag (item pages, action replies, the materialized-item mirror) stores the etag without looking below the directory, so the stored etag cannot stand in for "subtree reconciled". A listing which fails forgets the state of the directory and its ancestors, so the next pass descends there again.
+/// `scannedRemoteState` is the etag and permissions of a directory, as its parent's listing reports them, at the moment the scan had reconciled everything materialized below it. The parent's listing is the view the walk decides by, and it is not the directory's own: the server rewrites a mount point's permissions in the parent's listing (`View::getDirectoryContent()` adds or removes update and delete for mount points), so a state taken from the directory's own listing never matches for shares, group folders and app mounts. The state is written by the scan alone: every other writer of a directory's etag (item pages, action replies, the materialized-item mirror) stores the etag without looking below the directory, so the stored etag cannot stand in for "subtree reconciled". A listing which fails forgets the state of the directory and its ancestors, so the next pass descends there again.
 ///
 extension FilesDatabaseManager {
-    /// The remote state the working-set scan compares a directory against, built from what a listing reports.
+    /// The mount type the server reports for every item on an external storage.
+    static let externalMountType = "external"
+
+    /// The remote state the working-set scan compares a directory against, built from what its parent's listing reports.
     static func scanRemoteState(of metadata: SendableItemMetadata) -> String {
         "\(metadata.etag)|\(metadata.permissions)"
     }
@@ -63,6 +66,20 @@ extension FilesDatabaseManager {
                 .filter(
                     ItemMetadataRecord.hasServerUrl(equalTo: remotePath, includingDescendants: true)
                         && ItemMetadataRecord.isMaterialised
+                        && ItemMetadataRecord.Columns.deleted == false
+                )
+                .limit(1)
+                .fetchCount(db) > 0
+        }
+    }
+
+    /// Whether a live row of an external storage is stored anywhere below the directory at `remotePath`, or `nil` when the read fails. Every item inside such a mount carries the mount type, so a visited directory or a downloaded file inside one is found.
+    func hasExternalStorage(below remotePath: String) -> Bool? {
+        read("Could not look for external storages below a directory.", [.url: remotePath]) { db in
+            try ItemMetadataRecord
+                .filter(
+                    ItemMetadataRecord.hasServerUrl(equalTo: remotePath, includingDescendants: true)
+                        && ItemMetadataRecord.Columns.mountType == Self.externalMountType
                         && ItemMetadataRecord.Columns.deleted == false
                 )
                 .limit(1)

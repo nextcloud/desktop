@@ -1359,16 +1359,16 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
                 let responseData = generateResponse(itemCount: 1, finalPage: true)
                 return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
             case .targetAndDirectChildren:
-                let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }
+                let files = [item.toNKFile()] + item.children.map { $0.toNKFile(asListedByParent: true) }
                 return generateReturn(files: files)
             case .targetAndAllChildren:
                 var files = [NKFile]()
                 var queue = [item]
                 while !queue.isEmpty {
                     var nextQueue = [MockRemoteItem]()
-                    for item in queue {
-                        files.append(item.toNKFile())
-                        nextQueue.append(contentsOf: item.children)
+                    for queued in queue {
+                        files.append(queued.toNKFile(asListedByParent: queued !== item))
+                        nextQueue.append(contentsOf: queued.children)
                     }
                     queue = nextQueue
                 }
