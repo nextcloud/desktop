@@ -1777,7 +1777,7 @@ Cuirfidh an gníomh seo deireadh le haon sioncrónú atá ar siúl faoi láthair
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>The selected certificate file is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Tá an comhad deimhnithe roghnaithe folamh.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
