@@ -869,15 +869,16 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     add_custom_command(TARGET nextcloud POST_BUILD
         COMMAND "${MACDEPLOYQT_EXECUTABLE}"
         "$<TARGET_FILE_DIR:nextcloud>/../.."
-        -qmldir=${CMAKE_SOURCE_DIR}/src/gui
+        "-qmldir=${CMAKE_SOURCE_DIR}/src/gui"
         -always-overwrite
-        -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
-        -libpath=${MACDEPLOYQT_LIB_DIR}
-        -libpath=${BIN_OUTPUT_DIRECTORY}
+        "-executable=$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
+        "-libpath=${MACDEPLOYQT_LIB_DIR}"
+        "-libpath=${BIN_OUTPUT_DIRECTORY}"
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
         COMMENT "Running macdeployqt..."
+        VERBATIM
     )
 endif()
 
