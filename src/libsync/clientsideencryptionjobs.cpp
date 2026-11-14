@@ -253,15 +253,20 @@ bool UnlockEncryptFolderApiJob::finished()
 
     qCDebug(lcCseJob()) << "unlock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId;
 
-    if (retCode != 0) {
+    if (retCode == 200 && reply()->error() == QNetworkReply::NoError) {
         _journalDb->deleteE2EeLockedFolder(_fileId);
+        if (!_journalDb->e2EeLockedFolder(_fileId).isEmpty()) {
+            Q_EMIT done();
+            Q_EMIT error(_fileId, 0, tr("Could not update the encrypted folder lock in the local database."));
+            return true;
+        }
     }
 
     Q_EMIT done();
 
-    if (retCode != 200) {
+    if (retCode != 200 || reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode << "Full Error Log" << reply()->readAll();
-        Q_EMIT error(_fileId, retCode, errorString());
+        Q_EMIT error(_fileId, retCode == 200 ? 0 : retCode, errorString());
         return true;
     }
 
@@ -325,12 +330,18 @@ void LockEncryptFolderApiJob::start()
         const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), folderTokenEncrypted);
         if (!folderToken) {
             qCWarning(lcCseJob()) << "decrypt failed";
+            Q_EMIT error(_fileId, 0, tr("Could not decrypt the encrypted folder lock token."));
+            deleteLater();
             return;
         }
-        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, *folderToken, _journalDb, this);
+        const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, _fileId, QByteArray::fromBase64(*folderToken), _journalDb, this);
         unlockJob->setShouldRollbackMetadataChanges(true);
-        connect(unlockJob, &UnlockEncryptFolderApiJob::done, this, [this]() {
+        connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, [this]() {
             this->start();
+        });
+        connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, [this](const QByteArray &fileId, int httpErrorCode, const QString &errorMessage) {
+            Q_EMIT error(fileId, httpErrorCode, errorMessage);
+            deleteLater();
         });
         unlockJob->start();
         return;

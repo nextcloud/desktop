@@ -492,6 +492,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void SyncEngine::startSync()
 {
+    if (s_anySyncRunning || _syncRunning) {
+        return;
+    }
+
     if (_journal->exists()) {
         QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
         if (!pollInfos.isEmpty()) {
@@ -503,28 +507,6 @@ void SyncEngine::startSync()
             job->start();
             return;
         }
-
-        const auto e2EeLockedFolders = _journal->e2EeLockedFolders();
-
-        if (!e2EeLockedFolders.isEmpty()) {
-            for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
-                const auto folderId = e2EeLockedFolder.first;
-                qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
-                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(), _account->e2e()->paddingMode(), *_account->e2e(), e2EeLockedFolder.second);
-                if (!folderToken) {
-                    qCWarning(lcEngine()) << "decrypt failed";
-                    return;
-                }
-                // TODO: We need to rollback changes done to metadata in case we have an active lock, this needs to be implemented on the server first
-                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, *folderToken, _journal, this);
-                unlockJob->setShouldRollbackMetadataChanges(true);
-                unlockJob->start();
-            }
-        }
-    }
-
-    if (s_anySyncRunning || _syncRunning) {
-        return;
     }
     const auto currentEncryptionStatus = EncryptionStatusEnums::toDbEncryptionStatus(EncryptionStatusEnums::fromEndToEndEncryptionApiVersion(_account->capabilities().clientSideEncryptionVersion()));
     [[maybe_unused]] const auto result = _journal->listAllE2eeFoldersWithEncryptionStatusLessThan(static_cast<int>(currentEncryptionStatus), [this](const SyncJournalFileRecord &record) {
@@ -542,6 +524,48 @@ void SyncEngine::startSync()
 
     _progressInfo->reset();
 
+    recoverE2eeLocks();
+}
+
+void SyncEngine::recoverE2eeLocks()
+{
+    const auto lockedFolders = _journal->exists() ? _journal->e2EeLockedFolders() : QList<QPair<QByteArray, QByteArray>>{};
+    if (lockedFolders.isEmpty()) {
+        startSyncAfterE2eeRecovery();
+        return;
+    }
+
+    const auto &[folderId, encryptedToken] = lockedFolders.first();
+    const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->getCertificateInformation(),
+                                                                       _account->e2e()->paddingMode(),
+                                                                       *_account->e2e(),
+                                                                       encryptedToken);
+    if (!folderToken) {
+        _anotherSyncNeeded = DelayedFollowUp;
+        Q_EMIT syncError(tr("Could not decrypt the encrypted folder lock token."), ErrorCategory::GenericError);
+        finalize(false);
+        return;
+    }
+
+    // Recover abandoned locks before discovery or a new upload can use this folder.
+    const auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, QByteArray::fromBase64(*folderToken), _journal, this);
+    _e2eeUnlockJob = unlockJob;
+    unlockJob->setShouldRollbackMetadataChanges(true);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, [this]() {
+        _e2eeUnlockJob = nullptr;
+        recoverE2eeLocks();
+    });
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, [this](const QByteArray &, int, const QString &errorMessage) {
+        _e2eeUnlockJob = nullptr;
+        _anotherSyncNeeded = DelayedFollowUp;
+        Q_EMIT syncError(errorMessage, ErrorCategory::GenericError);
+        finalize(false);
+    });
+    unlockJob->start();
+}
+
+void SyncEngine::startSyncAfterE2eeRecovery()
+{
     if (!QFileInfo::exists(_localPath)) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
@@ -1464,7 +1488,18 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
 
 void SyncEngine::abort()
 {
-    if (_propagator) {
+    if (_e2eeUnlockJob) {
+        const auto unlockJob = _e2eeUnlockJob.data();
+        _e2eeUnlockJob = nullptr;
+        disconnect(unlockJob, nullptr, this, nullptr);
+        if (const auto reply = unlockJob->reply()) {
+            // A late reply must not clear a token saved by a subsequent sync.
+            disconnect(reply, nullptr, unlockJob, nullptr);
+            reply->abort();
+        }
+        unlockJob->deleteLater();
+        finalize(false);
+    } else if (_propagator) {
         // If we're already in the propagation phase, aborting that is sufficient
         qCInfo(lcEngine) << "Aborting sync in propagator...";
         _propagator->abort();
