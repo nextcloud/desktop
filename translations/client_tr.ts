@@ -1777,7 +1777,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
         <source>The selected certificate file is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş sertifika dosyası boş.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
