@@ -507,7 +507,7 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "child")?.deleted == false)
         }
 
-        /// The working set scan does not read a downloaded file at its parked folder's holding path, where the refused read would count as a failure and hold back the sync point.
+        /// The working set scan does not read a downloaded file at its parked folder's holding path, where the refused read would count as an item it could not read.
         @Test func theScanDoesNotReadAFileBelowAParkedFolder() async throws {
             var other = metadata("other", "other.txt", at: filesUrl + "/dst/Docs")
             other.downloaded = true
@@ -517,7 +517,8 @@ extension DatabaseTestSuites {
 
             let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
 
-            #expect(!scan.hadFailure)
+            #expect(!scan.storeUnreadable)
+            #expect(scan.unreadableItemCount == 0)
             #expect(!scan.deleted.map(\.ocId).contains("other"))
             #expect(manager.itemMetadata(ocId: "other")?.deleted == false)
         }
@@ -826,7 +827,7 @@ extension DatabaseTestSuites {
 
             let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
 
-            #expect(scan.hadFailure)
+            #expect(scan.storeUnreadable)
             #expect(!scan.updated.map(\.ocId).contains("folder"))
             #expect(!scan.deleted.map(\.ocId).contains("folder"))
         }

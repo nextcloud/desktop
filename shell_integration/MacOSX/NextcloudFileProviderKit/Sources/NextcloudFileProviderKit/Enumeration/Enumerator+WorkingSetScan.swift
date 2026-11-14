@@ -52,10 +52,10 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
-                // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
-                let hadFailure = serverChanges.hadFailure || localChanges == nil
+                // Only a failed local read keeps the incoming anchor: the pending local changes are derived from the anchor date, so advancing past a read which failed would lose them. A failed remote read does not hold the anchor back. Remote changes are found by comparing the server with the stored rows, not by date, and every materialised item is read again on the next pass, so the failed folder is retried either way. Keeping the anchor made the next pass re-derive and re-deliver everything since the old date.
+                let hadFailure = serverChanges.storeUnreadable || localChanges == nil
 
                 let changes = ChangeSet(
                     mergingUpdated: [serverChanges.updated, pendingLocalChanges.updated],
@@ -81,8 +81,8 @@ extension Enumerator {
                 )
             }
 
-            // Intermediate batches use continuation anchors. If the scan was incomplete, keep the
-            // incoming anchor for the final batch so missed changes are retried on the next signal.
+            // Intermediate batches use continuation anchors. If the local changes could not be read,
+            // keep the incoming anchor for the final batch so they are derived again on the next signal.
             let incomplete = readDeliveryState(reportingTo: observer) {
                 try changeBuffer.isPrimedIncomplete()
             }
@@ -110,11 +110,12 @@ extension Enumerator {
     /// directory did not change, because that reconstruction is gated on the materialised set and
     /// `syncTime`.
     ///
-    /// - Returns: The discovered creations and updates (combined into `updated`) and the items that
-    ///   were marked deleted.
+    /// - Returns: The discovered creations and updates (combined into `updated`), the items that
+    ///   were marked deleted, whether the materialised items could not be read from the store at all,
+    ///   and how many items could not be read from the server and are left for the next pass.
     ///
     func scanMaterialisedItemsForRemoteChanges() async -> (
-        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], hadFailure: Bool
+        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], storeUnreadable: Bool, unreadableItemCount: Int
     ) {
         logger.debug("Checking materialised items for changes on the server...")
 
@@ -129,7 +130,6 @@ extension Enumerator {
         // wait to see which items are truly deleted and which have just been moved elsewhere.
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
-        // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
         let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
         let materialisedItems = (storedMaterialisedItems ?? [])
             .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
@@ -139,11 +139,11 @@ extension Enumerator {
         var accumulatedUpdates = [SendableItemMetadata]()
         var accumulatedDeletions = [SendableItemMetadata]()
         var scannedItemIds = Set<String>()
-        // Track read failures so one unreadable folder no longer aborts the whole scan (see the
-        // read-error branch below). `hadReadFailure` is returned to the caller so it can avoid
-        // advancing the working-set sync point past changes this pass could not discover.
-        var hadReadFailure = storedMaterialisedItems == nil
+        // One unreadable item does not abort the scan (see the read-error branch below). It is read
+        // again on the next pass, because every materialised item is; the count is reported for the log.
         var failedItemIds = Set<String>()
+        // The store, in contrast, is read by date: a pass which could not read it keeps the incoming anchor.
+        var storeUnreadable = storedMaterialisedItems == nil
         var notFoundOcIds = Set<String>()
 
         // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
@@ -210,7 +210,6 @@ extension Enumerator {
                         "Read of materialised item failed during working-set scan; skipping it and continuing with the rest of the working set.",
                         [.error: readError, .url: itemRemoteUrl]
                     )
-                    hadReadFailure = true
                     failedItemIds.insert(itemToScan.ocId)
                     scannedItemIds.insert(itemToScan.ocId)
                     return
@@ -346,7 +345,7 @@ extension Enumerator {
             if let storedRows {
                 // A row missing since its read was removed meanwhile or never written, so it is not reported and the scan counts as incomplete.
                 guard let row = storedRows[copy.ocId] else {
-                    hadReadFailure = true
+                    storeUnreadable = true
                     continue
                 }
 
@@ -366,14 +365,19 @@ extension Enumerator {
             logger.info("No remote changes found in materialised items.")
         }
 
-        if hadReadFailure {
+        if !failedItemIds.isEmpty {
             logger.error(
-                "Working-set remote-change scan was incomplete: \(failedItemIds.count) item(s) could not be read and were skipped; their changes will be retried on the next scan. Not advancing the working-set sync point past the undiscovered changes.",
+                "Working-set remote-change scan skipped \(failedItemIds.count) item(s) which could not be read; they are read again on the next pass.",
                 [.account: account]
             )
         }
 
-        return (updated: discoveredUpdates, deleted: reportedDeletions, hadFailure: hadReadFailure)
+        return (
+            updated: discoveredUpdates,
+            deleted: reportedDeletions,
+            storeUnreadable: storeUnreadable,
+            unreadableItemCount: failedItemIds.count
+        )
     }
 
     /// Read `items` from the server, at most ``workingSetScanConcurrency`` at a time, handing each result to `merge` as it arrives.
