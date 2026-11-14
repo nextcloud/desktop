@@ -175,7 +175,13 @@ extension Enumerator {
                 [.url: self.serverUrl]
             )
 
-            completeEnumerationObserver(observer, nextPage: rawNextPage, itemMetadatas: items)
+            // A paged write returns the rows as stored; a depth-1 one returns the server's listing, so
+            // the local state the write merged in is read back before the page reaches the system.
+            let handedOver = pageSettings == nil
+                ? await dbManager.perform { Self.storedRows(for: items, dbManager: $0) }
+                : items
+
+            completeEnumerationObserver(observer, nextPage: rawNextPage, itemMetadatas: handedOver)
         }
     }
 
