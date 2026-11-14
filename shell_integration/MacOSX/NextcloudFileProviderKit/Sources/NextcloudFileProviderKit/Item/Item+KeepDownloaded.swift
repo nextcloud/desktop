@@ -3,6 +3,9 @@
 
 @preconcurrency import FileProvider
 
+/// Tells the framework about a changed keep-downloaded flag.
+typealias KeepDownloadedSignal = (_ keepDownloaded: Bool, _ identifier: NSFileProviderItemIdentifier, _ isDirectory: Bool, _ isDownloaded: Bool) async throws -> Void
+
 public extension Item {
     func toggle(keepDownloadedIn domain: NSFileProviderDomain) async throws {
         try await set(keepDownloaded: !keepDownloaded, domain: domain)
@@ -24,6 +27,8 @@ public extension Item {
     /// `requestDownloadForItem` is issued when the payload is not yet local, so
     /// content is pulled down immediately and automatically rather than lazily.
     ///
+    /// Every folder above a downloaded file whose flag changed is refreshed afterwards, so its "Remove downloaded items" entry matches.
+    ///
     func set(keepDownloaded: Bool, domain: NSFileProviderDomain) async throws {
         _ = try dbManager.set(keepDownloaded: keepDownloaded, for: metadata)
 
@@ -34,6 +39,39 @@ public extension Item {
                 let providerDomainNotFoundErrorCode = -2013
                 throw NSError(domain: NSFileProviderErrorDomain, code: providerDomainNotFoundErrorCode, userInfo: [NSLocalizedDescriptionKey: "Failed to get manager for domain."])
             }
+        }
+
+        try await propagate(
+            keepDownloaded: keepDownloaded,
+            domain: domain,
+            signal: { keepDownloaded, identifier, isDirectory, isDownloaded in
+                try await signalKeepDownloaded(keepDownloaded: keepDownloaded, identifier: identifier, isDirectory: isDirectory, isDownloaded: isDownloaded, manager: manager)
+            },
+            refreshAncestorsOfFiles: { ocIds in
+                refreshRemoveDownloadVisibility(forAncestorsOfFileOcIds: ocIds, domain: domain.identifier, manager: manager, dbManager: dbManager, logger: logger)
+            }
+        )
+    }
+
+    ///
+    /// Everything ``set(keepDownloaded:domain:)`` does after looking up the file provider manager, with the framework calls passed in.
+    ///
+    /// - Parameters:
+    ///   - signal: Tells the framework about a changed flag.
+    ///   - refreshAncestorsOfFiles: Refreshes "Remove downloaded items" on every folder above the given files.
+    ///
+    internal func propagate(
+        keepDownloaded: Bool,
+        domain: NSFileProviderDomain,
+        signal: KeepDownloadedSignal,
+        refreshAncestorsOfFiles: (Set<String>) -> Void
+    ) async throws {
+        // A folder offers "Remove downloaded items" for a downloaded file below it that is not pinned, so every downloaded file whose flag changed can change that answer for every folder above it.
+        var downloadedFileOcIds = Set<String>()
+        defer { refreshAncestorsOfFiles(downloadedFileOcIds) }
+
+        if !metadata.directory, metadata.downloaded {
+            downloadedFileOcIds.insert(metadata.ocId)
         }
 
         // When enabling on a directory, discover every descendant on the server
@@ -49,7 +87,7 @@ public extension Item {
             try await enumerateSubtreeBreadthFirst(domain: domain)
         }
 
-        try await signalKeepDownloaded(keepDownloaded: keepDownloaded, identifier: itemIdentifier, isDirectory: metadata.directory, isDownloaded: isDownloaded, manager: manager)
+        try await signal(keepDownloaded, itemIdentifier, metadata.directory, isDownloaded)
 
         // When disabling, fragment the chain of pinned ancestors above this
         // item so the unpin actually takes effect against
@@ -58,7 +96,8 @@ public extension Item {
         // the original recursive enable; we only need to flip the path
         // ancestors themselves to `.inherited`.
         if !keepDownloaded {
-            try await fragmentPathToRoot(manager: manager)
+            let newlyPinnedCousins = await fragmentPathToRoot(signal: signal)
+            downloadedFileOcIds.formUnion(newlyPinnedCousins.filter { !$0.directory && $0.downloaded }.map(\.ocId))
         }
 
         guard metadata.directory else { return }
@@ -77,14 +116,12 @@ public extension Item {
                 continue
             }
 
+            if !child.directory, child.downloaded {
+                downloadedFileOcIds.insert(child.ocId)
+            }
+
             do {
-                try await signalKeepDownloaded(
-                    keepDownloaded: keepDownloaded,
-                    identifier: NSFileProviderItemIdentifier(child.ocId),
-                    isDirectory: child.directory,
-                    isDownloaded: child.downloaded,
-                    manager: manager
-                )
+                try await signal(keepDownloaded, NSFileProviderItemIdentifier(child.ocId), child.directory, child.downloaded)
             } catch let error as NSFileProviderError where error.code == .noSuchItem {
                 // Expected, because the framework's item store only knows what enumeration
                 // handed it and the flag written above applies when it first enumerates the item.
@@ -138,7 +175,8 @@ public extension Item {
     /// ancestor exists, this is a no-op (the unpin gesture targets the pin
     /// root itself or there was no pin tree).
     ///
-    private func fragmentPathToRoot(manager: NSFileProviderManager) async throws {
+    /// - Returns: The cousins that were pinned on the way.
+    private func fragmentPathToRoot(signal: KeepDownloadedSignal) async -> [SendableItemMetadata] {
         let outcome = fragmentPathToRootInDatabase()
 
         // Cousins newly transitioned from `.inherited` (under a strict-pinned
@@ -148,7 +186,7 @@ public extension Item {
         // them down with the path.
         for cousin in outcome.newlyPinnedCousins {
             do {
-                try await signalKeepDownloaded(keepDownloaded: true, identifier: NSFileProviderItemIdentifier(cousin.ocId), isDirectory: cousin.directory, isDownloaded: cousin.downloaded, manager: manager)
+                try await signal(true, NSFileProviderItemIdentifier(cousin.ocId), cousin.directory, cousin.downloaded)
             } catch {
                 logger.error("Could not signal newly-pinned cousin during unpin-path fragmentation.", [.item: cousin.ocId, .name: cousin.fileName, .error: error])
             }
@@ -160,11 +198,13 @@ public extension Item {
         // downward".
         for ancestor in outcome.unpinnedAncestors.reversed() {
             do {
-                try await signalKeepDownloaded(keepDownloaded: false, identifier: NSFileProviderItemIdentifier(ancestor.ocId), isDirectory: ancestor.directory, isDownloaded: ancestor.downloaded, manager: manager)
+                try await signal(false, NSFileProviderItemIdentifier(ancestor.ocId), ancestor.directory, ancestor.downloaded)
             } catch {
                 logger.error("Could not signal fragmented ancestor unpin to framework.", [.item: ancestor.ocId, .name: ancestor.fileName, .error: error])
             }
         }
+
+        return outcome.newlyPinnedCousins
     }
 
     ///
@@ -181,7 +221,7 @@ public extension Item {
     }
 
     ///
-    /// Database-only counterpart to ``fragmentPathToRoot(manager:)``.
+    /// Database-only counterpart to ``fragmentPathToRoot(signal:)``.
     /// Walks parents, pins every off-path immediate child ("cousin") that
     /// isn't already pinned, then flips every pinned ancestor's flag to
     /// `false`. The framework-side signaling is the caller's job.
