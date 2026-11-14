@@ -1,11 +1,15 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
+import Foundation
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
-import NextcloudKit
-import TestInterface
+@testable import NextcloudKit
+import os
+import Testing
+@testable import TestInterface
 import UniformTypeIdentifiers
 import XCTest
 
@@ -128,6 +132,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
+        remoteItem.versionIdentifier = "current-etag"
 
         let item = Item(
             metadata: itemMetadata,
@@ -140,19 +145,133 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         let error = await item.delete(dbManager: Self.dbManager)
         XCTAssertNil(error)
         XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertEqual(remoteInterface.lastDeleteIfMatchHeader, "\"current-etag\"")
 
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, true)
+    }
+
+    func testDeleteRefusesAReplacementWithTheSameETag() async {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let original = MockRemoteItem(
+            identifier: "original-report",
+            versionIdentifier: "same-etag",
+            name: "report.txt",
+            remotePath: Self.account.davFilesUrl + "/report.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        original.parent = rootItem
+        let cached = original.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(cached)
+
+        let replacement = MockRemoteItem(
+            identifier: "replacement-report",
+            versionIdentifier: "same-etag",
+            name: original.name,
+            remotePath: original.remotePath,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        replacement.parent = rootItem
+        original.name = "moved-report.txt"
+        original.remotePath = Self.account.davFilesUrl + "/moved-report.txt"
+        rootItem.children = [original, replacement]
+
+        let item = Item(
+            metadata: cached,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertNotNil(error)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertEqual(rootItem.children.map(\.identifier), [original.identifier, replacement.identifier])
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: cached.ocId)?.deleted, false)
+    }
+
+    func testDeleteFindsServerCopyAfterFailedEditWithoutAnETag() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteItem = MockRemoteItem(
+            identifier: "edited-report",
+            versionIdentifier: "server-etag",
+            name: "report.txt",
+            remotePath: Self.account.davFilesUrl + "/report.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+        remote.uploadError = NKError(statusCode: 503, fallbackDescription: "Unavailable")
+
+        // The previous upload response did not supply an ETag.
+        var metadata = remoteItem.toItemMetadata(account: Self.account)
+        metadata.etag = ""
+        metadata.downloaded = true
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: Self.dbManager
+        )
+        let editURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data("Updated report".utf8).write(to: editURL)
+        defer { try? FileManager.default.removeItem(at: editURL) }
+        let (_, editError) = await item.modify(
+            itemTarget: item,
+            changedFields: [.contents],
+            contents: editURL,
+            dbManager: Self.dbManager
+        )
+        XCTAssertNotNil(editError)
+        let failedEdit = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+        XCTAssertEqual(failedEdit.status, Status.uploadError.rawValue)
+        XCTAssertFalse(failedEdit.uploaded)
+        XCTAssertTrue(failedEdit.etag.isEmpty)
+
+        let itemAfterEdit = Item(
+            metadata: failedEdit,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: Self.dbManager
+        )
+        let deleteError = await itemAfterEdit.delete(dbManager: Self.dbManager)
+
+        XCTAssertNil(deleteError)
+        XCTAssertEqual(remote.lastDeleteRemotePath, metadata.remotePath())
+        XCTAssertEqual(remote.lastDeleteIfMatchHeader, "\"server-etag\"")
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, true)
     }
 
     func testDeleteTreatsMissingFileAsSuccess() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
 
-        let itemMetadata = SendableItemMetadata(
-            ocId: "already-deleted-file",
-            fileName: "already-deleted.txt",
-            account: Self.account
+        let remoteItem = MockRemoteItem(
+            identifier: "already-deleted-file",
+            name: "already-deleted.txt",
+            remotePath: Self.account.davFilesUrl + "/already-deleted.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
         )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let item = Item(
@@ -172,7 +291,6 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteTreatsMissingFolderAsSuccessAndMarksDescendantsDeleted() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
-        remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
 
         let remoteFolder = MockRemoteItem(
             identifier: "already-deleted-folder",
@@ -212,7 +330,7 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         let error = await folder.delete(dbManager: Self.dbManager)
 
         XCTAssertNil(error)
-        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.davFilesUrl + "/already-deleted")
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: folderMetadata.ocId)?.deleted, true)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
     }
@@ -253,10 +371,21 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
     }
 
-    func testTrashPurgeDoesNotTreatFallback404AsSuccessAfterListingFailure() async {
+    func testTrashPurgeLeavesEntryUnresolvedWhenListingReturns404() async {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
-        remoteInterface.deleteError = NKError(statusCode: 404, fallbackDescription: "Not Found")
-        remoteInterface.trashListingError = NKError(statusCode: 500, fallbackDescription: "Internal Server Error")
+        remoteInterface.trashListingError = NKError(statusCode: 404, fallbackDescription: "Not Found")
+
+        let replacement = MockRemoteItem(
+            identifier: "replacement-trash-file",
+            name: "file",
+            remotePath: Self.account.trashUrl + "/file",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        replacement.parent = rootTrashItem
+        rootTrashItem.children = [replacement]
 
         var itemMetadata = SendableItemMetadata(
             ocId: "missing-trash-file",
@@ -277,10 +406,45 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
         let error = await item.delete(dbManager: Self.dbManager)
 
-        XCTAssertNotNil(error)
-        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, Self.account.trashUrl + "/file")
+        XCTAssertEqual((error as? CocoaError)?.code, .fileReadUnknown)
+        XCTAssertNil(remoteInterface.lastDeleteRemotePath)
+        XCTAssertEqual(rootTrashItem.children.map(\.identifier), [replacement.identifier])
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId))
         XCTAssertNotEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.deleted, true)
+    }
+
+    func testTrashPurgeLeavesEntryUnresolvedWhenMatchingIDHasDifferentType() async {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
+        let remoteFolder = MockRemoteItem(
+            identifier: "trash-id",
+            name: "Report.d1234567890",
+            remotePath: Self.account.trashUrl + "/Report.d1234567890",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        remoteFolder.parent = rootTrashItem
+        rootTrashItem.children = [remoteFolder]
+
+        var metadata = SendableItemMetadata(ocId: remoteFolder.identifier, fileName: "Report", account: Self.account)
+        metadata.serverUrl = Self.account.trashUrl
+        metadata.fileId = metadata.ocId
+        Self.dbManager.addItemMetadata(metadata)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: .trashContainer,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: Self.dbManager
+        )
+        let error = await item.delete(dbManager: Self.dbManager)
+
+        XCTAssertEqual((error as? CocoaError)?.code, .fileReadUnknown)
+        XCTAssertNil(remote.lastDeleteRemotePath)
+        XCTAssertEqual(rootTrashItem.children.map(\.identifier), [remoteFolder.identifier])
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId)?.deleted, false)
     }
 
     func testDeleteUsesFilesRootRelativeIgnorePath() async {
@@ -501,18 +665,26 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         Self.dbManager.recreateTablesForTesting()
     }
 
-    func testFailedDeleteKeepsIncompleteChunkUpload() async throws {
+    func testDeletePreconditionFailureKeepsIncompleteChunkUpload() async throws {
         let remoteInterface = MockRemoteInterface(
             account: Self.account,
             rootItem: rootItem,
             rootTrashItem: rootTrashItem
         )
         let itemIdentifier = "file-with-failed-delete"
-        let itemMetadata = SendableItemMetadata(
-            ocId: itemIdentifier,
-            fileName: "missing.txt",
-            account: Self.account
+        let remoteItem = MockRemoteItem(
+            identifier: itemIdentifier,
+            name: "changed-since-read.txt",
+            remotePath: Self.account.davFilesUrl + "/changed-since-read.txt",
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
         )
+        remoteItem.parent = rootItem
+        rootItem.children = [remoteItem]
+        remoteInterface.deleteError = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
         Self.dbManager.addItemMetadata(itemMetadata)
 
         let chunkUploadId = chunkUploadIdentifier(
@@ -545,7 +717,9 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
 
         let error = await item.delete(dbManager: Self.dbManager)
 
-        XCTAssertNotNil(error)
+        XCTAssertEqual((error as? CocoaError)?.code, .fileWriteUnknown)
+        XCTAssertEqual(remoteInterface.lastDeleteRemotePath, remoteItem.remotePath)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.deleted, false)
         XCTAssertTrue(FileManager.default.fileExists(atPath: chunksDirectory.path))
         XCTAssertEqual(
             Self.dbManager.remoteFileChunks(uploadId: chunkUploadId)?.count,
@@ -1170,4 +1344,118 @@ final class ItemDeleteTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteFolder.identifier))
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
     }
+}
+
+@Test(arguments: [
+    ("/instance//nextcloud", "/instance//nextcloud", true),
+    ("/instance/./nextcloud", "/instance/nextcloud", true),
+    ("/instance/previous/../nextcloud", "/instance/nextcloud", true),
+    ("/instance//nextcloud", "/instance//nextcloud", false)
+])
+func deletesItemReturnedAtNormalizedDAVURL(
+    configuredWebroot: String,
+    responseWebroot: String,
+    metadataMatchesAccount: Bool
+) async throws {
+    let host = UUID().uuidString.lowercased() + ".example.invalid"
+    let origin = "https://" + host
+    let account = Account(
+        user: "login",
+        id: "user-id",
+        serverUrl: origin + configuredWebroot,
+        password: "test"
+    )
+    let filePath = Account.webDavFilesUrlSuffix + account.id + "/Docs/report.txt"
+    let configuredURL = try #require(URL(string: account.serverUrl + filePath))
+    let parsedURL = try #require(URL(string: origin + "/instance/nextcloud" + filePath))
+    let itemID = "report-id"
+    let body = Data("""
+    <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+      <d:response>
+        <d:href>\(responseWebroot)\(filePath)</d:href>
+        <d:propstat>
+          <d:prop>
+            <oc:id>\(itemID)</oc:id>
+            <d:getetag>"file-v1"</d:getetag>
+            <d:getcontenttype>text/plain</d:getcontenttype>
+          </d:prop>
+          <d:status>HTTP/1.1 200 OK</d:status>
+        </d:propstat>
+      </d:response>
+    </d:multistatus>
+    """.utf8)
+    let requests = OSAllocatedUnfairLock(initialState: [URLRequest]())
+    MockHTTPURLProtocol.setHandlers(
+        forHost: host,
+        start: { request in
+            requests.withLock { $0.append(request.request) }
+            let url = request.request.url
+            switch request.request.httpMethod {
+                case "PROPFIND" where url == configuredURL || url == parsedURL:
+                    request.respond(status: 207, headers: ["Content-Type": "application/xml"], body: body)
+                case "DELETE" where url == configuredURL || url == parsedURL:
+                    request.respond(status: 204)
+                default:
+                    request.respond(status: 405)
+            }
+        },
+        stop: { _ in }
+    )
+    defer { MockHTTPURLProtocol.removeHandlers(forHost: host) }
+
+    let remote = NextcloudKit()
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [MockHTTPURLProtocol.self]
+    let session = NKSession(
+        nkCommonInstance: remote.nkCommonInstance,
+        urlBase: account.serverUrl,
+        user: account.username,
+        userId: account.id,
+        password: account.password,
+        account: account.ncKitAccount,
+        userAgent: "FileProvider-test",
+        groupIdentifier: "",
+        httpMaximumConnectionsPerHost: 1,
+        httpMaximumConnectionsPerHostInDownload: 1,
+        httpMaximumConnectionsPerHostInUpload: 1,
+        sessionDataOverride: Alamofire.Session(configuration: configuration)
+    )
+    remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+    let initialRead = await remote.enumerate(remotePath: configuredURL.absoluteString, depth: .target, account: account)
+    try #require(initialRead.error == .success)
+    let file = try #require(initialRead.files.first)
+    try #require(file.serverUrl + "/" + file.fileName == parsedURL.absoluteString)
+    var metadata = file.toItemMetadata()
+    try #require(metadata.urlBase == account.serverUrl)
+    let targetURL = try #require(URL(string: metadata.remotePath()))
+    try #require(targetURL == configuredURL || targetURL == parsedURL)
+
+    let manager = DatabaseTestSuites.makeManager(account: account)
+    manager.addItemMetadata(metadata)
+    if !metadataMatchesAccount {
+        // This URL could also have come from a cache created before the account URL changed.
+        metadata.urlBase = origin + "/instance/nextcloud"
+    }
+    let item = Item(
+        metadata: metadata,
+        parentItemIdentifier: .init("docs-id"),
+        account: account,
+        remoteInterface: remote,
+        dbManager: manager
+    )
+    requests.withLock { $0.removeAll() }
+    let error = await item.delete(dbManager: manager)
+    let deleteRequests = requests.withLock { $0 }
+
+    if metadataMatchesAccount {
+        #expect(error == nil)
+        #expect(deleteRequests.map(\.url) == [targetURL, targetURL])
+        #expect(deleteRequests.map(\.httpMethod) == ["PROPFIND", "DELETE"])
+        #expect(deleteRequests.first?.value(forHTTPHeaderField: "Depth") == "0")
+        #expect(deleteRequests.last?.value(forHTTPHeaderField: "If-Match") == "\"file-v1\"")
+    } else {
+        #expect((error as? NSFileProviderError)?.code == .serverUnreachable)
+        #expect(deleteRequests.isEmpty)
+    }
+    #expect(manager.itemMetadata(ocId: itemID)?.deleted == metadataMatchesAccount)
 }

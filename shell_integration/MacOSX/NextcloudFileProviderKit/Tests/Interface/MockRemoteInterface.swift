@@ -638,6 +638,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
+    public private(set) var lastDeleteIfMatchHeader: String?
 
     /// The source path of the most recent move request.
     public private(set) var lastMoveRemotePathSource: String?
@@ -1379,10 +1380,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public func delete(
         remotePath: String,
         account: Account,
-        options _: NKRequestOptions = .init(),
+        options: NKRequestOptions = .init(),
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         lastDeleteRemotePath = remotePath
+        lastDeleteIfMatchHeader = options.customHeader?["If-Match"]
         deleteCallHandler?()
         deleteCallHandler?()
 

@@ -52,13 +52,40 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         fileName = sanitise(string: id) + "_" + sanitisedUrl
     }
 
-    /// Returns a remote path relative to this account's DAV files root.
-    ///
-    /// Paths outside the files root, such as trash paths, do not have a sync-relative path.
+    /// Returns the path below this account's WebDAV Files root, without the leading slash.
+    /// Accepts the configured root and the root as returned by NextcloudKit's DAV parser.
     public func filesRootRelativePath(for remotePath: String) -> String? {
-        let filesRootPrefix = davFilesUrl + "/"
-        guard remotePath.hasPrefix(filesRootPrefix) else { return nil }
-        return String(remotePath.dropFirst(filesRootPrefix.count))
+        func pathBelowFilesRoot(_ root: String) -> String? {
+            let prefix = (root + "/").utf8
+            guard remotePath.utf8.starts(with: prefix) else { return nil }
+            return String(decoding: remotePath.utf8.dropFirst(prefix.count), as: UTF8.self)
+        }
+
+        if let path = pathBelowFilesRoot(davFilesUrl) {
+            return path
+        }
+
+        guard davFilesUrl.utf8.starts(with: (serverUrl + "/").utf8),
+              let configuredURL = URL(string: serverUrl),
+              let scheme = configuredURL.scheme,
+              let host = configuredURL.host
+        else { return nil }
+
+        let davPath = String(decoding: davFilesUrl.utf8.dropFirst(serverUrl.utf8.count), as: UTF8.self)
+        let port = configuredURL.port.map { ":\($0)" } ?? ""
+        let origin = "\(scheme)://\(host)\(port)"
+
+        // NextcloudKit collapses separators before decoding the response path.
+        // The server may also resolve dot segments in the installation path.
+        for base in [configuredURL, configuredURL.standardized] {
+            let encodedPath = base.path(percentEncoded: true).split(separator: "/").joined(separator: "/")
+            guard let decodedPath = encodedPath.removingPercentEncoding else { continue }
+            let responseBase = decodedPath.isEmpty ? origin : origin + "/" + decodedPath
+            if let path = pathBelowFilesRoot(responseBase + davPath) {
+                return path
+            }
+        }
+        return nil
     }
 
     public init?(dictionary: [String: String]) {
