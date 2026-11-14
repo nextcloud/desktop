@@ -46,6 +46,7 @@ constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
 constexpr auto versionC = "version";
 constexpr auto serverVersionC = "serverVersion";
+constexpr auto trustedRedirectHostsC = "trustedRedirectHosts";
 constexpr auto serverColorC = "serverColor";
 constexpr auto serverTextColorC = "serverTextColor";
 constexpr auto skipE2eeMetadataChecksumValidationC = "skipE2eeMetadataChecksumValidation";
@@ -648,6 +649,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
+    if (const auto trustedRedirectHosts = settings.value(QLatin1String(trustedRedirectHostsC)).toStringList(); !trustedRedirectHosts.isEmpty()) {
+        acc->setTrustedRedirectHosts(trustedRedirectHosts);
+    }
     acc->_serverColor = settings.value(QLatin1String(serverColorC)).value<QColor>();
     acc->_serverTextColor = settings.value(QLatin1String(serverTextColorC)).value<QColor>();
     acc->_serverHasValidSubscription = settings.value(QLatin1String(serverHasValidSubscriptionC), false).value<bool>();
