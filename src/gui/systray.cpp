@@ -329,6 +329,18 @@ void Systray::showActivitiesWindow(int userIndex)
     user->refreshActivities();
 }
 
+void Systray::toggleActivitiesWindow()
+{
+    const auto user = UserModel::instance()->currentUser();
+    const auto window = user ? _activitiesWindows.value(user->account()->id()) : nullptr;
+    if (window && window->isVisible() && !window->windowStates().testFlag(Qt::WindowMinimized)) {
+        window->hide();
+        return;
+    }
+
+    showActivitiesWindow();
+}
+
 void Systray::showAssistantWindow(int userIndex)
 {
     const auto userModel = UserModel::instance();
