@@ -232,7 +232,8 @@ extension Enumerator {
     /// Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
     /// This means that if you decide to use this method to implement change enumeration, you will
     /// have to collect the full results of all the pages before proceeding with discovering what
-    /// has changed relative to the state of the local database -- manually!
+    /// has changed relative to the state of the local database -- manually! The item enumeration
+    /// does so by date once its last page is in; see `Enumerator.dropChildrenNotListed(since:)`.
     ///
     /// Non-paginated reads will update the database with all of the discovered files and folders
     /// that have been found to be created, updated, and deleted. No extra work required.

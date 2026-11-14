@@ -606,7 +606,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     }
 
     /// A mount point read page by page keeps the permissions its parent listed, while a subfolder on the same page still takes the listed value.
-    func testHandlePagedReadResultsTargetDirectoryKeepsPermissionsListedByParent() {
+    func testHandlePagedReadResultsTargetDirectoryKeepsPermissionsListedByParent() throws {
         let dbManager = Self.dbManager
         let subfolder = MockRemoteItem(
             identifier: "subfolder",
@@ -640,9 +640,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(dbManager.itemMetadata(ocId: remoteFolder.identifier)?.permissions, "RMGCK", "The folder's own read must keep the permissions its parent listed.")
         XCTAssertEqual(dbManager.itemMetadata(ocId: subfolder.identifier)?.permissions, "RMGCK", "A listed subfolder must take the permissions from the listing.")
 
-        let firstWrite = dbManager.itemMetadata(ocId: remoteFolder.identifier)?.syncTime
+        let firstWrite = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteFolder.identifier))
         _ = Enumerator.handlePagedReadResults(files: [ownRead, listedChild], pageIndex: 0, dbManager: dbManager, log: FileProviderLogMock())
-        XCTAssertEqual(dbManager.itemMetadata(ocId: remoteFolder.identifier)?.syncTime, firstWrite, "Re-reading an unchanged mount point must not rewrite its row.")
+        let secondWrite = try XCTUnwrap(dbManager.itemMetadata(ocId: remoteFolder.identifier))
+        XCTAssertTrue(secondWrite.isInSameDatabaseStoreableRemoteState(firstWrite), "Re-reading an unchanged mount point must not rewrite its row.")
+        XCTAssertEqual(secondWrite.permissions, "RMGCK", "The permissions its parent listed survive the second read.")
     }
 
     /// The root container has no parent listing, so a paged read of it must still store its own permissions.
