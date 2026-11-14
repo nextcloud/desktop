@@ -205,6 +205,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         )
         destFolderMeta.directory = true
         destFolderMeta.visitedDirectory = true
+        destFolderMeta.uploaded = true // Only rows the server once confirmed are reconciled against its listings.
         destFolderMeta.etag = "OLD"
         destFolderMeta.syncTime = Date()
         Self.dbManager.addItemMetadata(destFolderMeta)
@@ -269,6 +270,7 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
         )
         parentMetadata.directory = true
         parentMetadata.visitedDirectory = true
+        parentMetadata.uploaded = true // Only rows the server once confirmed are reconciled against its listings.
         parentMetadata.syncTime = Date()
         Self.dbManager.addItemMetadata(parentMetadata)
 

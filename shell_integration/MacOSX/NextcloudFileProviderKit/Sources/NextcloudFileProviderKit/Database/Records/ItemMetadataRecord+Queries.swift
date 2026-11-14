@@ -41,6 +41,9 @@ extension ItemMetadataRecord {
     /// The `syncTime` of the row state last handed to the system. Not part of the record, see `FilesDatabaseManager.markReported(_:)`.
     static let reportedSyncTimeColumn = Column("reportedSyncTime")
 
+    /// The remote state at which the working-set scan last reconciled a directory's materialized subtree. Not part of the record, see `FilesDatabaseManager.recordScannedRemoteStates(_:forgetting:)`.
+    static let scannedRemoteStateColumn = Column("scannedRemoteState")
+
     /// Rows whose current state the system has not received yet.
     static var hasUnreportedState: SQLExpression {
         reportedSyncTimeColumn == nil || Columns.syncTime > reportedSyncTimeColumn

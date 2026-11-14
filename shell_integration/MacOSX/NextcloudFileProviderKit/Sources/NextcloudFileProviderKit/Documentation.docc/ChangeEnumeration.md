@@ -30,13 +30,13 @@ The enumerator has a different change source for each container type.
 
 | Container | Change source | Final anchor |
 | --- | --- | --- |
-| Working set | Scans materialised items on the server and combines those results with the pending local changes the system has not received yet. | A new current anchor. Only when the pending local changes cannot be read is the incoming anchor retained. |
+| Working set | Lists the account root and walks down into the directories whose remote state changed since the scan last reconciled them, then combines what the listings found with the pending local changes the system has not received yet. | A new current anchor. Only when the pending local changes cannot be read is the incoming anchor retained. |
 | Regular directory | Reads the directory from WebDAV and compares it with local metadata. | The incoming anchor. |
 | Trash | Lists the server trash and finds local trash rows that no longer exist there. | The incoming anchor. |
 
 Only the working set is signalled by remote-change notifications. A working-set
-scan can read changed descendants of materialised directories, so it may find
-changes that are not represented by the local pending-change query alone.
+scan lists changed directories, so it finds changes that are not represented
+by the local pending-change query alone.
 
 ## Normal sync anchors
 
@@ -107,6 +107,43 @@ framework received since is left out, so the newer state is not overwritten.
 A write which changes state the framework must learn about through
 enumeration therefore either stamps a fresh `syncTime`, as the lock state does,
 or is followed by a hand-over which marks the row.
+
+## Working-set scan
+
+``Enumerator/scanMaterialisedItemsForRemoteChanges()`` finds the remote
+changes to materialised items without reading any item on its own. The
+server bumps the etag of every ancestor when something changes below it, so
+the scan lists the account root and descends only where that is needed:
+
+- A directory is descended into when it is visited or holds a materialised
+  item somewhere below, unless its remote state, that is etag and permissions,
+  equals the state at which the scan last reconciled everything below it.
+- The reconciled state is kept per directory in `scannedRemoteState`. It is
+  written by the scan alone, in one write after the pass, and only for
+  directories whose descents all succeeded. Every other writer of a
+  directory's etag stores it without looking below the directory, so the
+  stored etag cannot stand in for "subtree reconciled". A directory the scan
+  never reconciled is therefore listed once, whatever its etag.
+- A directory on an external storage, and everything below it, is listed on
+  every pass: the server notices changes made behind its back only when the
+  directory is read.
+- A scan listing does not mark a directory as visited. Only an item
+  enumeration the framework asked for does.
+
+The listings write the rows they return like a folder enumeration does, so a
+file which changed is persisted and reported by its parent's listing. A
+directory missing from its parent's listing, or answering 404 itself, is
+expanded to everything stored below it after the pass, once the moves of the
+pass are known: a directory met alive elsewhere in the same pass was moved,
+and a deleted directory whose name a live directory took is reported alone,
+because the new directory's listing reconciles the children. Every tombstone
+the scan writes is stamped with a fresh `syncTime`, so a deletion lost with
+its batch is derived again from the database.
+
+An idle domain costs one request per pass, and nothing when nothing is
+materialised. A change deep in the tree costs the listings on its path from
+the root. Unchanged downloaded files are not re-reported, their rows are not
+rewritten.
 
 ## Batches
 
@@ -183,17 +220,17 @@ and [`NSFileProviderSyncAnchor`](https://developer.apple.com/documentation/filep
 
 ## Failed reads during a working-set scan
 
-The working-set scan continues after an individual remote read fails. It
-skips that item for the current pass and logs how many it skipped. The changes
-found from other items are still delivered, and the anchor advances as after a
-clean pass.
+The working-set scan continues after a listing fails. The failed directory and
+its ancestors forget their reconciled state, so the next pass descends there
+again from the root whatever else changed, while the rest of the pass keeps
+its state. The changes found elsewhere are still delivered, and the anchor
+advances as after a clean pass.
 
 Nothing is lost by advancing. Remote changes are found by comparing the server
-with the stored rows, not by date, and every materialised item is read again
-on the next pass, so the unreadable item is retried either way. Keeping the
-incoming anchor instead, as earlier versions did, made the next pass derive
-and deliver every change since the old date again, and on a server which
-fails one read in thousands the anchor never moved.
+with the stored rows, not by date, so the forgotten directories are retried
+either way. Keeping the incoming anchor instead, as earlier versions did, made
+the next pass derive and deliver every change since the old date again, and
+on a server which fails one read in thousands the anchor never moved.
 
 A listing the store could not persist counts the same way: the read reports
 `metadataDatabaseWriteFailed`, the item is skipped for the pass and read
@@ -223,10 +260,13 @@ The last request may be handled by a different `Enumerator` instance. That is
 expected. The important check is that the returned anchor is recognised and
 the next batch is delivered without re-running the remote change scan.
 
-If a remote read fails, look for the corresponding
-`Read of materialised item failed during working-set scan` message and, at
-the end of the pass, for the count of skipped items in
-`Working-set remote-change scan skipped`.
+Every pass ends with `Working-set scan finished.` and the number of
+directories it listed, skipped as unchanged, and failed to list. A failed
+listing logs `Directory listing failed; the directory and its ancestors are
+scanned again on the next pass.` with the directory. At debug level, each
+listing logs `Listing a directory for working-set changes.` and each skipped
+directory `Skipping a directory whose subtree is unchanged since the last
+scan.`, so the directories a pass touched can be read off the log.
 
 ## Tests
 
@@ -262,6 +302,15 @@ The change-enumeration tests are in
 
 The derivation rule itself is covered by the `Reported state` suite in
 `Tests/NextcloudFileProviderKitTests/Database/ReportedStateTests.swift`.
+
+The working-set scan is covered by the `Working-set scan` suite in
+`Tests/NextcloudFileProviderKitTests/Enumeration/WorkingSetScanTests.swift`,
+which counts the listings of each pass on a mock server, and its per-directory
+state by the `Scanned remote state` suite in
+`Tests/NextcloudFileProviderKitTests/Database/ScannedRemoteStateTests.swift`.
+`EnumeratorBenchmarkTests.testBenchmarkWorkingSetScanPasses` asserts the
+request count of an idle pass and of one changed leaf file on a larger tree
+and reports the timings when `NCFPK_BENCHMARKS=1` is set.
 
 These tests exercise the delivery logic in the package. A signed macOS build
 is still required to verify the interaction with the real `fileproviderd`.

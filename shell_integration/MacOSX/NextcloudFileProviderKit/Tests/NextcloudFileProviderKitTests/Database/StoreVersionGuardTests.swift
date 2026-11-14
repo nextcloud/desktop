@@ -125,7 +125,7 @@ struct StoreVersionGuardTests {
             )
         }
         #expect(migrated.column?.type == "REAL")
-        #expect(migrated.migrations == ["v1_initial", "v2_reportedSyncTime"])
+        #expect(migrated.migrations == ["v1_initial", "v2_reportedSyncTime", "v3_scannedRemoteState"])
         #expect(migrated.version == StoreVersion.current)
         #expect(migrated.rowId == rowId, "The column is added in place; the row is not rewritten.")
         #expect(migrated.sessions == 0 && migrated.items == 0, "A session in flight would keep delivering across the store bump.")
