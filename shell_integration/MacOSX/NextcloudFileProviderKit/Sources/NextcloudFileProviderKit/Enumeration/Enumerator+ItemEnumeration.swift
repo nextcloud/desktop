@@ -149,11 +149,12 @@ extension Enumerator {
                 logger.debug("No more items to enumerate, stopping paged enumeration.")
                 nextPage = nil
             }
+            // The state the pages come from: the row the first page wrote, or what the token carried.
+            let listingState = cursor.index == 0
+                ? dbManager.itemMetadata(enumeratedItemIdentifier).map(FilesDatabaseManager.scanRemoteState)
+                : cursor.remoteState
             nextPage?.startedAt = listingStart
-
-            if pageSettings != nil, nextPage == nil, let listingStart {
-                dropChildrenNotListed(since: listingStart)
-            }
+            nextPage?.remoteState = listingState
 
             logger.info(
                 """
@@ -182,6 +183,17 @@ extension Enumerator {
                 [.url: self.serverUrl]
             )
 
+            // A few milliseconds of store work before the last page is handed over, so the observer's finish means the store is reconciled. Only a listing which compared the children with the stored rows reconciles: the depth-1 write did, a paginated listing only once its by-date drop ran.
+            // The server saying that no page follows is what ends the listing here: a page which could not be encoded ends the enumeration too, but then nothing was compared.
+            if nextPage == nil {
+                if pageSettings == nil {
+                    reconcileEnumeratedDirectory(stateAtListingStart: listingState)
+                } else if let listingStart {
+                    dropChildrenNotListed(since: listingStart)
+                    reconcileEnumeratedDirectory(stateAtListingStart: listingState)
+                }
+            }
+
             // A paged write returns the rows as stored; a depth-1 one returns the server's listing, so
             // the local state the write merged in is read back before the page reaches the system.
             let handedOver = pageSettings == nil
@@ -202,19 +214,83 @@ extension Enumerator {
     ///
     private func paginationCursor(
         from page: NSFileProviderPage
-    ) -> (index: Int, total: Int?, page: NSFileProviderPage?, startedAt: Date?) {
+    ) -> (index: Int, total: Int?, page: NSFileProviderPage?, startedAt: Date?, remoteState: String?) {
         guard page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage,
               page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
         else {
-            return (index: 0, total: nil, page: nil, startedAt: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil, remoteState: nil)
         }
 
         guard let response = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) else {
             logger.error("Could not parse page")
-            return (index: 0, total: nil, page: nil, startedAt: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil, remoteState: nil)
         }
 
-        return (index: response.index, total: response.total, page: page, startedAt: response.startedAt)
+        return (index: response.index, total: response.total, page: page, startedAt: response.startedAt, remoteState: response.remoteState)
+    }
+
+    ///
+    /// Record the enumerated directory as reconciled for the working-set scan when nothing below it is left for the scan to descend into.
+    ///
+    /// The listing the system asked for compared the directory's children with the stored rows, like a scan listing does. Deeper levels are covered by their own state and by the server's etag propagation, so the scan can skip the directory until its etag moves. Without this, every directory the system visits stays unreconciled until a change under its parent makes a pass list all of them at once.
+    ///
+    /// Only the directory listed is recorded, never an ancestor: an ancestor's stored etag may have been refreshed by a listing of its own parent without its children having been compared, and recording it would hide a change below it for good. Left to the scan as well: the root container, which is listed on every pass; a mount point, whose state the scan keeps as the parent lists it, with the permissions the server rewrites there; a directory whose stored state moved on while its pages were read; and a directory with a child the scan would still descend into, that is a child which is visited or holds something materialised and whose state differs from its own reconciled state, or which has an external storage at or below it.
+    ///
+    /// - Parameter stateAtListingStart: The directory's state as the listing's first page reported it; `nil` for a continuation from a build which did not record it.
+    ///
+    private func reconcileEnumeratedDirectory(stateAtListingStart: String?) {
+        guard !enumeratingSystemIdentifier,
+              let directory = dbManager.itemMetadata(enumeratedItemIdentifier), directory.directory, !directory.deleted,
+              let parent = storedParent(of: directory)
+        else {
+            return
+        }
+
+        guard let stateAtListingStart, FilesDatabaseManager.scanRemoteState(of: directory) == stateAtListingStart else {
+            logger.debug("Leaving a directory whose stored state moved on while its pages were read to the working-set scan.", [.item: directory.ocId, .url: serverUrl])
+            return
+        }
+
+        reconcile(directory, listedBy: parent)
+    }
+
+    private func storedParent(of directory: SendableItemMetadata) -> SendableItemMetadata? {
+        // The root container row is not addressed by its URL.
+        if directory.serverUrl == account.davFilesUrl {
+            return dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)
+        }
+
+        return dbManager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: directory.serverUrl)
+    }
+
+    private func reconcile(_ directory: SendableItemMetadata, listedBy parent: SendableItemMetadata) {
+        guard parent.mountType == directory.mountType else {
+            logger.debug("Leaving a mount point to the working-set scan.", [.item: directory.ocId, .url: directory.remotePath()])
+            return
+        }
+
+        let children = dbManager.immediateChildItems(directoryMetadata: directory).filter { $0.directory && !$0.deleted && !isLockFileName($0.fileName) }
+
+        guard let reconciledStates = dbManager.scannedRemoteStates(ocIds: children.map(\.ocId)) else {
+            return
+        }
+
+        for child in children {
+            let childPath = child.remotePath()
+            let decision = ScanDescentDecision(
+                child: child,
+                holdsMaterialisedItem: dbManager.hasMaterialisedItem(below: childPath) ?? true,
+                holdsExternalStorage: dbManager.hasExternalStorage(below: childPath) ?? true,
+                reconciledState: reconciledStates[child.ocId]
+            )
+
+            if decision == .descend {
+                logger.debug("Leaving a directory with a child the working-set scan has to list to the scan.", [.item: directory.ocId, .url: childPath])
+                return
+            }
+        }
+
+        dbManager.recordScannedRemoteStates([directory.ocId: FilesDatabaseManager.scanRemoteState(of: directory)], forgetting: [])
     }
 
     ///

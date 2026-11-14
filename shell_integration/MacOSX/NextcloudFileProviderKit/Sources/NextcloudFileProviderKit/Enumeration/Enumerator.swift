@@ -36,7 +36,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     /// Internal (not private) so the concern-specific extensions in sibling files can read it.
     let enumeratedItemMetadata: SendableItemMetadata?
 
-    private var enumeratingSystemIdentifier: Bool {
+    var enumeratingSystemIdentifier: Bool {
         Self.isSystemIdentifier(enumeratedItemIdentifier)
     }
 
