@@ -23,6 +23,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
 - The `fileId` column is indexed for the push-notification lookup, which asks for thousands of identifiers at once.
+- `itemMetadata.reportedSyncTime`, the `syncTime` of the row state last handed to the framework, is the one column outside its record type. The record's upsert assigns every record column on conflict, and the mark has to survive every rewrite of a row, so only `markReported(_:)` writes it. See <doc:ChangeEnumeration> for what it is for.
 
 ## Durability
 
@@ -35,6 +36,8 @@ Lookups return the empty value when a read fails, and the failure is logged. Two
 A single damaged value does not take a query with it. A list column holding malformed JSON decodes as empty and is logged with the item's identifier; a mistyped scalar reads as the column type's zero value, which is how SQLite coerces it. Item rows are decoded one by one, so a row which cannot be decoded at all is skipped and logged rather than failing the result; such a row behaves like a missing one, and the next write of that item replaces it. `materialisedItemMetadatas(account:)` returns `nil` when the read itself fails; the working-set enumeration then finishes with an error, the working-set scan keeps its sync point, and the materialized-item reconciliation does nothing.
 
 The change-delivery buffer treats a failed read of its stored session or items the same way: it finishes the enumeration with an error and keeps the session, instead of taking an empty read for the last batch and acknowledging changes which were never delivered. The startup cleanup of chunk uploads decides in one read and skips the cleanup when that read fails.
+
+A failed write of the reported state leaves the rows unmarked, so they are reported once more; a failed read of it delivers a change batch unfiltered. Both err towards reporting.
 
 On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. The replacement carries a new store identity, so every anchor the framework kept for the domain expires and the containers are enumerated afresh. Any other open failure, and a failed import, keep the files untouched and make the open throw; the extension then reports the setup as failed and the domain stays unavailable until a later setup succeeds. Nothing is served from a substitute database, because nothing written to one would survive.
 
@@ -54,6 +57,8 @@ The store version and the store identity are part of every sync anchor, so after
 ## Store identity
 
 Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
+
+Version 2 added `reportedSyncTime` and emptied the change-delivery tables once: a session in flight carries continuation anchors which name no store version and would otherwise keep delivering across the bump.
 
 ## Import from Realm
 

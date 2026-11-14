@@ -7,7 +7,7 @@ import GRDB
 ///
 /// Tables and indexes of the metadata database, applied through a `DatabaseMigrator`.
 ///
-/// Every table mirrors one record type under `Database/Records`. Dates are `REAL` seconds since the reference date, booleans `INTEGER`, arrays JSON `TEXT`.
+/// Every table mirrors one record type under `Database/Records`, with one exception: `itemMetadata.reportedSyncTime` is written only by `FilesDatabaseManager.markReported(_:)` and stays outside ``ItemMetadataRecord``, so the record's upsert never touches it. Dates are `REAL` seconds since the reference date, booleans `INTEGER`, arrays JSON `TEXT`.
 ///
 enum DatabaseSchema {
     /// File extension of the database next to the domain's logs.
@@ -194,6 +194,17 @@ enum DatabaseSchema {
                 table.primaryKey("id", .integer).check(sql: "id = 1")
                 table.column("identity", .text).notNull()
             }
+        }
+
+        migrator.registerMigration("v2_reportedSyncTime") { db in
+            // The `syncTime` of the row state last handed to the system; `NULL` means never. Adding a nullable column rewrites no row.
+            try db.alter(table: ItemMetadataRecord.databaseTableName) { table in
+                table.add(column: "reportedSyncTime", .real)
+            }
+
+            // A change-delivery session in flight carries continuation anchors which name no store version, so it would survive the store bump and keep delivering its snapshots. Sessions are replayable: the pending deletions remain as tombstones and the next derivation finds everything again.
+            try db.execute(sql: "DELETE FROM \(ChangeDeliveryItemRecord.databaseTableName)")
+            try db.execute(sql: "DELETE FROM \(ChangeDeliverySessionRecord.databaseTableName)")
         }
 
         return migrator

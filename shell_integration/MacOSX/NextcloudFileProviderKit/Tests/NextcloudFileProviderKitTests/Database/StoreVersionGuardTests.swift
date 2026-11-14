@@ -94,6 +94,47 @@ struct StoreVersionGuardTests {
         #expect(StoreVersionGuard.recordedVersion(at: databaseURL) == StoreVersion.current)
     }
 
+    @Test func aVersionOneFileIsMigratedInPlace() throws {
+        var row = DatabaseTestSuites.makeFile(ocId: "kept", fileName: "kept.txt")
+        row.downloaded = true
+        let rowId: Int64 = try autoreleasepool {
+            let queue = try DatabaseQueue(path: databaseURL.path)
+            try DatabaseSchema.migrator.migrate(queue, upTo: "v1_initial")
+            return try queue.write { db in
+                try ItemMetadataRecord(row).upsertRow(db)
+                try db.execute(sql: "INSERT INTO changeDeliverySession (sessionId, containerKey, currentAnchorKey, finalAnchorRawValue) VALUES ('s', 'c', 'fp-continuation|s|1', x'00')")
+                try db.execute(sql: "INSERT INTO changeDeliveryItem (sessionId, sequence, metadataData) VALUES ('s', 0, x'00')")
+                try db.execute(sql: "PRAGMA user_version = 1")
+                #expect(try db.columns(in: "itemMetadata").contains { $0.name == "reportedSyncTime" } == false)
+                return try Int64.fetchOne(db, sql: "SELECT rowid FROM itemMetadata WHERE ocId = 'kept'")!
+            }
+        }
+        #expect(StoreVersionGuard.recordedVersion(at: databaseURL) == 1)
+        #expect(StoreVersionGuard.decide(seen: 1) == .upgrade(from: 1))
+
+        let manager = openManager()
+
+        let migrated = try manager.writer.read { db in
+            try (
+                column: db.columns(in: "itemMetadata").first { $0.name == "reportedSyncTime" },
+                migrations: String.fetchAll(db, sql: "SELECT identifier FROM grdb_migrations ORDER BY identifier"),
+                version: Int.fetchOne(db, sql: "PRAGMA user_version"),
+                rowId: Int64.fetchOne(db, sql: "SELECT rowid FROM itemMetadata WHERE ocId = 'kept'"),
+                sessions: Int.fetchOne(db, sql: "SELECT count(*) FROM changeDeliverySession"),
+                items: Int.fetchOne(db, sql: "SELECT count(*) FROM changeDeliveryItem")
+            )
+        }
+        #expect(migrated.column?.type == "REAL")
+        #expect(migrated.migrations == ["v1_initial", "v2_reportedSyncTime"])
+        #expect(migrated.version == StoreVersion.current)
+        #expect(migrated.rowId == rowId, "The column is added in place; the row is not rewritten.")
+        #expect(migrated.sessions == 0 && migrated.items == 0, "A session in flight would keep delivering across the store bump.")
+        #expect(manager.itemMetadata(ocId: "kept")?.fileName == "kept.txt")
+        #expect(manager.reportedSyncTimeForTesting(ocId: "kept") == nil)
+        #expect(manager.pendingWorkingSetChanges(since: .distantPast)?.updated.map(\.ocId) == ["kept"], "Nothing was handed over yet.")
+        #expect(domainDefaults.latestSeenDatabaseVersion == StoreVersion.current)
+    }
+
     @Test func unknownMigrationsInTheFileCountAsNewer() throws {
         let earlier = openManager()
         try earlier.writer.write { db in
