@@ -189,9 +189,16 @@ public extension FilesDatabaseManager {
         } ?? nil
     }
 
-    /// Deletes all metadatas related to the info of the directory provided
+    /// Mark the directory and everything below it deleted.
+    ///
+    /// - Parameters:
+    ///   - ocId: The directory.
+    ///   - stampingSyncTime: When given, every row marked here gets this `syncTime`, so the working-set derivation finds the deletions by date. The default leaves the stamps alone.
+    ///
+    /// - Returns: The rows as they were before, or `nil` when the directory is unknown.
+    ///
     func deleteDirectoryAndSubdirectoriesMetadata(
-        ocId: String
+        ocId: String, stampingSyncTime: Date? = nil
     ) -> [SendableItemMetadata]? {
         write("Failure to delete directory metadata in recursive delete.", [.item: ocId]) { db in
             guard var directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
@@ -208,6 +215,9 @@ public extension FilesDatabaseManager {
             logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
 
             directoryMetadata.deleted = true
+            if let stampingSyncTime {
+                directoryMetadata.syncTime = stampingSyncTime
+            }
             try directoryMetadata.upsertRow(db)
 
             var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
@@ -234,6 +244,9 @@ public extension FilesDatabaseManager {
                 }
                 let inactiveItemMetadata = result.metadata
                 result.deleted = true
+                if let stampingSyncTime {
+                    result.syncTime = stampingSyncTime
+                }
                 try result.upsertRow(db)
                 deletedMetadatas.append(inactiveItemMetadata)
             }

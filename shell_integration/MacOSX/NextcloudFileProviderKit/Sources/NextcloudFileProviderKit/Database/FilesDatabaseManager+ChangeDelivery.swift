@@ -192,7 +192,8 @@ extension FilesDatabaseManager {
                 let deletedItems = ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.ocId))
 
                 if session.hardRemoveDeleted {
-                    try deletedItems.deleteAll(db)
+                    // An identifier which came back alive since the batch was derived keeps its row.
+                    try deletedItems.filter(ItemMetadataRecord.Columns.deleted == true).deleteAll(db)
                 } else {
                     try deletedItems.updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
                 }
