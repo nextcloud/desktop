@@ -39,7 +39,7 @@ public extension Item {
 
         let ocId = itemIdentifier.rawValue
         let relativePath = account.filesRootRelativePath(for: metadata.remotePath())
-        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0, isDirectory: metadata.directory) ?? false } ?? false
 
         let refusalAtHoldingPath = { [self] () -> Error in
             logger.info("Not deleting an item whose folder waits to be placed again by a listing.", [.item: ocId, .name: filename])

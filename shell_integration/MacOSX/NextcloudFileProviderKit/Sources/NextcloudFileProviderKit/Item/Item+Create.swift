@@ -345,7 +345,8 @@ public extension Item {
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
         let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
-        let isOnIgnoreList = ignoredFiles?.isExcluded(relativePath) ?? false
+        let ignoreListPath = account.filesRootRelativePath(for: parentItemRemotePath + "/" + itemTemplate.filename)
+        let isOnIgnoreList = ignoreListPath.map { ignoredFiles?.isExcluded($0, isDirectory: itemTemplateIsFolder) ?? false } ?? false
         let refusalInParkedFolder = { () -> (Item?, Error?) in
             logger.info("Not creating an item in a folder that waits to be placed again by a listing.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
             return (nil, NSFileProviderError(.cannotSynchronize))
