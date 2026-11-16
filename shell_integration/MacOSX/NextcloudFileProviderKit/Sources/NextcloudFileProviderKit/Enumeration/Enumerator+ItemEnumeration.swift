@@ -145,16 +145,38 @@ extension Enumerator {
             let serverItemTotal = nextPage?.total ?? cursor.total
             // Cached follow-up pages omit X-NC-Paginate-Total; keep it so the stop check below still fires.
             nextPage?.total = serverItemTotal
+
+            // The target itself comes back on the first page only, so that page holds one child fewer than it holds entries.
+            let entriesReturned = items.count + (cursor.index == 0 ? 1 : 0)
+
+            // A page the server did not fill is its own end-of-listing marker, and counting up to the total it reported
+            // says the same thing. Absent either, a missing next page says only that this response carried no pagination
+            // headers; the tail may still be there. Newer servers send a first page which the listing fills exactly without
+            // pagination headers; it is the whole listing, but looks the same as a page whose headers were lost on the way,
+            // so it concludes nothing either.
+            var listingReachedTheEnd = entriesReturned < pageItemCount
+
             if let pendingPage = nextPage, let serverItemTotal, pendingPage.index * pageItemCount >= serverItemTotal {
                 // Server will sometimes provide a valid next page data even though there are no
                 // items to enumerate anymore
                 logger.debug("No more items to enumerate, stopping paged enumeration.")
                 nextPage = nil
+                listingReachedTheEnd = true
             }
             nextPage?.startedAt = listingStart
 
             if pageSettings != nil, nextPage == nil, let listingStart {
-                dropChildrenNotListed(since: listingStart)
+                if listingReachedTheEnd {
+                    dropChildrenNotListed(since: listingStart)
+                } else {
+                    logger.error(
+                        "Concluding no deletion: the listing stopped before the end the server reported.",
+                        [
+                            .url: serverUrl,
+                            .name: "page \(cursor.index) returned \(entriesReturned) of \(pageItemCount) entries, server total \(serverItemTotal.map(String.init) ?? "unknown")"
+                        ]
+                    )
+                }
             }
 
             logger.info(
