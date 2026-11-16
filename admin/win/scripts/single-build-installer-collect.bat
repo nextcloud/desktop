@@ -38,8 +38,6 @@ echo "* APPLICATION_NAME %APPLICATION_NAME%"
 echo "* WIN_GIT_PATH=%WIN_GIT_PATH%"
 echo "* VCINSTALLDIR=%VCINSTALLDIR%"
 
-echo "* EXTRA_DEPLOY_PATH=%EXTRA_DEPLOY_PATH%"
-
 echo "* DLL_SUFFIX=%DLL_SUFFIX%"
 
 echo "* DESKTOP_REPO_PATH=%DESKTOP_REPO_PATH%"
@@ -64,7 +62,6 @@ call :testEnv PROJECT_PATH
 call :testEnv BUILD_TYPE
 call :testEnv BUILD_ARCH
 call :testEnv WIN_GIT_PATH
-call :testEnv EXTRA_DEPLOY_PATH
 
 if "%USE_CODE_SIGNING%" == "1" (
     call :testEnv VCINSTALLDIR
@@ -231,17 +228,6 @@ if %ERRORLEVEL% neq 0 goto
 echo "* copy b2-1.dll"
 start "copy b2-1.dll" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%CRAFT_PATH%/bin/b2-1.dll" "%MY_COLLECT_PATH%/"
 if %ERRORLEVEL% neq 0 goto
-
-Rem deploy-extra: optional extra dll's and other resources
-echo "* copy optional extra resources (dll's, etc.) from %EXTRA_DEPLOY_PATH%/."
-( dir /b /a "%EXTRA_DEPLOY_PATH%" | findstr . ) > nul && (
-    start "copy %EXTRA_DEPLOY_PATH%/" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%EXTRA_DEPLOY_PATH%/"* "%MY_COLLECT_PATH%/"
-) || (
-    echo "* NOTE: nothing found to copy from %EXTRA_DEPLOY_PATH%/."
-    goto skipDeployExtra
-)
-if %ERRORLEVEL% neq 0 goto onError
-:skipDeployExtra
 
 Rem VC Environment Variables
 echo "** Calling vcvars64.bat to get the VC env vars:"

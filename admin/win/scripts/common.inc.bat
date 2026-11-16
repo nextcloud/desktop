@@ -26,7 +26,3 @@ if "%BUILD_ARCH%" == "Win64" ( set "QT_PATH=%CRAFT_PATH%" )
 if "%BUILD_ARCH%" == "Win64" ( set "PATH=%CRAFT_PATH%\bin;%CRAFT_PATH%\dev-utils\bin;%PATH%" )
 if "%BUILD_ARCH%" == "Win64" ( set "QT_BIN_PATH=%CRAFT_PATH%\bin" )
 if "%BUILD_ARCH%" == "Win64" ( set "QT_PREFIX=%CRAFT_PATH%" )
-
-Rem Default EXTRA_DEPLOY_PATH when not already set by the calling script.
-Rem This path is optional; if it does not exist or is empty the collect step silently skips it.
-if "%EXTRA_DEPLOY_PATH%" == "" set "EXTRA_DEPLOY_PATH=%PROJECT_PATH%/deploy-extra/%BUILD_TYPE%/%BUILD_ARCH%"

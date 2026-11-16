@@ -103,7 +103,6 @@ them in your shell environment before calling any script.
 | `USE_CODE_SIGNING` | `1` | Set to `0` to skip all signing steps |
 | `UPLOAD_BUILD` | `1` | Set to `0` to skip the SCP upload step |
 | `INSTALLER_OUTPUT_PATH` | `%PROJECT_PATH%/daily/` | Directory where the finished MSI is placed |
-| `EXTRA_DEPLOY_PATH` | `%PROJECT_PATH%/deploy-extra/%BUILD_TYPE%/%BUILD_ARCH%` | Optional directory of extra DLLs to bundle |
 | `PULL_DESKTOP` | `0` | Set to `1` to clone a fresh copy of the repository before building |
 | `CHECKOUT_DESKTOP` | `0` | Set to `1` together with `PULL_DESKTOP=1` to choose a specific tag |
 | `TAG_DESKTOP` | `master` | Branch or tag to clone when `CHECKOUT_DESKTOP=1` |

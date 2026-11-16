@@ -22,8 +22,6 @@ for %%G in (%BUILD_TARGETS%) do (
         set "DLL_SUFFIX="
     )
 
-    set "EXTRA_DEPLOY_PATH=%PROJECT_PATH%/deploy-extra/%BUILD_TYPE%/%%G"
-
     echo "**** collect installer files for %%G (%~nx0)."
     start "single-build-installer-collect.bat %BUILD_TYPE% %%G" /D "%PROJECT_PATH%/" /B /wait "%~dp0/single-build-installer-collect.bat" %BUILD_TYPE% %%G
 
