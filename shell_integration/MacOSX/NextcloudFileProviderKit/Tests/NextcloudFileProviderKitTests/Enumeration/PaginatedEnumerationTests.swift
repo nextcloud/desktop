@@ -107,6 +107,32 @@ struct PaginatedEnumerationTests {
         }
     }
 
+    @Test func aTruncatedListingTombstonesNothing() async throws {
+        // The server stops sending pagination headers after the second page, although its own total counts seven children.
+        remoteInterface.paginationPageLimit = 2
+        _ = seedStaleChildren()
+        for child in folder.children {
+            seed(child.toItemMetadata(account: account))
+        }
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator())
+
+        try await observer.enumerateItems()
+
+        #expect(observer.observedPages.count == 2, "The server stopped after two of the three pages.")
+        #expect(observer.items.count == 5, "Two pages carry five of the seven children.")
+        for ocId in ["f5", "f6"] {
+            #expect(manager.itemMetadata(ocId: ocId)?.deleted == false, "\(ocId) was on the page the server never sent, so it is no deletion.")
+        }
+        for ocId in ["gone", "goneDir", "deep"] {
+            #expect(manager.itemMetadata(ocId: ocId)?.deleted == false, "A listing which cannot show it reached the end concludes no deletion at all.")
+        }
+        let pending = try #require(manager.pendingWorkingSetChanges(since: old))
+        #expect(
+            Set(pending.deleted.map(\.ocId)).isDisjoint(with: ["gone", "goneDir", "deep", "f5", "f6"]),
+            "The working set is told of no deletion."
+        )
+    }
+
     @Test func aContinuationWithoutAListingStartTombstonesNothing() async throws {
         _ = seedStaleChildren()
         let observer = try MockEnumerationObserver(enumerator: makeEnumerator())

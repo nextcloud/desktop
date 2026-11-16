@@ -608,6 +608,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
 
+    /// When set, stop sending pagination headers once this many pages have been served, although children the
+    /// server counted in its own total remain unsent. Models a server which truncates a listing: the client sees
+    /// a response with no next page, indistinguishable from a complete one unless it checks what it was given.
+    public var paginationPageLimit: Int?
+
     private let readOperationCountLock = NSLock()
     private var lockedReadOperationCount = 0
 
@@ -1352,7 +1357,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             let lastItem = min(firstItem + itemCount, files.count) - 1
             assert(firstItem <= lastItem)
             let itemsPage = Array(files[firstItem ... lastItem])
-            let responseData = generateResponse(itemCount: files.count, finalPage: reachedEnd)
+            let pageIndex = itemCount > 0 && itemCount != .max ? firstItem / itemCount : 0
+            let truncated = paginationPageLimit.map { pageIndex + 1 >= $0 } ?? false
+            let responseData = generateResponse(itemCount: files.count, finalPage: reachedEnd || truncated)
             return (account.ncKitAccount, itemsPage, responseData, .success)
         }
 
