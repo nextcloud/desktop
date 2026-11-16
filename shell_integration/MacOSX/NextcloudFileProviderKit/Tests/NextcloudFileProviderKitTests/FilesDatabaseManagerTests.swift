@@ -485,7 +485,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             try Self.dbManager.insertForTesting(folder)
             var original = SendableItemMetadata(ocId: "child-\(status.rawValue)", fileName: "child.txt", account: Self.account)
             original.serverUrl = folder.remotePath()
-            original.uploaded = true
+            original.uploaded = status != .uploadError
             original.downloaded = true
             original.keepDownloaded = true
             original.visitedDirectory = true

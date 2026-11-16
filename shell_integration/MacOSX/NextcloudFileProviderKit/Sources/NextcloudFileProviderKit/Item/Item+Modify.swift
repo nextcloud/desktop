@@ -268,10 +268,12 @@ public extension Item {
             )
 
             let shouldClearLockToken = error.isPreconditionFailedError || error.isLockedError || error.isNotFoundError
+            let serverVersionConflict = sentIfMatch && error.isPreconditionFailedError
             dbManager.recordUploadFailure(
                 ocId: ocId,
                 errorDescription: error.errorDescription,
-                staleLockToken: shouldClearLockToken ? metadata.lockToken : nil
+                staleLockToken: shouldClearLockToken ? metadata.lockToken : nil,
+                serverVersionConflict: serverVersionConflict
             )
 
             // We sent `If-Match`, so a 412 here means the server copy diverged
@@ -279,7 +281,7 @@ public extension Item {
             // not merely a stale lock. Do NOT commit the rejected upload. Clear any
             // lock token, drop the row into an error state, and re-enumerate so the
             // server's newer version is fetched.
-            if sentIfMatch, error.isPreconditionFailedError {
+            if serverVersionConflict {
                 logger.error("Upload rejected: server version changed since last sync (If-Match precondition failed).", [.item: itemIdentifier, .name: filename])
                 if let domain, let manager = NSFileProviderManager(for: domain) {
                     Task {
