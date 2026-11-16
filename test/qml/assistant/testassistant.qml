@@ -307,6 +307,9 @@ Item {
             mouseClick(retryButton)
             tryCompare(thinkingLabel, "visible", true)
             compare(thinkingLabel.text, "Assistant is thinking…")
+            const picker = findChild(chatView, "assistantConversationPicker")
+            compare(assistantTestSetup.controller.requestInProgress, true)
+            compare(picker.enabled, true)
         }
 
         function test_taskTypeDelegateSelectsTaskType() {

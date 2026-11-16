@@ -18,7 +18,7 @@ ComboBox {
     model: root.assistantController.chatConversations
     textRole: "title"
     valueRole: "conversationId"
-    enabled: !root.assistantController.requestInProgress && count > 0
+    enabled: count > 0 && (!root.assistantController.requestInProgress || root.assistantController.thinking)
     displayText: root.assistantController.selectedChatConversationTitle.length > 0
         ? root.assistantController.selectedChatConversationTitle
         : qsTr("No conversation selected")
