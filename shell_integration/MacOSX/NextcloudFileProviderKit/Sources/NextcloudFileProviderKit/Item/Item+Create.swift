@@ -100,6 +100,11 @@ public extension Item {
             return (nil, NSFileProviderError(.cannotSynchronize))
         }
 
+        guard !directory.ocId.isEmpty else {
+            logger.error("Refusing to return created folder with empty ocId.", [.url: remotePath])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
+
         directory.downloaded = true
         directory.keepDownloaded = parentKeepDownloaded
         // A folder we just created is already fully enumerated from the framework's point of
@@ -164,7 +169,7 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
-        guard error == .success, let ocId else {
+        guard error == .success, let ocId, !ocId.isEmpty else {
             logger.error(
                 """
                 Could not upload item with filename: \(itemTemplate.filename),
@@ -185,7 +190,7 @@ public extension Item {
                 await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
             }
 
-            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log))
+            return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log) ?? NSFileProviderError(.cannotSynchronize))
         }
 
         // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.

@@ -127,7 +127,9 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) {
-        let deletedFileProviderItemIdentifiers = deleted.map { NSFileProviderItemIdentifier($0.ocId) }
+        let deletedFileProviderItemIdentifiers = deleted.compactMap {
+            $0.ocId.isEmpty ? nil : NSFileProviderItemIdentifier($0.ocId)
+        }
 
         // Per-item trace so a debug archive can reconstruct exactly which items each batch carried.
         for metadata in updated {
