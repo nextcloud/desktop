@@ -5,7 +5,7 @@
 
 # Windows Build Scripts
 
-This directory contains Windows batch scripts for building, packaging, signing, and uploading
+This directory contains Windows batch scripts for building, packaging, signing
 the Nextcloud Desktop Client on Windows. They were originally maintained in the separate
 [nextcloud/client-building](https://github.com/nextcloud/client-building) repository and have
 been moved here so that build tooling lives alongside the source it builds.
@@ -50,10 +50,10 @@ This will, in order:
 2. Collect all runtime libraries and resources (`build-installer-collect.bat`)
 3. Build the MSI installer (`build-installer-msi.bat`)
 
-To run without signing or uploading:
+To run without signing:
 
 ```bat
-USE_CODE_SIGNING=0 UPLOAD_BUILD=0 ./build.bat
+USE_CODE_SIGNING=0 ./build.bat
 ```
 
 To do a dry run (validates all required variables without building):
@@ -82,7 +82,6 @@ them in your shell environment before calling any script.
 | `WIX_SDK_PATH` | `%WIX%/SDK/VS2017` | WiX SDK path used by the NCMsiHelper CMake target |
 | `BUILD_INSTALLER_MSI` | `1` | Set to `0` to skip MSI creation |
 | `USE_CODE_SIGNING` | `1` | Set to `0` to skip all signing steps |
-| `UPLOAD_BUILD` | `1` | Set to `0` to skip the SCP upload step |
 | `INSTALLER_OUTPUT_PATH` | `%PROJECT_PATH%/daily/` | Directory where the finished MSI is placed |
 | `PULL_DESKTOP` | `0` | Set to `1` to clone a fresh copy of the repository before building |
 | `CHECKOUT_DESKTOP` | `0` | Set to `1` together with `PULL_DESKTOP=1` to choose a specific tag |
@@ -102,14 +101,6 @@ For code signing, additionally set:
 | `SIGN_TIMESTAMP_URL` | Timestamp server URL (default: `http://timestamp.digicert.com`) |
 | `SIGN_TIMESTAMP_DIGEST_ALG` | Timestamp digest algorithm (default: `sha256`) |
 | `APPLICATION_VENDOR` | Vendor string used in the signing description (default: `Nextcloud GmbH`) |
-
-For uploading (`UPLOAD_BUILD=1`), additionally set:
-
-| Variable | Description |
-|---|---|
-| `SFTP_SERVER` | Hostname of the SSH/SCP target server |
-| `SFTP_USER` | SSH username |
-| `SFTP_PATH` | Remote path on the server |
 
 ---
 
@@ -132,7 +123,7 @@ each target architecture.
 |---|---|
 | `build-desktop.bat` | Build the desktop client for all configured architectures. |
 | `build-installer-collect.bat` | Collect all runtime files for each architecture. |
-| `build-installer-msi.bat` | Build and (optionally) sign and upload the MSI for each architecture. |
+| `build-installer-msi.bat` | Build and (optionally) sign for each architecture. |
 
 ### Per-architecture implementation scripts
 
@@ -143,7 +134,6 @@ They are being called automatically and are not to be used directly.
 | Script | Purpose |
 |---|---|
 | `sign.bat <file>` | Sign a single binary with `signtool`. Reads certificate settings from environment. |
-| `upload.bat <file>` | Upload a file to the configured SCP server. |
 
 ### Include files
 

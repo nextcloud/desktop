@@ -50,7 +50,6 @@ echo "* WIX=%WIX%"
 echo "* PATH=%PATH%"
 
 echo "* USE_CODE_SIGNING=%USE_CODE_SIGNING%"
-echo "* UPLOAD_BUILD=%UPLOAD_BUILD%"
 
 Rem ********************************************************************************************
 rem     "check for required environment variables"
@@ -191,13 +190,6 @@ if "%USE_CODE_SIGNING%" == "0" (
 echo "* Move %MSI_FILENAME% to '%INSTALLER_OUTPUT_PATH%'."
 start "move msi" /D "%MY_MSI_PATH%" /B /wait mv "%MSI_FILENAME%" "%INSTALLER_OUTPUT_PATH%"/
 if %ERRORLEVEL% neq 0 goto onError
-
-if "%UPLOAD_BUILD%" == "0" (
-    echo "** Don't upload: Uploading is disabled by UPLOAD_BUILD"
-) else (
-    echo "* Upload %MSI_FILENAME%."
-    start "upload msi" /D "%PROJECT_PATH%" /B /wait %~dp0/upload.bat %INSTALLER_OUTPUT_PATH%/%MSI_FILENAME%
-)
 
 Rem ********************************************************************************************
 
