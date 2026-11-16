@@ -13,6 +13,11 @@ extension [SendableItemMetadata] {
         let allFilters = await Item.getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
 
         return try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
+            guard !itemMetadata.ocId.isEmpty else {
+                logger.error("Skipping metadata with empty ocId in enumeration.", [.name: itemMetadata.fileName, .url: itemMetadata.serverUrl])
+                return nil
+            }
+
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
