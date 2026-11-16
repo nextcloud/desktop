@@ -231,12 +231,3 @@ in `admin/win/msi/` and `admin/win/tools/`. The final MSI build step in
 `install/<type>/<arch>/msi/`) with the collect directory as input.
 
 ---
-
-## What is NOT included
-
-- **NSIS EXE installer creation** — The legacy NSIS installer (`nextcloud.nsi`) and the
-  wrapper script `build-installer-exe.bat` are not included here. The WiX MSI is the current
-  official Windows installer format.
-- **Dependency bootstrapping** (`init.bat`, `build-qtkeychain.bat`, `build-zlib.bat`) — These
-  were part of the original standalone `client-building` setup and are now obsolete. All
-  build-time dependencies are provided by KDE Craft.
