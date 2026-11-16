@@ -136,21 +136,7 @@ each target architecture.
 
 ### Per-architecture implementation scripts
 
-Call these directly when you want to build for a single architecture:
-
-```bat
-single-build-desktop.bat <BUILD_TYPE> <BUILD_ARCH>
-single-build-installer-collect.bat <BUILD_TYPE> <BUILD_ARCH>
-single-build-installer-msi.bat <BUILD_TYPE> <BUILD_ARCH>
-```
-
-Example (Release, 64-bit only):
-
-```bat
-single-build-desktop.bat Release Win64
-single-build-installer-collect.bat Release Win64
-single-build-installer-msi.bat Release Win64
-```
+They are being called automatically and are not to be used directly.
 
 ### Utility scripts
 
