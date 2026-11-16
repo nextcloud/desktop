@@ -18,6 +18,9 @@ ColumnLayout {
 
     required property NC.AssistantController assistantController
 
+    property double conversationToDelete: -1
+    property string conversationTitleToDelete: ""
+
     signal newConversationStarted()
 
     spacing: Style.wizardSectionSpacing
@@ -27,6 +30,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         AssistantConversationPicker {
+            id: conversationPicker
             objectName: "assistantConversationPicker"
             assistantController: root.assistantController
             leftPadding: Style.assistantConversationPickerLeftPadding
@@ -34,7 +38,13 @@ ColumnLayout {
             topPadding: 0
             bottomPadding: 0
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 0
             Layout.preferredHeight: Style.standardPrimaryButtonHeight
+            onDeleteRequested: (conversationId, title) => {
+                root.conversationTitleToDelete = title
+                root.conversationToDelete = conversationId
+            }
         }
 
         WizardButton {
@@ -87,11 +97,43 @@ ColumnLayout {
         }
     }
 
+    Loader {
+        parent: conversationPicker
+        active: root.conversationToDelete > 0
+        onLoaded: item.open()
+        sourceComponent: AssistantDeleteConversationDialog {
+            parent: Overlay.overlay
+            assistantController: root.assistantController
+            conversationId: root.conversationToDelete
+            conversationTitle: root.conversationTitleToDelete
+            width: Math.min(Style.wizardDialogMaximumWidth,
+                root.width - Style.wizardWindowMargin * 2)
+            padding: Style.wizardWindowMargin
+            anchors.centerIn: parent
+            onClosed: {
+                root.conversationTitleToDelete = ""
+                conversationPicker.forceActiveFocus(Qt.PopupFocusReason)
+                root.conversationToDelete = -1
+            }
+        }
+    }
+
     AssistantMessageList {
         objectName: "assistantMessageList"
         assistantController: root.assistantController
         Layout.fillWidth: true
         Layout.fillHeight: true
+        Layout.minimumHeight: 0
+        Layout.preferredHeight: 0
+    }
+
+    Loader {
+        active: root.assistantController.pendingActions.length > 0
+        visible: active
+        Layout.fillWidth: true
+        sourceComponent: AssistantActionConfirmation {
+            assistantController: root.assistantController
+        }
     }
 
     EnforcedPlainTextLabel {

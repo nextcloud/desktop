@@ -71,6 +71,90 @@ class TestAssistantModels : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    void emptyMessagesAreHidden_data()
+    {
+        QTest::addColumn<bool>("incremental");
+        QTest::newRow("history") << false;
+        QTest::newRow("append") << true;
+    }
+
+    void emptyMessagesAreHidden()
+    {
+        using namespace Qt::StringLiterals;
+        QFETCH(bool, incremental);
+        auto model = AssistantMessageModel{};
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
+        auto inserted = QSignalSpy{&model, &QAbstractItemModel::rowsInserted};
+        auto attachmentOnly = message(6, u"sessionId"_s, 42, u"human"_s, {});
+        attachmentOnly.insert(u"attachments"_s, QJsonArray{QJsonObject{{u"file_id"_s, 12}, {u"type"_s, u"File"_s}}});
+        auto invalidAttachment = message(4, u"sessionId"_s, 42, u"assistant"_s, {});
+        invalidAttachment.insert(u"attachments"_s, QJsonArray{QJsonObject{{u"file_id"_s, -1}}});
+        const auto messages = QJsonArray{
+            message(1, u"sessionId"_s, 42, u"human"_s, {}),
+            message(2, u"sessionId"_s, 42, u"user"_s, {}),
+            message(3, u"sessionId"_s, 42, u"assistant"_s, u" \n\t"_s),
+            invalidAttachment,
+            message(5, u"sessionId"_s, 42, u"assistant"_s, u"Answer"_s),
+            attachmentOnly,
+        };
+        if (incremental) {
+            for (const auto &entry : messages) {
+                model.append(entry.toObject());
+            }
+            QCOMPARE(inserted.size(), 2);
+        } else {
+            model.replaceFromResponse(QJsonDocument{messages});
+        }
+        QCOMPARE(model.rowCount(), 2);
+        QCOMPARE(model.data(model.index(0, 0), AssistantMessageModel::MessageIdRole).toLongLong(), 5);
+        QCOMPARE(model.data(model.index(1, 0), AssistantMessageModel::MessageIdRole).toLongLong(), 6);
+        QVERIFY(model.data(model.index(1, 0), AssistantMessageModel::TextRole).toString().isEmpty());
+        QCOMPARE(model.data(model.index(1, 0), AssistantMessageModel::AttachmentsRole).toList().size(), 1);
+        QVERIFY(model.lastMessageIsHuman());
+
+        model.replaceFromResponse(QJsonDocument{QJsonArray{messages.at(0), messages.at(1), messages.at(2), invalidAttachment}});
+        QCOMPARE(model.rowCount(), 0);
+        QVERIFY(!model.lastMessageIsHuman());
+    }
+
+    void messagesPreserveGenericAttachments()
+    {
+        using namespace Qt::StringLiterals;
+        auto model = AssistantMessageModel{};
+        const auto response = QJsonObject{
+            {u"id"_s, 1},
+            {u"role"_s, u"assistant"_s},
+            {u"content"_s, u""_s},
+            {u"ocp_task_id"_s, 42},
+            {u"attachments"_s,
+             QJsonArray{
+                 QJsonObject{{u"type"_s, u"File"_s}, {u"file_id"_s, 11}},
+                 QJsonObject{{u"type"_s, u"Image"_s}, {u"fileId"_s, u"12"_s}, {u"ocp_task_id"_s, 43}},
+                 QJsonObject{{u"type"_s, u"Audio"_s}, {u"file_id"_s, 13}},
+                 QJsonObject{{u"file_id"_s, -1}},
+                 QJsonObject{{u"file_id"_s, u"invalid"_s}},
+                 QJsonValue{},
+             }},
+        };
+        model.replaceFromResponse(QJsonDocument{QJsonArray{response}});
+        QCOMPARE(model.rowCount(), 1);
+        QVERIFY(model.data(model.index(0, 0), AssistantMessageModel::TextRole).toString().isEmpty());
+        const auto attachments = model.data(model.index(0, 0), AssistantMessageModel::AttachmentsRole).toList();
+        QCOMPARE(attachments.size(), 3);
+        QCOMPARE(attachments[0].toMap().value(u"fileId"_s).toLongLong(), 11);
+        QCOMPARE(attachments[0].toMap().value(u"taskId"_s).toLongLong(), 42);
+        QCOMPARE(attachments[1].toMap().value(u"fileId"_s).toLongLong(), 12);
+        QCOMPARE(attachments[1].toMap().value(u"taskId"_s).toLongLong(), 43);
+        QCOMPARE(attachments[2].toMap().value(u"type"_s).toString(), u"Audio"_s);
+
+        auto human = response;
+        human.insert(u"role"_s, u"human"_s);
+        model.append(human);
+        QCOMPARE(model.data(model.index(1, 0), AssistantMessageModel::AttachmentsRole).toList()[1].toMap().value(u"taskId"_s).toLongLong(), -1);
+        model.replaceFromResponse(QJsonDocument{QJsonArray{QJsonObject{{u"content"_s, u"No attachments"_s}}}});
+        QVERIFY(model.data(model.index(0, 0), AssistantMessageModel::AttachmentsRole).toList().isEmpty());
+    }
+
     void taskTypesFilterSortAndExposeMetadata()
     {
         AssistantTaskTypeModel model;
@@ -185,6 +269,24 @@ private Q_SLOTS:
         model.clear();
         QCOMPARE(model.rowCount(), 0);
         QVERIFY(!model.contains(43));
+    }
+
+    void conversationsRemoveById()
+    {
+        using namespace Qt::StringLiterals;
+        auto model = AssistantConversationModel{};
+        const auto modelTester = QAbstractItemModelTester(&model, QAbstractItemModelTester::FailureReportingMode::QtTest);
+        model.replaceFromResponse(QJsonDocument{QJsonArray{conversation(42, u"Current"_s), conversation(43, u"Other"_s)}}, 42);
+        auto removed = QSignalSpy(&model, &QAbstractItemModel::rowsRemoved);
+        model.remove(43);
+        QCOMPARE(model.rowCount(), 1);
+        QCOMPARE(removed.size(), 1);
+        QVERIFY(model.data(model.index(0, 0), AssistantConversationModel::SelectedRole).toBool());
+        model.remove(43);
+        QCOMPARE(removed.size(), 1);
+        model.remove(42);
+        QCOMPARE(model.rowCount(), 0);
+        QVERIFY(!model.contains(42));
     }
 
     void messagesNormalizeRolesAndSessionKeys()

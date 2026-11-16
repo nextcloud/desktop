@@ -8,6 +8,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "assistantcontroller.h"
+#include "assistantimageprovider.h"
 #include "theme.h"
 
 #include <QLoggingCategory>
@@ -16,6 +17,8 @@
 #include <QQuickWindow>
 #include <QVariantMap>
 #include <memory>
+
+using namespace Qt::StringLiterals;
 
 namespace OCC::Assistant
 {
@@ -57,6 +60,10 @@ QQuickWindow *createWindow(QQmlEngine *engine, const AccountStatePtr &accountSta
     if (!engine || !accountState || !accountState->account()) {
         qCWarning(lcAssistantWindow) << "Cannot create an Assistant window without an engine and account.";
         return nullptr;
+    }
+
+    if (!engine->imageProvider("assistant-attachments"_L1)) {
+        engine->addImageProvider("assistant-attachments"_L1, new AssistantImageProvider);
     }
 
     QQmlComponent component(engine, QStringLiteral("qrc:/qml/src/gui/assistant/qml/AssistantWindow.qml"));

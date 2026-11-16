@@ -40,6 +40,8 @@ public:
     void replaceFromResponse(const QJsonDocument &json, qint64 selectedConversationId);
     /** @brief Prepends a newly created conversation. */
     void prepend(const QJsonObject &conversation, qint64 selectedConversationId);
+    /** @brief Removes an existing conversation by identifier. */
+    void remove(qint64 conversationId);
     /** @brief Removes all conversations. */
     void clear();
     /** @brief Updates the selected role for all conversations. */

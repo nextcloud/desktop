@@ -134,12 +134,12 @@ nextcloud_add_test(UnifiedSearchListmodel)
 nextcloud_add_test(AssistantController)
 target_sources(AssistantControllerTest PRIVATE assistant/fakeassistantclient.cpp)
 nextcloud_add_test(AssistantModels)
+nextcloud_add_test(AssistantAttachments)
 add_executable(AssistantQmlTest
     qml/assistant/assistantqmltestrunner.cpp
     assistant/fakeassistantclient.cpp
-    testhelper.h
 )
-target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore Qt::QuickTest)
+target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore testutils Qt::QuickTest)
 target_include_directories(AssistantQmlTest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 set_target_properties(AssistantQmlTest PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}

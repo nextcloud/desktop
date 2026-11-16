@@ -26,19 +26,27 @@ ScrollView {
         messageList.forceLayout()
     }
 
+    implicitWidth: 0
+    implicitHeight: 0
     contentWidth: availableWidth
     clip: true
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    ScrollBar.vertical.objectName: "assistantConversationScrollBar"
     ScrollBar.vertical.policy: ScrollBar.AsNeeded
+    ScrollBar.vertical.active: ScrollBar.vertical.size < 1
 
     ListView {
         id: messageList
+        objectName: "assistantMessageViewport"
+        clip: true
+        flickableDirection: Flickable.VerticalFlick
 
         spacing: Style.wizardSectionSpacing
         boundsBehavior: Flickable.StopAtBounds
         model: root.assistantController.messages
 
         delegate: AssistantMessageDelegate {
+            assistantController: root.assistantController
         }
 
         onCountChanged: positionViewAtEnd()
