@@ -632,6 +632,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    public var uploadIdentifierOverride: String?
+
     /// When set, every delete call returns this error immediately without touching the mock tree.
     /// Use this to simulate an already-missing remote item.
     public var deleteError: NKError?
@@ -899,7 +901,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             print("Updated item \(item.name)")
         } else {
             item = MockRemoteItem(
-                identifier: randomIdentifier(),
+                identifier: uploadIdentifierOverride ?? randomIdentifier(),
                 name: itemName,
                 remotePath: remotePath,
                 creationDate: creationDate ?? .init(),
