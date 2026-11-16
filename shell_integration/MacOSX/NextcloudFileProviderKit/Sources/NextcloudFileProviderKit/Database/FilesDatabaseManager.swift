@@ -510,6 +510,10 @@ public final class FilesDatabaseManager: Sendable {
 
     /// Persist `metadata`, evicting any other live row at its logical address first.
     func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
+        guard !metadata.ocId.isEmpty else {
+            logger.error("Refusing to persist item metadata with empty ocId.", [.name: metadata.fileName, .url: metadata.serverUrl])
+            return
+        }
         try evictLogicalDuplicates(of: metadata, in: db)
         try ItemMetadataRecord(metadata).upsertRow(db)
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])

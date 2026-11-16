@@ -496,6 +496,8 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     ) async -> Item? {
         // resolve the given identifier to a record in the model
 
+        guard !identifier.rawValue.isEmpty else { return nil }
+
         guard !isCancelled() else { return nil }
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         guard !isCancelled() else { return nil }
