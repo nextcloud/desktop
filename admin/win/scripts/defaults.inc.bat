@@ -105,10 +105,6 @@ Rem Updater: ON = build, OFF = don't build (default)
 if "%BUILD_UPDATER%" == ""                  set "BUILD_UPDATER=OFF"
 
 Rem ********************************************************************************************
-Rem Installer Options
-Rem NSIS EXE installer: not supported; use MSI instead (BUILD_INSTALLER_MSI=1)
-if "%BUILD_INSTALLER%" == ""                set "BUILD_INSTALLER=0"
-
 Rem MSI installer: 1 = build (default), 0 = don't build
 if "%BUILD_INSTALLER_MSI%" == ""            set "BUILD_INSTALLER_MSI=1"
 

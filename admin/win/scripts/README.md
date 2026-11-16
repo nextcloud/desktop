@@ -10,9 +10,6 @@ the Nextcloud Desktop Client on Windows. They were originally maintained in the 
 [nextcloud/client-building](https://github.com/nextcloud/client-building) repository and have
 been moved here so that build tooling lives alongside the source it builds.
 
-> **Note:** NSIS EXE installer creation is **not** supported by these scripts.
-> The official Windows installer is the WiX-based MSI (see `admin/win/msi/`).
-
 ---
 
 ## Prerequisites
