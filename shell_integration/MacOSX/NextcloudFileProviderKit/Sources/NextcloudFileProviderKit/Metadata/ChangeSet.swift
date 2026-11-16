@@ -6,7 +6,7 @@ import Foundation
 ///
 /// A set of item changes derived by comparing a fresh server listing against the local database.
 ///
-/// Produced by the change-deriving database read (``FilesDatabaseManager/depth1ReadUpdateItemMetadatas(account:serverUrl:updatedMetadatas:keepExistingDownloadState:)``)
+/// Produced by the change-deriving database read (``FilesDatabaseManager/depth1ReadUpdateItemMetadatas(account:serverUrl:updatedMetadatas:keepExistingDownloadState:preserveDeletedTarget:)``)
 /// and carried through the enumerator to the file-provider change observer. Replaces the three
 /// parallel `newMetadatas` / `updatedMetadatas` / `deletedMetadatas` arrays that used to be passed
 /// around as a positional tuple.

@@ -443,38 +443,38 @@
 <context>
     <name>ClientCertificateDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="35"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="38"/>
         <source>Client certificate</source>
         <translation>クライアント証明書</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="46"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
         <translation>PKCS#12証明書ファイルを選択し、そのパスワードを入力してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="59"/>
         <source>Certificate file</source>
         <translation>証明書ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="65"/>
         <source>Choose</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="72"/>
         <source>Certificate password</source>
         <translation>証明書のパスワード</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="96"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="106"/>
         <source>Connect</source>
         <translation>接続する</translation>
     </message>
@@ -891,17 +891,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="344"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>サーバーの応答に時間がかかりすぎました。接続を確認し、再度同期を試みてください。それでも動作しない場合は、サーバー管理者に連絡してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="350"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="352"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>予期しないエラーが発生しました。再度同期を試みるか、問題が解決しない場合はサーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="591"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="593"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>サーバーは厳格なトランスポートセキュリティを適用し、信頼できない証明書は受け付けません。</translation>
     </message>
@@ -909,22 +909,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="239"/>
+        <location filename="../src/libsync/account.cpp" line="240"/>
         <source>Public Share Link</source>
         <translation>公開共有リンク</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1092"/>
+        <location filename="../src/libsync/account.cpp" line="1107"/>
         <source>File %1 is already locked by %2.</source>
         <translation>ファイル %1 はすでに %2 がロックしています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1094"/>
+        <location filename="../src/libsync/account.cpp" line="1109"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>エラー %2 により、 %1 のロック処理に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1096"/>
+        <location filename="../src/libsync/account.cpp" line="1111"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>エラー %2 により、 %1 のロック解除処理に失敗しました</translation>
     </message>
@@ -1679,104 +1679,108 @@ This action will abort any currently running synchronization.</source>
         <translation>アカウントに接続しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
         <source>Will require %1 of storage</source>
         <translation>ストレージの%1が必要になります </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>空き容量 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
         <source>Please choose a local sync folder.</source>
         <translation>ローカルの同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>空のローカル同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
         <source>Could not create local folder %1</source>
         <translation>ローカルフォルダー %1 を作成できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
         <source>Checking remote folder</source>
         <translation>リモートフォルダーの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
         <source>No remote folder specified!</source>
         <translation>リモートフォルダーが指定されていません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
         <source>Error: %1</source>
         <translation>エラー: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
         <source>Creating remote folder</source>
         <translation>リモートフォルダーの作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>フォルダーの作成中にHTTPエラーコード%1が発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>指定された認証情報が正しくないため、リモートフォルダーの作成に失敗しました。戻って認証情報を確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>リモートフォルダー %1 の作成がエラーで失敗しました。&lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>同期フォルダーの作成中にアカウントの設定に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
         <source>Could not create the sync folder.</source>
         <translation>同期フォルダーを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
         <source>Select a certificate</source>
         <translation>証明書を選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>証明書ファイル (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2129"/>
         <source>Could not access the selected certificate file.</source>
         <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <source>The selected certificate file is empty.</source>
+        <translation>選択した証明書ファイルが空です。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>証明書を読み込めませんでした。 パスワードが間違っていますか？</translation>
     </message>
@@ -3809,119 +3813,119 @@ For advanced users: this issue might be related to multiple sync database files 
 <context>
     <name>OCC::Gui::Sharing::SharingController</name>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="172"/>
         <source>The server did not generate a valid public-link identifier.</source>
         <translation>サーバーは有効な公開リンク識別子を生成しませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="178"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="181"/>
         <source>Could not create the public link.</source>
         <translation>公開リンクを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="217"/>
         <source>Could not retrieve the internal link.</source>
         <translation>内部リンクを取得できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="263"/>
         <source>The server returned an invalid share.</source>
         <translation>サーバーから無効な共有が返されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="272"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="275"/>
         <source>Could not create the share.</source>
         <translation>共有を作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="320"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="324"/>
         <source>Could not delete the share.</source>
         <translation>共有を削除できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="363"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="353"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="356"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="763"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="766"/>
         <source>Could not add the recipient.</source>
         <translation>受信者を追加できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="384"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="387"/>
         <source>Could not remove the recipient.</source>
         <translation>受信者を削除できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="412"/>
         <source>The server did not generate a valid sharing link.</source>
         <translation>サーバーは有効な共有リンクを生成しませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="423"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="426"/>
         <source>Could not update the sharing link.</source>
         <translation>共有リンクを更新できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="431"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="434"/>
         <source>Could not generate a sharing link.</source>
         <translation>共有リンクを生成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="479"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="464"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="472"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="571"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="579"/>
         <source>Could not update the permissions.</source>
         <translation>権限を更新できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="528"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="536"/>
         <source>Could not update the recipient permissions.</source>
         <translation>受信者の権限を更新できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="612"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="616"/>
         <source>Could not update the sharing setting.</source>
         <translation>共有設定を更新できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="666"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーが共有を有効化しませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="669"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="672"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>共有を送信できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="730"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="713"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="723"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="750"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="774"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>新しく作成された共有は利用できなくなりました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="735"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="738"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>アイテムを共有に追加できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="834"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>共有へのすべての変更を保存できませんでした。</translation>
     </message>
 </context>
 <context>
@@ -3952,13 +3956,13 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
         <source>Failed to find fileId: %1 in db</source>
-        <translation type="unfinished"/>
+        <translation>DB内でファイルID %1 が見つかりませんでした。</translation>
     </message>
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
         <source>Unexpected file size transferred. Expected %1 received %2</source>
         <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
-        <translation type="unfinished"/>
+        <translation>予期しないファイルサイズが転送されました。想定: %1、受信: %2</translation>
     </message>
 </context>
 <context>
@@ -4632,17 +4636,17 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation type="unfinished"/>
+        <translation>オンデマンドファイル用の同期ルートを確保できません。このフォルダーはすでに %1 によって確保されています。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
         <source>Unable to retrieve registration info. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>登録情報を取得できません。エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
-        <translation type="unfinished"/>
+        <translation>ファイルが変更されたため、プレースホルダーに変換できません。</translation>
     </message>
 </context>
 <context>
@@ -4650,32 +4654,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="289"/>
         <source>Failed to read /proc/self/mountinfo</source>
-        <translation type="unfinished"/>
+        <translation>/proc/self/mountinfo の読み取りに失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation type="unfinished"/>
+        <translation>OpenVFSのマウント %1 のアンマウントに失敗しました。エラー: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
         <source>The filesystem for %1 does not support xattributes.</source>
-        <translation type="unfinished"/>
+        <translation>%1 のファイルシステムは拡張属性(xattributes)をサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
         <source>The sync path is already claimed by %1</source>
-        <translation type="unfinished"/>
+        <translation>同期パスはすでに %1 によって確保されています。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
         <source>OpenVFS executable not found, please install it</source>
-        <translation type="unfinished"/>
+        <translation>OpenVFSの実行ファイルが見つかりません。インストールしてください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="324"/>
         <source>Failed to find the OpenVFS config file, please check your installation.</source>
-        <translation type="unfinished"/>
+        <translation>OpenVFSの設定ファイルが見つかりませんでした。インストール状況を確認してください。</translation>
     </message>
 </context>
 <context>
@@ -4884,7 +4888,7 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2244"/>
         <source>Moved to invalid target, restoring</source>
         <translation>無効なターゲットに移動し、復元しました</translation>
     </message>
@@ -4904,22 +4908,22 @@ Note that using any logging command line options will override this setting.</so
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2202"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2217"/>
+        <location filename="../src/libsync/discovery.cpp" line="2221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバー上で読み取り専用のため、ファイルをアップロードできません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2254"/>
+        <location filename="../src/libsync/discovery.cpp" line="2258"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除、復元は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2427"/>
+        <location filename="../src/libsync/discovery.cpp" line="2431"/>
         <source>Error while reading the database</source>
         <translation>データベースを読み込み中にエラーが発生しました</translation>
     </message>
@@ -5519,48 +5523,48 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="559"/>
         <source>%1 days</source>
         <translation>%1 日</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="561"/>
         <source>%1 day</source>
         <translation>%1 日</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="562"/>
         <source>Today</source>
         <translation>今日</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="737"/>
         <source>Secure file drop link</source>
         <translation>セキュアファイルドロップリンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="740"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
         <translation>リンクを共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
         <source>Link share</source>
         <translation>リンク共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="751"/>
         <source>Internal link</source>
         <translation>内部リンク</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="753"/>
         <source>Secure file drop</source>
         <translation>セキュアなファイルドロップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="942"/>
         <source>Could not find local folder for %1</source>
         <translation>%1 のローカルフォルダが見つかりませんでした</translation>
     </message>
@@ -5598,23 +5602,23 @@ Note that using any logging command line options will override this setting.</so
         <translation>コンテキストメニューの共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
         <source>I shared something with you</source>
         <translation>私はあなたと何かを共有しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Share options</source>
         <translation>共有オプション</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Send private link by email …</source>
         <translation>メールでプライベートリンクを送信…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
         <source>Copy private link to clipboard</source>
         <translation>プライベートリンクをクリップボードにコピーする</translation>
     </message>
@@ -5653,102 +5657,102 @@ Server replied with error: %2</source>
         <translation>次のフォルダの暗号化に成功しました: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
         <source>File actions</source>
         <translation>ファイルアクション</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
         <source>Leave this share</source>
         <translation>この共有を外す</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this file is not allowed</source>
         <translation>このファイルの再共有は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this folder is not allowed</source>
         <translation>このフォルダーの再共有は許可されていません</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1344"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
         <source>Encrypt</source>
         <translation>暗号化</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
         <source>Lock file</source>
         <translation>ファイルをロック</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
         <source>Unlock file</source>
         <translation>ロックを解除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1374"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
         <source>Locked by %1</source>
         <translation>%1 によってロックされました</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>%1分後に期限切れ</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
         <source>Apply labels</source>
         <translation>ラベルを適用する</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
         <source>Resolve conflict …</source>
         <translation>競合を解決する…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
         <source>Move and rename …</source>
         <translation>移動して名前を変更…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
         <source>Move, rename and upload …</source>
         <translation>移動、名前の変更、アップロード…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1543"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
         <source>Delete local changes</source>
         <translation>ローカルの変更を削除する</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1549"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
         <source>Move and upload …</source>
         <translation>移動してアップロード…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1550"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
         <source>Copy internal link</source>
         <translation>内部リンクをコピー</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Open in browser</source>
         <translation>ブラウザーで開く</translation>
     </message>
@@ -6044,7 +6048,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1078"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>データベースへの接続に失敗しました。</translation>
     </message>
 </context>
 <context>
@@ -6156,53 +6160,53 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="574"/>
+        <location filename="../src/gui/systray.cpp" line="571"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="573"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>%1 デスクトップを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <source>Pause sync</source>
         <translation>同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="580"/>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <source>Resume sync</source>
         <translation>同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="581"/>
+        <location filename="../src/gui/systray.cpp" line="578"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="582"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="583"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
         <source>Exit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation>全ての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation>すべての同期を再開</translation>
@@ -6240,12 +6244,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>ユーザー検索は利用できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーを読み込めませんでした。もう一度お試しください。</translation>
     </message>
 </context>
 <context>
@@ -6257,7 +6261,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="320"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="617"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>このアカウントがオフラインの間は検索を利用できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -6283,87 +6287,87 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="613"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="660"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>検索プロバイダーの取得に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="737"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>利用可能な検索プロバイダーはありません。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="771"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>検索をクリアしました</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="811"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1314"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>検索中</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1033"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部分一致</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1302"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>利用可能なすべての検索元で検索に失敗しました。もう一度お試しください。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1325"/>
         <source>%1 results in %2</source>
         <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%2 の検索結果 %1 件</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1327"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>一致する結果はありません</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1330"/>
         <source>%1 results. Some sources are unavailable.</source>
         <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 件の結果。一部の検索元は利用できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1333"/>
         <source>%1 results</source>
         <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 件の結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1507"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1510"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>過去7日間</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1513"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>過去30日間</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1517"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1521"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>昨年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1542"/>
         <source>%1 – %2</source>
         <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
 </context>
 <context>
@@ -6813,15 +6817,15 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>新しい場所を選択…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>Internal link copied</source>
         <translation>内部リンクをコピーしました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>内部リンクがクリップボードにコピーされました。</translation>
     </message>
@@ -7049,132 +7053,132 @@ Server replied with error: %2</source>
         <translation>&apos;#&apos;文字で始まるパスは、VFSモード(仮想ファイル)でサポートされていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>リクエストを処理できませんでした。後ほど再度同期をお試しください。この現象が継続する場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>続行するにはサインインが必要です。認証情報に問題がある場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>このリソースへのアクセス権限がありません。誤りと思われる場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>お探しのページが見つかりませんでした。移動または削除された可能性があります。サポートが必要な場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>認証が必要なプロキシを使用しているようです。プロキシ設定と認証情報を確認してください。サポートが必要な場合は、サーバー管理者に連絡してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>リクエストが通常より時間がかかっています。再度同期を試みてください。それでも解決しない場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>作業中にサーバーのファイルが変更されました。再度同期を試みてください。問題が解決しない場合はサーバー管理者に連絡してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>このフォルダーまたはファイルは利用できなくなりました。サポートが必要な場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>必要な条件が満たされていないため、リクエストを完了できませんでした。後ほど再度同期をお試しください。サポートが必要な場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>ファイルが大きすぎてアップロードできません。より小さなファイルを選択するか、サーバー管理者に連絡して支援を求める必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>リクエストに使用されたアドレスが長すぎてサーバーが処理できません。送信する情報を短縮するか、サーバー管理者に連絡して支援を求めてください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>このファイル形式はサポートされていません。サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>サーバーは、一部の情報が不正確または不完全であったため、リクエストを処理できませんでした。後ほど再度同期を試みるか、サーバー管理者に連絡して支援を受けてください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>アクセスしようとしているリソースは現在ロックされており、変更できません。後ほど変更を試みるか、サーバー管理者に連絡して支援を求めてください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>このリクエストは、必要な条件が不足しているため完了できませんでした。後ほど再度お試しいただくか、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>リクエストが多すぎます。しばらく待ってから再度お試しください。このメッセージが繰り返し表示される場合は、サーバー管理者に連絡してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>サーバーで問題が発生しました。しばらくしてから再度同期を試みてください。問題が解決しない場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>サーバーはリクエストメソッドを認識しません。サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>サーバーへの接続に問題が発生しています。しばらくしてから再度お試しください。問題が解決しない場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>サーバーは現在混雑しています。しばらくしてから再度接続を試みるか、緊急の場合はサーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>サーバーへの接続に時間がかかりすぎているため、後ほど再度お試しください。サポートが必要な場合は、サーバー管理者にお問い合わせください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>サーバーは使用されている接続のバージョンをサポートしていません。サーバー管理者に連絡してサポートを受けてください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>サーバーにはリクエストを完了するのに十分な空き容量がありません。サーバー管理者に連絡し、ユーザーがどの程度のクォータを持っているか確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>ネットワークに追加の認証が必要です。接続を確認してください。問題が解決しない場合は、サーバー管理者に連絡してサポートを受けてください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>このリソースへのアクセス権限がありません。誤りと思われる場合は、サーバー管理者に連絡して支援を依頼してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>予期しないエラーが発生しました。再度同期を試みるか、問題が解決しない場合はサーバー管理者にお問い合わせください。</translation>
     </message>
@@ -7184,17 +7188,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 の権限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>受信者の権限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>
@@ -7202,12 +7206,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>受信者を検索</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダーでは共有は利用できません</translation>
     </message>
 </context>
 <context>
@@ -7278,33 +7282,33 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 フィルターを削除</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>再試行</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>検索結果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>利用できない検索元があります</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>連携サービスの表示を減らす</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>連携サービスをさらに表示</translation>
     </message>
 </context>
 <context>
@@ -7335,7 +7339,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>この共有で利用できる詳細設定はありません。</translation>
     </message>
 </context>
 <context>
@@ -7351,37 +7355,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>この共有への変更は直ちに適用されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>共有を削除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>閉じる</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>キャンセルしています…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>保存しています…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>保存</translation>
     </message>
 </context>
 <context>
@@ -7470,52 +7474,52 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 が追加</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>受信者の権限を設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>受信者のリンクをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>受信者のリンクを再生成</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>受信者のリンクを生成</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>受信者を削除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>閲覧可能</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>編集可能</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>カスタム権限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>共有設定</translation>
     </message>
 </context>
 <context>
@@ -7524,51 +7528,51 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
         <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; を共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
         <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
-        <translation type="unfinished"/>
+        <translation>ファイル</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
         <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共有設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
         <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 と共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
-        <translation type="unfinished"/>
+        <translation>新しい共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>共有の詳細に戻る</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>共有一覧に戻る</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>共有設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>共有の詳細設定</translation>
     </message>
 </context>
 <context>
@@ -7576,28 +7580,28 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>共有を作成しています…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>内部リンク</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>すでにアクセス権を持つユーザー向け</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>内部リンクをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>公開リンクを作成</translation>
     </message>
 </context>
 <context>
@@ -7606,44 +7610,44 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共有リンク</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
         <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
-        <translation type="unfinished"/>
+        <translation>未完了の共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>有効になっていません — 選択して完了する</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 人の受信者</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>公開リンクをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>共有を設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>共有を削除</translation>
     </message>
 </context>
 <context>
@@ -7712,12 +7716,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>仮想ファイル(ベータ版)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
         <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
-        <translation type="unfinished"/>
+        <translation>必要な時にファイルをダウンロードします。この機能は早期プレビュー段階です。テスト目的でのみ推奨されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="93"/>
@@ -7851,38 +7855,38 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>期間の指定</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>適用</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>開始日(YYYY-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>終了日(YYYY-MM-DD)</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>開始日が終了日より前になるよう、有効な日付を入力してください。</translation>
     </message>
 </context>
 <context>
@@ -7890,12 +7894,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>戻る</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>すべての検索結果に戻る</translation>
     </message>
 </context>
 <context>
@@ -7904,79 +7908,79 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
         <extracomment>Search filter for selecting a result provider type.</extracomment>
-        <translation type="unfinished"/>
+        <translation>種類</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>種類で絞り込む</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
         <extracomment>Search filter for restricting results by date.</extracomment>
-        <translation type="unfinished"/>
+        <translation>日付</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>日付で絞り込む</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>日付での絞り込みに対応している検索元がありません</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>過去7日間</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>過去30日間</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>昨年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>期間を指定…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>日付をクリア</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
         <extracomment>Search filter for restricting results to a person.</extracomment>
-        <translation type="unfinished"/>
+        <translation>ユーザー</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーで絞り込む</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーでの絞り込みに対応している検索元がありません</translation>
     </message>
 </context>
 <context>
@@ -7989,12 +7993,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>検索をクリア</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>有効なフィルターは保持されます</translation>
     </message>
 </context>
 <context>
@@ -8002,12 +8006,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーを検索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>再試行</translation>
     </message>
 </context>
 <context>
@@ -8024,27 +8028,27 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
         <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 のその他の結果 →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部分一致</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="194"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>さらに結果を読み込み中…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>結果の読み込みを再試行</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>結果をさらに読み込む</translation>
     </message>
 </context>
 <context>

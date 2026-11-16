@@ -147,6 +147,13 @@ public extension ItemMetadata {
         name = fileName
     }
 
+    /// Keep the permissions the parent's listing stored for a folder other than the root, because a mount point's own read returns its storage's permissions instead.
+    mutating func keepPermissionsListedByParent(from existing: any ItemMetadata) {
+        guard directory, ocId != NSFileProviderItemIdentifier.rootContainer.rawValue else { return }
+
+        permissions = existing.permissions
+    }
+
     mutating func apply(account: Account) {
         self.account = account.ncKitAccount
         user = account.username
@@ -164,6 +171,7 @@ public extension ItemMetadata {
             && comparingMetadata.hasPreview == hasPreview
             && comparingMetadata.note == note
             && comparingMetadata.lock == lock
+            && comparingMetadata.lockTimeOut == lockTimeOut
             && comparingMetadata.sharePermissionsCollaborationServices
             == sharePermissionsCollaborationServices
             && comparingMetadata.favorite == favorite
@@ -188,6 +196,11 @@ public extension ItemMetadata {
                 .init(name: "y", value: "\(size.height)"),
                 .init(name: "a", value: "true")
             ])
+    }
+
+    /// Whether the row is a parked directory or below one, so its path exists only in the database.
+    var isAtHoldingPath: Bool {
+        remotePath().contains(FilesDatabaseManager.holdingNameSeparator)
     }
 
     func remotePath() -> String {

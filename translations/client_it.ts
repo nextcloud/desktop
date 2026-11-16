@@ -443,38 +443,38 @@
 <context>
     <name>ClientCertificateDialog</name>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="33"/>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="36"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="35"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="38"/>
         <source>Client certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="44"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="46"/>
         <source>Select a PKCS#12 certificate file and enter its password.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="57"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="59"/>
         <source>Certificate file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="63"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="65"/>
         <source>Choose</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="70"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="72"/>
         <source>Certificate password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="94"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="96"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="104"/>
+        <location filename="../src/gui/wizard/qml/ClientCertificateDialog.qml" line="106"/>
         <source>Connect</source>
         <translation type="unfinished"/>
     </message>
@@ -891,17 +891,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="344"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>The server took too long to respond. Check your connection and try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>Il server ha impiegato troppo tempo per rispondere. Controlla la connessione e riprova a sincronizzare. Se il problema persiste, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="350"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="352"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Si è verificato un errore imprevisto. Riprova a sincronizzare o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="591"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="593"/>
         <source>The server enforces strict transport security and does not accept untrusted certificates.</source>
         <translation>Il server applica una rigorosa sicurezza di trasporto e non accetta certificati non attendibili.</translation>
     </message>
@@ -909,22 +909,22 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="239"/>
+        <location filename="../src/libsync/account.cpp" line="240"/>
         <source>Public Share Link</source>
         <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1092"/>
+        <location filename="../src/libsync/account.cpp" line="1107"/>
         <source>File %1 is already locked by %2.</source>
         <translation>File %1 è già bloccato da %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1094"/>
+        <location filename="../src/libsync/account.cpp" line="1109"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Operazione di blocco di %1 fallita con errore %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="1096"/>
+        <location filename="../src/libsync/account.cpp" line="1111"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Operazione di sblocco di %1 fallita con errore %2</translation>
     </message>
@@ -1678,104 +1678,108 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1290"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
         <source>Will require %1 of storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1470"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1480"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1497"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
         <source>Please choose a local sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
         <source>Please choose an empty local sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1567"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1581"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
         <source>Checking remote folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1627"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1636"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
         <source>Error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
         <source>Creating remote folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1660"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1662"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1664"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1711"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1723"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
         <source>Could not create the sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1829"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
         <source>Local Sync Folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2104"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
         <source>Select a certificate</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2106"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2114"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2129"/>
         <source>Could not access the selected certificate file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2150"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <source>The selected certificate file is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"/>
     </message>
@@ -3811,117 +3815,117 @@ Per utenti avanzati: questo problema potrebbe essere correlato a più file di da
 <context>
     <name>OCC::Gui::Sharing::SharingController</name>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="176"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="172"/>
         <source>The server did not generate a valid public-link identifier.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="182"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="185"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="178"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="181"/>
         <source>Could not create the public link.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="223"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="217"/>
         <source>Could not retrieve the internal link.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="270"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="263"/>
         <source>The server returned an invalid share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="279"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="282"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="272"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="275"/>
         <source>Could not create the share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="327"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="331"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="320"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="324"/>
         <source>Could not delete the share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="360"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="363"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="770"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="773"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="353"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="356"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="763"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="766"/>
         <source>Could not add the recipient.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="391"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="394"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="384"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="387"/>
         <source>Could not remove the recipient.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="419"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="412"/>
         <source>The server did not generate a valid sharing link.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="430"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="433"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="423"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="426"/>
         <source>Could not update the sharing link.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="438"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="441"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="431"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="434"/>
         <source>Could not generate a sharing link.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="471"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="479"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="578"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="586"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="464"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="472"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="571"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="579"/>
         <source>Could not update the permissions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="535"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="543"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="528"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="536"/>
         <source>Could not update the recipient permissions.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="619"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="623"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="612"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="616"/>
         <source>Could not update the sharing setting.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="673"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="666"/>
         <source>The server did not activate the share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="676"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="679"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="669"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="672"/>
         <source>Could not send the share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="720"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="730"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="713"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="723"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="750"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="764"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="781"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="774"/>
         <source>The newly created share is no longer available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="742"/>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="745"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="735"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="738"/>
         <source>Could not attach the item to the share.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="841"/>
+        <location filename="../src/gui/sharing/sharingcontroller.cpp" line="834"/>
         <source>Could not save all changes to the share.</source>
         <translation type="unfinished"/>
     </message>
@@ -4877,7 +4881,7 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2240"/>
+        <location filename="../src/libsync/discovery.cpp" line="2244"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Spostato su una destinazione non valida, ripristino</translation>
     </message>
@@ -4897,22 +4901,22 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
         <translation>Non consentito perché non sei autorizzato ad aggiungere sottocartelle a quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2202"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non ti è consentito perché non hai i permessi per aggiungere file in quella cartella </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2217"/>
+        <location filename="../src/libsync/discovery.cpp" line="2221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non ti è permesso caricare questo file perché hai l&apos;accesso in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2254"/>
+        <location filename="../src/libsync/discovery.cpp" line="2258"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2427"/>
+        <location filename="../src/libsync/discovery.cpp" line="2431"/>
         <source>Error while reading the database</source>
         <translation>Errore durante la lettura del database</translation>
     </message>
@@ -5512,48 +5516,48 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
 <context>
     <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="568"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="559"/>
         <source>%1 days</source>
         <translation>%1 giorni</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="570"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="561"/>
         <source>%1 day</source>
         <translation>%1 giorno</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="571"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="562"/>
         <source>Today</source>
         <translation>Oggi</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="746"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="737"/>
         <source>Secure file drop link</source>
         <translation>Collegamento per il file drop sicuro</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="740"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
         <translation>Collegamento di condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="758"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="749"/>
         <source>Link share</source>
         <translation>Condivisione del collegamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="760"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="751"/>
         <source>Internal link</source>
         <translation>Collegamento ad uso interno</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="762"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="753"/>
         <source>Secure file drop</source>
         <translation>File drop sicuro</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/sharemodel.cpp" line="951"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="942"/>
         <source>Could not find local folder for %1</source>
         <translation>Impossibile trovare la cartella locale per %1</translation>
     </message>
@@ -5591,23 +5595,23 @@ Nota che l&apos;utilizzo di qualsiasi opzione della riga di comando di registraz
         <translation>Condivisione da menu contestuale</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1232"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
         <source>I shared something with you</source>
         <translation>Ho condiviso qualcosa con te</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1245"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1285"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
         <source>Share options</source>
         <translation>Opzioni di condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1251"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
         <source>Send private link by email …</source>
         <translation>Invia collegamento privato tramite email…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1250"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
         <source>Copy private link to clipboard</source>
         <translation>Copia collegamento privato negli appunti</translation>
     </message>
@@ -5646,102 +5650,102 @@ Il server ha risposto con errore: %2</translation>
         <translation>La seguente cartella è stata crittografata correttamente: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1311"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
         <source>File actions</source>
         <translation>Azioni sui file</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1497"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1277"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
         <source>Leave this share</source>
         <translation>Abbandona questa condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this file is not allowed</source>
         <translation>La ri-condivisione di questo file non è consentita</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
         <source>Resharing this folder is not allowed</source>
         <translation>La ri-condivisione di questa cartella non è consentita</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1344"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
         <source>Encrypt</source>
         <translation>Cifra</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1355"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
         <source>Lock file</source>
         <translation>Blocca file</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
         <source>Unlock file</source>
         <translation>Sblocca file</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1374"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
         <source>Locked by %1</source>
         <translation>Bloccato da %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Scade in %1 minuto</numerusform><numerusform>Scade in %1 minuti</numerusform><numerusform>Scade in %1 minuti</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1387"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1534"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
         <source>Resolve conflict …</source>
         <translation>Risolvi conflitto…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1538"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
         <source>Move and rename …</source>
         <translation>Sposta e rinomina…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
         <source>Move, rename and upload …</source>
         <translation>Sposta, rinomina e carica…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1543"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
         <source>Delete local changes</source>
         <translation>Elimina modifiche locali</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1549"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
         <source>Move and upload …</source>
         <translation>Sposta e carica…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1550"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
         <source>Delete</source>
         <translation>Elimina</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1289"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
         <source>Copy internal link</source>
         <translation>Copia collegamento interno</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1505"/>
         <source>Open in browser</source>
         <translation>Apri nel browser</translation>
     </message>
@@ -6149,53 +6153,53 @@ Il server ha risposto con errore: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="574"/>
+        <location filename="../src/gui/systray.cpp" line="571"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation>Aggiungi account</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="573"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation>Apri %1 Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <source>Pause sync</source>
         <translation>Sospendi la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="580"/>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="577"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <source>Resume sync</source>
         <translation>Riprendi la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="581"/>
+        <location filename="../src/gui/systray.cpp" line="578"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="582"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
         <source>Help</source>
         <translation>Assistenza</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="583"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
         <source>Exit %1</source>
         <translation>Esci da %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="589"/>
+        <location filename="../src/gui/systray.cpp" line="586"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation>Sospendi la sincronizzazione per tutto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="595"/>
+        <location filename="../src/gui/systray.cpp" line="592"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation>Riprendi la sincronizzazione per tutto</translation>
@@ -6809,12 +6813,12 @@ Il server ha risposto con errore: %2</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>Internal link copied</source>
         <translation>Link interno copiato</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="934"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation>Il link interno è stato copiato negli appunti.</translation>
     </message>
@@ -7042,132 +7046,132 @@ Il server ha risposto con errore: %2</translation>
         <translation>I percorsi che iniziano con il carattere &apos;#&apos; non sono supportati in modalità VFS.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="476"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="478"/>
         <source>We couldn’t process your request. Please try syncing again later. If this keeps happening, contact your server administrator for help.</source>
         <translation>Non siamo riusciti a elaborare la tua richiesta. Riprova a sincronizzare più tardi. Se il problema persiste, contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="479"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="481"/>
         <source>You need to sign in to continue. If you have trouble with your credentials, please reach out to your server administrator.</source>
         <translation>Devi effettuare l&apos;accesso per continuare. Se riscontri problemi con le tue credenziali, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="482"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="484"/>
         <source>You don’t have access to this resource. If you think this is a mistake, please contact your server administrator.</source>
         <translation>Non hai accesso a questa risorsa. Se ritieni che si tratti di un errore, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="485"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="487"/>
         <source>We couldn’t find what you were looking for. It might have been moved or deleted. If you need help, contact your server administrator.</source>
         <translation>Non siamo riusciti a trovare quello che cercavi. Potrebbe essere stato spostato o eliminato. Se hai bisogno di aiuto, contatta l&apos;amministratore del tuo server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="488"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="490"/>
         <source>It seems you are using a proxy that required authentication. Please check your proxy settings and credentials. If you need help, contact your server administrator.</source>
         <translation>Sembra che tu stia utilizzando un proxy che richiede l&apos;autenticazione. Controlla le impostazioni e le credenziali del proxy. Se hai bisogno di aiuto, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="491"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="493"/>
         <source>The request is taking longer than usual. Please try syncing again. If it still doesn’t work, reach out to your server administrator.</source>
         <translation>La richiesta sta richiedendo più tempo del solito. Riprova a sincronizzare. Se il problema persiste, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="494"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="496"/>
         <source>Server files changed while you were working. Please try syncing again. Contact your server administrator if the issue persists.</source>
         <translation>I file del server sono cambiati durante il lavoro. Riprova a sincronizzare. Se il problema persiste, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="497"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="499"/>
         <source>This folder or file isn’t available anymore. If you need assistance, please contact your server administrator.</source>
         <translation>Questa cartella o questo file non è più disponibile. Se hai bisogno di assistenza, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="500"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="502"/>
         <source>The request could not be completed because some required conditions were not met. Please try syncing again later. If you need assistance, please contact your server administrator.</source>
         <translation>La richiesta non è stata completata perché alcune condizioni obbligatorie non sono state soddisfatte. Riprova a sincronizzare più tardi. Per assistenza, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="503"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="505"/>
         <source>The file is too big to upload. You might need to choose a smaller file or contact your server administrator for assistance.</source>
         <translation>Il file è troppo grande per essere caricato. Potrebbe essere necessario scegliere un file più piccolo o contattare l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="506"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="508"/>
         <source>The address used to make the request is too long for the server to handle. Please try shortening the information you’re sending or contact your server administrator for assistance.</source>
         <translation>L&apos;indirizzo utilizzato per effettuare la richiesta è troppo lungo per essere gestito dal server. Prova ad abbreviare le informazioni che stai inviando o contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="509"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="511"/>
         <source>This file type isn’t supported. Please contact your server administrator for assistance.</source>
         <translation>Questo tipo di file non è supportato. Contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="512"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="514"/>
         <source>The server couldn’t process your request because some information was incorrect or incomplete. Please try syncing again later, or contact your server administrator for assistance.</source>
         <translation>Il server non è riuscito a elaborare la tua richiesta perché alcune informazioni sono errate o incomplete. Riprova a sincronizzare più tardi o contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="515"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="517"/>
         <source>The resource you are trying to access is currently locked and cannot be modified. Please try changing it later, or contact your server administrator for assistance.</source>
         <translation>La risorsa a cui stai tentando di accedere è attualmente bloccata e non può essere modificata. Prova a modificarla più tardi o contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="518"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="520"/>
         <source>This request could not be completed because it is missing some required conditions. Please try again later, or contact your server administrator for help.</source>
         <translation>Impossibile completare la richiesta perché mancano alcune condizioni obbligatorie. Riprova più tardi o contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="521"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="523"/>
         <source>You made too many requests. Please wait and try again. If you keep seeing this, your server administrator can help.</source>
         <translation>Hai effettuato troppe richieste. Attendi e riprova. Se continui a visualizzare questo messaggio, l&apos;amministratore del server può aiutarti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="524"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="526"/>
         <source>Something went wrong on the server. Please try syncing again later, or contact your server administrator if the issue persists.</source>
         <translation>Si è verificato un problema sul server. Riprova a sincronizzare più tardi o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="527"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="529"/>
         <source>The server does not recognize the request method. Please contact your server administrator for help.</source>
         <translation>Il server non riconosce il metodo di richiesta. Contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="530"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="532"/>
         <source>We’re having trouble connecting to the server. Please try again soon. If the issue persists, your server administrator can help you.</source>
         <translation>Stiamo riscontrando problemi di connessione al server. Riprova più tardi. Se il problema persiste, l&apos;amministratore del server può aiutarti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="533"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="535"/>
         <source>The server is busy right now. Please try connecting again in a few minutes or contact your server administrator if it’s urgent.</source>
         <translation>Al momento il server è occupato. Riprova a connetterti tra qualche minuto o contatta l&apos;amministratore del server in caso di urgenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="536"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="538"/>
         <source>It’s taking too long to connect to the server. Please try again later. If you need help, contact your server administrator.</source>
         <translation>La connessione al server sta impiegando troppo tempo. Riprova più tardi. Se hai bisogno di aiuto, contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="539"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="541"/>
         <source>The server does not support the version of the connection being used. Contact your server administrator for help.</source>
         <translation>Il server non supporta la versione della connessione utilizzata. Contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="542"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="544"/>
         <source>The server does not have enough space to complete your request. Please check how much quota your user has by contacting your server administrator.</source>
         <translation>Il server non ha spazio sufficiente per completare la tua richiesta. Verifica la quota disponibile per il tuo utente contattando l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="545"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="547"/>
         <source>Your network needs extra authentication. Please check your connection. Contact your server administrator for help if the issue persists.</source>
         <translation>La tua rete necessita di un&apos;autenticazione aggiuntiva. Controlla la tua connessione. Se il problema persiste, contatta l&apos;amministratore del server per assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="548"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="550"/>
         <source>You don’t have permission to access this resource. If you believe this is an error, contact your server administrator to ask for assistance.</source>
         <translation>Non hai l&apos;autorizzazione per accedere a questa risorsa. Se ritieni che si tratti di un errore, contatta l&apos;amministratore del server per chiedere assistenza.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="551"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="553"/>
         <source>An unexpected error occurred. Please try syncing again or contact your server administrator if the issue continues.</source>
         <translation>Si è verificato un errore imprevisto. Riprova a sincronizzare o contatta l&apos;amministratore del server se il problema persiste.</translation>
     </message>

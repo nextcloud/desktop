@@ -25,30 +25,21 @@
 /// - The observer covers eviction (a file going dataless) and out-of-band
 ///   materialization it discovers itself.
 ///
+/// Batched by ``AncestorRefreshCoalescer``, so callers only take a short lock.
+///
 func refreshRemoveDownloadVisibility(
     forAncestorsOfFileOcIds ocIds: Set<String>,
+    domain: NSFileProviderDomainIdentifier,
     manager: NSFileProviderManager,
     dbManager: FilesDatabaseManager,
     logger: FileProviderLogger
 ) {
     guard !ocIds.isEmpty else { return }
 
-    // Everything — the ancestor walk (a synchronous database read) and the nudges —
-    // runs inside the Task so callers on latency-sensitive paths (the
-    // materialized-set completion handler, `fetchContents`) are never blocked.
-    Task {
-        let ancestors = dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ocIds)
-
-        guard !ancestors.isEmpty else { return }
-
-        logger.debug("Refreshing \(ancestors.count) ancestor container(s) to update Remove download visibility after materialization change.")
-
-        for ancestor in ancestors {
-            do {
-                try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: ancestor)
-            } catch {
-                logger.error("Could not nudge ancestor container to refresh Remove download visibility.", [.item: ancestor, .error: error.localizedDescription])
-            }
-        }
-    }
+    AncestorRefreshCoalescer.shared(for: domain).enqueue(
+        ocIds: ocIds,
+        ancestors: { dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: $0) },
+        nudge: { try await manager.requestModification(of: [.lastUsedDate], forItemWithIdentifier: $0) },
+        log: logger.log
+    )
 }

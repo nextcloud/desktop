@@ -365,9 +365,10 @@ bool Capabilities::chunkingParallelUploadDisabled() const
     return _capabilities["dav"].toMap()["chunkingParallelUploadDisabled"].toBool();
 }
 
-bool Capabilities::privateLinkPropertyAvailable() const
+QString Capabilities::globalScaleToken() const
 {
-    return _capabilities["files"].toMap()["privateLinks"].toBool();
+    const auto token = _capabilities.value(u"globalscale"_s).toMap().value(u"token"_s);
+    return token.metaType().id() == QMetaType::QString ? token.toString() : QString{};
 }
 
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const

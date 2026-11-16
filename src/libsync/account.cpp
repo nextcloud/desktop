@@ -54,6 +54,7 @@
 #include "creds/abstractcredentials.h"
 
 using namespace QKeychain;
+using namespace Qt::StringLiterals;
 
 namespace {
 constexpr int pushNotificationsReconnectInterval = 1000 * 60 * 2;
@@ -405,10 +406,24 @@ QUrl Account::davUrl() const
     return Utility::concatUrlPath(url(), davPath());
 }
 
-QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
+QUrl Account::internalLinkUrl(const QByteArray &numericFileId) const
 {
-    return Utility::concatUrlPath(_userVisibleUrl,
-        QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
+    if (numericFileId.isEmpty()) {
+        return {};
+    }
+
+    const auto token = _capabilities.globalScaleToken();
+    const auto path = token.isEmpty() ? u"/index.php/f/"_s : u"/index.php/gf/"_s + QString::fromLatin1(QUrl::toPercentEncoding(token)) + u'/';
+    auto link = _userVisibleUrl;
+    auto basePath = link.path(QUrl::FullyEncoded);
+    if (basePath.endsWith(u'/')) {
+        basePath.chop(1);
+    }
+    // Keep escaped separators inside the token and file ID as path-component data.
+    link.setPath(basePath + path + QString::fromLatin1(QUrl::toPercentEncoding(QString::fromUtf8(numericFileId))), QUrl::TolerantMode);
+    link.setQuery(QString{});
+    link.setFragment(QString{});
+    return link;
 }
 
 /**

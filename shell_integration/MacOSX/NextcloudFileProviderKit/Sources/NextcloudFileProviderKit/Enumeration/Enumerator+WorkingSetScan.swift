@@ -5,6 +5,11 @@
 import Foundation
 
 ///
+/// How many working-set scan reads, and separately how many stored-path checks of one listing, may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share.
+///
+let workingSetScanConcurrency = 6
+
+///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
 /// this is the path that drives remote changes into the framework for items the system tracks
 /// (visited folders and downloaded files) and the subtrees they reach.
@@ -61,8 +66,9 @@ extension Enumerator {
                 // preserves this across batches; without it macOS may create a rename-destination folder
                 // to house a child before it processes the parent rename, briefly leaving both the old
                 // and new folder names on disk.
+                // Paths of equal length are ordered by path, so the order does not depend on which scan read finished first.
                 let sortedUpdated = changes.createdAndUpdated
-                    .sorted { $0.remotePath().count < $1.remotePath().count }
+                    .sorted { ($0.remotePath().count, $0.remotePath()) < ($1.remotePath().count, $1.remotePath()) }
 
                 let finalAnchor = hadFailure ? anchor : currentAnchor
                 changeBuffer.prime(
@@ -125,7 +131,7 @@ extension Enumerator {
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
         let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
         let materialisedItems = (storedMaterialisedItems ?? [])
-            .filter { !$0.deleted && !$0.isTrashed }
+            .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var accumulatedCreations = [SendableItemMetadata]()
@@ -137,130 +143,153 @@ extension Enumerator {
         // advancing the working-set sync point past changes this pass could not discover.
         var hadReadFailure = storedMaterialisedItems == nil
         var failedItemIds = Set<String>()
+        var notFoundOcIds = Set<String>()
+
+        // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
+        func remotePathDepth(_ metadata: SendableItemMetadata) -> Int {
+            metadata.remotePath().count(where: { $0 == "/" })
+        }
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
-        // scanning is appended ONLY when its subtree actually contains a materialised item, so its
-        // changed descendants are visited too — otherwise a depth-1 read of a visited folder surfaces
-        // the changed subdirectory but never the changed items inside it. A changed subdirectory whose
-        // subtree holds nothing materialised is NOT enqueued: nothing inside it is part of the working
-        // set, so there is nothing to keep in sync, and its contents are read lazily when the user
-        // navigates into it. Without that bound a single working-set signal on a sparse / freshly
+        // scanning is appended ONLY when its subtree actually contains a materialised item or the
+        // directory is pinned, so its changed descendants are visited too — otherwise a depth-1 read of
+        // a visited folder surfaces the changed subdirectory but never the changed items inside it. A
+        // changed, unpinned subdirectory whose subtree holds nothing materialised is NOT enqueued:
+        // nothing inside it is part of the working set, so there is nothing to keep in sync, and its
+        // contents are read lazily when the user navigates into it. Without that bound a single working-set signal on a sparse / freshly
         // activated domain triggers a full recursive PROPFIND of every changed branch down to its
         // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
         // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
-        var scanQueue = materialisedItems
+        var scanQueue = Dictionary(grouping: materialisedItems, by: remotePathDepth)
         var enqueuedDirectoryIds = Set(materialisedItems.filter(\.directory).map(\.ocId))
-        var scanIndex = 0
 
-        while scanIndex < scanQueue.count {
-            let itemToScan = scanQueue[scanIndex]
-            scanIndex += 1
+        // Items a successful read listed, which exist on the server whatever their own read at an older path returned.
+        var listedOcIds = Set<String>()
 
-            guard !scannedItemIds.contains(itemToScan.ocId) else { continue }
-            guard isLockFileName(itemToScan.fileName) == false else {
-                // Skip server requests for locally created lock files.
-                // They are not synchronised to the server for real.
-                // Thus they can be expected not to be found there.
-                // That would also cause their local deletion due to synchronisation logic.
-                logger.debug("Skipping materialised item in working set check because the name hints a lock file.", [.item: itemToScan, .name: itemToScan.name])
-                continue
+        while let waveDepth = scanQueue.keys.min() {
+            let wave = scanQueue.removeValue(forKey: waveDepth) ?? []
+
+            let toRead = wave.filter { candidate in
+                guard !scannedItemIds.contains(candidate.ocId) else { return false }
+                guard isLockFileName(candidate.fileName) == false else {
+                    // Skip server requests for locally created lock files.
+                    // They are not synchronised to the server for real.
+                    // Thus they can be expected not to be found there.
+                    // That would also cause their local deletion due to synchronisation logic.
+                    logger.debug("Skipping materialised item in working set check because the name hints a lock file.", [.item: candidate, .name: candidate.name])
+                    return false
+                }
+                return true
             }
 
-            let itemRemoteUrl = itemToScan.remotePath()
+            guard !toRead.isEmpty else { continue }
 
-            let readResult = await Enumerator.readServerUrl(itemRemoteUrl, account: account, remoteInterface: remoteInterface, dbManager: dbManager, depth: itemToScan.directory ? .targetAndDirectChildren : .target, log: logger.log)
-            let changes = readResult.changes ?? ChangeSet()
+            await concurrentlyReadForWorkingSetScan(toRead) { itemToScan, readResult in
+                // A sibling merged earlier in this wave covers this item when the server moved it into that sibling or onto its path.
+                guard !scannedItemIds.contains(itemToScan.ocId) else { return }
 
-            if readResult.error?.errorCode == 404 {
-                accumulatedDeletions.append(itemToScan)
-                scannedItemIds.insert(itemToScan.ocId)
-                // Children are not marked deleted here — they may have moved with their parent.
-                logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
-            } else if let readError = readResult.error, readError != .success {
-                // A single unreadable folder must NOT abort discovery for the rest of the working set.
-                // The queue is sorted parent-first, so the account root and top-level folders (e.g. a
-                // very large "Talk" whose depth-1 PROPFIND times out) are scanned first; a `break` here
-                // meant one early failure silently stalled ALL remote-change propagation for every other
-                // folder — the "files uploaded on the web never appear" bug. Skip only the failing item
-                // (it is retried on the next scan) and keep scanning the remainder.
-                // See nextcloud/desktop#10442.
-                logger.error(
-                    "Read of materialised item failed during working-set scan; skipping it and continuing with the rest of the working set.",
-                    [.error: readError, .url: itemRemoteUrl]
-                )
-                hadReadFailure = true
-                failedItemIds.insert(itemToScan.ocId)
-                scannedItemIds.insert(itemToScan.ocId)
-                continue
-            } else {
-                accumulatedDeletions += changes.deleted
-                accumulatedUpdates += changes.updated
-                accumulatedCreations += changes.created
+                let itemRemoteUrl = itemToScan.remotePath()
+                let changes = readResult.changes ?? ChangeSet()
 
-                // Reading a directory's children does not by itself require scanning each child's own
-                // children. Track which children this read has already accounted for.
-                var childrenCoveredByThisRead = Set<String>()
+                if readResult.error?.errorCode == 404 {
+                    accumulatedDeletions.append(itemToScan)
+                    notFoundOcIds.insert(itemToScan.ocId)
+                    scannedItemIds.insert(itemToScan.ocId)
+                    // Children are not marked deleted here — they may have moved with their parent.
+                    logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
+                } else if let readError = readResult.error, readError != .success {
+                    // A single unreadable folder must NOT abort discovery for the rest of the working set.
+                    // The queue is sorted parent-first, so the account root and top-level folders (e.g. a
+                    // very large "Talk" whose depth-1 PROPFIND times out) are scanned first; a `break` here
+                    // meant one early failure silently stalled ALL remote-change propagation for every other
+                    // folder — the "files uploaded on the web never appear" bug. Skip only the failing item
+                    // (it is retried on the next scan) and keep scanning the remainder.
+                    // See nextcloud/desktop#10442.
+                    logger.error(
+                        "Read of materialised item failed during working-set scan; skipping it and continuing with the rest of the working set.",
+                        [.error: readError, .url: itemRemoteUrl]
+                    )
+                    hadReadFailure = true
+                    failedItemIds.insert(itemToScan.ocId)
+                    scannedItemIds.insert(itemToScan.ocId)
+                    return
+                } else {
+                    accumulatedDeletions += changes.deleted
+                    accumulatedUpdates += changes.updated
+                    accumulatedCreations += changes.created
 
-                if let readItems = readResult.metadatas, let readTarget = readItems.first {
-                    scannedItemIds.insert(readTarget.ocId)
+                    // Reading a directory's children does not by itself require scanning each child's own
+                    // children. Track which children this read has already accounted for.
+                    var childrenCoveredByThisRead = Set<String>()
 
-                    if readItems.count > 1 {
-                        childrenCoveredByThisRead.formUnion(readItems[1...].filter { !$0.directory }.map(\.ocId))
-                    }
+                    if let readItems = readResult.metadatas, let readTarget = readItems.first {
+                        listedOcIds.formUnion(readItems.map(\.ocId))
+                        scannedItemIds.insert(readTarget.ocId)
 
-                    if readItems.count > 1 {
-                        let childDirectories = readItems[1...].filter(\.directory)
-                        let changedChildOcIds = Set(changes.updated.map(\.ocId))
-                            .union(changes.created.map(\.ocId))
+                        if readItems.count > 1 {
+                            childrenCoveredByThisRead.formUnion(readItems[1...].filter { !$0.directory }.map(\.ocId))
+                        }
 
-                        for childDirectory in childDirectories {
-                            // A changed child directory is scanned so its changed descendants are
-                            // discovered, even when the directory itself is not materialised — but
-                            // only when the working set actually tracks something inside it, i.e. it
-                            // has a materialised descendant (a visited subfolder or a downloaded file).
-                            // A changed-but-unmaterialised subtree is never crawled here: nothing in
-                            // it is cached locally, so its contents are read lazily on navigation
-                            // rather than walked now (which on a sparse domain would recurse into
-                            // entire never-visited subtrees). Its own change is still reported above
-                            // via `accumulatedUpdates` / `accumulatedCreations`.
-                            if changedChildOcIds.contains(childDirectory.ocId) {
-                                let childPath = childDirectory.remotePath()
-                                let childHasMaterialisedDescendant = materialisedItems.contains {
-                                    $0.ocId != childDirectory.ocId
-                                        && ($0.hasSameRemotePath(as: childPath)
-                                            || $0.isDescendant(of: childPath))
+                        if readItems.count > 1 {
+                            let childDirectories = readItems[1...].filter(\.directory)
+                            let changedChildOcIds = Set(changes.updated.map(\.ocId))
+                                .union(changes.created.map(\.ocId))
+
+                            for childDirectory in childDirectories {
+                                // A changed child directory is scanned so its changed descendants are
+                                // discovered, even when the directory itself is not materialised — but
+                                // only when the working set actually tracks something inside it, i.e. it
+                                // has a materialised descendant (a visited subfolder or a downloaded file),
+                                // or when it is pinned, because "Always keep downloaded" asks for the whole
+                                // subtree. Any other changed-but-unmaterialised subtree is never crawled
+                                // here: nothing in it is cached locally, so its contents are read lazily on
+                                // navigation rather than walked now (which on a sparse domain would recurse
+                                // into entire never-visited subtrees). Its own change is still reported
+                                // above via `accumulatedUpdates` / `accumulatedCreations`.
+                                if changedChildOcIds.contains(childDirectory.ocId) {
+                                    let childPath = childDirectory.remotePath()
+                                    let childHasMaterialisedDescendant = materialisedItems.contains {
+                                        $0.ocId != childDirectory.ocId
+                                            && ($0.hasSameRemotePath(as: childPath)
+                                                || $0.isDescendant(of: childPath))
+                                    }
+                                    // The pin is read from the stored row because the read applies the parent's pin to its own copy.
+                                    let childIsPinned = dbManager
+                                        .itemMetadata(ocId: childDirectory.ocId)?
+                                        .keepDownloaded == true
+
+                                    if childHasMaterialisedDescendant || childIsPinned,
+                                       enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
+                                    {
+                                        scanQueue[remotePathDepth(childDirectory), default: []].append(childDirectory)
+                                    }
+                                    continue
                                 }
-                                if childHasMaterialisedDescendant,
-                                   enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
-                                {
-                                    scanQueue.append(childDirectory)
+
+                                // Only skip unchanged child directories with no materialised descendants.
+                                // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
+                                guard let localItem = materialisedItems.first(
+                                    where: { $0.ocId == childDirectory.ocId }
+                                ), localItem.isInSameDatabaseStoreableRemoteState(childDirectory) else {
+                                    continue
                                 }
-                                continue
-                            }
 
-                            // Only skip unchanged child directories with no materialised descendants.
-                            // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
-                            guard let localItem = materialisedItems.first(
-                                where: { $0.ocId == childDirectory.ocId }
-                            ), localItem.isInSameDatabaseStoreableRemoteState(childDirectory) else {
-                                continue
-                            }
+                                let hasMaterialisedDescendants = materialisedItems.contains {
+                                    $0.ocId != localItem.ocId
+                                        && $0.isDescendant(of: localItem.remotePath())
+                                }
 
-                            let hasMaterialisedDescendants = materialisedItems.contains {
-                                $0.ocId != localItem.ocId
-                                    && $0.isDescendant(of: localItem.remotePath())
-                            }
-
-                            if !hasMaterialisedDescendants {
-                                childrenCoveredByThisRead.insert(childDirectory.ocId)
+                                if !hasMaterialisedDescendants {
+                                    childrenCoveredByThisRead.insert(childDirectory.ocId)
+                                }
                             }
                         }
+
+                        childrenCoveredByThisRead.formUnion(changes.deleted.map(\.ocId))
                     }
 
-                    childrenCoveredByThisRead.formUnion(changes.deleted.map(\.ocId))
+                    scannedItemIds.formUnion(childrenCoveredByThisRead)
                 }
-
-                scannedItemIds.formUnion(childrenCoveredByThisRead)
             }
         }
 
@@ -268,26 +297,68 @@ extension Enumerator {
         // should not be marked deleted at the old location.
         let survivingOcIds = Set(accumulatedUpdates.map(\.ocId))
             .union(accumulatedCreations.map(\.ocId))
+            .union(listedOcIds)
 
         accumulatedDeletions.removeAll { survivingOcIds.contains($0.ocId) }
 
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
-            if deletedMetadata.status >= Status.inUpload.rawValue {
-                logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
-                continue
+            // Check and write in one transaction, so a move that commits in between is not overwritten.
+            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
+                let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
+
+                if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
+                    logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                // A move that reached the database during the scan makes a 404 about the old path, not the item.
+                if notFoundOcIds.contains(deletedMetadata.ocId), let current, !current.hasSameRemotePath(as: deletedMetadata.remotePath()) {
+                    logger.debug("Ignoring deletion of an item that has since moved.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                var deleteMarked = deletedMetadata
+                deleteMarked.deleted = true
+                deleteMarked.syncTime = Date()
+                try dbManager.insertItemMetadata(deleteMarked, in: db)
+                return deleteMarked
+            } ?? nil
+
+            if let deleteMarked {
+                reportedDeletions.append(deleteMarked)
             }
-            var deleteMarked = deletedMetadata
-            deleteMarked.deleted = true
-            deleteMarked.syncTime = Date()
-            dbManager.addItemMetadata(deleteMarked)
-            reportedDeletions.append(deleteMarked)
         }
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.
         var seenUpdatedOcIds = Set<String>()
-        let discoveredUpdates = (accumulatedCreations + accumulatedUpdates).filter {
+        let firstCopies = (accumulatedCreations + accumulatedUpdates).filter {
             seenUpdatedOcIds.insert($0.ocId).inserted
+        }
+
+        // Each read reports rows as stored after it, so a row that a later read moved again or deleted is reported as it is stored now.
+        let storedRows = dbManager.itemMetadatas(ocIds: firstCopies.map(\.ocId))
+        var discoveredUpdates = [SendableItemMetadata]()
+        for copy in firstCopies {
+            let stored: SendableItemMetadata
+
+            if let storedRows {
+                // A row missing since its read was removed meanwhile or never written, so it is not reported and the scan counts as incomplete.
+                guard let row = storedRows[copy.ocId] else {
+                    hadReadFailure = true
+                    continue
+                }
+
+                stored = row
+            } else {
+                stored = copy
+            }
+
+            if stored.deleted {
+                reportedDeletions.append(stored)
+            } else {
+                discoveredUpdates.append(stored)
+            }
         }
 
         if discoveredUpdates.isEmpty, reportedDeletions.isEmpty {
@@ -302,5 +373,35 @@ extension Enumerator {
         }
 
         return (updated: discoveredUpdates, deleted: reportedDeletions, hadFailure: hadReadFailure)
+    }
+
+    /// Read `items` from the server, at most ``workingSetScanConcurrency`` at a time, handing each result to `merge` as it arrives.
+    private func concurrentlyReadForWorkingSetScan(
+        _ items: [SendableItemMetadata],
+        merge: (SendableItemMetadata, RemoteReadResult) -> Void
+    ) async {
+        await withTaskGroup(of: (SendableItemMetadata, RemoteReadResult).self) { group in
+            for (index, item) in items.enumerated() {
+                if index >= workingSetScanConcurrency, let (readItem, result) = await group.next() {
+                    merge(readItem, result)
+                }
+
+                group.addTask {
+                    let result = await Enumerator.readServerUrl(
+                        item.remotePath(),
+                        account: self.account,
+                        remoteInterface: self.remoteInterface,
+                        dbManager: self.dbManager,
+                        depth: item.directory ? .targetAndDirectChildren : .target,
+                        log: self.logger.log
+                    )
+                    return (item, result)
+                }
+            }
+
+            for await (readItem, result) in group {
+                merge(readItem, result)
+            }
+        }
     }
 }

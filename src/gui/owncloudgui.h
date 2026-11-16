@@ -108,9 +108,7 @@ public Q_SLOTS:
     /**
      * @brief Open an item's web page in the user's browser on behalf of the macOS file provider extension.
      *
-     * Resolves the per-item private link via `fetchPrivateLinkUrl` (PROPFIND for
-     * the server-side `privatelink` property, falling back to the deprecated link
-     * built from the numeric file id) and opens it via `Utility::openBrowser`.
+     * Builds the internal link from the numeric file ID and account capabilities and opens it via `Utility::openBrowser`.
      * Mirrors the classic-sync entry exposed by `SocketApi::command_OPEN_PRIVATE_LINK`.
      * See nextcloud/desktop#10025.
      *
@@ -123,9 +121,7 @@ public Q_SLOTS:
     /**
      * @brief Copy an item's Nextcloud internal link to the clipboard on behalf of the macOS file provider extension.
      *
-     * Resolves the per-item private link via `fetchPrivateLinkUrl` (PROPFIND for
-     * the server-side `privatelink` property, falling back to the deprecated link
-     * built from the numeric file id) and writes it to `QGuiApplication::clipboard()`.
+     * Builds the internal link from the numeric file ID and account capabilities and writes it to `QGuiApplication::clipboard()`.
      * Surfaces a notification through the existing systray afterwards. Mirrors
      * the classic-sync entry exposed by `SocketApi::command_COPY_PRIVATE_LINK`.
      * See nextcloud/desktop#10024.

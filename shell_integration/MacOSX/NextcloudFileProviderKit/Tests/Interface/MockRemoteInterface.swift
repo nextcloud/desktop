@@ -572,6 +572,27 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Limits completion callbacks to simulate an interrupted chunk upload.
     public var chunkUploadCompletedChunkCount: Int?
 
+    public var chunkPreparationHandler: (@Sendable () async -> Void)?
+    public var chunkPreparationError: NKError?
+    public var chunkAssemblyHandler: (@Sendable () async -> Void)?
+    public var uploadHandler: (@Sendable () async -> Void)?
+    public var uploadRequest: UploadRequest?
+    public var uploadTask: URLSessionTask?
+    public private(set) var uploadOperationCount = 0
+
+    public var downloadHandler: (@Sendable () async -> Void)?
+    public var downloadCompletionHandler: (@Sendable () async -> Void)?
+    public var downloadRequest: DownloadRequest?
+    public var downloadTask: URLSessionTask?
+    public var downloadError: NKError?
+    public private(set) var downloadOperationCount = 0
+    public private(set) var downloadDestinationURL: URL?
+    public var thumbnailHandler: (@Sendable (URL, @Sendable @escaping (URLSessionTask) -> Void) async -> Void)?
+    public var thumbnailCompletionHandler: (@Sendable () -> Void)?
+    public var thumbnailData: Data?
+    public var thumbnailError: NKError?
+    public var capabilitiesHandler: (@Sendable (Account, @Sendable @escaping (URLSessionTask) -> Void) async -> Void)?
+
     /// Overrides the directory where chunked uploads create their local chunk files.
     public var chunkUploadDirectory: URL?
 
@@ -587,8 +608,13 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
 
-    /// Track the number of read operations performed
-    public var readOperationCount: Int = 0
+    private let readOperationCountLock = NSLock()
+    private var lockedReadOperationCount = 0
+
+    /// The number of read operations performed, safe to read while reads run concurrently.
+    public var readOperationCount: Int {
+        readOperationCountLock.withLock { lockedReadOperationCount }
+    }
 
     /// When non-nil, the upload mock truncates the modification date returned to
     /// the caller to this precision (in seconds) — simulating Nextcloud's
@@ -613,11 +639,16 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
 
+    /// The source path of the most recent move request.
+    public private(set) var lastMoveRemotePathSource: String?
+
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
 
     /// Optional hook invoked after a delete path is captured and before the mock applies it.
     public var deleteCallHandler: (() -> Void)?
+
+    public private(set) var lastCapabilitiesRequestOptions: NKRequestOptions?
 
     /// Records the `If-Match` header the most recent upload call carried (nil if none).
     /// Lets tests assert the optimistic-concurrency precondition was sent, and with
@@ -632,6 +663,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// When set, every lock or unlock call throws this error without changing the mock item.
     public var lockUnlockError: NKError?
+
+    public var enumerateHandler: (@Sendable () async -> Void)?
 
     /// Handler to track enumerate calls
     public var enumerateCallHandler: ((String, EnumerateDepth, Bool, [String], Data?, Account, NKRequestOptions, @escaping (URLSessionTask) -> Void) -> Void)?
@@ -803,8 +836,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         modificationDate: Date? = .init(),
         account: Account,
         options: NKRequestOptions = .init(),
-        requestHandler _: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in },
+        requestHandler: @escaping (Alamofire.UploadRequest) -> Void = { _ in },
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (Progress) -> Void = { _ in }
     ) async -> (
         account: String,
@@ -815,8 +848,22 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         response: HTTPURLResponse?,
         remoteError: NKError
     ) {
+        uploadOperationCount += 1
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfHeader = options.customHeader?["If"]
+
+        if let uploadRequest {
+            requestHandler(uploadRequest)
+        }
+        if let uploadTask {
+            taskHandler(uploadTask)
+        }
+        if let uploadHandler {
+            await uploadHandler()
+            if Task.isCancelled {
+                return (account.ncKitAccount, nil, nil, nil, 0, nil, NKError(error: URLError(.cancelled)))
+            }
+        }
 
         if let uploadError {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, uploadError)
@@ -906,7 +953,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunkCounter _: @escaping (Int) -> Void = { _ in },
         log _: any FileProviderLogging,
         chunkUploadStartHandler: @escaping ([RemoteFileChunk]) -> Void = { _ in },
-        requestHandler: @escaping (UploadRequest) -> Void = { _ in },
+        requestHandler _: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
         chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
@@ -919,6 +966,17 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
             return ("", nil, nil, .urlError)
+        }
+
+        if let chunkPreparationHandler {
+            await chunkPreparationHandler()
+            if Task.isCancelled, chunkPreparationError == nil {
+                // Match NKCommon.chunkedFile's cancellation error.
+                return (account.ncKitAccount, nil, nil, NKError(errorCode: -5, errorDescription: "Chunking was cancelled."))
+            }
+        }
+        if let chunkPreparationError {
+            return (account.ncKitAccount, nil, nil, chunkPreparationError)
         }
 
         // Create the local chunk directory used by the production adapter and populate it below.
@@ -968,7 +1026,6 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             modificationDate: modificationDate,
             account: account,
             options: options,
-            requestHandler: requestHandler,
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
@@ -976,6 +1033,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             newChunks.prefix($0)
         } ?? newChunks[...]
         completedChunks.forEach { chunkUploadCompleteHandler($0) }
+        if let chunkAssemblyHandler {
+            await chunkAssemblyHandler()
+        }
         print(remainingChunks)
         completedChunkTransferSize[remoteChunkStoreFolderName] =
             remainingChunks.reduce(0) { $0 + $1.size }
@@ -1030,6 +1090,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         print("Moving \(remotePathSource) to \(remotePathDestination)")
+        lastMoveRemotePathSource = remotePathSource
 
         let isTrashed = remotePathSource.hasPrefix(account.trashUrl)
         let isTrashing = remotePathDestination.hasPrefix(account.trashUrl)
@@ -1134,14 +1195,32 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         fileNameLocalPath: String,
         account: String,
         options _: NKRequestOptions,
-        requestHandler _: @escaping (_ request: DownloadRequest) -> Void = { _ in },
-        taskHandler _: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
+        requestHandler: @escaping (_ request: DownloadRequest) -> Void = { _ in },
+        taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler _: @escaping (_ progress: Progress) -> Void = { _ in }
     ) async -> (
         account: String,
         response: AFDownloadResponse<URL?>?,
         nkError: NKError
     ) {
+        downloadOperationCount += 1
+        downloadDestinationURL = URL(fileURLWithPath: fileNameLocalPath)
+        if let downloadRequest {
+            requestHandler(downloadRequest)
+        }
+        if let downloadTask {
+            taskHandler(downloadTask)
+        }
+        if let downloadHandler {
+            await downloadHandler()
+        }
+        if Task.isCancelled {
+            return (account, nil, NKError(errorCode: NSURLErrorCancelled, errorDescription: "Download cancelled"))
+        }
+        if let downloadError {
+            return (account, nil, downloadError)
+        }
+
         guard let serverUrlFileName = serverUrlFileName as? String ?? (serverUrlFileName as? URL)?.absoluteString else {
             return (account, nil, .urlError)
         }
@@ -1170,6 +1249,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, .urlError)
         }
 
+        await downloadCompletionHandler?()
         return (account.ncKitAccount, nil, .success)
     }
 
@@ -1184,7 +1264,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError) {
         // Increment read operation counter
-        readOperationCount += 1
+        readOperationCountLock.withLock { lockedReadOperationCount += 1 }
 
         var remotePath = remotePath
 
@@ -1200,6 +1280,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         // Call the enumerate call handler if it exists
         enumerateCallHandler?(remotePath, depth, showHiddenFiles, includeHiddenFiles, requestBody, account, options, taskHandler)
+        if let enumerateHandler {
+            await enumerateHandler()
+        }
 
         // Test hook: inject a read failure for a targeted path (see `enumerateErrorBySuffix`).
         if let injected = enumerateErrorBySuffix.first(where: { remotePath.hasSuffix($0.key) })?.value {
@@ -1386,20 +1469,33 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     }
 
     public func downloadThumbnail(
-        url _: URL,
+        url: URL,
         account: Account,
         options _: NKRequestOptions,
-        taskHandler _: @escaping (URLSessionTask) -> Void
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
     ) async -> (account: String, data: Data?, error: NKError) {
-        // TODO: Implement downloadThumbnail
-        (account.ncKitAccount, nil, .success)
+        if let thumbnailHandler {
+            await thumbnailHandler(url, taskHandler)
+        }
+        if Task.isCancelled {
+            return (account.ncKitAccount, nil, NKError(errorCode: NSURLErrorCancelled, errorDescription: "Thumbnail cancelled"))
+        }
+        thumbnailCompletionHandler?()
+        return (account.ncKitAccount, thumbnailData, thumbnailError ?? .success)
     }
 
     public func fetchCapabilities(
         account: Account,
-        options _: NKRequestOptions,
-        taskHandler _: @escaping (URLSessionTask) -> Void
+        options: NKRequestOptions,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
     ) async -> (account: String, capabilities: Capabilities?, data: Data?, error: NKError) {
+        lastCapabilitiesRequestOptions = options
+        if let capabilitiesHandler {
+            await capabilitiesHandler(account, taskHandler)
+        }
+        if Task.isCancelled {
+            return (account.ncKitAccount, nil, nil, NKError(error: URLError(.cancelled)))
+        }
         let capsData = capabilities.data(using: .utf8)
         return (account.ncKitAccount, directMockCapabilities(), capsData, .success)
     }

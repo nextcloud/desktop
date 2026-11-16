@@ -34,6 +34,57 @@ final class ReportCurrentSyncStateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(proxy.reportedSyncStatuses, ["SYNC_FINISHED"])
     }
 
+    func testCompletedOrCancelledActionReportsFinished() {
+        let errors: [Error?] = [nil, CocoaError(.userCancelled), NSError(domain: NSCocoaErrorDomain, code: NSUserCancelledError)]
+        for error in errors {
+            let ext = makeExtension()
+            let proxy = SyncStatusCapturingAppProxy()
+            ext.app = proxy
+            let actionId = UUID()
+            ext.insertSyncAction(actionId)
+
+            ext.completeSyncAction(actionId, error: error)
+
+            XCTAssertEqual(proxy.reportedSyncStatuses, ["SYNC_STARTED", "SYNC_FINISHED"])
+            XCTAssertTrue(ext.syncActions.isEmpty)
+            XCTAssertTrue(ext.errorActions.isEmpty)
+        }
+    }
+
+    func testFailedActionReportsFailure() {
+        let ext = makeExtension()
+        let proxy = SyncStatusCapturingAppProxy()
+        ext.app = proxy
+        let actionId = UUID()
+        ext.insertSyncAction(actionId)
+
+        ext.completeSyncAction(actionId, error: NSFileProviderError(.serverUnreachable))
+
+        XCTAssertEqual(proxy.reportedSyncStatuses, ["SYNC_STARTED", "SYNC_FAILED"])
+        XCTAssertTrue(ext.syncActions.isEmpty)
+    }
+
+    func testCancelledActionPreservesOtherActionsAndFailures() {
+        let ext = makeExtension()
+        let proxy = SyncStatusCapturingAppProxy()
+        ext.app = proxy
+        let cancelledId = UUID()
+        let runningId = UUID()
+        let failedId = UUID()
+        ext.insertSyncAction(cancelledId)
+        ext.insertSyncAction(runningId)
+        ext.insertSyncAction(failedId)
+        ext.completeSyncAction(failedId, error: NSFileProviderError(.serverUnreachable))
+
+        ext.completeSyncAction(cancelledId, error: CocoaError(.userCancelled))
+
+        XCTAssertEqual(ext.syncActions, [runningId])
+        XCTAssertEqual(ext.errorActions, [failedId])
+        XCTAssertEqual(proxy.reportedSyncStatuses, ["SYNC_STARTED"])
+        ext.completeSyncAction(runningId, error: nil)
+        XCTAssertEqual(proxy.reportedSyncStatuses, ["SYNC_STARTED", "SYNC_FAILED"])
+    }
+
     func testReportsStartedWhileSyncing() {
         let ext = makeExtension()
         let proxy = SyncStatusCapturingAppProxy()

@@ -1214,51 +1214,42 @@ class TestUnifiedSharing : public QObject
         QVERIFY(!controller.creatingShare());
     }
 
-    void sharingControllerResolvesInternalLinkAndFallback()
+    void sharingControllerGeneratesInternalLinksWithoutNetwork()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
-        auto includePrivateLink = true;
+        fakeFolder.account()->setUrl(QUrl{u"https://example.com/nextcloud"_s});
         auto requestCount = 0;
-        fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *) {
+        fakeFolder.setServerOverride([&](FakeQNAM::Operation, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
             ++requestCount;
-            const auto properties = includePrivateLink
-                ? "<oc:fileid>42</oc:fileid><oc:privatelink>https://example.com/f/42</oc:privatelink>"_ba
-                : QByteArray{};
-            const auto reply = new FakePropfindReply{QByteArray{"<?xml version=\"1.0\"?>"
-                                                                  "<d:multistatus xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">"
-                                                                  "<d:response><d:href>/remote.php/dav/files/user/Documents/file.txt</d:href>"
-                                                                  "<d:propstat><d:prop>"}
-                                                           + properties
-                                                           + QByteArray{"</d:prop><d:status>HTTP/1.1 200 OK</d:status>"
-                                                                        "</d:propstat></d:response></d:multistatus>"},
-                                                       operation,
-                                                       request,
-                                                       this};
-            reply->open(QIODevice::ReadOnly);
-            return reply;
+            return nullptr;
         });
 
         SharingController controller;
-        controller.setAccount(fakeFolder.account());
         QSignalSpy internalLinkSpy{&controller, &SharingController::internalLinkResolved};
+        controller.requestInternalLink("42"_L1);
+        QCOMPARE(internalLinkSpy.size(), 0);
 
-        controller.requestInternalLink("/Documents/file.txt"_L1, "42"_L1);
-        controller.requestInternalLink("/Documents/file.txt"_L1, "42"_L1);
+        controller.setAccount(fakeFolder.account());
+        fakeFolder.account()->setCapabilities({});
+        controller.requestInternalLink("42"_L1);
+        QCOMPARE(internalLinkSpy.size(), 1);
+        QCOMPARE(internalLinkSpy.at(0).at(0).toString(), u"https://example.com/nextcloud/index.php/f/42"_s);
 
-        QTRY_COMPARE(internalLinkSpy.size(), 1);
-        QCOMPARE(internalLinkSpy.at(0).at(0).toString(), "https://example.com/f/42"_L1);
-        QCOMPARE(requestCount, 1);
-        QVERIFY(!controller.resolvingInternalLink());
+        fakeFolder.account()->setCapabilities({{u"globalscale"_s, QVariantMap{{u"token"_s, u"abc123"_s}}}});
+        controller.requestInternalLink("42"_L1);
+        QCOMPARE(internalLinkSpy.size(), 2);
+        QCOMPARE(internalLinkSpy.at(1).at(0).toString(), u"https://example.com/nextcloud/index.php/gf/abc123/42"_s);
+
+        controller.requestInternalLink({});
+        QVERIFY(!controller.internalLinkError().isEmpty());
+        QCOMPARE(internalLinkSpy.size(), 2);
+
+        fakeFolder.account()->setCapabilities({});
+        controller.requestInternalLink("99"_L1);
+        QCOMPARE(internalLinkSpy.size(), 3);
+        QCOMPARE(internalLinkSpy.at(2).at(0).toString(), u"https://example.com/nextcloud/index.php/f/99"_s);
         QVERIFY(controller.internalLinkError().isEmpty());
-
-        includePrivateLink = false;
-        controller.requestInternalLink("/Documents/file.txt"_L1, "99"_L1);
-        QTRY_COMPARE(internalLinkSpy.size(), 2);
-        QCOMPARE(internalLinkSpy.at(1).at(0).toString(), fakeFolder.account()->deprecatedPrivateLinkUrl("99").toString(QUrl::FullyEncoded));
-
-        controller.requestInternalLink("/Documents/file.txt"_L1, {});
-        QTRY_VERIFY(!controller.internalLinkError().isEmpty());
-        QVERIFY(!controller.resolvingInternalLink());
+        QCOMPARE(requestCount, 0);
     }
 
     void sharingControllerCleansUpDraftWhenInitialRecipientFails()

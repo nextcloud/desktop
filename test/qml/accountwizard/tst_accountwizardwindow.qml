@@ -28,6 +28,12 @@ Item {
         AccountWizardWindow {}
     }
 
+    Component {
+        id: clientCertificateDialogComponent
+
+        ClientCertificateDialog {}
+    }
+
     TestCase {
         id: testCase
 
@@ -200,6 +206,18 @@ Item {
             tryVerify(() => label.truncated)
             const rightEdge = button.mapToItem(wizard.contentItem, button.width, 0).x
             verify(rightEdge <= wizard.width - Style.wizardWindowMargin, "button overflows to " + rightEdge)
+        }
+
+        // Escape and outside clicks close the dialog without Cancel; the input must still be cleared.
+        function test_closingClientCertificateDialogClearsInput() {
+            const controller = createTemporaryObject(controllerComponent, testRoot)
+            const dialog = createTemporaryObject(clientCertificateDialogComponent, testRoot, { controller: controller })
+            dialog.open()
+            tryVerify(() => dialog.opened)
+
+            dialog.close()
+
+            tryCompare(controller, "clearClientCertificateInputCount", 1)
         }
     }
 }

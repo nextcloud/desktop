@@ -9,6 +9,10 @@ extension NSFileProviderItemProtocol {
     /// Determine whether the file provider item is a package or a bundle.
     ///
     var isBundleOrPackage: Bool {
+        Self.isBundleOrPackage(contentType: contentType, filename: filename)
+    }
+
+    static func isBundleOrPackage(contentType: UTType?, filename: String) -> Bool {
         if contentType?.conforms(to: .bundle) == true {
             return true
         }

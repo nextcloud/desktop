@@ -36,7 +36,7 @@ extension DatabaseTestSuites {
 
             #expect(Set(manager.childItems(directoryMetadata: parent).map(\.ocId)) == ["child", "grandchild"])
             #expect(manager.immediateChildItems(directoryMetadata: parent).map(\.ocId) == ["child"])
-            #expect(manager.childItemCount(directoryMetadata: parent) == 2)
+            #expect(manager.childItemCount(directoryMetadata: parent) == 1)
         }
 
         @Test func descendantLookupNormalizesTheQueryToNFC() throws {

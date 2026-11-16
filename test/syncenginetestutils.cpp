@@ -463,7 +463,6 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
         xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.numericFileId()));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
-        xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock"), fileInfo.lockState == FileInfo::LockState::FileLocked ? QStringLiteral("1") : QStringLiteral("0"));
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-type"), fileInfo.lockOwnerId);

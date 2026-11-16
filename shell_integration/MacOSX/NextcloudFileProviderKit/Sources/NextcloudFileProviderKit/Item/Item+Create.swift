@@ -148,10 +148,10 @@ public extension Item {
             inChunksSized: forcedChunkSize,
             forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
+            progress: progress,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
             log: log,
-            requestHandler: { progress.setHandlersFromAfRequest($0) },
             taskHandler: { task in
                 if let domain {
                     NSFileProviderManager(for: domain)?.register(
@@ -309,6 +309,7 @@ public extension Item {
         // immediate parent is sufficient because that recursive enable sets the
         // flag on every then-known descendant of the pinned ancestor.
         let parentKeepDownloaded: Bool
+        var parentIsParked = false
 
         if parentItemIdentifier == .rootContainer {
             // Mirrors the lookup `Item.rootContainer(...)` uses to merge persisted
@@ -332,6 +333,8 @@ public extension Item {
                 )
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
+
+            parentIsParked = parentItemMetadata.isAtHoldingPath
             parentKeepDownloaded = parentItemMetadata.keepDownloaded
             parentItemRemotePath = parentItemMetadata.remotePath()
             parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
@@ -341,6 +344,12 @@ public extension Item {
         }
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
+        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
+        let isOnIgnoreList = ignoredFiles?.isExcluded(relativePath) ?? false
+        let refusalInParkedFolder = { () -> (Item?, Error?) in
+            logger.info("Not creating an item in a folder that waits to be placed again by a listing.", [.item: itemTemplate.itemIdentifier, .name: itemTemplate.filename])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
 
         // Bundles and packages (`.app`, `.key`, `.pages`, `.fcpbundle`, …) are folders that the
         // system presents as atomic files. WebDAV cannot represent the full bundle layout
@@ -350,18 +359,23 @@ public extension Item {
         // boundary, route them through the existing `createIgnored` path (which returns
         // `NSFileProviderError(.excludedFromSync)`), and tell the user via the activity view.
         // Tracked at https://github.com/nextcloud/desktop/issues/9827.
+        // A package on the ignore list is excluded here too, but without the warning.
 
         if itemTemplate.isBundleOrPackage {
             logger.info("Refusing to sync bundle or package because this is not supported.", [.name: itemTemplate.filename])
 
-            if let domain {
-                ItemExclusionReporter.report(relativePath: parentItemRelativePath + "/" + itemTemplate.filename, fileName: itemTemplate.filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: log)
+            if let domain, !isOnIgnoreList {
+                ItemExclusionReporter.report(relativePath: relativePath, fileName: itemTemplate.filename, domainIdentifier: domain.identifier, appProxy: appProxy, log: log)
             }
 
             return await Item.createIgnored(basedOn: itemTemplate, parentItemRemotePath: parentItemRemotePath, contents: url, account: account, remoteInterface: remoteInterface, progress: progress, dbManager: dbManager, log: log)
         }
 
         guard !isLockFileName(itemTemplate.filename) || itemTemplateIsFolder else {
+            guard !parentIsParked else {
+                return refusalInParkedFolder()
+            }
+
             return await Item.createLockFile(
                 basedOn: itemTemplate,
                 parentItemIdentifier: parentItemIdentifier,
@@ -375,8 +389,7 @@ public extension Item {
             )
         }
 
-        let relativePath = parentItemRelativePath + "/" + itemTemplate.filename
-        guard ignoredFiles == nil || ignoredFiles?.isExcluded(relativePath) == false else {
+        guard !isOnIgnoreList else {
             return await Item.createIgnored(
                 basedOn: itemTemplate,
                 parentItemRemotePath: parentItemRemotePath,
@@ -387,6 +400,10 @@ public extension Item {
                 dbManager: dbManager,
                 log: log
             )
+        }
+
+        guard !parentIsParked else {
+            return refusalInParkedFolder()
         }
 
         let fileNameLocalPath = url?.path ?? ""

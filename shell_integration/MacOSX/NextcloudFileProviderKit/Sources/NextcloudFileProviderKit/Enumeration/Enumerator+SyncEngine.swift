@@ -22,7 +22,7 @@ extension Enumerator {
                 // preservation of `visitedDirectory` so the just-set `true`
                 // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
+                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false, keepPermissionsListedByParent: true)
             } else {
                 dbManager.addItemMetadataPreservingLocalState(metadata)
             }
@@ -90,6 +90,7 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         files: [NKFile],
         pageIndex: Int?,
+        preserveDeletedTarget: Bool,
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -101,8 +102,10 @@ extension Enumerator {
         logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
 
         if let pageIndex {
-            let (metadatas, error) =
+            // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+            let (metadatas, error) = await dbManager.perform { dbManager in
                 handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+            }
             return (metadatas, nil, error)
         }
 
@@ -129,7 +132,9 @@ extension Enumerator {
             return (nil, nil, .invalidData)
         }
 
-        if let existingMetadata = dbManager.itemMetadata(ocId: directory.ocId) {
+        // Both database calls run off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+        let directoryOcId = directory.ocId
+        if let existingMetadata = await dbManager.perform({ $0.itemMetadata(ocId: directoryOcId) }) {
             directory.downloaded = existingMetadata.downloaded
             directory.keepDownloaded = existingMetadata.keepDownloaded
         }
@@ -138,31 +143,41 @@ extension Enumerator {
 
         files.insert(directory, at: 0)
 
-        let batchClock = ContinuousClock()
-        let batchStart = batchClock.now
-        let batchWriteState = signposter.beginInterval(
-            "Depth1BatchWrite",
-            id: signposter.makeSignpostID(),
-            "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
-        )
-        let changes = dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
-            serverUrl: serverUrl,
-            updatedMetadatas: files,
-            keepExistingDownloadState: true
-        )
-        signposter.endInterval("Depth1BatchWrite", batchWriteState)
+        guard !Task.isCancelled else { return (nil, nil, .cancelled) }
+        let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
+            let batchClock = ContinuousClock()
+            let batchStart = batchClock.now
+            let batchWriteState = signposter.beginInterval(
+                "Depth1BatchWrite",
+                id: signposter.makeSignpostID(),
+                "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
+            )
+            let changes = dbManager.depth1ReadUpdateItemMetadatas(
+                account: account.ncKitAccount,
+                serverUrl: serverUrl,
+                updatedMetadatas: files,
+                keepExistingDownloadState: true,
+                preserveDeletedTarget: preserveDeletedTarget
+            )
+            signposter.endInterval("Depth1BatchWrite", batchWriteState)
+
+            return (changes, batchClock.now - batchStart)
+        }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
         // enumeration bottleneck: its per-item logical-dedup scans are O(N²) over a flat folder. Log its
         // wall-clock + items/sec so the effect of the normalizedFileName index is visible in the JSONL
         // (the `Depth1BatchWrite` signpost shows the same in Instruments).
-        let batchElapsed = batchClock.now - batchStart
         let batchRate = batchElapsed.fpSeconds > 0 ? Double(files.count) / batchElapsed.fpSeconds : 0
         logger.performance(
             "PERF Depth1BatchWrite items=\(files.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
             [.url: serverUrl]
         )
+
+        guard let changes else {
+            logger.error("Could not persist directory metadata.", [.url: serverUrl])
+            return (nil, nil, .metadataDatabaseWriteFailed)
+        }
 
         return (files, changes, nil)
     }
@@ -188,10 +203,19 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
         enumeratedItemIdentifier: NSFileProviderItemIdentifier? = nil,
+        expectedDirectoryOcId: String? = nil,
         depth: EnumerateDepth = .targetAndDirectChildren,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
+
+        guard !serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) else {
+            logger.info("Not reading a folder that waits to be placed again by a listing.", [.url: serverUrl])
+            return RemoteReadResult(error: .parkedFolderPath)
+        }
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 
@@ -220,7 +244,18 @@ extension Enumerator {
         let networkClock = ContinuousClock()
         let networkStart = networkClock.now
 
-        let (_, files, data, error) = await remoteInterface.enumerate(
+        let registeringTaskHandler: @Sendable (URLSessionTask) -> Void = { task in
+            taskHandler(task)
+            if let domain, let enumeratedItemIdentifier {
+                NSFileProviderManager(for: domain)?.register(
+                    task,
+                    forItemWithIdentifier: enumeratedItemIdentifier,
+                    completionHandler: { _ in }
+                )
+            }
+        }
+
+        let (_, enumeratedFiles, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
             depth: depth,
             showHiddenFiles: true,
@@ -228,17 +263,10 @@ extension Enumerator {
             requestBody: nil,
             account: account,
             options: options,
-            taskHandler: { task in
-                if let domain, let enumeratedItemIdentifier {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: enumeratedItemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }
+            taskHandler: registeringTaskHandler
         )
 
+        var files = enumeratedFiles
         let networkElapsed = networkClock.now - networkStart
         signposter.endInterval("PROPFIND", propfindState, "files=\(files.count)")
         logger.performance(
@@ -256,6 +284,16 @@ extension Enumerator {
             return RemoteReadResult(error: error)
         }
 
+        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        if let expectedDirectoryOcId {
+            // A path may now refer to a different item from the one this download owns.
+            let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
+            guard let target, target.directory, target.ocId == expectedDirectoryOcId, target.account == account.ncKitAccount else {
+                logger.error("Read directory no longer matches the download's item.", [.item: expectedDirectoryOcId, .url: serverUrl])
+                return RemoteReadResult(error: .invalidData)
+            }
+        }
+
         // This will be nil if the page settings were also nil, as the server will not give us the
         // pagination-related headers.
         let nextPage = EnumeratorPageResponse(nkResponseData: data, index: (pageSettings?.index ?? 0) + 1, log: log)
@@ -265,6 +303,18 @@ extension Enumerator {
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
             return RemoteReadResult(metadatas: [], nextPage: nextPage)
+        }
+
+        func finishTargetRead(_ metadata: SendableItemMetadata, changes: ChangeSet) async -> RemoteReadResult {
+            do {
+                try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
+            } catch is CancellationError {
+                return RemoteReadResult(error: .cancelled)
+            } catch {
+                // A single-item lookup can still return the server result if caching fails.
+                logger.error("Could not persist remote item metadata.", [.item: metadata.ocId, .error: error])
+            }
+            return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
         }
 
         // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
@@ -277,15 +327,71 @@ extension Enumerator {
                 (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
             else {
                 logger.debug("Read item is a file, converting.", [.url: serverUrl])
-                var metadata = receivedFile.toItemMetadata()
+                let received = receivedFile.toItemMetadata()
+
+                // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+                let (metadata, newItems, updatedItems) = await dbManager.perform {
+                    dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+                    var metadata = received
+                    let existing = dbManager.itemMetadata(ocId: metadata.ocId)
+                    let isNew = existing == nil
+                    let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                    metadata.lockToken = existing?.lockToken
+                    if metadata.etag == existing?.etag {
+                        metadata.fileProviderContentVersion = existing?.fileProviderContentVersion
+                    }
+                    let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                    metadata.downloaded = existing?.downloaded == true
+
+                    if let existing {
+                        metadata.keepDownloaded = existing.keepDownloaded
+                    } else {
+                        // Genuinely new item: inherit the parent's pin so the
+                        // overlay and `contentPolicy` match its siblings (#10054).
+                        metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                    }
+
+                    return (metadata, newItems, updatedItems)
+                }
+
+                return await finishTargetRead(metadata, changes: ChangeSet(created: newItems, updated: updatedItems))
+            }
+        }
+
+        // A listed folder stored at another path was either moved here or is a second mount of the same folder, which shares its identifier (#10106).
+        let listsTarget = depth != .target && !isFollowUpPaginatedRequest
+        guard let secondMounts = await secondMountedDirectories(
+            among: listsTarget ? Array(files.dropFirst()) : files,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            taskHandler: registeringTaskHandler,
+            isCancelled: isCancelled,
+            logger: logger
+        ) else {
+            return RemoteReadResult(error: .cancelled)
+        }
+        files.removeAll { secondMounts[$0.ocId] != nil }
+
+        if depth == .target {
+            if let storedMetadata = secondMounts[receivedFile.ocId] {
+                return RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+            }
+
+            let received = receivedFile.toItemMetadata()
+
+            // Read and merge off the cooperative pool: see
+            // `FilesDatabaseManager.perform(_:)`.
+            let (metadata, newMetadatas, updatedMetadatas) = await dbManager.perform {
+                dbManager -> (SendableItemMetadata, [SendableItemMetadata], [SendableItemMetadata]) in
+                var metadata = received
                 let existing = dbManager.itemMetadata(ocId: metadata.ocId)
                 let isNew = existing == nil
-                let newItems: [SendableItemMetadata] = isNew ? [metadata] : []
+                let updatedMetadatas = isNew ? [] : [metadata]
+                let newMetadatas = isNew ? [metadata] : []
+
                 metadata.lockToken = existing?.lockToken
-                if metadata.etag == existing?.etag {
-                    metadata.fileProviderContentVersion = existing?.fileProviderContentVersion
-                }
-                let updatedItems: [SendableItemMetadata] = isNew ? [] : [metadata]
+                metadata.visitedDirectory = existing?.visitedDirectory == true
                 metadata.downloaded = existing?.downloaded == true
 
                 if let existing {
@@ -296,41 +402,10 @@ extension Enumerator {
                     metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
                 }
 
-                dbManager.addItemMetadata(metadata)
-                return RemoteReadResult(
-                    metadatas: [metadata],
-                    changes: ChangeSet(created: newItems, updated: updatedItems),
-                    nextPage: nextPage
-                )
-            }
-        }
-
-        if depth == .target {
-            var metadata = receivedFile.toItemMetadata()
-            let existing = dbManager.itemMetadata(ocId: metadata.ocId)
-            let isNew = existing == nil
-            let updatedMetadatas = isNew ? [] : [metadata]
-            let newMetadatas = isNew ? [metadata] : []
-
-            metadata.lockToken = existing?.lockToken
-            metadata.visitedDirectory = existing?.visitedDirectory == true
-            metadata.downloaded = existing?.downloaded == true
-
-            if let existing {
-                metadata.keepDownloaded = existing.keepDownloaded
-            } else {
-                // Genuinely new item: inherit the parent's pin so the
-                // overlay and `contentPolicy` match its siblings (#10054).
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
+                return (metadata, newMetadatas, updatedMetadatas)
             }
 
-            dbManager.addItemMetadata(metadata)
-
-            return RemoteReadResult(
-                metadatas: [metadata],
-                changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas),
-                nextPage: nextPage
-            )
+            return await finishTargetRead(metadata, changes: ChangeSet(created: newMetadatas, updated: updatedMetadatas))
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
@@ -338,6 +413,7 @@ extension Enumerator {
                 dbManager: dbManager,
                 files: files,
                 pageIndex: pageSettings?.index,
+                preserveDeletedTarget: expectedDirectoryOcId != nil,
                 log: logger.log
             )
 
@@ -357,5 +433,126 @@ extension Enumerator {
             logger.error("Infinite depth read requested.")
             return RemoteReadResult(error: .cancelled)
         }
+    }
+
+    ///
+    /// The listed folders to keep at their stored path, keyed by identifier, because the server still lists them there.
+    ///
+    /// Only a folder stored at the root or below another live parent can be a second mount. A single such folder below a parent
+    /// is read at its stored path, several are checked with one listing of their stored parent, and a folder the server no
+    /// longer has there, or whose check fails, was moved. Up to ``workingSetScanConcurrency`` stored parents are checked at once.
+    ///
+    /// - Returns: `nil` when the read was cancelled.
+    ///
+    private static func secondMountedDirectories(
+        among files: [NKFile],
+        account: Account,
+        remoteInterface: RemoteInterface,
+        dbManager: FilesDatabaseManager,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
+        isCancelled: @Sendable () -> Bool,
+        logger: FileProviderLogger
+    ) async -> [String: SendableItemMetadata]? {
+        let listedDirectories = files.filter(\.directory)
+
+        guard !listedDirectories.isEmpty else {
+            return [:]
+        }
+
+        let candidates = await dbManager.perform { manager in
+            let storedByOcId = manager.itemMetadatas(ocIds: listedDirectories.map(\.ocId)) ?? [:]
+
+            return listedDirectories.compactMap { listed -> SendableItemMetadata? in
+                guard let stored = storedByOcId[listed.ocId], stored.directory, !stored.deleted, !stored.isTrashed, !stored.isAtHoldingPath,
+                      stored.serverUrl.precomposedStringWithCanonicalMapping != listed.serverUrl.precomposedStringWithCanonicalMapping,
+                      stored.serverUrl == account.davFilesUrl || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
+                else {
+                    return nil
+                }
+
+                return stored
+            }
+        }
+
+        var secondMounts: [String: SendableItemMetadata] = [:]
+
+        await withTaskGroup(of: [SendableItemMetadata].self) { group in
+            for (index, (storedParentPath, storedDirectories)) in Dictionary(grouping: candidates, by: \.serverUrl).enumerated() {
+                if index >= workingSetScanConcurrency, let kept = await group.next() {
+                    kept.forEach { secondMounts[$0.ocId] = $0 }
+                }
+
+                guard !isCancelled() else {
+                    group.cancelAll()
+                    break
+                }
+
+                group.addTask {
+                    await foldersStillListed(among: storedDirectories, storedAt: storedParentPath, account: account, remoteInterface: remoteInterface, taskHandler: taskHandler, logger: logger)
+                }
+            }
+
+            for await kept in group {
+                kept.forEach { secondMounts[$0.ocId] = $0 }
+            }
+        }
+
+        return isCancelled() ? nil : secondMounts
+    }
+
+    /// The folders among `storedDirectories`, all stored below `storedParentPath`, that the server still lists there.
+    private static func foldersStillListed(
+        among storedDirectories: [SendableItemMetadata],
+        storedAt storedParentPath: String,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
+        logger: FileProviderLogger
+    ) async -> [SendableItemMetadata] {
+        // A single folder is read on its own, so a large stored parent is not downloaded on every listing.
+        let checksSingleFolder = storedDirectories.count == 1
+        let checkedPath = checksSingleFolder ? storedDirectories[0].remotePath() : storedParentPath
+        let (listedAtStoredLocation, error) = await listedIdentifiers(
+            at: checkedPath,
+            depth: checksSingleFolder ? .target : .targetAndDirectChildren,
+            account: account,
+            remoteInterface: remoteInterface,
+            taskHandler: taskHandler
+        )
+
+        guard error == .success else {
+            logger.info("Treated folders as moved because their stored location could not be read.", [.url: checkedPath, .error: error])
+            return []
+        }
+
+        let kept = storedDirectories.filter { listedAtStoredLocation.contains($0.ocId) }
+
+        for stored in kept {
+            logger.info("Kept a folder at its stored path because the server still lists it there.", [.item: stored.ocId, .url: storedParentPath])
+        }
+
+        return kept
+    }
+
+    /// The identifiers the server lists at `remotePath` to the given depth, or the error of the read.
+    static func listedIdentifiers(
+        at remotePath: String,
+        depth: EnumerateDepth,
+        account: Account,
+        remoteInterface: RemoteInterface,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
+    ) async -> (ocIds: Set<String>, error: NKError) {
+        let (_, files, _, error) = await remoteInterface.enumerate(
+            remotePath: remotePath,
+            depth: depth,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: taskHandler
+        )
+
+        return (Set(files.map(\.ocId)), error)
     }
 }

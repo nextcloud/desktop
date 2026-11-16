@@ -74,8 +74,8 @@ public:
     /// disable parallel upload in chunking
     [[nodiscard]] bool chunkingParallelUploadDisabled() const;
 
-    /// Whether the "privatelink" DAV property is available
-    [[nodiscard]] bool privateLinkPropertyAvailable() const;
+    /// Returns the Global Scale instance token, or an empty string when unavailable.
+    [[nodiscard]] QString globalScaleToken() const;
 
     /// returns true if the capabilities report notifications
     [[nodiscard]] bool notificationsAvailable() const;

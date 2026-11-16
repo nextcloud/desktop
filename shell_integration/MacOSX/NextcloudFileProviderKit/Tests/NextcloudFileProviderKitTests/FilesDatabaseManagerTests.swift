@@ -229,6 +229,35 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
+    /// A pinned file's ancestors are still returned, because the downloads a pin triggers are what refreshes the "Remove download" answer of the folders above the pin.
+    func testAncestorContainerIdentifiersIncludePinnedFile() throws {
+        var folder = SendableItemMetadata.rawRow(ocId: "pinned-folder")
+        folder.account = Self.account.ncKitAccount
+        folder.serverUrl = Self.account.davFilesUrl
+        folder.urlBase = Self.account.serverUrl
+        folder.userId = Self.account.id
+        folder.fileName = "pinned"
+        folder.directory = true
+        folder.keepDownloaded = true
+
+        var pinnedFile = SendableItemMetadata.rawRow(ocId: "pinned-file")
+        pinnedFile.account = Self.account.ncKitAccount
+        pinnedFile.serverUrl = Self.account.davFilesUrl + "/pinned"
+        pinnedFile.urlBase = Self.account.serverUrl
+        pinnedFile.userId = Self.account.id
+        pinnedFile.fileName = "note.txt"
+        pinnedFile.downloaded = true
+        pinnedFile.keepDownloaded = true
+
+        try Self.dbManager.insertForTesting(folder)
+        try Self.dbManager.insertForTesting(pinnedFile)
+
+        XCTAssertEqual(
+            Self.dbManager.ancestorContainerIdentifiers(ofFileItemsWithOcIds: ["pinned-file"]),
+            [NSFileProviderItemIdentifier("pinned-folder"), .rootContainer]
+        )
+    }
+
     /// `evictableDescendantFileIdentifiers` returns exactly the downloaded,
     /// non-deleted, non-pinned descendant FILES — the set the "Remove downloaded
     /// items" handler evicts individually (#10085). Pinned, dataless, tombstoned,
@@ -2192,5 +2221,217 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         let storedB = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "B"))
         XCTAssertFalse(storedB.deleted)
+    }
+
+    // MARK: - Redundant-write suppression
+
+    ///
+    /// `syncTime` is the observable, carried from the incoming payload so that it advances if and
+    /// only if the row was actually written.
+    ///
+    private func seedRow(ocId: String, etag: String, syncTime: Date, visited: Bool = false) -> SendableItemMetadata {
+        var metadata = SendableItemMetadata(ocId: ocId, fileName: "doc.txt", account: Self.account)
+        metadata.etag = etag
+        metadata.syncTime = syncTime
+        metadata.visitedDirectory = visited
+        // The convenience initializer stamps `Date()`, and `date` is part of the remote-state
+        // comparison — pin it so successive rows differ only where the test intends.
+        metadata.date = Date(timeIntervalSince1970: 500_000)
+        metadata.creationDate = Date(timeIntervalSince1970: 500_000)
+        return metadata
+    }
+
+    func testUnchangedRemoteStateIsNotRewritten() {
+        let ocId = "unchanged-\(name)"
+        let firstSeen = Date(timeIntervalSince1970: 1_000_000)
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: firstSeen))
+
+        let rescanned = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        let returned = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, firstSeen,
+            "An unchanged row must not be rewritten."
+        )
+        XCTAssertEqual(returned.ocId, ocId, "The merged metadata must still be returned to the caller.")
+        XCTAssertEqual(returned.etag, "v1")
+    }
+
+    func testChangedRemoteStateIsStillWritten() {
+        let ocId = "changed-\(name)"
+        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000)))
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v2", syncTime: later))
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.etag, "v2", "A real remote change must still be persisted.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    func testListingKeepsFailedUploadMetadata() throws {
+        let ocId = "upload-error-\(name)"
+        var failedUpload = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        failedUpload.status = Status.uploadError.rawValue
+        failedUpload.sessionError = "Upload cancelled"
+        failedUpload.chunkUploadId = "pending-chunk-upload"
+        Self.dbManager.addItemMetadata(failedUpload)
+        let pending = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: ocId))
+
+        var rescanned = seedRow(ocId: ocId, etag: "v2", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        rescanned.uploaded = true
+        let reported = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+
+        XCTAssertEqual(reported, pending)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId), pending)
+    }
+
+    /// `visitedDirectory` is local-only and so not part of `isInSameDatabaseStoreableRemoteState`,
+    /// so the skip must compare it explicitly or a recorded visit would be silently dropped.
+    func testRecordingADirectoryVisitIsAlwaysWritten() {
+        let ocId = "visit-\(name)"
+        var directory = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        directory.directory = true
+        Self.dbManager.addItemMetadata(directory)
+
+        var visited = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000), visited: true)
+        visited.directory = true
+        Self.dbManager.addItemMetadataPreservingLocalState(visited, preserveVisitedDirectory: false)
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.visitedDirectory, true,
+            "Recording a directory visit must be written even when the remote state is unchanged."
+        )
+    }
+
+    /// A server-side move keeps the item's ETag, date and size, so the row found by `ocId` must
+    /// still be rewritten when the listing reports it somewhere else.
+    func testMovedItemWithUnchangedRemoteStateIsWritten() {
+        let ocId = "moved-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.serverUrl = Self.account.davFilesUrl + "/A"
+        Self.dbManager.addItemMetadata(original)
+
+        let later = Date(timeIntervalSince1970: 2_000_000)
+        var moved = seedRow(ocId: ocId, etag: "v1", syncTime: later)
+        moved.serverUrl = Self.account.davFilesUrl + "/B"
+        Self.dbManager.addItemMetadataPreservingLocalState(moved)
+
+        let stored = Self.dbManager.itemMetadata(ocId: ocId)
+        XCTAssertEqual(stored?.serverUrl, Self.account.davFilesUrl + "/B", "A moved item must be stored at its new location.")
+        XCTAssertEqual(stored?.syncTime, later)
+    }
+
+    func testSoftDeletedItemWithUnchangedRemoteStateIsRevived() {
+        let ocId = "revived-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.deleted = true
+        Self.dbManager.addItemMetadata(original)
+
+        Self.dbManager.addItemMetadataPreservingLocalState(
+            seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        )
+
+        XCTAssertEqual(
+            Self.dbManager.itemMetadata(ocId: ocId)?.deleted, false,
+            "An item listed again must no longer be marked deleted."
+        )
+    }
+
+    /// Extending a lock changes only its timeout, not the file's ETag.
+    func testExtendedLockTimeoutIsWritten() {
+        let ocId = "lock-extended-\(name)"
+        var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
+        original.lock = true
+        original.lockTimeOut = Date(timeIntervalSince1970: 3_000_000)
+        Self.dbManager.addItemMetadata(original)
+
+        let extendedTimeout = Date(timeIntervalSince1970: 4_000_000)
+        var extended = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
+        extended.lock = true
+        extended.lockTimeOut = extendedTimeout
+        Self.dbManager.addItemMetadataPreservingLocalState(extended)
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.lockTimeOut, extendedTimeout)
+    }
+
+    // MARK: - Folder permissions from the parent listing
+
+    private func folder(ocId: String, fileName: String, permissions: String, etag: String = "folder-v1") -> SendableItemMetadata {
+        var metadata = SendableItemMetadata(ocId: ocId, fileName: fileName, account: Self.account)
+        metadata.directory = true
+        metadata.uploaded = true
+        metadata.permissions = permissions
+        metadata.etag = etag
+        metadata.date = Date(timeIntervalSince1970: 1_000_000)
+        return metadata
+    }
+
+    private func readRoot(listing children: SendableItemMetadata..., rootPermissions: String = "RGDNVCK") -> ChangeSet? {
+        let root = folder(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, fileName: "/", permissions: rootPermissions, etag: "root-v1")
+
+        return Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: Self.account.davFilesUrl,
+            updatedMetadatas: [root] + children,
+            keepExistingDownloadState: true
+        )
+    }
+
+    private func readFolder(_ target: SendableItemMetadata) -> ChangeSet? {
+        Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: Self.account.davFilesUrl + "/" + target.fileName,
+            updatedMetadatas: [target],
+            keepExistingDownloadState: true
+        )
+    }
+
+    ///
+    /// A mount point is listed by its parent without delete, rename and move, while its own read
+    /// reports its storage's permissions, so taking each read at face value flagged the folder as
+    /// changed on every scan of either.
+    ///
+    func testMountPointPermissionsFromTheParentListingSurviveItsOwnRead() {
+        let ocId = "mount-\(name)"
+        let fileName = "Team-\(name)"
+
+        _ = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+
+        let ownRead = readFolder(folder(ocId: ocId, fileName: fileName, permissions: "RMGDNVCK"))
+        XCTAssertFalse(
+            ownRead?.updated.contains { $0.ocId == ocId } ?? true,
+            "The folder's own read must not report it as changed when only its storage's permissions differ."
+        )
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.permissions, "RMGCK")
+
+        let rootReread = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+        XCTAssertFalse(
+            rootReread?.updated.contains { $0.ocId == ocId } ?? true,
+            "Re-reading the parent must not report the folder as changed either."
+        )
+    }
+
+    func testAChangedFolderIsStillReportedByItsOwnRead() {
+        let ocId = "changed-mount-\(name)"
+        let fileName = "Changed-\(name)"
+
+        _ = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+
+        let ownRead = readFolder(folder(ocId: ocId, fileName: fileName, permissions: "RMGDNVCK", etag: "folder-v2"))
+        let reported = ownRead?.updated.first { $0.ocId == ocId }
+
+        XCTAssertNotNil(reported, "A real change found by the folder's own read must still be reported.")
+        XCTAssertEqual(reported?.permissions, "RMGCK", "The reported folder must carry the permissions its parent listed.")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.etag, "folder-v2")
+    }
+
+    /// The root container has no parent listing, so its own read is the only source of its permissions.
+    func testTheRootContainerTakesItsPermissionsFromItsOwnRead() {
+        _ = readRoot()
+
+        _ = readRoot(rootPermissions: "RGCK")
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)?.permissions, "RGCK")
     }
 }

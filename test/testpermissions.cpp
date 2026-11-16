@@ -701,12 +701,59 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.currentLocalState().find("readonly/newlocal"));
         QVERIFY(!fakeFolder.currentRemoteState().find("readonly/newlocal"));
 
+        // The kept file completes as FileIgnored (so the sync still succeeds), but carries
+        // the _isUploadForbiddenItemKept flag to show file in Not-synced list.
+        auto keptItem = completeSpy.findItem("readonly/newlocal");
+        QVERIFY(keptItem);
+        QCOMPARE(keptItem->_status, SyncFileItem::FileIgnored);
+        QVERIFY(keptItem->_isUploadForbiddenItemKept);
+        QVERIFY(!keptItem->_errorString.isEmpty());
+
         // The second sync must not loop: the file is still ignored+kept and no follow-up is requested.
         completeSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "readonly/newlocal", CSYNC_INSTRUCTION_IGNORE));
+        keptItem = completeSpy.findItem("readonly/newlocal");
+        QVERIFY(keptItem);
+        QCOMPARE(keptItem->_status, SyncFileItem::FileIgnored);
+        QVERIFY(keptItem->_isUploadForbiddenItemKept);
         QVERIFY(fakeFolder.currentLocalState().find("readonly/newlocal"));
         QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), NoFollowUpSync);
+    }
+
+    // Regression test for the activity flooding reported on PR #10226: files excluded by the
+    // ignore list or by "choose what to sync" must complete WITHOUT the _isUploadForbiddenItemKept flag.
+    void testExcludedFilesStayFileIgnored()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("dir");
+        fakeFolder.remoteModifier().mkdir("unselected");
+        fakeFolder.remoteModifier().insert("unselected/file");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // A local file matching the ignore list.
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"*.ignored"_s);
+        fakeFolder.localModifier().insert("dir/foo.ignored");
+
+        // A folder deselected via "choose what to sync" holding a new local-only file:
+        // unchanged content is removed locally by design, but new local data is ignored.
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {u"unselected/"_s});
+        fakeFolder.localModifier().insert("unselected/newfile");
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+
+        const auto ignoredItem = completeSpy.findItem("dir/foo.ignored");
+        QVERIFY(ignoredItem);
+        QCOMPARE(ignoredItem->_instruction, CSYNC_INSTRUCTION_IGNORE);
+        QCOMPARE(ignoredItem->_status, SyncFileItem::FileIgnored);
+        QVERIFY(!ignoredItem->_isUploadForbiddenItemKept);
+
+        const auto unselectedItem = completeSpy.findItem("unselected/newfile");
+        QVERIFY(unselectedItem);
+        QCOMPARE(unselectedItem->_instruction, CSYNC_INSTRUCTION_IGNORE);
+        QCOMPARE(unselectedItem->_status, SyncFileItem::FileIgnored);
+        QVERIFY(!unselectedItem->_isUploadForbiddenItemKept);
     }
 
     // A synced file moved into a read-only folder cannot land at its new location. The duplicate

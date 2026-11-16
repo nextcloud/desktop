@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+import Alamofire
 @preconcurrency import FileProvider
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
@@ -62,7 +63,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     override func setUp() {
         super.setUp()
-        try! Self.dbManager.removeAllRowsForTesting()
+        setUpDatabase(Self.dbManager)
         rootItem = MockRemoteItem.rootItem(account: Self.account)
     }
 
@@ -123,6 +124,153 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbItem.uploaded)
         XCTAssertTrue(createdItem.isDownloaded)
         XCTAssertTrue(createdItem.isUploaded)
+    }
+
+    func testCancellationDuringChunkPreparationDoesNotCreateFile() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let progress = Progress()
+        remoteInterface.chunkPreparationHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Chunk preparation must receive cancellation")
+        }
+        let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+        try Data(repeating: 1, count: 8).write(to: fileUrl)
+        defer { try? FileManager.default.removeItem(at: fileUrl) }
+        var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: fileUrl.lastPathComponent, account: Self.account)
+        metadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: fileUrl,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: 3,
+            progress: progress,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+    }
+
+    func testCancellationDuringUploadDoesNotCreateFile() async throws {
+        for chunkSize in [8, 3] {
+            let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+            let progress = Progress()
+            let data = Data(repeating: 1, count: 8)
+            let isChunked = chunkSize < data.count
+            let session = isChunked ? nil : Session(startRequestsImmediately: false)
+            let request = session?.upload(Data(), to: "https://example.invalid/resource")
+            let urlSession = URLSession(configuration: .ephemeral)
+            defer { urlSession.invalidateAndCancel() }
+            let (networkTask, networkCompletion) = try observedNetworkTask(
+                in: urlSession,
+                url: XCTUnwrap(URL(string: "https://example.invalid/resource"))
+            )
+            remoteInterface.uploadRequest = request
+            remoteInterface.uploadTask = networkTask
+            remoteInterface.uploadHandler = {
+                progress.cancel()
+                let cancelled = await waitForCancellation()
+                XCTAssertTrue(cancelled, "Cancellation must reach the create operation")
+            }
+            remoteInterface.chunkUploadCompletedChunkCount = 1
+            let chunkDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+            remoteInterface.chunkUploadDirectory = chunkDirectory
+            defer { try? FileManager.default.removeItem(at: chunkDirectory) }
+            let fileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+            try data.write(to: fileUrl)
+            defer { try? FileManager.default.removeItem(at: fileUrl) }
+            var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: fileUrl.lastPathComponent, account: Self.account)
+            metadata.classFile = NKTypeClassFile.document.rawValue
+            let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+            let (createdItem, error) = await Item.create(
+                basedOn: template,
+                contents: fileUrl,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                forcedChunkSize: chunkSize,
+                progress: progress,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+
+            XCTAssertNil(createdItem)
+            XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+            let cancellationCode = try await nextTestValue(from: networkCompletion)
+            XCTAssertEqual(cancellationCode, NSURLErrorCancelled)
+            if !isChunked {
+                XCTAssertTrue(try XCTUnwrap(request).isCancelled)
+            }
+            XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+            XCTAssertTrue(rootItem.children.isEmpty)
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: metadata.ocId))
+            let uploadIds = try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames())
+                .filter { $0.hasPrefix(chunkUploadIdentifierPrefix(forItemWithIdentifier: metadata.ocId)) }
+            let remainingChunks = try Set(uploadIds).flatMap { uploadId in
+                try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId))
+            }
+            XCTAssertEqual(remainingChunks.map(\.fileName).sorted(), isChunked ? ["2", "3"] : [])
+            for chunk in remainingChunks {
+                XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.appendingPathComponent(chunk.fileName).path))
+            }
+        }
+    }
+
+    func testCancellationDuringSuccessfulChunkAssemblyPersistsCreatedItem() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let progress = Progress()
+        let chunksDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        remoteInterface.chunkUploadDirectory = chunksDirectory
+        defer { try? FileManager.default.removeItem(at: chunksDirectory) }
+        remoteInterface.chunkAssemblyHandler = {
+            progress.cancel()
+            let cancelled = await waitForCancellation()
+            XCTAssertTrue(cancelled, "Assembly must receive cancellation")
+        }
+        let contents = Data(repeating: 1, count: 8)
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".txt")
+        try contents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        var metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: contentsURL.lastPathComponent, account: Self.account)
+        metadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(metadata: metadata, parentItemIdentifier: .rootContainer, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager)
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: contentsURL,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: 3,
+            progress: progress,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertTrue(progress.isCancelled)
+        XCTAssertNil(error)
+        let item = try XCTUnwrap(createdItem)
+        let remote = try XCTUnwrap(rootItem.children.first)
+        let stored = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remote.identifier))
+        XCTAssertEqual(item.itemIdentifier.rawValue, remote.identifier)
+        XCTAssertEqual(stored.etag, remote.versionIdentifier)
+        XCTAssertEqual(stored.size, Int64(contents.count))
+        XCTAssertTrue(stored.uploaded)
+        XCTAssertTrue(stored.downloaded)
+        XCTAssertEqual(stored.status, Status.normal.rawValue)
+        XCTAssertNil(stored.sessionError)
+        XCTAssertEqual(remote.data, contents)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 1)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: chunksDirectory.path))
+        XCTAssertTrue(try XCTUnwrap(Self.dbManager.remoteChunkStoreFolderNames()).isEmpty)
     }
 
     func testCreateFile() async throws {
@@ -346,8 +494,9 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             .appendingPathComponent("quota-report-create")
         try Data("Hello world".utf8).write(to: tempUrl) // 11 bytes > 4 bytes available
 
+        let domainIdentifier = NSFileProviderDomainIdentifier(UUID().uuidString)
         let domain = NSFileProviderDomain(
-            identifier: NSFileProviderDomainIdentifier("test-domain-create"),
+            identifier: domainIdentifier,
             displayName: "test"
         )
         let proxy = QuotaCapturingAppProxy()
@@ -377,10 +526,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(proxy.capturedItems.count, 1)
         let itemCapture = try XCTUnwrap(proxy.capturedItems.first)
         XCTAssertEqual(itemCapture.fileName, "file-quota-report")
-        XCTAssertEqual(itemCapture.domainIdentifier, "test-domain-create")
+        XCTAssertEqual(itemCapture.domainIdentifier, domainIdentifier.rawValue)
         XCTAssertEqual(itemCapture.fileBytes, 11)
 
-        XCTAssertEqual(proxy.capturedSummaryDomains, ["test-domain-create"])
+        XCTAssertEqual(proxy.capturedSummaryDomains, [domainIdentifier.rawValue])
     }
 
     /// Negative `quotaAvailableBytes` (the default for accounts with no quota set) must
@@ -586,6 +735,96 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(item)
         XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
         XCTAssertNil(rootItem.children.first { $0.name == appFilename })
+    }
+
+    /// A package on the ignore list, such as Keka's temporary `.kextraction` output, is excluded
+    /// without the bundle warning in the activity view.
+    func testCreateIgnoredBundleIsExcludedWithoutBundleReport() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "Archive.kextraction"
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: true, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == filename })
+        XCTAssertTrue(proxy.captured.isEmpty)
+    }
+
+    /// A package that is not on the ignore list still produces the bundle warning.
+    func testCreateBundleNotOnIgnoreListReportsExclusion() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "Presentation.key"
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: true, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertNil(rootItem.children.first { $0.name == filename })
+        XCTAssertEqual(proxy.captured.map(\.fileName), [filename])
+        XCTAssertEqual(proxy.captured.first?.reason, ItemExclusionReporter.reasonText(for: .bundle))
+    }
+
+    /// An ignored plain file whose extension makes it count as a package, and whose name looks like an Office lock file, is excluded rather than handled as a lock file.
+    func testCreateIgnoredPlainFileWithPackageExtensionIsNotHandledAsLockFile() async {
+        let proxy = ExclusionCapturingAppProxy()
+        let filename = "~$Report.app"
+
+        // A file the lock-file handling would pick as the target of the lock, by its name.
+        let lockTarget = MockRemoteItem(
+            identifier: "report-target",
+            name: "Report.app",
+            remotePath: Self.account.davFilesUrl + "/Report.app",
+            data: Data("report".utf8),
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        lockTarget.parent = rootItem
+        rootItem.children = [lockTarget]
+        Self.dbManager.addItemMetadata(lockTarget.toItemMetadata(account: Self.account))
+
+        let (item, error) = await createWithIgnoreList(named: filename, isPackageFolder: false, appProxy: proxy)
+
+        XCTAssertNotNil(item)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .excludedFromSync)
+        XCTAssertFalse(lockTarget.locked, "An ignored item must not lock another file on the server.")
+        XCTAssertNotEqual(Self.dbManager.itemMetadata(ocId: "\(filename)-id")?.isLockFileOfLocalOrigin, true, "An ignored item must not be stored as a lock file.")
+        XCTAssertTrue(proxy.captured.isEmpty)
+    }
+
+    private func createWithIgnoreList(named filename: String, isPackageFolder: Bool, appProxy: ExclusionCapturingAppProxy) async -> (Item?, Error?) {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        var metadata = SendableItemMetadata(ocId: "\(filename)-id", fileName: filename, account: Self.account)
+        metadata.serverUrl = Self.account.davFilesUrl
+        if isPackageFolder {
+            metadata.directory = true
+            metadata.classFile = NKTypeClassFile.directory.rawValue
+            metadata.contentType = UTType.package.identifier
+        }
+
+        let template = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+
+        return await Item.create(
+            basedOn: template,
+            contents: nil,
+            domain: NSFileProviderDomain(identifier: NSFileProviderDomainIdentifier("test-domain-package"), displayName: "test"),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            ignoredFiles: IgnoredFilesMatcher(ignoreList: ["*.kextraction", "~$*"], log: FileProviderLogMock()),
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            appProxy: appProxy,
+            log: FileProviderLogMock()
+        )
     }
 
     func testCreateFileChunked() async throws {

@@ -7,8 +7,9 @@ import Foundation
 import XCTest
 
 ///
-/// Guards for the two substitutions that made log writing cheap enough for a bulk pass: the byte
-/// counter that replaced a per-line `stat`, and the removal of the per-line `fsync`.
+/// Guards for the two substitutions that made log writing cheap enough for a bulk pass, the byte
+/// counter that replaced a per-line `stat` and the removal of the per-line `fsync`, and for the
+/// encoding of `Int` details.
 ///
 final class FileProviderLogWriteTests: XCTestCase {
     private var logsDirectory: URL!
@@ -136,5 +137,29 @@ final class FileProviderLogWriteTests: XCTestCase {
 
         XCTAssertEqual(afterRotation, onDisk, "The counter must match the new file exactly.")
         XCTAssertLessThan(afterRotation, limit, "The new file starts below the limit, not above it.")
+    }
+
+    /// Counts such as those of the materialized-set reconciliation are passed as `Int` details and
+    /// must reach the file as JSON numbers.
+    func testAnIntDetailIsWrittenAsAJSONNumber() async throws {
+        let log = makeLog()
+
+        await log.write(
+            category: "Test",
+            level: .info,
+            message: "Counted.",
+            details: [.deferredCount: 3],
+            file: #file,
+            function: #function,
+            line: #line
+        )
+
+        let currentFile = await log.file
+        let path = try XCTUnwrap(currentFile)
+        let line = try XCTUnwrap(try String(contentsOf: path, encoding: .utf8).split(separator: "\n").last)
+        let object = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(line.utf8)) as? [String: Any])
+        let details = try XCTUnwrap(object["details"] as? [String: Any])
+
+        XCTAssertEqual(details["deferredCount"] as? Int, 3, "The detail must be the number 3, not a string describing it.")
     }
 }

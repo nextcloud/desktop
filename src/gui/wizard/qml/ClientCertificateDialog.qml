@@ -22,6 +22,8 @@ Dialog {
     header: null
     footer: null
 
+    onClosed: root.controller.clearClientCertificateInput()
+
     background: Rectangle {
         radius: 12
         color: Style.wizardWindowBackground

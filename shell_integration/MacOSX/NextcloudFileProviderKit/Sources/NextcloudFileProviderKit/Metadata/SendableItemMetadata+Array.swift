@@ -23,6 +23,12 @@ extension [SendableItemMetadata] {
                 return nil
             }
 
+            // The parked folder above the row is or will be reported deleted, and the row is enumerated again once a listing has placed it.
+            guard !itemMetadata.isAtHoldingPath else {
+                logger.debug("Skipping metadata below a parked folder in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
+                return nil
+            }
+
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(itemMetadata) else {
                 logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 let targetUrl = itemMetadata.serverUrl

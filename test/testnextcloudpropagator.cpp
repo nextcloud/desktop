@@ -16,6 +16,7 @@
 #include "propagatedownload.h"
 #include "owncloudpropagator_p.h"
 #include "syncenginetestutils.h"
+#include "networkjobs.h"
 
 using namespace Qt::StringLiterals;
 
@@ -232,6 +233,13 @@ private Q_SLOTS:
             responder.write("OK redirectTarget"_ba, headers);
         });
 
+        bool uploadReceivedAtDirectDownloadServer = false;
+        directDownloadServer.route("/data/crossOriginUploadTarget", [&uploadReceivedAtDirectDownloadServer](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            Q_UNUSED(request);
+            uploadReceivedAtDirectDownloadServer = true;
+            responder.write("ERROR"_ba, "text/plain"_ba, QHttpServerResponder::StatusCode::Forbidden);
+        });
+
         QTcpServer directDownloadTcpServer;
         QVERIFY(directDownloadTcpServer.listen(QHostAddress::LocalHost));
         QVERIFY(directDownloadServer.bind(&directDownloadTcpServer));
@@ -254,6 +262,13 @@ private Q_SLOTS:
             QHttpHeaders headers;
             headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
             headers.append(QHttpHeaders::WellKnownHeader::Location, directDownloadBaseUrl + "/someOtherPath/redirectTarget"_L1);
+            responder.write(""_ba, headers, QHttpServerResponder::StatusCode::Found);
+        });
+        nextcloudServer.route("/remote.php/dav/files/propagatortest/redirectedUpload", [&directDownloadBaseUrl](const QHttpServerRequest &request, QHttpServerResponder &responder) -> void {
+            Q_UNUSED(request);
+            QHttpHeaders headers;
+            headers.append(QHttpHeaders::WellKnownHeader::ContentType, "text/plain"_ba);
+            headers.append(QHttpHeaders::WellKnownHeader::Location, directDownloadBaseUrl + "/data/crossOriginUploadTarget"_L1);
             responder.write(""_ba, headers, QHttpServerResponder::StatusCode::Found);
         });
 
@@ -329,6 +344,24 @@ private Q_SLOTS:
 
             // The temporary web servers verify the received headers
             QCOMPARE(receivedContent.data(), "OK redirectTarget"_ba);
+        }
+
+        {
+            qInfo() << "Test: request with body to standard dav path with redirect to different origin";
+            QByteArray payload = "CONFIDENTIAL_PAYLOAD"_ba;
+            auto uploadBuffer = new QBuffer();
+            uploadBuffer->setData(payload);
+            uploadBuffer->open(QIODevice::ReadOnly);
+
+            auto job = new SimpleNetworkJob(account);
+            uploadBuffer->setParent(job);
+            QSignalSpy spy(job, &SimpleNetworkJob::finishedSignal);
+
+            job->startRequest("POST"_ba, QUrl{nextcloudBaseUrl + "/remote.php/dav/files/propagatortest/redirectedUpload"_L1}, {}, uploadBuffer);
+            spy.wait(1000);
+
+            // Cross-origin redirect with request body must be refused and never reach the external server
+            QVERIFY(!uploadReceivedAtDirectDownloadServer);
         }
     }
 #endif
