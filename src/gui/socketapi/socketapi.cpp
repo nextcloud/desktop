@@ -212,6 +212,42 @@ void setClipboardText(const QString &text)
     QApplication::clipboard()->setText(text);
 #endif
 }
+
+// Context menu entries use title case on macOS and Linux and sentence case on Windows,
+// following the human interface guidelines of each platform (nextcloud/desktop#10525).
+#if defined(Q_OS_WIN)
+QString contextMenuLockFileText() { return OCC::SocketApi::tr("Lock file"); }
+QString contextMenuUnlockFileText() { return OCC::SocketApi::tr("Unlock file"); }
+QString contextMenuShareOptionsText() { return OCC::SocketApi::tr("Share options"); }
+QString contextMenuOpenInBrowserText() { return OCC::SocketApi::tr("Open in browser"); }
+QString contextMenuCopyInternalLinkText() { return OCC::SocketApi::tr("Copy internal link"); }
+QString contextMenuFileActionsText() { return OCC::SocketApi::tr("File actions"); }
+QString contextMenuLeaveShareText() { return OCC::SocketApi::tr("Leave this share"); }
+QString contextMenuApplyLabelsText() { return OCC::SocketApi::tr("Apply labels"); }
+QString contextMenuResolveConflictText() { return OCC::SocketApi::tr("Resolve conflict …"); }
+QString contextMenuMoveAndRenameText() { return OCC::SocketApi::tr("Move and rename …"); }
+QString contextMenuMoveRenameAndUploadText() { return OCC::SocketApi::tr("Move, rename and upload …"); }
+QString contextMenuDeleteLocalChangesText() { return OCC::SocketApi::tr("Delete local changes"); }
+QString contextMenuMoveAndUploadText() { return OCC::SocketApi::tr("Move and upload …"); }
+QString contextMenuCopyPrivateLinkText() { return OCC::SocketApi::tr("Copy private link to clipboard"); }
+QString contextMenuSendPrivateLinkByEmailText() { return OCC::SocketApi::tr("Send private link by email …"); }
+#else
+QString contextMenuLockFileText() { return OCC::SocketApi::tr("Lock File"); }
+QString contextMenuUnlockFileText() { return OCC::SocketApi::tr("Unlock File"); }
+QString contextMenuShareOptionsText() { return OCC::SocketApi::tr("Share Options"); }
+QString contextMenuOpenInBrowserText() { return OCC::SocketApi::tr("Open in Browser"); }
+QString contextMenuCopyInternalLinkText() { return OCC::SocketApi::tr("Copy Internal Link"); }
+QString contextMenuFileActionsText() { return OCC::SocketApi::tr("File Actions"); }
+QString contextMenuLeaveShareText() { return OCC::SocketApi::tr("Leave This Share"); }
+QString contextMenuApplyLabelsText() { return OCC::SocketApi::tr("Apply Labels"); }
+QString contextMenuResolveConflictText() { return OCC::SocketApi::tr("Resolve Conflict …"); }
+QString contextMenuMoveAndRenameText() { return OCC::SocketApi::tr("Move and Rename …"); }
+QString contextMenuMoveRenameAndUploadText() { return OCC::SocketApi::tr("Move, Rename and Upload …"); }
+QString contextMenuDeleteLocalChangesText() { return OCC::SocketApi::tr("Delete Local Changes"); }
+QString contextMenuMoveAndUploadText() { return OCC::SocketApi::tr("Move and Upload …"); }
+QString contextMenuCopyPrivateLinkText() { return OCC::SocketApi::tr("Copy Private Link to Clipboard"); }
+QString contextMenuSendPrivateLinkByEmailText() { return OCC::SocketApi::tr("Send Private Link by Email …"); }
+#endif
 }
 
 namespace OCC {
@@ -1240,13 +1276,13 @@ void OCC::SocketApi::openPrivateLink(const QString &link)
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
     static std::array<std::pair<const char *, QString>, 7> strings{{
-        {"SHARE_MENU_TITLE", tr("Share options")},
-        {"FILE_ACTIONS_MENU_TITLE", tr("File actions")},
+        {"SHARE_MENU_TITLE", contextMenuShareOptionsText()},
+        {"FILE_ACTIONS_MENU_TITLE", contextMenuFileActionsText()},
         //: Name of the Activity file action.
         {"FILE_ACTIVITY_MENU_TITLE", tr("Activity")},
         {"CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI()},
-        {"COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard")},
-        {"EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …")},
+        {"COPY_PRIVATE_LINK_MENU_TITLE", contextMenuCopyPrivateLinkText()},
+        {"EMAIL_PRIVATE_LINK_MENU_TITLE", contextMenuSendPrivateLinkByEmailText()},
         {"CONTEXT_MENU_ICON", APPLICATION_ICON_NAME},
     }};
     listener->sendMessage(QStringLiteral("GET_STRINGS:BEGIN"));
@@ -1272,7 +1308,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     }
 
     if (record._isShared && !record._sharedByMe && itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
-        listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + tr("Leave this share"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + contextMenuLeaveShareText());
     }
 
     // If sharing is globally disabled, do not show any sharing entries.
@@ -1280,11 +1316,11 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + (!record.isDirectory() ? tr("Resharing this file is not allowed") : tr("Resharing this folder is not allowed")));
     } else {
-        listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share options"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + contextMenuShareOptionsText());
     }
 
     if (itemEncryptionFlag == SharingContextItemEncryptedFlag::NotEncryptedItem) {
-        listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy internal link"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + contextMenuCopyInternalLinkText());
     }
 
     // Disabled: only providing email option for private links would look odd,
@@ -1306,7 +1342,7 @@ void SocketApi::sendFileActionsContextMenuOptions(const FileData &fileData, Sock
 
     const auto flagString = isOnTheServer && serverHasIntegration ? QLatin1String("::")
                                                                   : QLatin1String(":d:");
-    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + tr("File actions"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:FILE_ACTIONS") + flagString + contextMenuFileActionsText());
 }
 
 void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
@@ -1350,10 +1386,10 @@ void SocketApi::sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
 {
     if (!FileSystem::isDir(fileInfo.absoluteFilePath()) && syncFolder->accountState()->account()->capabilities().filesLockAvailable()) {
         if (syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::UnlockedItem) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + tr("Lock file"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + contextMenuLockFileText());
         } else {
             if (syncFolder->accountState()->account()->fileCanBeUnlocked(syncFolder->journalDb(), fileData.folderRelativePath)) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:UNLOCK_FILE::") + tr("Unlock file"));
+                listener->sendMessage(QLatin1String("MENU_ITEM:UNLOCK_FILE::") + contextMenuUnlockFileText());
             }
         }
     }
@@ -1382,7 +1418,7 @@ void SocketApi::sendFilesGovernanceLabelsMenuOptions(const QFileInfo &fileInfo,
                                                      SocketListener *listener)
 {
     if (fileData.folder->accountState()->account()->capabilities().governanceAvailable() && !FileSystem::isDir(fileInfo.absoluteFilePath())) {
-        listener->sendMessage(QLatin1String("MENU_ITEM:FILES_GOVERNANCE_LABELS::") + tr("Apply labels"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:FILES_GOVERNANCE_LABELS::") + contextMenuApplyLabelsText());
     }
 }
 
@@ -1498,9 +1534,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
             //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
-            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Open in browser"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + contextMenuOpenInBrowserText());
         } else {
-            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + contextMenuOpenInBrowserText());
         }
 
         sendEncryptFolderCommandMenuEntries(fileInfo, fileData, isE2eEncryptedPath, listener);
@@ -1529,22 +1565,22 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
             if (isConflict && canChangeFile) {
                 if (canAddToDir) {
-                    listener->sendMessage(QLatin1String("MENU_ITEM:RESOLVE_CONFLICT::") + tr("Resolve conflict …"));
+                    listener->sendMessage(QLatin1String("MENU_ITEM:RESOLVE_CONFLICT::") + contextMenuResolveConflictText());
                 } else {
                     if (isOnTheServer) {
                         // Uploaded conflict file in read-only directory
-                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and rename …"));
+                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + contextMenuMoveAndRenameText());
                     } else {
                         // Local-only conflict file in a read-only dir
-                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move, rename and upload …"));
+                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + contextMenuMoveRenameAndUploadText());
                     }
-                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
+                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + contextMenuDeleteLocalChangesText());
                 }
             }
 
             // File in a read-only directory?
             if (!isConflict && !isOnTheServer && !canAddToDir) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and upload …"));
+                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + contextMenuMoveAndUploadText());
                 listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete"));
             }
         }
