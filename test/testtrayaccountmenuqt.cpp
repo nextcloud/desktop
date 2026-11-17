@@ -15,6 +15,7 @@
 #include <QApplication>
 #include <QFont>
 #include <QMenu>
+#include <QPalette>
 #include <QPointer>
 #include <QScreen>
 #include <QSignalSpy>
@@ -291,6 +292,39 @@ private Q_SLOTS:
             hasSearch |= action->text() == searchText;
         }
         QVERIFY(hasSearch);
+    }
+
+    void openingAfterIconPaletteChangeRebuildsMenu_data()
+    {
+        QTest::addColumn<int>("colorGroup");
+        QTest::addColumn<int>("colorRole");
+
+        QTest::newRow("active text") << int{QPalette::Active} << int{QPalette::Text};
+        QTest::newRow("selected icon") << int{QPalette::Active} << int{QPalette::HighlightedText};
+        QTest::newRow("disabled icon") << int{QPalette::Disabled} << int{QPalette::Text};
+    }
+
+    void openingAfterIconPaletteChangeRebuildsMenu()
+    {
+        QFETCH(int, colorGroup);
+        QFETCH(int, colorRole);
+
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // Each of these colors tints the menu icons in one of their modes, so a
+        // change to any one of them alone must give the menu new icons.
+        auto palette = menu.palette();
+        const auto group = static_cast<QPalette::ColorGroup>(colorGroup);
+        const auto role = static_cast<QPalette::ColorRole>(colorRole);
+        const auto changedColor = palette.color(group, role) == Qt::magenta ? QColor{Qt::cyan} : QColor{Qt::magenta};
+        palette.setColor(group, role, changedColor);
+        menu.setPalette(palette);
+
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
     }
 };
 

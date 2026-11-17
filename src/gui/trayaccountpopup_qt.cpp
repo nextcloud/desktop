@@ -957,7 +957,7 @@ QVariantList trayMenuState(const QMenu *menu, const Systray *systray)
     state.append(QVariant(QVariantList{
         static_cast<int>(systray->syncControlState()),
         systray->enableAddAccount(),
-        nativeMenuIconPalette(menu).color(QPalette::Text),
+        nativeMenuIconPalette(menu),
         nativeMenuIconSize(menu),
     }));
     return state;
