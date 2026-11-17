@@ -906,6 +906,20 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             updated?.status, Status.normal.rawValue,
             "A rejected upload must not be committed as a normal, synced item."
         )
+
+        remoteItem.versionIdentifier = "server-after-conflict"
+        let read = await Enumerator.readServerUrl(
+            remoteItem.remotePath,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(read.error)
+        XCTAssertEqual(read.changes?.updated.first?.etag, remoteItem.versionIdentifier)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)?.etag, remoteItem.versionIdentifier)
     }
 
     /// macOS < 26: no conflict-copy contract exists, so a detected conflict

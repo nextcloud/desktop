@@ -137,6 +137,10 @@ public extension ItemMetadata {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
+    internal var hasPendingUpload: Bool {
+        !deleted && (isUpload || (!uploaded && status == Status.uploadError.rawValue))
+    }
+
     var isTrashed: Bool {
         serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
     }
