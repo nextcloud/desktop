@@ -347,9 +347,6 @@ public extension Item {
             return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: logger.log))
         }
 
-        // Upload bookkeeping may have cleared the chunk identifier.
-        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
-
         // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
         await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)
 
@@ -360,27 +357,17 @@ public extension Item {
             """
         )
 
-        var newMetadata =
-            dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
-
         // Prefer the mtime we just handed to the server (and which is on disk)
         // over the truncated, second-precision value the PUT response carries
         // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
         // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
         // "changed by another application" right after they save it.
-        newMetadata.date = newContentModificationDate ?? date ?? metadata.date
-        newMetadata.etag = etag ?? metadata.etag
-        newMetadata.fileProviderContentVersion = newMetadata.etag
-        newMetadata.ocId = ocId
-        newMetadata.size = size ?? 0
-        newMetadata.session = ""
-        newMetadata.sessionError = ""
-        newMetadata.sessionTaskIdentifier = 0
-        newMetadata.downloaded = true
-        newMetadata.uploaded = true
-        newMetadata.chunkUploadId = metadata.chunkUploadId
-
-        dbManager.addItemMetadata(newMetadata)
+        let newMetadata = dbManager.recordSuccessfulUpload(
+            metadata,
+            etag: etag ?? metadata.etag,
+            modificationDate: newContentModificationDate ?? date ?? metadata.date,
+            size: size ?? 0
+        )
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
 

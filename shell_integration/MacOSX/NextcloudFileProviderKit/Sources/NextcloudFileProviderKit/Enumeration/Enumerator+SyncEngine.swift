@@ -238,6 +238,7 @@ extension Enumerator {
         )
         let networkClock = ContinuousClock()
         let networkStart = networkClock.now
+        let readStartedAt = Date()
 
         let (_, files, data, error) = await remoteInterface.enumerate(
             remotePath: serverUrl,
@@ -301,11 +302,14 @@ extension Enumerator {
             do {
                 let (metadata, changes) = try await dbManager.reconcileItemMetadataFromRemoteRead(
                     received,
+                    readStartedAt: readStartedAt,
                     isCancelled: isCancelled
                 )
                 return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
             } catch is CancellationError {
                 return RemoteReadResult(error: .cancelled)
+            } catch let error as NKError {
+                return RemoteReadResult(error: error)
             } catch {
                 logger.error("Could not reconcile remote item metadata.", [.item: received.ocId, .error: error])
                 return RemoteReadResult(error: .metadataDatabaseWriteFailed)

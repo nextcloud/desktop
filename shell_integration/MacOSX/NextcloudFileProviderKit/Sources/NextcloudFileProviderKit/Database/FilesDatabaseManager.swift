@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import NextcloudKit
 import os
 
 ///
@@ -489,6 +490,40 @@ public final class FilesDatabaseManager: Sendable {
 
     // MARK: - Writing
 
+    /// Publish the completed upload and its timestamp in one write.
+    func recordSuccessfulUpload(
+        _ attempted: SendableItemMetadata,
+        etag: String,
+        modificationDate: Date,
+        size: Int64
+    ) -> SendableItemMetadata {
+        func applyingUploadResult(to metadata: SendableItemMetadata) -> SendableItemMetadata {
+            var completed = metadata
+            completed.status = Status.normal.rawValue
+            completed.date = modificationDate
+            completed.etag = etag
+            completed.fileProviderContentVersion = etag
+            completed.size = size
+            completed.session = ""
+            completed.sessionError = ""
+            completed.sessionTaskIdentifier = 0
+            completed.downloaded = true
+            completed.uploaded = true
+            completed.syncTime = Date()
+            return completed
+        }
+
+        var completed: SendableItemMetadata?
+        write("Could not record completed upload.", [.item: attempted.ocId]) { db in
+            let current = try itemMetadata(ocId: attempted.ocId, in: db)
+            var metadata = applyingUploadResult(to: current?.metadata ?? attempted)
+            metadata.chunkUploadId = current?.chunkUploadId
+            completed = metadata
+            try insertItemMetadata(metadata, in: db)
+        }
+        return completed ?? applyingUploadResult(to: attempted)
+    }
+
     /// Persist `metadata`, evicting any other live row at its logical address first.
     func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
         try evictLogicalDuplicates(of: metadata, in: db)
@@ -784,6 +819,7 @@ public final class FilesDatabaseManager: Sendable {
                 if serverVersionConflict {
                     // File Provider keeps the rejected edit. Enumeration can refresh the server copy.
                     $0.uploaded = true
+                    $0.syncTime = Date()
                 }
                 if let staleLockToken, $0.lockToken == staleLockToken {
                     $0.lockToken = nil
@@ -805,6 +841,7 @@ public final class FilesDatabaseManager: Sendable {
     /// Reconcile a single server item against the current row in the same transaction as the write.
     func reconcileItemMetadataFromRemoteRead(
         _ received: SendableItemMetadata,
+        readStartedAt: Date,
         isCancelled: @Sendable @escaping () -> Bool
     ) async throws -> (metadata: SendableItemMetadata, changes: ChangeSet) {
         // GRDB's async writer handles Swift task cancellation while waiting for the writer.
@@ -819,6 +856,10 @@ public final class FilesDatabaseManager: Sendable {
                     if let existing = try self.itemMetadata(ocId: received.ocId, in: db) {
                         if existing.hasPendingUpload {
                             return (existing.metadata, ChangeSet())
+                        }
+                        // An upload or lock change can finish while PROPFIND is in flight.
+                        guard existing.syncTime <= readStartedAt else {
+                            throw NKError.staleRemoteRead
                         }
                         metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
                         changes = ChangeSet(updated: [metadata])

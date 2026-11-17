@@ -16,6 +16,9 @@ extension NKError {
     /// Local persistence failed. Maps to `cannotSynchronize`, not a server or quota error.
     static let metadataDatabaseWriteFailed = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The metadata database could not be updated.")
 
+    /// A newer local write made the remote snapshot unsafe to apply. Maps to `cannotSynchronize` so the caller can retry.
+    static let staleRemoteRead = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The item changed while its remote metadata was being read.")
+
     var isCancelledError: Bool {
         errorCode == NSURLErrorCancelled
     }

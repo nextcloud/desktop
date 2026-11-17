@@ -74,6 +74,7 @@ extension FilesDatabaseManager {
             target.lockTime = nil
             target.lockTimeOut = nil
             target.lockToken = nil
+            target.syncTime = Date()
 
             try target.upsertRow(db)
             return true
