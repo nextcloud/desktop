@@ -139,7 +139,7 @@ add_executable(AssistantQmlTest
     qml/assistant/assistantqmltestrunner.cpp
     assistant/fakeassistantclient.cpp
 )
-target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore testutils Qt::QuickTest)
+target_link_libraries(AssistantQmlTest PRIVATE nextcloudCore testutils cmdCore Qt::QuickTest)
 target_include_directories(AssistantQmlTest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
 set_target_properties(AssistantQmlTest PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
