@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import NextcloudKit
 import os
 
 ///
@@ -489,6 +490,40 @@ public final class FilesDatabaseManager: Sendable {
 
     // MARK: - Writing
 
+    /// Publish the completed upload and its timestamp in one write.
+    func recordSuccessfulUpload(
+        _ attempted: SendableItemMetadata,
+        etag: String,
+        modificationDate: Date,
+        size: Int64
+    ) -> SendableItemMetadata {
+        func applyingUploadResult(to metadata: SendableItemMetadata) -> SendableItemMetadata {
+            var completed = metadata
+            completed.status = Status.normal.rawValue
+            completed.date = modificationDate
+            completed.etag = etag
+            completed.fileProviderContentVersion = etag
+            completed.size = size
+            completed.session = ""
+            completed.sessionError = ""
+            completed.sessionTaskIdentifier = 0
+            completed.downloaded = true
+            completed.uploaded = true
+            completed.syncTime = Date()
+            return completed
+        }
+
+        var completed: SendableItemMetadata?
+        write("Could not record completed upload.", [.item: attempted.ocId]) { db in
+            let current = try itemMetadata(ocId: attempted.ocId, in: db)
+            var metadata = applyingUploadResult(to: current?.metadata ?? attempted)
+            metadata.chunkUploadId = current?.chunkUploadId
+            completed = metadata
+            try insertItemMetadata(metadata, in: db)
+        }
+        return completed ?? applyingUploadResult(to: attempted)
+    }
+
     /// Persist `metadata`, evicting any other live row at its logical address first.
     func insertItemMetadata(_ metadata: SendableItemMetadata, in db: Database) throws {
         try evictLogicalDuplicates(of: metadata, in: db)
@@ -503,7 +538,7 @@ public final class FilesDatabaseManager: Sendable {
         let updatedOcIds = Set(updatedMetadatas.map(\.ocId))
         var deletedMetadatas: [ItemMetadataRecord] = []
 
-        for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) {
+        for existingMetadata in existingMetadatas where !existingMetadata.hasPendingUpload && !updatedOcIds.contains(existingMetadata.ocId) {
             deletedMetadatas.append(existingMetadata)
 
             logger.debug("Deleting item metadata during update.", [.item: existingMetadata.ocId])
@@ -531,7 +566,11 @@ public final class FilesDatabaseManager: Sendable {
 
         for var updatedMetadata in updatedMetadatas {
             if let existingMetadata = existingByOcId[updatedMetadata.ocId] {
-                if existingMetadata.status == Status.normal.rawValue, !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata) {
+                let canRefreshFromServer = existingMetadata.status == Status.normal.rawValue
+                    || (existingMetadata.status == Status.uploadError.rawValue && existingMetadata.uploaded)
+                if canRefreshFromServer,
+                   !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -563,7 +602,12 @@ public final class FilesDatabaseManager: Sendable {
                     ])
                 }
 
-            } else { // This is a new metadata
+            } else {
+                // The listing can include a pending file excluded from the uploaded children query.
+                if try itemMetadata(ocId: updatedMetadata.ocId, in: db)?.hasPendingUpload == true {
+                    continue
+                }
+
                 // Inherit the parent's "Always keep downloaded" flag so a file surfacing here via remote enumeration acquires the same pin as its already-pinned siblings (#10054).
                 if let cached = inheritedKeepDownloadedByServerUrl[updatedMetadata.serverUrl] {
                     updatedMetadata.keepDownloaded = cached
@@ -757,7 +801,12 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     /// Update the current upload state without writing back metadata captured before the transfer.
-    func recordUploadFailure(ocId: String, errorDescription: String, staleLockToken: String?) {
+    func recordUploadFailure(
+        ocId: String,
+        errorDescription: String,
+        staleLockToken: String?,
+        serverVersionConflict: Bool
+    ) {
         write("Could not record upload failure.", [.item: ocId]) { db in
             guard var record = try itemMetadata(ocId: ocId, in: db),
                   !record.deleted,
@@ -767,6 +816,11 @@ public final class FilesDatabaseManager: Sendable {
             try record.updateChanges(db) {
                 $0.status = Status.uploadError.rawValue
                 $0.sessionError = errorDescription
+                if serverVersionConflict {
+                    // File Provider keeps the rejected edit. Enumeration can refresh the server copy.
+                    $0.uploaded = true
+                    $0.syncTime = Date()
+                }
                 if let staleLockToken, $0.lockToken == staleLockToken {
                     $0.lockToken = nil
                 }
@@ -784,18 +838,52 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Save the item metadata returned by the server. Roll back the write if cancellation is detected before commit.
-    func addItemMetadataFromRemoteRead(
-        _ metadata: SendableItemMetadata,
+    /// Reconcile a single server item against the current row in the same transaction as the write.
+    func reconcileItemMetadataFromRemoteRead(
+        _ received: SendableItemMetadata,
+        readStartedAt: Date,
         isCancelled: @Sendable @escaping () -> Bool
-    ) async throws {
+    ) async throws -> (metadata: SendableItemMetadata, changes: ChangeSet) {
         // GRDB's async writer handles Swift task cancellation while waiting for the writer.
         try await writer.writeWithoutTransaction { db in
-            try self.writeTransaction(in: db, durability: .full) { db in
-                guard !isCancelled() else { throw CancellationError() }
-                try self.insertItemMetadata(metadata, in: db)
-                // Progress can be cancelled before its handler cancels the Swift task.
-                guard !isCancelled() else { throw CancellationError() }
+            var prepared: (metadata: SendableItemMetadata, changes: ChangeSet)?
+            do {
+                return try self.writeTransaction(in: db, durability: .full) { db in
+                    guard !isCancelled() else { throw CancellationError() }
+
+                    let metadata: SendableItemMetadata
+                    let changes: ChangeSet
+                    if let existing = try self.itemMetadata(ocId: received.ocId, in: db) {
+                        if existing.hasPendingUpload {
+                            return (existing.metadata, ChangeSet())
+                        }
+                        // An upload or lock change can finish while PROPFIND is in flight.
+                        guard existing.syncTime <= readStartedAt else {
+                            throw NKError.staleRemoteRead
+                        }
+                        metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
+                        changes = ChangeSet(updated: [metadata])
+                    } else {
+                        var newMetadata = received
+                        newMetadata.keepDownloaded = try self.inheritedKeepDownloaded(for: received, in: db)
+                        metadata = newMetadata
+                        changes = ChangeSet(created: [metadata])
+                    }
+
+                    prepared = (metadata, changes)
+                    try self.insertItemMetadata(metadata, in: db)
+                    // Progress can be cancelled before its handler cancels the Swift task.
+                    guard !isCancelled() else { throw CancellationError() }
+                    return (metadata, changes)
+                }
+            } catch {
+                if error is CancellationError || isCancelled() {
+                    throw CancellationError()
+                }
+                guard let prepared else { throw error }
+                // A single-item lookup can still return the reconciled result if caching fails.
+                self.logger.error("Could not persist remote item metadata.", [.item: received.ocId, .error: error])
+                return prepared
             }
         }
     }
@@ -902,9 +990,8 @@ public final class FilesDatabaseManager: Sendable {
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
         write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
             if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
-                let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
                 // A listing describes the server copy while the local edit is still pending.
-                if !existing.deleted, existing.isUpload || hasFailedUpload {
+                if existing.hasPendingUpload {
                     toWrite = existing.metadata
                     return
                 }

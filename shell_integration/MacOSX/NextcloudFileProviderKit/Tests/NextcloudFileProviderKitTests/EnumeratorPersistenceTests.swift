@@ -141,6 +141,151 @@ struct EnumeratorPersistenceTests {
         #expect(result.changes == nil)
     }
 
+    @Test(arguments: [Status.inUpload, .uploading, .uploadError].map(\.rawValue))
+    func workingSetFileReadKeepsPendingUpload(status: Int) async throws {
+        manager.setMaterializationStates([(ocId: folder.identifier, downloaded: nil, visitedDirectory: false)])
+        var pending = try #require(manager.itemMetadata(ocId: file.identifier))
+        pending.status = status
+        pending.uploaded = false
+        pending.downloaded = true
+        pending.chunkUploadId = "pending-chunks"
+        pending.sessionError = status == Status.uploadError.rawValue ? "upload failed" : nil
+        manager.addItemMetadata(pending)
+
+        let observer = try MockChangeObserver(enumerator: makeEnumerator(.workingSet))
+        let anchor = Enumerator.syncAnchor(at: anchorDate, storeIdentity: manager.storeIdentity)
+        try await observer.enumerateChanges(from: anchor)
+
+        #expect(remote.readOperationCount == 1)
+        #expect(manager.itemMetadata(ocId: file.identifier) == pending)
+        #expect(observer.changedItems.isEmpty)
+        #expect(observer.deletedItemIdentifiers.isEmpty)
+    }
+
+    @Test func fileReadReportsPinSetDuringRequest() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        let manager = manager
+        remote.enumerateHandler = {
+            _ = try? manager.set(keepDownloaded: true, for: original)
+        }
+        file.versionIdentifier = "file-v2"
+
+        let result = await Enumerator.readServerUrl(
+            file.remotePath,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(result.error == nil)
+        #expect(stored.etag == "file-v2")
+        #expect(stored.keepDownloaded)
+        #expect(result.metadatas == [stored])
+        #expect(result.changes?.updated == [stored])
+    }
+
+    @Test func failedFileCacheWriteReturnsReconciledMetadata() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        _ = try manager.set(keepDownloaded: true, for: original)
+        file.versionIdentifier = "file-v2"
+        try manager.setItemMetadataWriteFailureForTesting(true)
+
+        let result = await Enumerator.readServerUrl(
+            file.remotePath,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.error == nil)
+        let metadata = try #require(result.metadatas?.first)
+        #expect(metadata.etag == "file-v2")
+        #expect(metadata.keepDownloaded)
+        #expect(result.changes?.updated == [metadata])
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == original.etag)
+    }
+
+    @Test(arguments: [Status.inUpload, .uploading, .uploadError].map(\.rawValue))
+    func folderReadKeepsPendingChildUpload(status: Int) async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        var pending = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        pending.status = status
+        pending.chunkUploadId = "pending-chunks"
+        manager.addItemMetadata(pending)
+
+        file.versionIdentifier = "file-v2"
+        let result = await readFolder()
+
+        #expect(result.error == nil)
+        #expect(manager.itemMetadata(ocId: file.identifier) == pending)
+        #expect(result.changes?.isEmpty == true)
+    }
+
+    @Test func singleFileReadRetriesAfterUploadFinishes() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        let pending = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        let manager = manager
+        remote.enumerateHandler = {
+            // The in-flight read still returns file-v1 after the upload completes locally.
+            _ = manager.recordSuccessfulUpload(
+                pending,
+                etag: "uploaded-etag",
+                modificationDate: pending.date,
+                size: pending.size
+            )
+        }
+
+        let stale = await readFile()
+
+        #expect(stale.error?.fileProviderError?.code == .cannotSynchronize)
+        #expect(stale.metadatas == nil)
+        #expect(stale.changes == nil)
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "uploaded-etag")
+
+        remote.enumerateHandler = nil
+        file.versionIdentifier = "server-v3"
+        let fresh = await readFile()
+
+        #expect(fresh.error == nil)
+        #expect(fresh.changes?.updated.first?.etag == "server-v3")
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "server-v3")
+    }
+
+    @Test func folderReadRefreshesServerCopyAfterUploadConflict() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        _ = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        manager.recordUploadFailure(
+            ocId: file.identifier,
+            errorDescription: "Precondition Failed",
+            staleLockToken: nil,
+            serverVersionConflict: true
+        )
+        file.versionIdentifier = "server-after-conflict"
+
+        let result = await readFolder()
+
+        #expect(result.error == nil)
+        #expect(result.changes?.created.isEmpty == true)
+        #expect(result.changes?.updated.first?.etag == "server-after-conflict")
+        #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "server-after-conflict")
+    }
+
+    private func readFile() async -> RemoteReadResult {
+        await Enumerator.readServerUrl(
+            file.remotePath,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+    }
+
     private func readFolder() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             folder.remotePath, account: account, remoteInterface: remote,

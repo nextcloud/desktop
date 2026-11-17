@@ -1405,8 +1405,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 existing.keepDownloaded = storedValue
                 existing.visitedDirectory = true
                 existing.lockToken = "stored-lock"
-                existing.status = Status.uploading.rawValue
-                existing.chunkUploadId = "stored-upload"
                 try Self.dbManager.insertForTesting(existing)
                 let previousReadCount = remote.readOperationCount
 
@@ -1431,8 +1429,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 XCTAssertEqual(metadata.fileProviderContentVersion, unchangedEtag ? storedVersion : nil)
                 XCTAssertEqual(metadata.etag, remoteItemA.versionIdentifier)
                 XCTAssertEqual(metadata.remotePath(), remoteItemA.remotePath)
-                XCTAssertEqual(metadata.status, Status.normal.rawValue)
-                XCTAssertNil(metadata.chunkUploadId)
                 XCTAssertEqual(Self.dbManager.itemMetadata(ocId: metadata.ocId), metadata)
                 XCTAssertEqual(reported, metadata)
             }
