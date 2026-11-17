@@ -65,6 +65,7 @@ struct LocalInfo
     bool isMetadataMissing = false;
     bool isPermissionsInvalid = false;
     bool isLocked = false;
+    bool isStatError = false;
     [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 

@@ -17,12 +17,15 @@
 #include <QSignalSpy>
 #include <QThreadPool>
 #include <QTemporaryDir>
-
 #include <owncloudpropagator.h>
 
 #include <filesystem>
 #include <functional>
 #include <system_error>
+
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#endif
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
@@ -59,6 +62,32 @@ private Q_SLOTS:
 
         QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
     }
+
+#ifndef Q_OS_WIN
+    void testStatErrorDoesNotDeleteRemoteFiles()
+    {
+        if (geteuid() == 0) {
+            QSKIP("Needs a non root user so stat() fails inside an unsearchable directory");
+        }
+
+        FakeFolder fakeFolder{FileInfo { }};
+        fakeFolder.localModifier().mkdir("sub");
+        fakeFolder.localModifier().insert("sub/a.txt", 100);
+        fakeFolder.localModifier().insert("sub/b.txt", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto subPath = fakeFolder.localPath() + QStringLiteral("sub");
+        QVERIFY(QFile::setPermissions(subPath, QFileDevice::ReadOwner));
+
+        fakeFolder.syncOnce();
+
+        QFile::setPermissions(subPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/a.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/b.txt"));
+    }
+#endif
 
     void testSelectiveSyncQuotaExceededDataLoss()
     {

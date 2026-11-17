@@ -407,10 +407,11 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
         i.isMetadataMissing = dirent->is_metadata_missing;
         i.isPermissionsInvalid = dirent->isPermissionsInvalid;
+        i.isStatError = dirent->is_stat_error;
         i.type = dirent->type;
 
         // Access lock state on the worker thread so a blocking open cannot freeze the GUI #10464
-        if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory) {
+        if (!i.isSymLink && !i.isVirtualFile && !i.isDirectory && !i.isStatError) {
             const QString absoluteLocalPath = localPath + QLatin1Char('/') + i.name;
             i.isLocked = FileSystem::isFileLocked(absoluteLocalPath, FileSystem::LockMode::SharedRead);
             qCDebug(lcDiscovery) << "File" << absoluteLocalPath << "isLocked" << i.isLocked;

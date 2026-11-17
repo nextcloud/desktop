@@ -175,8 +175,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     // path always ends with '\', by construction
 
     if (csync_vio_local_stat(handle->path + QString::fromWCharArray(handle->ffd.cFileName), file_stat.get(), true) < 0) {
-        // Will get excluded by _csync_detect_update.
-        file_stat->type = ItemTypeSkip;
+        file_stat->is_stat_error = true;
     }
 
     return file_stat;

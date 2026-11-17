@@ -209,6 +209,8 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   bool isE2eEncrypted BITFIELD(1);
   bool is_metadata_missing BITFIELD(1); // Indicates the file has missing metadata, f.ex. the file is not a placeholder in case of vfs.
   bool isPermissionsInvalid BITFIELD(1);
+  bool is_stat_error BITFIELD(1); // Enumerated but stat/open failed: listing is incomplete, never a deletion.
+                                  // e.g. Windows error: The operation is only supported on files under a cloud sync root
 
   QByteArray path;
   QByteArray rename_path;
@@ -230,13 +232,14 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   SyncInstructions instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
   csync_file_stat_s()
-    : type(ItemTypeSkip)
-    , child_modified(false)
-    , has_ignored_files(false)
-    , is_hidden(false)
-    , isE2eEncrypted(false)
-    , is_metadata_missing(false)
-    , isPermissionsInvalid(false)
+      : type(ItemTypeSkip)
+      , child_modified(false)
+      , has_ignored_files(false)
+      , is_hidden(false)
+      , isE2eEncrypted(false)
+      , is_metadata_missing(false)
+      , isPermissionsInvalid(false)
+      , is_stat_error(false)
   { }
 };
 
