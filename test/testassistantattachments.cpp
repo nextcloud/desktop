@@ -85,7 +85,7 @@ private Q_SLOTS:
         _network->setOverride([this](auto operation, const auto &request, QIODevice *) -> QNetworkReply * {
             _requests.append(request);
             if (request.url().path().endsWith("/info"_L1)) {
-                return new FakeJsonReply(operation, request, _network, 200, fileInfo(u"Report.pdf"_s));
+                return new FakePayloadReply(operation, request, fileInfo(u"Report.pdf"_s).toJson(QJsonDocument::Compact), _network);
             }
             return new FakePayloadReply(operation, request, preview(), _network);
         });
@@ -118,7 +118,7 @@ private Q_SLOTS:
     {
         _network->setOverride([this](auto operation, const auto &request, QIODevice *) -> QNetworkReply * {
             if (request.url().path().endsWith("/info"_L1)) {
-                return new FakeJsonReply(operation, request, _network, 200, fileInfo(u"Picture.png"_s));
+                return new FakePayloadReply(operation, request, fileInfo(u"Picture.png"_s).toJson(QJsonDocument::Compact), _network);
             }
             return new FakePayloadReply(operation, request, preview(), _network);
         });
@@ -164,7 +164,7 @@ private Q_SLOTS:
         QFETCH(QByteArray, body);
         _network->setOverride([this, body](auto operation, const auto &request, QIODevice *) -> QNetworkReply * {
             if (request.url().path().endsWith("/info"_L1)) {
-                return new FakeJsonReply(operation, request, _network, 200, fileInfo(u"Archive.zip"_s));
+                return new FakePayloadReply(operation, request, fileInfo(u"Archive.zip"_s).toJson(QJsonDocument::Compact), _network);
             }
             return new FakePayloadReply(operation, request, body, _network);
         });
@@ -205,7 +205,7 @@ private Q_SLOTS:
         QVERIFY(attachment.previewSource().isEmpty());
         _network->setOverride([this](auto operation, const auto &request, QIODevice *) -> QNetworkReply * {
             if (request.url().path().endsWith("/info"_L1)) {
-                return new FakeJsonReply(operation, request, _network, 200, fileInfo(u"Retried.png"_s));
+                return new FakePayloadReply(operation, request, fileInfo(u"Retried.png"_s).toJson(QJsonDocument::Compact), _network);
             }
             return new FakePayloadReply(operation, request, preview(), _network);
         });
@@ -240,7 +240,7 @@ private Q_SLOTS:
         otherAccount->setCredentials(new FakeCredentials{otherNetwork});
         otherNetwork->setOverride([otherNetwork](auto operation, const auto &request, QIODevice *) -> QNetworkReply * {
             if (request.url().path().endsWith("/info"_L1)) {
-                return new FakeJsonReply(operation, request, otherNetwork, 200, fileInfo(u"Other account.png"_s));
+                return new FakePayloadReply(operation, request, fileInfo(u"Other account.png"_s).toJson(QJsonDocument::Compact), otherNetwork);
             }
             return new FakePayloadReply(operation, request, preview(), otherNetwork);
         });

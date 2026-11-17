@@ -166,7 +166,7 @@ public:
                                                                  {u"meta"_s, QJsonObject{{u"statuscode"_s, 100}}},
                                                                  {u"data"_s, QJsonObject{{u"name"_s, name}}},
                                                              }}}};
-                return new FakeJsonReply(operation, request, network, 200, json);
+                return new FakePayloadReply(operation, request, json.toJson(QJsonDocument::Compact), network);
             }
             if (QUrlQuery(request.url()).queryItemValue(u"fileId"_s) == "12"_L1 || path.endsWith("/task/1221224/output-file/14/preview"_L1)) {
                 auto image = QImage{QSize{2, 2}, QImage::Format_RGB32};

@@ -52,7 +52,8 @@ Item {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             policy: ScrollBar.AsNeeded
-            active: size < 1
+            visible: size < 1
+            active: visible
         }
 
         TextEdit {

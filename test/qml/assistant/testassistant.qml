@@ -371,7 +371,8 @@ Item {
             viewport.positionViewAtBeginning()
             tryVerify(() => list.itemAtIndex(0) !== null)
             const message = findChild(list.itemAtIndex(0), "assistantMessageText")
-            const point = viewport.mapToItem(message, viewport.width / 4, viewport.height / 2)
+            const point = message.mapFromItem(viewport,
+                message.mapToItem(viewport, message.width / 2, 0).x, viewport.height / 2)
             verify(point.x > 0 && point.x < message.width)
             verify(point.y > 0 && point.y < message.height)
             const start = viewport.contentY
@@ -379,7 +380,10 @@ Item {
             tryVerify(() => viewport.contentY > start)
             viewport.cancelFlick()
             const scrolled = viewport.contentY
-            const backPoint = viewport.mapToItem(message, viewport.width / 4, viewport.height / 2)
+            const backPoint = message.mapFromItem(viewport,
+                message.mapToItem(viewport, message.width / 2, 0).x, viewport.height / 2)
+            verify(backPoint.x > 0 && backPoint.x < message.width)
+            verify(backPoint.y > 0 && backPoint.y < message.height)
             mouseWheel(message, backPoint.x, backPoint.y, 0, 120)
             tryVerify(() => viewport.contentY < scrolled)
         }
@@ -400,6 +404,7 @@ Item {
             createdObject.text = "Short response"
             tryVerify(() => !scrollbar.visible)
             tryCompare(viewport, "contentX", 0)
+            tryCompare(createdObject, "height", textItem.implicitHeight)
         }
 
         function test_linkedNextcloudFilesUseGenericAttachments() {
