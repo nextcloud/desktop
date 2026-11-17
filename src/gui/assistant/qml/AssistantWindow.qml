@@ -67,6 +67,13 @@ WizardStyledWindow {
                 enabled: root.canUseAssistant && !root.assistantController.requestInProgress
                 Layout.fillWidth: true
                 Layout.preferredHeight: frame.footerButtonHeight
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                KeyNavigation.tab: root.assistantController.selectedTaskTypeIsChat
+                    && assistantViewLoader.status === Loader.Ready
+                    && assistantViewLoader.item
+                    && assistantViewLoader.item.conversationFocusItem
+                    && assistantViewLoader.item.conversationFocusItem.enabled
+                    ? assistantViewLoader.item.conversationFocusItem : null
                 onAccepted: root.submitQuestion()
             },
 
@@ -109,6 +116,7 @@ WizardStyledWindow {
             }
 
             Loader {
+                id: assistantViewLoader
                 objectName: "assistantViewLoader"
                 sourceComponent: root.assistantController.selectedTaskTypeIsChat
                     ? chatComponent

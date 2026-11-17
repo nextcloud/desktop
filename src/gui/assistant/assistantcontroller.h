@@ -98,9 +98,9 @@ public:
     /** @brief Creates an attachment loader owned by its QML card. */
     Q_INVOKABLE QObject *createAttachment(const QVariantMap &attachment, QObject *owner);
     /** @brief Adds same-account file links in Markdown to the server's attachment list. */
-    Q_INVOKABLE QVariantList chatAttachments(const QString &text, const QVariantList &attachments) const;
+    Q_INVOKABLE [[nodiscard]] QVariantList chatAttachments(const QString &text, const QVariantList &attachments) const;
     /** @brief Resolves HTTP links against this account, rejecting other URL schemes. */
-    Q_INVOKABLE QUrl chatLinkUrl(const QString &link) const;
+    Q_INVOKABLE [[nodiscard]] QUrl chatLinkUrl(const QString &link) const;
     /** @brief Colors and underlines chat links without changing their destinations or other formatting. */
     Q_INVOKABLE void styleChatLinks(QQuickTextDocument *document, const QColor &color) const;
 

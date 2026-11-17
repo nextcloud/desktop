@@ -18,6 +18,8 @@ ColumnLayout {
 
     required property NC.AssistantController assistantController
 
+    readonly property Item conversationFocusItem: conversationPicker
+
     property double conversationToDelete: -1
     property string conversationTitleToDelete: ""
 

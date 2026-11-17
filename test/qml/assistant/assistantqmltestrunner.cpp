@@ -226,7 +226,7 @@ public:
         _client->deliverChatSessionCheck(_client->lastChatMessagesGeneration, ocsResponse(QJsonObject{{u"sessionAgencyPendingActions"_s, QJsonArray{action}}}));
     }
 
-    Q_INVOKABLE int pendingDecision() const
+    Q_INVOKABLE [[nodiscard]] int pendingDecision() const
     {
         return _client->lastAgencyConfirm;
     }

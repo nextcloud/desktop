@@ -213,6 +213,24 @@ Item {
             compare(messageList.itemAtIndex(0).objectName, "assistantMessageDelegate")
         }
 
+        function test_tabFromInputReachesConversationPicker() {
+            const window = createAssistantWindow()
+            assistantTestSetup.completeChatLoad()
+            assistantTestSetup.selectConversationAndCompleteMessages()
+            const input = findChild(window, "assistantQuestionInput")
+            const picker = findChild(window, "assistantConversationPicker")
+            verify(input !== null)
+            verify(picker !== null)
+            verify(picker.enabled)
+            window.requestActivate()
+            input.forceActiveFocus(Qt.TabFocusReason)
+            tryCompare(input, "activeFocus", true)
+            keyClick(Qt.Key_Tab)
+            tryCompare(picker, "activeFocus", true)
+            keyClick(Qt.Key_Tab, Qt.ShiftModifier)
+            tryCompare(input, "activeFocus", true)
+        }
+
         function test_longTitlesStayOnOneLine() {
             createdObject = conversationDelegateComponent.createObject(testRoot, {
                 title: "Long title\n".repeat(100)
