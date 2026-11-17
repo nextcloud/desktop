@@ -368,7 +368,10 @@ Item {
             const viewport = findChild(list, "assistantMessageViewport")
             list.forceLayout()
             tryVerify(() => viewport.contentHeight > viewport.height)
+            verify(waitForRendering(viewport))
+            list.forceLayout()
             viewport.positionViewAtBeginning()
+            verify(waitForRendering(viewport))
             tryVerify(() => list.itemAtIndex(0) !== null)
             const message = findChild(list.itemAtIndex(0), "assistantMessageText")
             const point = message.mapFromItem(viewport,
@@ -482,7 +485,7 @@ Item {
             const preview = findChild(imageCard, "assistantAttachmentPreview")
             tryCompare(preview, "status", Image.Ready)
             verify(preview.visible)
-            verify(imageMessage.height > preview.height)
+            tryVerify(() => imageMessage.height > preview.height)
 
             const fileCard = findChild(list.itemAtIndex(1), "assistantAttachmentDelegate")
             verify(fileCard !== null)
