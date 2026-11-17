@@ -79,7 +79,17 @@ extension NextcloudKit: RemoteInterface {
             ) { account, response, nkError in
                 let allHeaderFields = response?.response?.allHeaderFields
                 let ocId = self.nkCommonInstance.findHeader("oc-fileid", allHeaderFields: allHeaderFields)
-                let etag = self.nkCommonInstance.normalizedETag(self.nkCommonInstance.findHeader("oc-etag", allHeaderFields: allHeaderFields))
+                let ocETag = self.nkCommonInstance.findHeader("oc-etag", allHeaderFields: allHeaderFields)
+                let httpETag = self.nkCommonInstance.findHeader("etag", allHeaderFields: allHeaderFields)
+                // The next edit can use this tag in If-Match, which requires a strong ETag.
+                let etag = [ocETag, httpETag].compactMap { header -> String? in
+                    guard let header,
+                          !header.hasPrefix("W/"),
+                          let normalized = self.nkCommonInstance.normalizedETag(header),
+                          !normalized.isEmpty
+                    else { return nil }
+                    return normalized
+                }.first
                 let date = self.nkCommonInstance.findHeader("date", allHeaderFields: allHeaderFields)?.parsedDate(using: "EEE, dd MMM y HH:mm:ss zzz")
 
                 // The size the server stored equals the bytes we sent, i.e. the local file's size.

@@ -490,38 +490,37 @@ public final class FilesDatabaseManager: Sendable {
 
     // MARK: - Writing
 
-    /// Publish the completed upload and its timestamp in one write.
+    /// Commit the accepted content version and transfer state on the existing row.
     func recordSuccessfulUpload(
         _ attempted: SendableItemMetadata,
+        uploadedOcId: String?,
         etag: String,
         modificationDate: Date,
         size: Int64
-    ) -> SendableItemMetadata {
-        func applyingUploadResult(to metadata: SendableItemMetadata) -> SendableItemMetadata {
-            var completed = metadata
-            completed.status = Status.normal.rawValue
-            completed.date = modificationDate
-            completed.etag = etag
-            completed.fileProviderContentVersion = etag
-            completed.size = size
-            completed.session = ""
-            completed.sessionError = ""
-            completed.sessionTaskIdentifier = 0
-            completed.downloaded = true
-            completed.uploaded = true
-            completed.syncTime = Date()
-            return completed
-        }
+    ) throws -> SendableItemMetadata {
+        return try write(durability: .full) { db in
+            guard var current = try itemMetadata(ocId: attempted.ocId, in: db),
+                  !current.deleted,
+                  current.status == Status.uploading.rawValue,
+                  current.account == attempted.account,
+                  current.hasSameLocation(as: attempted) || uploadedOcId == current.ocId
+            else { throw NSFileProviderError(.cannotSynchronize) }
 
-        var completed: SendableItemMetadata?
-        write("Could not record completed upload.", [.item: attempted.ocId]) { db in
-            let current = try itemMetadata(ocId: attempted.ocId, in: db)
-            var metadata = applyingUploadResult(to: current?.metadata ?? attempted)
-            metadata.chunkUploadId = current?.chunkUploadId
-            completed = metadata
-            try insertItemMetadata(metadata, in: db)
+            try current.updateChanges(db) {
+                $0.status = Status.normal.rawValue
+                $0.date = modificationDate
+                $0.etag = etag
+                $0.fileProviderContentVersion = etag
+                $0.size = size
+                $0.session = ""
+                $0.sessionError = ""
+                $0.sessionTaskIdentifier = 0
+                $0.downloaded = true
+                $0.uploaded = true
+                $0.syncTime = Date()
+            }
+            return current.metadata
         }
-        return completed ?? applyingUploadResult(to: attempted)
     }
 
     /// Persist `metadata`, evicting any other live row at its logical address first.

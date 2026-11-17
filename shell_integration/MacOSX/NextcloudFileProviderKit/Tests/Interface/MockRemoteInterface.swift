@@ -576,6 +576,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var chunkPreparationError: NKError?
     public var chunkAssemblyHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
+    public var uploadCompletionHandler: (@Sendable () async -> Void)?
     public var uploadRequest: UploadRequest?
     public var uploadTask: URLSessionTask?
     public private(set) var uploadOperationCount = 0
@@ -631,6 +632,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// When set, every upload call returns this error immediately without touching the mock tree.
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
+    public var omitUploadETag = false
 
     /// When set, every delete call returns this error immediately without touching the mock tree.
     /// Use this to simulate an already-missing remote item.
@@ -925,15 +927,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return item.modificationDate as NSDate
         }()
 
-        return (
-            account.ncKitAccount,
-            item.identifier,
-            item.versionIdentifier,
-            responseDate,
-            item.size,
-            nil,
-            .success
-        )
+        let identifier = item.identifier
+        let etag = omitUploadETag ? nil : item.versionIdentifier
+        let size = item.size
+        await uploadCompletionHandler?()
+        return (account.ncKitAccount, identifier, etag, responseDate, size, nil, .success)
     }
 
     public func chunkedUpload(

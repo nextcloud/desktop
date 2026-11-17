@@ -232,7 +232,7 @@ public extension Item {
 
         let uploadOptions = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, etag, date, size, error) = await upload(
+        let (uploadedOcId, etag, date, size, error) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -357,23 +357,41 @@ public extension Item {
             """
         )
 
-        // Prefer the mtime we just handed to the server (and which is on disk)
-        // over the truncated, second-precision value the PUT response carries
-        // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
-        // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
-        // "changed by another application" right after they save it.
-        let newMetadata = dbManager.recordSuccessfulUpload(
-            metadata,
-            etag: etag ?? metadata.etag,
-            modificationDate: newContentModificationDate ?? date ?? metadata.date,
-            size: size ?? 0
-        )
+        guard let etag, !etag.isEmpty, !etag.hasPrefix("W/"), let size else {
+            let error = NSFileProviderError(.cannotSynchronize)
+            logger.error("Completed upload response lacked a usable ETag or file size.", [.item: ocId])
+            dbManager.recordUploadFailure(
+                ocId: ocId,
+                errorDescription: error.localizedDescription,
+                staleLockToken: nil,
+                serverVersionConflict: false
+            )
+            return (nil, error)
+        }
+
+        // Preserve the mtime File Provider supplied at local precision.
+        let newMetadata: SendableItemMetadata
+        do {
+            newMetadata = try dbManager.recordSuccessfulUpload(
+                metadata,
+                uploadedOcId: uploadedOcId,
+                etag: etag,
+                modificationDate: newContentModificationDate ?? date ?? metadata.date,
+                size: size
+            )
+        } catch {
+            logger.error("Could not record the completed upload.", [.item: ocId, .error: error])
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
 
+        let currentParentItemIdentifier = newMetadata.serverUrl == metadata.serverUrl
+            ? parentItemIdentifier
+            : dbManager.parentItemIdentifierFromMetadata(newMetadata) ?? parentItemIdentifier
         let modifiedItem = await Item(
             metadata: newMetadata,
-            parentItemIdentifier: parentItemIdentifier,
+            parentItemIdentifier: currentParentItemIdentifier,
             account: account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,

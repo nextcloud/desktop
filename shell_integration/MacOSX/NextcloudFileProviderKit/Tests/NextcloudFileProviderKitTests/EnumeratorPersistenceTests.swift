@@ -232,8 +232,9 @@ struct EnumeratorPersistenceTests {
         let manager = manager
         remote.enumerateHandler = {
             // The in-flight read still returns file-v1 after the upload completes locally.
-            _ = manager.recordSuccessfulUpload(
+            _ = try? manager.recordSuccessfulUpload(
                 pending,
+                uploadedOcId: pending.ocId,
                 etag: "uploaded-etag",
                 modificationDate: pending.date,
                 size: pending.size
@@ -406,6 +407,184 @@ struct EnumeratorPersistenceTests {
         } else {
             #expect(result.changes?.isEmpty == true)
         }
+    }
+
+    @Test func completedUploadUpdatesTheExistingRow() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        var pinned = original
+        pinned.keepDownloaded = true
+        manager.addItemMetadata(pinned)
+        file.versionIdentifier = "file-v2"
+        let contents = Data("New uploaded content".utf8)
+        let modifiedAt = Date(timeIntervalSince1970: 1_700_000_000.125)
+        try await manager.rejectMetadataWriteForTesting(.insert, size: Int64(contents.count))
+        var reads: [EnumerateDepth] = []
+        remote.enumerateCallHandler = { [file] path, depth, _, _, _, _, _, _ in
+            if path == file.remotePath {
+                reads.append(depth)
+            }
+        }
+
+        let (reported, error) = try await uploadEdit(metadata: pinned, contents: contents, modifiedAt: modifiedAt)
+
+        #expect(error == nil)
+        #expect(reads.isEmpty)
+        #expect(remote.uploadOperationCount == 1)
+        #expect(file.data == contents)
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(stored.etag == "file-v2")
+        #expect(stored.fileProviderContentVersion == "file-v2")
+        #expect(stored.size == Int64(contents.count))
+        #expect(stored.date == modifiedAt)
+        #expect(stored.syncTime > original.syncTime)
+        #expect(stored.keepDownloaded)
+        #expect(stored.uploaded)
+        #expect(stored.downloaded)
+        #expect(stored.status == Status.normal.rawValue)
+        #expect(reported?.metadata == stored)
+    }
+
+    @Test(arguments: [nil, "", "W/\"file-v2\""] as [String?])
+    func uploadWithoutUsableETagLeavesThePreviousMetadataIntact(responseETag: String?) async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        let contents = Data("Uploaded without a usable response ETag".utf8)
+        remote.omitUploadETag = responseETag == nil
+        file.versionIdentifier = responseETag ?? "file-v2"
+        var readUploadedFile = false
+        remote.enumerateCallHandler = { [file] path, _, _, _, _, _, _, _ in
+            if path == file.remotePath {
+                readUploadedFile = true
+            }
+        }
+
+        let (reported, error) = try await uploadEdit(metadata: original, contents: contents, modifiedAt: Date())
+
+        #expect(reported == nil)
+        #expect(error as? NSFileProviderError == NSFileProviderError(.cannotSynchronize))
+        #expect(!readUploadedFile)
+        #expect(remote.uploadOperationCount == 1)
+        #expect(file.data == contents)
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(stored.etag == original.etag)
+        #expect(stored.fileProviderContentVersion == original.fileProviderContentVersion)
+        #expect(stored.size == original.size)
+        #expect(stored.date == original.date)
+        #expect(stored.syncTime == original.syncTime)
+        #expect(stored.status == Status.uploadError.rawValue)
+        #expect(stored.hasPendingUpload)
+    }
+
+    @Test func failedCompletionUpdateReturnsAnErrorWithoutPublishingPartOfTheUpload() async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        let contents = Data("On the server despite a failed database write".utf8)
+        file.versionIdentifier = "file-v2"
+        try await manager.rejectMetadataWriteForTesting(.update, size: Int64(contents.count))
+
+        let (reported, error) = try await uploadEdit(metadata: original, contents: contents, modifiedAt: Date())
+
+        #expect(reported == nil)
+        #expect(error as? NSFileProviderError == NSFileProviderError(.cannotSynchronize))
+        #expect(remote.uploadOperationCount == 1)
+        #expect(file.data == contents)
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(stored.etag == original.etag)
+        #expect(stored.size == original.size)
+        #expect(stored.date == original.date)
+        #expect(stored.syncTime == original.syncTime)
+        #expect(stored.hasPendingUpload)
+    }
+
+    @Test(arguments: [true, false])
+    func uploadCompletesAfterParentRenameOnlyWithMatchingIdentity(matchesIdentity: Bool) async throws {
+        var original = try #require(manager.itemMetadata(ocId: file.identifier))
+        original.fileId = "42"
+        manager.addItemMetadata(original)
+        let originalOcId = original.ocId
+        let oldParentPath = folder.remotePath
+        let renamedParentPath = account.davFilesUrl + "/renamed-folder"
+        let contents = Data("Uploaded before parent rename".utf8)
+        file.versionIdentifier = "file-v2"
+        if !matchesIdentity {
+            file.identifier = "replacement-file"
+        }
+        remote.uploadCompletionHandler = { [weak remote, manager, account] in
+            guard let remote else { return }
+            let (_, _, moveError) = await remote.move(
+                remotePathSource: oldParentPath,
+                remotePathDestination: renamedParentPath,
+                overwrite: false,
+                account: account,
+                options: .init(),
+                taskHandler: { _ in }
+            )
+            #expect(moveError == .success)
+            let read = await Enumerator.readServerUrl(
+                account.davFilesUrl,
+                account: account,
+                remoteInterface: remote,
+                dbManager: manager,
+                log: FileProviderLogMock()
+            )
+            #expect(read.error == nil)
+            #expect(manager.itemMetadata(ocId: originalOcId)?.serverUrl == renamedParentPath)
+            #expect(manager.itemMetadata(ocId: originalOcId)?.status == Status.uploading.rawValue)
+        }
+
+        let (reported, error) = try await uploadEdit(metadata: original, contents: contents, modifiedAt: Date())
+
+        #expect(remote.uploadOperationCount == 1)
+        #expect(file.data == contents)
+        let stored = try #require(manager.itemMetadata(ocId: original.ocId))
+        #expect(stored.serverUrl == renamedParentPath)
+        if matchesIdentity {
+            #expect(error == nil)
+            #expect(reported?.metadata == stored)
+            #expect(reported?.parentItemIdentifier == NSFileProviderItemIdentifier(folder.identifier))
+            #expect(stored.etag == "file-v2")
+            #expect(stored.size == Int64(contents.count))
+            #expect(stored.status == Status.normal.rawValue)
+            #expect(stored.uploaded)
+        } else {
+            #expect(error as? NSFileProviderError == NSFileProviderError(.cannotSynchronize))
+            #expect(reported == nil)
+            #expect(stored.etag == original.etag)
+            #expect(stored.size == original.size)
+            #expect(stored.hasPendingUpload)
+        }
+    }
+
+    private func uploadEdit(
+        metadata: SendableItemMetadata,
+        contents: Data,
+        modifiedAt: Date
+    ) async throws -> (Item?, Error?) {
+        let parent = NSFileProviderItemIdentifier(folder.identifier)
+        let item = Item(
+            metadata: metadata,
+            parentItemIdentifier: parent,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager
+        )
+        var edited = metadata
+        edited.date = modifiedAt
+        let target = Item(
+            metadata: edited,
+            parentItemIdentifier: parent,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager
+        )
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: url) }
+        try contents.write(to: url)
+        return await item.modify(
+            itemTarget: target,
+            baseVersion: item.itemVersion,
+            changedFields: [.contents, .contentModificationDate],
+            contents: url,
+            dbManager: manager
+        )
     }
 
     private func readFile() async -> RemoteReadResult {

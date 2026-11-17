@@ -70,6 +70,21 @@ extension FilesDatabaseManager {
         }
     }
 
+    enum MetadataWriteOperation: String {
+        case insert = "INSERT"
+        case update = "UPDATE"
+    }
+
+    func rejectMetadataWriteForTesting(_ operation: MetadataWriteOperation, size: Int64) async throws {
+        try await writer.write { db in
+            try db.execute(sql: """
+                CREATE TEMP TRIGGER audit_fail_uploaded_size BEFORE \(operation.rawValue) ON itemMetadata
+                WHEN NEW.size = \(size)
+                BEGIN SELECT RAISE(ABORT, 'Injected completion write failure'); END
+                """)
+        }
+    }
+
     /// Reject metadata inserts and updates while keeping reads and change delivery available.
     func setItemMetadataWriteFailureForTesting(_ enabled: Bool) throws {
         try writer.write { db in
