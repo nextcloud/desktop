@@ -56,10 +56,14 @@ Item {
 
             AssistantMessageText {
                 id: messageTextItem
+                assistantController: root.assistantController
                 text: root.messageText
                 visible: root.messageText.length > 0
                 textColor: root.isAssistantMessage
                     ? Style.wizardPrimaryText
+                    : Style.wizardSelectedText
+                linkColor: root.isAssistantMessage
+                    ? Style.wizardRadioAccent
                     : Style.wizardSelectedText
                 Layout.fillWidth: true
                 Layout.minimumWidth: 0

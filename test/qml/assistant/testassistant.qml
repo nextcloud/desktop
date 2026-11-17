@@ -104,6 +104,7 @@ Item {
     Component {
         id: messageTextComponent
         Assistant.AssistantMessageText {
+            assistantController: assistantTestSetup.controller
             width: 300
             height: implicitHeight
             textColor: Style.wizardPrimaryText
@@ -291,6 +292,44 @@ Item {
             mouseMove(textItem, plainPosition.x + plainPosition.width / 2, plainPosition.y + plainPosition.height / 2)
             tryCompare(textItem, "hoveredLink", "")
             compare(hover.cursorShape, Qt.IBeamCursor)
+        }
+
+        function test_messageLinksUseBubbleColors_data() {
+            return [
+                { tag: "own-markdown", role: "user", markdown: true },
+                { tag: "own-url", role: "user", markdown: false },
+                { tag: "assistant-markdown", role: "assistant", markdown: true },
+                { tag: "assistant-url", role: "assistant", markdown: false }
+            ]
+        }
+
+        function test_messageLinksUseBubbleColors(data) {
+            failOnWarning(/ReferenceError:|TypeError:|Binding loop/)
+            const url = "https://example.test/ticket#comment"
+            const label = data.markdown ? "Ticket" : url
+            createdObject = messageDelegateComponent.createObject(testRoot, {
+                messageRole: data.role,
+                messageText: (data.markdown ? "[" + label + "](" + url + ")" : url) + " plain text"
+            })
+            verify(createdObject !== null)
+            const textItem = findChild(createdObject, "assistantMessageText")
+            const expectedColor = data.role === "user" ? Style.wizardSelectedText : Style.wizardRadioAccent
+            textItem.select(0, label.length)
+            tryCompare(textItem.cursorSelection, "color", expectedColor)
+            verify(textItem.cursorSelection.font.underline)
+            compare(textItem.selectedText, label)
+            textItem.deselect()
+            const linkPosition = textItem.positionToRectangle(2)
+            compare(textItem.linkAt(linkPosition.x, linkPosition.y + linkPosition.height / 2), url)
+            compare(textItem.getText(0, textItem.length), label + " plain text")
+
+            createdObject.messageRole = data.role === "user" ? "assistant" : "user"
+            textItem.select(0, label.length)
+            tryCompare(textItem.cursorSelection, "color", data.role === "user" ? Style.wizardRadioAccent : Style.wizardSelectedText)
+            textItem.deselect()
+            createdObject.messageText = "No link here"
+            tryCompare(textItem, "length", "No link here".length)
+            compare(textItem.getText(0, textItem.length), "No link here")
         }
 
         function test_longConversationScrollsWithoutMovingTheComposer() {

@@ -5,6 +5,7 @@
 
 import QtQuick
 import QtQuick.Controls.Basic
+import com.nextcloud.desktopclient as NC
 import Style
 
 Item {
@@ -13,9 +14,18 @@ Item {
 
     required property string text
     required property color textColor
+    required property NC.AssistantController assistantController
+    property color linkColor: Style.wizardRadioAccent
     property alias textItem: messageText
 
     signal linkActivated(string link)
+
+    function updateLinkStyle() {
+        root.assistantController.styleChatLinks(messageText.textDocument, root.linkColor)
+    }
+
+    onLinkColorChanged: Qt.callLater(root.updateLinkStyle)
+    Component.onCompleted: Qt.callLater(root.updateLinkStyle)
 
     implicitWidth: 0
     implicitHeight: messageText.implicitHeight + (horizontalBar.visible ? horizontalBar.height : 0)
@@ -58,6 +68,7 @@ Item {
             textFormat: Text.MarkdownText
             readOnly: true
             selectByMouse: true
+            onTextChanged: Qt.callLater(root.updateLinkStyle)
             onLinkActivated: link => root.linkActivated(link)
 
             HoverHandler {

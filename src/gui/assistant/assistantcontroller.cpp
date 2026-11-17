@@ -10,6 +10,7 @@
 #include <QHash>
 #include <QRegularExpression>
 #include <QTextBlock>
+#include <QTextCursor>
 #include <QTextDocument>
 #include <QTextFragment>
 
@@ -197,6 +198,40 @@ QUrl AssistantController::chatLinkUrl(const QString &link) const
         return {};
     }
     return url;
+}
+
+void AssistantController::styleChatLinks(QQuickTextDocument *document, const QColor &color) const
+{
+    if (!document || !document->textDocument() || !color.isValid()) {
+        return;
+    }
+    const auto textDocument = document->textDocument();
+    auto links = QList<QTextCursor>{};
+    for (auto block = textDocument->begin(); block.isValid(); block = block.next()) {
+        for (auto it = block.begin(); !it.atEnd(); ++it) {
+            const auto fragment = it.fragment();
+            const auto format = fragment.charFormat();
+            if (!format.isAnchor() || format.anchorHref().isEmpty() || (format.foreground().color() == color && format.fontUnderline())) {
+                continue;
+            }
+            auto cursor = QTextCursor{textDocument};
+            cursor.setPosition(fragment.position());
+            cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
+            links.append(cursor);
+        }
+    }
+    if (links.isEmpty()) {
+        return;
+    }
+    auto format = QTextCharFormat{};
+    format.setForeground(color);
+    format.setFontUnderline(true);
+    auto edit = QTextCursor{textDocument};
+    edit.beginEditBlock();
+    for (auto &link : links) {
+        link.mergeCharFormat(format);
+    }
+    edit.endEditBlock();
 }
 
 AssistantController::AssistantController(const AccountStatePtr &accountState, QObject *parent)
