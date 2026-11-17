@@ -547,6 +547,28 @@ public final class FilesDatabaseManager: Sendable {
         return deletedMetadatas
     }
 
+    /// Follow a server rename so a failed upload can retry at the new address.
+    private func relocatedFailedUpload(
+        _ existing: ItemMetadataRecord,
+        to incoming: SendableItemMetadata
+    ) -> SendableItemMetadata? {
+        guard existing.status == Status.uploadError.rawValue,
+              existing.hasPendingUpload,
+              existing.account == incoming.account,
+              !existing.directory,
+              !incoming.directory,
+              !existing.hasSameLocation(as: incoming)
+        else { return nil }
+
+        var relocated = existing
+        relocated.updateLocation(serverUrl: incoming.serverUrl, fileName: incoming.fileName)
+        relocated.fileNameView = incoming.fileNameView
+        relocated.name = incoming.name
+        relocated.path = incoming.path
+        relocated.syncTime = Date()
+        return relocated.metadata
+    }
+
     private func processItemMetadatasToUpdate(existingMetadatas: [ItemMetadataRecord], updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool, in db: Database) throws -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
@@ -604,7 +626,10 @@ public final class FilesDatabaseManager: Sendable {
 
             } else {
                 // The listing can include a pending file excluded from the uploaded children query.
-                if try itemMetadata(ocId: updatedMetadata.ocId, in: db)?.hasPendingUpload == true {
+                if let existing = try itemMetadata(ocId: updatedMetadata.ocId, in: db), existing.hasPendingUpload {
+                    if let relocated = relocatedFailedUpload(existing, to: updatedMetadata) {
+                        returningUpdatedMetadatas.append(relocated)
+                    }
                     continue
                 }
 
@@ -854,14 +879,15 @@ public final class FilesDatabaseManager: Sendable {
                     let metadata: SendableItemMetadata
                     let changes: ChangeSet
                     if let existing = try self.itemMetadata(ocId: received.ocId, in: db) {
-                        if existing.hasPendingUpload {
+                        let relocated = self.relocatedFailedUpload(existing, to: received)
+                        if existing.hasPendingUpload, relocated == nil {
                             return (existing.metadata, ChangeSet())
                         }
                         // An upload or lock change can finish while PROPFIND is in flight.
                         guard existing.syncTime <= readStartedAt else {
                             throw NKError.staleRemoteRead
                         }
-                        metadata = RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
+                        metadata = relocated ?? RemoteMetadataMerger.merge(received, preservingLocalStateFrom: existing)
                         changes = ChangeSet(updated: [metadata])
                     } else {
                         var newMetadata = received
@@ -870,7 +896,10 @@ public final class FilesDatabaseManager: Sendable {
                         changes = ChangeSet(created: [metadata])
                     }
 
-                    prepared = (metadata, changes)
+                    // File Provider can retry a failed upload at the reported address once it is persisted.
+                    if !metadata.hasPendingUpload {
+                        prepared = (metadata, changes)
+                    }
                     try self.insertItemMetadata(metadata, in: db)
                     // Progress can be cancelled before its handler cancels the Swift task.
                     guard !isCancelled() else { throw CancellationError() }
@@ -993,6 +1022,10 @@ public final class FilesDatabaseManager: Sendable {
                 // A listing describes the server copy while the local edit is still pending.
                 if existing.hasPendingUpload {
                     toWrite = existing.metadata
+                    if let relocated = relocatedFailedUpload(existing, to: metadata) {
+                        try insertItemMetadata(relocated, in: db)
+                        toWrite = relocated
+                    }
                     return
                 }
 

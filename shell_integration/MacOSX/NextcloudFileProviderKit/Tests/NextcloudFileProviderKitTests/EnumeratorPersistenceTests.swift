@@ -275,6 +275,92 @@ struct EnumeratorPersistenceTests {
         #expect(manager.itemMetadata(ocId: file.identifier)?.etag == "server-after-conflict")
     }
 
+    enum RenameDiscovery: CaseIterable {
+        case singleItem
+        case folderChanges
+        case folderPage
+    }
+
+    @Test(arguments: RenameDiscovery.allCases)
+    func remoteRenamePreservesFailedUpload(discovery: RenameDiscovery) async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        let targetBeforeRename = Item(
+            metadata: original,
+            parentItemIdentifier: .init(folder.identifier),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager
+        )
+        var pending = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        pending.chunkUploadId = "pending-chunks"
+        manager.addItemMetadata(pending)
+        manager.recordUploadFailure(
+            ocId: file.identifier,
+            errorDescription: "Not Found",
+            staleLockToken: nil,
+            serverVersionConflict: false
+        )
+        file.name = "renamed.txt"
+        file.remotePath = folder.remotePath + "/" + file.name
+        file.versionIdentifier = "server-etag"
+
+        let result: RemoteReadResult
+        switch discovery {
+        case .singleItem:
+            result = await readFile()
+        case .folderChanges:
+            result = await readFolder()
+        case .folderPage:
+            result = await Enumerator.readServerUrl(
+                folder.remotePath,
+                pageSettings: (page: nil, index: 0, size: 10),
+                account: account,
+                remoteInterface: remote,
+                dbManager: manager,
+                log: FileProviderLogMock()
+            )
+        }
+
+        #expect(result.error == nil)
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(stored.remotePath() == file.remotePath)
+        #expect(stored.status == Status.uploadError.rawValue)
+        #expect(stored.sessionError == "Not Found")
+        #expect(stored.chunkUploadId == pending.chunkUploadId)
+        #expect(stored.etag == original.etag)
+        #expect(!stored.uploaded)
+        if discovery == .folderPage {
+            #expect(result.metadatas?.first { $0.ocId == file.identifier } == stored)
+        } else {
+            #expect(result.changes?.created.isEmpty == true)
+            #expect(result.changes?.updated == [stored])
+        }
+
+        let currentItem = Item(
+            metadata: stored,
+            parentItemIdentifier: .init(folder.identifier),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager
+        )
+        let edit = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let contents = Data("Retry after the server rename".utf8)
+        try contents.write(to: edit)
+        defer { try? FileManager.default.removeItem(at: edit) }
+
+        let (modified, error) = await currentItem.modify(
+            itemTarget: targetBeforeRename,
+            changedFields: [.contents],
+            contents: edit,
+            dbManager: manager
+        )
+
+        #expect(error == nil)
+        #expect(modified?.metadata.remotePath() == file.remotePath)
+        #expect(file.data == contents)
+        #expect(folder.children.count == 1)
+    }
+
     private func readFile() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             file.remotePath,

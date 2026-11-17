@@ -479,7 +479,13 @@ public extension Item {
             return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
-        let newParentItemIdentifier = itemTarget.parentItemIdentifier
+        // A retry may still carry the item snapshot from before a server-side rename.
+        let retryingFailedUpload = modifiedItem.metadata.hasPendingUpload
+            && modifiedItem.metadata.status == Status.uploadError.rawValue
+        let newParentItemIdentifier = retryingFailedUpload && !changedFields.contains(.parentItemIdentifier)
+            ? modifiedItem.parentItemIdentifier : itemTarget.parentItemIdentifier
+        let destinationFilename = retryingFailedUpload && !changedFields.contains(.filename)
+            ? modifiedItem.filename : itemTarget.filename
         let isFolder = modifiedItem.contentType.conforms(to: .directory)
         // Bundles/packages were short-circuited at the top of this function, so anything that
         // makes it this far as a folder is a regular directory.
@@ -510,7 +516,7 @@ public extension Item {
             newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
-        let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
+        let newServerUrlFileName = newParentItemRemoteUrl + "/" + destinationFilename
         let destinationRelativePath = account.filesRootRelativePath(for: newServerUrlFileName)
         let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
