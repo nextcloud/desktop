@@ -20,6 +20,8 @@
 #include <QJsonObject>
 #include <QQmlContext>
 #include <QQmlEngine>
+#include <QQuickWindow>
+#include <QTest>
 #include <QtQuickTest/quicktest.h>
 
 #include <memory>
@@ -191,6 +193,14 @@ public:
         _controller = std::make_unique<OCC::AssistantController>(_accountState, _client, nullptr);
         Q_EMIT controllerChanged();
         Q_EMIT clientStateChanged();
+    }
+
+    Q_INVOKABLE void keyClickInWindow(QQuickWindow *window, int key, int modifiers)
+    {
+        if (!window) {
+            return;
+        }
+        QTest::keyClick(window, static_cast<Qt::Key>(key), Qt::KeyboardModifiers(modifiers));
     }
 
     Q_INVOKABLE void completeChatLoad()

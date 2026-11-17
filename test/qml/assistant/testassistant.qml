@@ -225,9 +225,10 @@ Item {
             window.requestActivate()
             input.forceActiveFocus(Qt.TabFocusReason)
             tryCompare(input, "activeFocus", true)
-            keyClick(Qt.Key_Tab)
+            compare(input.KeyNavigation.tab, picker)
+            assistantTestSetup.keyClickInWindow(window, Qt.Key_Tab, Qt.NoModifier)
             tryCompare(picker, "activeFocus", true)
-            keyClick(Qt.Key_Tab, Qt.ShiftModifier)
+            assistantTestSetup.keyClickInWindow(window, Qt.Key_Tab, Qt.ShiftModifier)
             tryCompare(input, "activeFocus", true)
         }
 
