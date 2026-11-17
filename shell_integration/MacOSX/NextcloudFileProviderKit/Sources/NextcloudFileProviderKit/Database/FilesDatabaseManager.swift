@@ -550,8 +550,13 @@ public final class FilesDatabaseManager: Sendable {
     /// Follow a server rename so a failed upload can retry at the new address.
     private func relocatedFailedUpload(
         _ existing: ItemMetadataRecord,
-        to incoming: SendableItemMetadata
+        to incoming: SendableItemMetadata,
+        readStartedAt: Date? = nil
     ) -> SendableItemMetadata? {
+        if let readStartedAt, existing.syncTime > readStartedAt {
+            return nil
+        }
+
         guard existing.status == Status.uploadError.rawValue,
               existing.hasPendingUpload,
               existing.account == incoming.account,
@@ -569,7 +574,13 @@ public final class FilesDatabaseManager: Sendable {
         return relocated.metadata
     }
 
-    private func processItemMetadatasToUpdate(existingMetadatas: [ItemMetadataRecord], updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool, in db: Database) throws -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
+    private func processItemMetadatasToUpdate(
+        existingMetadatas: [ItemMetadataRecord],
+        updatedMetadatas: [SendableItemMetadata],
+        keepExistingDownloadState: Bool,
+        readStartedAt: Date?,
+        in db: Database
+    ) throws -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
@@ -627,7 +638,7 @@ public final class FilesDatabaseManager: Sendable {
             } else {
                 // The listing can include a pending file excluded from the uploaded children query.
                 if let existing = try itemMetadata(ocId: updatedMetadata.ocId, in: db), existing.hasPendingUpload {
-                    if let relocated = relocatedFailedUpload(existing, to: updatedMetadata) {
+                    if let relocated = relocatedFailedUpload(existing, to: updatedMetadata, readStartedAt: readStartedAt) {
                         returningUpdatedMetadatas.append(relocated)
                     }
                     continue
@@ -660,7 +671,8 @@ public final class FilesDatabaseManager: Sendable {
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
-        preserveDeletedTarget: Bool = false
+        preserveDeletedTarget: Bool = false,
+        readStartedAt: Date? = nil
     ) -> ChangeSet? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
@@ -708,6 +720,7 @@ public final class FilesDatabaseManager: Sendable {
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas,
                 keepExistingDownloadState: keepExistingDownloadState,
+                readStartedAt: readStartedAt,
                 in: db
             )
 
@@ -1012,8 +1025,14 @@ public final class FilesDatabaseManager: Sendable {
     ///     and pre-set `metadata.visitedDirectory = true`, so the visit is
     ///     recorded rather than overwritten by a stale `false` from the DB.
     ///
+    ///   - readStartedAt: The start of the server request, used to avoid restoring an older path for a failed upload.
+    ///
     @discardableResult
-    public func addItemMetadataPreservingLocalState(_ metadata: SendableItemMetadata, preserveVisitedDirectory: Bool = true) -> SendableItemMetadata {
+    public func addItemMetadataPreservingLocalState(
+        _ metadata: SendableItemMetadata,
+        preserveVisitedDirectory: Bool = true,
+        readStartedAt: Date? = nil
+    ) -> SendableItemMetadata {
         var toWrite = metadata
 
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
@@ -1022,7 +1041,7 @@ public final class FilesDatabaseManager: Sendable {
                 // A listing describes the server copy while the local edit is still pending.
                 if existing.hasPendingUpload {
                     toWrite = existing.metadata
-                    if let relocated = relocatedFailedUpload(existing, to: metadata) {
+                    if let relocated = relocatedFailedUpload(existing, to: metadata, readStartedAt: readStartedAt) {
                         try insertItemMetadata(relocated, in: db)
                         toWrite = relocated
                     }

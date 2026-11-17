@@ -6,7 +6,11 @@ import NextcloudKit
 
 extension Enumerator {
     static func handlePagedReadResults(
-        files: [NKFile], pageIndex: Int, dbManager: FilesDatabaseManager, log: any FileProviderLogging
+        files: [NKFile],
+        pageIndex: Int,
+        dbManager: FilesDatabaseManager,
+        readStartedAt: Date? = nil,
+        log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
         // First PROPFIND contains the target item, but we do not want to report this in the
         // retrieved metadatas (the enumeration observers don't expect you to enumerate the
@@ -22,9 +26,13 @@ extension Enumerator {
                 // preservation of `visitedDirectory` so the just-set `true`
                 // is not overwritten by the existing row's value.
                 metadata.visitedDirectory = true
-                dbManager.addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: false)
+                dbManager.addItemMetadataPreservingLocalState(
+                    metadata,
+                    preserveVisitedDirectory: false,
+                    readStartedAt: readStartedAt
+                )
             } else {
-                dbManager.addItemMetadataPreservingLocalState(metadata)
+                dbManager.addItemMetadataPreservingLocalState(metadata, readStartedAt: readStartedAt)
             }
         }
 
@@ -65,7 +73,7 @@ extension Enumerator {
             convAccum += clock.now - convStart
 
             let dbStart = clock.now
-            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata))
+            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata, readStartedAt: readStartedAt))
             dbAccum += clock.now - dbStart
         }
 
@@ -91,6 +99,7 @@ extension Enumerator {
         files: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
+        readStartedAt: Date,
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -104,7 +113,13 @@ extension Enumerator {
         if let pageIndex {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
             let (metadatas, error) = await dbManager.perform { dbManager in
-                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+                handlePagedReadResults(
+                    files: files,
+                    pageIndex: pageIndex,
+                    dbManager: dbManager,
+                    readStartedAt: readStartedAt,
+                    log: log
+                )
             }
             return (metadatas, nil, error)
         }
@@ -157,7 +172,8 @@ extension Enumerator {
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
                 keepExistingDownloadState: true,
-                preserveDeletedTarget: preserveDeletedTarget
+                preserveDeletedTarget: preserveDeletedTarget,
+                readStartedAt: readStartedAt
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
@@ -340,6 +356,7 @@ extension Enumerator {
                 files: files,
                 pageIndex: pageSettings?.index,
                 preserveDeletedTarget: expectedDirectoryOcId != nil,
+                readStartedAt: readStartedAt,
                 log: logger.log
             )
 
@@ -351,7 +368,11 @@ extension Enumerator {
             )
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
+                files: files,
+                pageIndex: pageIndex,
+                dbManager: dbManager,
+                readStartedAt: readStartedAt,
+                log: log
             )
             return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
         } else {

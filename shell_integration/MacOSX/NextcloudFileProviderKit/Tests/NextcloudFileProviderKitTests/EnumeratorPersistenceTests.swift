@@ -361,6 +361,53 @@ struct EnumeratorPersistenceTests {
         #expect(folder.children.count == 1)
     }
 
+    @Test(arguments: [false, true])
+    func olderFolderListingKeepsRediscoveredUploadPath(paged: Bool) async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        _ = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        manager.recordUploadFailure(
+            ocId: file.identifier,
+            errorDescription: "Not Found",
+            staleLockToken: nil,
+            serverVersionConflict: false
+        )
+        var renamed = original
+        renamed.apply(fileName: "renamed.txt")
+        let newerMetadata = renamed
+        let manager = manager
+        remote.enumerateHandler = {
+            // A newer single-item response commits the rename while the folder read is in flight.
+            do {
+                _ = try await manager.reconcileItemMetadataFromRemoteRead(
+                    newerMetadata,
+                    readStartedAt: Date(),
+                    isCancelled: { false }
+                )
+            } catch {
+                Issue.record(error)
+            }
+        }
+
+        let result = await Enumerator.readServerUrl(
+            folder.remotePath,
+            pageSettings: paged ? (page: nil, index: 0, size: 10) : nil,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            log: FileProviderLogMock()
+        )
+
+        #expect(result.error == nil)
+        let stored = try #require(manager.itemMetadata(ocId: file.identifier))
+        #expect(stored.remotePath() == newerMetadata.remotePath())
+        #expect(stored.status == Status.uploadError.rawValue)
+        if paged {
+            #expect(result.metadatas?.first { $0.ocId == original.ocId } == stored)
+        } else {
+            #expect(result.changes?.isEmpty == true)
+        }
+    }
+
     private func readFile() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             file.remotePath,
