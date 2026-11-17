@@ -33,6 +33,11 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
         InstallScopeDlg.wxs
+        InstallScopeDlg_en-us.wxl
+        InstallScopeDlg_de-de.wxl
+        InstallScopeDlg_fr-fr.wxl
+        InstallScopeDlg_it-it.wxl
+        InstallScopeDlg_es-es.wxl
         gui/banner.bmp
         gui/dialog.bmp
     DESTINATION msi/)

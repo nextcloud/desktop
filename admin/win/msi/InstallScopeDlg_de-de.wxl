@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<!-- Texts of the installation scope wizard page (InstallScopeDlg.wxs) -->
+<WixLocalization Culture="de-de" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+    <String Id="NcInstallScopeDlgPerMachine">Für alle Benutzer dieses &amp;Computers installieren</String>
+    <String Id="NcInstallScopeDlgPerUser">Nur für &amp;mich installieren ([LogonUser])</String>
+    <String Id="NcInstallScopeDlgPerUserWarning">Mit dieser Option kann der Datei-Explorer bei Verwendung der selektiven Synchronisierung keine Synchronisierungsstatus-Symbole für Dateien und Ordner anzeigen. Virtuelle Dateien sind nicht betroffen.</String>
+</WixLocalization>
