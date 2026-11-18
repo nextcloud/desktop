@@ -126,18 +126,20 @@ QVector<ZipEntry> createDebugArchiveFileList()
 
 bool createDebugArchive(const QString &filename)
 {
-    const auto entries = createDebugArchiveFileList();
+    auto entries = createDebugArchiveFileList();
+    // An archive which overwrites a file in the log folder would otherwise read itself while it is written.
+    const auto destination = QFileInfo(filename).canonicalFilePath();
+    entries.removeIf([&destination](const ZipEntry &entry) {
+        return !destination.isEmpty() && QFileInfo(entry.localFilename).canonicalFilePath() == destination;
+    });
 
-    const auto tempDir = QDir::temp();
-    const auto tempFilePath = tempDir.filePath(QStringLiteral("nextcloud-debug-archive-temp.zip"));
-
-    KZip zip(tempFilePath);
+    // Write into the chosen file itself: the macOS sandbox grants access to that path only, so neither a temporary
+    // file next to it (KZip with a file name) nor a copy across volumes (QFile::rename()) can be created.
+    QFile archiveFile(filename);
+    KZip zip(&archiveFile);
 
     if (!zip.open(QIODevice::WriteOnly)) {
-        qWarning() << "Failed to open debug archive for writing:"
-                 << tempFilePath
-                 << "because of error:"
-                 << zip.errorString();
+        qWarning() << "Failed to open debug archive for writing:" << filename << "because of error:" << zip.errorString();
 
         QMessageBox::critical(
             nullptr,
@@ -183,41 +185,14 @@ bool createDebugArchive(const QString &filename)
     zip.writeData(buildInfo, buildInfo.size());
     zip.finishWriting(buildInfo.size());
 
-    zip.close();
-
-    QFile tempFile(tempFilePath);
-    if (!tempFile.exists()) {
-        qWarning() << "Temporary debug archive file does not exist:" << tempFilePath;
-        QMessageBox::critical(
-            nullptr,
-            QObject::tr("Failed to create debug archive"),
-            QObject::tr("Could not create debug archive in temporary location!"),
-            QMessageBox::Ok
-        );
-        return false;
-    }
-
-    if (QFile::exists(filename) && !QFile::remove(filename)) {
-        qWarning() << "Failed to remove existing file at destination:" << filename;
-        tempFile.remove();
-        QMessageBox::critical(
-            nullptr,
-            QObject::tr("Failed to create debug archive"),
-            QObject::tr("Could not remove existing file at destination!"),
-            QMessageBox::Ok
-        );
-        return false;
-    }
-
-    if (!tempFile.rename(filename)) {
-        qWarning() << "Failed to move debug archive from" << tempFilePath << "to" << filename;
-        tempFile.remove();
-        QMessageBox::critical(
-            nullptr,
-            QObject::tr("Failed to create debug archive"),
-            QObject::tr("Could not move debug archive to selected location!"),
-            QMessageBox::Ok
-        );
+    // KArchive ignores errors from closing a device it does not own, which flushes the last part of the archive.
+    if (!zip.close() || archiveFile.error() != QFileDevice::NoError) {
+        qWarning() << "Failed to write debug archive:" << filename << "because of error:" << zip.errorString() << archiveFile.errorString();
+        archiveFile.remove();
+        QMessageBox::critical(nullptr,
+                              QObject::tr("Failed to create debug archive"),
+                              QObject::tr("Could not create debug archive in selected location!"),
+                              QMessageBox::Ok);
         return false;
     }
 
