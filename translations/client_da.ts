@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Åbn i browser</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -5630,77 +5630,77 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
         <source>Lock File</source>
-        <translation type="unfinished"/>
+        <translation>Lås fil</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
         <source>Unlock File</source>
-        <translation type="unfinished"/>
+        <translation>Lås fil op</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
         <source>Share Options</source>
-        <translation type="unfinished"/>
+        <translation>Delingsmuligheder</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Åbn i browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
         <source>Copy Internal Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiér internt link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
         <source>File Actions</source>
-        <translation type="unfinished"/>
+        <translation>Filhandlinger</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
         <source>Leave This Share</source>
-        <translation type="unfinished"/>
+        <translation>Forlad denne deling</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
         <source>Apply Labels</source>
-        <translation type="unfinished"/>
+        <translation>Anvend etiketter</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
         <source>Resolve Conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Løs konflikt …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
         <source>Move and Rename …</source>
-        <translation type="unfinished"/>
+        <translation>Flyt og omdøb …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
         <source>Move, Rename and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flyt, omdøb og overfør …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
         <source>Delete Local Changes</source>
-        <translation type="unfinished"/>
+        <translation>Slet lokale ændringer</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
         <source>Move and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flyt og overfør …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
         <source>Copy Private Link to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiér privat link til udklipsholderen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
         <source>Send Private Link by Email …</source>
-        <translation type="unfinished"/>
+        <translation>Send privat link via e-mail …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
@@ -8603,7 +8603,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="109"/>
         <source>Make Always Available Locally</source>
-        <translation type="unfinished"/>
+        <translation>Gør altid tilgængelig lokalt</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="117"/>
@@ -8613,7 +8613,7 @@ Serveren svarede med fejl: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="119"/>
         <source>Free Up Local Space</source>
-        <translation type="unfinished"/>
+        <translation>Frigør lokal lagerplads</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="143"/>

@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>在瀏覽器中開啟</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -5631,77 +5631,77 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
         <source>Lock File</source>
-        <translation type="unfinished"/>
+        <translation>鎖定檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
         <source>Unlock File</source>
-        <translation type="unfinished"/>
+        <translation>解鎖檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
         <source>Share Options</source>
-        <translation type="unfinished"/>
+        <translation>分享選項</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>在瀏覽器中開啟</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
         <source>Copy Internal Link</source>
-        <translation type="unfinished"/>
+        <translation>複製內部連結</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
         <source>File Actions</source>
-        <translation type="unfinished"/>
+        <translation>檔案動作</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
         <source>Leave This Share</source>
-        <translation type="unfinished"/>
+        <translation>離開此分享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
         <source>Apply Labels</source>
-        <translation type="unfinished"/>
+        <translation>套用標籤</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
         <source>Resolve Conflict …</source>
-        <translation type="unfinished"/>
+        <translation>解決衝突⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
         <source>Move and Rename …</source>
-        <translation type="unfinished"/>
+        <translation>移動並重新命名⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
         <source>Move, Rename and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>移動、重新命名與上傳⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
         <source>Delete Local Changes</source>
-        <translation type="unfinished"/>
+        <translation>刪除本機變更</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
         <source>Move and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>移動與上傳⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
         <source>Copy Private Link to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>複製私人連結到剪貼簿</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
         <source>Send Private Link by Email …</source>
-        <translation type="unfinished"/>
+        <translation>透過電子郵件傳送私人連結⋯⋯</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
@@ -8604,7 +8604,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="109"/>
         <source>Make Always Available Locally</source>
-        <translation type="unfinished"/>
+        <translation>啟用一律可在本機使用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="117"/>
@@ -8614,7 +8614,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="119"/>
         <source>Free Up Local Space</source>
-        <translation type="unfinished"/>
+        <translation>釋放本機空間</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="143"/>

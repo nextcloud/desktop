@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -5629,77 +5629,77 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
         <source>Lock File</source>
-        <translation type="unfinished"/>
+        <translation>Trancar arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
         <source>Unlock File</source>
-        <translation type="unfinished"/>
+        <translation>Destrancar arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
         <source>Share Options</source>
-        <translation type="unfinished"/>
+        <translation>Opções de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
         <source>Copy Internal Link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link interno</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
         <source>File Actions</source>
-        <translation type="unfinished"/>
+        <translation>Ações de arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
         <source>Leave This Share</source>
-        <translation type="unfinished"/>
+        <translation>Deixar este compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
         <source>Apply Labels</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar rótulos</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
         <source>Resolve Conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflito …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
         <source>Move and Rename …</source>
-        <translation type="unfinished"/>
+        <translation>Mover e renomear …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
         <source>Move, Rename and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover, renomear e enviar …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
         <source>Delete Local Changes</source>
-        <translation type="unfinished"/>
+        <translation>Excluir alterações locais …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
         <source>Move and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover e enviar …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
         <source>Copy Private Link to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link privado para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
         <source>Send Private Link by Email …</source>
-        <translation type="unfinished"/>
+        <translation>Enviar link privado por e-mail …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
@@ -8612,7 +8612,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="119"/>
         <source>Free Up Local Space</source>
-        <translation type="unfinished"/>
+        <translation>Liberar espaço local</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="143"/>
