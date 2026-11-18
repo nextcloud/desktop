@@ -9,6 +9,8 @@
 #include <QPointer>
 #include <QWidget>
 
+class KArchive;
+
 namespace OCC {
 
 class IgnoreListEditor;
@@ -25,6 +27,7 @@ public:
     explicit AdvancedSettings(QWidget *parent = nullptr);
     ~AdvancedSettings() override;
     [[nodiscard]] QSize sizeHint() const override;
+    static void addDiagnosticCommandLineOptions(KArchive &archive);
 
 public Q_SLOTS:
     void slotStyleChanged();

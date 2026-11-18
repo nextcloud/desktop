@@ -110,6 +110,23 @@ target_link_libraries(SharingDialogTest PRIVATE nextcloudGuiSharing nextcloudGui
 nextcloud_add_test(PushNotifications)
 nextcloud_add_test(Theme)
 nextcloud_add_test(SettingsDialog)
+nextcloud_build_test(ApplicationDiagnostics)
+if(KF6DBusAddons_FOUND)
+    find_program(APPLICATION_DIAGNOSTICS_DBUS_RUN_SESSION dbus-run-session)
+endif()
+if(KF6DBusAddons_FOUND AND APPLICATION_DIAGNOSTICS_DBUS_RUN_SESSION)
+    add_test(
+        NAME
+        ApplicationDiagnosticsTest
+        COMMAND
+        "${APPLICATION_DIAGNOSTICS_DBUS_RUN_SESSION}"
+        --
+        $<TARGET_FILE:ApplicationDiagnosticsTest>
+    )
+else()
+    add_test(NAME ApplicationDiagnosticsTest COMMAND ApplicationDiagnosticsTest)
+endif()
+set_tests_properties(ApplicationDiagnosticsTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 nextcloud_add_test(IconUtils)
 nextcloud_add_test(CustomStateIcons)
 target_compile_definitions(CustomStateIconsTest PRIVATE NEXTCLOUD_SOURCE_DIR="${CMAKE_SOURCE_DIR}")

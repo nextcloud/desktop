@@ -277,6 +277,7 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
 
     parseOptions(arguments());
+    _startupCommandLineOptions = summarizeCommandLineOptions();
     //no need to waste time;
     if (_helpOnly || _versionOnly) {
         return;
@@ -983,7 +984,12 @@ void Application::setupLogging()
     qCInfo(lcApplication) << "Command-line options:" << diagnosticCommandLineOptions();
 }
 
-QStringList Application::diagnosticCommandLineOptions() const
+const QStringList &Application::diagnosticCommandLineOptions() const
+{
+    return _startupCommandLineOptions;
+}
+
+QStringList Application::summarizeCommandLineOptions() const
 {
     // Command-line values can contain credentials. Report only selected parsed flags.
     auto options = QStringList{};
