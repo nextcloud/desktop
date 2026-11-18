@@ -98,6 +98,15 @@ Item {
             tryCompare(activityList, "atYBeginning", false);
         }
 
+        function wheelTarget()
+        {
+            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
+            const x = activityListView.width / 2;
+            const y = activityListView.height / 2;
+            tryVerify(() => activityListView.indexAt(activityListView.contentX + x, activityListView.contentY + y) >= 0);
+            return Qt.point(x, y);
+        }
+
         function test_reopeningResetsViewport()
         {
             positionAtEnd();
@@ -149,23 +158,23 @@ Item {
 
         function test_mouseWheelScrollsActivityList()
         {
+            const target = wheelTarget();
             tryCompare(activityListView, "atYBeginning", true);
-            verify(waitForRendering(activityListView));
 
             const startY = activityListView.contentY;
-            mouseWheel(activityListView, activityListView.width / 2, activityListView.height / 2, 0, -120);
+            mouseWheel(activityListView, target.x, target.y, 0, -120);
             tryVerify(() => activityListView.contentY > startY);
         }
 
         function test_mouseWheelCancelsScrollToTopAtEnd()
         {
             positionAtEnd();
+            const target = wheelTarget();
             tryCompare(activityListView, "atYEnd", true);
-            verify(waitForRendering(activityListView));
 
             activityList.scrollToTop();
             compare(activityList.scrollingToTop, true);
-            mouseWheel(activityListView, activityListView.width / 2, activityListView.height / 2, 0, -120);
+            mouseWheel(activityListView, target.x, target.y, 0, -120);
             compare(activityList.scrollingToTop, false);
             tryCompare(activityListView, "atYEnd", true);
         }
