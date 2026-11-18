@@ -31,6 +31,11 @@ OcsJob::OcsJob(AccountPtr account)
     setIgnoreCredentialFailure(true);
 }
 
+void OcsJob::setHttpLoggingMetadataOnly()
+{
+    _request.setAttribute(HttpLogger::MetadataOnlyAttribute, true);
+}
+
 void OcsJob::setVerb(const QByteArray &verb)
 {
     _verb = verb;
@@ -39,7 +44,7 @@ void OcsJob::setVerb(const QByteArray &verb)
 void OcsJob::addParam(const QString &name, const QString &value)
 {
     if (name.compare("password"_L1, Qt::CaseInsensitive) == 0) {
-        _request.setAttribute(HttpLogger::MetadataOnlyAttribute, true);
+        setHttpLoggingMetadataOnly();
     }
     _params.emplaceBack(name, value);
 }

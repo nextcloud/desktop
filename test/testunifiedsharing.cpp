@@ -4,6 +4,7 @@
  */
 
 #include <QMetaMethod>
+#include <QScopeGuard>
 #include <QSignalSpy>
 #include <QTest>
 #include <QUrlQuery>
@@ -400,7 +401,17 @@ class TestUnifiedSharing : public QObject
     void requestsAreConfiguredBeforeTheyStart()
     {
         FakeFolder fakeFolder{{}, {}, {}, false};
+        static thread_local auto traceLines = QStringList{};
+        const auto previousHandler = qInstallMessageHandler([](QtMsgType, const QMessageLogContext &context, const QString &message) {
+            if (qstrcmp(context.category, "sync.httplogger") == 0) {
+                traceLines.append(message);
+            }
+        });
+        const auto restoreLogHandler = qScopeGuard([previousHandler] {
+            qInstallMessageHandler(previousHandler);
+        });
         auto requestCount = 0;
+        auto requestId = QByteArray{};
         auto requestPath = QString{};
         auto requestVerb = QByteArray{};
         auto requestQuery = QList<QPair<QString, QString>>{};
@@ -409,6 +420,7 @@ class TestUnifiedSharing : public QObject
 
         fakeFolder.setServerOverride([&](FakeQNAM::Operation operation, const QNetworkRequest &request, QIODevice *outgoingData) {
             ++requestCount;
+            requestId = request.rawHeader("X-Request-ID");
             requestPath = request.url().path();
             requestQuery = QUrlQuery{request.url()}.queryItems();
             requestQuery.removeAll({"format"_L1, "json"_L1});
@@ -474,6 +486,7 @@ class TestUnifiedSharing : public QObject
                                        const QString &expectedPath,
                                        QList<QPair<QString, QString>> expectedQuery = {},
                                        const QJsonObject &expectedBody = {}) {
+            traceLines.clear();
             QSignalSpy finishedSpy{job, &UnifiedSharingRequest::jobFinished};
             job->start();
             QVERIFY(finishedSpy.wait());
@@ -485,6 +498,15 @@ class TestUnifiedSharing : public QObject
             if (!expectedBody.isEmpty()) {
                 QCOMPARE(requestContentType, "application/json");
             }
+
+            QVERIFY(!requestId.isEmpty());
+            const auto traceId = QString::fromUtf8(requestId);
+            const auto verb = QString::fromUtf8(expectedVerb);
+            const auto expectedTrace = QStringList{
+                u"\"%1: Request: %2\""_s.arg(traceId, verb),
+                u"\"%1: Response: %2 200\""_s.arg(traceId, verb),
+            };
+            QCOMPARE(traceLines, expectedTrace);
         };
 
         verifyRequest(new SearchRecipientsJob{account, "ali"_L1, 10, 20, {"user-class"_L1, "group-class"_L1}, "share-1"_L1},

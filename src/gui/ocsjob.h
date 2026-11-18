@@ -46,6 +46,8 @@ class OcsJob : public AbstractNetworkJob
 protected:
     explicit OcsJob(AccountPtr account);
 
+    void setHttpLoggingMetadataOnly();
+
     /**
      * Set the verb for the job
      *

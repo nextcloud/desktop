@@ -173,13 +173,19 @@ void AbstractNetworkJob::onTimedOut()
 
 void AbstractNetworkJob::slotFinished()
 {
+    const auto metadataOnly = HttpLogger::isMetadataOnly(_reply->request());
+    const auto requestContext = metadataOnly ? HttpLogger::requestLogContext(*_reply) : QString{};
+    const auto errorDetailsForLog = [this, metadataOnly, &requestContext] {
+        return metadataOnly ? requestContext : errorString();
+    };
+
     if (_reply->error() == QNetworkReply::TimeoutError) {
-        qCWarning(lcNetworkJob) << "TimeoutError"  << errorString();
+        qCWarning(lcNetworkJob) << "TimeoutError" << errorDetailsForLog();
         onTimedOut();
     }
 
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
-        qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
+        qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorDetailsForLog() << " : can be caused by a webserver wanting SSL client certificates";
     }
     // Qt doesn't yet transparently resend HTTP2 requests, do so here
     const auto maxHttp2Resends = 3;
@@ -188,13 +194,13 @@ void AbstractNetworkJob::slotFinished()
         && _reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()) {
 
         if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
-            qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
-                                    << _reply->request().url() << verb << _requestBody;
+            qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable" << HttpLogger::requestLogContext(*_reply) << verb
+                                    << _requestBody;
         } else if (_http2ResendCount >= maxHttp2Resends) {
-            qCWarning(lcNetworkJob) << "Not resending HTTP2 request, number of resends exhausted"
-                                    << _reply->request().url() << _http2ResendCount;
+            qCWarning(lcNetworkJob) << "Not resending HTTP2 request, number of resends exhausted" << HttpLogger::requestLogContext(*_reply)
+                                    << _http2ResendCount;
         } else {
-            qCInfo(lcNetworkJob) << "HTTP2 resending" << _reply->request().url();
+            qCInfo(lcNetworkJob) << "HTTP2 resending" << HttpLogger::requestLogContext(*_reply);
             _http2ResendCount++;
 
             if (_requestBody) {
@@ -225,9 +231,8 @@ void AbstractNetworkJob::slotFinished()
         }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
-            qCWarning(lcNetworkJob) << _reply->error() << errorString()
-                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-            if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
+            qCWarning(lcNetworkJob) << _reply->error() << errorDetailsForLog() << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            if (!metadataOnly && _reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
                 qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
             }
         }
@@ -276,7 +281,11 @@ void AbstractNetworkJob::slotFinished()
                 _redirectCount++;
 
                 // Create the redirected request and send it
-                qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
+                if (metadataOnly) {
+                    qCInfo(lcNetworkJob) << "Redirecting" << verb << requestContext;
+                } else {
+                    qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
+                }
                 if (_requestBody) {
                     if(!_requestBody->isOpen()) {
                         // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
@@ -288,9 +297,13 @@ void AbstractNetworkJob::slotFinished()
                 auto request = reply()->request();
 
                 if (!(requestedUrl.host() == redirectUrl.host() && requestedUrl.port() == redirectUrl.port())) {
-                    qCWarning(lcNetworkJob).nospace() << "redirect target mismatches origin, removing credentials"
-                        << " origin=" << requestedUrl.host() << ":" << requestedUrl.port()
-                        << " target=" << redirectUrl.host() << ":" << redirectUrl.port();
+                    if (metadataOnly) {
+                        qCWarning(lcNetworkJob) << "redirect target mismatches origin, removing credentials for" << requestContext;
+                    } else {
+                        qCWarning(lcNetworkJob).nospace()
+                            << "redirect target mismatches origin, removing credentials"
+                            << " origin=" << requestedUrl.host() << ":" << requestedUrl.port() << " target=" << redirectUrl.host() << ":" << redirectUrl.port();
+                    }
 
                     auto headers = request.headers();
                     headers.removeAll(QHttpHeaders::WellKnownHeader::Authorization);
@@ -315,7 +328,7 @@ void AbstractNetworkJob::slotFinished()
 
     bool discard = finished();
     if (discard) {
-        qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << path();
+        qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << (metadataOnly ? requestContext : path());
         deleteLater();
     }
 }
@@ -396,10 +409,15 @@ AbstractNetworkJob::~AbstractNetworkJob()
 
 void AbstractNetworkJob::start()
 {
+    const auto parentMetaObjectName = parent() ? QString::fromLatin1(parent()->metaObject()->className()) : QString{};
+    if (_reply && HttpLogger::isMetadataOnly(_reply->request())) {
+        qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << HttpLogger::requestLogContext(*_reply) << parentMetaObjectName;
+        return;
+    }
+
     const QUrl url = account()->url();
     const QString displayUrl = QStringLiteral("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
-    QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
     qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
@@ -466,11 +484,13 @@ QString errorMessage(const QString &baseError, const QByteArray &body)
 
 QString networkReplyErrorString(const QNetworkReply &reply)
 {
-    const auto base = reply.errorString();
     const auto httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    const auto httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-
-    qCWarning(lcNetworkJob) << "Network request error" << base << "HTTP status" << httpStatus << "httpReason" << httpReason;
+    if (HttpLogger::isMetadataOnly(reply.request())) {
+        qCWarning(lcNetworkJob) << "Network request error for" << HttpLogger::requestLogContext(reply) << "HTTP status" << httpStatus;
+    } else {
+        const auto httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+        qCWarning(lcNetworkJob) << "Network request error" << reply.errorString() << "HTTP status" << httpStatus << "httpReason" << httpReason;
+    }
 
     QString userFriendlyMessage;
     switch (httpStatus) {
@@ -563,7 +583,7 @@ void AbstractNetworkJob::retry()
     auto req = _reply->request();
     QUrl requestedUrl = req.url();
     QByteArray verb = HttpLogger::requestVerb(*_reply);
-    qCInfo(lcNetworkJob) << "Restarting" << verb << requestedUrl;
+    qCInfo(lcNetworkJob) << "Restarting" << verb << HttpLogger::requestLogContext(*_reply);
     if (_requestBody) {
         _requestBody->seek(0);
     }

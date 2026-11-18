@@ -9,9 +9,10 @@
 #include <QLoggingCategory>
 #include <QBuffer>
 
-namespace {
 using namespace Qt::StringLiterals;
 
+namespace
+{
 Q_LOGGING_CATEGORY(lcNetworkHttp, "sync.httplogger", QtWarningMsg)
 
 const qint64 PeekSize = 1024 * 1024;
@@ -87,8 +88,16 @@ void logHttp(const QByteArray &verb,
 }
 }
 
-
 namespace OCC {
+
+QString HttpLogger::requestLogContext(const QNetworkReply &reply)
+{
+    const auto request = reply.request();
+    if (isMetadataOnly(request)) {
+        return u"request ID %1"_s.arg(QString::fromLatin1(request.rawHeader(XRequestId())));
+    }
+    return reply.url().toString();
+}
 
 void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operation operation, QIODevice *device)
 {
@@ -96,7 +105,7 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
-    const auto metadataOnly = request.attribute(MetadataOnlyAttribute).toBool();
+    const auto metadataOnly = isMetadataOnly(request);
     const auto keys = request.rawHeaderList();
     QList<QNetworkReply::RawHeaderPair> header;
     header.reserve(keys.size());
