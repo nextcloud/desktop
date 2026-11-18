@@ -632,12 +632,17 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Use this to simulate server-side upload rejections (e.g. 404 path gone, 507 quota).
     public var uploadError: NKError?
 
+    public var uploadIdentifierOverride: String?
+
     /// When set, every delete call returns this error immediately without touching the mock tree.
     /// Use this to simulate an already-missing remote item.
     public var deleteError: NKError?
 
     /// The remote path supplied to the most recent delete call.
     public private(set) var lastDeleteRemotePath: String?
+
+    /// The source path of the most recent move request.
+    public private(set) var lastMoveRemotePathSource: String?
 
     /// When set, trash listings return this error without reading the mock trash tree.
     public var trashListingError: NKError?
@@ -897,7 +902,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             print("Updated item \(item.name)")
         } else {
             item = MockRemoteItem(
-                identifier: randomIdentifier(),
+                identifier: uploadIdentifierOverride ?? randomIdentifier(),
                 name: itemName,
                 remotePath: remotePath,
                 creationDate: creationDate ?? .init(),
@@ -1088,6 +1093,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, data: Data?, error: NKError) {
         print("Moving \(remotePathSource) to \(remotePathDestination)")
+        lastMoveRemotePathSource = remotePathSource
 
         let isTrashed = remotePathSource.hasPrefix(account.trashUrl)
         let isTrashing = remotePathDestination.hasPrefix(account.trashUrl)

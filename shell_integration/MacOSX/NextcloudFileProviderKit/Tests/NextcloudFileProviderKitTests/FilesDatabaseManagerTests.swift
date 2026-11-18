@@ -2354,4 +2354,84 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.lockTimeOut, extendedTimeout)
     }
+
+    // MARK: - Folder permissions from the parent listing
+
+    private func folder(ocId: String, fileName: String, permissions: String, etag: String = "folder-v1") -> SendableItemMetadata {
+        var metadata = SendableItemMetadata(ocId: ocId, fileName: fileName, account: Self.account)
+        metadata.directory = true
+        metadata.uploaded = true
+        metadata.permissions = permissions
+        metadata.etag = etag
+        metadata.date = Date(timeIntervalSince1970: 1_000_000)
+        return metadata
+    }
+
+    private func readRoot(listing children: SendableItemMetadata..., rootPermissions: String = "RGDNVCK") -> ChangeSet? {
+        let root = folder(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, fileName: "/", permissions: rootPermissions, etag: "root-v1")
+
+        return Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: Self.account.davFilesUrl,
+            updatedMetadatas: [root] + children,
+            keepExistingDownloadState: true
+        )
+    }
+
+    private func readFolder(_ target: SendableItemMetadata) -> ChangeSet? {
+        Self.dbManager.depth1ReadUpdateItemMetadatas(
+            account: Self.account.ncKitAccount,
+            serverUrl: Self.account.davFilesUrl + "/" + target.fileName,
+            updatedMetadatas: [target],
+            keepExistingDownloadState: true
+        )
+    }
+
+    ///
+    /// A mount point is listed by its parent without delete, rename and move, while its own read
+    /// reports its storage's permissions, so taking each read at face value flagged the folder as
+    /// changed on every scan of either.
+    ///
+    func testMountPointPermissionsFromTheParentListingSurviveItsOwnRead() {
+        let ocId = "mount-\(name)"
+        let fileName = "Team-\(name)"
+
+        _ = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+
+        let ownRead = readFolder(folder(ocId: ocId, fileName: fileName, permissions: "RMGDNVCK"))
+        XCTAssertFalse(
+            ownRead?.updated.contains { $0.ocId == ocId } ?? true,
+            "The folder's own read must not report it as changed when only its storage's permissions differ."
+        )
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.permissions, "RMGCK")
+
+        let rootReread = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+        XCTAssertFalse(
+            rootReread?.updated.contains { $0.ocId == ocId } ?? true,
+            "Re-reading the parent must not report the folder as changed either."
+        )
+    }
+
+    func testAChangedFolderIsStillReportedByItsOwnRead() {
+        let ocId = "changed-mount-\(name)"
+        let fileName = "Changed-\(name)"
+
+        _ = readRoot(listing: folder(ocId: ocId, fileName: fileName, permissions: "RMGCK"))
+
+        let ownRead = readFolder(folder(ocId: ocId, fileName: fileName, permissions: "RMGDNVCK", etag: "folder-v2"))
+        let reported = ownRead?.updated.first { $0.ocId == ocId }
+
+        XCTAssertNotNil(reported, "A real change found by the folder's own read must still be reported.")
+        XCTAssertEqual(reported?.permissions, "RMGCK", "The reported folder must carry the permissions its parent listed.")
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.etag, "folder-v2")
+    }
+
+    /// The root container has no parent listing, so its own read is the only source of its permissions.
+    func testTheRootContainerTakesItsPermissionsFromItsOwnRead() {
+        _ = readRoot()
+
+        _ = readRoot(rootPermissions: "RGCK")
+
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)?.permissions, "RGCK")
+    }
 }

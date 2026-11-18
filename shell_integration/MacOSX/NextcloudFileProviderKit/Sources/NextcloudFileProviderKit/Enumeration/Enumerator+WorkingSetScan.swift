@@ -5,9 +5,9 @@
 import Foundation
 
 ///
-/// How many working-set scan reads may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share, so on an HTTP/1.1 server a transfer started during a scan waits for a scan read to finish.
+/// How many working-set scan reads, and separately how many stored-path checks of one listing, may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share.
 ///
-private let workingSetScanConcurrency = 6
+let workingSetScanConcurrency = 6
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
@@ -131,7 +131,7 @@ extension Enumerator {
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
         let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
         let materialisedItems = (storedMaterialisedItems ?? [])
-            .filter { !$0.deleted && !$0.isTrashed }
+            .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
             .sorted { $0.remotePath().count < $1.remotePath().count }
 
         var accumulatedCreations = [SendableItemMetadata]()
@@ -143,6 +143,7 @@ extension Enumerator {
         // advancing the working-set sync point past changes this pass could not discover.
         var hadReadFailure = storedMaterialisedItems == nil
         var failedItemIds = Set<String>()
+        var notFoundOcIds = Set<String>()
 
         // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
         func remotePathDepth(_ metadata: SendableItemMetadata) -> Int {
@@ -150,12 +151,12 @@ extension Enumerator {
         }
 
         // Work queue seeded with the materialised items. A changed child directory discovered while
-        // scanning is appended ONLY when its subtree actually contains a materialised item, so its
-        // changed descendants are visited too — otherwise a depth-1 read of a visited folder surfaces
-        // the changed subdirectory but never the changed items inside it. A changed subdirectory whose
-        // subtree holds nothing materialised is NOT enqueued: nothing inside it is part of the working
-        // set, so there is nothing to keep in sync, and its contents are read lazily when the user
-        // navigates into it. Without that bound a single working-set signal on a sparse / freshly
+        // scanning is appended ONLY when its subtree actually contains a materialised item or the
+        // directory is pinned, so its changed descendants are visited too — otherwise a depth-1 read of
+        // a visited folder surfaces the changed subdirectory but never the changed items inside it. A
+        // changed, unpinned subdirectory whose subtree holds nothing materialised is NOT enqueued:
+        // nothing inside it is part of the working set, so there is nothing to keep in sync, and its
+        // contents are read lazily when the user navigates into it. Without that bound a single working-set signal on a sparse / freshly
         // activated domain triggers a full recursive PROPFIND of every changed branch down to its
         // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
         // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
@@ -192,6 +193,7 @@ extension Enumerator {
 
                 if readResult.error?.errorCode == 404 {
                     accumulatedDeletions.append(itemToScan)
+                    notFoundOcIds.insert(itemToScan.ocId)
                     scannedItemIds.insert(itemToScan.ocId)
                     // Children are not marked deleted here — they may have moved with their parent.
                     logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
@@ -237,12 +239,13 @@ extension Enumerator {
                                 // A changed child directory is scanned so its changed descendants are
                                 // discovered, even when the directory itself is not materialised — but
                                 // only when the working set actually tracks something inside it, i.e. it
-                                // has a materialised descendant (a visited subfolder or a downloaded file).
-                                // A changed-but-unmaterialised subtree is never crawled here: nothing in
-                                // it is cached locally, so its contents are read lazily on navigation
-                                // rather than walked now (which on a sparse domain would recurse into
-                                // entire never-visited subtrees). Its own change is still reported above
-                                // via `accumulatedUpdates` / `accumulatedCreations`.
+                                // has a materialised descendant (a visited subfolder or a downloaded file),
+                                // or when it is pinned, because "Always keep downloaded" asks for the whole
+                                // subtree. Any other changed-but-unmaterialised subtree is never crawled
+                                // here: nothing in it is cached locally, so its contents are read lazily on
+                                // navigation rather than walked now (which on a sparse domain would recurse
+                                // into entire never-visited subtrees). Its own change is still reported
+                                // above via `accumulatedUpdates` / `accumulatedCreations`.
                                 if changedChildOcIds.contains(childDirectory.ocId) {
                                     let childPath = childDirectory.remotePath()
                                     let childHasMaterialisedDescendant = materialisedItems.contains {
@@ -250,7 +253,12 @@ extension Enumerator {
                                             && ($0.hasSameRemotePath(as: childPath)
                                                 || $0.isDescendant(of: childPath))
                                     }
-                                    if childHasMaterialisedDescendant,
+                                    // The pin is read from the stored row because the read applies the parent's pin to its own copy.
+                                    let childIsPinned = dbManager
+                                        .itemMetadata(ocId: childDirectory.ocId)?
+                                        .keepDownloaded == true
+
+                                    if childHasMaterialisedDescendant || childIsPinned,
                                        enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
                                     {
                                         scanQueue[remotePathDepth(childDirectory), default: []].append(childDirectory)
@@ -295,21 +303,62 @@ extension Enumerator {
 
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
-            if deletedMetadata.status >= Status.inUpload.rawValue {
-                logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
-                continue
+            // Check and write in one transaction, so a move that commits in between is not overwritten.
+            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
+                let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
+
+                if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
+                    logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                // A move that reached the database during the scan makes a 404 about the old path, not the item.
+                if notFoundOcIds.contains(deletedMetadata.ocId), let current, !current.hasSameRemotePath(as: deletedMetadata.remotePath()) {
+                    logger.debug("Ignoring deletion of an item that has since moved.", [.item: deletedMetadata.ocId])
+                    return nil
+                }
+
+                var deleteMarked = deletedMetadata
+                deleteMarked.deleted = true
+                deleteMarked.syncTime = Date()
+                try dbManager.insertItemMetadata(deleteMarked, in: db)
+                return deleteMarked
+            } ?? nil
+
+            if let deleteMarked {
+                reportedDeletions.append(deleteMarked)
             }
-            var deleteMarked = deletedMetadata
-            deleteMarked.deleted = true
-            deleteMarked.syncTime = Date()
-            dbManager.addItemMetadata(deleteMarked)
-            reportedDeletions.append(deleteMarked)
         }
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.
         var seenUpdatedOcIds = Set<String>()
-        let discoveredUpdates = (accumulatedCreations + accumulatedUpdates).filter {
+        let firstCopies = (accumulatedCreations + accumulatedUpdates).filter {
             seenUpdatedOcIds.insert($0.ocId).inserted
+        }
+
+        // Each read reports rows as stored after it, so a row that a later read moved again or deleted is reported as it is stored now.
+        let storedRows = dbManager.itemMetadatas(ocIds: firstCopies.map(\.ocId))
+        var discoveredUpdates = [SendableItemMetadata]()
+        for copy in firstCopies {
+            let stored: SendableItemMetadata
+
+            if let storedRows {
+                // A row missing since its read was removed meanwhile or never written, so it is not reported and the scan counts as incomplete.
+                guard let row = storedRows[copy.ocId] else {
+                    hadReadFailure = true
+                    continue
+                }
+
+                stored = row
+            } else {
+                stored = copy
+            }
+
+            if stored.deleted {
+                reportedDeletions.append(stored)
+            } else {
+                discoveredUpdates.append(stored)
+            }
         }
 
         if discoveredUpdates.isEmpty, reportedDeletions.isEmpty {

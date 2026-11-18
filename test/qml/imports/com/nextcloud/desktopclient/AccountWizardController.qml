@@ -94,7 +94,8 @@ QtObject {
     function submitBasicAuth() {}
     function submitClientCertificate() {}
     function chooseClientCertificate() {}
-    function clearClientCertificateInput() {}
+    property int clearClientCertificateInputCount: 0
+    function clearClientCertificateInput() { clearClientCertificateInputCount++ }
     function retrySecureConnectionWithoutTls() {}
     function useClientCertificateForSecureConnection() {}
     function chooseLocalSyncFolder() {}

@@ -474,9 +474,17 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testVirtualFileDownloadResume_data()
+    {
+        QTest::addColumn<bool>("remoteChanged");
+        QTest::newRow("unchanged remote resumes") << false;
+        QTest::newRow("changed remote restarts") << true;
+    }
+
     void testVirtualFileDownloadResume()
     {
-        FakeFolder fakeFolder{ FileInfo() };
+        QFETCH(bool, remoteChanged);
+        FakeFolder fakeFolder{FileInfo()};
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -489,7 +497,8 @@ private Q_SLOTS:
 
         // Create a virtual file for remote files
         fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert("A/a1");
+        constexpr auto fileSize = 1024;
+        fakeFolder.remoteModifier().insert("A/a1", fileSize, 'A');
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         cleanup();
@@ -507,7 +516,47 @@ private Q_SLOTS:
         cleanup();
 
         fakeFolder.serverErrorPaths().clear();
+
+        constexpr auto partialSize = 128;
+        using namespace Qt::StringLiterals;
+        const auto partialFileName = "A/.a1.~resume"_L1;
+        QFile partialFile(fakeFolder.localPath() + partialFileName);
+        QVERIFY(partialFile.open(QIODevice::WriteOnly));
+        QCOMPARE(partialFile.write(QByteArray(partialSize, 'A')), partialSize);
+        partialFile.close();
+
+        auto remoteState = fakeFolder.currentRemoteState();
+        const auto remoteFile = remoteState.find("A/a1");
+        QVERIFY(remoteFile);
+        SyncJournalDb::DownloadInfo downloadInfo;
+        downloadInfo._tmpfile = partialFileName;
+        downloadInfo._etag = remoteFile->etag;
+        downloadInfo._valid = true;
+        fakeFolder.syncJournal().setDownloadInfo("A/a1", downloadInfo);
+        fakeFolder.syncJournal().commit("seed partial virtual file download");
+
+        if (remoteChanged) {
+            fakeFolder.remoteModifier().setContents("A/a1", 'B');
+        }
+
+        QByteArray requestedRange;
+        auto requestCount = 0;
+        fakeFolder.setServerOverride(
+            [&requestedRange, &requestCount](const QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+                if (operation == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a1")) {
+                    ++requestCount;
+                    requestedRange = request.rawHeader("Range");
+                }
+                return nullptr;
+            });
+
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(requestCount, 1);
+        QCOMPARE(requestedRange, remoteChanged ? QByteArray() : QByteArray("bytes=128-"));
+        QFile downloadedFile(fakeFolder.localPath() + "A/a1");
+        QVERIFY(downloadedFile.open(QIODevice::ReadOnly));
+        QCOMPARE(downloadedFile.readAll(), QByteArray(fileSize, remoteChanged ? 'B' : 'A'));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + partialFileName));
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

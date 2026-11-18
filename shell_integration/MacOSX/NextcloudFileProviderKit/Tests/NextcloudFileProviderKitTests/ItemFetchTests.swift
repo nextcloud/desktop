@@ -1812,7 +1812,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
         XCTAssertNil(listing.error)
-        XCTAssertTrue(try XCTUnwrap(listing.changes).created.contains { $0.ocId == movedChild.identifier })
+        // The child is stored elsewhere, so the listing reports it as moved rather than new.
+        XCTAssertTrue(try XCTUnwrap(listing.changes).updated.contains { $0.ocId == movedChild.identifier })
         let moved = try XCTUnwrap(dbManager.itemMetadata(ocId: movedChild.identifier))
         XCTAssertEqual(moved.remotePath(), movedChild.remotePath)
         XCTAssertEqual(moved.etag, movedChild.versionIdentifier)

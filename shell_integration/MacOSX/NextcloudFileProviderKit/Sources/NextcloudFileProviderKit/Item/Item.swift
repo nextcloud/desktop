@@ -523,6 +523,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         }
 
         try checkCancellation()
+        guard !identifier.rawValue.isEmpty else {
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+        }
+
         let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
         try checkCancellation()
 

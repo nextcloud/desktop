@@ -254,6 +254,9 @@ public extension FilesDatabaseManager {
 }
 
 extension FilesDatabaseManager {
+    /// The character between a parked directory's name and its identifier in its holding name, doubled when the directory was already deleted.
+    static let holdingNameSeparator = "\u{1}"
+
     func directoryMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
         try ItemMetadataRecord
             .filter(key: ocId)
@@ -261,8 +264,83 @@ extension FilesDatabaseManager {
             .fetchRecord(db, logger: logger)
     }
 
+    ///
+    /// Put `incoming`, a directory about to be written, at its location without mixing up the contents of folders.
+    ///
+    /// Descendants are found by their path, so a location holds at most one directory row. Any other directory stored at the
+    /// location, live or deleted, is parked first, and a stored row of `incoming` at another location then moves there with
+    /// its own descendants. A deleted stored row leaves its deleted descendants, and everything below them, behind, so each is
+    /// written again where the server lists it; a row parked while live counts as live. A deleted stored row that shares its
+    /// location with a live directory moves alone, because its descendants cannot be told apart from that directory's, so its
+    /// own live descendants, such as pending uploads and local lock files, stay with that directory.
+    ///
+    /// - Returns: The descendants of `incoming` that moved with it.
+    ///
+    func placeDirectory(_ incoming: any ItemMetadata, in db: Database) throws -> [SendableItemMetadata] {
+        guard incoming.directory, incoming.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue else {
+            return []
+        }
+
+        try parkDirectories(at: incoming.serverUrl, fileName: incoming.fileName, otherThan: incoming.ocId, in: db)
+
+        guard let stored = try directoryMetadata(ocId: incoming.ocId, in: db), !stored.hasSameLocation(as: incoming) else {
+            return []
+        }
+
+        let parkedWhileLive = stored.fileName.hasSuffix(Self.holdingNameSeparator + stored.ocId) && !stored.fileName.hasSuffix(Self.holdingNameSeparator + Self.holdingNameSeparator + stored.ocId)
+        let countsAsLive = !stored.deleted || parkedWhileLive
+
+        let movesAlone = try !countsAsLive && ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.hasLocation(serverUrl: stored.serverUrl, fileName: stored.fileName)
+                    && ItemMetadataRecord.Columns.directory == true
+                    && ItemMetadataRecord.Columns.deleted == false
+                    && ItemMetadataRecord.Columns.ocId != stored.ocId
+            )
+            .fetchCount(db) > 0
+
+        guard !movesAlone else {
+            try renameItemMetadata(ocId: incoming.ocId, newServerUrl: incoming.serverUrl, newFileName: incoming.fileName, in: db)
+            return []
+        }
+
+        return try renameDirectoryAndPropagateToChildren(ocId: incoming.ocId, newServerUrl: incoming.serverUrl, newFileName: incoming.fileName, includingDeleted: countsAsLive, in: db) ?? []
+    }
+
+    ///
+    /// Move every other directory stored at a location, with its descendants, to a name of its own and mark it deleted.
+    ///
+    /// The parked row keeps its descendants together, so if the server lists that folder again somewhere else, it moves there
+    /// with only its own contents. Nothing is parked when the directory `ocId` is already stored at the location, because
+    /// the descendants of the two directories cannot then be told apart.
+    ///
+    func parkDirectories(at serverUrl: String, fileName: String, otherThan ocId: String, in db: Database) throws {
+        guard try ItemMetadataRecord.filter(key: ocId).filter(ItemMetadataRecord.hasLocation(serverUrl: serverUrl, fileName: fileName)).fetchCount(db) == 0 else {
+            return
+        }
+
+        let occupants = try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.hasLocation(serverUrl: serverUrl, fileName: fileName)
+                    && ItemMetadataRecord.Columns.directory == true
+                    && ItemMetadataRecord.Columns.ocId != ocId
+            )
+            .fetchRecords(db, logger: logger)
+
+        for occupant in occupants {
+            let separator = occupant.deleted ? Self.holdingNameSeparator + Self.holdingNameSeparator : Self.holdingNameSeparator
+            _ = try renameDirectoryAndPropagateToChildren(ocId: occupant.ocId, newServerUrl: occupant.serverUrl, newFileName: occupant.fileName + separator + occupant.ocId, in: db)
+
+            try ItemMetadataRecord
+                .filter(key: occupant.ocId)
+                .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true), ItemMetadataRecord.Columns.syncTime.set(to: Date().timeIntervalSinceReferenceDate))
+
+            logger.info("Parked a directory whose location another directory takes.", [.item: occupant.ocId, .name: occupant.fileName, .url: occupant.serverUrl])
+        }
+    }
+
     func renameDirectoryAndPropagateToChildren(
-        ocId: String, newServerUrl: String, newFileName: String, in db: Database
+        ocId: String, newServerUrl: String, newFileName: String, includingDeleted: Bool = true, in db: Database
     ) throws -> [SendableItemMetadata]? {
         guard let directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
             logger.error("Could not find a directory with ocID \(ocId), cannot proceed with recursive renaming.", [.item: ocId])
@@ -273,15 +351,24 @@ extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = try ItemMetadataRecord
+        let descendants = try ItemMetadataRecord
             .filter(
                 ItemMetadataRecord.Columns.account == directoryMetadata.account
                     && ItemMetadataRecord.hasServerUrl(equalTo: oldDirectoryServerUrl, includingDescendants: true)
             )
             .fetchRecords(db, logger: logger)
 
+        // A deleted folder that stays behind keeps everything below it, so every moved row still has its parent.
+        let pathsLeftBehind = includingDeleted ? [] : descendants.filter { $0.deleted && $0.directory }.map { $0.serverUrl + "/" + $0.fileName }
+        let childItemResults = includingDeleted ? descendants : descendants.filter { child in
+            !child.deleted && !pathsLeftBehind.contains { child.serverUrl == $0 || child.serverUrl.hasPrefix($0 + "/") }
+        }
+
         try renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName, in: db)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
+
+        var movedChildren: [SendableItemMetadata] = []
+        movedChildren.reserveCapacity(childItemResults.count)
 
         for var childItem in childItemResults {
             let oldServerUrl = childItem.serverUrl
@@ -291,6 +378,7 @@ extension FilesDatabaseManager {
             childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
             childItem.lockToken = nil
             try childItem.upsertRow(db)
+            movedChildren.append(childItem.metadata)
             logger.debug(
                 """
                 Moved childItem at: \(oldServerUrl)
@@ -299,12 +387,6 @@ extension FilesDatabaseManager {
             )
         }
 
-        return try ItemMetadataRecord
-            .filter(
-                ItemMetadataRecord.Columns.account == directoryMetadata.account
-                    && ItemMetadataRecord.hasServerUrl(equalTo: newDirectoryServerUrl, includingDescendants: true)
-            )
-            .fetchRecords(db, logger: logger)
-            .map(\.metadata)
+        return movedChildren
     }
 }
