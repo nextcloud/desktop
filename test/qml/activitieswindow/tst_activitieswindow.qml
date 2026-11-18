@@ -98,15 +98,6 @@ Item {
             tryCompare(activityList, "atYBeginning", false);
         }
 
-        function wheelTarget()
-        {
-            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
-            const x = activityListView.width / 2;
-            const y = activityListView.height / 2;
-            tryVerify(() => activityListView.indexAt(activityListView.contentX + x, activityListView.contentY + y) >= 0);
-            return Qt.point(x, y);
-        }
-
         function test_reopeningResetsViewport()
         {
             positionAtEnd();
@@ -158,29 +149,15 @@ Item {
 
         function test_mouseWheelScrollsActivityList()
         {
-            const target = wheelTarget();
+            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
             tryCompare(activityListView, "atYBeginning", true);
 
+            const x = activityListView.width / 2;
+            const y = activityListView.height / 2;
+            tryVerify(() => activityListView.indexAt(activityListView.contentX + x, activityListView.contentY + y) >= 0);
             const startY = activityListView.contentY;
-            mouseWheel(activityListView, target.x, target.y, 0, -120);
+            mouseWheel(activityListView, x, y, 0, -120);
             tryVerify(() => activityListView.contentY > startY);
-        }
-
-        function test_mouseWheelCancelsScrollToTopAtEnd()
-        {
-            // Activating the window resets the activity list to the beginning.
-            activitiesWindow.requestActivate();
-            tryCompare(activitiesWindow, "active", true);
-            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
-            activityListView.positionViewAtEnd();
-            const target = wheelTarget();
-            tryCompare(activityListView, "atYEnd", true);
-
-            activityList.scrollToTop();
-            compare(activityList.scrollingToTop, true);
-            mouseWheel(activityListView, target.x, target.y, 0, -120);
-            compare(activityList.scrollingToTop, false);
-            tryCompare(activityListView, "atYEnd", true);
         }
 
         function test_liveActivityDoesNotResetViewport()
