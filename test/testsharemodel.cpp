@@ -1000,6 +1000,8 @@ private Q_SLOTS:
 
     void testSharePropertySetError()
     {
+        using namespace Qt::StringLiterals;
+
         helper.resetTestData();
 
         // Serve a broken share definition from the server to force an error
@@ -1030,10 +1032,32 @@ private Q_SLOTS:
         // Now try changing a property of the share
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         const auto share = shareIndex.data(ShareModel::ShareRole).value<SharePtr>();
+        QVERIFY(share);
+        QSignalSpy shareError(share.data(), &Share::serverError);
         QSignalSpy serverError(&model, &ShareModel::serverError);
 
-        model.toggleShareAllowEditing(share, false);
-        QVERIFY(serverError.wait(3000));
+        {
+            static thread_local auto warnings = QStringList{};
+            warnings.clear();
+            const auto previousHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &context, const QString &message) {
+                if (type == QtWarningMsg && qstrcmp(context.category, "com.nextcloud.sharemodel") == 0) {
+                    warnings.append(message);
+                }
+            });
+            const auto restoreLogHandler = qScopeGuard([previousHandler] {
+                qInstallMessageHandler(previousHandler);
+            });
+
+            model.toggleShareAllowEditing(share, false);
+            QVERIFY(serverError.wait(3000));
+            QCOMPARE(serverError.count(), 1);
+            QCOMPARE(shareError.count(), 1);
+            const auto signalArguments = serverError.constFirst();
+            QCOMPARE(signalArguments, shareError.constFirst());
+            QCOMPARE(signalArguments.at(0).toInt(), 404);
+            QVERIFY(!signalArguments.at(1).toString().isEmpty());
+            QCOMPARE(warnings, QStringList{u"Share reported an error: 404"_s});
+        }
 
         // Specific signal for password set error
         QSignalSpy passwordSetError(&model, &ShareModel::passwordSetError);

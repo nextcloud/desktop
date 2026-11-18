@@ -637,10 +637,11 @@ void ShareModel::slotAddShare(const SharePtr &share)
     const QPersistentModelIndex sharePersistentIndex(shareModelIndex);
     _shareIdIndexHash.insert(shareId, sharePersistentIndex);
 
-    connect(share.data(), &Share::serverError, this, [this] (int code, const QString &message) {
-        qCWarning(lcShareModel) << "Error from server from Share class" << code << message;
+    const auto reportShareError = [this](int code, const QString &message) {
+        qCWarning(lcShareModel) << "Share reported an error:" << code;
         Q_EMIT serverError(code, message);
-    });
+    };
+    connect(share.data(), &Share::serverError, this, reportShareError);
     connect(share.data(), &Share::passwordSetError, this, [this, shareId](const int code, const QString &message) {
         _shareIdRecentlySetPasswords.remove(shareId);
         slotSharePasswordSet(shareId);
