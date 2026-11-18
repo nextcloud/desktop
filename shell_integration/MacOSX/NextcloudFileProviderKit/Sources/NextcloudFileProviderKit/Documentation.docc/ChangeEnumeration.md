@@ -135,6 +135,14 @@ the scan lists the account root and descends only where that is needed:
   notices changes made behind its back only when the directory is read.
 - A scan listing does not mark a directory as visited. Only an item
   enumeration the framework asked for does.
+- The directories below one listing are read together, up to
+  ``WorkingSetScanLimits/concurrentListings`` at a time across the whole pass,
+  because nothing one of them finds decides what another descends into. Each
+  walks a state of its own, and what they found is taken over in the order
+  their parent listed them, so what a pass reports does not depend on which
+  subtree answered first. Two subtrees read at the same time cannot see each
+  other's listings, so a directory which moved into both of them during the
+  pass is listed by each; the listings agree, and the item is reported once.
 - An item enumeration the framework asked for reconciles the directory it
   listed, when its pages compared the children with the stored rows, no
   child directory is left for the scan to descend into, the directory is not
@@ -163,10 +171,12 @@ rewritten.
 
 The framework issues no folder enumeration for the domain while a
 working-set change enumeration is outstanding, so a long pass freezes Finder
-for its duration. A pass therefore starts no further sibling after its
-budget (`WorkingSetScanLimits`, 20 seconds) is spent; the listing in flight
-finishes on its own, and the first descent below each directory just listed
-is still taken, so every pass completes at least one chain. The changes
+for its duration. A pass therefore starts no further listing after its
+budget (`WorkingSetScanLimits`, 20 seconds) is spent; the listings in flight
+finish on their own, and the first directory below each listing is still
+read, so every pass completes at least one chain. The budget is decided when
+a listing is about to go out, so a subtree whose turn comes after the
+deadline reads nothing and counts as unfinished. The changes
 found so far are delivered and the anchor advances. Such a pass reports no
 deletions, because it cannot tell a deletion from a move into a part it did
 not reach: it revives the tombstones it wrote and forgets the directories
