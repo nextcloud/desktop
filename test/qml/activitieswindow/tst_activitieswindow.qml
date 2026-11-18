@@ -168,7 +168,11 @@ Item {
 
         function test_mouseWheelCancelsScrollToTopAtEnd()
         {
-            positionAtEnd();
+            // Activating the window resets the activity list to the beginning.
+            activitiesWindow.requestActivate();
+            tryCompare(activitiesWindow, "active", true);
+            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
+            activityListView.positionViewAtEnd();
             const target = wheelTarget();
             tryCompare(activityListView, "atYEnd", true);
 
