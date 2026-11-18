@@ -196,27 +196,29 @@ void PropagateLocalRemove::start()
             moveToTrashIsFeasible = false;
         }
     }
+    auto removedByTrash = false;
     if (_moveToTrash && moveToTrashIsFeasible) {
         if (FileSystem::fileExists(filename, fileInfo)) {
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
-            if (!FileSystem::moveToTrash(filename, &removeError)) {
+            removedByTrash = FileSystem::moveToTrash(filename, &removeError);
+            if (!removedByTrash) {
                 qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
-                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
-                return;
             }
         } else {
             qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << "was already deleted";
+            removedByTrash = true;
         }
-    } else {
+    }
+    if (!removedByTrash) {
         if (_item->isDirectory()) {
-            if (FileSystem::fileExists(filename, fileInfo) && !removeRecursively(QString())) {
+            if (FileSystem::fileExists(filename) && !removeRecursively(QString())) {
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename, fileInfo)) {
+            if (FileSystem::fileExists(filename)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
