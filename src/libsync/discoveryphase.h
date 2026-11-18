@@ -281,6 +281,12 @@ class DiscoveryPhase : public QObject
 
     [[nodiscard]] bool recursiveCheckForDeletedParents(const QString &itemPath) const;
 
+    /** Keep every directory above \a directoryPath that is marked for removal.
+     *
+     * Removing a parent deletes its whole local subtree, including ignored files.
+     */
+    void keepDeletedParentsOfIgnoredChild(const QString &directoryPath);
+
     /// contains files/folder names that are requested to be deleted permanently
     QSet<QString> _permanentDeletionRequests;
 

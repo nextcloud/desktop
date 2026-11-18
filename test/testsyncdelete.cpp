@@ -52,6 +52,61 @@ private Q_SLOTS:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testDeleteDirectoryKeepsNestedIgnoredFile()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("*.ign");
+        fakeFolder.remoteModifier().mkdir("A/sub");
+        fakeFolder.remoteModifier().mkdir("A/sub/deeper");
+        fakeFolder.remoteModifier().insert("A/sub/deeper/synced.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().insert("A/sub/deeper/local.ign");
+        fakeFolder.remoteModifier().remove("A");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentRemoteState().find("A"));
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/sub/deeper/local.ign"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/a1"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/sub/deeper/synced.txt"));
+
+        // The kept folders stay stable on the next sync
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/sub/deeper/local.ign"));
+    }
+
+    void testDeleteSubdirectoryKeepsIgnoredFileAndSiblings()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("*.ign");
+        fakeFolder.remoteModifier().mkdir("A/sub");
+        fakeFolder.remoteModifier().insert("A/sub/synced.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().insert("A/sub/local.ign");
+        fakeFolder.remoteModifier().remove("A/sub");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/sub/local.ign"));
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/a1"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/sub/synced.txt"));
+    }
+
+    void testDeleteNestedDirectoryWithoutIgnoredFile()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("*.ign");
+        fakeFolder.remoteModifier().mkdir("A/sub");
+        fakeFolder.remoteModifier().insert("A/sub/synced.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().remove("A");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     void issue1329()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };

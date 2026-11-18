@@ -247,6 +247,27 @@ bool DiscoveryPhase::recursiveCheckForDeletedParents(const QString &itemPath) co
     return result;
 }
 
+void DiscoveryPhase::keepDeletedParentsOfIgnoredChild(const QString &directoryPath)
+{
+    if (_deletedItem.isEmpty()) {
+        return;
+    }
+
+    for (auto separatorIndex = directoryPath.lastIndexOf('/'); separatorIndex > 0; separatorIndex = directoryPath.lastIndexOf('/', separatorIndex - 1)) {
+        const auto parentItem = _deletedItem.constFind(directoryPath.left(separatorIndex));
+        if (parentItem == _deletedItem.constEnd()) {
+            continue;
+        }
+
+        if (!(*parentItem)->isDirectory() || (*parentItem)->_instruction != CSYNC_INSTRUCTION_REMOVE) {
+            continue;
+        }
+
+        qCInfo(lcDiscovery) << "Keeping folder to remove because of an ignored descendant" << (*parentItem)->_file;
+        (*parentItem)->_instruction = CSYNC_INSTRUCTION_NONE;
+    }
+}
+
 void DiscoveryPhase::markPermanentDeletionRequests()
 {
     // since we don't know in advance which files/directories need to be permanently deleted,
