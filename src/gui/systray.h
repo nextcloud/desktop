@@ -98,6 +98,8 @@ public:
 
     /** @brief Returns the actions that the global tray synchronization control should offer. */
     [[nodiscard]] SyncControlState syncControlState() const;
+    /** @brief Returns whether at least one classic synchronization folder can sync now. */
+    [[nodiscard]] bool canSyncNow() const;
     [[nodiscard]] bool isOpen() const;
     [[nodiscard]] bool isActivitySurfaceVisible() const;
     void setTrayContextMenuVisible(const bool visible);
@@ -158,6 +160,7 @@ public Q_SLOTS:
     void showUserStatusWindow(int userIndex);
 
     void setSyncIsPaused(const bool syncIsPaused);
+    void syncAllFoldersNow();
     void setIsOpen(const bool isOpen);
 
     void createShareDialog(const QString &localPath, const QString &fileId = {});
