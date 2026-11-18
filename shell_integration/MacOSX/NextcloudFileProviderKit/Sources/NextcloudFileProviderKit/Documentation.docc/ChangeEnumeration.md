@@ -116,17 +116,22 @@ server bumps the etag of every ancestor when something changes below it, so
 the scan lists the account root and descends only where that is needed:
 
 - A directory is descended into when it is visited or holds a materialised
-  item somewhere below, unless its remote state, that is etag and permissions,
-  equals the state at which the scan last reconciled everything below it.
-- The reconciled state is kept per directory in `scannedRemoteState`. It is
-  written by the scan alone, in one write after the pass, and only for
-  directories whose descents all succeeded. Every other writer of a
-  directory's etag stores it without looking below the directory, so the
-  stored etag cannot stand in for "subtree reconciled". A directory the scan
-  never reconciled is therefore listed once, whatever its etag.
-- A directory on an external storage, and everything below it, is listed on
-  every pass: the server notices changes made behind its back only when the
-  directory is read.
+  item somewhere below, unless its remote state, that is etag and permissions
+  as its parent's listing reports them, equals the state at which the scan
+  last reconciled everything below it. `ScanDescentDecision` holds the rule.
+- The reconciled state is kept per directory in `scannedRemoteState`, in the
+  parent's view. The server rewrites a mount point's permissions in the
+  parent's listing (`View::getDirectoryContent()` adds or removes update and
+  delete), so the directory's own listing is not comparable for shares,
+  group folders and app mounts. The state is written by the scan alone, in
+  one write after the pass, and only for directories whose descents all
+  succeeded. Every other writer of a directory's etag stores it without
+  looking below the directory, so the stored etag cannot stand in for
+  "subtree reconciled". A directory the scan never reconciled is therefore
+  listed once, whatever its etag.
+- A directory on an external storage is listed on every pass, with every
+  directory above it on the way down and everything below it: the server
+  notices changes made behind its back only when the directory is read.
 - A scan listing does not mark a directory as visited. Only an item
   enumeration the framework asked for does.
 

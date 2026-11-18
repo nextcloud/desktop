@@ -99,6 +99,24 @@ extension DatabaseTestSuites {
             #expect(manager.hasMaterialisedItem(below: root + "/a/bb") == false, "A sibling with a common prefix is not below.")
         }
 
+        @Test func externalStoragesBelowADirectoryAreFound() throws {
+            let root = DatabaseTestSuites.account.davFilesUrl
+            try manager.insertForTesting(makeDirectory(ocId: "a", fileName: "a"))
+            var mount = makeDirectory(ocId: "mount", fileName: "mount", serverUrl: root + "/a")
+            mount.mountType = FilesDatabaseManager.externalMountType
+            try manager.insertForTesting(mount)
+            var gone = makeDirectory(ocId: "gone", fileName: "gone", serverUrl: root + "/b")
+            gone.mountType = FilesDatabaseManager.externalMountType
+            gone.deleted = true
+            try manager.insertForTesting(gone)
+            try manager.insertForTesting(makeDirectory(ocId: "b", fileName: "b"))
+
+            #expect(manager.hasExternalStorage(below: root + "/a") == true)
+            #expect(manager.hasExternalStorage(below: root) == true)
+            #expect(manager.hasExternalStorage(below: root + "/b") == false, "A deleted row does not count.")
+            #expect(manager.hasExternalStorage(below: root + "/a/mount") == false, "The mount's own row is not below itself.")
+        }
+
         @Test func aLiveOccupantOfAnAddressIsFound() throws {
             let root = DatabaseTestSuites.account.davFilesUrl
             var old = makeDirectory(ocId: "d-old", fileName: "d")
@@ -119,6 +137,7 @@ extension DatabaseTestSuites {
 
             #expect(manager.scannedRemoteStates() == nil)
             #expect(manager.hasMaterialisedItem(below: DatabaseTestSuites.account.davFilesUrl + "/a") == nil)
+            #expect(manager.hasExternalStorage(below: DatabaseTestSuites.account.davFilesUrl + "/a") == nil)
             #expect(manager.liveItemOccupies(serverUrl: DatabaseTestSuites.account.davFilesUrl, fileName: "a", otherThan: "x") == nil)
             manager.recordScannedRemoteStates(["a": "b"], forgetting: ["a"])
             manager.recordScannedRemoteStates([:], forgetting: [])
