@@ -522,6 +522,7 @@ public final class FilesDatabaseManager: Sendable {
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
     }
 
+    /// Live rows of the listed directory which the listing no longer contains. Rows already marked deleted were reported when they went missing.
     private func processItemMetadatasToDelete(
         existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata]
@@ -529,7 +530,7 @@ public final class FilesDatabaseManager: Sendable {
         let updatedOcIds = Set(updatedMetadatas.map(\.ocId))
         var deletedMetadatas: [ItemMetadataRecord] = []
 
-        for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) {
+        for existingMetadata in existingMetadatas where !updatedOcIds.contains(existingMetadata.ocId) && !existingMetadata.deleted {
             deletedMetadatas.append(existingMetadata)
 
             logger.debug("Deleting item metadata during update.", [.item: existingMetadata.ocId])
@@ -672,12 +673,15 @@ public final class FilesDatabaseManager: Sendable {
                 )
                 .fetchRecords(db, logger: logger)
 
+            // Stamped so the working-set derivation finds the deletion by date should the batch carrying it be lost.
+            let deletionTime = Date()
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
                 updatedMetadatas: updatedChildMetadatas
             ).map {
                 var metadata = $0.metadata
                 metadata.deleted = true
+                metadata.syncTime = deletionTime
                 return metadata
             }
 
@@ -775,7 +779,11 @@ public final class FilesDatabaseManager: Sendable {
             for chunk in metadatasToDelete.map(\.ocId).chunked(into: Self.inClauseChunkSize) {
                 try ItemMetadataRecord
                     .filter(keys: chunk)
-                    .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
+                    .updateAll(
+                        db,
+                        ItemMetadataRecord.Columns.deleted.set(to: true),
+                        ItemMetadataRecord.Columns.syncTime.set(to: deletionTime.timeIntervalSinceReferenceDate)
+                    )
             }
 
             for metadata in metadatasToUpdate + metadatasToCreate {
