@@ -21,4 +21,21 @@ public final class EnumeratePathRecorder: @unchecked Sendable {
         defer { lock.unlock() }
         return storage
     }
+
+    public var count: Int {
+        paths.count
+    }
+
+    public func reset() {
+        lock.lock()
+        defer { lock.unlock() }
+        storage.removeAll()
+    }
+
+    /// Attach the recorder to a mock so every read is recorded.
+    public func record(on remoteInterface: MockRemoteInterface) {
+        remoteInterface.enumerateCallHandler = { [self] remotePath, _, _, _, _, _, _, _ in
+            add(remotePath)
+        }
+    }
 }
