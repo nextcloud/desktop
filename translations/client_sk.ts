@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -5630,77 +5630,77 @@ Upozorňujeme, že použitie ľubovoľných možností príkazového riadka na z
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
         <source>Lock File</source>
-        <translation type="unfinished"/>
+        <translation>Zamknúť súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
         <source>Unlock File</source>
-        <translation type="unfinished"/>
+        <translation>Odomknúť súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
         <source>Share Options</source>
-        <translation type="unfinished"/>
+        <translation>Možnosti zdieľania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť v prehliadači</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
         <source>Copy Internal Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať interný odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
         <source>File Actions</source>
-        <translation type="unfinished"/>
+        <translation>Akcie so súbormi</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
         <source>Leave This Share</source>
-        <translation type="unfinished"/>
+        <translation>Opustiť toto zdieľanie</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
         <source>Apply Labels</source>
-        <translation type="unfinished"/>
+        <translation>Použiť štítky</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
         <source>Resolve Conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Vyriešiť konflikt …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
         <source>Move and Rename …</source>
-        <translation type="unfinished"/>
+        <translation>Presunúť a premenovať …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
         <source>Move, Rename and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Presunúť, premenovať a nahrať …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
         <source>Delete Local Changes</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť lokálne zmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
         <source>Move and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>Presunúť a nahrať …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
         <source>Copy Private Link to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať súkromný odkaz do schránky</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
         <source>Send Private Link by Email …</source>
-        <translation type="unfinished"/>
+        <translation>Odoslať súkromný odkaz e-mailom …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
@@ -8603,7 +8603,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="109"/>
         <source>Make Always Available Locally</source>
-        <translation type="unfinished"/>
+        <translation>Vždy sprístupniť lokálne</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="117"/>
@@ -8613,7 +8613,7 @@ Server odpovedal chybou: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="119"/>
         <source>Free Up Local Space</source>
-        <translation type="unfinished"/>
+        <translation>Uvoľniť lokálny priestor</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="143"/>
