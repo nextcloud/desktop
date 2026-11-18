@@ -182,6 +182,41 @@ extension Enumerator {
         return (files, changes, nil)
     }
 
+    ///
+    /// A depth-1 listing as it is stored after the write, in the server's order.
+    ///
+    /// The write merges the local flags (`downloaded`, `keepDownloaded`, `visitedDirectory`, `lockToken`) into the rows it persists, while the fresh conversions carry the server defaults. The system must receive the stored state, otherwise it renders pinned or downloaded children as neither. A row which the write left alone, which is a tombstone, which waits at a holding path, or which cannot be read, is handed over as converted.
+    ///
+    /// The listing itself keeps the server's conversions, because a folder download compares the version it transferred against them.
+    ///
+    /// - Parameter files: The listing, the directory read first, as ``handleDepth1ReadFileOrFolder(serverUrl:account:dbManager:files:pageIndex:preserveDeletedTarget:log:)`` returns it.
+    ///
+    static func storedRows(for files: [SendableItemMetadata], dbManager: FilesDatabaseManager) -> [SendableItemMetadata] {
+        guard let directory = files.first, directory.directory else {
+            return files
+        }
+
+        var storedByOcId = Dictionary(
+            dbManager.immediateChildItems(directoryMetadata: directory).map { ($0.ocId, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
+
+        if let storedDirectory = dbManager.itemMetadata(ocId: directory.ocId) {
+            storedByOcId[directory.ocId] = storedDirectory
+        }
+
+        return files.map { converted in
+            guard let stored = storedByOcId[converted.ocId],
+                  !stored.deleted,
+                  !stored.isAtHoldingPath
+            else {
+                return converted
+            }
+
+            return stored
+        }
+    }
+
     /// READ THIS CAREFULLY.
     ///
     /// This method supports paginated and non-paginated reads. Handled by the pageSettings argument.
