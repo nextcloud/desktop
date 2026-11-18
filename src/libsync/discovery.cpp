@@ -2399,6 +2399,9 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                     _dirItem->_direction = SyncFileItem::Down;
                 }
             }
+            if (_childIgnored) {
+                _discoveryData->keepDeletedParentsOfIgnoredChild(_dirItem->_originalFile);
+            }
             if (_childIgnored && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // Do not remove a directory that has ignored files
                 qCInfo(lcDisco) << "Child ignored for a folder to remove" << _dirItem->_file << "direction" << _dirItem->_direction;
