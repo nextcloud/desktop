@@ -14,9 +14,14 @@
 #include <QAction>
 #include <QApplication>
 #include <QFont>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMenu>
 #include <QPalette>
 #include <QPointer>
+#include <QProxyStyle>
+#include <QScopeGuard>
 #include <QScreen>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -25,6 +30,17 @@
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
+
+/// A style whose small icons are twice as large as those of the application style.
+class DoubleSmallIconStyle : public QProxyStyle
+{
+public:
+    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override
+    {
+        const auto size = QProxyStyle::pixelMetric(metric, option, widget);
+        return metric == PM_SmallIconSize ? 2 * size : size;
+    }
+};
 
 class TestTrayAccountMenuQt : public QObject
 {
@@ -323,6 +339,48 @@ private Q_SLOTS:
         palette.setColor(group, role, changedColor);
         menu.setPalette(palette);
 
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+    }
+
+    void openingAfterAppListChangeRebuildsMenu()
+    {
+        static constexpr auto httpOk = 200;
+        const auto setApps = [this](const QJsonDocument &reply) {
+            return QMetaObject::invokeMethod(_accountState, "slotNavigationAppsFetched", Q_ARG(QJsonDocument, reply), Q_ARG(int, httpOk));
+        };
+        const auto clearApps = qScopeGuard([&setApps] {
+            setApps(QJsonDocument{});
+        });
+
+        QVERIFY(setConnectionStatus(ConnectionValidator::Connected));
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // Only the list of server apps changes, nothing else the menu shows.
+        const auto app = QJsonObject{
+            {u"id"_s, u"files"_s},
+            {u"name"_s, u"Files"_s},
+            {u"href"_s, u"https://cloud.example.com/apps/files"_s},
+            {u"icon"_s, u"https://cloud.example.com/apps/files/img/app.svg"_s},
+        };
+        const auto reply = QJsonDocument{QJsonObject{{u"ocs"_s, QJsonObject{{u"data"_s, QJsonArray{app}}}}}};
+        QVERIFY(setApps(reply));
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+    }
+
+    void openingAfterIconSizeChangeRebuildsMenu()
+    {
+        auto style = DoubleSmallIconStyle{};
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        menu.setStyle(&style);
         QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
         QVERIFY(!firstAction);
     }
