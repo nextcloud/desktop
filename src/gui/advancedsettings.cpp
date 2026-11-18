@@ -10,6 +10,7 @@
 #include "application.h"
 #include "capabilities.h"
 #include "common/utility.h"
+#include "common/vfs.h"
 #include "configfile.h"
 #include "folderman.h"
 #include "folder.h"
@@ -45,6 +46,7 @@
 #include <QScopedValueRollback>
 #include <QSpinBox>
 #include <QStandardPaths>
+#include <QStyle>
 #include <QVector>
 
 #include <algorithm>
@@ -242,6 +244,7 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
     connect(_ui->stopExistingFolderNowBigSyncCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
+    connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::slotShowInExplorerNavigationPane);
     connect(_ui->remotePollIntervalSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AdvancedSettings::slotRemotePollIntervalChanged);
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &AdvancedSettings::slotIgnoreFilesEditor);
@@ -298,6 +301,7 @@ void AdvancedSettings::loadMiscSettings()
 
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->moveFilesToTrashCheckBox->setChecked(cfgFile.moveToTrash());
+    updateMoveFilesToTrashVfsWarningVisibility();
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
 
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -470,6 +474,23 @@ void AdvancedSettings::updatePollIntervalVisibility()
     _ui->remotePollIntervalSeparator->setVisible(!pushAvailable);
 }
 
+void AdvancedSettings::updateMoveFilesToTrashVfsWarningIcon()
+{
+    using namespace Qt::StringLiterals;
+    const auto iconSize = style()->pixelMetric(QStyle::PM_SmallIconSize, nullptr, this);
+    const auto warningIcon = Theme::createColorAwareIcon(u":/client/theme/black/warning.svg"_s);
+    _ui->moveFilesToTrashVfsWarningIcon->setPixmap(warningIcon.pixmap(iconSize, iconSize));
+}
+
+void AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility()
+{
+    const auto showWarning = isVfsPluginAvailable(Vfs::WindowsCfApi) && _ui->moveFilesToTrashCheckBox->isChecked();
+    _ui->moveFilesToTrashVfsWarningBanner->setVisible(showWarning);
+    if (showWarning) {
+        updateMoveFilesToTrashVfsWarningIcon();
+    }
+}
+
 void AdvancedSettings::slotStyleChanged()
 {
     customizeStyle();
@@ -478,6 +499,10 @@ void AdvancedSettings::slotStyleChanged()
 void AdvancedSettings::customizeStyle()
 {
     SettingsPanelStyle::apply(this);
+
+    if (!_ui->moveFilesToTrashVfsWarningBanner->isHidden()) {
+        updateMoveFilesToTrashVfsWarningIcon();
+    }
 }
 
 } // namespace OCC
