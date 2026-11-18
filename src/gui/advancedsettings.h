@@ -40,6 +40,9 @@ private Q_SLOTS:
 
 private:
     void customizeStyle();
+    void pickDebugArchiveLocation(std::function<void(const QString &)> completion);
+    void updateMoveFilesToTrashVfsWarningIcon();
+    void updateMoveFilesToTrashVfsWarningVisibility();
 
     Ui::AdvancedSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
