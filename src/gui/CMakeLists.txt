@@ -467,13 +467,10 @@ IF( WIN32 )
 ENDIF()
 
 set(3rdparty_SRC
-    ../3rdparty/kmessagewidget/kmessagewidget.h
-    ../3rdparty/kmessagewidget/kmessagewidget.cpp
     ../3rdparty/kirigami/wheelhandler.h
     ../3rdparty/kirigami/wheelhandler.cpp
    )
 
-set_property(SOURCE ../3rdparty/kmessagewidget/kmessagewidget.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 
 find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS LinguistTools)
@@ -667,7 +664,6 @@ set_target_properties(nextcloudCore
 target_include_directories(nextcloudCore
   PUBLIC
   ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
