@@ -12,6 +12,7 @@
 #include <KZip>
 
 #include <QBuffer>
+#include <QDir>
 #include <QScopeGuard>
 #include <QStandardPaths>
 #include <QTemporaryDir>
@@ -63,6 +64,14 @@ int main(int argc, char **argv)
         qCritical("Could not create test configuration directory.");
         return 1;
     }
+
+#ifdef Q_OS_MACOS
+    // The single-instance manager uses the process home before command-line parsing.
+    if (!qputenv("HOME", temporaryDirectory.path().toLocal8Bit()) || QDir::homePath() != temporaryDirectory.path()) {
+        qCritical("Could not isolate the test home directory.");
+        return 1;
+    }
+#endif
 
     QStandardPaths::setTestModeEnabled(true);
     QCoreApplication::setOrganizationDomain(u"nextcloud.test"_s);
