@@ -466,13 +466,6 @@ IF( WIN32 )
         ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp)
 ENDIF()
 
-set(3rdparty_SRC
-    ../3rdparty/kirigami/wheelhandler.h
-    ../3rdparty/kirigami/wheelhandler.cpp
-   )
-
-set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-
 find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS LinguistTools)
 if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
     qt_add_translation(client_I18N ${TRANSLATIONS})
@@ -494,7 +487,6 @@ set( final_src
     ${client_UI_SRCS}
     ${guiMoc}
     ${client_I18N}
-    ${3rdparty_SRC}
     ${3rdparty_MOC}
 )
 
@@ -663,7 +655,6 @@ set_target_properties(nextcloudCore
 
 target_include_directories(nextcloudCore
   PUBLIC
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
 )

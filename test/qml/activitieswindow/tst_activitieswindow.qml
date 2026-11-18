@@ -147,6 +147,29 @@ Item {
             tryVerify(() => activityListView.highlightItem === null || !activityListView.highlightItem.visible);
         }
 
+        function test_mouseWheelScrollsActivityList()
+        {
+            tryCompare(activityListView, "atYBeginning", true);
+            verify(waitForRendering(activityListView));
+
+            const startY = activityListView.contentY;
+            mouseWheel(activityListView, activityListView.width / 2, activityListView.height / 2, 0, -120);
+            tryVerify(() => activityListView.contentY > startY);
+        }
+
+        function test_mouseWheelCancelsScrollToTopAtEnd()
+        {
+            positionAtEnd();
+            tryCompare(activityListView, "atYEnd", true);
+            verify(waitForRendering(activityListView));
+
+            activityList.scrollToTop();
+            compare(activityList.scrollingToTop, true);
+            mouseWheel(activityListView, activityListView.width / 2, activityListView.height / 2, 0, -120);
+            compare(activityList.scrollingToTop, false);
+            tryCompare(activityListView, "atYEnd", true);
+        }
+
         function test_liveActivityDoesNotResetViewport()
         {
             positionAtEnd();
