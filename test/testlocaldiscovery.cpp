@@ -86,6 +86,9 @@ private Q_SLOTS:
 
         QVERIFY(fakeFolder.currentRemoteState().find("sub/a.txt"));
         QVERIFY(fakeFolder.currentRemoteState().find("sub/b.txt"));
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 #endif
 

@@ -210,7 +210,6 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   bool is_metadata_missing BITFIELD(1); // Indicates the file has missing metadata, f.ex. the file is not a placeholder in case of vfs.
   bool isPermissionsInvalid BITFIELD(1);
   bool is_stat_error BITFIELD(1); // Enumerated but stat/open failed: listing is incomplete, never a deletion.
-                                  // e.g. Windows error: The operation is only supported on files under a cloud sync root
 
   QByteArray path;
   QByteArray rename_path;

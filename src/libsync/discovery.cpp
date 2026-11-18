@@ -1385,10 +1385,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
 
-    if (localEntry.isValid() && localEntry.isStatError) {
+    if (localEntry.isStatError) {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         item->_status = SyncFileItem::FileIgnored;
-        item->_errorString = tr("Could not read local file due to error. Sync will retry automatically.");
+        item->_errorString = tr("Could not read local file. It will be checked again on a later sync.");
         finalize();
         return;
     }
