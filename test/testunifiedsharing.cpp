@@ -4,15 +4,21 @@
  */
 
 #include <QMetaMethod>
+#include <QNetworkProxy>
+#include <QPointer>
 #include <QScopeGuard>
 #include <QSignalSpy>
+#include <QTcpServer>
+#include <QTcpSocket>
 #include <QTest>
 #include <QUrlQuery>
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <vector>
 
+#include "accessmanager.h"
 #include "gui/sharing/addrecipientjob.h"
 #include "gui/sharing/addsourcejob.h"
 #include "gui/sharing/createsharejob.h"
@@ -2232,6 +2238,123 @@ class TestUnifiedSharing : public QObject
             QCOMPARE(share->state(), Share::State::Draft);
         }
 
+    }
+
+    void transportLogsOnlyShareRequestMetadata_data()
+    {
+        QTest::addColumn<int>("httpStatus");
+        QTest::addColumn<QByteArray>("ocsData");
+
+        QTest::newRow("success") << 200 << R"json({"ocs":{"meta":{"statuscode":200},"data":[{"id":"fixture-share-result"}]}})json"_ba;
+        QTest::newRow("failure") << 400 << R"json({"ocs":{"meta":{"statuscode":400,"message":"fixture-server-message"}}})json"_ba;
+    }
+
+    void transportLogsOnlyShareRequestMetadata()
+    {
+        QFETCH(int, httpStatus);
+        QFETCH(QByteArray, ocsData);
+
+        auto server = QTcpServer{};
+        QVERIFY2(server.listen(QHostAddress::LocalHost), qPrintable(server.errorString()));
+        const auto response = QByteArray{"HTTP/1.1 "_ba + QByteArray::number(httpStatus) + " fixture-http-reason\r\n"
+            "Content-Type: application/json\r\n"
+            "X-Fixture: fixture-response-header\r\n"
+            "Connection: close\r\n"
+            "Content-Length: " + QByteArray::number(ocsData.size()) + "\r\n\r\n" + ocsData};
+        auto request = QByteArray{};
+        const auto acceptConnection = [&] {
+            const auto socket = server.nextPendingConnection();
+            const auto readRequest = [&, socket] {
+                const auto alreadyComplete = request.contains("\r\n\r\n"_ba);
+                request += socket->readAll();
+                if (!alreadyComplete && request.contains("\r\n\r\n"_ba)) {
+                    socket->write(response);
+                    socket->disconnectFromHost();
+                }
+            };
+            connect(socket, &QTcpSocket::readyRead, socket, readRequest);
+        };
+        connect(&server, &QTcpServer::pendingConnectionAvailable, &server, acceptConnection);
+
+        auto account = Account::create();
+        const auto manager = new AccessManager{&server};
+        account->setCredentials(new FakeCredentials{manager});
+        account->setUrl(QUrl{u"http://127.0.0.1:%1"_s.arg(server.serverPort())});
+        manager->setProxy(QNetworkProxy{QNetworkProxy::NoProxy});
+
+        const auto logger = Logger::instance();
+        const auto logRules = QSet<QString>{u"sync.httplogger.info=true"_s};
+        logger->addLogRule(logRules);
+        const auto restoreLogRules = qScopeGuard([&] {
+            logger->removeLogRule(logRules);
+        });
+        static thread_local auto messages = QList<QPair<QByteArray, QString>>{};
+        messages.clear();
+        const auto previousHandler = qInstallMessageHandler([](QtMsgType, const QMessageLogContext &context, const QString &message) {
+            static constexpr auto categories = std::array{
+                QByteArrayView{"sync.httplogger"},
+                QByteArrayView{"nextcloud.sync.accessmanager"},
+                QByteArrayView{"nextcloud.sync.networkjob"},
+                QByteArrayView{"nextcloud.gui.sharing.ocs"},
+            };
+            const auto category = QByteArrayView{context.category};
+            if (std::ranges::find(categories, category) != categories.end()) {
+                messages.emplaceBack(category.toByteArray(), message);
+            }
+        });
+        const auto restoreLogHandler = qScopeGuard([previousHandler] {
+            qInstallMessageHandler(previousHandler);
+        });
+
+        const auto job = new GetSharesJob{account, u"example-type"_s, u"fixture-source-value"_s};
+        const auto cleanupJob = qScopeGuard([job = QPointer{job}] {
+            delete job.data();
+        });
+        QSignalSpy sharesFetched{job, &GetSharesJob::sharesFetched};
+        QSignalSpy networkError{job, &GetSharesJob::networkError};
+        QSignalSpy ocsError{job, &GetSharesJob::ocsError};
+        job->start();
+        const auto requestId = job->requestId();
+        QVERIFY(!requestId.isEmpty());
+        QTRY_COMPARE(sharesFetched.size() + ocsError.size(), 1);
+        QVERIFY(request.startsWith("GET /ocs/v2.php/apps/sharing/api/v1/shares?"_ba));
+        QVERIFY(request.contains("filterSourceTypeValue=fixture-source-value"_ba));
+        const auto requestIdHeader = QByteArray{"x-request-id: "_ba + requestId.toLower()};
+        QVERIFY(request.toLower().contains(requestIdHeader));
+
+        if (httpStatus == 200) {
+            QVERIFY(ocsError.isEmpty());
+            QVERIFY(networkError.isEmpty());
+            const auto document = sharesFetched.constFirst().constFirst().value<QJsonDocument>();
+            const auto shares = document.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
+            QCOMPARE(shares.size(), 1);
+            QCOMPARE(shares.at(0).toObject().value("id"_L1).toString(), "fixture-share-result"_L1);
+        } else {
+            QVERIFY(sharesFetched.isEmpty());
+            QCOMPARE(networkError.size(), 1);
+            const auto error = ocsError.constFirst();
+            QCOMPARE(error.at(0).toInt(), httpStatus);
+            QCOMPARE(error.at(1).toString(), "fixture-server-message"_L1);
+        }
+
+        const auto traceId = QString::fromLatin1(requestId);
+        const auto logged = [&](QByteArrayView category, QStringView text) {
+            const auto matches = [&](const auto &entry) {
+                return entry.first == category && entry.second.contains(traceId) && entry.second.contains(text);
+            };
+            return std::ranges::any_of(messages, matches);
+        };
+        for (const auto &entry : messages) {
+            QVERIFY2(!entry.second.contains("fixture-"_L1), qPrintable(entry.second));
+        }
+        QVERIFY(logged("nextcloud.sync.accessmanager", u"Request has been sent"));
+        QVERIFY(logged("sync.httplogger", u"Request: GET"));
+        QVERIFY(logged("sync.httplogger", u"Response: GET %1"_s.arg(httpStatus)));
+        QVERIFY(logged("nextcloud.sync.networkjob", u"created for"));
+        if (httpStatus != 200) {
+            QVERIFY(logged("nextcloud.sync.networkjob", QString::number(httpStatus)));
+            QVERIFY(logged("nextcloud.gui.sharing.ocs", u"unexpected status code"));
+        }
     }
 
     void networkErrorsAreSeparateFromSuccessfulResults()
