@@ -6,9 +6,10 @@
 
 #include "progressdispatcher.h"
 
-#include <QObject>
-#include <QMetaType>
 #include <QCoreApplication>
+#include <QLocale>
+#include <QMetaType>
+#include <QObject>
 
 namespace OCC {
 
@@ -151,6 +152,9 @@ void ProgressInfo::reset()
     _currentItems.clear();
     _currentDiscoveredRemoteFolder.clear();
     _currentDiscoveredLocalFolder.clear();
+    _discoveredFolders = 0;
+    _discoveredFiles = 0;
+    _discoveryProgressTimer.invalidate();
     _sizeProgress = Progress();
     _fileProgress = Progress();
     _totalSizeOfCompletedJobs = 0;
@@ -167,6 +171,53 @@ void ProgressInfo::reset()
 ProgressInfo::Status ProgressInfo::status() const
 {
     return _status;
+}
+
+bool ProgressInfo::recordDiscoveredItem(const SyncFileItem &item)
+{
+    if (_status != Discovery || item._type == ItemTypeSkip) {
+        return false;
+    }
+    if (item.isDirectory()) {
+        ++_discoveredFolders;
+    } else {
+        ++_discoveredFiles;
+    }
+    if (_discoveryProgressTimer.isValid() && _discoveryProgressTimer.elapsed() < DiscoveryProgressIntervalMs) {
+        return false;
+    }
+    _discoveryProgressTimer.start();
+    return true;
+}
+
+qint64 ProgressInfo::discoveredFolders() const
+{
+    return _discoveredFolders;
+}
+
+qint64 ProgressInfo::discoveredFiles() const
+{
+    return _discoveredFiles;
+}
+
+QString ProgressInfo::preparationStatusString() const
+{
+    switch (_status) {
+    case Starting:
+        return tr("Starting sync…");
+    case Discovery:
+        if (_discoveredFolders == 0 && _discoveredFiles == 0) {
+            return tr("Checking for changes…");
+        }
+        //: %1 and %2 are the numbers of folders and files examined during discovery, for example 12 and 1,234.
+        return tr("Checking for changes — folders: %1, files: %2").arg(QLocale().toString(_discoveredFolders), QLocale().toString(_discoveredFiles));
+    case Reconcile:
+        return tr("Comparing local and server changes…");
+    case Propagation:
+    case Done:
+        return {};
+    }
+    return {};
 }
 
 void ProgressInfo::startEstimateUpdates()

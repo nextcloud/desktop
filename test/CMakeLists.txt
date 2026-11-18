@@ -83,6 +83,7 @@ nextcloud_add_test(AllFilesDeleted)
 nextcloud_add_test(Blacklist)
 nextcloud_add_test(LocalDiscovery)
 nextcloud_add_test(RemoteDiscovery)
+nextcloud_add_test(DiscoveryProgress)
 nextcloud_add_test(Governance)
 
 nextcloud_add_test(Permissions)
