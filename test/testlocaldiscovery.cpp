@@ -25,6 +25,9 @@
 
 #ifndef Q_OS_WIN
 #include <unistd.h>
+#else
+#include <QProcess>
+#include <QScopeGuard>
 #endif
 
 using namespace OCC;
@@ -86,6 +89,37 @@ private Q_SLOTS:
 
         QVERIFY(fakeFolder.currentRemoteState().find("sub/a.txt"));
         QVERIFY(fakeFolder.currentRemoteState().find("sub/b.txt"));
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+#else
+    void testStatErrorDoesNotDeleteRemoteFiles()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().insert("a.txt", 100);
+        fakeFolder.localModifier().insert("b.txt", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto filePath = fakeFolder.localPath() + u"a.txt"_s;
+        const auto userName = qEnvironmentVariable("USERNAME");
+        const auto restoreAccess = [&filePath, &userName] {
+            return QProcess::execute(u"icacls"_s, {filePath, u"/remove:d"_s, userName});
+        };
+
+        // Deny reading attributes: the directory listing still shows the file but stat fails.
+        QCOMPARE(QProcess::execute(u"icacls"_s, {filePath, u"/deny"_s, u"%1:(RA)"_s.arg(userName)}), 0);
+        const auto restoreGuard = qScopeGuard([&restoreAccess] {
+            restoreAccess();
+        });
+
+        fakeFolder.syncOnce();
+
+        QCOMPARE(restoreAccess(), 0);
+
+        QVERIFY(fakeFolder.currentRemoteState().find("a.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("b.txt"));
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
