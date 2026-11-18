@@ -242,6 +242,11 @@ public extension FilesDatabaseManager {
                     logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
                     continue
                 }
+                if result.isAtHoldingPath || result.serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) {
+                    // A folder parked at a holding path, and what waits below it, belong to the placement to come.
+                    logger.info("Skipping deletion of an item waiting at a holding path.", [.item: result.ocId, .name: result.fileName])
+                    continue
+                }
                 let inactiveItemMetadata = result.metadata
                 result.deleted = true
                 if let stampingSyncTime {

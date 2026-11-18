@@ -44,9 +44,9 @@ extension DatabaseTestSuites {
             let digest = SHA256.hash(data: Data(schema.utf8)).map { String(format: "%02x", $0) }.joined()
 
             // A change of the schema changes this digest. Raise StoreVersion.current with it and, as StoreVersion describes, StoreVersion.oldestMigratable too; then update all three expectations.
-            #expect(digest == "80859b3aee2988f234c07e0c003e0e8535cb8c11bc422800d8eaf795a94bc309", "Schema:\n\(schema)")
-            #expect(StoreVersion.current == 2)
-            #expect(StoreVersion.oldestMigratable == 2)
+            #expect(digest == "23ecae867d5376e6409c0700a0e9f50495d94625ee262aaaaf5a6f86041607a6", "Schema:\n\(schema)")
+            #expect(StoreVersion.current == 3)
+            #expect(StoreVersion.oldestMigratable == 3)
         }
 
         @Test func reopeningAnExistingDatabaseKeepsItsRows() throws {
@@ -116,6 +116,16 @@ extension DatabaseTestSuites {
             #expect(try #require(column).type == "REAL")
             #expect(try #require(column).isNotNull == false)
             #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("reportedSyncTime"), "The record's upsert must not reset the mark.")
+        }
+
+        @Test func theScannedRemoteStateColumnIsNullableTextOutsideTheRecord() throws {
+            let column = try manager.writer.read { db in
+                try db.columns(in: ItemMetadataRecord.databaseTableName).first { $0.name == "scannedRemoteState" }
+            }
+
+            #expect(try #require(column).type == "TEXT")
+            #expect(try #require(column).isNotNull == false)
+            #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("scannedRemoteState"), "The record's upsert must not reset the scan's state.")
         }
 
         @Test func markingUsesThePrimaryKey() throws {

@@ -703,8 +703,8 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         deletedItem.syncTime = now
         Self.dbManager.addItemMetadata(deletedItem)
 
-        // Non-materialised item synced after anchor date (should be ignored).
-        var nonMaterialisedItem = MockRemoteItem(
+        // Non-materialised item synced after anchor date (should be ignored). It exists on the server, so the root listing does not reconcile it away.
+        let nonMaterialisedRemoteItem = MockRemoteItem(
             identifier: "non-mat",
             name: "non-mat.txt",
             remotePath: Self.account.davFilesUrl + "/non-mat.txt",
@@ -712,7 +712,10 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             username: Self.account.username,
             userId: Self.account.id,
             serverUrl: Self.account.serverUrl
-        ).toItemMetadata(account: Self.account)
+        )
+        nonMaterialisedRemoteItem.parent = rootItem
+        rootItem.children.append(nonMaterialisedRemoteItem)
+        var nonMaterialisedItem = nonMaterialisedRemoteItem.toItemMetadata(account: Self.account)
         nonMaterialisedItem.downloaded = false
         nonMaterialisedItem.syncTime = now
         Self.dbManager.addItemMetadata(nonMaterialisedItem)
@@ -732,14 +735,9 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 3. Assert
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
 
-        // Check for updated items
-        XCTAssertEqual(observer.changedItems.count, 2, "One item changed and the other did not but still its metadata was updated in the database.")
-
-        let firstChangedItem = observer.changedItems[0]
-        let secondChangedItem = observer.changedItems[1]
-
-        XCTAssertEqual(firstChangedItem.itemIdentifier.rawValue, oldItem.ocId, "The item unchanged on the server should be reported as updated locally nonetheless.")
-        XCTAssertEqual(secondChangedItem.itemIdentifier.rawValue, updatedItem.ocId, "The item which actually changed on the server should be reported as updated.")
+        // Check for updated items. The item unchanged on the server and synced before the anchor is not read on its own any more, so it is not reported.
+        XCTAssertEqual(observer.changedItems.map(\.itemIdentifier.rawValue), [updatedItem.ocId], "Only the item whose stored state is newer than the anchor is reported.")
+        _ = oldItem
 
         // Check for deleted items
         XCTAssertEqual(observer.deletedItemIdentifiers.count, 1, "There should be one deleted item.")
@@ -818,24 +816,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 3. Assert: Verify optimization behavior
         XCTAssertNil(observer.error, "Enumeration should complete without error.")
 
-        // Since the parent folder's ETag hasn't changed, the child folder should NOT
-        // trigger a separate server request. The enumerator should recognize that
-        // an unchanged parent ETag means no descendants have changed.
+        // The first pass has no reconciled state to go by, so it lists the root and both visited
+        // directories once, whatever their etags.
+        let coldReads = remoteInterface.readOperationCount - initialReadCount
+        XCTAssertEqual(coldReads, 3, "A directory never reconciled is listed once.")
 
-        // The parent folder should be checked (1 read), but the child should not
-        // trigger an additional read since parent ETag is unchanged
-        let finalReadCount = remoteInterface.readOperationCount
-        let additionalReads = finalReadCount - initialReadCount
-
-        // We expect reads for materialized directories, but child should be skipped
-        // because parent ETag is unchanged
-        XCTAssertLessThanOrEqual(
-            additionalReads,
-            1,
-            "Child directory should not be enumerated when parent ETag is unchanged"
-        )
-
-        // Verify that no changes were reported for either folder since nothing changed
         XCTAssertEqual(
             observer.changedItems.count,
             4,
@@ -846,6 +831,29 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             0,
             "No items should be reported as deleted"
         )
+
+        // From then on an unchanged subtree costs nothing beyond the root listing: the child folder
+        // is not read while its parent's etag, and its own, are what the scan last reconciled.
+        let warmAnchor = try XCTUnwrap(observer.finishes.last?.anchor)
+        let warmEnumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let warmObserver = MockChangeObserver(enumerator: warmEnumerator)
+        let warmInitialReadCount = remoteInterface.readOperationCount
+        try await warmObserver.enumerateChanges(from: warmAnchor)
+        XCTAssertNil(warmObserver.error)
+        XCTAssertEqual(
+            remoteInterface.readOperationCount - warmInitialReadCount,
+            1,
+            "Child directory should not be enumerated when parent ETag is unchanged"
+        )
+        // Rows the first pass wrote carry a `syncTime` after its anchor, which has second precision, so the
+        // local derivation may echo them once; what matters here is that no directory was read again.
+        XCTAssertTrue(warmObserver.deletedItemIdentifiers.isEmpty)
 
         // Verify the metadata in the database remains correct
         let finalParentMetadata = try XCTUnwrap(
@@ -1145,7 +1153,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(quiet.changedItems.map(\.itemIdentifier.rawValue), [], "The system already has the whole page.")
         XCTAssertEqual(quiet.deletedItemIdentifiers, [])
 
-        remoteItemA.versionIdentifier = "CHANGED"
+        remoteItemA.changeVersion(to: "CHANGED")
         let afterChange = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
             account: Self.account,
@@ -1156,7 +1164,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let changed = MockChangeObserver(enumerator: afterChange)
         try await changed.enumerateChanges(from: anchor)
         XCTAssertNil(changed.error)
-        XCTAssertEqual(changed.changedItems.map(\.itemIdentifier.rawValue), [remoteItemA.identifier])
+        XCTAssertEqual(changed.changedItems.map(\.itemIdentifier.rawValue), [remoteFolder.identifier, remoteItemA.identifier], "The folder's etag changed with its child, parents first.")
     }
 
     ///
@@ -2454,6 +2462,14 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     @discardableResult
     private func seedMaterialisedWorkingSetFiles(count: Int, syncTime: Date) -> Set<String> {
         var expectedOcIds = Set<String>()
+
+        // The root listing of a working-set scan must find the root's children as stored, or it reports them.
+        var rootMetadata = rootItem.toItemMetadata(account: Self.account)
+        rootMetadata.syncTime = Date(timeIntervalSinceNow: -3600)
+        Self.dbManager.addItemMetadata(rootMetadata)
+        var folderMetadata = remoteFolder.toItemMetadata(account: Self.account)
+        folderMetadata.syncTime = Date(timeIntervalSinceNow: -3600)
+        Self.dbManager.addItemMetadata(folderMetadata)
         for i in 0 ..< count {
             let item = MockRemoteItem(
                 identifier: "wsItem\(i)",

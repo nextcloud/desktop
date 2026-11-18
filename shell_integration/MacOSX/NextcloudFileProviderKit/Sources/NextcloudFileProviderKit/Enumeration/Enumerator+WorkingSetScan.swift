@@ -4,9 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 
-///
-/// How many working-set scan reads, and separately how many stored-path checks of one listing, may be in flight at once, equal to NextcloudKit's default per-host connection limit on the data session that downloads and uploads share.
-///
+/// How many reads of one kind run at a time, so a sweep over many directories does not open one connection per directory.
 let workingSetScanConcurrency = 6
 
 ///
@@ -54,7 +52,7 @@ extension Enumerator {
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
-                // Only a failed local read keeps the incoming anchor: the pending local changes are derived from the anchor date, so advancing past a read which failed would lose them. A failed remote read does not hold the anchor back. Remote changes are found by comparing the server with the stored rows, not by date, and every materialised item is read again on the next pass, so the failed folder is retried either way. Keeping the anchor made the next pass re-derive and re-deliver everything since the old date.
+                // Only a failed local read keeps the incoming anchor: the pending local changes are derived from the anchor date, so advancing past a read which failed would lose them. A failed remote read does not hold the anchor back. Remote changes are found by comparing the server with the stored rows, not by date, and a directory whose listing failed is forgotten by the scan, so it is listed again on the next pass either way. Keeping the anchor made the next pass re-derive and re-deliver everything since the old date.
                 let hadFailure = serverChanges.storeUnreadable || localChanges == nil
 
                 let changes = ChangeSet(
@@ -101,8 +99,21 @@ extension Enumerator {
     }
 
     ///
-    /// Scan the materialised items (and any changed subtrees they reveal) on the server, persist the
-    /// discovered changes to the database, and return them.
+    /// Find the remote changes to the working set by walking the directory tree from the account
+    /// root, persist them, and return them.
+    ///
+    /// The server bumps the etag of every ancestor when something changes below it, so one listing of
+    /// the root shows which top-level directories changed, and the walk descends only into directories
+    /// whose remote state (etag and permissions) differs from the state at which the scan last
+    /// reconciled them, and which hold a materialized item. Unchanged subtrees cost nothing; an idle
+    /// domain costs one request. Files are never read on their own, their parent's listing carries
+    /// their state.
+    ///
+    /// The reconciled state is remembered per directory in `scannedRemoteState`, written only after
+    /// the whole pass, and only for directories whose descended children all succeeded. A failed
+    /// listing forgets the state of the directory and its ancestors, so the next pass descends there
+    /// again from the root. Directories on external storages are listed on every pass, because the
+    /// server notices changes made behind its back only when the directory is read.
     ///
     /// The returned changes are reported to the working-set change observer directly. Relying on
     /// ``FilesDatabaseManager/pendingWorkingSetChanges(since:)`` alone to re-derive the report from
@@ -112,10 +123,10 @@ extension Enumerator {
     ///
     /// - Returns: The discovered creations and updates (combined into `updated`), the items that
     ///   were marked deleted, whether the materialised items could not be read from the store at all,
-    ///   and how many items could not be read from the server and are left for the next pass.
+    ///   and how many directories could not be listed and are left for the next pass.
     ///
     func scanMaterialisedItemsForRemoteChanges() async -> (
-        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], storeUnreadable: Bool, unreadableItemCount: Int
+        updated: [SendableItemMetadata], deleted: [SendableItemMetadata], storeUnreadable: Bool, failedListingCount: Int
     ) {
         logger.debug("Checking materialised items for changes on the server...")
 
@@ -123,290 +134,305 @@ extension Enumerator {
             logger.debug("Completed checking materialised items for changes on the server.")
         }
 
+        guard let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
+            return (updated: [], deleted: [], storeUnreadable: true, failedListingCount: 0)
+        }
+
         // Trashed rows are excluded because trashing moves `serverUrl` to the trashbin without
-        // setting `deleted`, and the ordinary DAV path 404s there — which the scan reads as a
+        // setting `deleted`, and the ordinary DAV path 404s there, which the scan would read as a
         // deletion of the row trash reconciliation needs.
-        // Unlike when enumerating items we can't progressively enumerate items as we need to
-        // wait to see which items are truly deleted and which have just been moved elsewhere.
-        // Visited folders and downloaded files. Sort in terms of their remote URLs.
-        // This way we ensure we visit parent folders before their children.
-        let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
-        let materialisedItems = (storedMaterialisedItems ?? [])
-            .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
-            .sorted { $0.remotePath().count < $1.remotePath().count }
+        let materialisedItems = storedMaterialisedItems.filter { !$0.deleted && !$0.isTrashed }
 
-        var accumulatedCreations = [SendableItemMetadata]()
-        var accumulatedUpdates = [SendableItemMetadata]()
-        var accumulatedDeletions = [SendableItemMetadata]()
-        var scannedItemIds = Set<String>()
-        // One unreadable item does not abort the scan (see the read-error branch below). It is read
-        // again on the next pass, because every materialised item is; the count is reported for the log.
-        var failedItemIds = Set<String>()
-        // The store, in contrast, is read by date: a pass which could not read it keeps the incoming anchor.
-        var storeUnreadable = storedMaterialisedItems == nil
-        var notFoundOcIds = Set<String>()
-
-        // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
-        func remotePathDepth(_ metadata: SendableItemMetadata) -> Int {
-            metadata.remotePath().count(where: { $0 == "/" })
+        guard !materialisedItems.isEmpty else {
+            logger.info("Nothing is materialised, so there is nothing to check on the server.")
+            return (updated: [], deleted: [], storeUnreadable: false, failedListingCount: 0)
         }
 
-        // Work queue seeded with the materialised items. A changed child directory discovered while
-        // scanning is appended ONLY when its subtree actually contains a materialised item or the
-        // directory is pinned, so its changed descendants are visited too — otherwise a depth-1 read of
-        // a visited folder surfaces the changed subdirectory but never the changed items inside it. A
-        // changed, unpinned subdirectory whose subtree holds nothing materialised is NOT enqueued:
-        // nothing inside it is part of the working set, so there is nothing to keep in sync, and its
-        // contents are read lazily when the user navigates into it. Without that bound a single working-set signal on a sparse / freshly
-        // activated domain triggers a full recursive PROPFIND of every changed branch down to its
-        // leaves (every never-enumerated descendant looks "new"), hammering the server. Unchanged
-        // subtrees are likewise never enqueued, so the "skip unchanged directories" optimisation holds.
-        var scanQueue = Dictionary(grouping: materialisedItems, by: remotePathDepth)
-        var enqueuedDirectoryIds = Set(materialisedItems.filter(\.directory).map(\.ocId))
+        var state = WorkingSetScanState(
+            scannedRemoteStates: dbManager.scannedRemoteStates() ?? [:],
+            alwaysListedPrefixes: materialisedItems
+                .filter { $0.directory && $0.mountType == Self.externalMountType }
+                .map { $0.remotePath().precomposedStringWithCanonicalMapping }
+        )
 
-        // Items a successful read listed, which exist on the server whatever their own read at an older path returned.
-        var listedOcIds = Set<String>()
+        let rootMetadata = dbManager.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue)
+        _ = await listDirectory(
+            at: account.davFilesUrl,
+            ocId: NSFileProviderItemIdentifier.rootContainer.rawValue,
+            metadata: rootMetadata,
+            ancestorOcIds: [],
+            state: &state
+        )
 
-        while let waveDepth = scanQueue.keys.min() {
-            let wave = scanQueue.removeValue(forKey: waveDepth) ?? []
+        var deletions = expandMissingDirectories(state: &state)
+        dbManager.recordScannedRemoteStates(state.reconciled, forgetting: state.forgotten)
 
-            let toRead = wave.filter { candidate in
-                guard !scannedItemIds.contains(candidate.ocId) else { return false }
-                guard isLockFileName(candidate.fileName) == false else {
-                    // Skip server requests for locally created lock files.
-                    // They are not synchronised to the server for real.
-                    // Thus they can be expected not to be found there.
-                    // That would also cause their local deletion due to synchronisation logic.
-                    logger.debug("Skipping materialised item in working set check because the name hints a lock file.", [.item: candidate, .name: candidate.name])
-                    return false
-                }
-                return true
-            }
-
-            guard !toRead.isEmpty else { continue }
-
-            await concurrentlyReadForWorkingSetScan(toRead) { itemToScan, readResult in
-                // A sibling merged earlier in this wave covers this item when the server moved it into that sibling or onto its path.
-                guard !scannedItemIds.contains(itemToScan.ocId) else { return }
-
-                let itemRemoteUrl = itemToScan.remotePath()
-                let changes = readResult.changes ?? ChangeSet()
-
-                if readResult.error?.errorCode == 404 {
-                    accumulatedDeletions.append(itemToScan)
-                    notFoundOcIds.insert(itemToScan.ocId)
-                    scannedItemIds.insert(itemToScan.ocId)
-                    // Children are not marked deleted here — they may have moved with their parent.
-                    logger.debug("Parent returned 404; children will be checked individually.", [.url: itemRemoteUrl])
-                } else if let readError = readResult.error, readError != .success {
-                    // A single unreadable folder must NOT abort discovery for the rest of the working set.
-                    // The queue is sorted parent-first, so the account root and top-level folders (e.g. a
-                    // very large "Talk" whose depth-1 PROPFIND times out) are scanned first; a `break` here
-                    // meant one early failure silently stalled ALL remote-change propagation for every other
-                    // folder — the "files uploaded on the web never appear" bug. Skip only the failing item
-                    // (it is retried on the next scan) and keep scanning the remainder.
-                    // See nextcloud/desktop#10442.
-                    logger.error(
-                        "Read of materialised item failed during working-set scan; skipping it and continuing with the rest of the working set.",
-                        [.error: readError, .url: itemRemoteUrl]
-                    )
-                    failedItemIds.insert(itemToScan.ocId)
-                    scannedItemIds.insert(itemToScan.ocId)
-                    return
-                } else {
-                    accumulatedDeletions += changes.deleted
-                    accumulatedUpdates += changes.updated
-                    accumulatedCreations += changes.created
-
-                    // Reading a directory's children does not by itself require scanning each child's own
-                    // children. Track which children this read has already accounted for.
-                    var childrenCoveredByThisRead = Set<String>()
-
-                    if let readItems = readResult.metadatas, let readTarget = readItems.first {
-                        listedOcIds.formUnion(readItems.map(\.ocId))
-                        scannedItemIds.insert(readTarget.ocId)
-
-                        if readItems.count > 1 {
-                            childrenCoveredByThisRead.formUnion(readItems[1...].filter { !$0.directory }.map(\.ocId))
-                        }
-
-                        if readItems.count > 1 {
-                            let childDirectories = readItems[1...].filter(\.directory)
-                            let changedChildOcIds = Set(changes.updated.map(\.ocId))
-                                .union(changes.created.map(\.ocId))
-
-                            for childDirectory in childDirectories {
-                                // A changed child directory is scanned so its changed descendants are
-                                // discovered, even when the directory itself is not materialised — but
-                                // only when the working set actually tracks something inside it, i.e. it
-                                // has a materialised descendant (a visited subfolder or a downloaded file),
-                                // or when it is pinned, because "Always keep downloaded" asks for the whole
-                                // subtree. Any other changed-but-unmaterialised subtree is never crawled
-                                // here: nothing in it is cached locally, so its contents are read lazily on
-                                // navigation rather than walked now (which on a sparse domain would recurse
-                                // into entire never-visited subtrees). Its own change is still reported
-                                // above via `accumulatedUpdates` / `accumulatedCreations`.
-                                if changedChildOcIds.contains(childDirectory.ocId) {
-                                    let childPath = childDirectory.remotePath()
-                                    let childHasMaterialisedDescendant = materialisedItems.contains {
-                                        $0.ocId != childDirectory.ocId
-                                            && ($0.hasSameRemotePath(as: childPath)
-                                                || $0.isDescendant(of: childPath))
-                                    }
-                                    // The pin is read from the stored row because the read applies the parent's pin to its own copy.
-                                    let childIsPinned = dbManager
-                                        .itemMetadata(ocId: childDirectory.ocId)?
-                                        .keepDownloaded == true
-
-                                    if childHasMaterialisedDescendant || childIsPinned,
-                                       enqueuedDirectoryIds.insert(childDirectory.ocId).inserted
-                                    {
-                                        scanQueue[remotePathDepth(childDirectory), default: []].append(childDirectory)
-                                    }
-                                    continue
-                                }
-
-                                // Only skip unchanged child directories with no materialised descendants.
-                                // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
-                                guard let localItem = materialisedItems.first(
-                                    where: { $0.ocId == childDirectory.ocId }
-                                ), localItem.isInSameDatabaseStoreableRemoteState(childDirectory) else {
-                                    continue
-                                }
-
-                                let hasMaterialisedDescendants = materialisedItems.contains {
-                                    $0.ocId != localItem.ocId
-                                        && $0.isDescendant(of: localItem.remotePath())
-                                }
-
-                                if !hasMaterialisedDescendants {
-                                    childrenCoveredByThisRead.insert(childDirectory.ocId)
-                                }
-                            }
-                        }
-
-                        childrenCoveredByThisRead.formUnion(changes.deleted.map(\.ocId))
-                    }
-
-                    scannedItemIds.formUnion(childrenCoveredByThisRead)
-                }
-            }
-        }
-
-        // Catches moves across directories: items found at a new location (updated or new)
-        // should not be marked deleted at the old location.
-        let survivingOcIds = Set(accumulatedUpdates.map(\.ocId))
-            .union(accumulatedCreations.map(\.ocId))
-            .union(listedOcIds)
-
-        accumulatedDeletions.removeAll { survivingOcIds.contains($0.ocId) }
-
-        var reportedDeletions = [SendableItemMetadata]()
-        for deletedMetadata in accumulatedDeletions {
-            // Check and write in one transaction, so a move that commits in between is not overwritten.
-            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
-                let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
-
-                if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
-                    logger.info("Skipping deletion of item with pending upload.", [.item: deletedMetadata.ocId])
-                    return nil
-                }
-
-                // A move that reached the database during the scan makes a 404 about the old path, not the item.
-                if notFoundOcIds.contains(deletedMetadata.ocId), let current, !current.hasSameRemotePath(as: deletedMetadata.remotePath()) {
-                    logger.debug("Ignoring deletion of an item that has since moved.", [.item: deletedMetadata.ocId])
-                    return nil
-                }
-
-                var deleteMarked = deletedMetadata
-                deleteMarked.deleted = true
-                deleteMarked.syncTime = Date()
-                try dbManager.insertItemMetadata(deleteMarked, in: db)
-                return deleteMarked
-            } ?? nil
-
-            if let deleteMarked {
-                reportedDeletions.append(deleteMarked)
-            }
-        }
-
-        // Deduplicate the discovered new/updated metadata by ocId, preserving order.
+        // Deduplicate the discovered new/updated metadata by ocId, preserving order; the root row is the system's, not ours to report.
         var seenUpdatedOcIds = Set<String>()
-        let firstCopies = (accumulatedCreations + accumulatedUpdates).filter {
-            seenUpdatedOcIds.insert($0.ocId).inserted
+        let firstCopies = state.createdAndUpdated.filter {
+            $0.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue && seenUpdatedOcIds.insert($0.ocId).inserted
         }
 
-        // Each read reports rows as stored after it, so a row that a later read moved again or deleted is reported as it is stored now.
+        // A row which a later listing of the same pass moved again, or deleted, is reported as it is stored now.
+        var storeUnreadable = false
         let storedRows = dbManager.itemMetadatas(ocIds: firstCopies.map(\.ocId))
         var discoveredUpdates = [SendableItemMetadata]()
+
         for copy in firstCopies {
-            let stored: SendableItemMetadata
+            guard let storedRows else {
+                discoveredUpdates.append(copy)
+                continue
+            }
 
-            if let storedRows {
-                // A row missing since its read was removed meanwhile or never written, so it is not reported and the scan counts as incomplete.
-                guard let row = storedRows[copy.ocId] else {
-                    storeUnreadable = true
-                    continue
-                }
-
-                stored = row
-            } else {
-                stored = copy
+            // A row gone since its listing was removed meanwhile or never written, so it is not reported and the pass counts as incomplete.
+            guard let stored = storedRows[copy.ocId] else {
+                storeUnreadable = true
+                continue
             }
 
             if stored.deleted {
-                reportedDeletions.append(stored)
+                deletions.append(stored)
             } else {
                 discoveredUpdates.append(stored)
             }
         }
 
-        if discoveredUpdates.isEmpty, reportedDeletions.isEmpty {
+        if discoveredUpdates.isEmpty, deletions.isEmpty {
             logger.info("No remote changes found in materialised items.")
         }
 
-        if !failedItemIds.isEmpty {
-            logger.error(
-                "Working-set remote-change scan skipped \(failedItemIds.count) item(s) which could not be read; they are read again on the next pass.",
-                [.account: account]
-            )
-        }
-
-        return (
-            updated: discoveredUpdates,
-            deleted: reportedDeletions,
-            storeUnreadable: storeUnreadable,
-            unreadableItemCount: failedItemIds.count
+        logger.info(
+            "Working-set scan finished.",
+            [.name: "\(state.listedCount) listed, \(state.skippedCount) skipped, \(state.failedCount) failed"]
         )
+
+        return (updated: discoveredUpdates, deleted: deletions, storeUnreadable: storeUnreadable, failedListingCount: state.failedCount)
     }
 
-    /// Read `items` from the server, at most ``workingSetScanConcurrency`` at a time, handing each result to `merge` as it arrives.
-    private func concurrentlyReadForWorkingSetScan(
-        _ items: [SendableItemMetadata],
-        merge: (SendableItemMetadata, RemoteReadResult) -> Void
-    ) async {
-        await withTaskGroup(of: (SendableItemMetadata, RemoteReadResult).self) { group in
-            for (index, item) in items.enumerated() {
-                if index >= workingSetScanConcurrency, let (readItem, result) = await group.next() {
-                    merge(readItem, result)
-                }
+    /// The mount type the server reports for a directory on an external storage.
+    static let externalMountType = "external"
 
-                group.addTask {
-                    let result = await Enumerator.readServerUrl(
-                        item.remotePath(),
-                        account: self.account,
-                        remoteInterface: self.remoteInterface,
-                        dbManager: self.dbManager,
-                        depth: item.directory ? .targetAndDirectChildren : .target,
-                        log: self.logger.log
-                    )
-                    return (item, result)
-                }
+    ///
+    /// List one directory, descend into the changed directories below it which hold something
+    /// materialized, and remember the directory's state when everything below it succeeded.
+    ///
+    /// - Returns: Whether this directory and every directory it descended into were listed.
+    ///
+    private func listDirectory(
+        at remotePath: String,
+        ocId: String,
+        metadata: SendableItemMetadata?,
+        ancestorOcIds: [String],
+        state: inout WorkingSetScanState
+    ) async -> Bool {
+        logger.debug("Listing a directory for working-set changes.", [.url: remotePath])
+        state.listedCount += 1
+
+        let readResult = await Enumerator.readServerUrl(
+            remotePath,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            depth: .targetAndDirectChildren,
+            recordVisit: false,
+            log: logger.log
+        )
+
+        let isRoot = ocId == NSFileProviderItemIdentifier.rootContainer.rawValue
+
+        if readResult.error?.errorCode == 404, !isRoot {
+            // The directory is gone; its subtree is expanded once the pass is over and moves are known.
+            logger.debug("Directory is gone from the server; its subtree is reported deleted.", [.url: remotePath])
+            if var gone = metadata {
+                gone.deleted = true
+                gone.syncTime = Date()
+                state.missing.append(gone)
+                state.notFoundOcIds.insert(ocId)
+            }
+            return true
+        }
+
+        if let readError = readResult.error, readError != .success {
+            // The rest of the working set is still scanned. This directory and its ancestors forget
+            // their reconciled state, so the next pass descends here again whatever else changed.
+            // See nextcloud/desktop#10442.
+            logger.error(
+                "Directory listing failed; the directory and its ancestors are scanned again on the next pass.",
+                [.error: readError, .url: remotePath]
+            )
+            state.failedCount += 1
+            state.forgotten.formUnion(ancestorOcIds)
+            state.forgotten.insert(ocId)
+            return false
+        }
+
+        let changes = readResult.changes ?? ChangeSet()
+        state.createdAndUpdated.append(contentsOf: changes.created + changes.updated)
+        state.survivingOcIds.formUnion(changes.created.map(\.ocId))
+        state.survivingOcIds.formUnion(changes.updated.map(\.ocId))
+        state.missing.append(contentsOf: changes.deleted)
+
+        // The listing carries the server's state; the walk decides by the stored one, where a visit,
+        // a pin and a download are recorded, and reports the rows as the store holds them after the write.
+        guard let rows = readResult.metadatas,
+              case let listedRows = Enumerator.storedRows(for: rows, dbManager: dbManager),
+              let listedTarget = listedRows.first
+        else {
+            return true
+        }
+
+        // An item any successful listing returned exists on the server, whatever a read of it at an
+        // older path answers later in the pass.
+        state.survivingOcIds.formUnion(listedRows.map(\.ocId))
+
+        var allDescentsSucceeded = true
+
+        for child in listedRows.dropFirst() where child.directory {
+            guard !isLockFileName(child.fileName), state.listedOcIds.insert(child.ocId).inserted else {
+                continue
             }
 
-            for await (readItem, result) in group {
-                merge(readItem, result)
+            let childPath = child.remotePath()
+            let canonicalChildPath = childPath.precomposedStringWithCanonicalMapping
+            // A failed read descends: better one listing too many than a subtree never checked.
+            let holdsMaterialisedItem = dbManager.hasMaterialisedItem(below: childPath) ?? true
+
+            // "Always keep downloaded" asks for the whole subtree, so a directory created on the server
+            // inside a pinned folder is read although nothing inside it is known yet.
+            guard child.visitedDirectory || child.keepDownloaded || holdsMaterialisedItem else {
+                // Nothing tracked below: the directory's own row is written and reported by this listing already.
+                continue
+            }
+
+            let remoteState = FilesDatabaseManager.scanRemoteState(of: child)
+            let reconciledState = state.scannedRemoteStates[child.ocId]
+            let alwaysListed = state.alwaysListedPrefixes.contains { canonicalChildPath == $0 || canonicalChildPath.hasPrefix($0 + "/") }
+
+            // A directory never reconciled is listed once, whatever its etag: only the scan's own state says the subtree was checked.
+            if !alwaysListed, child.status == Status.normal.rawValue, reconciledState == remoteState {
+                logger.debug("Skipping a directory whose subtree is unchanged since the last scan.", [.url: childPath, .eTag: child.etag])
+                state.skippedCount += 1
+                continue
+            }
+
+            let descended = await listDirectory(
+                at: childPath,
+                ocId: child.ocId,
+                metadata: child,
+                ancestorOcIds: ancestorOcIds + [ocId],
+                state: &state
+            )
+            allDescentsSucceeded = allDescentsSucceeded && descended
+        }
+
+        if allDescentsSucceeded {
+            state.reconciled[ocId] = FilesDatabaseManager.scanRemoteState(of: listedTarget)
+        }
+
+        return allDescentsSucceeded
+    }
+
+    ///
+    /// Turn the tombstones a pass collected into the deletions to report, expanding deleted directories
+    /// to everything below them now that moves are known.
+    ///
+    /// A directory which reappeared anywhere in the pass was moved, not deleted, and is dropped. A
+    /// deleted directory whose name is taken by a live directory with another identifier is reported
+    /// alone: the new directory's own listing reconciles the children.
+    ///
+    private func expandMissingDirectories(state: inout WorkingSetScanState) -> [SendableItemMetadata] {
+        var deletions: [SendableItemMetadata] = []
+        var reportedOcIds = Set<String>()
+        let now = Date()
+
+        for missing in state.missing where !state.survivingOcIds.contains(missing.ocId) {
+            guard reportedOcIds.insert(missing.ocId).inserted else {
+                continue
+            }
+
+            // The listing concluded about the path it read. A row which moved away from that path
+            // since, or which the user has started uploading to, is not what the listing concluded about.
+            let current = dbManager.itemMetadata(ocId: missing.ocId)
+
+            // A 404 is about the path which was read, so any move away from it makes the answer stale.
+            // A listing's own conclusion is about the children the server returned, which an ancestor
+            // renamed meanwhile does not put in doubt; a rename of the row itself does, because the
+            // listing did not look for that name.
+            let movedSince = state.notFoundOcIds.contains(missing.ocId)
+                ? current.map { !$0.hasSameRemotePath(as: missing.remotePath()) }
+                : current.map { $0.fileName != missing.fileName }
+
+            if movedSince == true, let current {
+                logger.debug("Ignoring the deletion of an item which has since moved.", [.item: missing.ocId, .url: missing.remotePath()])
+                revive(current)
+                continue
+            }
+
+            if (current ?? missing).status >= Status.inUpload.rawValue {
+                logger.info("Skipping deletion of item with pending upload.", [.item: missing.ocId])
+                current.map(revive)
+                continue
+            }
+
+            var tombstone = current ?? missing
+            tombstone.deleted = true
+
+            guard missing.directory else {
+                deletions.append(tombstone)
+                continue
+            }
+
+            // A folder parked at a holding path kept its children for the placement which is to come.
+            if (current ?? missing).isAtHoldingPath {
+                logger.debug("A folder waiting at a holding path is reported alone.", [.item: missing.ocId])
+                deletions.append(tombstone)
+                continue
+            }
+
+            let recreated = dbManager.liveItemOccupies(serverUrl: missing.serverUrl, fileName: missing.fileName, otherThan: missing.ocId) ?? false
+            if recreated {
+                logger.debug("A deleted directory was recreated under its name; only the old directory is reported.", [.item: missing.ocId, .url: missing.remotePath()])
+                if dbManager.itemMetadata(ocId: missing.ocId)?.deleted != true {
+                    dbManager.deleteItemMetadata(ocId: missing.ocId)
+                }
+                deletions.append(tombstone)
+                continue
+            }
+
+            guard let subtree = dbManager.deleteDirectoryAndSubdirectoriesMetadata(ocId: missing.ocId, stampingSyncTime: now) else {
+                deletions.append(tombstone)
+                continue
+            }
+
+            for var row in subtree {
+                let isTheDirectory = row.ocId == missing.ocId
+                guard isTheDirectory || (!state.survivingOcIds.contains(row.ocId) && reportedOcIds.insert(row.ocId).inserted) else {
+                    continue
+                }
+                row.deleted = true
+                row.syncTime = now
+                deletions.append(row)
             }
         }
+
+        return deletions
+    }
+
+    ///
+    /// Put a row back which a listing tombstoned although the pass decided not to report its deletion.
+    ///
+    /// The listing writes its conclusion as it goes, while the pass decides about the deletion once every
+    /// listing is in. A row left tombstoned would reach the system as a deletion through the local
+    /// derivation, which reports what the store holds, whatever this pass reports.
+    ///
+    private func revive(_ row: SendableItemMetadata) {
+        guard row.deleted else {
+            return
+        }
+
+        var alive = row
+        alive.deleted = false
+        alive.syncTime = Date()
+        dbManager.addItemMetadata(alive)
     }
 }
