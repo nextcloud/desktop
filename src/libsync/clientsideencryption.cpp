@@ -20,6 +20,7 @@
 
 #include <KCompressionDevice>
 
+#include <QByteArrayView>
 #include <QDebug>
 #include <QLoggingCategory>
 #include <QFileInfo>
@@ -93,27 +94,36 @@ constexpr char e2e_mnemonic[] = "_e2e-mnemonic";
 
 constexpr qint64 blockSize = 1024;
 
-QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
+QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher, qsizetype partCount)
 {
-    const auto separator = QByteArrayLiteral("fA=="); // BASE64 encoded '|'
-    auto result = QList<QByteArray>();
+    const auto separator = "fA=="_ba; // Base64-encoded '|'
+    auto parts = QList<QByteArray>();
+    auto offset = qsizetype{0};
+    while (parts.size() + 1 < partCount) {
+        auto index = cipher.indexOf(separator, offset);
+        if (index < 0) {
+            break;
+        }
 
-    auto data = cipher;
-    auto index = data.indexOf(separator);
-    while (index >=0) {
-        result.append(data.left(index));
-        data = data.mid(index + separator.size());
-        index = data.indexOf(separator);
+        // A padded field ending in "fA==" places two copies of the marker side by side.
+        // If only the second copy remains, it can be the entire final field.
+        const auto remainder = QByteArrayView(cipher).sliced(index + separator.size());
+        if (remainder.size() > separator.size() && remainder.startsWith(separator)) {
+            index += separator.size();
+        }
+
+        parts.append(cipher.mid(offset, index - offset));
+        offset = index + separator.size();
     }
 
-    result.append(data);
-    return result;
+    parts.append(cipher.mid(offset));
+    return parts;
 }
 
-QList<QByteArray> splitCipherParts(const QByteArray &data)
+QList<QByteArray> splitCipherParts(const QByteArray &data, qsizetype partCount)
 {
     const auto isOldFormat = !data.contains('|');
-    const auto parts = isOldFormat ? oldCipherFormatSplit(data) : data.split('|');
+    const auto parts = isOldFormat ? oldCipherFormatSplit(data, partCount) : data.split('|');
     qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
     return parts;
 }
@@ -386,7 +396,7 @@ QByteArray encryptPrivateKey(
 }
 
 QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
-    const auto parts = splitCipherParts(data);
+    const auto parts = splitCipherParts(data, 3);
     if (parts.size() < 2) {
         qCInfo(lcCse()) << "Not enough parts found";
         return QByteArray();
@@ -460,7 +470,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
 
 QByteArray extractPrivateKeySalt(const QByteArray &data)
 {
-    const auto parts = splitCipherParts(data);
+    const auto parts = splitCipherParts(data, 3);
     if (parts.size() < 3) {
         qCInfo(lcCse()) << "Not enough parts found";
         return QByteArray();
@@ -470,7 +480,7 @@ QByteArray extractPrivateKeySalt(const QByteArray &data)
 }
 
 QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
-    const auto parts = splitCipherParts(data);
+    const auto parts = splitCipherParts(data, 2);
     if (parts.size() < 2) {
         qCInfo(lcCse()) << "Not enough parts found";
         return QByteArray();

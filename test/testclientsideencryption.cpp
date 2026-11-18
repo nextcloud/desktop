@@ -18,15 +18,11 @@
 #include "logger.h"
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestClientSideEncryption : public QObject
 {
     Q_OBJECT
-
-    QByteArray convertToOldStorageFormat(const QByteArray &data)
-    {
-        return data.split('|').join("fA==");
-    }
 
 private Q_SLOTS:
     void initTestCase()
@@ -84,10 +80,11 @@ private Q_SLOTS:
     void shouldDecryptPrivateKeysInOldStorageFormat()
     {
         // GIVEN
-        const auto encryptionKey = QByteArrayLiteral("foo");
-        const auto originalPrivateKey = QByteArrayLiteral("bar");
-        const auto originalSalt = QByteArrayLiteral("baz");
-        const auto cipher = convertToOldStorageFormat(EncryptionHelper::encryptPrivateKey(encryptionKey, originalPrivateKey, originalSalt));
+        const auto encryptionKey = "0123456789abcdef0123456789abcdef"_ba;
+        const auto originalPrivateKey = "example"_ba;
+        const auto originalSalt = "|"_ba;
+        // The ciphertext ends in "fA==", and the encoded salt is also "fA==".
+        const auto cipher = "4Xs7CRabFYybaVADl5f5afgPiLcKiiqiLI+jfA==fA==A3oCAwQFBgcICQoLfA==fA=="_ba;
 
         // WHEN
         const auto privateKey = EncryptionHelper::decryptPrivateKey(encryptionKey, cipher);
@@ -136,12 +133,19 @@ private Q_SLOTS:
         QCOMPARE(data, originalData);
     }
 
+    void shouldSymmetricDecryptStringsInOldStorageFormat_data()
+    {
+        QTest::addColumn<QByteArray>("cipher");
+        QTest::newRow("ordinary") << "zIXJcmeX7C1Tlangd0QAL0cRUEI=fA==AAECAwQFBgcICQoLDA0ODw=="_ba;
+        QTest::newRow("separator-at-end-of-iv") << "Vu2QBVB50JZke4zlxtRCwqnc7C4=fA==AAECAwQFBgcICQoLDA0OfA=="_ba;
+    }
+
     void shouldSymmetricDecryptStringsInOldStorageFormat()
     {
         // GIVEN
-        const auto encryptionKey = QByteArrayLiteral("foo");
-        const auto originalData = QByteArrayLiteral("bar");
-        const auto cipher = convertToOldStorageFormat(EncryptionHelper::encryptStringSymmetric(encryptionKey, originalData));
+        QFETCH(QByteArray, cipher);
+        const auto encryptionKey = "0123456789abcdef"_ba;
+        const auto originalData = "bar"_ba;
 
         // WHEN
         const auto data = EncryptionHelper::decryptStringSymmetric(encryptionKey, cipher);
