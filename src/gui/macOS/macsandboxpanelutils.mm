@@ -26,10 +26,16 @@ void beginSheet(NSSavePanel *panel, QWindow *parentWindow, void (^completionHand
         sheetParent = NSApp.keyWindow ?: NSApp.mainWindow;
     }
 
+    const auto closingCompletionHandler = ^(NSModalResponse response) {
+        // Take the panel off screen first, a modal dialog shown by the handler would otherwise keep it open.
+        [panel orderOut:nil];
+        completionHandler(response);
+    };
+
     if (sheetParent) {
-        [panel beginSheetModalForWindow:sheetParent completionHandler:completionHandler];
+        [panel beginSheetModalForWindow:sheetParent completionHandler:closingCompletionHandler];
     } else {
-        [panel beginWithCompletionHandler:completionHandler];
+        [panel beginWithCompletionHandler:closingCompletionHandler];
     }
 }
 
