@@ -49,6 +49,21 @@ extension FilesDatabaseManager {
     }
 
     ///
+    /// The `syncTime` of the row state last handed to the system, or `nil` when the row is unknown or was never handed over.
+    ///
+    func reportedSyncTimeForTesting(ocId: String) -> Date? {
+        let mark = try? writer.read { db in
+            try Double.fetchOne(db, sql: "SELECT reportedSyncTime FROM itemMetadata WHERE ocId = ?", arguments: [ocId])
+        }
+
+        guard let mark = mark ?? nil else {
+            return nil
+        }
+
+        return Date(timeIntervalSinceReferenceDate: mark)
+    }
+
+    ///
     /// Every stored item row, ordered by identifier.
     ///
     func allItemMetadatasForTesting() -> [SendableItemMetadata] {

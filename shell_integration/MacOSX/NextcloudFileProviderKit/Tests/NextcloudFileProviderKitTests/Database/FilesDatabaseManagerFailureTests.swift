@@ -78,6 +78,20 @@ extension DatabaseTestSuites {
             #expect(manager.remoteChunkStoreFolderNames() == nil)
         }
 
+        @Test func reportedStateFailsOpen() throws {
+            let row = DatabaseTestSuites.makeFile(ocId: "row", fileName: "row.txt")
+            manager.addItemMetadata(row)
+            manager.markReported([row])
+            var newer = row
+            newer.syncTime = row.syncTime.addingTimeInterval(-10)
+            #expect(manager.notYetReported([newer]).isEmpty)
+
+            try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
+
+            manager.markReported([row])
+            #expect(manager.notYetReported([newer]).map(\.ocId) == ["row"], "A failed read delivers the batch unfiltered.")
+        }
+
         @Test func theAbandonedUploadDecisionIsNilWhenAnyOfItsQueriesFails() throws {
             var resumable = DatabaseTestSuites.makeFile(ocId: "resumable", fileName: "r.bin")
             resumable.chunkUploadId = "u-resumable"

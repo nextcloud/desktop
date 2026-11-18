@@ -23,6 +23,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
 - The `fileId` column is indexed for the push-notification lookup, which asks for thousands of identifiers at once.
+- `itemMetadata.reportedSyncTime`, the `syncTime` of the row state last handed to the framework, is the one column outside its record type. The record's upsert assigns every record column on conflict, and the mark has to survive every rewrite of a row, so only `markReported(_:)` writes it. See <doc:ChangeEnumeration> for what it is for.
 
 ## Durability
 
@@ -36,24 +37,29 @@ A single damaged value does not take a query with it. A list column holding malf
 
 The change-delivery buffer treats a failed read of its stored session or items the same way: it finishes the enumeration with an error and keeps the session, instead of taking an empty read for the last batch and acknowledging changes which were never delivered. The startup cleanup of chunk uploads decides in one read and skips the cleanup when that read fails.
 
+A failed write of the reported state leaves the rows unmarked, so they are reported once more; a failed read of it delivers a change batch unfiltered. Both err towards reporting.
+
 On open, a file SQLite reports as corrupt is set aside with the suffix `.unreadable-<timestamp>` and replaced. The replacement carries a new store identity, so every anchor the framework kept for the domain expires and the containers are enumerated afresh. Any other open failure, and a failed import, keep the files untouched and make the open throw; the extension then reports the setup as failed and the domain stays unavailable until a later setup succeeds. Nothing is served from a substitute database, because nothing written to one would survive.
 
 ## Store version
 
-`StoreVersion.current` names the generation of the on-disk format. It is bumped with every migration registered in `DatabaseSchema` and recorded twice after a successful open: in the file as `PRAGMA user_version`, and in the domain's defaults as `latestSeenDatabaseVersion`.
+`StoreVersion.current` names the generation of the on-disk format. It is bumped with every change of the schema in `DatabaseSchema` and recorded twice after a successful open: in the file as `PRAGMA user_version`, and in the domain's defaults as `latestSeenDatabaseVersion`.
 
 On open, the higher of the two recorded versions is compared with the running build:
 
 - Absent: a new domain, or an import from Realm.
-- Lower: the migrator brings the file up to date.
+- Lower than `StoreVersion.oldestMigratable`: no migration brings the file up to date. It is removed and set up from scratch.
+- Lower, but not below `StoreVersion.oldestMigratable`: the migrator brings the file up to date.
 - Equal: nothing to do.
 - Higher: the database was written by a newer build. It is removed and set up from scratch, because an older build cannot tell which of its assumptions the newer format broke. The marker is lowered to the running version.
+
+No build distributed to users, release candidates and betas included, has shipped this store yet. Until one does, a change of the schema edits `v1_initial` instead of registering a migration and raises `StoreVersion.oldestMigratable` together with `StoreVersion.current`, so a store from an earlier development build is set up from scratch rather than kept without the change. The change which prepares that first build replaces this paragraph and freezes `StoreVersion.oldestMigratable` at the version it ships. From then on every change of the schema gets a migration of its own and raises only `StoreVersion.current`; a migration which changes what a buffered change-delivery session would deliver also empties `changeDeliverySession` and `changeDeliveryItem`, because continuation anchors carry no store version. Raising `StoreVersion.oldestMigratable` after a build was distributed sets up the store of everyone using it from scratch, which drops what only the store records: pins, exclusions from sync, lock tokens and the bookkeeping of chunked uploads.
 
 The store version and the store identity are part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
 
 ## Store identity
 
-Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
+Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or because it was older than `StoreVersion.oldestMigratable`, or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
 ## Import from Realm
 

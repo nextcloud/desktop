@@ -26,6 +26,8 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     static let preservingLocalStateRowCount = 2000
     static let workingSetRowCount = 20000
     static let workingSetChangedRowCount = 500
+    static let treeDirectoryCount = 1000
+    static let treeChildCount = 100
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -229,5 +231,57 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
         }
 
         report("PendingWorkingSetChanges", items: Self.workingSetRowCount, durations: durations)
+    }
+
+    ///
+    /// The shape a folder walk leaves behind: many visited directories, each with children the folder pages just handed to the system.
+    ///
+    /// Reports the derivation before any page was marked as reported (every child is a working-set change), after every page was marked (nothing is), and the cost of marking one page.
+    ///
+    func testBenchmarkPendingWorkingSetChangesAfterAFolderWalk() {
+        let anchor = Date().addingTimeInterval(-3600)
+        var unreportedDurations: [Duration] = []
+        var reportedDurations: [Duration] = []
+        var markDurations: [Duration] = []
+
+        measure(metrics: [XCTClockMetric(), XCTMemoryMetric()], options: measureOptions) {
+            let manager = makeManager()
+            var pages: [[SendableItemMetadata]] = []
+            for directoryIndex in 0 ..< Self.treeDirectoryCount {
+                let directoryUrl = Self.account.davFilesUrl + "/Dir-\(directoryIndex)"
+                let directory = makeDirectory(ocId: "dir-\(directoryIndex)", fileName: "Dir-\(directoryIndex)", parentUrl: Self.account.davFilesUrl, etag: "v1")
+                let children = (0 ..< Self.treeChildCount).map { makeFile(index: directoryIndex * Self.treeChildCount + $0, parentUrl: directoryUrl, etag: "v1") }
+                let changes = manager.depth1ReadUpdateItemMetadatas(account: Self.account.ncKitAccount, serverUrl: directoryUrl, updatedMetadatas: [directory] + children, keepExistingDownloadState: true)
+                pages.append(changes?.created ?? [])
+            }
+            let itemCount = Self.treeDirectoryCount * (Self.treeChildCount + 1)
+            XCTAssertEqual(pages.reduce(0) { $0 + $1.count }, itemCount)
+
+            let clock = ContinuousClock()
+            startMeasuring()
+            var start = clock.now
+            let unreported = manager.pendingWorkingSetChanges(since: anchor)!
+            unreportedDurations.append(clock.now - start)
+
+            start = clock.now
+            manager.markReported(pages[0])
+            markDurations.append(clock.now - start)
+            for page in pages.dropFirst() {
+                manager.markReported(page)
+            }
+
+            start = clock.now
+            let reported = manager.pendingWorkingSetChanges(since: anchor)!
+            reportedDurations.append(clock.now - start)
+            stopMeasuring()
+
+            XCTAssertEqual(unreported.updated.count, itemCount, "Before the pages are marked, every visited directory and every child is a working-set change.")
+            XCTAssertEqual(reported.updated.count, 0, "After the pages are marked, nothing is.")
+        }
+
+        let itemCount = Self.treeDirectoryCount * (Self.treeChildCount + 1)
+        report("PendingWorkingSetChangesAfterFolderWalkUnreported", items: itemCount, durations: unreportedDurations)
+        report("PendingWorkingSetChangesAfterFolderWalkReported", items: itemCount, durations: reportedDurations)
+        report("MarkReportedPage", items: Self.treeChildCount + 1, durations: markDurations)
     }
 }

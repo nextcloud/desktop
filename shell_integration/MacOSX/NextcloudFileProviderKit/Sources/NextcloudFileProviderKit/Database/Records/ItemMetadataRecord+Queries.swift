@@ -38,6 +38,14 @@ extension ItemMetadataRecord {
         Columns.syncTime > date.timeIntervalSinceReferenceDate
     }
 
+    /// The `syncTime` of the row state last handed to the system. Not part of the record, see `FilesDatabaseManager.markReported(_:)`.
+    static let reportedSyncTimeColumn = Column("reportedSyncTime")
+
+    /// Rows whose current state the system has not received yet.
+    static var hasUnreportedState: SQLExpression {
+        reportedSyncTimeColumn == nil || Columns.syncTime > reportedSyncTimeColumn
+    }
+
     /// Rows which the file provider has materialized: visited directories and downloaded files.
     static var isMaterialised: SQLExpression {
         (Columns.directory == true && Columns.visitedDirectory == true)

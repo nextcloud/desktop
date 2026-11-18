@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
+import CryptoKit
 import Foundation
 import GRDB
 @testable import NextcloudFileProviderKit
@@ -22,6 +23,30 @@ extension DatabaseTestSuites {
 
             #expect(!tables.contains(false))
             #expect(DatabaseSchema.tableNames.count == 7)
+        }
+
+        @Test func theSchemaIsPinnedToItsStoreVersion() throws {
+            let schema = try manager.writer.read { db in
+                var lines: [String] = []
+
+                for table in try String.fetchAll(db, sql: "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE 'grdb_%' ORDER BY name") {
+                    for column in try db.columns(in: table) {
+                        lines.append("\(table).\(column.name) \(column.type) notNull=\(column.isNotNull) default=\(column.defaultValueSQL ?? "-") primaryKey=\(column.primaryKeyIndex)")
+                    }
+
+                    for index in try db.indexes(on: table).sorted(by: { $0.name < $1.name }) {
+                        lines.append("\(table) index \(index.name) on \(index.columns) unique=\(index.isUnique)")
+                    }
+                }
+
+                return lines.joined(separator: "\n")
+            }
+            let digest = SHA256.hash(data: Data(schema.utf8)).map { String(format: "%02x", $0) }.joined()
+
+            // A change of the schema changes this digest. Raise StoreVersion.current with it and, as StoreVersion describes, StoreVersion.oldestMigratable too; then update all three expectations.
+            #expect(digest == "80859b3aee2988f234c07e0c003e0e8535cb8c11bc422800d8eaf795a94bc309", "Schema:\n\(schema)")
+            #expect(StoreVersion.current == 2)
+            #expect(StoreVersion.oldestMigratable == 2)
         }
 
         @Test func reopeningAnExistingDatabaseKeepsItsRows() throws {
@@ -81,6 +106,28 @@ extension DatabaseTestSuites {
                 )
             }
             #expect(FileManager.default.fileExists(atPath: directory.appendingPathComponent("readonly.sqlite").path) == false)
+        }
+
+        @Test func theReportedSyncTimeColumnIsNullableAndOutsideTheRecord() throws {
+            let column = try manager.writer.read { db in
+                try db.columns(in: ItemMetadataRecord.databaseTableName).first { $0.name == "reportedSyncTime" }
+            }
+
+            #expect(try #require(column).type == "REAL")
+            #expect(try #require(column).isNotNull == false)
+            #expect(!ItemMetadataRecord.Columns.allCases.map(\.rawValue).contains("reportedSyncTime"), "The record's upsert must not reset the mark.")
+        }
+
+        @Test func markingUsesThePrimaryKey() throws {
+            let plan = try manager.writer.read { db in
+                try Row
+                    .fetchAll(db, sql: "EXPLAIN QUERY PLAN " + FilesDatabaseManager.markReportedSQL, arguments: [1.0, "x", 1.0])
+                    .map { $0["detail"] as String }
+                    .joined(separator: " | ")
+            }
+
+            #expect(plan.contains("sqlite_autoindex_itemMetadata_1"), "Plan: \(plan)")
+            #expect(!plan.contains("SCAN itemMetadata"), "Plan: \(plan)")
         }
 
         @Test func fileIdLookupsUseTheFileIdIndex() throws {

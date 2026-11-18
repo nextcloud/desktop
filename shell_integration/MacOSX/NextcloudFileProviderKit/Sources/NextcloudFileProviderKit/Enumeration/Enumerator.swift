@@ -55,6 +55,9 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     /// enumerator can resume the next batch.
     let changeBuffer: ChangeDeliveryBuffer
 
+    /// Set by ``invalidate()``. A page handed over after that may never be ingested, so it is not marked as reported.
+    let invalidation = InvalidationFlag()
+
     /// Default number of items reported per page/batch when the system does not suggest one. Mirrors the
     /// per-page item budget used for paginated item enumeration (``pageItemCount``).
     static let defaultBatchSize = 1000
@@ -115,6 +118,7 @@ public final class Enumerator: NSObject, NSFileProviderEnumerator, Sendable {
     }
 
     public func invalidate() {
+        invalidation.set()
         logger.debug("Enumerator is being invalidated.", [.item: enumeratedItemIdentifier, .name: enumeratedItemMetadata?.fileName])
     }
 

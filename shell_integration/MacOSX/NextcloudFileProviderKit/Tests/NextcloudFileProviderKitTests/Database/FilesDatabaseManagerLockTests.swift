@@ -86,10 +86,11 @@ extension DatabaseTestSuites {
             #expect(manager.itemMetadata(ocId: "doc")?.lock == false)
         }
 
-        @Test func clearingALockRemovesTheLockFieldsAndLeavesTheSyncTimeUntouched() throws {
+        @Test func clearingALockRemovesTheLockFieldsAndStampsTheSyncTime() throws {
             _ = seed()
             #expect(try manager.applyLock(makeLock(), rawServerUrl: parentUrl, rawFileName: "Report.docx"))
-            let lockedSyncTime = try #require(manager.itemMetadata(ocId: "doc")).syncTime
+            let locked = try #require(manager.itemMetadata(ocId: "doc"))
+            manager.markReported([locked])
 
             #expect(try manager.clearLock(rawServerUrl: parentUrl, rawFileName: "Report.docx"))
 
@@ -102,7 +103,8 @@ extension DatabaseTestSuites {
             #expect(stored.lockTime == nil)
             #expect(stored.lockTimeOut == nil)
             #expect(stored.lockToken == nil)
-            #expect(stored.syncTime == lockedSyncTime)
+            #expect(stored.syncTime > locked.syncTime, "The unlock reaches the system only through the working-set derivation, so it must look newer than the reported state.")
+            #expect(manager.reportedSyncTimeForTesting(ocId: "doc") == locked.syncTime)
         }
 
         @Test func clearingALockAtAnUnknownLocationReportsFalse() throws {
