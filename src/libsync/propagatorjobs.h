@@ -36,7 +36,7 @@ constexpr auto checksumRecalculateOnServerHeaderC = "X-Recalculate-Hash";
  * @brief Declaration of the other propagation jobs
  * @ingroup libsync
  */
-class PropagateLocalRemove : public PropagateItemJob
+class OWNCLOUDSYNC_EXPORT PropagateLocalRemove : public PropagateItemJob
 {
     Q_OBJECT
 public:
@@ -51,6 +51,9 @@ public:
     }
 
     void start() override;
+
+protected:
+    [[nodiscard]] virtual bool moveToTrash(const QString &fileName, QString *errorString) const;
 
 private:
     bool removeRecursively(const QString &path);

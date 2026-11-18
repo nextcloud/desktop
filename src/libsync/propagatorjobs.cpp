@@ -138,6 +138,11 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     return success;
 }
 
+bool PropagateLocalRemove::moveToTrash(const QString &fileName, QString *errorString) const
+{
+    return FileSystem::moveToTrash(fileName, errorString);
+}
+
 void PropagateLocalRemove::start()
 {
     qCInfo(lcPropagateLocalRemove) << "Start propagate local remove job";
@@ -202,7 +207,7 @@ void PropagateLocalRemove::start()
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
-            if (FileSystem::moveToTrash(filename, &removeError)) {
+            if (moveToTrash(filename, &removeError)) {
                 removedByTrash = true;
             } else {
                 qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
