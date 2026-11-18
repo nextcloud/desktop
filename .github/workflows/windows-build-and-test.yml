@@ -135,9 +135,17 @@ jobs:
 
               cd $buildFolder
 
-              $binFolder = "$buildFolder\bin"
-
               & ctest --output-on-failure --timeout 300
+              $testExitCode = $LASTEXITCODE
+              if ($testExitCode -ne 0) {
+                  $qtTestLog = Join-Path $buildFolder "test\ActivitiesWindowQmlTest.txt"
+                  if (Test-Path -LiteralPath $qtTestLog) {
+                      Get-Content -LiteralPath $qtTestLog
+                  } else {
+                      Write-Warning "Qt Test output was not written to $qtTestLog"
+                  }
+              }
+              exit $testExitCode
           }
           
           runTests
