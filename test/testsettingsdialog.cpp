@@ -8,13 +8,16 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsettings.h"
+#include "common/vfs.h"
 #include "configfile.h"
 #include "systray.h"
 
+#include <QAbstractButton>
 #include <QAction>
 #include <QApplication>
 #include <QFrame>
 #include <QGroupBox>
+#include <QLabel>
 #include <QScopeGuard>
 #include <QScrollArea>
 #include <QSignalSpy>
@@ -34,6 +37,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         Q_INIT_RESOURCE(resources);
+        Q_INIT_RESOURCE(theme);
         QStandardPaths::setTestModeEnabled(true);
         QVERIFY(_configDir.isValid());
         OCC::ConfigFile::setConfDir(_configDir.path());
@@ -170,6 +174,62 @@ private Q_SLOTS:
         shortcutsPanel->ensurePolished();
         statusPanel->ensurePolished();
         QCOMPARE(shortcutsPanel->palette().color(QPalette::Window), statusPanel->palette().color(QPalette::Window));
+    }
+
+    void moveFilesToTrashVfsWarningVisibility()
+    {
+        using namespace Qt::StringLiterals;
+
+        auto palette = _originalPalette;
+        palette.setColor(QPalette::Base, Qt::white);
+        QApplication::setPalette(palette);
+
+        OCC::SettingsDialog dialog(nullptr);
+        const auto moveToTrashSwitch = dialog.findChild<QAbstractButton *>(u"moveFilesToTrashCheckBox"_s);
+        const auto banner = dialog.findChild<QWidget *>(u"moveFilesToTrashVfsWarningBanner"_s);
+        const auto icon = dialog.findChild<QLabel *>(u"moveFilesToTrashVfsWarningIcon"_s);
+        const auto label = dialog.findChild<QLabel *>(u"moveFilesToTrashVfsWarningLabel"_s);
+
+        QVERIFY(moveToTrashSwitch);
+        QVERIFY(banner);
+        QVERIFY(icon);
+        QVERIFY(label);
+        QVERIFY(!label->text().isEmpty());
+
+        const auto cfApiAvailable = OCC::isVfsPluginAvailable(OCC::Vfs::WindowsCfApi);
+#ifdef Q_OS_WIN
+        QVERIFY(cfApiAvailable);
+#endif
+
+        moveToTrashSwitch->setChecked(false);
+        QVERIFY(banner->isHidden());
+
+        moveToTrashSwitch->setChecked(true);
+        QCOMPARE(!banner->isHidden(), cfApiAvailable);
+        const auto lightIcon = icon->pixmap().toImage();
+        if (cfApiAvailable) {
+            QVERIFY(!lightIcon.isNull());
+        }
+
+        moveToTrashSwitch->setChecked(false);
+        QVERIFY(banner->isHidden());
+
+        palette.setColor(QPalette::Base, Qt::black);
+        QApplication::setPalette(palette);
+        auto themeChange = QEvent(QEvent::ThemeChange);
+        QCoreApplication::sendEvent(&dialog, &themeChange);
+        QVERIFY(banner->isHidden());
+
+        moveToTrashSwitch->setChecked(true);
+        QCOMPARE(!banner->isHidden(), cfApiAvailable);
+        if (cfApiAvailable) {
+            const auto darkIcon = icon->pixmap().toImage();
+            QVERIFY(!darkIcon.isNull());
+            QVERIFY(darkIcon != lightIcon);
+        }
+
+        moveToTrashSwitch->setChecked(false);
+        QVERIFY(banner->isHidden());
     }
 };
 
