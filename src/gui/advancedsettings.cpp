@@ -33,7 +33,6 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QAbstractButton>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
@@ -174,10 +173,12 @@ bool createDebugArchive(const QString &filename)
     }
 #endif
 
-    const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
-    zip.prepareWriting("_client_parameters.txt", {}, {}, clientParameters.size());
-    zip.writeData(clientParameters, clientParameters.size());
-    zip.finishWriting(clientParameters.size());
+    if (const auto *application = qobject_cast<OCC::Application *>(qApp)) {
+        const auto clientParameters = application->diagnosticCommandLineOptions().join(' ').toUtf8();
+        zip.prepareWriting("_client_parameters.txt", {}, {}, clientParameters.size());
+        zip.writeData(clientParameters, clientParameters.size());
+        zip.finishWriting(clientParameters.size());
+    }
 
     const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
     zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());

@@ -7,6 +7,7 @@
 #include "ocsjob.h"
 #include "networkjobs.h"
 #include "account.h"
+#include "httplogger.h"
 
 #include <QBuffer>
 #include <QJsonDocument>
@@ -16,6 +17,8 @@
 #include <utility>
 
 namespace OCC {
+
+using namespace Qt::StringLiterals;
 
 Q_LOGGING_CATEGORY(lcOcs, "nextcloud.gui.sharing.ocs", QtInfoMsg)
 
@@ -35,6 +38,9 @@ void OcsJob::setVerb(const QByteArray &verb)
 
 void OcsJob::addParam(const QString &name, const QString &value)
 {
+    if (name.compare("password"_L1, Qt::CaseInsensitive) == 0) {
+        _request.setAttribute(HttpLogger::MetadataOnlyAttribute, true);
+    }
     _params.emplaceBack(name, value);
 }
 
@@ -130,23 +136,14 @@ bool OcsJob::finished()
     // when it is null we might have a 304 so get status code from reply() and gives a warning...
     if (error.error != QJsonParseError::NoError) {
         statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        qCWarning(lcOcs) << "Could not parse reply to"
-                         << _verb
-                         << Utility::concatUrlPath(account()->url(), path())
-                         << _params
-                         << error.errorString()
-                         << ":" << replyData;
+        qCWarning(lcOcs) << "Could not parse reply to" << _verb << "with request ID" << requestId() << "and HTTP status" << statusCode << error.errorString();
     } else {
         statusCode  = getJsonReturnCode(json, message);
     }
 
     //... then it checks for the statusCode
     if (!_passStatusCodes.contains(statusCode)) {
-        qCWarning(lcOcs) << "Reply to"
-                         << _verb
-                         << Utility::concatUrlPath(account()->url(), path())
-                         << _params
-                         << "has unexpected status code:" << statusCode << replyData;
+        qCWarning(lcOcs) << "Reply to" << _verb << "with request ID" << requestId() << "has unexpected status code:" << statusCode;
         Q_EMIT ocsError(statusCode, message);
 
     } else {

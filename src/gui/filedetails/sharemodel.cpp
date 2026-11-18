@@ -365,7 +365,7 @@ void ShareModel::initShareManager()
                 Q_EMIT hasInitialShareFetchCompletedChanged();
             }
 
-            qCWarning(lcShareModel) << "Error from server from ShareManager class and initShareManager" << code << message;
+            qCWarning(lcShareModel) << "Share manager reported an error:" << code;
             Q_EMIT serverError(code, message);
         });
 

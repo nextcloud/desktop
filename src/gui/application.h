@@ -66,6 +66,7 @@ public:
     void showHint(std::string errorHint);
     bool debugMode();
     [[nodiscard]] bool backgroundMode() const;
+    [[nodiscard]] QStringList diagnosticCommandLineOptions() const;
     bool versionOnly(); // only display the version?
     void showVersion();
 

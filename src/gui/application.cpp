@@ -68,6 +68,8 @@ class QSocket;
 
 namespace OCC {
 
+using namespace Qt::StringLiterals;
+
 Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
 namespace {
@@ -978,7 +980,28 @@ void Application::setupLogging()
                           << "version:" << _theme->version()
                           << "os:" << Utility::platformName()
                           << "platform:" << QApplication::platformName();
-    qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
+    qCInfo(lcApplication) << "Command-line options:" << diagnosticCommandLineOptions();
+}
+
+QStringList Application::diagnosticCommandLineOptions() const
+{
+    // Command-line values can contain credentials. Report only selected parsed flags.
+    auto options = QStringList{};
+    if (_backgroundMode) {
+        options.append(u"--background"_s);
+    }
+    if (_showLogWindow) {
+        options.append(u"--logwindow"_s);
+    }
+    if (_logFlush) {
+        options.append(u"--logflush"_s);
+    }
+    if (_debugMode) {
+        options.append(u"--debug"_s);
+    } else if (_logDebug) {
+        options.append(u"--logdebug"_s);
+    }
+    return options;
 }
 
 void Application::slotParseMessage(const QByteArray &message)

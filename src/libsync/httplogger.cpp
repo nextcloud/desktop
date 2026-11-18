@@ -10,6 +10,8 @@
 #include <QBuffer>
 
 namespace {
+using namespace Qt::StringLiterals;
+
 Q_LOGGING_CATEGORY(lcNetworkHttp, "sync.httplogger", QtWarningMsg)
 
 const qint64 PeekSize = 1024 * 1024;
@@ -24,10 +26,15 @@ bool isTextBody(const QString &s)
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
+void logHttp(const QByteArray &verb,
+             const QString &url,
+             const QByteArray &id,
+             const QString &contentType,
+             const QList<QNetworkReply::RawHeaderPair> &header,
+             QIODevice *device,
+             bool metadataOnly)
 {
     const auto reply = qobject_cast<QNetworkReply *>(device);
-    const auto contentLength = device ? device->size() : 0;
     QString msg;
     QTextStream stream(&msg);
     stream << id << ": ";
@@ -40,10 +47,15 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
     if (reply) {
         stream << " " << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     }
+    if (metadataOnly) {
+        qCInfo(lcNetworkHttp) << msg;
+        return;
+    }
+
     stream << " " << url << " Header: { ";
     for (const auto &it : header) {
         stream << it.first << ": ";
-        if (it.first == "Authorization") {
+        if (it.first.compare("Authorization"_ba, Qt::CaseInsensitive) == 0) {
             stream << (it.second.startsWith("Bearer ") ? "Bearer" : "Basic");
             stream << " [redacted]";
         } else {
@@ -52,6 +64,7 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
         stream << ", ";
     }
     stream << "} Data: [";
+    const auto contentLength = device ? device->size() : 0;
     if (contentLength > 0) {
         if (isTextBody(contentType)) {
             if (!device->isOpen()) {
@@ -83,6 +96,7 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
+    const auto metadataOnly = request.attribute(MetadataOnlyAttribute).toBool();
     const auto keys = request.rawHeaderList();
     QList<QNetworkReply::RawHeaderPair> header;
     header.reserve(keys.size());
@@ -90,19 +104,21 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         header << qMakePair(key, request.rawHeader(key));
     }
     logHttp(requestVerb(operation, request),
-        request.url().toString(),
-        request.rawHeader(XRequestId()),
-        request.header(QNetworkRequest::ContentTypeHeader).toString(),
-        header,
-        device);
+            request.url().toString(),
+            request.rawHeader(XRequestId()),
+            request.header(QNetworkRequest::ContentTypeHeader).toString(),
+            header,
+            device,
+            metadataOnly);
 
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply] {
+    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, metadataOnly] {
         logHttp(requestVerb(*reply),
-            reply->url().toString(),
-            reply->request().rawHeader(XRequestId()),
-            reply->header(QNetworkRequest::ContentTypeHeader).toString(),
-            reply->rawHeaderPairs(),
-            reply);
+                reply->url().toString(),
+                reply->request().rawHeader(XRequestId()),
+                reply->header(QNetworkRequest::ContentTypeHeader).toString(),
+                reply->rawHeaderPairs(),
+                reply,
+                metadataOnly);
     });
 }
 
