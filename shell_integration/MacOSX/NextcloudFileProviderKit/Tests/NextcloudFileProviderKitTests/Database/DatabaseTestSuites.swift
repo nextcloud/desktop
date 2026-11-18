@@ -26,6 +26,17 @@ enum DatabaseTestSuites {
     }
 
     ///
+    /// An account of its own, for a suite which changes what the server can do.
+    ///
+    /// Capabilities are cached per account for the whole process, so a suite which patches them while it
+    /// shares an account decides for every other suite on that account which server they are all talking
+    /// to, depending on which one ran first.
+    ///
+    static func isolatedAccount() -> Account {
+        Account(user: "testUser-\(UUID().uuidString)", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd")
+    }
+
+    ///
     /// A database manager on a fresh temporary directory, so one test cannot see another's rows.
     ///
     static func makeManager(account: Account = account) -> FilesDatabaseManager {

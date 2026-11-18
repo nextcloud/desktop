@@ -90,6 +90,8 @@ extension Enumerator {
             let pageWorkStart = pageWorkClock.now
 
             let cursor = paginationCursor(from: page)
+            // Rows a page writes carry a fresh `syncTime`, so the last page can tell the children no page returned by this moment. A continuation from a build which did not record it reconciles nothing.
+            let listingStart: Date? = cursor.index == 0 ? Date() : cursor.startedAt
 
             // Check server version to determine if pagination should be enabled.
             // Pagination was fixed in Nextcloud 31 (server bug: https://github.com/nextcloud/server/issues/53674)
@@ -141,11 +143,36 @@ extension Enumerator {
             }
 
             let serverItemTotal = nextPage?.total ?? cursor.total
+
+            // The target itself comes back on the first page only, so that page holds one child fewer than it holds entries.
+            let entriesReturned = items.count + (cursor.index == 0 ? 1 : 0)
+
+            // A page the server did not fill is its own end-of-listing marker, and counting up to the total it reported
+            // says the same thing. Absent either, a missing next page says only that this response carried no pagination
+            // headers, which is also what a server truncating the listing sends; the tail may still be there.
+            var listingReachedTheEnd = entriesReturned < pageItemCount
+
             if let pendingPage = nextPage, let serverItemTotal, pendingPage.index * pageItemCount >= serverItemTotal {
                 // Server will sometimes provide a valid next page data even though there are no
                 // items to enumerate anymore
                 logger.debug("No more items to enumerate, stopping paged enumeration.")
                 nextPage = nil
+                listingReachedTheEnd = true
+            }
+            nextPage?.startedAt = listingStart
+
+            if pageSettings != nil, nextPage == nil, let listingStart {
+                if listingReachedTheEnd {
+                    dropChildrenNotListed(since: listingStart)
+                } else {
+                    logger.error(
+                        "Concluding no deletion: the listing stopped before the end the server reported.",
+                        [
+                            .url: serverUrl,
+                            .name: "page \(cursor.index) returned \(entriesReturned) of \(pageItemCount) entries, server total \(serverItemTotal.map(String.init) ?? "unknown")"
+                        ]
+                    )
+                }
             }
 
             logger.info(
@@ -195,19 +222,34 @@ extension Enumerator {
     ///
     private func paginationCursor(
         from page: NSFileProviderPage
-    ) -> (index: Int, total: Int?, page: NSFileProviderPage?) {
+    ) -> (index: Int, total: Int?, page: NSFileProviderPage?, startedAt: Date?) {
         guard page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage,
               page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
         else {
-            return (index: 0, total: nil, page: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil)
         }
 
         guard let response = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) else {
             logger.error("Could not parse page")
-            return (index: 0, total: nil, page: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil)
         }
 
-        return (index: response.index, total: response.total, page: page)
+        return (index: response.index, total: response.total, page: page, startedAt: response.startedAt)
+    }
+
+    ///
+    /// Tombstone the stored children a complete paginated listing did not return.
+    ///
+    /// A paginated listing writes each page as it arrives and cannot compare a page with the stored rows, unlike the depth-1 write of the other paths. The system drops the items the listing did not return from the container, and so does the store now, which otherwise would keep them as live, materialised rows.
+    ///
+    private func dropChildrenNotListed(since listingStart: Date) {
+        guard let dropped = dbManager.deleteChildrenNotListed(of: serverUrl, account: account.ncKitAccount, since: listingStart) else {
+            return
+        }
+
+        if !dropped.isEmpty {
+            logger.info("Tombstoned the children a paginated listing no longer returned.", [.url: serverUrl, .name: "\(dropped.count)"])
+        }
     }
 
     ///

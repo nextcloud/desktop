@@ -201,65 +201,116 @@ public extension FilesDatabaseManager {
         ocId: String, stampingSyncTime: Date? = nil
     ) -> [SendableItemMetadata]? {
         write("Failure to delete directory metadata in recursive delete.", [.item: ocId]) { db in
-            guard var directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
-                logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.item: ocId])
-                return nil
-            }
+            try deleteDirectoryAndSubdirectoriesMetadata(ocId: ocId, stampingSyncTime: stampingSyncTime, in: db)
+        } ?? nil
+    }
 
-            let directoryMetadataCopy = directoryMetadata.metadata
-            let directoryOcId = directoryMetadata.ocId
-            let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
-            let directoryAccount = directoryMetadata.account
-            let directoryEtag = directoryMetadata.etag
-
-            logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
-
-            directoryMetadata.deleted = true
-            if let stampingSyncTime {
-                directoryMetadata.syncTime = stampingSyncTime
-            }
-            try directoryMetadata.upsertRow(db)
-
-            var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
-
-            let results = try ItemMetadataRecord
+    ///
+    /// Tombstone the live children of a directory which a complete paginated listing did not return.
+    ///
+    /// A paginated listing writes each page as it arrives and cannot compare a page with the stored rows. Every row a page writes carries a fresh `syncTime`, so a live child whose `syncTime` predates the listing's first request was in no page: the server no longer has it there. Rows the server never confirmed, rows in transit and lock files of local origin are left alone, as the depth-1 write leaves them, and a directory takes its subtree along. Every tombstone is stamped with one time, so the working-set derivation finds the deletions by date.
+    ///
+    /// - Parameters:
+    ///   - directoryServerUrl: The directory's full remote path.
+    ///   - listingStart: When the listing's first page was requested.
+    /// - Returns: The rows as they were before, or `nil` when the write fails.
+    ///
+    func deleteChildrenNotListed(of directoryServerUrl: String, account: String, since listingStart: Date) -> [SendableItemMetadata]? {
+        write("Could not tombstone the children a paginated listing no longer returns.", [.url: directoryServerUrl], durability: .relaxed) { db in
+            let missing = try ItemMetadataRecord
                 .filter(
-                    ItemMetadataRecord.Columns.account == directoryAccount
-                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
+                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+                        && ItemMetadataRecord.hasServerUrl(equalTo: directoryServerUrl, includingDescendants: false)
+                        && ItemMetadataRecord.Columns.account == account
+                        && ItemMetadataRecord.Columns.uploaded == true
+                        && ItemMetadataRecord.Columns.deleted == false
+                        && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
+                        && ItemMetadataRecord.Columns.status == Status.normal.rawValue
+                        && ItemMetadataRecord.syncedBefore(listingStart)
                 )
                 .fetchRecords(db, logger: logger)
 
-            // TODO: Parent is deleted even when a child upload is pending. The child will
-            // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
-            for var result in results {
-                if result.status >= Status.inUpload.rawValue {
-                    // Preserve the child metadata and its resumable chunks. Item deletion applies
-                    // the same status boundary when deciding which descendant chunks to clean up.
-                    logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+            let deletionTime = Date()
+            var deleted: [SendableItemMetadata] = []
+
+            for var row in missing {
+                if row.directory {
+                    deleted += try deleteDirectoryAndSubdirectoriesMetadata(ocId: row.ocId, stampingSyncTime: deletionTime, in: db) ?? []
                     continue
                 }
-                if result.isLockFileOfLocalOrigin {
-                    logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
-                    continue
-                }
-                if result.isAtHoldingPath || result.serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) {
-                    // A folder parked at a holding path, and what waits below it, belong to the placement to come.
-                    logger.info("Skipping deletion of an item waiting at a holding path.", [.item: result.ocId, .name: result.fileName])
-                    continue
-                }
-                let inactiveItemMetadata = result.metadata
-                result.deleted = true
-                if let stampingSyncTime {
-                    result.syncTime = stampingSyncTime
-                }
-                try result.upsertRow(db)
-                deletedMetadatas.append(inactiveItemMetadata)
+
+                deleted.append(row.metadata)
+                row.deleted = true
+                row.syncTime = deletionTime
+                try row.upsertRow(db)
+                logger.debug("Tombstoned a child a paginated listing did not return.", [.item: row.ocId, .name: row.fileName])
             }
 
-            logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
+            return deleted
+        }
+    }
 
-            return deletedMetadatas
-        } ?? nil
+    private func deleteDirectoryAndSubdirectoriesMetadata(
+        ocId: String, stampingSyncTime: Date?, in db: Database
+    ) throws -> [SendableItemMetadata]? {
+        guard var directoryMetadata = try directoryMetadata(ocId: ocId, in: db) else {
+            logger.error("Could not find directory metadata for ocId. Not proceeding with deletion.", [.item: ocId])
+            return nil
+        }
+
+        let directoryMetadataCopy = directoryMetadata.metadata
+        let directoryOcId = directoryMetadata.ocId
+        let directoryUrlPath = directoryMetadata.serverUrl + "/" + directoryMetadata.fileName
+        let directoryAccount = directoryMetadata.account
+        let directoryEtag = directoryMetadata.etag
+
+        logger.debug("Deleting root directory metadata in recursive delete.", [.eTag: directoryEtag, .item: directoryMetadata.ocId, .url: directoryUrlPath])
+
+        directoryMetadata.deleted = true
+        if let stampingSyncTime {
+            directoryMetadata.syncTime = stampingSyncTime
+        }
+        try directoryMetadata.upsertRow(db)
+
+        var deletedMetadatas: [SendableItemMetadata] = [directoryMetadataCopy]
+
+        let results = try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.Columns.account == directoryAccount
+                    && ItemMetadataRecord.hasServerUrl(equalTo: directoryUrlPath, includingDescendants: true)
+            )
+            .fetchRecords(db, logger: logger)
+
+        // TODO: Parent is deleted even when a child upload is pending. The child will
+        // orphan after upload. Follow-up: defer parent deletion or re-parent after upload.
+        for var result in results {
+            if result.status >= Status.inUpload.rawValue {
+                // Preserve the child metadata and its resumable chunks. Item deletion applies
+                // the same status boundary when deciding which descendant chunks to clean up.
+                logger.info("Skipping deletion of child with pending upload.", [.item: result.ocId])
+                continue
+            }
+            if result.isLockFileOfLocalOrigin {
+                logger.info("Skipping deletion of local-origin lock file during directory delete.", [.item: result.ocId, .name: result.fileName])
+                continue
+            }
+            if result.isAtHoldingPath || result.serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) {
+                // A folder parked at a holding path, and what waits below it, belong to the placement to come.
+                logger.info("Skipping deletion of an item waiting at a holding path.", [.item: result.ocId, .name: result.fileName])
+                continue
+            }
+            let inactiveItemMetadata = result.metadata
+            result.deleted = true
+            if let stampingSyncTime {
+                result.syncTime = stampingSyncTime
+            }
+            try result.upsertRow(db)
+            deletedMetadatas.append(inactiveItemMetadata)
+        }
+
+        logger.debug("Completed deletions in directory recursive delete.", [.eTag: directoryEtag, .item: directoryOcId, .url: directoryUrlPath])
+
+        return deletedMetadatas
     }
 
     func renameDirectoryAndPropagateToChildren(
@@ -395,6 +446,7 @@ extension FilesDatabaseManager {
             )
             childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
             childItem.lockToken = nil
+            childItem.syncTime = Date()
             try childItem.upsertRow(db)
             movedChildren.append(childItem.metadata)
             logger.debug(
