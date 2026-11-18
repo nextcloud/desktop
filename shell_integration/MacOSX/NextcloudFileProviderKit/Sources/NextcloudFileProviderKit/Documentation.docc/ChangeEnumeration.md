@@ -134,6 +134,12 @@ the scan lists the account root and descends only where that is needed:
   notices changes made behind its back only when the directory is read.
 - A scan listing does not mark a directory as visited. Only an item
   enumeration the framework asked for does.
+- An item enumeration the framework asked for reconciles the directory it
+  listed, when no child directory is left for the scan to descend into and
+  the directory is not a mount point. A tree walk through Finder therefore
+  leaves nothing unreconciled behind; without this, every visited directory
+  waited for the first change under its parent, and that pass then listed
+  all of them at once.
 
 The listings write the rows they return like a folder enumeration does, so a
 file which changed is persisted and reported by its parent's listing. A

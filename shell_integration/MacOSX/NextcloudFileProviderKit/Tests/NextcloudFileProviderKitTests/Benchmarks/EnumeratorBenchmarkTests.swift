@@ -37,6 +37,7 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
         let dbManager: FilesDatabaseManager
         let recorder: EnumeratePathRecorder
         let changedLeafFile: MockRemoteItem
+        let visitedDirectories: [MockRemoteItem]
         let itemCount: Int
     }
 
@@ -137,7 +138,10 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
         let recorder = EnumeratePathRecorder()
         recorder.record(on: remoteInterface)
 
-        return Fixture(remoteInterface: remoteInterface, dbManager: dbManager, recorder: recorder, changedLeafFile: changedLeafFile!, itemCount: itemCount)
+        return Fixture(
+            remoteInterface: remoteInterface, dbManager: dbManager, recorder: recorder, changedLeafFile: changedLeafFile!,
+            visitedDirectories: visitedDirectories, itemCount: itemCount
+        )
     }
 
     /// One working-set change pass from `anchor`; returns the anchor it finished with.
@@ -216,5 +220,49 @@ final class EnumeratorBenchmarkTests: NextcloudFileProviderKitTestCase {
         BenchmarkReport.print("WorkingSetScanColdPass", items: itemCount, durations: coldDurations, requests: coldRequests)
         BenchmarkReport.print("WorkingSetScanIdlePass", items: itemCount, durations: idleDurations, requests: idleRequests)
         BenchmarkReport.print("WorkingSetScanOneChangedLeaf", items: itemCount, durations: changedDurations, requests: changedRequests)
+    }
+
+    ///
+    /// The passes after the system itself enumerated every visited directory, as Finder does on a tree walk.
+    ///
+    /// Each enumeration reconciles its directory when nothing below it is pending, so the first pass lists the root, the ancestors of the downloaded files, and the directories the system never listed but which hold a downloaded file; the pass after that lists the root alone. One iteration: the walk dominates and its cost is reported too.
+    ///
+    func testBenchmarkWorkingSetScanAfterSystemWalk() async throws {
+        let fixture = makeFixture()
+        let clock = ContinuousClock()
+
+        var start = clock.now
+        for directory in fixture.visitedDirectories {
+            let enumerator = try Enumerator(
+                enumeratedItemIdentifier: NSFileProviderItemIdentifier(directory.identifier),
+                account: Self.account,
+                remoteInterface: fixture.remoteInterface,
+                dbManager: fixture.dbManager,
+                log: FileProviderLogMock()
+            )
+            try await MockEnumerationObserver(enumerator: enumerator).enumerateItems()
+        }
+        let walkDuration = clock.now - start
+
+        fixture.recorder.reset()
+        start = clock.now
+        let anchor = try await runPass(fixture, from: Enumerator.syncAnchor(at: Date(), storeIdentity: fixture.dbManager.storeIdentity))
+        let firstDuration = clock.now - start
+        let firstRequests = fixture.recorder.count
+
+        fixture.recorder.reset()
+        start = clock.now
+        _ = try await runPass(fixture, from: anchor)
+        let idleDuration = clock.now - start
+        let idleRequests = fixture.recorder.count
+
+        // Every level-1 and level-2 directory had a downloaded file pending below it when the system listed it, so only the leaves were reconciled by the walk.
+        let ancestorsOfDownloads = Self.branchingFactor + Self.branchingFactor * Self.branchingFactor
+        XCTAssertEqual(firstRequests, 1 + ancestorsOfDownloads + Self.unvisitedDirectoryCount, "The root, the ancestors of the downloads, and the directories holding a download which the system never listed.")
+        XCTAssertEqual(idleRequests, 1, "Everything the system or the scan listed is reconciled.")
+
+        BenchmarkReport.print("SystemWalkOfVisitedDirectories", items: fixture.visitedDirectories.count, durations: [walkDuration], requests: fixture.visitedDirectories.count)
+        BenchmarkReport.print("WorkingSetScanFirstPassAfterSystemWalk", items: fixture.itemCount, durations: [firstDuration], requests: firstRequests)
+        BenchmarkReport.print("WorkingSetScanIdlePassAfterSystemWalk", items: fixture.itemCount, durations: [idleDuration], requests: idleRequests)
     }
 }

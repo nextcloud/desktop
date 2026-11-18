@@ -10,6 +10,8 @@ struct EnumeratorPageResponse: Codable {
     var total: Int? // Total item count, provided in the first non-offset paginated response
     /// When the listing's first page was requested. Carried through the pages, so the last one can tell which stored children no page returned.
     var startedAt: Date?
+    /// The directory's state, etag and permissions, as its first page reported it. Carried through the pages, so the last one records the directory as reconciled at the state its pages came from, not at whatever another listing stored meanwhile.
+    var remoteState: String?
 
     init?(nkResponseData: AFDataResponse<Data>?, index: Int, log _: any FileProviderLogging) {
         guard let headers = nkResponseData?.response?.allHeaderFields as? [String: String] else {

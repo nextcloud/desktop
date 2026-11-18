@@ -41,6 +41,22 @@ extension DatabaseTestSuites {
             #expect(manager.scannedRemoteStateForTesting(ocId: "b") == nil)
         }
 
+        @Test func theStatesOfGivenDirectoriesAreReadBack() throws {
+            let count = FilesDatabaseManager.inClauseChunkSize + 2
+            var states: [String: String] = [:]
+            for index in 0 ..< count {
+                try manager.insertForTesting(makeDirectory(ocId: "d-\(index)", fileName: "d-\(index)"))
+                states["d-\(index)"] = "s-\(index)"
+            }
+            try manager.insertForTesting(makeDirectory(ocId: "never", fileName: "never"))
+            manager.recordScannedRemoteStates(states, forgetting: [])
+
+            let asked = Array(states.keys) + ["never", "unknown"]
+
+            #expect(manager.scannedRemoteStates(ocIds: asked) == states, "Directories never reconciled and unknown identifiers are left out.")
+            #expect(manager.scannedRemoteStates(ocIds: []) == [:])
+        }
+
         @Test func forgettingWinsOverRecordingInTheSameWrite() throws {
             try manager.insertForTesting(makeDirectory(ocId: "a", fileName: "a"))
             try manager.insertForTesting(makeDirectory(ocId: "b", fileName: "b"))
@@ -136,6 +152,7 @@ extension DatabaseTestSuites {
             try manager.breakTableForTesting(ItemMetadataRecord.databaseTableName)
 
             #expect(manager.scannedRemoteStates() == nil)
+            #expect(manager.scannedRemoteStates(ocIds: ["a"]) == nil)
             #expect(manager.hasMaterialisedItem(below: DatabaseTestSuites.account.davFilesUrl + "/a") == nil)
             #expect(manager.hasExternalStorage(below: DatabaseTestSuites.account.davFilesUrl + "/a") == nil)
             #expect(manager.liveItemOccupies(serverUrl: DatabaseTestSuites.account.davFilesUrl, fileName: "a", otherThan: "x") == nil)
