@@ -68,7 +68,7 @@ extension Enumerator {
     ///
     /// The version segment of an anchor: the extension version, the store version of the metadata database and the identity of the open database file.
     ///
-    /// The store version expires every anchor when the database format changes, even between builds with the same marketing version. The store identity expires every anchor when the file is replaced, whether after a downgrade, because it was corrupt or because it was removed by hand, so a database set up from scratch is repopulated by a full enumeration instead of answering the framework's old anchors from empty tables.
+    /// The store version expires every anchor when the database format changes, even between builds with the same marketing version. The store identity expires every anchor when the file is replaced, whether after a downgrade, because it was older than ``StoreVersion/oldestMigratable``, because it was corrupt or because it was removed by hand, so a database set up from scratch is repopulated by a full enumeration instead of answering the framework's old anchors from empty tables.
     ///
     static func anchorVersionTag(storeIdentity: String) -> String {
         "\(currentExtensionVersion())+store\(StoreVersion.current)+\(storeIdentity)"

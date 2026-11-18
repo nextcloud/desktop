@@ -29,7 +29,7 @@ public final class FilesDatabaseManager: Sendable {
         case noDatabaseDirectory
         /// A Realm database exists but could not be imported; it is left in place for the next attempt.
         case importFailed(URL)
-        /// The database file could not be opened or migrated.
+        /// The database file could not be opened or migrated, or could not be removed to set it up from scratch.
         case openFailed(URL, underlying: any Error)
     }
 
@@ -89,7 +89,7 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// Open the domain's database, creating, importing or migrating it as needed.
     ///
-    /// A database left behind by a newer build is set up from scratch (see ``StoreVersionGuard``); a Realm database left behind by an older build is imported (see ``RealmStoreImporter``).
+    /// A database left behind by a newer build, or older than ``StoreVersion/oldestMigratable``, is set up from scratch (see ``StoreVersionGuard``); a Realm database left behind by an older build is imported (see ``RealmStoreImporter``).
     ///
     /// - Parameters:
     ///     - account: The Nextcloud account for which the database is being created.
@@ -122,7 +122,10 @@ public final class FilesDatabaseManager: Sendable {
         switch StoreVersionGuard.decide(seen: seenVersion) {
             case let .downgrade(from):
                 logger.fault("The metadata database was written by a newer build. Setting it up from scratch.", [.url: databaseLocation.path, .name: "store version \(from), supported \(StoreVersion.current)"])
-                StoreVersionGuard.resetStore(at: databaseLocation, logger: logger)
+                try StoreVersionGuard.resetStore(at: databaseLocation, logger: logger)
+            case let .obsolete(from):
+                logger.info("The metadata database is older than the oldest store version this build migrates. Setting it up from scratch.", [.url: databaseLocation.path, .name: "store version \(from), oldest migrated \(StoreVersion.oldestMigratable)"])
+                try StoreVersionGuard.resetStore(at: databaseLocation, logger: logger)
             case let .upgrade(from):
                 logger.info("Migrating the metadata database.", [.url: databaseLocation.path, .name: "store version \(from) to \(StoreVersion.current)"])
             case .fresh, .current:
