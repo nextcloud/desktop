@@ -6,6 +6,7 @@
 #include "advancedsettings.h"
 
 #include "configfile.h"
+#include "logger.h"
 
 #include <KZip>
 
@@ -13,6 +14,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QMessageBox>
+#include <QScopeGuard>
 #include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
@@ -92,6 +94,73 @@ private Q_SLOTS:
         QVERIFY(zip.open(QIODevice::ReadOnly));
         QVERIFY(zip.directory()->entry(u"_client_parameters.txt"_s));
         QVERIFY(zip.directory()->entry(u"_client_buildinfo.txt"_s));
+    }
+
+    // Like the macOS sandbox, which grants access to the chosen file only, nothing may be created or removed next to it.
+    void archiveIsWrittenWhenOnlyTheChosenFileIsWritable()
+    {
+        QTemporaryDir destinationDir;
+        QVERIFY(destinationDir.isValid());
+        const auto destination = destinationDir.filePath(u"debug.zip"_s);
+        QFile existingFile(destination);
+        QVERIFY(existingFile.open(QIODevice::WriteOnly));
+        existingFile.close();
+        QVERIFY(QFile::setPermissions(destinationDir.path(), QFileDevice::ReadOwner | QFileDevice::ExeOwner));
+        const auto restorePermissions = qScopeGuard([&destinationDir] {
+            QFile::setPermissions(destinationDir.path(), QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+        });
+        if (QFile probe(destinationDir.filePath(u"probe"_s)); probe.open(QIODevice::WriteOnly)) {
+            probe.remove();
+            QSKIP("Directory permissions are not enforced here, for example on Windows or as root.");
+        }
+
+        AdvancedSettings settings;
+        AdvancedSettingsTestAccess::setDebugArchiveLocationPicker(settings, [&destination](const auto &completion) {
+            completion(destination);
+        });
+
+        auto dialogShown = false;
+        closeNextModalDialog(dialogShown);
+        clickCreateDebugArchive(settings);
+
+        KZip zip(destination);
+        QVERIFY(zip.open(QIODevice::ReadOnly));
+        QVERIFY(zip.directory()->entry(u"_client_parameters.txt"_s));
+        QCOMPARE(QDir(destinationDir.path()).entryList(QDir::Files | QDir::Hidden), QStringList{u"debug.zip"_s});
+    }
+
+    void archiveOverwrittenInTheLogFolderLeavesItselfOut()
+    {
+        QTemporaryDir logDir;
+        QVERIFY(logDir.isValid());
+        QFile logFile(logDir.filePath(u"client.log"_s));
+        QVERIFY(logFile.open(QIODevice::WriteOnly));
+        logFile.write("log");
+        logFile.close();
+        const auto destination = logDir.filePath(u"debug.zip"_s);
+        QFile previousArchive(destination);
+        QVERIFY(previousArchive.open(QIODevice::WriteOnly));
+        previousArchive.write("previous archive");
+        previousArchive.close();
+        const auto previousLogDir = Logger::instance()->logDir();
+        Logger::instance()->setLogDir(logDir.path());
+        const auto restoreLogDir = qScopeGuard([&previousLogDir] {
+            Logger::instance()->setLogDir(previousLogDir);
+        });
+
+        AdvancedSettings settings;
+        AdvancedSettingsTestAccess::setDebugArchiveLocationPicker(settings, [&destination](const auto &completion) {
+            completion(destination);
+        });
+
+        auto dialogShown = false;
+        closeNextModalDialog(dialogShown);
+        clickCreateDebugArchive(settings);
+
+        KZip zip(destination);
+        QVERIFY(zip.open(QIODevice::ReadOnly));
+        QVERIFY(zip.directory()->entry(u"logs/client.log"_s));
+        QVERIFY(!zip.directory()->entry(u"logs/debug.zip"_s));
     }
 
     void cancellingCreatesNoArchive()
