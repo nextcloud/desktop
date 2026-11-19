@@ -221,10 +221,25 @@ private Q_SLOTS:
         }
     }
 
+    void testOpenStopsAfterMigrationFailure_data()
+    {
+        QTest::addColumn<QByteArray>("setupSql");
+        QTest::newRow("no-version") << QByteArray("DELETE FROM version;");
+        QTest::newRow("legacy-version") << QByteArray("UPDATE version SET major=2, minor=2, patch=0;");
+    }
+
     void testOpenStopsAfterMigrationFailure()
     {
-        SyncJournalDb journal(_tempDir.filePath(u"open-migration-failure.db"_s));
+        QFETCH(QByteArray, setupSql);
+        SyncJournalDb journal(_tempDir.filePath(u"open-migration-failure-%1.db"_s.arg(QString::fromLatin1(QTest::currentDataTag()))));
         QVERIFY(journal.open());
+        SyncJournalFileRecord folder;
+        folder._path = "folder";
+        folder._type = ItemTypeDirectory;
+        folder._modtime = QDateTime::currentSecsSinceEpoch();
+        folder._etag = "etag";
+        QVERIFY(journal.setFileRecord(folder));
+        QCOMPARE(sqlite3_exec(journal._db.sqliteDb(), setupSql.constData(), nullptr, nullptr, nullptr), SQLITE_OK);
         journal.close();
 
         journal.autotestFailCounter = 1;
@@ -233,6 +248,16 @@ private Q_SLOTS:
 
         journal.autotestFailCounter = -1;
         QVERIFY(journal.open());
+        SyncJournalFileRecord storedFolder;
+        QVERIFY(journal.getFileRecord(folder._path, &storedFolder));
+        QCOMPARE(storedFolder._etag, QByteArray("_invalid_"));
+
+        // A successful retry records the upgrade so future opens preserve fresh ETags.
+        QVERIFY(journal.setFileRecord(folder));
+        journal.close();
+        QVERIFY(journal.open());
+        QVERIFY(journal.getFileRecord(folder._path, &storedFolder));
+        QCOMPARE(storedFolder._etag, folder._etag);
     }
 
     void testOpenStopsAfterDiscoverySqlFailure()
@@ -242,9 +267,14 @@ private Q_SLOTS:
 #endif
         SyncJournalDb journal(_tempDir.filePath(u"open-discovery-failure.db"_s));
         QVERIFY(journal.open());
+        SyncJournalFileRecord folder;
+        folder._path = "folder";
+        folder._type = ItemTypeDirectory;
+        folder._modtime = QDateTime::currentSecsSinceEpoch();
+        folder._etag = "etag";
+        QVERIFY(journal.setFileRecord(folder));
         QCOMPARE(sqlite3_exec(journal._db.sqliteDb(),
                               "DELETE FROM version;"
-                              "INSERT INTO metadata(phash,path,type) VALUES(1,'folder',2);"
                               "CREATE TRIGGER fail_discovery BEFORE UPDATE OF md5 ON metadata "
                               "BEGIN SELECT RAISE(ABORT,'injected discovery failure'); END;",
                               nullptr,
@@ -255,6 +285,19 @@ private Q_SLOTS:
 
         QVERIFY(!journal.open());
         QVERIFY(!journal.isOpen());
+
+        {
+            SqlDatabase repairDb;
+            QVERIFY(repairDb.openOrCreateReadWrite(journal.databaseFilePath()));
+            SqlQuery dropTrigger("DROP TRIGGER fail_discovery;", repairDb);
+            QVERIFY(dropTrigger.exec());
+        }
+
+        SyncJournalDb reopened(journal.databaseFilePath());
+        QVERIFY(reopened.open());
+        SyncJournalFileRecord storedFolder;
+        QVERIFY(reopened.getFileRecord(folder._path, &storedFolder));
+        QCOMPARE(storedFolder._etag, QByteArray("_invalid_"));
     }
 
     void testMigrationSqlFailure_data()

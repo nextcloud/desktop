@@ -584,60 +584,33 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table e2EeLockedFolders"), createQuery);
     }
 
-    bool forceRemoteDiscovery = false;
-
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
-    if (!versionQuery.next().hasData) {
+    const auto version = versionQuery.next();
+    if (!version.ok) {
+        return sqlFail(u"Read version"_s, versionQuery);
+    }
+    const auto major = version.hasData ? versionQuery.intValue(0) : 0;
+    const auto minor = version.hasData ? versionQuery.intValue(1) : 0;
+    const auto patch = version.hasData ? versionQuery.intValue(2) : 0;
+    const auto needsVersionUpdate = !version.hasData || major != MIRALL_VERSION_MAJOR || minor != MIRALL_VERSION_MINOR || patch != MIRALL_VERSION_PATCH;
+    auto forceRemoteDiscovery = !version.hasData;
+
+    if (major == 1 && minor == 8 && (patch == 0 || patch == 1)) {
+        qCInfo(lcDb) << "possibleUpgradeFromMirall_1_8_0_or_1 detected!";
         forceRemoteDiscovery = true;
+    }
 
-        createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
-        createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
-        createQuery.bindValue(2, MIRALL_VERSION_MINOR);
-        createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-        createQuery.bindValue(4, static_cast<qulonglong>(MIRALL_VERSION_BUILD));
-        if (!createQuery.exec()) {
-            return sqlFail(QStringLiteral("Update version"), createQuery);
-        }
+    // There was a bug in versions <2.3.0 that could lead to stale
+    // local files and a remote discovery will fix them.
+    // See #5190 #5242.
+    if (major == 2 && minor < 3) {
+        qCInfo(lcDb) << "upgrade from client < 2.3.0 detected! forcing remote discovery";
+        forceRemoteDiscovery = true;
+    }
 
-    } else {
-        int major = versionQuery.intValue(0);
-        int minor = versionQuery.intValue(1);
-        int patch = versionQuery.intValue(2);
-
-        if (major == 1 && minor == 8 && (patch == 0 || patch == 1)) {
-            qCInfo(lcDb) << "possibleUpgradeFromMirall_1_8_0_or_1 detected!";
-            forceRemoteDiscovery = true;
-        }
-
-        // There was a bug in versions <2.3.0 that could lead to stale
-        // local files and a remote discovery will fix them.
-        // See #5190 #5242.
-        if (major == 2 && minor < 3) {
-            qCInfo(lcDb) << "upgrade form client < 2.3.0 detected! forcing remote discovery";
-            forceRemoteDiscovery = true;
-        }
-
-        // Not comparing the BUILD id here, correct?
-        if (!(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH)) {
-            createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
-                                "WHERE major=?5 AND minor=?6 AND patch=?7;");
-            createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
-            createQuery.bindValue(2, MIRALL_VERSION_MINOR);
-            createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-            createQuery.bindValue(4, static_cast<qulonglong>(MIRALL_VERSION_BUILD));
-            createQuery.bindValue(5, major);
-            createQuery.bindValue(6, minor);
-            createQuery.bindValue(7, patch);
-            if (!createQuery.exec()) {
-                return sqlFail(QStringLiteral("Update version"), createQuery);
-            }
-
-            if (major < MAJOR_VERSION_3 || (major == MAJOR_VERSION_3 && minor <= MINOR_VERSION_16)) {
-                const auto fixEncryptionResult = ensureCorrectEncryptionStatus();
-                if (!fixEncryptionResult) {
-                    qCWarning(lcDb) << "Failed to update the encryption status";
-                }
-            }
+    if (version.hasData && needsVersionUpdate && (major < MAJOR_VERSION_3 || (major == MAJOR_VERSION_3 && minor <= MINOR_VERSION_16))) {
+        if (!ensureCorrectEncryptionStatus()) {
+            qCWarning(lcDb) << "Failed to update the encryption status";
         }
     }
 
@@ -645,8 +618,7 @@ bool SyncJournalDb::checkConnect()
     versionQuery.reset_and_clear_bindings();
     commitInternal(QStringLiteral("checkConnect"));
 
-    bool rc = updateDatabaseStructure();
-    if (!rc) {
+    if (!updateDatabaseStructure()) {
         qCWarning(lcDb) << "Failed to update the database structure!";
         close();
         return false;
@@ -689,6 +661,25 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("prepare _getErrorBlacklistQuery"), *getErrorBlacklistQuery);
     }
 
+    // Record the new version only after the schema and ETag updates have succeeded.
+    // Otherwise a failed open could skip rediscovery on the next attempt.
+    if (needsVersionUpdate) {
+        createQuery.prepare(version.hasData ? "UPDATE version SET major=?1, minor=?2, patch=?3, custom=?4 WHERE major=?5 AND minor=?6 AND patch=?7;"
+                                            : "INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
+        createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
+        createQuery.bindValue(2, MIRALL_VERSION_MINOR);
+        createQuery.bindValue(3, MIRALL_VERSION_PATCH);
+        createQuery.bindValue(4, static_cast<qulonglong>(MIRALL_VERSION_BUILD));
+        if (version.hasData) {
+            createQuery.bindValue(5, major);
+            createQuery.bindValue(6, minor);
+            createQuery.bindValue(7, patch);
+        }
+        if (!createQuery.exec()) {
+            return sqlFail(u"Update version"_s, createQuery);
+        }
+    }
+
     // don't start a new transaction now
     commitInternal(QStringLiteral("checkConnect End"), false);
 
@@ -702,7 +693,7 @@ bool SyncJournalDb::checkConnect()
     FileSystem::setFileHidden(databaseFilePath() + QStringLiteral("-shm"), true);
     FileSystem::setFileHidden(databaseFilePath() + QStringLiteral("-journal"), true);
 
-    return rc;
+    return true;
 }
 
 void SyncJournalDb::close()
