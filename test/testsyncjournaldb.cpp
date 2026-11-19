@@ -340,7 +340,6 @@ private Q_SLOTS:
         QTest::addColumn<QByteArray>("failedStatement");
         QTest::newRow("virtual-file-update") << QByteArray("UPDATE metadata SET type=5");
         QTest::newRow("avoid-renames") << QByteArray("UPDATE metadata SET fileid = ''");
-        QTest::newRow("schedule-discovery") << QByteArray("UPDATE metadata SET md5='_invalid_'");
     }
 
     void testSqlFailureStopsUpdates()
@@ -357,10 +356,8 @@ private Q_SLOTS:
         const auto row = QByteArray(QTest::currentDataTag());
         if (row == "virtual-file-update") {
             journal.markVirtualFileForDownloadRecursively("");
-        } else if (row == "avoid-renames") {
-            journal.avoidRenamesOnNextSync(QByteArray("folder"));
         } else {
-            journal.schedulePathForRemoteDiscovery(QByteArray("folder"));
+            journal.avoidRenamesOnNextSync(QByteArray("folder"));
         }
         const auto isOpen = journal.isOpen();
         if (isOpen) {
@@ -369,6 +366,33 @@ private Q_SLOTS:
         QVERIFY(failure.second);
         QVERIFY(!isOpen);
         QVERIFY(journal._etagStorageFilter.isEmpty());
+    }
+
+    void testRemoteDiscoveryFiltersEtagsAfterSqlFailure()
+    {
+#if !defined(QT_NO_DEBUG) || defined(QT_FORCE_ASSERTS)
+        QSKIP("sqlFail intentionally aborts when assertions are enabled.");
+#endif
+        auto failure = qMakePair(QByteArray("UPDATE metadata SET md5='_invalid_'"), false);
+        SyncJournalDb journal(_tempDir.filePath(u"rediscovery-update-failure.db"_s));
+        QVERIFY(journal.open());
+
+        SyncJournalFileRecord parent;
+        parent._path = "folder";
+        parent._type = ItemTypeDirectory;
+        parent._modtime = QDateTime::currentSecsSinceEpoch();
+        parent._etag = "etag";
+        QVERIFY(journal.setFileRecord(parent));
+
+        QCOMPARE(interruptStatement(journal, failure), SQLITE_OK);
+        journal.schedulePathForRemoteDiscovery(QByteArray("folder/child"));
+        QVERIFY(failure.second);
+        QVERIFY(!journal.isOpen());
+
+        QVERIFY(journal.setFileRecord(parent));
+        SyncJournalFileRecord storedParent;
+        QVERIFY(journal.getFileRecord(parent._path, &storedParent));
+        QCOMPARE(storedParent._etag, QByteArray("_invalid_"));
     }
 
     void testFileRecordChecksum()

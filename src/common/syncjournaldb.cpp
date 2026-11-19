@@ -2549,11 +2549,9 @@ void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
 
     if (!query.exec()) {
         sqlFail(QStringLiteral("schedulePathForRemoteDiscovery path: %1").arg(QString::fromUtf8(fileName)), query);
-        return;
     }
 
-    // Prevent future overwrite of the etags of this folder and all
-    // parent folders for this sync
+    // A later record write in this sync can still invalidate the ETag even if the UPDATE failed.
     argument.append('/');
     _etagStorageFilter.append(argument);
 }
