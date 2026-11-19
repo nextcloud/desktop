@@ -380,6 +380,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             break;
         }
         if (dirent->type == ItemTypeSkip) {
+            qCDebug(lcDiscovery) << "Skipping item" << dirent->path;
             continue;
         }
         LocalInfo i;
