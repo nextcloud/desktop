@@ -159,17 +159,17 @@
 <context>
     <name>ActivityList</name>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityList.qml" line="64"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="57"/>
         <source>Activity list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityList.qml" line="150"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="156"/>
         <source>Scroll to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activity/qml/ActivityList.qml" line="179"/>
+        <location filename="../src/gui/activity/qml/ActivityList.qml" line="185"/>
         <source>No activities yet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5287,38 +5287,38 @@ Note that using any logging command line options will override this setting.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation type="unfinished"></translation>
@@ -6180,60 +6180,60 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="152"/>
+        <location filename="../src/gui/systray.cpp" line="153"/>
         <source>Download</source>
         <extracomment>Name of the macOS notification category for file downloads.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="171"/>
-        <location filename="../src/gui/systray.cpp" line="571"/>
+        <location filename="../src/gui/systray.cpp" line="574"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="878"/>
         <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="573"/>
+        <location filename="../src/gui/systray.cpp" line="576"/>
         <source>Open %1 Desktop</source>
         <comment>Open Nextcloud main window. Placeholer will be the application name. Please keep it.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="576"/>
-        <location filename="../src/gui/systray.cpp" line="586"/>
+        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <source>Pause sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="577"/>
-        <location filename="../src/gui/systray.cpp" line="592"/>
+        <location filename="../src/gui/systray.cpp" line="580"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <source>Resume sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="578"/>
+        <location filename="../src/gui/systray.cpp" line="581"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="916"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="579"/>
+        <location filename="../src/gui/systray.cpp" line="582"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="580"/>
+        <location filename="../src/gui/systray.cpp" line="583"/>
         <source>Exit %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="586"/>
+        <location filename="../src/gui/systray.cpp" line="589"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="592"/>
+        <location filename="../src/gui/systray.cpp" line="595"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="890"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"></translation>
@@ -6728,109 +6728,109 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>Please sign in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="532"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="530"/>
         <source>There are no sync folders configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="305"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="320"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="318"/>
         <source>Terms of service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Your account %1 requires you to accept the terms of service of your server. You will be redirected to %2 to acknowledge that you have read it and agrees with it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="510"/>
         <source>%1: %2</source>
         <extracomment>Example text: &quot;Nextcloud: Syncing 25MB (3 minutes left)&quot; (%1 is the folder name to be synced, %2 a status message for that folder)</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>macOS VFS for %1: Sync is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>macOS VFS for %1: Last sync was successful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="520"/>
         <source>macOS VFS for %1: A problem was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>macOS VFS for %1: An error was encountered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="591"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="589"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="592"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="845"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="843"/>
         <source>Select new location …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="915"/>
         <source>Internal link copied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="915"/>
         <source>The internal link has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="422"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="425"/>
         <source>Account %1: %2</source>
         <extracomment>%1 is the account display name. %2 is the account connection status.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="443"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="612"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="610"/>
         <source>%1 (%2, %3)</source>
         <extracomment>%1 is the file name. %2 is the sync result. %3 is the current time.</extracomment>
         <translation type="unfinished"></translation>
