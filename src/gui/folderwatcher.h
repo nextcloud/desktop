@@ -21,6 +21,8 @@
 #include <QDir>
 #include <QTimer>
 
+#include <functional>
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcFolderWatcher)
@@ -84,6 +86,10 @@ public:
     void slotLockFileDetectedExternally(const QString &lockFile);
 
     void setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking);
+
+    /// On Linux, a folder for which the check returns true is neither walked nor watched, its content inherits its exclusion.
+    void setFolderExcludedCheck(const std::function<bool(const QString &)> &isFolderExcluded);
+
     [[nodiscard]] int lockChangeDebouncingTimout() const;
 
 Q_SIGNALS:
@@ -146,6 +152,9 @@ private:
 
     /* Check if the path should be ignored by the FolderWatcher. */
     [[nodiscard]] bool pathIsIgnored(const QString &path) const;
+
+    [[nodiscard]] bool folderIsExcluded(const QString &path) const;
+    std::function<bool(const QString &)> _isFolderExcluded;
 
     /** Path of the expected test notification */
     QString _testNotificationPath;

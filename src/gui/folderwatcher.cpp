@@ -70,6 +70,16 @@ bool FolderWatcher::pathIsIgnored(const QString &path) const
     return path.isEmpty();
 }
 
+void FolderWatcher::setFolderExcludedCheck(const std::function<bool(const QString &)> &isFolderExcluded)
+{
+    _isFolderExcluded = isFolderExcluded;
+}
+
+bool FolderWatcher::folderIsExcluded(const QString &path) const
+{
+    return _isFolderExcluded && _isFolderExcluded(path);
+}
+
 bool FolderWatcher::isReliable() const
 {
     return _isReliable;

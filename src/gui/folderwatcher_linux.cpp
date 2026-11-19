@@ -53,6 +53,10 @@ bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullLi
         for (constIterator = paths.constBegin(); constIterator != paths.constEnd();
              ++constIterator) {
             const QString fullPath(dir.path() + QLatin1String("/") + (*constIterator));
+            if (_parent && _parent->folderIsExcluded(fullPath)) {
+                qCDebug(lcFolderWatcher) << "* Not walking excluded folder" << fullPath;
+                continue;
+            }
             fullList.append(fullPath);
             ok = findFoldersBelow(QDir(fullPath), fullList);
         }
@@ -86,7 +90,7 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 {
-    if (_pathToWatch.contains(path)) {
+    if (_pathToWatch.contains(path) || _parent->folderIsExcluded(path)) {
         return;
     }
 
