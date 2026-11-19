@@ -27,25 +27,15 @@ Q_LOGGING_CATEGORY(lcFileProviderXPCUtils, "nextcloud.gui.macos.fileprovider.xpc
 
 QString urlForFileProviderXPC(const QUrl &url)
 {
-    using namespace Qt::StringLiterals;
-
     auto serverUrl = url.toString();
     const auto host = url.host();
-    const auto aceHost = url.host(QUrl::FullyEncoded);
-
-    if (host == aceHost) {
-        return serverUrl;
-    }
-
-    const QString authorityPrefix = url.scheme() + u"://"_s + url.authority();
-    const auto hostOffset = authorityPrefix.lastIndexOf(host);
-    if (hostOffset < 0 || !serverUrl.startsWith(authorityPrefix)) {
+    const auto hostOffset = url.toString(QUrl::RemovePath | QUrl::RemoveQuery | QUrl::RemoveFragment).lastIndexOf(host);
+    if (hostOffset < 0) {
         return serverUrl;
     }
 
     // NextcloudKit encodes the whole URL again, so leave paths and escapes as they were.
-    serverUrl.replace(hostOffset, host.size(), aceHost);
-    return serverUrl;
+    return serverUrl.replace(hostOffset, host.size(), url.host(QUrl::FullyEncoded));
 }
 
 NSArray<NSFileProviderManager *> *getDomainManagers()
