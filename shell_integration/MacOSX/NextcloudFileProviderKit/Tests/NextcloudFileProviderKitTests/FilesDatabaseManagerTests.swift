@@ -1327,7 +1327,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
     }
 
-    func testAddItemMetadataPreservingLocalState_InheritsPinnedParentForNewItem() throws {
+    func testPaginatedMetadataInheritsPinnedParentForNewItem() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         // Pinned parent folder.
@@ -1344,7 +1344,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         freshChild.serverUrl = account.davFilesUrl + "/pinned"
         freshChild.keepDownloaded = false
 
-        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [freshChild]))
+        XCTAssertEqual(page.count, 1)
+        let written = try XCTUnwrap(page.first)
 
         XCTAssertTrue(written.keepDownloaded, "keepDownloaded should be inherited from pinned parent on first insert")
 
@@ -1352,7 +1354,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
     }
 
-    func testAddItemMetadataPreservingLocalState_DoesNotInheritFromUnpinnedParent() throws {
+    func testPaginatedMetadataDoesNotInheritFromUnpinnedParent() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         // Unpinned parent folder.
@@ -1367,7 +1369,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         freshChild.serverUrl = account.davFilesUrl + "/regular"
         freshChild.keepDownloaded = false
 
-        let written = Self.dbManager.addItemMetadataPreservingLocalState(freshChild)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [freshChild]))
+        XCTAssertEqual(page.count, 1)
+        let written = try XCTUnwrap(page.first)
 
         XCTAssertFalse(written.keepDownloaded, "keepDownloaded should remain false when parent is not pinned")
 
@@ -2136,7 +2140,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testAddItemMetadataPreservingLocalStateFallsBackOnOcIdRotation() throws {
+    func testPaginatedMetadataFallsBackOnOcIdRotation() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         var original = SendableItemMetadata(ocId: "originalOcId", fileName: "rotated.txt", account: account)
@@ -2148,7 +2152,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         rotated.keepDownloaded = false // fresh from server, no local state
         rotated.downloaded = false
 
-        let merged = Self.dbManager.addItemMetadataPreservingLocalState(rotated)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [rotated]))
+        XCTAssertEqual(page.count, 1)
+        let merged = try XCTUnwrap(page.first)
 
         XCTAssertTrue(merged.keepDownloaded, "Should carry over keepDownloaded across the ocId rotation")
         XCTAssertTrue(merged.downloaded, "Should carry over downloaded across the ocId rotation")
@@ -2162,7 +2168,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedRotated.downloaded)
     }
 
-    func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
+    func testPaginatedMetadataKeepsContentVersionForSameEtag() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
 
         var original = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
@@ -2173,7 +2179,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var refreshed = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
         refreshed.etag = "etag-after-lock"
 
-        let merged = Self.dbManager.addItemMetadataPreservingLocalState(refreshed)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [refreshed]))
+        XCTAssertEqual(page.count, 1)
+        let merged = try XCTUnwrap(page.first)
 
         XCTAssertEqual(merged.fileProviderContentVersion, "etag-before-lock")
         XCTAssertEqual(
@@ -2182,7 +2190,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
+    func testPaginatedMetadataFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
         let account = Account(user: "test", id: "t", serverUrl: "https://example.com", password: "")
         let fileName = "duped.txt"
 
@@ -2208,7 +2216,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         fresh.keepDownloaded = false
         fresh.downloaded = false
 
-        let merged = Self.dbManager.addItemMetadataPreservingLocalState(fresh)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [fresh]))
+        XCTAssertEqual(page.count, 1)
+        let merged = try XCTUnwrap(page.first)
 
         XCTAssertFalse(merged.keepDownloaded, "Should not merge state when the database is already duplicated")
         XCTAssertFalse(merged.downloaded, "Should not merge state when the database is already duplicated")
@@ -2241,13 +2251,17 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         return metadata
     }
 
-    func testUnchangedRemoteStateIsNotRewritten() {
+    func testUnchangedRemoteStateIsNotRewritten() throws {
         let ocId = "unchanged-\(name)"
         let firstSeen = Date(timeIntervalSince1970: 1_000_000)
-        Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: firstSeen))
+        var stored = seedRow(ocId: ocId, etag: "v1", syncTime: firstSeen)
+        stored.keepDownloaded = true
+        Self.dbManager.addItemMetadata(stored)
 
         let rescanned = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
-        let returned = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [rescanned]))
+        XCTAssertEqual(page.count, 1)
+        let returned = try XCTUnwrap(page.first)
 
         XCTAssertEqual(
             Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, firstSeen,
@@ -2255,14 +2269,20 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(returned.ocId, ocId, "The merged metadata must still be returned to the caller.")
         XCTAssertEqual(returned.etag, "v1")
+        XCTAssertEqual(returned.syncTime, rescanned.syncTime)
+        XCTAssertTrue(returned.keepDownloaded)
     }
 
-    func testChangedRemoteStateIsStillWritten() {
+    func testChangedRemoteStateIsStillWritten() throws {
         let ocId = "changed-\(name)"
         Self.dbManager.addItemMetadata(seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000)))
 
         let later = Date(timeIntervalSince1970: 2_000_000)
-        Self.dbManager.addItemMetadataPreservingLocalState(seedRow(ocId: ocId, etag: "v2", syncTime: later))
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(
+            target: nil,
+            children: [seedRow(ocId: ocId, etag: "v2", syncTime: later)]
+        ))
+        XCTAssertEqual(page.map(\.ocId), [ocId])
 
         let stored = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertEqual(stored?.etag, "v2", "A real remote change must still be persisted.")
@@ -2280,7 +2300,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var rescanned = seedRow(ocId: ocId, etag: "v2", syncTime: Date(timeIntervalSince1970: 2_000_000))
         rescanned.uploaded = true
-        let reported = Self.dbManager.addItemMetadataPreservingLocalState(rescanned)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [rescanned]))
+        XCTAssertEqual(page.count, 1)
+        let reported = try XCTUnwrap(page.first)
 
         XCTAssertEqual(reported, pending)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId), pending)
@@ -2288,7 +2310,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     /// `visitedDirectory` is local-only and so not part of `isInSameDatabaseStoreableRemoteState`,
     /// so the skip must compare it explicitly or a recorded visit would be silently dropped.
-    func testRecordingADirectoryVisitIsAlwaysWritten() {
+    func testRecordingADirectoryVisitIsAlwaysWritten() throws {
         let ocId = "visit-\(name)"
         var directory = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
         directory.directory = true
@@ -2296,17 +2318,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
         var visited = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000), visited: true)
         visited.directory = true
-        Self.dbManager.addItemMetadataPreservingLocalState(visited, preserveVisitedDirectory: false)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: visited, children: []))
+        XCTAssertTrue(page.isEmpty)
 
         XCTAssertEqual(
             Self.dbManager.itemMetadata(ocId: ocId)?.visitedDirectory, true,
             "Recording a directory visit must be written even when the remote state is unchanged."
         )
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.syncTime, visited.syncTime)
     }
 
     /// A server-side move keeps the item's ETag, date and size, so the row found by `ocId` must
     /// still be rewritten when the listing reports it somewhere else.
-    func testMovedItemWithUnchangedRemoteStateIsWritten() {
+    func testMovedItemWithUnchangedRemoteStateIsWritten() throws {
         let ocId = "moved-\(name)"
         var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
         original.serverUrl = Self.account.davFilesUrl + "/A"
@@ -2315,22 +2339,25 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let later = Date(timeIntervalSince1970: 2_000_000)
         var moved = seedRow(ocId: ocId, etag: "v1", syncTime: later)
         moved.serverUrl = Self.account.davFilesUrl + "/B"
-        Self.dbManager.addItemMetadataPreservingLocalState(moved)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [moved]))
+        XCTAssertEqual(page.map(\.ocId), [ocId])
 
         let stored = Self.dbManager.itemMetadata(ocId: ocId)
         XCTAssertEqual(stored?.serverUrl, Self.account.davFilesUrl + "/B", "A moved item must be stored at its new location.")
         XCTAssertEqual(stored?.syncTime, later)
     }
 
-    func testSoftDeletedItemWithUnchangedRemoteStateIsRevived() {
+    func testSoftDeletedItemWithUnchangedRemoteStateIsRevived() throws {
         let ocId = "revived-\(name)"
         var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
         original.deleted = true
         Self.dbManager.addItemMetadata(original)
 
-        Self.dbManager.addItemMetadataPreservingLocalState(
-            seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
-        )
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(
+            target: nil,
+            children: [seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))]
+        ))
+        XCTAssertEqual(page.map(\.ocId), [ocId])
 
         XCTAssertEqual(
             Self.dbManager.itemMetadata(ocId: ocId)?.deleted, false,
@@ -2339,7 +2366,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
     }
 
     /// Extending a lock changes only its timeout, not the file's ETag.
-    func testExtendedLockTimeoutIsWritten() {
+    func testExtendedLockTimeoutIsWritten() throws {
         let ocId = "lock-extended-\(name)"
         var original = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 1_000_000))
         original.lock = true
@@ -2350,7 +2377,8 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var extended = seedRow(ocId: ocId, etag: "v1", syncTime: Date(timeIntervalSince1970: 2_000_000))
         extended.lock = true
         extended.lockTimeOut = extendedTimeout
-        Self.dbManager.addItemMetadataPreservingLocalState(extended)
+        let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(target: nil, children: [extended]))
+        XCTAssertEqual(page.map(\.ocId), [ocId])
 
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: ocId)?.lockTimeOut, extendedTimeout)
     }
