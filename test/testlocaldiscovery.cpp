@@ -78,6 +78,9 @@ private Q_SLOTS:
         fakeFolder.localModifier().mkdir("sub");
         fakeFolder.localModifier().insert("sub/a.txt", 100);
         fakeFolder.localModifier().insert("sub/b.txt", 100);
+        fakeFolder.localModifier().mkdir("sub/inner");
+        fakeFolder.localModifier().mkdir("sub/inner/deep");
+        fakeFolder.localModifier().insert("sub/inner/deep/c.txt", 100);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -90,6 +93,7 @@ private Q_SLOTS:
 
         QVERIFY(fakeFolder.currentRemoteState().find("sub/a.txt"));
         QVERIFY(fakeFolder.currentRemoteState().find("sub/b.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/inner/deep/c.txt"));
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -103,8 +107,7 @@ private Q_SLOTS:
 
         QFile::setPermissions(subPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
 
-        const auto subItem = completeSpy.findItem("sub");
-        QVERIFY(!subItem || subItem->_instruction != CSYNC_INSTRUCTION_REMOVE);
+        QVERIFY(completeSpy.findItem("sub")->_instruction != CSYNC_INSTRUCTION_REMOVE);
         QVERIFY(QFileInfo::exists(subPath + QStringLiteral("/a.txt")));
     }
 #else
@@ -122,7 +125,7 @@ private Q_SLOTS:
             return QProcess::execute(u"icacls"_s, {filePath, u"/remove:d"_s, userName});
         };
 
-        // Deny SYNCHRONIZE: a zero access open skips the DACL check, so only this makes stat fail.
+        // Denying SYNCHRONIZE makes the open in csync_vio_local_stat() fail. Denying read attributes does not.
         QCOMPARE(QProcess::execute(u"icacls"_s, {filePath, u"/deny"_s, u"%1:(S)"_s.arg(userName)}), 0);
         const auto restoreGuard = qScopeGuard([&restoreAccess] {
             restoreAccess();

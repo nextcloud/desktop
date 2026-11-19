@@ -150,7 +150,7 @@ void ProcessDirectoryJob::process()
         // This is done in a second path in order to not depend on the order of
         // _localNormalQueryEntries.
         for (auto &e : _localNormalQueryEntries) {
-            if (!e.isVirtualFile) {
+            if (!e.isVirtualFile && !(e.type == ItemTypeSkipError && hasVirtualFileSuffix(e.name))) {
                 continue;
             }
             auto &suffixedEntry = entries[e.name];
@@ -1390,7 +1390,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         item->_status = SyncFileItem::SoftError;
         item->_errorString = tr("Could not read local file. It will be checked again on a later sync.");
-        finalize();
+        Q_EMIT _discoveryData->itemDiscovered(item);
         return;
     }
 
