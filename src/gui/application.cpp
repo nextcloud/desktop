@@ -46,6 +46,8 @@
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #include "macOS/lowpowergpu_mac.h"
+#elif defined(Q_OS_LINUX)
+#include "linuxsingleapplication.h"
 #endif
 
 #include <QLocale>
@@ -233,8 +235,6 @@ Application::Application(int &argc, char **argv)
     , _gui(nullptr)
 #if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     , _dbusService{KDBusService::StartupOption::Unique}
-#elif defined(Q_OS_LINUX)
-    , _singleApp{QLatin1String(APPLICATION_EXECUTABLE), QFileInfo(QCoreApplication::applicationFilePath()).fileName()}
 #endif
     , _theme(Theme::instance())
 {
@@ -275,11 +275,19 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    parseOptions(arguments());
+    parseOptions(arguments(), OptionSource::Startup);
     //no need to waste time;
     if (_helpOnly || _versionOnly) {
         return;
     }
+
+#if defined(Q_OS_LINUX) && !KF6DBusAddons_FOUND
+    const auto configDirectory = ConfigFile().configPath();
+    // ConfigFile uses the GUI name to resolve the default directory.
+    setApplicationName(_theme->appName());
+    const auto instanceName = Utility::linuxSingleApplicationName(QLatin1String(APPLICATION_EXECUTABLE), configDirectory);
+    _singleApp.emplace(instanceName, KDSingleApplication::Option::IncludeUsernameInSocketName);
+#endif
 
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
@@ -291,7 +299,7 @@ Application::Application(int &argc, char **argv)
         return;
     }
 #else
-    if (!_singleApp.isPrimaryInstance()) {
+    if (isRunning()) {
         return;
     }
 #endif
@@ -425,7 +433,7 @@ Application::Application(int &argc, char **argv)
 #elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     connect(&_dbusService, &KDBusService::activateRequested, this, &Application::slotActivateRequestedMessage);
 #elif defined(Q_OS_LINUX)
-    connect(&_singleApp, &Utility::LinuxSingleApplication::messageReceived, this, &Application::slotParseMessage);
+    connect(&*_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #else
     connect(&_singleApp, &KDSingleApplication::messageReceived, this, &Application::slotParseMessage);
 #endif
@@ -741,7 +749,7 @@ void Application::showMainDialogRemoteCommand()
 void Application::parseOptionsRemoteCommand(const QStringList &options)
 {
     _showLogWindow = false;
-    parseOptions(options);
+    parseOptions(options, OptionSource::Forwarded);
     setupLogging();
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
@@ -1001,7 +1009,7 @@ void Application::slotActivateRequestedMessage(const QStringList &arguments, con
     }
 }
 
-void Application::parseOptions(const QStringList &options)
+void Application::parseOptions(const QStringList &options, OptionSource source)
 {
     // Accept both "--option value" and "--option=value" for every option below.
     const auto expandedOptions = Utility::expandCommandLineOptionValues(options);
@@ -1047,13 +1055,14 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--logdebug")) {
             _logDebug = true;
         } else if (option == QLatin1String("--confdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                QString confDir = it.next();
-                if (!ConfigFile::setConfDir(confDir)) {
-                    showHint("Invalid path passed to --confdir");
-                }
-            } else {
+            const auto confDir = it.hasNext() && !it.peekNext().startsWith(QLatin1String("--")) ? it.next() : QString{};
+            if (source == OptionSource::Forwarded) {
+                continue;
+            }
+            if (confDir.isNull()) {
                 showHint("Path for confdir not specified");
+            } else if (!ConfigFile::setConfDir(confDir)) {
+                showHint("Invalid path passed to --confdir");
             }
         } else if (option == QLatin1String("--debug")) {
             _logDebug = true;
@@ -1176,9 +1185,26 @@ bool Application::isRunning() const
 {
 #if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     return false;
+#elif defined(Q_OS_LINUX)
+    return _singleApp && !_singleApp->isPrimaryInstance();
 #else
     return !_singleApp.isPrimaryInstance();
 #endif
+}
+
+QStringList Application::argumentsForPrimaryInstance() const
+{
+    // The profile has already selected the recipient. Keep its path out of the pipe-delimited message.
+    auto options = Utility::expandCommandLineOptionValues(arguments());
+    for (qsizetype index = 1; index < options.size();) {
+        if (options.at(index) != QLatin1String("--confdir")) {
+            ++index;
+            continue;
+        }
+        const auto hasValue = index + 1 < options.size() && !options.at(index + 1).startsWith(QLatin1String("--"));
+        options.remove(index, hasValue ? 2 : 1);
+    }
+    return options;
 }
 
 bool Application::sendMessage(const QString &message)
@@ -1187,6 +1213,8 @@ bool Application::sendMessage(const QString &message)
     Q_UNUSED(message)
 
     return true;
+#elif defined(Q_OS_LINUX)
+    return _singleApp && _singleApp->sendMessage(message.toLatin1());
 #else
     return _singleApp.sendMessage(message.toLatin1());
 #endif

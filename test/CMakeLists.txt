@@ -73,6 +73,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_compile_definitions(LinuxSingleApplicationTest PRIVATE QT_NO_KEYWORDS)
     set_target_properties(LinuxSingleApplicationTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY} FOLDER Tests)
     add_test(NAME LinuxSingleApplicationTest COMMAND LinuxSingleApplicationTest)
+
+    if(NOT KF6DBusAddons_FOUND)
+        nextcloud_add_test(ApplicationOptions)
+        set_tests_properties(ApplicationOptionsTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    endif()
 endif()
 
 if (APPLE)

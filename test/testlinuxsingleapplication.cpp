@@ -6,7 +6,6 @@
 #include <QDeadlineTimer>
 #include <QProcess>
 #include <QProcessEnvironment>
-#include <QSet>
 #include <QSocketNotifier>
 #include <QTextStream>
 #include <QTimer>
@@ -31,7 +30,7 @@ class TestLinuxSingleApplication : public QObject
     std::unique_ptr<QTemporaryDir> _directory;
     std::vector<std::unique_ptr<QProcess>> _processes;
 
-    QProcess *startChild(const QString &name, const QString &session, bool legacy = false, const QString &message = {})
+    QProcess *startChild(const QString &name, const QString &session, const QString &message = {}, const QString &profile = {})
     {
         auto environment = QProcessEnvironment::systemEnvironment();
         environment.insert(u"TMPDIR"_s, _directory->path());
@@ -42,8 +41,8 @@ class TestLinuxSingleApplication : public QObject
         }
         auto process = std::make_unique<QProcess>();
         process->setProcessEnvironment(environment);
-        const auto mode = legacy ? u"--legacy-child"_s : u"--child"_s;
-        process->start(QCoreApplication::applicationFilePath(), {mode, name, message});
+        const auto configDirectory = profile.isEmpty() ? _directory->filePath(u"default"_s) : profile;
+        process->start(QCoreApplication::applicationFilePath(), {u"--child"_s, name, configDirectory, message});
         _processes.push_back(std::move(process));
         return _processes.back().get();
     }
@@ -65,23 +64,6 @@ class TestLinuxSingleApplication : public QObject
         QVERIFY(process->waitForFinished(processTimeoutMs));
         QCOMPARE(process->exitStatus(), QProcess::NormalExit);
         QCOMPARE(process->exitCode(), 0);
-    }
-
-    void checkSecondary(QProcess *secondary) const
-    {
-        QCOMPARE(readLine(secondary), QByteArray("SECONDARY"));
-        QVERIFY(secondary->state() == QProcess::NotRunning || secondary->waitForFinished(processTimeoutMs));
-        QCOMPARE(secondary->exitStatus(), QProcess::NormalExit);
-        QCOMPARE(secondary->exitCode(), 0);
-    }
-
-    void checkForwarding(QProcess *primary, const QString &name, const QString &session, bool legacy = false)
-    {
-        QCOMPARE(readLine(primary), QByteArray("PRIMARY"));
-        const auto message = u"forwarded action"_s;
-        checkSecondary(startChild(name, session, legacy, message));
-        QCOMPARE(readLine(primary), QByteArray("MESSAGE ") + message.toUtf8().toHex());
-        QCOMPARE(primary->state(), QProcess::Running);
     }
 
 private Q_SLOTS:
@@ -122,50 +104,67 @@ private Q_SLOTS:
         QFETCH(QString, firstSession);
         QFETCH(QString, secondSession);
         const auto identity = u"nextcloud-session-test"_s;
-        checkForwarding(startChild(identity, firstSession), identity, secondSession);
-    }
-
-    void legacyCompatibility_data()
-    {
-        QTest::addColumn<bool>("legacyFirst");
-        QTest::addColumn<QString>("firstSession");
-        QTest::addColumn<QString>("secondSession");
-        const auto session = u"session-1"_s;
-        QTest::newRow("legacy-to-current-same-session") << true << session << session;
-        QTest::newRow("current-to-legacy-same-session") << false << session << session;
-        QTest::newRow("legacy-to-current-both-unset") << true << QString() << QString();
-        QTest::newRow("current-to-legacy-both-unset") << false << QString() << QString();
-        QTest::newRow("legacy-to-current-unset-to-set") << true << QString() << session;
-        QTest::newRow("current-to-legacy-set-to-unset") << false << session << QString();
-    }
-
-    void legacyCompatibility()
-    {
-        QFETCH(bool, legacyFirst);
-        QFETCH(QString, firstSession);
-        QFETCH(QString, secondSession);
-        const auto identity = u"nextcloud-legacy-test"_s;
-        checkForwarding(startChild(identity, firstSession, legacyFirst), identity, secondSession, !legacyFirst);
-    }
-
-    void simultaneousLaunchesWithLegacyPrimary()
-    {
-        const auto identity = u"nextcloud-legacy-test"_s;
-        const auto session = u"session-1"_s;
-        auto primary = startChild(identity, session, true);
+        auto primary = startChild(identity, firstSession);
         QCOMPARE(readLine(primary), QByteArray("PRIMARY"));
-
-        const auto firstMessage = u"first action"_s;
-        const auto secondMessage = u"second action"_s;
-        auto first = startChild(identity, session, false, firstMessage);
-        auto second = startChild(identity, session, false, secondMessage);
-        checkSecondary(first);
-        checkSecondary(second);
-
-        const auto received = QSet{readLine(primary), readLine(primary)};
-        const auto expected = QSet{QByteArray("MESSAGE ") + firstMessage.toUtf8().toHex(), QByteArray("MESSAGE ") + secondMessage.toUtf8().toHex()};
-        QCOMPARE(received, expected);
+        const auto message = u"forwarded action"_s;
+        auto secondary = startChild(identity, secondSession, message);
+        QCOMPARE(readLine(secondary), QByteArray("SECONDARY"));
+        QVERIFY(secondary->state() == QProcess::NotRunning || secondary->waitForFinished(processTimeoutMs));
+        QCOMPARE(secondary->exitStatus(), QProcess::NormalExit);
+        QCOMPARE(secondary->exitCode(), 0);
+        QCOMPARE(readLine(primary), QByteArray("MESSAGE ") + message.toUtf8().toHex());
         QCOMPARE(primary->state(), QProcess::Running);
+    }
+
+    void distinctProfiles()
+    {
+        const auto identity = u"nextcloud-profile-test"_s;
+        const auto session = u"session-1"_s;
+        auto first = startChild(identity, session, {}, _directory->filePath(u"profile-a"_s));
+        auto second = startChild(identity, session, {}, _directory->filePath(u"profile-b"_s));
+        QCOMPARE(readLine(first), QByteArray("PRIMARY"));
+        QCOMPARE(readLine(second), QByteArray("PRIMARY"));
+        stopChild(first);
+        stopChild(second);
+    }
+
+    void sameProfileThroughAlias()
+    {
+        const auto identity = u"nextcloud-profile-test"_s;
+        const auto configuration = _directory->filePath(u"profile"_s);
+        QVERIFY(QDir().mkpath(configuration));
+        const auto alias = _directory->filePath(u"alias"_s);
+        QVERIFY(QFile::link(configuration, alias));
+
+        auto primary = startChild(identity, u"session-1"_s, {}, configuration);
+        QCOMPARE(readLine(primary), QByteArray("PRIMARY"));
+        const auto message = u"aliased profile"_s;
+        auto secondary = startChild(identity, u"session-2"_s, message, alias);
+        QCOMPARE(readLine(secondary), QByteArray("SECONDARY"));
+        QCOMPARE(readLine(primary), QByteArray("MESSAGE ") + message.toUtf8().toHex());
+        stopChild(primary);
+    }
+
+    void profileIdentityBeforeDirectoryExists()
+    {
+        using OCC::Utility::linuxSingleApplicationName;
+        const auto identity = u"nextcloud-profile-test"_s;
+        const auto directory = _directory->filePath(u"real"_s);
+        const auto alias = _directory->filePath(u"alias"_s);
+        QVERIFY(QDir().mkpath(directory));
+        QVERIFY(QFile::link(directory, alias));
+
+        const auto configuration = QDir(directory).filePath(u"new/profile"_s);
+        const auto aliasedConfiguration = QDir(alias).filePath(u"new/profile"_s);
+        const auto relativeConfiguration = QDir::current().relativeFilePath(configuration);
+        const auto key = linuxSingleApplicationName(identity, configuration);
+        QCOMPARE(linuxSingleApplicationName(identity, aliasedConfiguration), key);
+        QCOMPARE(linuxSingleApplicationName(identity, relativeConfiguration), key);
+        QVERIFY(linuxSingleApplicationName(identity, directory) != key);
+        QVERIFY(linuxSingleApplicationName(u"other-brand"_s, configuration) != key);
+        QVERIFY(!QFile::exists(configuration));
+        QVERIFY(QDir().mkpath(configuration));
+        QCOMPARE(linuxSingleApplicationName(identity, aliasedConfiguration), key);
     }
 
     void takeoverAfterExit()
@@ -190,54 +189,41 @@ private Q_SLOTS:
     }
 };
 
-template<typename Guard>
-int runChild(QCoreApplication &application, Guard &guard, const QString &message)
-{
-    constexpr auto childLifetimeMs = 15000;
-    auto output = QTextStream(stdout);
-    if (!guard.isPrimaryInstance()) {
-        if (!guard.sendMessage(message.toUtf8())) {
-            return 2;
-        }
-        output << u"SECONDARY\n"_s << Qt::flush;
-        return 0;
-    }
-    QObject::connect(&guard, &Guard::messageReceived, &application, [&](const auto &receivedMessage) {
-        output << u"MESSAGE "_s << QString::fromLatin1(receivedMessage.toHex()) << Qt::endl;
-    });
-    auto input = QFile();
-    if (!input.open(stdin, QIODevice::ReadOnly)) {
-        return 2;
-    }
-    auto notifier = QSocketNotifier(fileno(stdin), QSocketNotifier::Read);
-    QObject::connect(&notifier, &QSocketNotifier::activated, &application, [&] {
-        if (input.readLine().trimmed() == "quit") {
-            application.quit();
-        }
-    });
-    QTimer::singleShot(childLifetimeMs, &application, [&] {
-        application.exit(3);
-    });
-    output << u"PRIMARY\n"_s << Qt::flush;
-    return application.exec();
-}
-
 int main(int argc, char **argv)
 {
     auto application = QCoreApplication(argc, argv);
     const auto arguments = application.arguments();
-    if (arguments.size() == 4) {
-        const auto &mode = arguments.at(1);
-        const auto &identity = arguments.at(2);
-        const auto &message = arguments.at(3);
-        if (mode == u"--child") {
-            auto guard = OCC::Utility::LinuxSingleApplication(identity, identity);
-            return runChild(application, guard, message);
+    if (arguments.size() == 5 && arguments.at(1) == u"--child") {
+        constexpr auto messageTimeoutMs = 1000;
+        constexpr auto childLifetimeMs = 15000;
+        const auto instanceName = OCC::Utility::linuxSingleApplicationName(arguments.at(2), arguments.at(3));
+        auto guard = KDSingleApplication(instanceName, KDSingleApplication::Option::IncludeUsernameInSocketName);
+        auto output = QTextStream(stdout);
+        if (!guard.isPrimaryInstance()) {
+            if (!guard.sendMessageWithTimeout(arguments.at(4).toUtf8(), messageTimeoutMs)) {
+                return 2;
+            }
+            output << u"SECONDARY\n"_s << Qt::flush;
+            return 0;
         }
-        if (mode == u"--legacy-child") {
-            auto guard = KDSingleApplication(identity);
-            return runChild(application, guard, message);
+        QObject::connect(&guard, &KDSingleApplication::messageReceived, &application, [&](const auto &message) {
+            output << u"MESSAGE "_s << QString::fromLatin1(message.toHex()) << Qt::endl;
+        });
+        auto input = QFile();
+        if (!input.open(stdin, QIODevice::ReadOnly)) {
+            return 2;
         }
+        auto notifier = QSocketNotifier(fileno(stdin), QSocketNotifier::Read);
+        QObject::connect(&notifier, &QSocketNotifier::activated, &application, [&] {
+            if (input.readLine().trimmed() == "quit") {
+                application.quit();
+            }
+        });
+        QTimer::singleShot(childLifetimeMs, &application, [&] {
+            application.exit(3);
+        });
+        output << u"PRIMARY\n"_s << Qt::flush;
+        return application.exec();
     }
 
     auto test = TestLinuxSingleApplication();

@@ -5,54 +5,36 @@
 
 #include "linuxsingleapplication.h"
 
+#include <QCryptographicHash>
 #include <QDir>
-#include <QLockFile>
-
-#include <unistd.h>
+#include <QFileInfo>
 
 using namespace Qt::StringLiterals;
 
 namespace OCC::Utility
 {
 
-LinuxSingleApplication::LinuxSingleApplication(const QString &name, const QString &legacyName)
+static QString canonicalConfigPath(const QString &absolutePath)
 {
-    constexpr auto startupLockTimeoutMs = 5000;
-    // A second upgraded launch must wait until both guards have been checked before choosing where to send its message.
-    auto startupLock = QLockFile(QDir::temp().filePath(u"%1-%2-instance-startup.lock"_s.arg(name).arg(::getuid())));
-    startupLock.setStaleLockTime(0);
-    if (!startupLock.tryLock(startupLockTimeoutMs)) {
-        qWarning("Could not acquire the Linux single-instance startup lock.");
-        return;
+    const auto info = QFileInfo(absolutePath);
+    if (const auto canonicalPath = info.canonicalFilePath(); !canonicalPath.isEmpty()) {
+        return canonicalPath;
     }
 
-    _sharedGuard.emplace(name, KDSingleApplication::Option::IncludeUsernameInSocketName);
-    if (!_sharedGuard->isPrimaryInstance()) {
-        _secondaryGuard = &*_sharedGuard;
-        return;
+    // The default directory may not exist at startup. Resolve its parents without creating it.
+    const auto parentPath = info.absolutePath();
+    if (parentPath == absolutePath) {
+        return absolutePath;
     }
-
-    // KDAB uses the same socket for both guards if neither the executable name nor the session suffix differs.
-    if (name != legacyName || !qEnvironmentVariableIsEmpty("XDG_SESSION_ID")) {
-        _legacyGuard.emplace(legacyName);
-        if (!_legacyGuard->isPrimaryInstance()) {
-            _sharedGuard.reset();
-            _secondaryGuard = &*_legacyGuard;
-            return;
-        }
-        connect(&*_legacyGuard, &KDSingleApplication::messageReceived, this, &LinuxSingleApplication::messageReceived);
-    }
-    connect(&*_sharedGuard, &KDSingleApplication::messageReceived, this, &LinuxSingleApplication::messageReceived);
+    return QDir(canonicalConfigPath(parentPath)).filePath(info.fileName());
 }
 
-bool LinuxSingleApplication::isPrimaryInstance() const
+QString linuxSingleApplicationName(const QString &applicationName, const QString &configDirectory)
 {
-    return _sharedGuard.has_value() && !_secondaryGuard;
-}
-
-bool LinuxSingleApplication::sendMessage(const QByteArray &message)
-{
-    return _secondaryGuard && _secondaryGuard->sendMessage(message);
+    const auto canonicalPath = canonicalConfigPath(QDir::cleanPath(QDir(configDirectory).absolutePath()));
+    const auto identity = applicationName.toUtf8() + '\0' + canonicalPath.toUtf8();
+    // Keep the name short because Unix socket paths have a fixed length limit.
+    return QString::fromLatin1(QCryptographicHash::hash(identity, QCryptographicHash::Sha256).first(12).toHex());
 }
 
 }

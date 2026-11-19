@@ -14,8 +14,6 @@
 
 #ifdef Q_OS_MACOS
 #include "macOS/singleinstancemanager_mac.h"
-#elif defined(Q_OS_LINUX)
-#include "linuxsingleapplication.h"
 #else
 #include <KDSingleApplication>
 #endif
@@ -31,6 +29,8 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QNetworkInformation>
+
+#include <optional>
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -73,6 +73,7 @@ public:
 
     [[nodiscard]] bool isRunning() const;
 
+    [[nodiscard]] QStringList argumentsForPrimaryInstance() const;
     bool sendMessage(const QString &message);
 
     void showMainDialog();
@@ -100,7 +101,8 @@ public Q_SLOTS:
     void tryTrayAgain();
 
 protected:
-    void parseOptions(const QStringList &);
+    enum class OptionSource { Startup, Forwarded };
+    void parseOptions(const QStringList &options, OptionSource source);
     void setupTranslations();
     void setupLogging();
 
@@ -145,7 +147,8 @@ private:
 #elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     KDBusService _dbusService;
 #elif defined(Q_OS_LINUX)
-    Utility::LinuxSingleApplication _singleApp;
+    // Linux selects the instance after resolving the startup config directory.
+    std::optional<KDSingleApplication> _singleApp;
 #else
     KDSingleApplication _singleApp;
 #endif
