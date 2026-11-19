@@ -157,6 +157,33 @@ private Q_SLOTS:
         QCOMPARE(availability.error(), Vfs::AvailabilityError::NoSuchItem);
     }
 
+    void testAvailabilityOfEmptyFolder_data()
+    {
+        QTest::addColumn<PinState>("pinState");
+        QTest::addColumn<VfsItemAvailability>("expected");
+        QTest::newRow("always local") << PinState::AlwaysLocal << VfsItemAvailability::AlwaysLocal;
+        QTest::newRow("online only") << PinState::OnlineOnly << VfsItemAvailability::OnlineOnly;
+        QTest::newRow("unspecified") << PinState::Unspecified << VfsItemAvailability::AllHydrated;
+    }
+
+    void testAvailabilityOfEmptyFolder()
+    {
+        QFETCH(PinState, pinState);
+        QFETCH(VfsItemAvailability, expected);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareHydratedFolder(fakeFolder, *vfs);
+        fakeFolder.remoteModifier().mkdir(u"Empty"_s);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(writeDefaultAttributes(fakeFolder.localPath() + u"Empty"_s));
+        QVERIFY(vfs->setPinState(u"Empty"_s, pinState));
+
+        const auto availability = vfs->availability(u"Empty"_s, Vfs::AvailabilityRecursivity::RecursiveAvailability);
+        QVERIFY(availability);
+        QCOMPARE(*availability, expected);
+    }
+
     void testPinningAFolderKeepsExcludedItems()
     {
         FakeFolder fakeFolder{FileInfo{}};

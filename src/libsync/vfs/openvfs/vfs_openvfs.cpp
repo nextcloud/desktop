@@ -673,7 +673,19 @@ Vfs::AvailabilityResult OpenVFS::availability(const QString &folderPath, [[maybe
         return AvailabilityError::NoSuchItem;
     }
     // the pin state of a folder does not tell whether the files below it are hydrated, the journal knows that
-    return availabilityFromPinState(folderPath, pinState(folderPath));
+    const auto pin = pinState(folderPath);
+    const auto availability = availabilityFromPinState(folderPath, pin);
+    if (availability || availability.error() != AvailabilityError::NoSuchItem) {
+        return availability;
+    }
+    // the journal has no files below an empty folder, its pin state is all there is
+    if (pin && *pin == PinState::AlwaysLocal) {
+        return VfsItemAvailability::AlwaysLocal;
+    }
+    if (pin && *pin == PinState::OnlineOnly) {
+        return VfsItemAvailability::OnlineOnly;
+    }
+    return VfsItemAvailability::AllHydrated;
 }
 
 void OpenVFS::fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus)
