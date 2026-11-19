@@ -401,9 +401,23 @@ bool AccountWizardController::isUsingFileProvider() const
 
 bool AccountWizardController::canUseClassicSync() const
 {
+    return !virtualFilesEnforced() || !canUseVirtualFiles();
+}
+
+bool AccountWizardController::virtualFilesEnforced() const
+{
     const auto managedVfs = accountManagedVirtualFilesMode();
-    const auto vfsEnforced = Theme::instance()->enforceVirtualFilesSyncFolder() || (managedVfs.isEnforced && managedVfs.enabled);
-    return !vfsEnforced || !canUseVirtualFiles();
+    return Theme::instance()->enforceVirtualFilesSyncFolder() || (managedVfs.isEnforced && managedVfs.enabled);
+}
+
+void AccountWizardController::showSyncOptionsAfterAutomaticFinishFailed()
+{
+    if (!_finishingAutomatically) {
+        return;
+    }
+
+    _finishingAutomatically = false;
+    setCurrentStep(SyncOptionsStep);
 }
 
 bool AccountWizardController::needsSyncOptions() const
@@ -1229,6 +1243,16 @@ void AccountWizardController::chooseSyncModeAfterCapabilities()
             return;
         }
 
+        if (virtualFilesEnforced() && canUseVirtualFiles()) {
+            setSyncMode(VirtualFiles);
+            validateLocalSyncFolder();
+            if (_syncMode == VirtualFiles && canFinish()) {
+                _finishingAutomatically = true;
+                QTimer::singleShot(0, this, &AccountWizardController::finish);
+                return;
+            }
+        }
+
         setCurrentStep(SyncOptionsStep);
         if (Theme::instance()->wizardSelectiveSyncDefaultNothing() && canUseClassicSync()) {
             _selectiveSyncBlacklist = QStringList(QStringLiteral("/"));
@@ -1306,6 +1330,7 @@ void AccountWizardController::cancel()
 
 void AccountWizardController::goBack()
 {
+    _finishingAutomatically = false;
     setErrorText({});
     if (_currentStep == BrowserAuthStep || _currentStep == BasicAuthStep || _currentStep == SyncOptionsStep) {
         discardFlow2Auth();
@@ -1330,6 +1355,7 @@ void AccountWizardController::finish()
     if (localSyncFolderRequired()) {
         validateLocalSyncFolder();
         if (!_localSyncFolderValid || !ensureLocalSyncFolder()) {
+            showSyncOptionsAfterAutomaticFinishFailed();
             return;
         }
     }
@@ -1625,6 +1651,7 @@ void AccountWizardController::slotRemoteFolderExists(QNetworkReply *reply)
         if (_remoteFolder.isEmpty()) {
             setBusy(false);
             setErrorText(tr("No remote folder specified!"));
+            showSyncOptionsAfterAutomaticFinishFailed();
             return;
         }
 
@@ -1634,6 +1661,7 @@ void AccountWizardController::slotRemoteFolderExists(QNetworkReply *reply)
 
     setBusy(false);
     setErrorText(tr("Error: %1").arg(job ? job->errorString() : QString{}));
+    showSyncOptionsAfterAutomaticFinishFailed();
 }
 
 void AccountWizardController::createRemoteFolder()
@@ -1664,6 +1692,7 @@ void AccountWizardController::slotCreateRemoteFolderFinished(QNetworkReply *repl
         setErrorText(tr("Remote folder %1 creation failed with error <tt>%2</tt>.")
             .arg(Utility::escape(_remoteFolder), QString::number(static_cast<int>(networkError))));
     }
+    showSyncOptionsAfterAutomaticFinishFailed();
 }
 
 void AccountWizardController::completeRemoteFolderCheck()
@@ -1672,10 +1701,12 @@ void AccountWizardController::completeRemoteFolderCheck()
     if (localSyncFolderRequired() && !createSyncFolder(accountState)) {
         AccountManager::instance()->removeAccountState(accountState);
         setBusy(false);
+        showSyncOptionsAfterAutomaticFinishFailed();
         return;
     }
 
     _account = AccountManager::createAccount();
+    _finishingAutomatically = false;
     setBusy(false);
     clearOneShotOverrides();
     setCurrentStep(CompletedStep);
