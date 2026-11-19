@@ -518,14 +518,15 @@ bool OpenVFS::isHydrating() const
     return false;
 }
 
+// OpenVFS placeholders have no "in sync" mark to maintain, unlike Windows placeholders
 Result<Vfs::ConvertToPlaceholderResult, QString> OpenVFS::updatePlaceholderMarkInSync([[maybe_unused]] const QString &filePath, [[maybe_unused]] const SyncFileItem &item)
 {
-    return {Vfs::ConvertToPlaceholderResult::Error};
+    return {Vfs::ConvertToPlaceholderResult::Ok};
 }
 
 bool OpenVFS::isPlaceHolderInSync([[maybe_unused]] const QString &filePath) const
 {
-    return false;
+    return true;
 }
 
 Result<void, QString> OpenVFS::createPlaceholders([[maybe_unused]] const QList<SyncFileItemPtr> &items)
