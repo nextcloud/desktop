@@ -171,6 +171,7 @@ extension Enumerator {
     ///
     /// This method supports paginated and non-paginated reads. Handled by the pageSettings argument.
     /// Paginated reads is used by enumerateItems, non-paginated reads is used by enumerateChanges.
+    /// Pass the source row for stored URLs so a parser-normalized base can be checked against the row's account.
     ///
     /// Paginated reads WILL NOT HANDLE REMOVAL OF REMOTELY DELETED ITEMS FROM THE LOCAL DATABASE.
     /// Paginated reads WILL ONLY REPORT THE FILES DISCOVERED REMOTELY.
@@ -184,6 +185,7 @@ extension Enumerator {
         _ serverUrl: String,
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
         account: Account,
+        sourceMetadata: SendableItemMetadata? = nil,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         domain: NSFileProviderDomain? = nil,
@@ -192,6 +194,11 @@ extension Enumerator {
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
+
+        guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
+            logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
+            return RemoteReadResult(error: .invalidData)
+        }
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
 

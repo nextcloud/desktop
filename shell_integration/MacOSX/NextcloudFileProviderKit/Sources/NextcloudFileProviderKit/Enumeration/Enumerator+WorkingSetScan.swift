@@ -148,7 +148,15 @@ extension Enumerator {
 
             let itemRemoteUrl = itemToScan.remotePath()
 
-            let readResult = await Enumerator.readServerUrl(itemRemoteUrl, account: account, remoteInterface: remoteInterface, dbManager: dbManager, depth: itemToScan.directory ? .targetAndDirectChildren : .target, log: logger.log)
+            let readResult = await Enumerator.readServerUrl(
+                itemRemoteUrl,
+                account: account,
+                sourceMetadata: itemToScan,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager,
+                depth: itemToScan.directory ? .targetAndDirectChildren : .target,
+                log: logger.log
+            )
             let changes = readResult.changes ?? ChangeSet()
 
             if readResult.error?.errorCode == 404 {

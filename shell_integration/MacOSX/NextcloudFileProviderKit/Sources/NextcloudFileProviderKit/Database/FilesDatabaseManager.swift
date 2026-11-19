@@ -18,16 +18,20 @@ public final class FilesDatabaseManager: Sendable {
         case missingParentServerUrlAndFileName = "MissingParentServerUrlAndFileName"
     }
 
+    static let missingParentChildIdentifierKey = "MissingParentChildIdentifier"
     static let errorDomain = "FilesDatabaseManager"
 
     static func error(code: ErrorCode, userInfo: [String: String]) -> NSError {
         NSError(domain: errorDomain, code: code.rawValue, userInfo: userInfo)
     }
 
-    static func parentMetadataNotFoundError(itemUrl: String) -> NSError {
+    static func parentMetadataNotFoundError(for metadata: SendableItemMetadata) -> NSError {
         error(
             code: .parentMetadataNotFound,
-            userInfo: [ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: itemUrl]
+            userInfo: [
+                ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue: metadata.serverUrl,
+                missingParentChildIdentifierKey: metadata.ocId
+            ]
         )
     }
 
@@ -556,6 +560,11 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     public func addItemMetadata(_ metadata: SendableItemMetadata) {
+        guard !metadata.ocId.isEmpty else {
+            logger.error("Could not add metadata with an empty item identifier.", [.url: metadata.serverUrl])
+            return
+        }
+
         let database = ncDatabase()
 
         do {
@@ -860,6 +869,7 @@ public final class FilesDatabaseManager: Sendable {
         let readResult = await Enumerator.readServerUrl(
             metadata.serverUrl,
             account: account,
+            sourceMetadata: metadata,
             remoteInterface: remoteInterface,
             dbManager: self,
             depth: .target,

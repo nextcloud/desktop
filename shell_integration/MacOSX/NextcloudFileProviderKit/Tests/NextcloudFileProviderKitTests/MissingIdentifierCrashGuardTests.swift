@@ -18,18 +18,12 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
     override func setUp() {
         super.setUp()
         rootItem = MockRemoteItem.rootItem(account: Self.account)
-        dbManager = try! FilesDatabaseManager(
+        dbManager = FilesDatabaseManager(
             account: Self.account,
             databaseDirectory: makeDatabaseDirectory(),
             fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"),
             log: FileProviderLogMock()
         )
-    }
-
-    private func insertRaw(_ metadata: SendableItemMetadata) throws {
-        try dbManager.writer.write { db in
-            try ItemMetadataRecord(metadata).upsertRow(db)
-        }
     }
 
     func testAddItemMetadataRejectsEmptyOcId() {
@@ -44,7 +38,7 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
     func testStoredItemReturnsNilForEmptyIdentifier() async throws {
         var poison = SendableItemMetadata(ocId: "", fileName: "folder", account: Self.account)
         poison.directory = true
-        try insertRaw(poison)
+        try dbManager.insertForTesting(poison)
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let item = await Item.storedItem(
