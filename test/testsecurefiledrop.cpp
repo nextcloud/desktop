@@ -293,8 +293,9 @@ private Q_SLOTS:
         const auto serializedFiles = contents.value("files").toObject();
         const auto serializedFolders = contents.value("folders").toObject();
         QCOMPARE(serializedFiles.size() + serializedFolders.size(), files.size());
+        QCOMPARE(serializedFolders.size(), existingIsDirectory ? existingNames.size() : 0);
         for (const auto &file : files) {
-            if (file.isDirectory()) {
+            if (existingIsDirectory && existingNames.contains(file.originalFilename)) {
                 QCOMPARE(serializedFolders.value(file.encryptedFilename).toString(), file.originalFilename);
                 continue;
             }
