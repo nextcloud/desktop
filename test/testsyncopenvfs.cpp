@@ -184,6 +184,21 @@ private Q_SLOTS:
         QCOMPARE(*availability, expected);
     }
 
+    void testExcludingAFolderLeavesItsContent()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareHydratedFolder(fakeFolder, *vfs);
+        QVERIFY(vfs->setPinState(u"A/a2"_s, PinState::OnlineOnly));
+
+        // the status tracker excludes ignored folders on every sync, this must not walk their content
+        QVERIFY(vfs->setPinState(u"A"_s, PinState::Excluded));
+
+        QCOMPARE(*vfs->pinState(u"A"_s), PinState::Excluded);
+        QCOMPARE(*vfs->pinState(u"A/a1"_s), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState(u"A/a2"_s), PinState::OnlineOnly);
+    }
+
     void testPinningAFolderKeepsExcludedItems()
     {
         FakeFolder fakeFolder{FileInfo{}};

@@ -619,7 +619,8 @@ bool OpenVFS::setPinState(const QString &folderPath, PinState state)
     if (!setPlaceholderAttributes(attribs)) {
         return false;
     }
-    if (std::filesystem::is_directory(localPath.get())) {
+    // the content of an excluded folder is not synced, and walking it on every sync blocks the client
+    if (state != PinState::Excluded && std::filesystem::is_directory(localPath.get())) {
         inheritPinStateBelow(localPath);
     }
     return true;
