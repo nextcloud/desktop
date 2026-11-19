@@ -8602,7 +8602,7 @@ Servidor respondeu com erro: %2</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="109"/>
         <source>Make Always Available Locally</source>
-        <translation type="unfinished"/>
+        <translation>Tornar sempre disponível localmente</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="117"/>
