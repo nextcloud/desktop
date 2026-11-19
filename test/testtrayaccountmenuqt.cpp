@@ -14,8 +14,14 @@
 #include <QAction>
 #include <QApplication>
 #include <QFont>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMenu>
+#include <QPalette>
 #include <QPointer>
+#include <QProxyStyle>
+#include <QScopeGuard>
 #include <QScreen>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -24,6 +30,17 @@
 
 using namespace OCC;
 using namespace Qt::StringLiterals;
+
+/// A style whose small icons are twice as large as those of the application style.
+class DoubleSmallIconStyle : public QProxyStyle
+{
+public:
+    int pixelMetric(PixelMetric metric, const QStyleOption *option, const QWidget *widget) const override
+    {
+        const auto size = QProxyStyle::pixelMetric(metric, option, widget);
+        return metric == PM_SmallIconSize ? 2 * size : size;
+    }
+};
 
 class TestTrayAccountMenuQt : public QObject
 {
@@ -249,6 +266,123 @@ private Q_SLOTS:
             hasSearch |= action->text() == searchText;
         }
         QVERIFY(hasSearch);
+    }
+
+    void openingUnchangedMenuKeepsActions()
+    {
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto initialActions = menu.actions();
+        QVERIFY(!initialActions.isEmpty());
+        const auto firstAction = QPointer<QAction>(initialActions.first());
+
+        constexpr auto openingCount = 3;
+        for (auto opening = 0; opening < openingCount; ++opening) {
+            QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+            QVERIFY(firstAction);
+            QCOMPARE(menu.actions(), initialActions);
+        }
+    }
+
+    void openingAfterAccountChangeRebuildsMenu()
+    {
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // Guards against the state check skipping a rebuild that is needed: a hidden
+        // account submenu is not refreshed on the change itself (see above), only by
+        // rebuilding the menu when it opens.
+        QVERIFY(setConnectionStatus(ConnectionValidator::Connected));
+        QVERIFY(firstAction);
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+
+        const auto submenu = accountMenu(menu);
+        QVERIFY(submenu);
+        const auto searchText = QCoreApplication::translate("TrayAccountPopup", "Search");
+        auto hasSearch = false;
+        for (const auto action : submenu->actions()) {
+            hasSearch |= action->text() == searchText;
+        }
+        QVERIFY(hasSearch);
+    }
+
+    void openingAfterIconPaletteChangeRebuildsMenu_data()
+    {
+        QTest::addColumn<int>("colorGroup");
+        QTest::addColumn<int>("colorRole");
+
+        QTest::newRow("active text") << int{QPalette::Active} << int{QPalette::Text};
+        QTest::newRow("selected icon") << int{QPalette::Active} << int{QPalette::HighlightedText};
+        QTest::newRow("disabled icon") << int{QPalette::Disabled} << int{QPalette::Text};
+    }
+
+    void openingAfterIconPaletteChangeRebuildsMenu()
+    {
+        QFETCH(int, colorGroup);
+        QFETCH(int, colorRole);
+
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // Each of these colors tints the menu icons in one of their modes, so a
+        // change to any one of them alone must give the menu new icons.
+        auto palette = menu.palette();
+        const auto group = static_cast<QPalette::ColorGroup>(colorGroup);
+        const auto role = static_cast<QPalette::ColorRole>(colorRole);
+        const auto changedColor = palette.color(group, role) == Qt::magenta ? QColor{Qt::cyan} : QColor{Qt::magenta};
+        palette.setColor(group, role, changedColor);
+        menu.setPalette(palette);
+
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+    }
+
+    void openingAfterAppListChangeRebuildsMenu()
+    {
+        static constexpr auto httpOk = 200;
+        const auto setApps = [this](const QJsonDocument &reply) {
+            return QMetaObject::invokeMethod(_accountState, "slotNavigationAppsFetched", Q_ARG(QJsonDocument, reply), Q_ARG(int, httpOk));
+        };
+        const auto clearApps = qScopeGuard([&setApps] {
+            setApps(QJsonDocument{});
+        });
+
+        QVERIFY(setConnectionStatus(ConnectionValidator::Connected));
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        // Only the list of server apps changes, nothing else the menu shows.
+        const auto app = QJsonObject{
+            {u"id"_s, u"files"_s},
+            {u"name"_s, u"Files"_s},
+            {u"href"_s, u"https://cloud.example.com/apps/files"_s},
+            {u"icon"_s, u"https://cloud.example.com/apps/files/img/app.svg"_s},
+        };
+        const auto reply = QJsonDocument{QJsonObject{{u"ocs"_s, QJsonObject{{u"data"_s, QJsonArray{app}}}}}};
+        QVERIFY(setApps(reply));
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
+    }
+
+    void openingAfterIconSizeChangeRebuildsMenu()
+    {
+        auto style = DoubleSmallIconStyle{};
+        auto menu = QMenu{};
+        setupQtTrayContextMenu(&menu, Systray::instance());
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        const auto firstAction = QPointer<QAction>(menu.actions().first());
+
+        menu.setStyle(&style);
+        QVERIFY(QMetaObject::invokeMethod(&menu, "aboutToShow"));
+        QVERIFY(!firstAction);
     }
 };
 
