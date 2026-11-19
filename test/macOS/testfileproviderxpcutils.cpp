@@ -1388,12 +1388,20 @@ private Q_SLOTS:
 
     void fileProviderServerUrlPreservesOtherComponents()
     {
-        const auto url = QUrl(u"https://user@bücher.com:8443/nextcloud/space%20name/%25/ü?q=%25#section"_s);
+        const auto url = QUrl(u"https://bücher.com@bücher.com:8443/nextcloud/bücher.com/space%20name/%25/ü?q=%25#section"_s);
         const auto original = url.toString();
         const QString originalAuthority = url.scheme() + u"://"_s + url.authority();
 
         QVERIFY(original.startsWith(originalAuthority));
-        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), u"https://user@xn--bcher-kva.com:8443"_s + original.mid(originalAuthority.size()));
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url),
+                 u"https://bücher.com@xn--bcher-kva.com:8443"_s + original.mid(originalAuthority.size()));
+    }
+
+    void fileProviderServerUrlPreservesEscapedUsername()
+    {
+        const auto url = QUrl(u"https://a%2Fb@bücher.com/nc"_s);
+
+        QCOMPARE(OCC::Mac::FileProviderXPCUtils::urlForFileProviderXPC(url), u"https://a%2Fb@xn--bcher-kva.com/nc"_s);
     }
 
     void fileProviderServerUrlLeavesAsciiHostsUntouched()
