@@ -51,6 +51,9 @@ void HydrationJob::start()
     _job->setExpectedContentLength(_record._fileSize);
     //_job->setPriority(QNetworkRequest::HighPriority);
     connect(_job, &GETFileJob::finishedSignal, this, [this] {
+        // write the buffered data to disk before anyone reads the file
+        _device->close();
+
         QString errorMsg;
         if (_job->reply()->error() != 0 /*|| (_job->httpStatusCode() != 200 && _job->httpStatusCode() != 204)*/) {
             errorMsg = _job->reply()->errorString();
