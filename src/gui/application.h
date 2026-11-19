@@ -14,6 +14,8 @@
 
 #ifdef Q_OS_MACOS
 #include "macOS/singleinstancemanager_mac.h"
+#elif defined(Q_OS_LINUX)
+#include "linuxsingleapplication.h"
 #else
 #include <KDSingleApplication>
 #endif
@@ -142,6 +144,8 @@ private:
     OCC::SingleInstanceManager _singleApp;
 #elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     KDBusService _dbusService;
+#elif defined(Q_OS_LINUX)
+    Utility::LinuxSingleApplication _singleApp;
 #else
     KDSingleApplication _singleApp;
 #endif
