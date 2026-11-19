@@ -37,12 +37,15 @@ if(NOT installed_custom_service STREQUAL custom_service)
 endif()
 
 file(MAKE_DIRECTORY "${TEST_BINARY_DIR}/user-data" "${TEST_BINARY_DIR}/config" "${TEST_BINARY_DIR}/runtime")
+# The default session config also searches the host's compiled-in service directory.
+set(bus_config "${TEST_BINARY_DIR}/session.conf")
+configure_file("${CMAKE_CURRENT_LIST_DIR}/session.conf" "${bus_config}" COPYONLY)
 execute_process(COMMAND "${CMAKE_COMMAND}" -E env
     "XDG_DATA_DIRS=${stage}/usr/share"
     "XDG_DATA_HOME=${TEST_BINARY_DIR}/user-data"
     "XDG_RUNTIME_DIR=${TEST_BINARY_DIR}/runtime"
     "XDG_CONFIG_HOME=${TEST_BINARY_DIR}/config"
-    "${DBUS_RUN_SESSION_EXECUTABLE}" -- "${DISCOVERY_TEST}" ${identity}
+    "${DBUS_RUN_SESSION_EXECUTABLE}" "--config-file=${bus_config}" -- "${DISCOVERY_TEST}" ${identity}
     RESULT_VARIABLE result)
 if(NOT result EQUAL 0)
     message(FATAL_ERROR "CloudProviders passive discovery failed: ${result}")
