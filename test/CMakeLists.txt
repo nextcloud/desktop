@@ -62,12 +62,8 @@ endif()
 
 nextcloud_add_test(Utility)
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    add_executable(LinuxSingleApplicationTest
-        testlinuxsingleapplication.cpp
-        ${CMAKE_SOURCE_DIR}/src/gui/linuxsingleapplication.cpp
-        ${CMAKE_SOURCE_DIR}/src/gui/linuxsingleapplication.h
-    )
+if(LINUX)
+    add_executable(LinuxSingleApplicationTest testlinuxsingleapplication.cpp)
     target_include_directories(LinuxSingleApplicationTest PRIVATE ${CMAKE_SOURCE_DIR}/src)
     target_link_libraries(LinuxSingleApplicationTest PRIVATE Qt::Core Qt::Network Qt::Test KDAB::kdsingleapplication)
     target_compile_definitions(LinuxSingleApplicationTest PRIVATE QT_NO_KEYWORDS)
@@ -76,6 +72,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
     if(NOT KF6DBusAddons_FOUND)
         nextcloud_add_test(ApplicationOptions)
+        add_dependencies(ApplicationOptionsTest nextcloud)
+        target_compile_definitions(ApplicationOptionsTest PRIVATE NEXTCLOUD_EXECUTABLE_PATH="$<TARGET_FILE:nextcloud>")
         set_tests_properties(ApplicationOptionsTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
     endif()
 endif()

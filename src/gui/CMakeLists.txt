@@ -72,6 +72,7 @@ set(client_SRCS
     accountsetupcommandlinemanager.cpp
     application.h
     application.cpp
+    linuxsingleapplication.h
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
     caseclashfilenamedialog.h
@@ -454,9 +455,6 @@ ENDIF()
 IF( NOT WIN32 AND NOT APPLE )
     set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp notificationsoundplayer_linux.cpp)
 ENDIF()
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    list(APPEND client_SRCS linuxsingleapplication.cpp linuxsingleapplication.h)
-endif()
 IF( WIN32 )
     set(client_SRCS
         ${client_SRCS}

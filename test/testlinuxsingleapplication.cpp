@@ -11,8 +11,6 @@
 #include <QTimer>
 #include <QtTest>
 
-#include <KDSingleApplication>
-
 #include <cstdio>
 #include <memory>
 #include <vector>
@@ -30,7 +28,7 @@ class TestLinuxSingleApplication : public QObject
     std::unique_ptr<QTemporaryDir> _directory;
     std::vector<std::unique_ptr<QProcess>> _processes;
 
-    QProcess *startChild(const QString &name, const QString &session, const QString &message = {}, const QString &profile = {})
+    QProcess *startChild(const QString &name, const QString &session = {}, const QString &message = {})
     {
         auto environment = QProcessEnvironment::systemEnvironment();
         environment.insert(u"TMPDIR"_s, _directory->path());
@@ -41,8 +39,7 @@ class TestLinuxSingleApplication : public QObject
         }
         auto process = std::make_unique<QProcess>();
         process->setProcessEnvironment(environment);
-        const auto configDirectory = profile.isEmpty() ? _directory->filePath(u"default"_s) : profile;
-        process->start(QCoreApplication::applicationFilePath(), {u"--child"_s, name, configDirectory, message});
+        process->start(QCoreApplication::applicationFilePath(), {u"--child"_s, name, message});
         _processes.push_back(std::move(process));
         return _processes.back().get();
     }
@@ -96,7 +93,6 @@ private Q_SLOTS:
         QTest::newRow("set-to-unset") << u"session-1"_s << QString();
         QTest::newRow("different-sessions") << u"session-1"_s << u"session-2"_s;
         QTest::newRow("same-session") << u"session-1"_s << u"session-1"_s;
-        QTest::newRow("both-unset") << QString() << QString();
     }
 
     void sharedAcrossSessions()
@@ -116,57 +112,6 @@ private Q_SLOTS:
         QCOMPARE(primary->state(), QProcess::Running);
     }
 
-    void distinctProfiles()
-    {
-        const auto identity = u"nextcloud-profile-test"_s;
-        const auto session = u"session-1"_s;
-        auto first = startChild(identity, session, {}, _directory->filePath(u"profile-a"_s));
-        auto second = startChild(identity, session, {}, _directory->filePath(u"profile-b"_s));
-        QCOMPARE(readLine(first), QByteArray("PRIMARY"));
-        QCOMPARE(readLine(second), QByteArray("PRIMARY"));
-        stopChild(first);
-        stopChild(second);
-    }
-
-    void sameProfileThroughAlias()
-    {
-        const auto identity = u"nextcloud-profile-test"_s;
-        const auto configuration = _directory->filePath(u"profile"_s);
-        QVERIFY(QDir().mkpath(configuration));
-        const auto alias = _directory->filePath(u"alias"_s);
-        QVERIFY(QFile::link(configuration, alias));
-
-        auto primary = startChild(identity, u"session-1"_s, {}, configuration);
-        QCOMPARE(readLine(primary), QByteArray("PRIMARY"));
-        const auto message = u"aliased profile"_s;
-        auto secondary = startChild(identity, u"session-2"_s, message, alias);
-        QCOMPARE(readLine(secondary), QByteArray("SECONDARY"));
-        QCOMPARE(readLine(primary), QByteArray("MESSAGE ") + message.toUtf8().toHex());
-        stopChild(primary);
-    }
-
-    void profileIdentityBeforeDirectoryExists()
-    {
-        using OCC::Utility::linuxSingleApplicationName;
-        const auto identity = u"nextcloud-profile-test"_s;
-        const auto directory = _directory->filePath(u"real"_s);
-        const auto alias = _directory->filePath(u"alias"_s);
-        QVERIFY(QDir().mkpath(directory));
-        QVERIFY(QFile::link(directory, alias));
-
-        const auto configuration = QDir(directory).filePath(u"new/profile"_s);
-        const auto aliasedConfiguration = QDir(alias).filePath(u"new/profile"_s);
-        const auto relativeConfiguration = QDir::current().relativeFilePath(configuration);
-        const auto key = linuxSingleApplicationName(identity, configuration);
-        QCOMPARE(linuxSingleApplicationName(identity, aliasedConfiguration), key);
-        QCOMPARE(linuxSingleApplicationName(identity, relativeConfiguration), key);
-        QVERIFY(linuxSingleApplicationName(identity, directory) != key);
-        QVERIFY(linuxSingleApplicationName(u"other-brand"_s, configuration) != key);
-        QVERIFY(!QFile::exists(configuration));
-        QVERIFY(QDir().mkpath(configuration));
-        QCOMPARE(linuxSingleApplicationName(identity, aliasedConfiguration), key);
-    }
-
     void takeoverAfterExit()
     {
         const auto identity = u"nextcloud-takeover-test"_s;
@@ -180,8 +125,8 @@ private Q_SLOTS:
 
     void distinctIdentities()
     {
-        auto first = startChild(u"first-brand"_s, u"session-1"_s);
-        auto second = startChild(u"second-brand"_s, u"session-1"_s);
+        auto first = startChild(u"nextcloud-first-brand"_s, u"session-1"_s);
+        auto second = startChild(u"nextcloud-second-brand"_s, u"session-1"_s);
         QCOMPARE(readLine(first), QByteArray("PRIMARY"));
         QCOMPARE(readLine(second), QByteArray("PRIMARY"));
         QCOMPARE(first->state(), QProcess::Running);
@@ -193,14 +138,13 @@ int main(int argc, char **argv)
 {
     auto application = QCoreApplication(argc, argv);
     const auto arguments = application.arguments();
-    if (arguments.size() == 5 && arguments.at(1) == u"--child") {
+    if (arguments.size() == 4 && arguments.at(1) == u"--child") {
         constexpr auto messageTimeoutMs = 1000;
         constexpr auto childLifetimeMs = 15000;
-        const auto instanceName = OCC::Utility::linuxSingleApplicationName(arguments.at(2), arguments.at(3));
-        auto guard = KDSingleApplication(instanceName, KDSingleApplication::Option::IncludeUsernameInSocketName);
+        auto guard = OCC::Utility::makeLinuxSingleApplication(arguments.at(2));
         auto output = QTextStream(stdout);
         if (!guard.isPrimaryInstance()) {
-            if (!guard.sendMessageWithTimeout(arguments.at(4).toUtf8(), messageTimeoutMs)) {
+            if (!guard.sendMessageWithTimeout(arguments.at(3).toUtf8(), messageTimeoutMs)) {
                 return 2;
             }
             output << u"SECONDARY\n"_s << Qt::flush;

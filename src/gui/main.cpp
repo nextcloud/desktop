@@ -154,7 +154,7 @@ static int runApplication(int argc, char **argv)
             return -1;
         }
 
-        const auto args = app.argumentsForPrimaryInstance();
+        QStringList args = app.arguments();
         if (args.size() > 1) {
             QString msg = args.join(QLatin1String("|"));
             if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg)) {

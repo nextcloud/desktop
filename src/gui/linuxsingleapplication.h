@@ -5,14 +5,15 @@
 
 #pragma once
 
-#include <QString>
+#include <KDSingleApplication>
 
 namespace OCC::Utility
 {
 
-/** Socket name component shared by all launches of the same application and config directory.
- * KDSingleApplication adds the Linux user to the name.
- */
-[[nodiscard]] QString linuxSingleApplicationName(const QString &applicationName, const QString &configDirectory);
+/** Creates an application guard shared by the user's login sessions. */
+[[nodiscard]] inline KDSingleApplication makeLinuxSingleApplication(const QString &name)
+{
+    return KDSingleApplication(name, KDSingleApplication::Option::IncludeUsernameInSocketName);
+}
 
 }

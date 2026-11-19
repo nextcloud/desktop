@@ -30,8 +30,6 @@
 #include <QElapsedTimer>
 #include <QNetworkInformation>
 
-#include <optional>
-
 class QMessageBox;
 class QSystemTrayIcon;
 class QSocket;
@@ -73,7 +71,6 @@ public:
 
     [[nodiscard]] bool isRunning() const;
 
-    [[nodiscard]] QStringList argumentsForPrimaryInstance() const;
     bool sendMessage(const QString &message);
 
     void showMainDialog();
@@ -101,7 +98,10 @@ public Q_SLOTS:
     void tryTrayAgain();
 
 protected:
-    enum class OptionSource { Startup, Forwarded };
+    enum class OptionSource {
+        Startup,
+        Forwarded,
+    };
     void parseOptions(const QStringList &options, OptionSource source);
     void setupTranslations();
     void setupLogging();
@@ -146,9 +146,6 @@ private:
     OCC::SingleInstanceManager _singleApp;
 #elif defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     KDBusService _dbusService;
-#elif defined(Q_OS_LINUX)
-    // Linux selects the instance after resolving the startup config directory.
-    std::optional<KDSingleApplication> _singleApp;
 #else
     KDSingleApplication _singleApp;
 #endif
