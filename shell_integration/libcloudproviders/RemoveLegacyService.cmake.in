@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+set(bus_name "@LIBCLOUDPROVIDERS_DBUS_BUS_NAME@")
+set(expected "[D-BUS Service]\nName=${bus_name}\nExec=${CMAKE_INSTALL_PREFIX}/bin/@APPLICATION_EXECUTABLE@ --background\n\n")
+
+set(service_dirs "@CMAKE_INSTALL_DATADIR@/dbus-1/services" "@legacy_dbus_services_dir@")
+foreach(service_dir IN LISTS service_dirs)
+    if(service_dir STREQUAL "")
+        continue()
+    endif()
+    if(NOT IS_ABSOLUTE "${service_dir}")
+        set(service_dir "${CMAKE_INSTALL_PREFIX}/${service_dir}")
+    endif()
+    set(service_file "$ENV{DESTDIR}${service_dir}/${bus_name}.service")
+    if(EXISTS "${service_file}" AND NOT IS_SYMLINK "${service_file}" AND NOT IS_DIRECTORY "${service_file}")
+        file(READ "${service_file}" contents LIMIT 4096)
+        if(contents STREQUAL expected)
+            file(REMOVE "${service_file}")
+            if(EXISTS "${service_file}")
+                message(FATAL_ERROR "Could not remove obsolete CloudProviders service: ${service_file}")
+            endif()
+        endif()
+    endif()
+endforeach()

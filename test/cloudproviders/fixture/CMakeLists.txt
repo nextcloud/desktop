@@ -15,3 +15,8 @@ set(LIBCLOUDPROVIDERS_DESKTOP_IMPLEMENTS
     "Implements=org.freedesktop.CloudProviders\n\n[org.freedesktop.CloudProviders]\nBusName=${bus_name}\nObjectPath=${object_path}")
 configure_file("${DESKTOP_SOURCE_DIR}/mirall.desktop.in" nextcloud.desktop @ONLY)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/nextcloud.desktop" DESTINATION "share/applications")
+
+set(CMAKE_INSTALL_DATADIR share)
+set(legacy_dbus_services_dir "/legacy/share/dbus-1/services")
+set(LIBCLOUDPROVIDERS_DBUS_BUS_NAME "${bus_name}")
+include("${DESKTOP_SOURCE_DIR}/shell_integration/libcloudproviders/InstallCleanup.cmake")

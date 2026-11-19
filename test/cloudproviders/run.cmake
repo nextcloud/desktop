@@ -11,7 +11,15 @@ if(NOT result EQUAL 0)
     message(FATAL_ERROR "Could not configure CloudProviders install fixture")
 endif()
 
+file(STRINGS "${TEST_BINARY_DIR}/build/identity" identity)
+list(GET identity 0 bus_name)
 set(stage "${TEST_BINARY_DIR}/stage")
+set(service_file "${stage}/usr/share/dbus-1/services/${bus_name}.service")
+file(WRITE "${service_file}" "[D-BUS Service]\nName=${bus_name}\nExec=/usr/bin/nextcloud --background\n\n")
+set(custom_service_file "${stage}/legacy/share/dbus-1/services/${bus_name}.service")
+set(custom_service "[D-BUS Service]\nName=${bus_name}\nExec=/opt/nextcloud/bin/nextcloud --background\n\n")
+file(WRITE "${custom_service_file}" "${custom_service}")
+
 execute_process(COMMAND "${CMAKE_COMMAND}" -E env "DESTDIR=${stage}"
     "${CMAKE_COMMAND}" --install "${TEST_BINARY_DIR}/build"
     RESULT_VARIABLE result)
@@ -19,11 +27,20 @@ if(NOT result EQUAL 0)
     message(FATAL_ERROR "Could not install CloudProviders fixture")
 endif()
 
-file(STRINGS "${TEST_BINARY_DIR}/build/identity" identity)
-file(MAKE_DIRECTORY "${TEST_BINARY_DIR}/user-data" "${TEST_BINARY_DIR}/config")
+if(EXISTS "${service_file}")
+    message(FATAL_ERROR "Upgrade left the obsolete CloudProviders service installed")
+endif()
+
+file(READ "${custom_service_file}" installed_custom_service)
+if(NOT installed_custom_service STREQUAL custom_service)
+    message(FATAL_ERROR "Upgrade changed an activation service belonging to a different prefix")
+endif()
+
+file(MAKE_DIRECTORY "${TEST_BINARY_DIR}/user-data" "${TEST_BINARY_DIR}/config" "${TEST_BINARY_DIR}/runtime")
 execute_process(COMMAND "${CMAKE_COMMAND}" -E env
     "XDG_DATA_DIRS=${stage}/usr/share"
     "XDG_DATA_HOME=${TEST_BINARY_DIR}/user-data"
+    "XDG_RUNTIME_DIR=${TEST_BINARY_DIR}/runtime"
     "XDG_CONFIG_HOME=${TEST_BINARY_DIR}/config"
     "${DBUS_RUN_SESSION_EXECUTABLE}" -- "${DISCOVERY_TEST}" ${identity}
     RESULT_VARIABLE result)
