@@ -1385,6 +1385,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
 
+    if (localEntry.type == ItemTypeSkipError) {
+        _childIgnored = true;
+        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+        item->_status = SyncFileItem::SoftError;
+        item->_errorString = tr("Could not read local file. It will be checked again on a later sync.");
+        finalize();
+        return;
+    }
+
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
             // Not modified locally (ParentNotChanged)

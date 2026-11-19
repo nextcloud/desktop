@@ -188,6 +188,9 @@ enum ItemType {
     ItemTypeVirtualFileDehydration = 6,
 
     ItemTypeVirtualDirectory = 7,
+
+    /** The item is listed but stat or open failed, so its real type is unknown. */
+    ItemTypeSkipError = 8,
 };
 Q_ENUM_NS(ItemType)
 }
