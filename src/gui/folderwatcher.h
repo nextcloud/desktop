@@ -87,7 +87,8 @@ public:
 
     void setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking);
 
-    /// On Linux, a folder for which the check returns true is neither walked nor watched, its content inherits its exclusion.
+    /// A folder for which the check returns true is not walked: a change on it does not report its content, and on Linux it is not watched.
+    /// Its content inherits its exclusion.
     void setFolderExcludedCheck(const std::function<bool(const QString &)> &isFolderExcluded);
 
     [[nodiscard]] int lockChangeDebouncingTimout() const;

@@ -375,6 +375,38 @@ private Q_SLOTS:
 #endif
     }
 
+    void testChangeOnExcludedFolderDoesNotListItsContent()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Attribute changes of folders are reported this way on Linux");
+#else
+        QTemporaryDir root;
+        QDir rootDir(root.path());
+        const auto rootPath = rootDir.canonicalPath();
+        QVERIFY(rootDir.mkpath(u"excluded/a/b"_s));
+        Utility::writeRandomFile(rootPath + u"/excluded/a/b/file"_s);
+
+        FolderWatcher watcher;
+        watcher.setFolderExcludedCheck([rootPath](const QString &path) {
+            return path == rootPath + u"/excluded"_s;
+        });
+        watcher.init(rootPath);
+        QSignalSpy pathChangedSpy(&watcher, &FolderWatcher::pathChanged);
+
+        // an attribute change of the excluded folder itself, as when its pin state is written
+        const auto excludedPath = QString{rootPath + u"/excluded"_s};
+        QVERIFY(QFile::setPermissions(excludedPath, QFile::permissions(excludedPath) | QFileDevice::ExeOther));
+
+        QTRY_VERIFY(std::any_of(pathChangedSpy.cbegin(), pathChangedSpy.cend(), [&excludedPath](const QList<QVariant> &arguments) {
+            return arguments.first().toString() == excludedPath;
+        }));
+        for (const auto &arguments : std::as_const(pathChangedSpy)) {
+            const auto path = arguments.first().toString();
+            QVERIFY2(!path.startsWith(excludedPath + u'/'), qPrintable(u"listed content of the excluded folder: %1"_s.arg(path)));
+        }
+#endif
+    }
+
     void testDetectLockFiles()
     {
         QStringList listOfOfficeFiles = {QString(_rootPath + "/document.docx"), QString(_rootPath + "/document.odt")};
