@@ -7,7 +7,7 @@
 
 Nextcloud publishes CloudProviders metadata and exports its accounts while the client is running. File managers and GTK file dialogs can discover a client started manually or at login. The integration does not install a D-Bus activation service, so discovering providers does not launch Nextcloud.
 
-The desktop entry declares the provider for libcloudproviders 0.3.3 and later. Older versions use the installed `cloud-providers/*.ini` file.
+The desktop entry declares the provider. CloudProviders integration requires libcloudproviders 0.3.3 or later.
 
 ## Upgrading existing installations
 
@@ -17,7 +17,7 @@ Installing from source into an existing prefix does not remove obsolete files. R
 
 ## Regression tests
 
-With CMake, C and C++ compilers, pkg-config, the libcloudproviders/GIO development files, Qt 6 DBus development files and `dbus-run-session` installed, run from the repository root:
+With CMake, a C compiler, pkg-config, the libcloudproviders/GIO development files and `dbus-run-session` installed, run from the repository root:
 
 ```sh
 cmake -S test/cloudproviders -B build-cloudproviders
@@ -25,4 +25,4 @@ cmake --build build-cloudproviders
 ctest --test-dir build-cloudproviders --output-on-failure
 ```
 
-The tests stage the integration's install rules on a private session bus, check that the provider cannot be activated, and verify that an existing collector discovers a provider started manually. They cover both desktop and legacy `.ini` metadata.
+The test stages the desktop entry on a private session bus, checks that the provider cannot be activated, and verifies that an existing collector discovers a provider started manually.
