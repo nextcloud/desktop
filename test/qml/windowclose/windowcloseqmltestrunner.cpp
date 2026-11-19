@@ -15,7 +15,6 @@
 #include "gui/systray.h"
 #include "gui/tray/usermodel.h"
 #include "theme.h"
-#include "wheelhandler.h"
 
 #include <QApplication>
 #include <QKeySequence>
@@ -69,7 +68,6 @@ public Q_SLOTS:
         qmlRegisterType<OCC::SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
         qmlRegisterType<OCC::SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
         qmlRegisterType<OCC::SyncStatusSummary>("com.nextcloud.desktopclient", 1, 0, "SyncStatusSummary");
-        qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
         OCC::FolderMan::instance();
         qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", OCC::UserModel::instance());

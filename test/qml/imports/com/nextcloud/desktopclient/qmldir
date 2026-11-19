@@ -8,4 +8,3 @@ singleton Theme 1.0 Theme.qml
 singleton UserModel 1.0 UserModel.qml
 SortedActivityListModel 1.0 SortedActivityListModel.qml
 SyncStatusSummary 1.0 SyncStatusSummary.qml
-WheelHandler 1.0 WheelHandler.qml

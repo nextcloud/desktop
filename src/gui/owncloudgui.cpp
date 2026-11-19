@@ -45,7 +45,6 @@
 #include "theme.h"
 #include "tray/trayaccountappsmodel.h"
 #include "tray/trayactivationpolicy.h"
-#include "wheelhandler.h"
 #include "wizard/accountwizardcontroller.h"
 
 #include "filesystem.h"
@@ -154,7 +153,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
     qmlRegisterType<FileActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
-    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
     qmlRegisterType<NotificationSoundPlayer>("com.nextcloud.desktopclient", 1, 0, "NotificationSoundPlayer");
     qmlRegisterType<Quick::DateFieldBackend>("com.nextcloud.desktopclient", 1, 0, "DateFieldBackend");
