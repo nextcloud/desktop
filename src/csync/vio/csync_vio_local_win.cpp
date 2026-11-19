@@ -51,7 +51,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     handle->hFind = FindFirstFile(reinterpret_cast<const wchar_t *>(dirname.utf16()), &(handle->ffd));
 
     if (handle->hFind == INVALID_HANDLE_VALUE) {
-        int retcode = GetLastError();
+        const auto retcode = GetLastError();
         if( retcode == ERROR_FILE_NOT_FOUND ) {
             errno = ENOENT;
         } else if (retcode == ERROR_DIRECTORY) {
@@ -119,7 +119,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   } else {
       if( FindNextFile(handle->hFind, &(handle->ffd)) == 0 ) {
           // might be error, check!
-          int dwError = GetLastError();
+          const auto dwError = GetLastError();
           if (dwError != ERROR_NO_MORE_FILES) {
               qCWarning(lcCSyncVIOLocal, "FindNextFile error %d", dwError);
               errno = EACCES; // no more files is fine. Otherwise EACCESS
@@ -200,14 +200,16 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf, bool checkP
         FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
         nullptr);
     if( h == INVALID_HANDLE_VALUE ) {
-        errno = GetLastError();
-        qCCritical(lcCSyncVIOLocal) << "CreateFileW failed on" << uri << OCC::Utility::formatWinError(errno);
+        const auto lastError = GetLastError();
+        errno = lastError;
+        qCWarning(lcCSyncVIOLocal) << "CreateFileW failed on" << uri << OCC::Utility::formatWinError(lastError);
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
-        errno = GetLastError();
-        qCCritical(lcCSyncVIOLocal) << "GetFileInformationByHandle failed on" << uri << OCC::Utility::formatWinError(errno);
+        const auto lastError = GetLastError();
+        errno = lastError;
+        qCWarning(lcCSyncVIOLocal) << "GetFileInformationByHandle failed on" << uri << OCC::Utility::formatWinError(lastError);
         CloseHandle(h);
         return -1;
     }

@@ -380,7 +380,7 @@ namespace Utility {
 
     OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
 
-    OCSYNC_EXPORT QString formatWinError(long error);
+    OCSYNC_EXPORT QString formatWinError(unsigned long error);
 
     OCSYNC_EXPORT bool canCreateFileInPath(const QString &path);
 

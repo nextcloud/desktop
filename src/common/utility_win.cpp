@@ -578,7 +578,7 @@ bool Utility::canCreateFileInPath(const QString &path)
     return testFile.open();
 }
 
-QString Utility::formatWinError(long errorCode)
+QString Utility::formatWinError(unsigned long errorCode)
 {
     return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
 }
