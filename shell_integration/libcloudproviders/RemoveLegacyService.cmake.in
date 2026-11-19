@@ -4,7 +4,11 @@
 set(bus_name "@LIBCLOUDPROVIDERS_DBUS_BUS_NAME@")
 set(expected "[D-BUS Service]\nName=${bus_name}\nExec=${CMAKE_INSTALL_PREFIX}/bin/@APPLICATION_EXECUTABLE@ --background\n\n")
 
-set(service_dirs "@CMAKE_INSTALL_DATADIR@/dbus-1/services" "@legacy_dbus_services_dir@")
+# An older build could install to the system directory even with a different prefix.
+set(service_dirs
+    "@CMAKE_INSTALL_DATADIR@/dbus-1/services"
+    "@legacy_dbus_services_dir@"
+    "/usr/share/dbus-1/services")
 foreach(service_dir IN LISTS service_dirs)
     if(service_dir STREQUAL "")
         continue()

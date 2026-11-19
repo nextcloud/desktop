@@ -13,7 +13,7 @@ The desktop entry declares the provider. CloudProviders integration requires lib
 
 Packages must drop the previously shipped `dbus-1/services/com.nextcloudgmbh.Nextcloud.service` file from their file lists so package upgrades remove it. Branded builds use their corresponding provider bus name.
 
-When installing from source over the same prefix, the installer removes an exact match for the old Nextcloud activation service. If an old service remains in a custom location, verify that it belongs to the previous Nextcloud installation before removing it.
+When installing from source over the same prefix, the installer removes an exact match for the old Nextcloud activation service. It checks the install data directory, the D-Bus service directory reported by pkg-config, and `/usr/share/dbus-1/services`. If an old service remains in a custom location, verify that it belongs to the previous Nextcloud installation before removing it.
 
 ## Regression tests
 
