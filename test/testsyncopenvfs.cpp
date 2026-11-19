@@ -4,6 +4,7 @@
  */
 
 #include "common/vfs.h"
+#include "hydrationjob.h"
 #include "syncenginetestutils.h"
 #include "vfs_openvfs.h"
 
@@ -45,6 +46,17 @@ bool writeDefaultAttributes(const QString &absolutePath)
     return ::setxattr(absolutePath.toLocal8Bit().constData(), ::OpenVFS::Constants::XAttributeNames::Data.data(), data.data(), data.size(), 0) == 0;
 }
 
+bool setPlaceholderState(const QString &absolutePath, ::OpenVFS::Constants::States state)
+{
+    auto attributes = ::OpenVFS::PlaceHolderAttributes::fromAttributes(FileSystem::toFilesystemPath(absolutePath));
+    if (!attributes) {
+        return false;
+    }
+    attributes->state = state;
+    const auto data = attributes->toData();
+    return ::setxattr(absolutePath.toLocal8Bit().constData(), ::OpenVFS::Constants::XAttributeNames::Data.data(), data.data(), data.size(), 0) == 0;
+}
+
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
@@ -83,6 +95,27 @@ private:
 
         QVERIFY(vfs.setPinState({}, PinState::Unspecified));
         QVERIFY(vfs.setPinState(u"A/a1"_s, PinState::Unspecified));
+    }
+
+    // A/a1 and A/a2 as dehydrated placeholders.
+    static void prepareDehydratedFolder(FakeFolder &fakeFolder, Vfs &vfs)
+    {
+        prepareHydratedFolder(fakeFolder, vfs);
+        QVERIFY(vfs.setPinState(u"A"_s, PinState::OnlineOnly));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(dbRecord(fakeFolder, u"A/a2"_s)._type, ItemTypeVirtualFile);
+        QCOMPARE(placeholderAttributes(fakeFolder, u"A/a2"_s)->state, ::OpenVFS::Constants::States::DeHydrated);
+    }
+
+    static void verifyDehydrated(FakeFolder &fakeFolder, const QString &path)
+    {
+        const auto record = dbRecord(fakeFolder, path);
+        QCOMPARE(record._type, ItemTypeVirtualFile);
+        const auto attributes = placeholderAttributes(fakeFolder, path);
+        QVERIFY(attributes);
+        QCOMPARE(attributes->state, ::OpenVFS::Constants::States::DeHydrated);
+        QCOMPARE(attributes->size, static_cast<std::size_t>(record._fileSize));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + path).size(), 0);
     }
 
 private Q_SLOTS:
@@ -222,6 +255,82 @@ private Q_SLOTS:
 
         QCOMPARE(*vfs->pinState(u"A/a1"_s), PinState::Unspecified);
         QCOMPARE(*vfs->pinState(u"A/a2"_s), PinState::OnlineOnly);
+    }
+
+    void testFailedHydrationRestoresThePlaceholder()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareDehydratedFolder(fakeFolder, *vfs);
+        const auto record = dbRecord(fakeFolder, u"A/a2"_s);
+        fakeFolder.setServerOverride([](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(u"A/a2"_s)) {
+                return new FakeErrorReply(op, request, nullptr, 500);
+            }
+            return nullptr;
+        });
+
+        auto *hydration = vfs->hydrateFile(record._fileId, fakeFolder.localPath() + u"A/a2"_s);
+        QVERIFY(hydration);
+        QSignalSpy errorSpy(hydration, &HydrationJob::error);
+        hydration->start();
+        QVERIFY(errorSpy.wait());
+
+        verifyDehydrated(fakeFolder, u"A/a2"_s);
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + u"A/a2"_s).lastModified().toSecsSinceEpoch(), record._modtime);
+
+        // the next access can download the file again
+        fakeFolder.setServerOverride({});
+        auto *retry = vfs->hydrateFile(record._fileId, fakeFolder.localPath() + u"A/a2"_s);
+        QVERIFY(retry);
+        QSignalSpy finishedSpy(retry, &HydrationJob::finished);
+        retry->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(placeholderAttributes(fakeFolder, u"A/a2"_s)->state, ::OpenVFS::Constants::States::Hydrated);
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + u"A/a2"_s).size(), 64);
+    }
+
+    void testInterruptedHydrationIsRestoredAndNotUploaded()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareDehydratedFolder(fakeFolder, *vfs);
+        const auto remoteBefore = fakeFolder.currentRemoteState();
+
+        // the client quit while it downloaded A/a2: partial data, still hydrating, new modification time
+        const auto localPath = fakeFolder.localPath() + u"A/a2"_s;
+        QFile file(localPath);
+        QVERIFY(file.open(QFile::WriteOnly | QFile::Truncate));
+        QCOMPARE(file.write(QByteArray(16, 'x')), 16);
+        file.close();
+        QVERIFY(setPlaceholderState(localPath, ::OpenVFS::Constants::States::Hydrating));
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentRemoteState(), remoteBefore);
+        verifyDehydrated(fakeFolder, u"A/a2"_s);
+    }
+
+    void testRunningHydrationIsLeftAlone()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        auto vfs = setupVfs(fakeFolder);
+        prepareDehydratedFolder(fakeFolder, *vfs);
+        const auto remoteBefore = fakeFolder.currentRemoteState();
+        const auto record = dbRecord(fakeFolder, u"A/a2"_s);
+
+        auto *hydration = vfs->hydrateFile(record._fileId, fakeFolder.localPath() + u"A/a2"_s);
+        QVERIFY(hydration);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentRemoteState(), remoteBefore);
+        QCOMPARE(placeholderAttributes(fakeFolder, u"A/a2"_s)->state, ::OpenVFS::Constants::States::Hydrating);
+
+        QSignalSpy finishedSpy(hydration, &HydrationJob::finished);
+        hydration->start();
+        QVERIFY(finishedSpy.wait());
+        QCOMPARE(placeholderAttributes(fakeFolder, u"A/a2"_s)->state, ::OpenVFS::Constants::States::Hydrated);
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + u"A/a2"_s).size(), 64);
     }
 };
 

@@ -452,8 +452,37 @@ void OpenVFS::slotHydrateJobFinished()
         qCWarning(lcOpenVFS) << u"Hydration succeeded but the file appears to be moved" << targetPath.native();
     }
 
+    finishHydration(hydration);
+}
+
+void OpenVFS::finishHydration(HydrationJob *hydration)
+{
+    {
+        const QMutexLocker locker(&_hydratingPathsMutex);
+        _hydratingPaths.remove(QDir::cleanPath(hydration->targetFileName()));
+    }
+    _hydrationJobs.remove(hydration->fileId());
     hydration->deleteLater();
-    this->_hydrationJobs.remove(hydration->fileId());
+}
+
+Result<void, QString> OpenVFS::restoreDehydratedPlaceholder(const QString &filePath, std::optional<time_t> modtime)
+{
+    auto attributes = placeHolderAttributes(filePath);
+    if (!attributes) {
+        return tr("No placeholder attributes found");
+    }
+    // a dehydrated placeholder must not contain data, drop what an aborted download left behind
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+        return file.errorString();
+    }
+    file.close();
+
+    attributes.state = ::OpenVFS::Constants::States::DeHydrated;
+    if (modtime) {
+        return setPlaceholderAttributes(attributes, *modtime);
+    }
+    return setPlaceholderAttributes(attributes);
 }
 
 Result<void, QString> OpenVFS::createPlaceholder(const SyncFileItem &item)
@@ -484,6 +513,8 @@ HydrationJob *OpenVFS::hydrateFile(const QByteArray &fileId, const QString &targ
         return {};
     }
 
+    // registered before the state changes, so discovery never takes this hydration for an interrupted one
+    const QMutexLocker locker(&_hydratingPathsMutex);
     if (auto attr = placeHolderAttributes(targetPath)) {
         attr.state = ::OpenVFS::Constants::States::Hydrating;
         if (auto res = setPlaceholderAttributes(attr); !res) {
@@ -497,12 +528,17 @@ HydrationJob *OpenVFS::hydrateFile(const QByteArray &fileId, const QString &targ
     auto *hydration = new HydrationJob(this, fileId, std::make_unique<QFile>(targetPath), nullptr);
     hydration->setTargetFile(targetPath);
     _hydrationJobs.insert(fileId, hydration);
+    _hydratingPaths.insert(QDir::cleanPath(targetPath));
 
     connect(hydration, &HydrationJob::finished, this, &OpenVFS::slotHydrateJobFinished);
     connect(hydration, &HydrationJob::error, this, [this, hydration](const QString &error) {
-        qCWarning(lcOpenVFS) << u"Hydration failed" << error;
-        this->_hydrationJobs.remove(hydration->fileId());
-        hydration->deleteLater();
+        qCWarning(lcOpenVFS) << u"Hydration failed" << hydration->targetFileName() << error;
+        const auto record = hydration->record();
+        const auto modtime = record.isValid() ? std::optional<time_t>{record._modtime} : std::nullopt;
+        if (const auto result = restoreDehydratedPlaceholder(hydration->targetFileName(), modtime); !result) {
+            qCWarning(lcOpenVFS) << u"Failed to restore the placeholder of" << hydration->targetFileName() << result.error();
+        }
+        finishHydration(hydration);
     });
 
     return hydration;
@@ -592,11 +628,29 @@ bool OpenVFS::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
     if (stat->type == ItemTypeFile) {
         const auto attribs = placeHolderAttributes(path);
-        if (attribs.state == ::OpenVFS::Constants::States::DeHydrated) {
+        auto state = attribs.state;
+        if (state == ::OpenVFS::Constants::States::Hydrating) {
+            const auto filePath = QDir::cleanPath(QString::fromUtf8(path));
+            const QMutexLocker locker(&_hydratingPathsMutex);
+            if (!_hydratingPaths.contains(filePath)) {
+                // the client quit or crashed during the download
+                qCWarning(lcOpenVFS) << u"Restoring the placeholder of an interrupted hydration" << filePath;
+                if (const auto result = restoreDehydratedPlaceholder(filePath, std::nullopt); result) {
+                    state = ::OpenVFS::Constants::States::DeHydrated;
+                } else {
+                    qCWarning(lcOpenVFS) << u"Failed to restore the placeholder of" << filePath << result.error();
+                }
+            }
+        }
+
+        if (state == ::OpenVFS::Constants::States::DeHydrated) {
             stat->type = ItemTypeVirtualFile;
             if (pin && *pin == PinState::AlwaysLocal) {
                 stat->type = ItemTypeVirtualFileDownload;
             }
+        } else if (state == ::OpenVFS::Constants::States::Hydrating) {
+            // the local data is incomplete, it must never be uploaded
+            stat->type = ItemTypeVirtualFile;
         } else {
             if (pin && *pin == PinState::OnlineOnly) {
                 stat->type = ItemTypeVirtualFileDehydration;
