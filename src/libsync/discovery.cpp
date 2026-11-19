@@ -150,7 +150,7 @@ void ProcessDirectoryJob::process()
         // This is done in a second path in order to not depend on the order of
         // _localNormalQueryEntries.
         for (auto &e : _localNormalQueryEntries) {
-            if (!e.isVirtualFile) {
+            if (!e.isVirtualFile && !(e.type == ItemTypeSkipError && hasVirtualFileSuffix(e.name))) {
                 continue;
             }
             auto &suffixedEntry = entries[e.name];
