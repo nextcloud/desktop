@@ -40,6 +40,8 @@ private Q_SLOTS:
 
 private:
     void customizeStyle();
+    void updateMoveFilesToTrashVfsWarningIcon();
+    void updateMoveFilesToTrashVfsWarningVisibility();
 
     Ui::AdvancedSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;

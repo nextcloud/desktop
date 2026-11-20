@@ -138,6 +138,11 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     return success;
 }
 
+bool PropagateLocalRemove::moveToTrash(const QString &fileName, QString *errorString) const
+{
+    return FileSystem::moveToTrash(fileName, errorString);
+}
+
 void PropagateLocalRemove::start()
 {
     qCInfo(lcPropagateLocalRemove) << "Start propagate local remove job";
@@ -196,27 +201,30 @@ void PropagateLocalRemove::start()
             moveToTrashIsFeasible = false;
         }
     }
+    auto removedByTrash = false;
     if (_moveToTrash && moveToTrashIsFeasible) {
         if (FileSystem::fileExists(filename, fileInfo)) {
             const auto parentFolderPath = fileInfo.dir().absolutePath();
             const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
-            if (!FileSystem::moveToTrash(filename, &removeError)) {
+            if (moveToTrash(filename, &removeError)) {
+                removedByTrash = true;
+            } else {
                 qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
-                done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
-                return;
             }
         } else {
             qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << "was already deleted";
+            removedByTrash = true;
         }
-    } else {
+    }
+    if (!removedByTrash) {
         if (_item->isDirectory()) {
-            if (FileSystem::fileExists(filename, fileInfo) && !removeRecursively(QString())) {
+            if (FileSystem::fileExists(filename) && !removeRecursively(QString())) {
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename, fileInfo)) {
+            if (FileSystem::fileExists(filename)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 

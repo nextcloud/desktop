@@ -7,6 +7,7 @@
  * any purpose.
  */
 
+#include "failingtrashlocalremovejob.h"
 #include "syncenginetestutils.h"
 
 #include "common/filesystembase.h"
@@ -1455,6 +1456,62 @@ private Q_SLOTS:
         CFVERIFY_GONE(fakeFolder, "A/a2");
         CFVERIFY_GONE(fakeFolder, "A");
         CFVERIFY_VIRTUAL(fakeFolder, "file1");
+    }
+
+    void testMoveToTrashFailureFallbackForMixedDirectory()
+    {
+        // Start with an existing directory so its children are discoverable after VFS is enabled.
+        const auto directory = u"A"_s;
+        const auto onlineOnlyFile = u"A/online.txt"_s;
+        const auto downloadedFile = u"A/downloaded.txt"_s;
+        auto fakeFolder = FakeFolder{FileInfo{QString{}, {FileInfo{directory}}}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().insert(onlineOnlyFile);
+        fakeFolder.remoteModifier().insert(downloadedFile);
+        QVERIFY(fakeFolder.syncOnce());
+        CFVERIFY_VIRTUAL(fakeFolder, onlineOnlyFile);
+        CFVERIFY_VIRTUAL(fakeFolder, downloadedFile);
+
+        triggerDownload(fakeFolder, downloadedFile.toUtf8());
+        QVERIFY(fakeFolder.syncOnce());
+        CFVERIFY_VIRTUAL(fakeFolder, onlineOnlyFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, downloadedFile);
+
+        auto &journal = fakeFolder.syncJournal();
+        auto record = SyncJournalFileRecord{};
+        QVERIFY(journal.getFileRecord(directory, &record));
+        QVERIFY(record.isValid());
+
+        fakeFolder.remoteModifier().remove(directory);
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = true;
+
+        auto bulkUploadBlackList = QSet<QString>{};
+        auto propagator = OwncloudPropagator(fakeFolder.account(), fakeFolder.localPath(), u"/"_s, &journal, bulkUploadBlackList);
+        propagator.setSyncOptions(syncOptions);
+
+        auto item = SyncFileItemPtr::create();
+        item->_file = directory;
+        item->_originalFile = directory;
+        item->_type = ItemTypeDirectory;
+        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+        item->_direction = SyncFileItem::Down;
+
+        auto job = FailingTrashLocalRemoveJob(&propagator, item);
+        auto finishedSpy = QSignalSpy(&job, &PropagatorJob::finished);
+        job.start();
+
+        const auto localDirectory = fakeFolder.localPath() + directory;
+        QCOMPARE(job._trashAttempts, QStringList{localDirectory});
+        QCOMPARE(finishedSpy.count(), 1);
+        QCOMPARE(finishedSpy.at(0).at(0).value<SyncFileItem::Status>(), SyncFileItem::Success);
+        QVERIFY(!QFileInfo::exists(localDirectory));
+
+        for (const auto &path : {directory, onlineOnlyFile, downloadedFile}) {
+            QVERIFY(journal.getFileRecord(path, &record));
+            QVERIFY(!record.isValid());
+        }
     }
 
     void testFolderReplacedByJunctionBeforePropagation()

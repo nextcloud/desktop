@@ -162,7 +162,7 @@ protected:
 /*
  * Abstract class to propagate a single item
  */
-class PropagateItemJob : public PropagatorJob
+class OWNCLOUDSYNC_EXPORT PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
