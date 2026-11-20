@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QHash>
 #include <QObject>
+#include <QTimer>
 
 #include <optional>
 
@@ -45,6 +46,8 @@ public Q_SLOTS:
 
 private Q_SLOTS:
     void slotAccountStateChanged(AccountState::State state) const;
+    //! Reconnect and authenticate every domain whose extension stopped answering, as after a restart of fileproviderd.
+    void checkFileProviderDomains();
 
 private:
     friend class FileProvider;
@@ -53,11 +56,16 @@ private:
 
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
+    //! Replace the connection to a domain's extension and send it the account and the ignore list again.
+    void reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier);
 
     //! keys are File Provider domain identifiers
     FileProviderXPCUtils::ClientCommunicationConnections _clientCommConnections;
     //! keys are File Provider domain identifiers
     QHash<QString, QDateTime> _unreachableFileProviderDomains;
+
+    //! XPC does not tell the app when fileproviderd replaces the extension process, so the app asks.
+    QTimer _reachabilityTimer;
 };
 
 } // namespace OCC::Mac
