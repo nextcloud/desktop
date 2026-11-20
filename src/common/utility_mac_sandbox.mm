@@ -5,7 +5,11 @@
 
 #include "utility_mac_sandbox.h"
 
+#include <QFile>
 #include <QLoggingCategory>
+
+#include <pwd.h>
+#include <unistd.h>
 
 #import <Foundation/Foundation.h>
 
@@ -55,14 +59,13 @@ QByteArray createSecurityScopedBookmarkData(const QString &localPath)
 
 QString getRealHomeDirectory()
 {
-    @autoreleasepool {
-        NSString * const homeDir = NSHomeDirectoryForUser(NSUserName());
-        if (!homeDir) {
-            qCWarning(lcMacSandboxUtility) << "Failed to resolve the logged-in user's home directory";
-            return {};
-        }
-        return QString::fromNSString(homeDir);
+    // In the sandbox NSHomeDirectory(), NSHomeDirectoryForUser() and $HOME all point into the app container, the user database does not.
+    const auto *const userEntry = getpwuid(getuid());
+    if (!userEntry || !userEntry->pw_dir) {
+        qCWarning(lcMacSandboxUtility) << "Failed to resolve the logged-in user's home directory";
+        return {};
     }
+    return QFile::decodeName(userEntry->pw_dir);
 }
 
 } // namespace Utility
