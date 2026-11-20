@@ -417,7 +417,7 @@ private:
     bool checkConnect();
 
     // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
-    void forceRemoteDiscoveryNextSyncLocked();
+    [[nodiscard]] bool forceRemoteDiscoveryNextSyncLocked();
 
     // Returns the integer id of the checksum type
     //
