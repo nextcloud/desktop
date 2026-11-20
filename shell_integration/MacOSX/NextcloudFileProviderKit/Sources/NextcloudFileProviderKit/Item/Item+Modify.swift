@@ -98,6 +98,10 @@ public extension Item {
                     \(moveError.errorDescription)
                 """
             )
+            if moveError.isPreconditionFailedError {
+                // Overwrite: F is the only precondition on this MOVE.
+                return (nil, NSFileProviderError(.filenameCollision))
+            }
             return await (nil, moveError.fileProviderError(
                 handlingCollisionAgainstItemInRemotePath: newRemotePath,
                 dbManager: dbManager,
