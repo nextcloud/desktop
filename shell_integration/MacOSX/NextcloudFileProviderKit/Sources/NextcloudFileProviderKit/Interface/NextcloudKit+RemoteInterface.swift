@@ -276,12 +276,15 @@ extension NextcloudKit: RemoteInterface {
     public func delete(
         remotePath: String,
         account: Account,
-        options _: NKRequestOptions = .init(),
-        taskHandler _: @escaping (URLSessionTask) -> Void = { _ in }
+        options: NKRequestOptions = .init(),
+        taskHandler: @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (account: String, response: HTTPURLResponse?, error: NKError) {
         await withCheckedContinuation { continuation in
             deleteFileOrFolder(
-                serverUrlFileName: remotePath, account: account.ncKitAccount
+                serverUrlFileName: remotePath,
+                account: account.ncKitAccount,
+                options: options,
+                taskHandler: taskHandler
             ) { account, response, error in
                 continuation.resume(returning: (account, response?.response, error))
             }
