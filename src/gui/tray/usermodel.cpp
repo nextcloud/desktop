@@ -32,6 +32,8 @@
 #include "gui/macOS/fileprovidersettingscontroller.h"
 #endif
 
+#include <limits>
+
 #include <QtCore>
 #include <QDesktopServices>
 #include <QIcon>
@@ -390,6 +392,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
 {
+    _account->account()->setSyncConflictReport(std::nullopt);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
@@ -459,6 +462,10 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
         }
     });
     connect(folderMan, &FolderMan::folderListChanged, this, [this](const Folder::Map &) {
+        _successfulFullSyncFolders.clear();
+        _account->account()->setServerErrorsResolvedAt(0);
+        _conflictInventoryFolders.clear();
+        _account->account()->setSyncConflictReport(std::nullopt);
         updateSyncStatus();
         refreshAccountAlert();
     });
@@ -1164,6 +1171,12 @@ void User::slotNotifyServerFinished(const QString &reply, int replyCode)
 
 void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
+    if (progress.status() == ProgressInfo::Starting) {
+        const auto *f = FolderMan::instance()->folder(folder);
+        if (f && f->accountState() == _account.data()) {
+            _successfulFullSyncFolders.remove(folder);
+        }
+    }
     if (progress.status() == ProgressInfo::Reconcile) {
         // Wipe all non-persistent entries - as well as the persistent ones
         // in cases where a local discovery was done.
@@ -1171,8 +1184,32 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         if (!f) {
             return;
         }
-        const auto &engine = f->syncEngine();
+        if (f->accountState() != _account.data()) {
+            return;
+        }
+        auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
+        const auto fullSync = style == LocalDiscoveryStyle::FilesystemOnly && !engine.singleItemDiscoveryOptions().isValid();
+        const auto inventoryKnown = _conflictInventoryFolders.remove(folder) || fullSync;
+        _account->account()->setSyncConflictReport(std::nullopt);
+        connect(
+            &engine,
+            &SyncEngine::finished,
+            this,
+            [this, folder, inventoryKnown, fullSync, engine = &engine](bool success) {
+                // Conflicts themselves can make finished(false); only an empty inventory needs success.
+                const auto hasConflicts = std::ranges::any_of(_activityModel->errorsList(), [&folder](const auto &activity) {
+                    return activity._folder == folder && isSyncConflictForReporting(activity._syncFileItemStatus);
+                });
+                if (inventoryKnown && (success || (engine->progressInfo()->status() == ProgressInfo::Done && hasConflicts))) {
+                    _conflictInventoryFolders.insert(folder);
+                }
+                if (success && fullSync && engine->isAnotherSyncNeeded() == NoFollowUpSync) {
+                    _successfulFullSyncFolders.insert(folder, QDateTime::currentMSecsSinceEpoch());
+                }
+                updateSyncConflictReport();
+            },
+            Qt::SingleShotConnection);
         auto outdatedErrors = ActivityList{};
         for (const auto errorsList = _activityModel->errorsList(); const auto &activity : errorsList) {
             if (activity._expireAtMsecs != -1) {
@@ -1217,6 +1254,44 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         }
 
         Q_EMIT ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+    }
+}
+
+bool User::isSyncConflictForReporting(const SyncFileItem::Status status)
+{
+    return status == SyncFileItem::Conflict || status == SyncFileItem::FileNameClash || status == SyncFileItem::FileNameInvalid;
+}
+
+void User::updateSyncConflictReport()
+{
+    const auto &folders = FolderMan::instance()->map();
+    auto accountFolders = QSet<QString>{};
+    auto serverErrorsResolvedAt = std::numeric_limits<quint64>::max();
+    for (const auto *folder : folders) {
+        if (folder->accountState() != _account.data()) {
+            continue;
+        }
+        if (!_conflictInventoryFolders.contains(folder->alias()) || folder->syncEngine().isSyncRunning()) {
+            return;
+        }
+        accountFolders.insert(folder->alias());
+        serverErrorsResolvedAt = std::min(serverErrorsResolvedAt, _successfulFullSyncFolders.value(folder->alias(), 0));
+    }
+    if (accountFolders.isEmpty()) {
+        return;
+    }
+
+    auto count = 0;
+    auto oldest = std::numeric_limits<qint64>::max();
+    for (const auto &activity : _activityModel->errorsList()) {
+        if (accountFolders.contains(activity._folder) && isSyncConflictForReporting(activity._syncFileItemStatus)) {
+            ++count;
+            oldest = std::min(oldest, activity._dateTime.toMSecsSinceEpoch());
+        }
+    }
+    _account->account()->setSyncConflictReport(count == 0 ? QVariantMap{} : QVariantMap{{u"count"_s, count}, {u"oldest"_s, oldest}});
+    if (_activityModel->errorsList().isEmpty() && serverErrorsResolvedAt > 0) {
+        _account->account()->setServerErrorsResolvedAt(serverErrorsResolvedAt);
     }
 }
 

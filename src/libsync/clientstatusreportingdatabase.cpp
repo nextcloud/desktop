@@ -7,9 +7,11 @@
 #include "account.h"
 #include <configfile.h>
 
+#include <QJsonDocument>
 #include <QSqlError>
-#include <QSqlRecord>
 #include <QSqlQuery>
+#include <QSqlRecord>
+#include <QUuid>
 
 namespace
 {
@@ -19,12 +21,13 @@ constexpr auto statusNamesHash = "statusNamesHash";
 
 namespace OCC
 {
+using namespace Qt::StringLiterals;
 Q_LOGGING_CATEGORY(lcClientStatusReportingDatabase, "nextcloud.sync.clientstatusreportingdatabase", QtInfoMsg)
 
 ClientStatusReportingDatabase::ClientStatusReportingDatabase(const Account *account)
 {
     const auto dbPath = makeDbPath(account);
-    _database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"));
+    _database = QSqlDatabase::addDatabase(u"QSQLITE"_s, QUuid::createUuid().toString());
     _database.setDatabaseName(dbPath);
 
     if (!_database.open()) {
@@ -32,7 +35,7 @@ ClientStatusReportingDatabase::ClientStatusReportingDatabase(const Account *acco
         return;
     }
 
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult =
         query.prepare(QStringLiteral("CREATE TABLE IF NOT EXISTS clientstatusreporting("
                                      "name VARCHAR(4096) PRIMARY KEY,"
@@ -58,9 +61,10 @@ ClientStatusReportingDatabase::ClientStatusReportingDatabase(const Account *acco
 
 ClientStatusReportingDatabase::~ClientStatusReportingDatabase()
 {
-    if (_database.isOpen()) {
-        _database.close();
-    }
+    const auto connectionName = _database.connectionName();
+    _database.close();
+    _database = {};
+    QSqlDatabase::removeDatabase(connectionName);
 }
 
 QVector<ClientStatusReportingRecord> ClientStatusReportingDatabase::getClientStatusReportingRecords() const
@@ -69,7 +73,7 @@ QVector<ClientStatusReportingRecord> ClientStatusReportingDatabase::getClientSta
 
     QMutexLocker locker(&_mutex);
 
-    QSqlQuery query;
+    QSqlQuery query(_database);
     if (!query.prepare(QStringLiteral("SELECT * FROM clientstatusreporting")) || !query.exec()) {
         qCWarning(lcClientStatusReportingDatabase) << "Could not get records from clientstatusreporting:" << query.lastError().text();
         return records;
@@ -88,7 +92,7 @@ QVector<ClientStatusReportingRecord> ClientStatusReportingDatabase::getClientSta
 
 Result<void, QString> ClientStatusReportingDatabase::deleteClientStatusReportingRecords() const
 {
-    QSqlQuery query;
+    QSqlQuery query(_database);
     if (!query.prepare(QStringLiteral("DELETE FROM clientstatusreporting")) || !query.exec()) {
         const auto errorMessage = query.lastError().text();
         qCWarning(lcClientStatusReportingDatabase) << "Could not delete records from clientstatusreporting:" << errorMessage;
@@ -109,7 +113,7 @@ Result<void, QString> ClientStatusReportingDatabase::setClientStatusReportingRec
 
     QMutexLocker locker(&_mutex);
 
-    QSqlQuery query;
+    QSqlQuery query(_database);
 
     const auto prepareResult = query.prepare(
         QStringLiteral("INSERT OR REPLACE INTO clientstatusreporting (name, status, count, lastOccurrence) VALUES(:name, :status, :count, :lastOccurrence) ON CONFLICT(name) "
@@ -166,7 +170,7 @@ bool ClientStatusReportingDatabase::updateStatusNamesHash() const
 QVector<QByteArray> ClientStatusReportingDatabase::getTableColumns(const QString &table) const
 {
     QVector<QByteArray> columns;
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult = query.prepare(QStringLiteral("PRAGMA table_info('%1');").arg(table));
     if (!prepareResult || !query.exec()) {
         qCWarning(lcClientStatusReportingDatabase) << "Could get table columns" << query.lastError().text();
@@ -183,7 +187,7 @@ bool ClientStatusReportingDatabase::addColumn(const QString &tableName, const QS
     const auto columns = getTableColumns(tableName);
     const auto latin1ColumnName = columnName.toLatin1();
     if (columns.indexOf(latin1ColumnName) == -1) {
-        QSqlQuery query;
+        QSqlQuery query(_database);
         const auto prepareResult = query.prepare(QStringLiteral("ALTER TABLE %1 ADD COLUMN %2 %3;").arg(tableName, columnName, dataType));
         if (!prepareResult || !query.exec()) {
             qCWarning(lcClientStatusReportingDatabase) << QStringLiteral("Failed to update table %1 structure: add %2 column").arg(tableName, columnName) << query.lastError().text();
@@ -201,10 +205,32 @@ bool ClientStatusReportingDatabase::addColumn(const QString &tableName, const QS
     return true;
 }
 
+QVariantMap ClientStatusReportingDatabase::lastSentReport() const
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query(_database);
+    if (!query.exec(u"SELECT value FROM keyvalue WHERE key = 'lastSentReport'"_s)) {
+        qCWarning(lcClientStatusReportingDatabase) << "Could not read last report:" << query.lastError().text();
+        return {};
+    }
+    return query.next() ? QJsonDocument::fromJson(query.value(0).toByteArray()).toVariant().toMap() : QVariantMap{};
+}
+
+void ClientStatusReportingDatabase::setLastSentReport(const QVariantMap &report) const
+{
+    QMutexLocker locker(&_mutex);
+    QSqlQuery query(_database);
+    query.prepare(u"INSERT OR REPLACE INTO keyvalue (key, value) VALUES ('lastSentReport', :value)"_s);
+    query.bindValue(u":value"_s, QJsonDocument::fromVariant(report).toJson(QJsonDocument::Compact));
+    if (!query.exec()) {
+        qCWarning(lcClientStatusReportingDatabase) << "Could not save last report:" << query.lastError().text();
+    }
+}
+
 quint64 ClientStatusReportingDatabase::getLastSentReportTimestamp() const
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
     query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     if (!prepareResult || !query.exec()) {
@@ -221,7 +247,7 @@ quint64 ClientStatusReportingDatabase::getLastSentReportTimestamp() const
 Result<void, QString> ClientStatusReportingDatabase::setStatusNamesHash(const QByteArray &hash) const
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult = query.prepare(QStringLiteral("INSERT OR REPLACE INTO keyvalue (key, value) VALUES(:key, :value);"));
     query.bindValue(QStringLiteral(":key"), statusNamesHash);
     query.bindValue(QStringLiteral(":value"), hash);
@@ -236,7 +262,7 @@ Result<void, QString> ClientStatusReportingDatabase::setStatusNamesHash(const QB
 QByteArray ClientStatusReportingDatabase::getStatusNamesHash() const
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult = query.prepare(QStringLiteral("SELECT value FROM keyvalue WHERE key = (:key)"));
     query.bindValue(QStringLiteral(":key"), statusNamesHash);
     if (!prepareResult || !query.exec()) {
@@ -258,7 +284,7 @@ bool ClientStatusReportingDatabase::isInitialized() const
 void ClientStatusReportingDatabase::setLastSentReportTimestamp(const quint64 timestamp) const
 {
     QMutexLocker locker(&_mutex);
-    QSqlQuery query;
+    QSqlQuery query(_database);
     const auto prepareResult = query.prepare(QStringLiteral("INSERT OR REPLACE INTO keyvalue (key, value) VALUES(:key, :value);"));
     query.bindValue(QStringLiteral(":key"), lastSentReportTimestamp);
     query.bindValue(QStringLiteral(":value"), timestamp);
