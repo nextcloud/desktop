@@ -598,6 +598,91 @@ struct EnumeratorPersistenceTests {
         )
     }
 
+    @Test(arguments: [false, true])
+    func listingDefersDifferentItemAtPendingUploadPath(paginated: Bool) async throws {
+        let original = try #require(manager.itemMetadata(ocId: file.identifier))
+        var pending = try #require(manager.setStatusForItemMetadata(original, status: .uploading))
+        pending.downloaded = true
+        pending.chunkUploadId = "pending-chunks"
+        manager.addItemMetadata(pending)
+
+        let moved = await remote.move(
+            remotePathSource: file.remotePath,
+            remotePathDestination: folder.remotePath + "/renamed.txt",
+            account: account
+        )
+        try #require(moved.error == .success)
+
+        let replacement = MockRemoteItem(
+            identifier: "replacement",
+            name: pending.fileName,
+            remotePath: pending.remotePath(),
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        replacement.parent = folder
+        folder.children.append(replacement)
+        remote.pagination = paginated
+
+        let pageSize = 2
+        let result = await Enumerator.readServerUrl(
+            folder.remotePath,
+            pageSettings: paginated ? (nil, 0, pageSize) : nil,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .targetAndDirectChildren,
+            log: FileProviderLogMock()
+        )
+        #expect(result.error == nil)
+        var listed = try #require(result.metadatas)
+        if paginated {
+            let continuation = try #require(result.nextPage)
+            let token = try #require(continuation.token)
+            let nextPage = NSFileProviderPage(Data(token.utf8))
+            let next = await Enumerator.readServerUrl(
+                folder.remotePath,
+                pageSettings: (nextPage, continuation.index, pageSize),
+                account: account,
+                remoteInterface: remote,
+                dbManager: manager,
+                depth: .targetAndDirectChildren,
+                log: FileProviderLogMock()
+            )
+            #expect(next.error == nil)
+            #expect(next.nextPage == nil)
+            listed += try #require(next.metadatas)
+        } else {
+            let changes = try #require(result.changes)
+            #expect(!changes.createdAndUpdated.contains { $0.ocId == replacement.identifier })
+        }
+        #expect(!listed.contains { $0.ocId == replacement.identifier })
+        #expect(manager.itemMetadata(ocId: replacement.identifier) == nil)
+        #expect(manager.itemMetadata(ocId: pending.ocId) == pending)
+
+        let targetRead = await Enumerator.readServerUrl(
+            pending.remotePath(),
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+        #expect(targetRead.error == nil)
+        #expect(targetRead.metadatas?.map(\.ocId) == [pending.ocId])
+        #expect(targetRead.changes?.createdAndUpdated.isEmpty == true)
+        #expect(manager.itemMetadata(ocId: replacement.identifier) == nil)
+
+        manager.addItemMetadata(file.toItemMetadata(account: account))
+        let refreshed = await readFolder()
+        #expect(refreshed.error == nil)
+        let changes = try #require(refreshed.changes)
+        #expect(changes.created.map(\.ocId) == [replacement.identifier])
+        #expect(manager.itemMetadata(ocId: replacement.identifier)?.remotePath() == pending.remotePath())
+    }
+
     private func readFolder() async -> RemoteReadResult {
         await Enumerator.readServerUrl(
             folder.remotePath, account: account, remoteInterface: remote,

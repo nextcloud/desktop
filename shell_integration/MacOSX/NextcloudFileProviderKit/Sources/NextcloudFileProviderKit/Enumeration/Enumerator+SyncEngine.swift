@@ -73,7 +73,9 @@ extension Enumerator {
             convAccum += clock.now - convStart
 
             let dbStart = clock.now
-            metadatas.append(dbManager.addItemMetadataPreservingLocalState(itemMetadata, readStartedAt: readStartedAt))
+            if let saved = dbManager.savePagedListingItem(itemMetadata, readStartedAt: readStartedAt) {
+                metadatas.append(saved)
+            }
             dbAccum += clock.now - dbStart
         }
 
@@ -159,7 +161,7 @@ extension Enumerator {
         files.insert(directory, at: 0)
 
         guard !Task.isCancelled else { return (nil, nil, .cancelled) }
-        let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
+        let (listing, batchElapsed) = await dbManager.perform { [files] dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
             let batchWriteState = signposter.beginInterval(
@@ -167,7 +169,7 @@ extension Enumerator {
                 id: signposter.makeSignpostID(),
                 "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
             )
-            let changes = dbManager.depth1ReadUpdateItemMetadatas(
+            let listing = dbManager.saveDepth1Listing(
                 account: account.ncKitAccount,
                 serverUrl: serverUrl,
                 updatedMetadatas: files,
@@ -177,7 +179,7 @@ extension Enumerator {
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
-            return (changes, batchClock.now - batchStart)
+            return (listing, batchClock.now - batchStart)
         }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
@@ -190,12 +192,12 @@ extension Enumerator {
             [.url: serverUrl]
         )
 
-        guard let changes else {
+        guard let listing else {
             logger.error("Could not persist directory metadata.", [.url: serverUrl])
             return (nil, nil, .metadataDatabaseWriteFailed)
         }
 
-        return (files, changes, nil)
+        return (listing.metadatas, listing.changes, nil)
     }
 
     /// READ THIS CAREFULLY.

@@ -530,6 +530,23 @@ public final class FilesDatabaseManager: Sendable {
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
     }
 
+    /// A different server item cannot take a name still held by a pending local upload.
+    private func pendingUploadOccupyingLocation(
+        of metadata: SendableItemMetadata,
+        in db: Database
+    ) throws -> ItemMetadataRecord? {
+        let columns = ItemMetadataRecord.Columns.self
+        return try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
+                    && columns.account == metadata.account
+                    && columns.ocId != metadata.ocId
+                    && !columns.deleted
+            )
+            .fetchRecords(db, logger: logger)
+            .first(where: \.hasPendingUpload)
+    }
+
     private func processItemMetadatasToDelete(
         existingMetadatas: [ItemMetadataRecord],
         updatedMetadatas: [SendableItemMetadata]
@@ -673,6 +690,24 @@ public final class FilesDatabaseManager: Sendable {
         preserveDeletedTarget: Bool = false,
         readStartedAt: Date? = nil
     ) -> ChangeSet? {
+        saveDepth1Listing(
+            account: account,
+            serverUrl: serverUrl,
+            updatedMetadatas: updatedMetadatas,
+            keepExistingDownloadState: keepExistingDownloadState,
+            preserveDeletedTarget: preserveDeletedTarget,
+            readStartedAt: readStartedAt
+        )?.changes
+    }
+
+    func saveDepth1Listing(
+        account: String,
+        serverUrl: String,
+        updatedMetadatas: [SendableItemMetadata],
+        keepExistingDownloadState: Bool,
+        preserveDeletedTarget: Bool,
+        readStartedAt: Date?
+    ) -> (metadatas: [SendableItemMetadata], changes: ChangeSet)? {
         write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
             // Find the metadatas that we previously knew to be on the server for this account
             // (we need to check if they were uploaded to prevent deleting ignored/lock files)
@@ -694,9 +729,14 @@ public final class FilesDatabaseManager: Sendable {
                 )
                 .fetchRecords(db, logger: logger)
 
-            var updatedChildMetadatas = updatedMetadatas
+            let listedMetadatas = try updatedMetadatas.filter {
+                try pendingUploadOccupyingLocation(of: $0, in: db) == nil
+            }
+            var updatedChildMetadatas = listedMetadatas
 
-            let readTargetMetadata: SendableItemMetadata? = if let targetMetadata = updatedMetadatas.first {
+            let readTargetMetadata: SendableItemMetadata? = if let targetMetadata = updatedMetadatas.first,
+                                                                listedMetadatas.first?.ocId == targetMetadata.ocId
+            {
                 if targetMetadata.directory {
                     updatedChildMetadatas.removeFirst()
                 } else {
@@ -708,7 +748,9 @@ public final class FilesDatabaseManager: Sendable {
 
             let metadatasToDelete = processItemMetadatasToDelete(
                 existingMetadatas: existingMetadatas,
-                updatedMetadatas: updatedChildMetadatas
+                updatedMetadatas: updatedMetadatas.first?.directory == true
+                    ? Array(updatedMetadatas.dropFirst())
+                    : updatedMetadatas
             ).map {
                 var metadata = $0.metadata
                 metadata.deleted = true
@@ -800,9 +842,12 @@ public final class FilesDatabaseManager: Sendable {
                     .updateAll(db, ItemMetadataRecord.Columns.visitedDirectory.set(to: true))
             }
 
-            return ChangeSet(
-                created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete
+            let changes = ChangeSet(
+                created: metadatasToCreate,
+                updated: metadatasToUpdate,
+                deleted: metadatasToDelete
             )
+            return (listedMetadatas, changes)
         }
     }
 
@@ -887,6 +932,10 @@ public final class FilesDatabaseManager: Sendable {
             do {
                 return try self.writeTransaction(in: db, durability: .full) { db in
                     guard !isCancelled() else { throw CancellationError() }
+
+                    if let pendingUpload = try self.pendingUploadOccupyingLocation(of: received, in: db) {
+                        return (pendingUpload.metadata, ChangeSet())
+                    }
 
                     let metadata: SendableItemMetadata
                     let changes: ChangeSet
@@ -1032,10 +1081,30 @@ public final class FilesDatabaseManager: Sendable {
         preserveVisitedDirectory: Bool = true,
         readStartedAt: Date? = nil
     ) -> SendableItemMetadata {
+        savePagedListingItem(
+            metadata,
+            preserveVisitedDirectory: preserveVisitedDirectory,
+            readStartedAt: readStartedAt,
+            deferPendingUploadCollision: false
+        ) ?? metadata
+    }
+
+    func savePagedListingItem(
+        _ metadata: SendableItemMetadata,
+        preserveVisitedDirectory: Bool = true,
+        readStartedAt: Date?,
+        deferPendingUploadCollision: Bool = true
+    ) -> SendableItemMetadata? {
         var toWrite = metadata
+        var deferred = false
 
         // Server-derived rows written once per item during enumeration; the local flags they carry over were committed durably when they were set.
         write("Failed to add item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl], durability: .relaxed) { db in
+            if deferPendingUploadCollision, try pendingUploadOccupyingLocation(of: metadata, in: db) != nil {
+                deferred = true
+                return
+            }
+
             if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
                 // A listing describes the server copy while the local edit is still pending.
                 if existing.hasPendingUpload {
@@ -1105,7 +1174,7 @@ public final class FilesDatabaseManager: Sendable {
             try insertItemMetadata(toWrite, in: db)
         }
 
-        return toWrite
+        return deferred ? nil : toWrite
     }
 
     ///
