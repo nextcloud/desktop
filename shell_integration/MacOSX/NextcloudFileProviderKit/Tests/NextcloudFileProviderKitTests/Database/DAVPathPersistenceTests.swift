@@ -118,58 +118,6 @@ struct DAVPathPersistenceTests {
         #expect(try reopened.storedParentLocationKeysForTesting(ocId: Self.fileId)?.parentPath == storedFile.parentPath)
     }
 
-    @Test(arguments: [false, true])
-    func listingKeepsPendingUploadAfterStartupUpdatesDAVRoot(paginated: Bool) async throws {
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let account = Self.currentAccount
-        let previous = Self.previousHostAccount
-        var serverFile = DatabaseTestSuites.makeFile(
-            ocId: "server-file",
-            fileName: "Server.txt",
-            serverUrl: previous.davFilesUrl + "/" + Self.folderName,
-            account: previous
-        )
-        serverFile.uploaded = true
-        _ = try writeCachedFolderAndFile(
-            oldAccount: previous,
-            additionalMetadata: [serverFile],
-            fileUploadFailed: true
-        )
-        let manager = try openManager()
-        let folderURL = account.davFilesUrl + "/" + Self.folderName
-        let migratedPending = try #require(manager.itemMetadata(ocId: Self.fileId))
-        #expect(migratedPending.remotePath() == folderURL + "/" + Self.fileName)
-        #expect(migratedPending.hasUnfinishedUpload)
-        #expect(manager.itemMetadata(ocId: serverFile.ocId)?.remotePath() == folderURL + "/" + serverFile.fileName)
-
-        let remote = makeRemoteWithTeamFolder()
-        remote.pagination = paginated
-        let folder = try #require(remote.rootItem?.children.first)
-        let listedFile = MockRemoteItem(
-            identifier: serverFile.ocId,
-            name: serverFile.fileName,
-            remotePath: folder.remotePath + "/" + serverFile.fileName,
-            account: account.ncKitAccount,
-            username: account.username,
-            userId: account.id,
-            serverUrl: account.serverUrl
-        )
-        folder.children.append(listedFile)
-        listedFile.parent = folder
-
-        let listing = await listDirectory(folder.remotePath, manager: manager, remote: remote, paginated: paginated)
-        #expect(listing.error == nil)
-        #expect(remote.readOperationCount == 1)
-        #expect(listing.metadatas?.contains { $0.ocId == serverFile.ocId } == true)
-        #expect(manager.itemMetadata(ocId: serverFile.ocId)?.remotePath() == listedFile.remotePath)
-        let pending = try #require(manager.itemMetadata(ocId: Self.fileId))
-        #expect(pending.remotePath() == folder.remotePath + "/" + Self.fileName)
-        #expect(pending.hasUnfinishedUpload)
-        #expect(pending.chunkUploadId == "pending-edit-upload")
-        #expect(pending.etag == Self.storedETag)
-        #expect(listing.metadatas?.first { $0.ocId == Self.fileId } == pending)
-    }
-
     @Test func singleItemReadPreservesFolderFlagsChangedDuringTheRequest() async throws {
         defer { try? FileManager.default.removeItem(at: directory) }
         let account = Self.currentAccount
