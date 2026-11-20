@@ -63,6 +63,10 @@ endif()
 
 nextcloud_add_test(Utility)
 
+if(CLOUDPROVIDERS_FOUND)
+    add_subdirectory(cloudproviders)
+endif()
+
 if (APPLE)
     add_subdirectory(macOS)
 endif()

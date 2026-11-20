@@ -740,10 +740,7 @@ target_link_libraries(nextcloud PRIVATE
 )
 target_compile_definitions(nextcloud PRIVATE QT_NO_KEYWORDS)
 
-if(TARGET PkgConfig::CLOUDPROVIDERS)
-    message("Building with libcloudproviderssupport")
-    target_sources(nextcloudCore PRIVATE cloudproviders/cloudprovidermanager.cpp cloudproviders/cloudproviderwrapper.cpp)
-
+if(UNIX AND NOT APPLE)
     string(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_APPLICATION_NAME "${APPLICATION_SHORTNAME}")
@@ -752,6 +749,13 @@ if(TARGET PkgConfig::CLOUDPROVIDERS)
     endif()
     set(LIBCLOUDPROVIDERS_DBUS_BUS_NAME "${DBUS_PREFIX}.${DBUS_VENDOR}.${DBUS_APPLICATION_NAME}")
     set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
+
+    include("${CMAKE_SOURCE_DIR}/shell_integration/libcloudproviders/InstallCleanup.cmake")
+endif()
+
+if(TARGET PkgConfig::CLOUDPROVIDERS)
+    message("Building with libcloudproviderssupport")
+    target_sources(nextcloudCore PRIVATE cloudproviders/cloudprovidermanager.cpp cloudproviders/cloudproviderwrapper.cpp)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cloudproviders/cloudproviderconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/cloudproviderconfig.h)
     target_compile_definitions(nextcloudCore PUBLIC -DWITH_LIBCLOUDPROVIDERS)
