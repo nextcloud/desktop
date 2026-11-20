@@ -536,6 +536,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Buka di browser</translation>
     </message>
@@ -1057,16 +1062,6 @@ Apakah akun harus diimpor?</translation>
         <translation>Belum ada akun terkonfigurasi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="98"/>
-        <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Enkripsi Ujung-ke-Ujung dengan File Virtual</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Anda tampaknya mengaktifkan fitur File Virtual pada folder ini. Saat ini, tidak memungkinkan untuk mengunduh file virtual yang dienkripsi ujung-ke-ujung secara implisit. Untuk mendapatkan pengalaman terbaik dengan file virtual dan enkripsi ujung-ke-ujung, pastikan folder terenkripsi ditandai dengan &quot;Selalu sediakan secara lokal&quot;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="107"/>
         <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
@@ -1082,6 +1077,16 @@ Apakah akun harus diimpor?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>Enkripsi ujung-ke-ujung</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation>Enkripsi Ujung-ke-Ujung dengan File Virtual</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Anda tampaknya mengaktifkan fitur File Virtual pada folder ini. Saat ini, tidak memungkinkan untuk mengunduh file virtual yang dienkripsi ujung-ke-ujung secara implisit. Untuk mendapatkan pengalaman terbaik dengan file virtual dan enkripsi ujung-ke-ujung, pastikan folder terenkripsi ditandai dengan &quot;Selalu sediakan secara lokal&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -3774,22 +3779,22 @@ Untuk pengguna tingkat lanjut: masalah ini mungkin terkait dengan beberapa file 
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="977"/>
         <source>Password for share required</source>
         <translation>Kata sandi diperlukan untuk berbagi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="978"/>
         <source>Please enter a password for your link share:</source>
         <translation>Silakan masukkan kata sandi untuk tautan berbagi Anda:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1004"/>
         <source>Sharing error</source>
         <translation>Gagal berbagi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5327,38 +5332,38 @@ Perlu dicatat bahwa penggunaan opsi baris perintah pencatatan log apa pun akan m
         <translation>Berkas terkunci sehingga tidak dapat disinkronkan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation>File lokal dihapus selama sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation>File lokal berubah selama sinkronisasi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation>URL polling tidak ada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Kode balasan tak terduga dari server (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation>ID file dari server tidak ada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Folder tidak dapat diakses di server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>File tidak dapat diakses di server.</translation>
@@ -5598,48 +5603,122 @@ Perlu dicatat bahwa penggunaan opsi baris perintah pencatatan log apa pun akan m
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="944"/>
         <source>Context menu share</source>
         <translation>Berbagi menu konteks</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1266"/>
         <source>I shared something with you</source>
         <translation>Saya membagikan sesuatu kepada Anda</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="221"/>
         <source>Share options</source>
         <translation>Opsi berbagi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="233"/>
         <source>Send private link by email …</source>
         <translation>Kirim tautan privat melalui email …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="232"/>
         <source>Copy private link to clipboard</source>
         <translation>Salin tautan privat ke papan klip</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
+        <source>Lock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
+        <source>Unlock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
+        <source>Share Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
+        <source>Copy Internal Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
+        <source>File Actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
+        <source>Leave This Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
+        <source>Apply Labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
+        <source>Resolve Conflict …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
+        <source>Move and Rename …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
+        <source>Move, Rename and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
+        <source>Delete Local Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
+        <source>Move and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
+        <source>Copy Private Link to Clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
+        <source>Send Private Link by Email …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Gagal mengenkripsi folder di &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="653"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Akun %1 tidak memiliki enkripsi ujung-ke-ujung yang dikonfigurasi. Silakan konfigurasikan ini di pengaturan akun Anda untuk mengaktifkan enkripsi folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="672"/>
         <source>Failed to encrypt folder</source>
         <translation>Gagal mengenkripsi folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="673"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5648,112 +5727,110 @@ Server replied with error: %2</source>
 Server membalas dengan kesalahan: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="680"/>
         <source>Folder encrypted successfully</source>
         <translation>Folder berhasil dienkripsi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="681"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Folder berikut berhasil dienkripsi: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="224"/>
         <source>File actions</source>
         <translation>Tindakan berkas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1531"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Aktivitas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="225"/>
         <source>Leave this share</source>
         <translation>Tinggalkan berbagi ini</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this file is not allowed</source>
         <translation>Berbagi ulang file ini tidak diizinkan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Berbagi ulang folder ini tidak diizinkan</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Encrypt</source>
         <translation>Enkripsi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="219"/>
         <source>Lock file</source>
         <translation>Kunci file</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="220"/>
         <source>Unlock file</source>
         <translation>Buka kunci file</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Locked by %1</source>
         <translation>Dikunci oleh %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1412"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Kedaluwarsa dalam %1 menit</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
         <translation>Terapkan label</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
         <source>Resolve conflict …</source>
         <translation>Selesaikan konflik …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="228"/>
         <source>Move and rename …</source>
         <translation>Pindahkan dan ganti nama …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="229"/>
         <source>Move, rename and upload …</source>
         <translation>Pindahkan, ganti nama, dan unggah …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="230"/>
         <source>Delete local changes</source>
         <translation>Hapus perubahan lokal</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="231"/>
         <source>Move and upload …</source>
         <translation>Pindahkan dan unggah …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1584"/>
         <source>Delete</source>
         <translation>Hapus</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="223"/>
         <source>Copy internal link</source>
         <translation>Salin tautan internal</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="222"/>
         <source>Open in browser</source>
         <translation>Buka di browser</translation>
     </message>
@@ -8306,119 +8383,119 @@ Server membalas dengan kesalahan: %2</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Virtual file created</source>
         <translation>File virtual dibuat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Replaced by virtual file</source>
         <translation>Diganti dengan file virtual</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
         <translation>Diunduh</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>Diunggah</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
         <translation>Versi server diunduh, file lokal yang diubah disalin ke file konflik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
         <translation>Versi server diunduh, file lokal yang diubah disalin ke file konflik benturan kapitalisasi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Deleted</source>
         <translation>Dihapus</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Moved to %1</source>
         <translation>Dipindahkan ke %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Ignored</source>
         <translation>Diabaikan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Filesystem access error</source>
         <translation>Kesalahan akses sistem file</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Error</source>
         <translation>Galat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local metadata</source>
         <translation>Metadata lokal diperbarui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated local virtual files metadata</source>
         <translation>Metadata file virtual lokal diperbarui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated end-to-end encryption metadata</source>
         <translation>Metadata enkripsi ujung-ke-ujung diperbarui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
         <translation>Tidak diketahui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Downloading</source>
         <translation>Mengunduh</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Uploading</source>
         <translation>Mengunggah</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Deleting</source>
         <translation>Menghapus</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Moving</source>
         <translation>Memindahkan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Ignoring</source>
         <translation>Mengabaikan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local metadata</source>
         <translation>Memperbarui metadata lokal</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating local virtual files metadata</source>
         <translation>Memperbarui metadata file virtual lokal</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="92"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Memperbarui metadata enkripsi ujung-ke-ujung</translation>
     </message>
@@ -8519,22 +8596,32 @@ Server membalas dengan kesalahan: %2</translation>
         <translation>Hanya tersedia online</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <location filename="../src/gui/guiutility.cpp" line="107"/>
         <source>Make always available locally</source>
         <translation>Buat selalu tersedia secara lokal</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="110"/>
+        <location filename="../src/gui/guiutility.cpp" line="109"/>
+        <source>Make Always Available Locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="117"/>
         <source>Free up local space</source>
         <translation>Kosongkan ruang lokal</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="133"/>
+        <location filename="../src/gui/guiutility.cpp" line="119"/>
+        <source>Free Up Local Space</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="143"/>
         <source>Enable experimental feature?</source>
         <translation>Aktifkan fitur eksperimental?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="134"/>
+        <location filename="../src/gui/guiutility.cpp" line="144"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8551,12 +8638,12 @@ Beralih ke mode ini akan membatalkan sinkronisasi yang sedang berlangsung.
 Ini adalah mode eksperimental baru. Jika Anda memutuskan untuk menggunakannya, silakan laporkan setiap masalah yang muncul.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="149"/>
+        <location filename="../src/gui/guiutility.cpp" line="159"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Aktifkan mode placeholder eksperimental</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="150"/>
+        <location filename="../src/gui/guiutility.cpp" line="160"/>
         <source>Stay safe</source>
         <translation>Tetap aman</translation>
     </message>

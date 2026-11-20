@@ -147,6 +147,19 @@ Item {
             tryVerify(() => activityListView.highlightItem === null || !activityListView.highlightItem.visible);
         }
 
+        function test_mouseWheelScrollsActivityList()
+        {
+            verify(waitForPolish(activitiesWindow), "Activities window layout did not settle");
+            tryCompare(activityListView, "atYBeginning", true);
+
+            const x = activityListView.width / 2;
+            const y = activityListView.height / 2;
+            tryVerify(() => activityListView.indexAt(activityListView.contentX + x, activityListView.contentY + y) >= 0);
+            const startY = activityListView.contentY;
+            mouseWheel(activityListView, x, y, 0, -120);
+            tryVerify(() => activityListView.contentY > startY);
+        }
+
         function test_liveActivityDoesNotResetViewport()
         {
             positionAtEnd();

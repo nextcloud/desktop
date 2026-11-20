@@ -536,6 +536,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Atverti naršyklėje</translation>
     </message>
@@ -1057,16 +1062,6 @@ Ar paskyrą reikėtų importuoti?</translation>
         <translation>Nėra sukonfiguruotų paskyrų.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="98"/>
-        <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Virtualių failų ištisinis šifravimas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Atrodo, kad šiame aplanke įjungta virtualių failų funkcija. Šiuo metu neįmanoma netiesiogiai atsisiųsti virtualių failų, kurie yra užšifruoti ištisiniu šifravimu. Norėdami gauti geriausią patirtį su virtualiais failais ir ištisiniu šifravimu, įsitikinkite, kad užšifruotas aplankas pažymėtas „Visada pasiekti vietoje“.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="107"/>
         <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
@@ -1082,6 +1077,16 @@ Ar paskyrą reikėtų importuoti?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>Ištisinis šifravimas</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation>Virtualių failų ištisinis šifravimas</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Atrodo, kad šiame aplanke įjungta virtualių failų funkcija. Šiuo metu neįmanoma netiesiogiai atsisiųsti virtualių failų, kurie yra užšifruoti ištisiniu šifravimu. Norėdami gauti geriausią patirtį su virtualiais failais ir ištisiniu šifravimu, įsitikinkite, kad užšifruotas aplankas pažymėtas „Visada pasiekti vietoje“.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -3774,22 +3779,22 @@ Pažengusiems vartotojams: ši problema gali būti susijusi su keliais sinchroni
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="977"/>
         <source>Password for share required</source>
         <translation>Reikalingas bendrinimosi slaptažodis</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="978"/>
         <source>Please enter a password for your link share:</source>
         <translation>Įveskite slaptažodį, kuriuo bendrinsite nuorodą:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1004"/>
         <source>Sharing error</source>
         <translation>Bendrinimo klaida</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5327,38 +5332,38 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
         <translation>Failas užrakintas, todėl jo negalima sinchronizuoti</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation>Vietinis failas sinchronizavimo metu buvo pašalintas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation>Vietinis failas sinchronizavimo metu buvo pakeistas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation>Nėra apklausos URL adreso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Nenumatytas atsakymo kodas iš serverio (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation>Trūksta failo ID iš serverio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Aplankas serveryje yra neprieinamas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Failas serveryje yra neprieinamas.</translation>
@@ -5598,48 +5603,122 @@ Atkreipkite dėmesį, kad naudojant bet kurias žurnalo įrašymo komandinės ei
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="944"/>
         <source>Context menu share</source>
         <translation>Kontekstinio meniu bendrinimas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1266"/>
         <source>I shared something with you</source>
         <translation>Aš pradėjau kai ką bendrinti su jumis</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="221"/>
         <source>Share options</source>
         <translation>Bendrinimo parinktys</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="233"/>
         <source>Send private link by email …</source>
         <translation>Siųsti privačią nuorodą el. paštu…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="232"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopijuoti privačią nuorodą į iškarpinę</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
+        <source>Lock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
+        <source>Unlock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
+        <source>Share Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
+        <source>Copy Internal Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
+        <source>File Actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
+        <source>Leave This Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
+        <source>Apply Labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
+        <source>Resolve Conflict …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
+        <source>Move and Rename …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
+        <source>Move, Rename and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
+        <source>Delete Local Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
+        <source>Move and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
+        <source>Copy Private Link to Clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
+        <source>Send Private Link by Email …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Nepavyko užšifruoti aplanko, esančio „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="653"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>%1 paskyroje nesukonfigūruotas ištisinis šifravimas. Norėdami įjungti aplankų šifravimą, sukonfigūruokite tai savo paskyros nustatymuose.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="672"/>
         <source>Failed to encrypt folder</source>
         <translation>Nepavyko šifruoti aplanko</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="673"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5648,112 +5727,110 @@ Server replied with error: %2</source>
 Serveris atsakė su klaida: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="680"/>
         <source>Folder encrypted successfully</source>
         <translation>Aplankas sėkmingai užšifruotas</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="681"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Šis aplankas buvo sėkmingai užšifruotas: „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="224"/>
         <source>File actions</source>
         <translation>Failo veiksmai</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1531"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Veikla</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="225"/>
         <source>Leave this share</source>
         <translation>Palikti šį bendrinimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this file is not allowed</source>
         <translation>Neleidžiama pakartotinai bendrinti šį failą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Neleidžiama pakartotinai bendrinti šį aplanką</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Encrypt</source>
         <translation>Šifruoti</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="219"/>
         <source>Lock file</source>
         <translation>Užrakinti failą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="220"/>
         <source>Unlock file</source>
         <translation>Atrakinti failą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Locked by %1</source>
         <translation>Užrakino %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1412"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Baigia galioti po %1 minutės</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
         <translation>Taikyti etiketes</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
         <source>Resolve conflict …</source>
         <translation>Išspręsti konfilktą ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="228"/>
         <source>Move and rename …</source>
         <translation>Perkelti ir pervadinti…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="229"/>
         <source>Move, rename and upload …</source>
         <translation>Perkelti, pervadinti ir įkelti…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="230"/>
         <source>Delete local changes</source>
         <translation>Ištrinti vietinius pakeitimus</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="231"/>
         <source>Move and upload …</source>
         <translation>Perkelti ir įkelti…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1584"/>
         <source>Delete</source>
         <translation>Ištrinti</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="223"/>
         <source>Copy internal link</source>
         <translation>Kopijuoti vidinę nuorodą</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="222"/>
         <source>Open in browser</source>
         <translation>Atverti naršyklėje</translation>
     </message>
@@ -8306,119 +8383,119 @@ Serveris atsakė su klaida: %2</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Virtual file created</source>
         <translation>Sukurtas virtualus failas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Replaced by virtual file</source>
         <translation>Pakeista virtualiu failu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
         <translation>Atsisiųsta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>Įkelta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
         <translation>Serverio versija atsisiųsta, pakeistas vietinis failas nukopijuotas į konfliktinį failą</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
         <translation>Serverio versija atsisiųsta, pakeistas vietinis failas nukopijuotas į konfliktinio atvejo konflikto failą</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Deleted</source>
         <translation>Ištrinta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Moved to %1</source>
         <translation>Perkelta į %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Ignored</source>
         <translation>Nepaisoma</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Filesystem access error</source>
         <translation>Failų sistemos prieigos klaida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Error</source>
         <translation>Klaida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local metadata</source>
         <translation>Atnaujinti vietiniai metaduomenys</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated local virtual files metadata</source>
         <translation>Atnaujinti vietinių virtualių failų metaduomenys</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated end-to-end encryption metadata</source>
         <translation>Atnaujinti ištisinio šifravimo metaduomenys</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
         <translation>Nežinoma</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Downloading</source>
         <translation>Atsisiunčiama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Uploading</source>
         <translation>Įkeliama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Deleting</source>
         <translation>Ištrinama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Moving</source>
         <translation>Perkeliama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Ignoring</source>
         <translation>Ignoruojama</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local metadata</source>
         <translation>Atnaujinami vietiniai metaduomenys</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating local virtual files metadata</source>
         <translation>Atnaujinami vietinių virtualių failų metaduomenys</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="92"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Atnaujinami ištisinio šifravimo metaduomenys</translation>
     </message>
@@ -8519,22 +8596,32 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Pasiekiami tik internetu</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <location filename="../src/gui/guiutility.cpp" line="107"/>
         <source>Make always available locally</source>
         <translation>Padaryti visada pasiekiamą vietoje</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="110"/>
+        <location filename="../src/gui/guiutility.cpp" line="109"/>
+        <source>Make Always Available Locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="117"/>
         <source>Free up local space</source>
         <translation>Atlaisvinkite vietos atmintį</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="133"/>
+        <location filename="../src/gui/guiutility.cpp" line="119"/>
+        <source>Free Up Local Space</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="143"/>
         <source>Enable experimental feature?</source>
         <translation>Įjungti eksperimentinę ypatybę?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="134"/>
+        <location filename="../src/gui/guiutility.cpp" line="144"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8551,12 +8638,12 @@ Perėjus į šį režimą, bus nutraukta bet kokia šiuo metu vykdoma sinchroniz
 Tai yra naujas, eksperimentinis režimas. Jei nuspręsite jį naudoti, prašome pranešti apie bet kokias iškilusias problemas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="149"/>
+        <location filename="../src/gui/guiutility.cpp" line="159"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Įjungti eksperimentinį vietos laikiklio režimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="150"/>
+        <location filename="../src/gui/guiutility.cpp" line="160"/>
         <source>Stay safe</source>
         <translation>Išlikite saugūs</translation>
     </message>

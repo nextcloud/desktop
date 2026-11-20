@@ -536,6 +536,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Otwórz w przeglądarce</translation>
     </message>
@@ -1057,16 +1062,6 @@ Czy zaimportować konto?</translation>
         <translation>Brak skonfigurowanych kont.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="98"/>
-        <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Szyfrowanie end-to-end za pomocą wirtualnych plików</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Wygląda na to, że w tym katalogu włączono funkcję plików wirtualnych. W tej chwili nie jest możliwe niejawne pobieranie wirtualnych plików, które są szyfrowane metodą end-to-end. Aby uzyskać najlepsze efekty z plikami wirtualnymi i szyfrowaniem end-to-end, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="107"/>
         <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
@@ -1082,6 +1077,16 @@ Czy zaimportować konto?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>Szyfrowanie End-to-End</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation>Szyfrowanie end-to-end za pomocą wirtualnych plików</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Wygląda na to, że w tym katalogu włączono funkcję plików wirtualnych. W tej chwili nie jest możliwe niejawne pobieranie wirtualnych plików, które są szyfrowane metodą end-to-end. Aby uzyskać najlepsze efekty z plikami wirtualnymi i szyfrowaniem end-to-end, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -3774,22 +3779,22 @@ Dla zaawansowanych użytkowników: ten problem może być związany z wieloma pl
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="977"/>
         <source>Password for share required</source>
         <translation>Wymagane hasło dla udostępnienia</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="978"/>
         <source>Please enter a password for your link share:</source>
         <translation>Wprowadź hasło dla udostępnionego linku:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1004"/>
         <source>Sharing error</source>
         <translation>Błąd udostępniania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5320,38 +5325,38 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
         <translation>Plik jest zablokowany, co uniemożliwia jego synchronizację</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation>Plik lokalny zmieniony podczas synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation>Brak adresu URL sondy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Nieoczekiwana odpowiedź z serwera (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation>Brak pliku ID z serwera</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Katalog nie jest dostępny na serwerze.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Plik nie jest dostępny na serwerze.</translation>
@@ -5591,48 +5596,122 @@ Zauważ, że użycie jakichkolwiek opcji wiersza poleceń logowania spowoduje za
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="944"/>
         <source>Context menu share</source>
         <translation>Menu kontekstowe udostępniania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1266"/>
         <source>I shared something with you</source>
         <translation>Coś Tobie udostępniłem</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="221"/>
         <source>Share options</source>
         <translation>Opcje udostępniania</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="233"/>
         <source>Send private link by email …</source>
         <translation>Wyślij link prywatny e-mailem…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="232"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiuj link prywatny do schowka</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
+        <source>Lock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
+        <source>Unlock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
+        <source>Share Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
+        <source>Copy Internal Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
+        <source>File Actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
+        <source>Leave This Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
+        <source>Apply Labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
+        <source>Resolve Conflict …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
+        <source>Move and Rename …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
+        <source>Move, Rename and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
+        <source>Delete Local Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
+        <source>Move and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
+        <source>Copy Private Link to Clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
+        <source>Send Private Link by Email …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Nie udało się zaszyfrować katalogu w &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="653"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Konto %1 nie ma skonfigurowanego szyfrowania end-to-end. Skonfiguruj to w ustawieniach konta, aby włączyć szyfrowanie katalogów.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="672"/>
         <source>Failed to encrypt folder</source>
         <translation>Nie udało się zaszyfrować katalogu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="673"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5641,112 +5720,110 @@ Server replied with error: %2</source>
 Serwer odpowiedział błędem: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="680"/>
         <source>Folder encrypted successfully</source>
         <translation>Katalog zaszyfrowano pomyślnie</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="681"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Następujący katalog został zaszyfrowany pomyślnie: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="224"/>
         <source>File actions</source>
         <translation>Akcje pliku</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1531"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Aktywność</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="225"/>
         <source>Leave this share</source>
         <translation>Opuść udostępnienie</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this file is not allowed</source>
         <translation>Udostępnianie dalej tego pliku jest niedozwolone</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Udostępnianie dalej tego katalogu jest niedozwolone</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Encrypt</source>
         <translation>Zaszyfruj</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="219"/>
         <source>Lock file</source>
         <translation>Zablokuj plik</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="220"/>
         <source>Unlock file</source>
         <translation>Odblokuj plik</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Locked by %1</source>
         <translation>Zablokowany przez %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1412"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Wygasa za %1 minutę</numerusform><numerusform>Wygasa za %1 minuty</numerusform><numerusform>Wygasa za %1 minut</numerusform><numerusform>Wygasa za %1 minut</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
         <source>Resolve conflict …</source>
         <translation>Rozwiąż konflikt…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="228"/>
         <source>Move and rename …</source>
         <translation>Przenieś i zmień nazwę…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="229"/>
         <source>Move, rename and upload …</source>
         <translation>Przenieś, zmień nazwę i wyślij…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="230"/>
         <source>Delete local changes</source>
         <translation>Usuń zmiany lokalne</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="231"/>
         <source>Move and upload …</source>
         <translation>Przenieś i wyślij…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1584"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="223"/>
         <source>Copy internal link</source>
         <translation>Kopiuj link wewnętrzny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="222"/>
         <source>Open in browser</source>
         <translation>Otwórz w przeglądarce</translation>
     </message>
@@ -8299,119 +8376,119 @@ Serwer odpowiedział błędem: %2</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Virtual file created</source>
         <translation>Utworzono plik wirtualny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Replaced by virtual file</source>
         <translation>Zastąpiony przez plik wirtualny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
         <translation>Pobrane</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>Wysłane</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
         <translation>Pobrano wersję z serwera, zmieniona wersja lokalna została skopiowana do pliku konfliktu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
         <translation>Pobrano wersję z serwera, skopiowano zmieniony plik lokalny do konfliktu niezgodności pliku</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Deleted</source>
         <translation>Usunięto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Moved to %1</source>
         <translation>Przeniesione do %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Ignored</source>
         <translation>Ignorowany</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Filesystem access error</source>
         <translation>Błąd dostępu do systemu plików</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local metadata</source>
         <translation>Zaktualizowano lokalne metadane</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated local virtual files metadata</source>
         <translation>Zaktualizowano metadane lokalnych plików wirtualnych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated end-to-end encryption metadata</source>
         <translation>Zaktualizowane metadane szyfrowania typu end-to-end</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
         <translation>Nieznany</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Downloading</source>
         <translation>Pobieranie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Uploading</source>
         <translation>Wysyłanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Deleting</source>
         <translation>Usuwanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Moving</source>
         <translation>Przenoszenie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Ignoring</source>
         <translation>Ignorowanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local metadata</source>
         <translation>Aktualizowanie lokalnych metadanych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating local virtual files metadata</source>
         <translation>Aktualizowanie metadanych lokalnych plików wirtualnych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="92"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Aktualizowanie metadanych szyfrowania typu end-to-end</translation>
     </message>
@@ -8512,22 +8589,32 @@ Serwer odpowiedział błędem: %2</translation>
         <translation>Dostępne tylko online</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <location filename="../src/gui/guiutility.cpp" line="107"/>
         <source>Make always available locally</source>
         <translation>Dostępne zawsze lokalnie</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="110"/>
+        <location filename="../src/gui/guiutility.cpp" line="109"/>
+        <source>Make Always Available Locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="117"/>
         <source>Free up local space</source>
         <translation>Zwolnij miejsce lokalne</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="133"/>
+        <location filename="../src/gui/guiutility.cpp" line="119"/>
+        <source>Free Up Local Space</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="143"/>
         <source>Enable experimental feature?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="134"/>
+        <location filename="../src/gui/guiutility.cpp" line="144"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8538,12 +8625,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="149"/>
+        <location filename="../src/gui/guiutility.cpp" line="159"/>
         <source>Enable experimental placeholder mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="150"/>
+        <location filename="../src/gui/guiutility.cpp" line="160"/>
         <source>Stay safe</source>
         <translation type="unfinished"/>
     </message>

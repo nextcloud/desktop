@@ -304,8 +304,12 @@ IF( APPLE )
         macOS/localnetworkpermission.mm
         macOS/lowpowergpu_mac.h
         macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfilepicker.h
+        macOS/macsandboxfilepicker.mm
         macOS/macsandboxfolderpicker.h
         macOS/macsandboxfolderpicker.mm
+        macOS/macsandboxpanelutils.h
+        macOS/macsandboxpanelutils.mm
         # macOS tray account popup: one type per header/implementation pair.
         # Shared foundation first, then the base hover view, rows, popups and the
         # public entry point (OCC::showMacOSTrayPopup / hideMacOSTrayPopup).
@@ -376,7 +380,9 @@ IF( APPLE )
         systray_mac_common.mm
         notificationsoundplayer_mac.mm
         macOS/lowpowergpu_mac.mm
+        macOS/macsandboxfilepicker.mm
         macOS/macsandboxfolderpicker.mm
+        macOS/macsandboxpanelutils.mm
         macOS/trayaccountpopup/ncactionrow.mm
         macOS/trayaccountpopup/ncpointinghandbutton.mm
         macOS/trayaccountpopup/ncalertboxrow.mm
@@ -466,16 +472,6 @@ IF( WIN32 )
         ${CMAKE_SOURCE_DIR}/src/common/shellextensionutils.cpp)
 ENDIF()
 
-set(3rdparty_SRC
-    ../3rdparty/kmessagewidget/kmessagewidget.h
-    ../3rdparty/kmessagewidget/kmessagewidget.cpp
-    ../3rdparty/kirigami/wheelhandler.h
-    ../3rdparty/kirigami/wheelhandler.cpp
-   )
-
-set_property(SOURCE ../3rdparty/kmessagewidget/kmessagewidget.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
-
 find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS LinguistTools)
 if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
     qt_add_translation(client_I18N ${TRANSLATIONS})
@@ -497,7 +493,6 @@ set( final_src
     ${client_UI_SRCS}
     ${guiMoc}
     ${client_I18N}
-    ${3rdparty_SRC}
     ${3rdparty_MOC}
 )
 
@@ -666,8 +661,6 @@ set_target_properties(nextcloudCore
 
 target_include_directories(nextcloudCore
   PUBLIC
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/kirigami
-  ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -811,7 +804,7 @@ if (APPLE)
     else()
         target_link_libraries(nextcloudCore PUBLIC "-framework UserNotifications")
     endif()
-    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework AppKit" "-framework Foundation" "-framework Metal" "-framework Network")
+    target_link_libraries(nextcloudCore PRIVATE "-framework AVFoundation" "-framework AppKit" "-framework Foundation" "-framework Metal" "-framework Network" "-framework UniformTypeIdentifiers")
     # ServiceManagement for SMAppService, used to register the FinderSync broker login item.
     # src/csync links it too, for utility_mac.mm, but PRIVATE — so it does not propagate here.
     target_link_libraries(nextcloudCore PRIVATE "-framework ServiceManagement")
@@ -869,15 +862,16 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     add_custom_command(TARGET nextcloud POST_BUILD
         COMMAND "${MACDEPLOYQT_EXECUTABLE}"
         "$<TARGET_FILE_DIR:nextcloud>/../.."
-        -qmldir=${CMAKE_SOURCE_DIR}/src/gui
+        "-qmldir=${CMAKE_SOURCE_DIR}/src/gui"
         -always-overwrite
-        -executable="$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
-        -libpath=${MACDEPLOYQT_LIB_DIR}
-        -libpath=${BIN_OUTPUT_DIRECTORY}
+        "-executable=$<TARGET_FILE_DIR:nextcloud>/${cmd_NAME}"
+        "-libpath=${MACDEPLOYQT_LIB_DIR}"
+        "-libpath=${BIN_OUTPUT_DIRECTORY}"
         ${NO_STRIP}
         COMMAND "${CMAKE_COMMAND}"
         -E rm -rf "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns/bearer"
         COMMENT "Running macdeployqt..."
+        VERBATIM
     )
 endif()
 

@@ -3,7 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
-import NextcloudFileProviderKit
+@testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import TestInterface
 import XCTest
@@ -11,7 +11,7 @@ import XCTest
 ///
 /// Timing benchmarks for the metadata database, run only when `NCFPK_BENCHMARKS=1` is set.
 ///
-/// These are XCTest cases on purpose: `measure(metrics:options:)` reports median and deviation, which Swift Testing does not offer. They use only the public `FilesDatabaseManager` API and a file-backed database, so the same file runs unchanged against every storage engine and the numbers are comparable across branches.
+/// The benchmarks use a file-backed database and XCTest's `measure(metrics:options:)` to report timing and memory metrics.
 ///
 /// Each iteration builds its own fixture outside of the measured interval.
 ///
@@ -23,7 +23,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     static let environmentKey = "NCFPK_BENCHMARKS"
     static let iterationCount = 5
     static let flatFolderChildCount = 7000
-    static let preservingLocalStateRowCount = 2000
+    static let paginatedFolderChildCount = 2000
     static let workingSetRowCount = 20000
     static let workingSetChangedRowCount = 500
 
@@ -114,32 +114,43 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
     }
 
     ///
-    /// The paginated ingestion path: every row goes through `addItemMetadataPreservingLocalState` once as a new row and once as a re-ingested row.
+    /// Measure persistence of a paginated folder listing on a cold database, followed by an unchanged warm pass.
+    /// The target directory shares the first response page with the first children. The inputs are already converted to metadata.
     ///
-    func testBenchmarkAddItemMetadataPreservingLocalState() {
+    func testBenchmarkPersistPaginatedMetadata() {
         let folderUrl = Self.account.davFilesUrl + "/Bench"
+        var target = makeDirectory(ocId: "bench-folder", fileName: "Bench", parentUrl: Self.account.davFilesUrl, etag: "folder-v1")
+        target.visitedDirectory = true
+        let rows = [target] + (0 ..< Self.paginatedFolderChildCount).map { makeFile(index: $0, parentUrl: folderUrl, etag: "v1") }
+        let pageSize = Enumerator.defaultBatchSize
+        let pages = stride(from: 0, to: rows.count, by: pageSize).map { offset in
+            let end = min(offset + pageSize, rows.count)
+            return (target: offset == 0 ? target : nil, children: Array(rows[max(1, offset) ..< end]))
+        }
+        let expectedPageIds = pages.map { $0.children.map(\.ocId) }
+        let expectedEtags = Dictionary(uniqueKeysWithValues: rows.map { ($0.ocId, $0.etag) })
         var durations: [Duration] = []
 
         measure(metrics: [XCTClockMetric(), XCTMemoryMetric()], options: measureOptions) {
             let manager = makeManager()
-            let rows = (0 ..< Self.preservingLocalStateRowCount).map { makeFile(index: $0, parentUrl: folderUrl, etag: "v1") }
 
             let clock = ContinuousClock()
             startMeasuring()
             let start = clock.now
-            for row in rows {
-                manager.addItemMetadataPreservingLocalState(row)
-            }
-            for row in rows {
-                manager.addItemMetadataPreservingLocalState(row)
-            }
+            let cold = pages.map { manager.persistPaginatedMetadata(target: $0.target, children: $0.children) }
+            let warm = pages.map { manager.persistPaginatedMetadata(target: $0.target, children: $0.children) }
             durations.append(clock.now - start)
             stopMeasuring()
 
-            XCTAssertEqual(manager.itemMetadatas(account: Self.account.ncKitAccount).count, Self.preservingLocalStateRowCount)
+            XCTAssertEqual(cold.compactMap { $0?.map(\.ocId) }, expectedPageIds)
+            XCTAssertEqual(warm.compactMap { $0?.map(\.ocId) }, expectedPageIds)
+            let stored = manager.itemMetadatas(account: Self.account.ncKitAccount)
+            XCTAssertEqual(stored.count, rows.count)
+            XCTAssertEqual(Dictionary(uniqueKeysWithValues: stored.map { ($0.ocId, $0.etag) }), expectedEtags)
+            XCTAssertEqual(stored.first { $0.ocId == target.ocId }?.visitedDirectory, true)
         }
 
-        report("AddItemMetadataPreservingLocalState", items: 2 * Self.preservingLocalStateRowCount, durations: durations)
+        report("PersistPaginatedMetadataColdAndWarm", items: 2 * rows.count, durations: durations)
     }
 
     ///

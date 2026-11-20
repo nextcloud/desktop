@@ -198,6 +198,11 @@ public extension ItemMetadata {
             ])
     }
 
+    /// Whether the row is a parked directory or below one, so its path exists only in the database.
+    var isAtHoldingPath: Bool {
+        remotePath().contains(FilesDatabaseManager.holdingNameSeparator)
+    }
+
     func remotePath() -> String {
         if ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
             // For the root container the fileName is defined by NextcloudKit.shared.nkCommonInstance.rootFileName.

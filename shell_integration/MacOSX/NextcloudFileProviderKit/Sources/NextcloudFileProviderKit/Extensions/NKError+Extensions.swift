@@ -13,6 +13,9 @@ extension NKError {
     /// The metadata database could not be read, so the operation must not proceed on a guess. Unlisted below, so it maps to `cannotSynchronize`.
     static let metadataDatabaseUnreadable = NKError(errorCode: -2000, errorDescription: "The metadata database could not be read.")
 
+    /// A read of a parked folder's holding path, which exists only in the database, and unlisted below, so it maps to `cannotSynchronize`.
+    static let parkedFolderPath = NKError(errorCode: -2001, errorDescription: "The path belongs to a parked folder.")
+
     /// Local persistence failed. Maps to `cannotSynchronize`, not a server or quota error.
     static let metadataDatabaseWriteFailed = NKError(errorCode: NSFileProviderError.cannotSynchronize.rawValue, errorDescription: "The metadata database could not be updated.")
 

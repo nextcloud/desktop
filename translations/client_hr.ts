@@ -536,6 +536,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Otvori u pregledniku</translation>
     </message>
@@ -1057,16 +1062,6 @@ Should the account be imported?</source>
         <translation>Račun nije konfiguriran.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="98"/>
-        <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Šifriranje s kraja na kraj uz virtualne datoteke</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Čini se da je značajka Virtualne datoteke uključena za ovu mapu. Trenutačno nije moguće implicitno preuzimati virtualne datoteke koje su šifrirane s kraja na kraj. Za najbolje iskustvo s virtualnim datotekama i šifriranjem s kraja na kraj, provjerite da je šifrirana mapa označena s &quot;Uvijek dostupno lokalno&quot;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="107"/>
         <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
@@ -1082,6 +1077,16 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>Šifriranje s kraja na kraj</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation>Šifriranje s kraja na kraj uz virtualne datoteke</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Čini se da je značajka Virtualne datoteke uključena za ovu mapu. Trenutačno nije moguće implicitno preuzimati virtualne datoteke koje su šifrirane s kraja na kraj. Za najbolje iskustvo s virtualnim datotekama i šifriranjem s kraja na kraj, provjerite da je šifrirana mapa označena s &quot;Uvijek dostupno lokalno&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -3773,22 +3778,22 @@ Za napredne korisnike: problem može biti povezan s više datoteka baze sinkroni
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="977"/>
         <source>Password for share required</source>
         <translation>Potrebna je zaporka za dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="978"/>
         <source>Please enter a password for your link share:</source>
         <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1004"/>
         <source>Sharing error</source>
         <translation>Pogreška dijeljenja</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5319,38 +5324,38 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation>Lokalna datoteka je uklonjena tijekom sinkronizacije.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalna datoteka je izmijenjena tijekom sinkronizacije.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation>Nedostaje URL ankete</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Neočekivana povratna šifra s poslužitelja (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation>Nedostaje ID datoteke s poslužitelja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Mapa nije dostupna na poslužitelju.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Datoteka nije dostupna na poslužitelju.</translation>
@@ -5590,48 +5595,122 @@ Imajte na umu da će uporaba bilo koje opcije naredbenog retka u vezi sa zapisim
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="944"/>
         <source>Context menu share</source>
         <translation>Dijeljenje kontekstnog izbornika</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1266"/>
         <source>I shared something with you</source>
         <translation>Dijelim nešto s vama</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="221"/>
         <source>Share options</source>
         <translation>Mogućnosti dijeljenja</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="233"/>
         <source>Send private link by email …</source>
         <translation>Pošalji privatnu poveznicu e-poštom…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="232"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiraj privatnu poveznicu u međuspremnik</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
+        <source>Lock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
+        <source>Unlock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
+        <source>Share Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
+        <source>Copy Internal Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
+        <source>File Actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
+        <source>Leave This Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
+        <source>Apply Labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
+        <source>Resolve Conflict …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
+        <source>Move and Rename …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
+        <source>Move, Rename and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
+        <source>Delete Local Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
+        <source>Move and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
+        <source>Copy Private Link to Clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
+        <source>Send Private Link by Email …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Nije uspjelo šifrirati mapu na &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="653"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Račun %1 nema konfigurirano šifriranje s kraja na kraj. Konfigurirajte ga u postavkama računa kako biste omogućili šifriranje mapa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="672"/>
         <source>Failed to encrypt folder</source>
         <translation>Nije uspjelo šifrirati mapu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="673"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5640,112 +5719,110 @@ Server replied with error: %2</source>
 Poslužitelj je vratio pogrešku: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="680"/>
         <source>Folder encrypted successfully</source>
         <translation>Mapa je uspješno šifrirana</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="681"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Sljedeća mapa uspješno je šifrirana: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="224"/>
         <source>File actions</source>
         <translation>Radnje nad datotekom</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1531"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Aktivnost</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="225"/>
         <source>Leave this share</source>
         <translation>Napusti ovo dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this file is not allowed</source>
         <translation>Dijeljenje ove datoteke nije dopušteno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Ponovno dijeljenje ove mape nije dopušteno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Encrypt</source>
         <translation>Šifriraj</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="219"/>
         <source>Lock file</source>
         <translation>Zaključaj datoteku</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="220"/>
         <source>Unlock file</source>
         <translation>Otključaj datoteku</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Locked by %1</source>
         <translation>Zaključao/la %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1412"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Istječe za %1 minutu</numerusform><numerusform>Istječe za %1 minute</numerusform><numerusform>Istječe za %1 minuta</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
         <source>Resolve conflict …</source>
         <translation>Riješi nepodudaranje…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="228"/>
         <source>Move and rename …</source>
         <translation>Premjesti i preimenuj…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="229"/>
         <source>Move, rename and upload …</source>
         <translation>Premjesti, preimenuj i otpremi…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="230"/>
         <source>Delete local changes</source>
         <translation>Izbriši lokalne promjene</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="231"/>
         <source>Move and upload …</source>
         <translation>Premjesti i otpremi…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1584"/>
         <source>Delete</source>
         <translation>Izbriši</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="223"/>
         <source>Copy internal link</source>
         <translation>Kopiraj internu poveznicu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="222"/>
         <source>Open in browser</source>
         <translation>Otvori u pregledniku</translation>
     </message>
@@ -8298,119 +8375,119 @@ Poslužitelj je vratio pogrešku: %2</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Virtual file created</source>
         <translation>Virtualna datoteka je stvorena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Replaced by virtual file</source>
         <translation>Zamijenjeno virtualnom datotekom</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
         <translation>Preuzeto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>Otpremljeno</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
         <translation>Preuzeta je inačica poslužitelja, promijenjena lokalna datoteka kopirana u datoteku nepodudaranja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
         <translation>Verzija s poslužitelja je preuzeta; izmijenjena lokalna datoteka je kopirana u datoteku sukoba veličine slova</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Deleted</source>
         <translation>Izbrisano</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Moved to %1</source>
         <translation>Premješteno u %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Ignored</source>
         <translation>Zanemareno</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Filesystem access error</source>
         <translation>Pogreška pristupa datotečnom sustavu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Error</source>
         <translation>Pogreška</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local metadata</source>
         <translation>Ažurirani lokalni metapodaci</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated local virtual files metadata</source>
         <translation>Ažurirani metapodaci lokalnih virtualnih datoteka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated end-to-end encryption metadata</source>
         <translation>Ažurirani metapodaci šifriranja s kraja na kraj</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
         <translation>Nepoznato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Downloading</source>
         <translation>Preuzimanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Uploading</source>
         <translation>Prijenos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Deleting</source>
         <translation>Brisanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Moving</source>
         <translation>Premještanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Ignoring</source>
         <translation>Zanemarivanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local metadata</source>
         <translation>Ažuriranje lokalnih metapodataka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating local virtual files metadata</source>
         <translation>Ažuriranje metapodataka lokalnih virtualnih datoteka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="92"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Ažuriranje metapodataka šifriranja s kraja na kraj</translation>
     </message>
@@ -8511,22 +8588,32 @@ Poslužitelj je vratio pogrešku: %2</translation>
         <translation>Dostupno samo na mreži</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <location filename="../src/gui/guiutility.cpp" line="107"/>
         <source>Make always available locally</source>
         <translation>Učini uvijek dostupnim lokalno</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="110"/>
+        <location filename="../src/gui/guiutility.cpp" line="109"/>
+        <source>Make Always Available Locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="117"/>
         <source>Free up local space</source>
         <translation>Oslobodi lokalni prostor za pohranu</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="133"/>
+        <location filename="../src/gui/guiutility.cpp" line="119"/>
+        <source>Free Up Local Space</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="143"/>
         <source>Enable experimental feature?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="134"/>
+        <location filename="../src/gui/guiutility.cpp" line="144"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8537,12 +8624,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="149"/>
+        <location filename="../src/gui/guiutility.cpp" line="159"/>
         <source>Enable experimental placeholder mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="150"/>
+        <location filename="../src/gui/guiutility.cpp" line="160"/>
         <source>Stay safe</source>
         <translation type="unfinished"/>
     </message>

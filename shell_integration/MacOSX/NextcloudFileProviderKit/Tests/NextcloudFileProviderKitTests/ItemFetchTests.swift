@@ -1812,7 +1812,8 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
         XCTAssertNil(listing.error)
-        XCTAssertTrue(try XCTUnwrap(listing.changes).created.contains { $0.ocId == movedChild.identifier })
+        // The child is stored elsewhere, so the listing reports it as moved rather than new.
+        XCTAssertTrue(try XCTUnwrap(listing.changes).updated.contains { $0.ocId == movedChild.identifier })
         let moved = try XCTUnwrap(dbManager.itemMetadata(ocId: movedChild.identifier))
         XCTAssertEqual(moved.remotePath(), movedChild.remotePath)
         XCTAssertEqual(moved.etag, movedChild.versionIdentifier)
@@ -2634,6 +2635,22 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: directory.identifier))
             Self.dbManager.removeItemMetadata(ocId: directory.identifier)
         }
+    }
+
+    func testDownloadedFileWithAnUnresolvedParentCanBeRetried() async {
+        let (item, remoteInterface, directory) = makeNestedFetchItem()
+        defer { removeDownloadedContents(remoteInterface: remoteInterface) }
+        remoteInterface.enumerateErrorBySuffix[directory.remotePath] = NKError(errorCode: 503, errorDescription: "Parent lookup unavailable")
+
+        let (url, fetchedItem, error) = await item.fetchContents(dbManager: Self.dbManager)
+
+        XCTAssertNil(url)
+        XCTAssertNil(fetchedItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remoteInterface.downloadOperationCount, 1)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: item.itemIdentifier.rawValue)?.deleted, false)
+        XCTAssertEqual(remoteInterface.downloadDestinationURL.map { FileManager.default.fileExists(atPath: $0.path) }, false)
     }
 
     func testCancellingParentLookupCancelsNetworkTask() async throws {

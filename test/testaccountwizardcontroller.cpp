@@ -102,6 +102,11 @@ public:
     {
         controller.loadClientCertificateFile(QUrl::fromLocalFile(path));
     }
+
+    static void setClientCertificatePicker(AccountWizardController &controller, AccountWizardController::ClientCertificatePicker picker)
+    {
+        controller._clientCertificatePicker = std::move(picker);
+    }
 };
 
 }
@@ -839,6 +844,59 @@ private Q_SLOTS:
         QVERIFY(!controller.submitClientCertificate());
         QCOMPARE(controller.clientCertificateError(), u"Could not load certificate. Maybe wrong password?"_s);
         QVERIFY(controller.clientCertificateValid());
+    }
+
+    void chosenClientCertificateIsLoaded()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        QVERIFY(writeTestPkcs12(path, "secret"));
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setClientCertificatePicker(controller, [&path](const auto &completion) {
+            completion(path);
+        });
+
+        controller.chooseClientCertificate();
+
+        QCOMPARE(controller.clientCertificatePath(), path);
+        QVERIFY(controller.clientCertificateValid());
+        QVERIFY(controller.clientCertificateError().isEmpty());
+    }
+
+    void cancellingClientCertificatePickerKeepsTheSelection()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        QVERIFY(writeTestPkcs12(path, "secret"));
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::loadClientCertificateFile(controller, path);
+        AccountWizardControllerTestAccess::setClientCertificatePicker(controller, [](const auto &completion) {
+            completion({});
+        });
+
+        controller.chooseClientCertificate();
+
+        QCOMPARE(controller.clientCertificatePath(), path);
+        QVERIFY(controller.clientCertificateValid());
+    }
+
+    void clientCertificateCompletionAfterControllerIsGoneIsIgnored()
+    {
+        QTemporaryDir dir;
+        const auto path = dir.filePath(u"client.p12"_s);
+        QVERIFY(writeTestPkcs12(path, "secret"));
+        std::function<void(const QString &)> pendingCompletion;
+
+        {
+            AccountWizardController controller;
+            AccountWizardControllerTestAccess::setClientCertificatePicker(controller, [&pendingCompletion](auto completion) {
+                pendingCompletion = std::move(completion);
+            });
+            controller.chooseClientCertificate();
+        }
+
+        QVERIFY(pendingCompletion);
+        pendingCompletion(path);
     }
 
 #ifdef Q_OS_LINUX

@@ -104,10 +104,16 @@ extension DatabaseTestSuites {
             manager.addItemMetadata(row)
             #expect(try manager.synchronousLevelForTesting() == 2, "Local writes commit with FULL.")
 
-            manager.addItemMetadataPreservingLocalState(row)
+            var changed = row
+            changed.etag = "updated-etag"
+            let page = try #require(manager.persistPaginatedMetadata(target: nil, children: [changed]))
+            #expect(page.count == 1)
+            let saved = try #require(page.first)
+            #expect(saved.etag == changed.etag)
+            #expect(manager.itemMetadata(ocId: row.ocId)?.etag == changed.etag)
             #expect(try manager.synchronousLevelForTesting() == 1, "Server-derived bulk writes commit with NORMAL.")
 
-            _ = try manager.set(keepDownloaded: true, for: row)
+            _ = try manager.set(keepDownloaded: true, for: saved)
             #expect(try manager.synchronousLevelForTesting() == 2)
             #expect(manager.itemMetadata(ocId: "pinned")?.keepDownloaded == true)
         }

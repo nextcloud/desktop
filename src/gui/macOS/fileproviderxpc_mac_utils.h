@@ -7,6 +7,7 @@
 
 #include <QHash>
 #include <QLoggingCategory>
+#include <QUrl>
 
 #include <chrono>
 #include <optional>
@@ -20,6 +21,10 @@
 #import "fileproviderservice.h"
 
 namespace OCC::Mac::FileProviderXPCUtils {
+
+// QUrl::toString() emits Unicode IDN hosts; Swift/NextcloudKit percent-encodes
+// those hosts instead of using ACE, breaking TLS verification.
+QString urlForFileProviderXPC(const QUrl &url);
 
 NSArray<NSFileProviderManager *> *getDomainManagers();
 NSArray<NSDictionary<NSFileProviderServiceName, NSFileProviderService *> *> *getFileProviderServices(NSArray<NSFileProviderManager *> *managers);

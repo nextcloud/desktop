@@ -107,11 +107,15 @@ import OSLog
         #endif
     }()
 
-    public required init(domain: NSFileProviderDomain) {
+    public required convenience init(domain: NSFileProviderDomain) {
         // The containing application must create a domain using
         // `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the
         // application extension process, call `FileProviderExtension.init(domain:)` to instantiate
         // the extension for that domain, and call methods on the instance.
+        self.init(domain: domain, ncKit: .shared)
+    }
+
+    init(domain: NSFileProviderDomain, ncKit: NextcloudKit) {
         self.domain = domain
         manager = NSFileProviderManager(for: domain)
 
@@ -121,7 +125,7 @@ import OSLog
         logger.debug("Initializing with domain identifier.", [.domain: domain.identifier.rawValue])
 
         // Set up NextcloudKit.
-        ncKit = NextcloudKit.shared
+        self.ncKit = ncKit
         _ = Self.nextcloudKitLoggingConfiguration
         logger.info("NextcloudKit logging configured.", [.url: NKLogFileManager.shared.currentLogFileURL()])
         keychain = Keychain(domain: domain, log: log)
@@ -179,6 +183,12 @@ import OSLog
         }
     }
 
+    /// File Provider waits for an explicit resolution signal after a mutation returns cannotSynchronize.
+    private static let unresolvedParentMutationError = CocoaError(
+        .xpcConnectionReplyInvalid,
+        userInfo: [NSUnderlyingErrorKey: NSFileProviderError(.cannotSynchronize) as NSError]
+    )
+
     // MARK: - NSFileProviderReplicatedExtension protocol methods
 
     public func item(for identifier: NSFileProviderItemIdentifier, request _: NSFileProviderRequest, completionHandler: @Sendable @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
@@ -205,11 +215,19 @@ import OSLog
                 return
             }
 
-            if let item = await Item.storedItem(identifier: identifier, account: ncAccount, remoteInterface: ncKit, dbManager: dbManager, log: log), item.metadata.deleted == false {
+            do {
+                let item = try await Item.resolveStoredItem(
+                    identifier: identifier,
+                    account: ncAccount,
+                    remoteInterface: ncKit,
+                    dbManager: dbManager,
+                    includeDeleted: false,
+                    log: log
+                )
                 progress.completedUnitCount = 1
                 completionHandler(item, nil)
-            } else {
-                completionHandler(nil, NSFileProviderError(.noSuchItem))
+            } catch {
+                completionHandler(nil, error)
             }
         }
 
@@ -258,7 +276,7 @@ import OSLog
         cancellation: NetworkOperationCancellation,
         actionId: UUID
     ) async -> (URL?, Item?, Error?) {
-        guard !progress.isCancelled, !Task.isCancelled else {
+        guard !cancellation.isCancelled else {
             removeSyncAction(actionId)
             return (nil, nil, CocoaError(.userCancelled))
         }
@@ -269,7 +287,7 @@ import OSLog
         do {
             ncAccount = try await awaitAccount()
         } catch {
-            if error is CancellationError || progress.isCancelled {
+            if cancellation.isCancelled {
                 removeSyncAction(actionId)
                 return (nil, nil, CocoaError(.userCancelled))
             }
@@ -278,7 +296,7 @@ import OSLog
             return (nil, nil, NSFileProviderError(.notAuthenticated))
         }
 
-        guard !progress.isCancelled, !Task.isCancelled else {
+        guard !cancellation.isCancelled else {
             removeSyncAction(actionId)
             return (nil, nil, CocoaError(.userCancelled))
         }
@@ -288,23 +306,29 @@ import OSLog
             return (nil, nil, NSFileProviderError(.cannotSynchronize))
         }
 
-        let item = await Item.storedItem(
-            identifier: itemIdentifier,
-            account: ncAccount,
-            remoteInterface: ncKit,
-            dbManager: dbManager,
-            taskHandler: { cancellation.register(task: $0) },
-            isCancelled: { cancellation.isCancelled },
-            log: log
-        )
-        guard !progress.isCancelled, !Task.isCancelled else {
+        let item: Item
+        do {
+            item = try await Item.resolveStoredItem(
+                identifier: itemIdentifier,
+                account: ncAccount,
+                remoteInterface: ncKit,
+                dbManager: dbManager,
+                taskHandler: { cancellation.register(task: $0) },
+                isCancelled: { cancellation.isCancelled },
+                log: log
+            )
+        } catch {
+            if cancellation.isCancelled {
+                removeSyncAction(actionId)
+                return (nil, nil, CocoaError(.userCancelled))
+            }
+            logger.error("Could not resolve the item for content fetch.", [.item: itemIdentifier, .error: error])
+            insertErrorAction(actionId)
+            return (nil, nil, error)
+        }
+        guard !cancellation.isCancelled else {
             removeSyncAction(actionId)
             return (nil, nil, CocoaError(.userCancelled))
-        }
-        guard let item else {
-            logger.error("Not fetching contents for item because item was not found.", [.item: itemIdentifier])
-            insertErrorAction(actionId)
-            return (nil, nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
         let result = await item.performFetchContents(domain: domain, progress: progress, dbManager: dbManager, cancellation: cancellation)
@@ -437,23 +461,20 @@ import OSLog
         let progress = Progress()
 
         Task {
-            guard let existingItem = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) else {
-                logger.error("Not modifying item because it was not found.", [.item: identifier])
-                insertErrorAction(actionId)
-
-                completionHandler(
-                    item,
-                    [],
-                    false,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: item.itemIdentifier)
+            let existingItem: Item
+            do {
+                existingItem = try await Item.resolveStoredItem(
+                    identifier: identifier,
+                    account: ncAccount,
+                    remoteInterface: ncKit,
+                    dbManager: dbManager,
+                    unresolvedParentError: Self.unresolvedParentMutationError,
+                    log: log
                 )
-
+            } catch {
+                logger.error("Could not resolve the item for modification.", [.item: identifier, .error: error])
+                insertErrorAction(actionId)
+                completionHandler(item, [], false, error)
                 return
             }
 
@@ -522,16 +543,20 @@ import OSLog
 
         let progress = Progress(totalUnitCount: 1)
         Task {
-            guard let item = await Item.storedItem(
-                identifier: identifier,
-                account: ncAccount,
-                remoteInterface: ncKit,
-                dbManager: dbManager,
-                log: log
-            ) else {
-                logger.error("Not deleting item because it was not found.", [.item: identifier])
+            let item: Item
+            do {
+                item = try await Item.resolveStoredItem(
+                    identifier: identifier,
+                    account: ncAccount,
+                    remoteInterface: ncKit,
+                    dbManager: dbManager,
+                    unresolvedParentError: Self.unresolvedParentMutationError,
+                    log: log
+                )
+            } catch {
+                logger.error("Could not resolve the item for deletion.", [.item: identifier, .error: error])
                 insertErrorAction(actionId)
-                completionHandler(NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier))
+                completionHandler(error)
                 return
             }
 

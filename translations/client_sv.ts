@@ -536,6 +536,11 @@
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in browser</source>
         <translation>Öppna i webbläsare</translation>
     </message>
@@ -1057,16 +1062,6 @@ Ska kontot importeras?</translation>
         <translation>Inget konto konfigurerat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="98"/>
-        <source>End-to-end Encryption with Virtual Files</source>
-        <translation>ände-till-ände-kryptering med virtuella filer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="99"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer som är end-to-end-krypterade. För att använda virtuella filer med ände-till-ände-kryptering, säkerställ att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="107"/>
         <location filename="../src/gui/accountsettings.cpp" line="129"/>
         <source>Do not encrypt folder</source>
@@ -1082,6 +1077,16 @@ Ska kontot importeras?</translation>
         <location filename="../src/gui/accountsettings.cpp" line="120"/>
         <source>End-to-end Encryption</source>
         <translation>Ände-till-ände-kryptering</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="98"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation>ände-till-ände-kryptering med virtuella filer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="99"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer som är end-to-end-krypterade. För att använda virtuella filer med ände-till-ände-kryptering, säkerställ att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="123"/>
@@ -3774,22 +3779,22 @@ För avancerade användare: det här problemet kan vara relaterat till flera syn
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="977"/>
         <source>Password for share required</source>
         <translation>Lösenord för delning krävs</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="942"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="978"/>
         <source>Please enter a password for your link share:</source>
         <translation>Ange ett lösenord för din länkdelning:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="968"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1004"/>
         <source>Sharing error</source>
         <translation>Fel vid delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1005"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -5327,38 +5332,38 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
         <translation>Filen är låst och kan inte synkroniseras</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>The local file was removed during sync.</source>
         <translation>Den lokala filen togs bort under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="475"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil ändrades under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="517"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="518"/>
         <source>Poll URL missing</source>
         <translation>Poll-URL saknas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="526"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="527"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Oväntad svarskod från servern (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="533"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="534"/>
         <source>Missing File ID from server</source>
         <translation>Saknar Fil-ID från servern</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="553"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
         <source>Folder is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Mappen är inte åtkomlig på servern.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="554"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="555"/>
         <source>File is not accessible on the server.</source>
         <comment>server error</comment>
         <translation>Filen är inte åtkomlig på servern.</translation>
@@ -5598,48 +5603,122 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="908"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="944"/>
         <source>Context menu share</source>
         <translation>Delningsmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1230"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1266"/>
         <source>I shared something with you</source>
         <translation>Jag delade något med dig</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1243"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1283"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="221"/>
         <source>Share options</source>
         <translation>Delningsalternativ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1249"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="233"/>
         <source>Send private link by email …</source>
         <translation>Skicka privat länk med e-post ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1248"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="232"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiera privat länk till urklipp</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="616"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
+        <source>Lock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
+        <source>Unlock File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
+        <source>Share Options</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
+        <source>Open in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
+        <source>Copy Internal Link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
+        <source>File Actions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
+        <source>Leave This Share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
+        <source>Apply Labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
+        <source>Resolve Conflict …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
+        <source>Move and Rename …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
+        <source>Move, Rename and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
+        <source>Delete Local Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
+        <source>Move and Upload …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
+        <source>Copy Private Link to Clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
+        <source>Send Private Link by Email …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
         <translation>Det gick inte att kryptera mappen &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="617"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="653"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
         <translation>Kontot %1 har inte ände-till-ände-kryptering konfigurerad. Konfigurera detta i dina kontoinställningar för att aktivera mappkryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="636"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="672"/>
         <source>Failed to encrypt folder</source>
         <translation>Kunde inte kryptera mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="637"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="673"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
@@ -5648,112 +5727,110 @@ Server replied with error: %2</source>
 Servern svarade med fel: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="644"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="680"/>
         <source>Folder encrypted successfully</source>
         <translation>Mappen har krypterats</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="645"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="681"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
         <translation>Följande mapp krypterades: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1309"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="224"/>
         <source>File actions</source>
         <translation>Filåtgärder</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1246"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1495"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1282"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1531"/>
         <source>Activity</source>
         <extracomment>Name of the Activity file action.</extracomment>
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1275"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="225"/>
         <source>Leave this share</source>
         <translation>Lämna denna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this file is not allowed</source>
         <translation>Vidaredelning av denna fil är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1281"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1317"/>
         <source>Resharing this folder is not allowed</source>
         <translation>Vidaredelning av denna mapp är inte tillåtet</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1342"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1378"/>
         <source>Encrypt</source>
         <translation>Kryptera</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1353"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="219"/>
         <source>Lock file</source>
         <translation>Lås fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1356"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="220"/>
         <source>Unlock file</source>
         <translation>Lås upp fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1372"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1408"/>
         <source>Locked by %1</source>
         <translation>Låst av %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1376"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1412"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
         <translation><numerusform>Går ut om %1 minut</numerusform><numerusform>Går ut om %1 minuter</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1385"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
         <translation>Tillämpa etiketter</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1532"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
         <source>Resolve conflict …</source>
         <translation>Lös konflikt …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1536"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="228"/>
         <source>Move and rename …</source>
         <translation>Flytta och byt namn …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1539"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="229"/>
         <source>Move, rename and upload …</source>
         <translation>Flytta, byt namn och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1541"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="230"/>
         <source>Delete local changes</source>
         <translation>Radera lokala ändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1547"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="231"/>
         <source>Move and upload …</source>
         <translation>Flytta och ladda upp …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1548"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1584"/>
         <source>Delete</source>
         <translation>Ta bort</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1287"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="223"/>
         <source>Copy internal link</source>
         <translation>Kopiera intern länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1501"/>
-        <location filename="../src/gui/socketapi/socketapi.cpp" line="1503"/>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="222"/>
         <source>Open in browser</source>
         <translation>Öppna i webbläsare</translation>
     </message>
@@ -8306,119 +8383,119 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="25"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
         <source>Virtual file created</source>
         <translation>Virtuell fil skapad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="27"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
         <source>Replaced by virtual file</source>
         <translation>Ersatt av virtuell fil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="29"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
         <translation>Hämtats</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>Uppladdad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
         <translation>Serverversion hämtad, kopierade den ändrade lokala filen till konfliktfil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
         <translation>Serverversionen har laddats ner, den ändrade lokala filen har kopierats in i en fil för skiftlägeskonflikt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Deleted</source>
         <translation>Raderad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Moved to %1</source>
         <translation>Flyttad till %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Ignored</source>
         <translation>Ignorerad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Filesystem access error</source>
         <translation>Åtkomstfel till filsystemet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Updated local metadata</source>
         <translation>Uppdaterade lokal metadata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Updated local virtual files metadata</source>
         <translation>Uppdaterad metadata för lokala virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
         <source>Updated end-to-end encryption metadata</source>
         <translation>Uppdaterade metadata för ände-till-ände-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="57"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
         <source>Unknown</source>
         <translation>Okänt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="71"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>Downloading</source>
         <translation>Laddar ner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>Uploading</source>
         <translation>Laddar upp</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>Deleting</source>
         <translation>Raderar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>Moving</source>
         <translation>Flyttar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>Ignoring</source>
         <translation>Ignorerar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
         <source>Updating local metadata</source>
         <translation>Uppdaterar lokal metadata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="88"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
         <source>Updating local virtual files metadata</source>
         <translation>Uppdaterar lokala virtuella filers metadata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="90"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="92"/>
         <source>Updating end-to-end encryption metadata</source>
         <translation>Uppdaterar metadata för ände-till-ände-kryptering</translation>
     </message>
@@ -8519,22 +8596,32 @@ Servern svarade med fel: %2</translation>
         <translation>Endast tillgänglig online</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <location filename="../src/gui/guiutility.cpp" line="107"/>
         <source>Make always available locally</source>
         <translation>Gör alltid tillgänglig lokalt</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="110"/>
+        <location filename="../src/gui/guiutility.cpp" line="109"/>
+        <source>Make Always Available Locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="117"/>
         <source>Free up local space</source>
         <translation>Frigör lokalt utrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="133"/>
+        <location filename="../src/gui/guiutility.cpp" line="119"/>
+        <source>Free Up Local Space</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="143"/>
         <source>Enable experimental feature?</source>
         <translation>Aktivera experimentell funktion?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="134"/>
+        <location filename="../src/gui/guiutility.cpp" line="144"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -8551,12 +8638,12 @@ Om du byter till det här läget avbryts all pågående synkronisering.
 Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda det, rapportera eventuella problem som dyker upp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="149"/>
+        <location filename="../src/gui/guiutility.cpp" line="159"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Aktivera experimentellt platshållarläge</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="150"/>
+        <location filename="../src/gui/guiutility.cpp" line="160"/>
         <source>Stay safe</source>
         <translation>Var försiktig</translation>
     </message>

@@ -57,6 +57,7 @@ extension Enumerator {
                 do {
                     let metadata = try await attemptInvalidParentRecovery(
                         error: error,
+                        itemMetadatas: itemMetadatas,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
@@ -148,7 +149,9 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) {
-        let deletedFileProviderItemIdentifiers = deleted.map { NSFileProviderItemIdentifier($0.ocId) }
+        let deletedFileProviderItemIdentifiers = deleted.compactMap {
+            $0.ocId.isEmpty ? nil : NSFileProviderItemIdentifier($0.ocId)
+        }
 
         // Per-item trace so a debug archive can reconstruct exactly which items each batch carried.
         for metadata in updated {
@@ -216,6 +219,7 @@ extension Enumerator {
                 do {
                     let metadata = try await attemptInvalidParentRecovery(
                         error: error,
+                        itemMetadatas: updated,
                         account: account,
                         remoteInterface: remoteInterface,
                         dbManager: dbManager
@@ -243,18 +247,21 @@ extension Enumerator {
 
     func attemptInvalidParentRecovery(
         error: NSError,
+        itemMetadatas: [SendableItemMetadata],
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) async throws -> SendableItemMetadata {
         logger.info("Attempting recovery from invalid parent identifier.")
-        // Try to recover from errors involving missing metadata for a parent
-        let userInfoKey =
-            FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
-        guard let urlToEnumerate = (error as NSError).userInfo[userInfoKey] as? String else {
-            logger.fault("No missing parent server url and filename in error user info.")
-            assertionFailure()
-            throw NSError()
+        let parentURLKey = FilesDatabaseManager.ErrorUserInfoKey.missingParentServerUrlAndFileName.rawValue
+        guard let urlToEnumerate = error.userInfo[parentURLKey] as? String,
+              let childIdentifier = error.userInfo[FilesDatabaseManager.missingParentChildIdentifierKey] as? String,
+              let child = itemMetadatas.first(where: {
+                  $0.ocId == childIdentifier && $0.serverUrl.utf8.elementsEqual(urlToEnumerate.utf8)
+              })
+        else {
+            logger.error("Could not identify the child whose parent metadata is missing.")
+            throw error
         }
 
         logger.info("Recovering from invalid parent identifier at \(urlToEnumerate)")
@@ -262,6 +269,7 @@ extension Enumerator {
         let readResult = await Enumerator.readServerUrl(
             urlToEnumerate,
             account: account,
+            sourceMetadata: child,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             depth: .target,
