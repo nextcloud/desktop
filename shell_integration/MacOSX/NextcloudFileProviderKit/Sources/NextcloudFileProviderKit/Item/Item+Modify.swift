@@ -424,7 +424,7 @@ public extension Item {
         // A package on the ignore list that keeps its name and folder is excluded here too, but without the warning, because a rename or move may take it off the list.
 
         let sourceRelativePath = account.filesRootRelativePath(for: modifiedItem.metadata.remotePath())
-        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let sourceIsExcluded = sourceRelativePath.map { ignoredFiles?.isExcluded($0, isDirectory: modifiedItem.metadata.directory) ?? false } ?? false
 
         if isBundleOrPackage {
             logger.info("Refusing to sync modification of bundle/package — feature not supported.", [.name: filename])
@@ -537,7 +537,7 @@ public extension Item {
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
         let destinationRelativePath = account.filesRootRelativePath(for: newServerUrlFileName)
-        let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
+        let destinationIsExcluded = destinationRelativePath.map { ignoredFiles?.isExcluded($0, isDirectory: modifiedItem.metadata.directory) ?? false } ?? false
 
         logger.debug("About to modify item.", [.item: modifiedItem])
 
