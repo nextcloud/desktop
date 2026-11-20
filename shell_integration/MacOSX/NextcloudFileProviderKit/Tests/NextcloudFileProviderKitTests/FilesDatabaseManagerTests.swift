@@ -1811,7 +1811,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(storedFresh.deleted, "Fresh ocId row should be persisted")
     }
 
-    func testDepth1ReadDoesNotEvictInFlightSibling() throws {
+    func testDepth1ReadDefersReplacementDuringUpload() throws {
         let account = Self.account
 
         var rootMetadata = SendableItemMetadata(ocId: "root", fileName: "", account: account)
@@ -1832,17 +1832,19 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         var fresh = SendableItemMetadata(ocId: "freshOcId", fileName: "upload-in-progress.bin", account: account)
         fresh.uploaded = true
 
-        _ = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            serverUrl: account.davFilesUrl,
-            updatedMetadatas: [rootMetadata, fresh],
-            keepExistingDownloadState: true
-        )
+        for listing in [[rootMetadata, fresh], [fresh]] {
+            let update = Self.dbManager.depth1ReadUpdateItemMetadatas(
+                serverUrl: account.davFilesUrl,
+                updatedMetadatas: listing,
+                keepExistingDownloadState: true
+            )
+            let changes = try XCTUnwrap(update)
+            XCTAssertNil(Self.dbManager.itemMetadata(ocId: fresh.ocId))
+            XCTAssertFalse(changes.createdAndUpdated.contains { $0.ocId == fresh.ocId })
+        }
 
         let storedInFlight = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "uploading"))
         XCTAssertFalse(storedInFlight.deleted, "In-flight sibling should not be soft-deleted")
-
-        let storedFresh = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: "freshOcId"))
-        XCTAssertFalse(storedFresh.deleted, "Fresh row should be inserted alongside the in-flight one")
     }
 
     func testStartupCleanupDeduplicatesSeededDuplicate() throws {

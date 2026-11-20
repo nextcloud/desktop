@@ -72,8 +72,12 @@ extension Enumerator {
 
             let dbStart = clock.now
             do {
-                let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(itemMetadata)
-                metadatas.append(savedMetadata)
+                if let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(
+                    itemMetadata,
+                    isChildInDirectoryListing: true
+                ) {
+                    metadatas.append(savedMetadata)
+                }
             } catch {
                 logger.error("Could not persist the listed item.", [.item: itemMetadata.ocId, .error: error])
                 return (nil, .invalidData)
@@ -106,7 +110,8 @@ extension Enumerator {
     ) async -> (
         metadatas: [SendableItemMetadata]?,
         changes: ChangeSet?,
-        readError: NKError?
+        readError: NKError?,
+        omittedPendingUploadIDs: Set<String>
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
         let accountKey = dbManager.account.ncKitAccount
@@ -124,7 +129,7 @@ extension Enumerator {
                     log: log
                 )
             }
-            return (metadatas, nil, error)
+            return (metadatas, nil, error, [])
         }
 
         // Non-paginated path (older servers / change enumeration): conversion is parallelized and the
@@ -141,18 +146,18 @@ extension Enumerator {
 
         guard let (directory, _, children) = convertedDirectory else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
-            return (nil, nil, .invalidData)
+            return (nil, nil, .invalidData, [])
         }
 
         // STORE DATA FOR CURRENTLY SCANNED DIRECTORY
         guard directory.directory else {
             logger.error("Expected directory metadata but received file metadata!", [.url: serverUrl])
-            return (nil, nil, .invalidData)
+            return (nil, nil, .invalidData, [])
         }
 
         let listingMetadata = [directory] + children
 
-        guard !isCancelled() else { return (nil, nil, .cancelled) }
+        guard !isCancelled() else { return (nil, nil, .cancelled, []) }
         // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
         let (listingWriteResult, batchElapsed) = await dbManager.perform { dbManager in
             let batchClock = ContinuousClock()
@@ -186,11 +191,14 @@ extension Enumerator {
 
         guard let listingWriteResult else {
             logger.error("Could not persist directory metadata.", [.url: serverUrl])
-            return (nil, nil, .metadataDatabaseWriteFailed)
+            return (nil, nil, .metadataDatabaseWriteFailed, [])
         }
 
-        let listedItems = listingMetadata.map { listingWriteResult.itemMetadataToReportByID[$0.ocId] ?? $0 }
-        return (listedItems, listingWriteResult.changes, nil)
+        let listedItems = listingMetadata.compactMap { metadata -> SendableItemMetadata? in
+            guard !listingWriteResult.itemIDsToOmitFromListing.contains(metadata.ocId) else { return nil }
+            return listingWriteResult.itemMetadataToReportByID[metadata.ocId] ?? metadata
+        }
+        return (listedItems, listingWriteResult.changes, nil, listingWriteResult.itemIDsToOmitFromListing)
     }
 
     /// READ THIS CAREFULLY.
@@ -386,6 +394,7 @@ extension Enumerator {
             let result = RemoteReadResult(
                 metadatas: depth1Read.metadatas,
                 changes: depth1Read.changes,
+                omittedPendingUploadIDs: depth1Read.omittedPendingUploadIDs,
                 nextPage: nextPage,
                 error: depth1Read.readError
             )

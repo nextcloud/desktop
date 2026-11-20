@@ -222,7 +222,8 @@ extension Enumerator {
 
                     // Reading a directory's children does not by itself require scanning each child's own
                     // children. Track which children this read has already accounted for.
-                    var childrenCoveredByThisRead = Set<String>()
+                    var childrenCoveredByThisRead = readResult.omittedPendingUploadIDs
+                    listedOcIds.formUnion(readResult.omittedPendingUploadIDs)
 
                     if let readItems = readResult.metadatas, let readTarget = readItems.first {
                         listedOcIds.formUnion(readItems.map(\.ocId))
