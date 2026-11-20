@@ -4,6 +4,15 @@
  */
 
 #include "assistantcontroller.h"
+#include "assistantattachment.h"
+#include "common/utility.h"
+
+#include <QHash>
+#include <QRegularExpression>
+#include <QTextBlock>
+#include <QTextCursor>
+#include <QTextDocument>
+#include <QTextFragment>
 
 #include "account.h"
 #include "assistantclient.h"
@@ -78,6 +87,153 @@ QJsonDocument chatDataFromResponse(const QJsonDocument &json)
 }
 }
 
+QVariantList AssistantController::pendingActions() const
+{
+    return _pendingActions;
+}
+
+void AssistantController::setPendingActions(const QVariantList &actions)
+{
+    if (_pendingActions == actions) {
+        return;
+    }
+    _pendingActions = actions;
+    Q_EMIT pendingActionsChanged();
+}
+
+void AssistantController::answerPendingActions(bool confirm)
+{
+    if (_pendingActions.isEmpty() || _selectedChatConversationId <= 0 || _requestInProgress || !selectedTaskTypeIsChat() || !assistantEnabled()
+        || !accountConnected()) {
+        return;
+    }
+    if (confirm) {
+        for (const auto &value : _pendingActions) {
+            const auto action = QJsonObject::fromVariantMap(value.toMap());
+            if (action.value("name"_L1).toString().isEmpty() || !action.value("args"_L1).isObject()) {
+                return;
+            }
+        }
+    }
+    const auto generation = beginRequest();
+    _agencyConfirm = confirm ? 1 : 0;
+    _error.clear();
+    Q_EMIT errorChanged();
+    setRequestInProgress(true);
+    _client->createChatMessage(_selectedChatConversationId, u"human"_s, {}, QDateTime::currentSecsSinceEpoch(), false, generation);
+}
+
+QObject *AssistantController::createAttachment(const QVariantMap &attachment, QObject *owner)
+{
+    const auto fileId = attachment.value(u"fileId"_s).toLongLong();
+    if (!owner || fileId <= 0) {
+        return nullptr;
+    }
+    return new AssistantAttachment(_account, fileId, attachment.value(u"taskId"_s, -1).toLongLong(), owner);
+}
+
+QVariantList AssistantController::chatAttachments(const QString &text, const QVariantList &attachments) const
+{
+    auto result = attachments;
+    auto fileRows = QHash<qint64, qsizetype>{};
+    for (auto row = qsizetype{0}; row < result.size(); ++row) {
+        fileRows.insert(result.at(row).toMap().value(u"fileId"_s).toLongLong(), row);
+    }
+    const auto base = Utility::concatUrlPath(_account->url(), u"/"_s);
+    const auto filePath = QRegularExpression{u"^%1(?:index\\.php/)?f/([1-9][0-9]*)/?$"_s.arg(QRegularExpression::escape(base.path()))};
+    const auto taskPaths = QList<QRegularExpression>{
+        QRegularExpression{
+            u"^%1ocs/v2\\.php/apps/assistant/api/v1/task/([1-9][0-9]*)/output-file/([1-9][0-9]*)/download/?$"_s.arg(QRegularExpression::escape(base.path()))},
+        QRegularExpression{u"^%1ocs/v2\\.php/taskprocessing/tasks/([1-9][0-9]*)/file/([1-9][0-9]*)/?$"_s.arg(QRegularExpression::escape(base.path()))},
+    };
+    auto document = QTextDocument{};
+    document.setMarkdown(text);
+    for (auto block = document.begin(); block.isValid(); block = block.next()) {
+        for (auto it = block.begin(); !it.atEnd(); ++it) {
+            const auto format = it.fragment().charFormat();
+            if (!format.isAnchor()) {
+                continue;
+            }
+            const auto url = chatLinkUrl(format.anchorHref());
+            if (url.scheme() != base.scheme() || url.host() != base.host() || url.port() != base.port()) {
+                continue;
+            }
+            const auto match = filePath.match(url.path());
+            auto fileId = match.hasMatch() ? match.captured(1).toLongLong() : -1;
+            auto taskId = qint64{-1};
+            for (const auto &taskPath : taskPaths) {
+                const auto taskMatch = taskPath.match(url.path());
+                if (taskMatch.hasMatch()) {
+                    taskId = taskMatch.captured(1).toLongLong();
+                    fileId = taskId > 0 ? taskMatch.captured(2).toLongLong() : -1;
+                    break;
+                }
+            }
+            if (fileId <= 0) {
+                continue;
+            }
+            if (fileRows.contains(fileId)) {
+                auto attachment = result.at(fileRows.value(fileId)).toMap();
+                if (taskId > 0 && attachment.value(u"taskId"_s, -1).toLongLong() <= 0) {
+                    attachment.insert(u"taskId"_s, taskId);
+                    result[fileRows.value(fileId)] = attachment;
+                }
+                continue;
+            }
+            fileRows.insert(fileId, result.size());
+            result.append(QVariantMap{{u"fileId"_s, fileId}, {u"taskId"_s, taskId}, {u"type"_s, u"File"_s}});
+        }
+    }
+    return result;
+}
+
+QUrl AssistantController::chatLinkUrl(const QString &link) const
+{
+    if (link.trimmed().isEmpty()) {
+        return {};
+    }
+    const auto base = Utility::concatUrlPath(_account->url(), u"/"_s);
+    const auto url = base.resolved(QUrl(link));
+    if (!url.isValid() || url.host().isEmpty() || !url.userInfo().isEmpty() || (url.scheme() != "https"_L1 && url.scheme() != "http"_L1)) {
+        return {};
+    }
+    return url;
+}
+
+void AssistantController::styleChatLinks(QQuickTextDocument *document, const QColor &color) const
+{
+    if (!document || !document->textDocument() || !color.isValid()) {
+        return;
+    }
+    const auto textDocument = document->textDocument();
+    auto links = QList<QTextCursor>{};
+    for (auto block = textDocument->begin(); block.isValid(); block = block.next()) {
+        for (auto it = block.begin(); !it.atEnd(); ++it) {
+            const auto fragment = it.fragment();
+            const auto format = fragment.charFormat();
+            if (!format.isAnchor() || format.anchorHref().isEmpty() || (format.foreground().color() == color && format.fontUnderline())) {
+                continue;
+            }
+            auto cursor = QTextCursor{textDocument};
+            cursor.setPosition(fragment.position());
+            cursor.setPosition(fragment.position() + fragment.length(), QTextCursor::KeepAnchor);
+            links.append(cursor);
+        }
+    }
+    if (links.isEmpty()) {
+        return;
+    }
+    auto format = QTextCharFormat{};
+    format.setForeground(color);
+    format.setFontUnderline(true);
+    auto edit = QTextCursor{textDocument};
+    edit.beginEditBlock();
+    for (auto &link : links) {
+        link.mergeCharFormat(format);
+    }
+    edit.endEditBlock();
+}
+
 AssistantController::AssistantController(const AccountStatePtr &accountState, QObject *parent)
     : AssistantController(accountState, nullptr, parent)
 {
@@ -107,6 +263,7 @@ AssistantController::AssistantController(const AccountStatePtr &accountState, As
     connect(_client, &AssistantClient::taskScheduled, this, &AssistantController::slotTaskScheduled);
     connect(_client, &AssistantClient::taskDeleted, this, &AssistantController::slotTaskDeleted);
     connect(_client, &AssistantClient::chatConversationsFetched, this, &AssistantController::slotChatConversationsFetched);
+    connect(_client, &AssistantClient::chatConversationDeleted, this, &AssistantController::slotChatConversationDeleted);
     connect(_client, &AssistantClient::chatMessagesFetched, this, &AssistantController::slotChatMessagesFetched);
     connect(_client, &AssistantClient::chatConversationCreated, this, &AssistantController::slotChatConversationCreated);
     connect(_client, &AssistantClient::chatMessageCreated, this, &AssistantController::slotChatMessageCreated);
@@ -253,6 +410,7 @@ void AssistantController::selectTaskType(const QString &taskTypeId)
     }
 
     _messages.clear();
+    setPendingActions({});
     refreshTasks(requestGeneration);
 }
 
@@ -289,6 +447,7 @@ void AssistantController::selectChatConversation(qint64 conversationId)
     Q_EMIT selectedChatConversationChanged();
 
     _messages.clear();
+    setPendingActions({});
     setShowRetryResponseGeneration(false);
     _chatMessageTaskId = -1;
     _chatPollAttempts = 0;
@@ -300,6 +459,21 @@ void AssistantController::selectChatConversation(qint64 conversationId)
     }
 }
 
+void AssistantController::deleteChatConversation(qint64 conversationId)
+{
+    if (conversationId <= 0 || !_chatConversations.contains(conversationId) || _requestInProgress || !selectedTaskTypeIsChat() || !assistantEnabled()
+        || !accountConnected()) {
+        return;
+    }
+    const auto showRetry = _showRetryResponseGeneration;
+    const auto requestGeneration = beginRequest();
+    setShowRetryResponseGeneration(showRetry);
+    _error.clear();
+    Q_EMIT errorChanged();
+    setRequestInProgress(true);
+    _client->deleteChatConversation(conversationId, requestGeneration);
+}
+
 void AssistantController::startNewChat()
 {
     beginRequest();
@@ -307,6 +481,7 @@ void AssistantController::startNewChat()
     _selectedChatConversationTitle.clear();
     _chatConversations.select(-1);
     _messages.clear();
+    setPendingActions({});
     _response.clear();
     _error.clear();
     _chatMessageTaskId = -1;
@@ -322,7 +497,7 @@ void AssistantController::startNewChat()
 
 void AssistantController::retryResponseGeneration()
 {
-    if (_selectedChatConversationId > 0) {
+    if (_selectedChatConversationId > 0 && _pendingActions.isEmpty() && !_requestInProgress) {
         startChatGeneration(_selectedChatConversationId, beginRequest());
     }
 }
@@ -382,6 +557,7 @@ void AssistantController::clear()
     _response.clear();
     _error.clear();
     _messages.clear();
+    setPendingActions({});
     setRequestInProgress(false);
     setThinking(false);
     setShowRetryResponseGeneration(false);
@@ -394,6 +570,8 @@ void AssistantController::clear()
 quint64 AssistantController::beginRequest()
 {
     ++_requestGeneration;
+    _agencyConfirm = -1;
+    _actionDecisionInFlight = false;
     _client->cancelRequests();
     _taskPollTimer.stop();
     _chatPollTimer.stop();
@@ -445,10 +623,12 @@ void AssistantController::pollChatGeneration()
         return;
     }
     if (_chatPollAttempts >= _maxChatPollAttempts) {
+        const auto decisionInFlight = _actionDecisionInFlight;
         beginRequest();
         setRequestInProgress(false);
-        setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
-        _error = tr("No response yet. Please try again later.");
+        setShowRetryResponseGeneration(!decisionInFlight && _messages.lastMessageIsHuman());
+        _error = decisionInFlight ? tr("The action result is not available yet. Reload the conversation to check its status.")
+                                  : tr("No response yet. Please try again later.");
         Q_EMIT errorChanged();
         return;
     }
@@ -474,6 +654,7 @@ void AssistantController::slotTaskTypesFetched(quint64 requestGeneration, const 
         _tasks.clear();
         _chatConversations.clear();
         _messages.clear();
+        setPendingActions({});
         _selectedChatConversationId = -1;
         _selectedChatConversationTitle.clear();
         Q_EMIT selectedChatConversationChanged();
@@ -587,10 +768,35 @@ void AssistantController::slotChatConversationsFetched(quint64 requestGeneration
         _selectedChatConversationId = -1;
         _selectedChatConversationTitle.clear();
         _messages.clear();
+        setPendingActions({});
         setShowRetryResponseGeneration(false);
         Q_EMIT selectedChatConversationChanged();
     }
+    if (_selectedChatConversationId > 0) {
+        loadChatMessages(_selectedChatConversationId, requestGeneration);
+        return;
+    }
     setRequestInProgress(false);
+}
+
+void AssistantController::slotChatConversationDeleted(quint64 requestGeneration, qint64 conversationId, const QJsonDocument &json, int statusCode)
+{
+    if (requestGeneration != _requestGeneration) {
+        return;
+    }
+    if (json.isNull() || chatReplyStatus(json, statusCode) != ChatReplyStatus::Success) {
+        const auto showRetry = _showRetryResponseGeneration;
+        requestFailed(u"deleteChatConversation"_s, statusCode);
+        setShowRetryResponseGeneration(showRetry);
+        return;
+    }
+
+    _chatConversations.remove(conversationId);
+    if (_selectedChatConversationId == conversationId) {
+        startNewChat();
+    } else {
+        setRequestInProgress(false);
+    }
 }
 
 void AssistantController::slotChatMessagesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode)
@@ -653,6 +859,7 @@ void AssistantController::slotChatMessageCreated(quint64 requestGeneration, cons
         return;
     }
     _messages.append(response.object());
+    setPendingActions({});
     startChatGeneration(_selectedChatConversationId, requestGeneration);
 }
 
@@ -697,11 +904,14 @@ void AssistantController::slotChatGenerationChecked(quint64 requestGeneration, c
 
     const auto message = response.object();
     if (message.value("role"_L1).toString() != "assistant"_L1 || !message.value("content"_L1).isString()) {
+        const auto decisionInFlight = _actionDecisionInFlight;
         requestFailed(QStringLiteral("checkChatGenerationResponse"), statusCode);
-        setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
+        setShowRetryResponseGeneration(!decisionInFlight && _messages.lastMessageIsHuman());
         return;
     }
+    _actionDecisionInFlight = false;
     _messages.append(message);
+    setPendingActions(message.value("sessionAgencyPendingActions"_L1).toArray().toVariantList());
     _chatMessageTaskId = -1;
     _chatPollTimer.stop();
     setThinking(false);
@@ -720,6 +930,7 @@ void AssistantController::slotChatSessionChecked(quint64 requestGeneration, cons
     }
 
     const auto session = response.object();
+    setPendingActions(session.value("sessionAgencyPendingActions"_L1).toArray().toVariantList());
     const auto sessionTitle = session.value("sessionTitle"_L1).toString();
     if (!sessionTitle.isEmpty() && _selectedChatConversationTitle != sessionTitle) {
         _selectedChatConversationTitle = sessionTitle;
@@ -738,7 +949,7 @@ void AssistantController::slotChatSessionChecked(quint64 requestGeneration, cons
         return;
     }
 
-    setShowRetryResponseGeneration(_messages.lastMessageIsHuman());
+    setShowRetryResponseGeneration(_pendingActions.isEmpty() && _messages.lastMessageIsHuman());
     setRequestInProgress(false);
 }
 
@@ -829,15 +1040,20 @@ void AssistantController::startChatGeneration(qint64 conversationId, quint64 req
     setRequestInProgress(true);
     setThinking(true);
     setShowRetryResponseGeneration(false);
-    _client->generateChatSession(conversationId, requestGeneration);
+    _actionDecisionInFlight = _agencyConfirm >= 0;
+    _client->generateChatSession(conversationId, requestGeneration, std::exchange(_agencyConfirm, -1));
 }
 
 void AssistantController::requestFailed(const QString &context, int statusCode)
 {
+    const auto decisionInFlight = _actionDecisionInFlight;
     beginRequest();
     setRequestInProgress(false);
     //: %1 is the HTTP status code returned by the server.
     _error = tr("Assistant request failed (%1).").arg(statusCode);
+    if (decisionInFlight) {
+        _error = tr("The action result could not be retrieved. Reload the conversation to check its status.");
+    }
     Q_EMIT errorChanged();
     qCWarning(lcAssistantController) << "Assistant request error:" << context << statusCode;
 }

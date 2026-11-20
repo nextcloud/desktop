@@ -68,6 +68,24 @@ void AssistantClient::fetchChatConversations(quint64 requestGeneration)
     _chatConversationsJob->start();
 }
 
+void AssistantClient::deleteChatConversation(qint64 conversationId, quint64 requestGeneration)
+{
+    if (_deleteChatConversationJob || conversationId <= 0) {
+        return;
+    }
+
+    _deleteChatConversationJob = new JsonApiJob(_account, u"/ocs/v2.php/apps/assistant/chat/delete_session"_s, this);
+    _deleteChatConversationJob->setVerb(SimpleApiJob::Verb::Delete);
+    auto params = QUrlQuery{};
+    params.addQueryItem(u"sessionId"_s, QString::number(conversationId));
+    _deleteChatConversationJob->addQueryParams(params);
+    connect(_deleteChatConversationJob, &JsonApiJob::jsonReceived, this, [this, conversationId, requestGeneration](const QJsonDocument &json, int statusCode) {
+        _deleteChatConversationJob = nullptr;
+        Q_EMIT chatConversationDeleted(requestGeneration, conversationId, json, statusCode);
+    });
+    _deleteChatConversationJob->start();
+}
+
 void AssistantClient::fetchChatMessages(qint64 conversationId, quint64 requestGeneration)
 {
     if (_chatMessagesJob) {
@@ -135,7 +153,7 @@ void AssistantClient::createChatMessage(qint64 sessionId,
     _createChatMessageJob->start();
 }
 
-void AssistantClient::generateChatSession(qint64 conversationId, quint64 requestGeneration)
+void AssistantClient::generateChatSession(qint64 conversationId, quint64 requestGeneration, int agencyConfirm)
 {
     if (_generateChatSessionJob) {
         return;
@@ -144,6 +162,9 @@ void AssistantClient::generateChatSession(qint64 conversationId, quint64 request
     _generateChatSessionJob = new JsonApiJob(_account, u"/ocs/v2.php/apps/assistant/chat/generate"_s, this);
     auto params = QUrlQuery{};
     params.addQueryItem(QStringLiteral("sessionId"), QString::number(conversationId));
+    if (agencyConfirm >= 0) {
+        params.addQueryItem(u"agencyConfirm"_s, QString::number(agencyConfirm));
+    }
     _generateChatSessionJob->addQueryParams(params);
     connect(_generateChatSessionJob, &JsonApiJob::jsonReceived, this, [this, requestGeneration](const QJsonDocument &json, int statusCode) {
         _generateChatSessionJob = nullptr;
@@ -202,6 +223,7 @@ void AssistantClient::cancelRequests()
         job = nullptr;
     };
     cancelJob(_chatConversationsJob);
+    cancelJob(_deleteChatConversationJob);
     cancelJob(_chatMessagesJob);
     cancelJob(_createChatConversationJob);
     cancelJob(_createChatMessageJob);

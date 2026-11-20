@@ -78,6 +78,20 @@ void AssistantConversationModel::prepend(const QJsonObject &conversation, qint64
     endInsertRows();
 }
 
+void AssistantConversationModel::remove(qint64 conversationId)
+{
+    const auto it = std::find_if(_items.cbegin(), _items.cend(), [conversationId](const Item &item) {
+        return item.conversationId == conversationId;
+    });
+    if (it == _items.cend()) {
+        return;
+    }
+    const auto row = static_cast<int>(std::distance(_items.cbegin(), it));
+    beginRemoveRows({}, row, row);
+    _items.removeAt(row);
+    endRemoveRows();
+}
+
 void AssistantConversationModel::clear()
 {
     if (_items.isEmpty()) {

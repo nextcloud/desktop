@@ -44,6 +44,13 @@ void FakeAssistantClient::fetchChatConversations(quint64 requestGeneration)
     lastChatConversationsGeneration = requestGeneration;
 }
 
+void FakeAssistantClient::deleteChatConversation(qint64 conversationId, quint64 requestGeneration)
+{
+    ++deleteChatConversationCount;
+    lastDeletedConversationId = conversationId;
+    lastChatConversationDeleteGeneration = requestGeneration;
+}
+
 void FakeAssistantClient::fetchChatMessages(qint64 conversationId, quint64 requestGeneration)
 {
     lastChatMessagesConversationId = conversationId;
@@ -74,9 +81,10 @@ void FakeAssistantClient::createChatMessage(qint64 sessionId,
     Q_UNUSED(timestamp)
 }
 
-void FakeAssistantClient::generateChatSession(qint64 conversationId, quint64 requestGeneration)
+void FakeAssistantClient::generateChatSession(qint64 conversationId, quint64 requestGeneration, int agencyConfirm)
 {
     ++generateChatSessionCount;
+    lastAgencyConfirm = agencyConfirm;
     lastGeneratedConversationId = conversationId;
     lastChatSessionGeneration = requestGeneration;
 }
@@ -126,6 +134,11 @@ void FakeAssistantClient::deliverTaskDeleted(quint64 requestGeneration, int stat
 void FakeAssistantClient::deliverChatConversations(quint64 requestGeneration, const QJsonDocument &json, int statusCode)
 {
     Q_EMIT chatConversationsFetched(requestGeneration, json, statusCode);
+}
+
+void FakeAssistantClient::deliverChatConversationDeleted(quint64 requestGeneration, qint64 conversationId, const QJsonDocument &json, int statusCode)
+{
+    Q_EMIT chatConversationDeleted(requestGeneration, conversationId, json, statusCode);
 }
 
 void FakeAssistantClient::deliverChatMessages(quint64 requestGeneration, const QJsonDocument &json, int statusCode)

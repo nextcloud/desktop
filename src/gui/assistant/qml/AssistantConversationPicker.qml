@@ -15,6 +15,14 @@ ComboBox {
 
     required property NC.AssistantController assistantController
 
+    signal deleteRequested(double conversationId, string title)
+
+    function requestDeletion(conversationId, title) {
+        // Closing the popup destroys its delegates, so continue in the picker's context.
+        root.popup.close()
+        root.deleteRequested(conversationId, title)
+    }
+
     model: root.assistantController.chatConversations
     textRole: "title"
     valueRole: "conversationId"
@@ -22,17 +30,25 @@ ComboBox {
     displayText: root.assistantController.selectedChatConversationTitle.length > 0
         ? root.assistantController.selectedChatConversationTitle
         : qsTr("No conversation selected")
+    implicitWidth: 0
     implicitHeight: Style.standardPrimaryButtonHeight
     font.pixelSize: Style.assistantControlFontPixelSize
     Accessible.name: qsTr("Selected conversation")
     onActivated: root.assistantController.selectChatConversation(currentValue)
 
-    contentItem: Text {
-        text: root.displayText
+    Keys.onDeletePressed: event => {
+        const row = conversationList.currentItem
+        if (root.popup.visible && row && row.canDelete) {
+            root.requestDeletion(row.conversationId, row.title)
+        } else {
+            event.accepted = false
+        }
+    }
+
+    contentItem: AssistantConversationTitle {
+        fullTitle: root.displayText
         font: root.font
         color: root.enabled ? Style.wizardPrimaryText : Style.wizardDisabledText
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
     }
 
     indicator: Image {
@@ -62,6 +78,10 @@ ComboBox {
         pickerFont: root.font
         pickerHighlightedIndex: root.highlightedIndex
         pickerWidth: root.width
+        canDelete: root.assistantController.assistantEnabled
+            && root.assistantController.accountConnected
+            && !root.assistantController.requestInProgress
+        onDeleteRequested: (conversationId, title) => root.requestDeletion(conversationId, title)
     }
 
     popup: Popup {
@@ -71,6 +91,8 @@ ComboBox {
         padding: Style.assistantPopupPadding
 
         contentItem: ListView {
+            id: conversationList
+            objectName: "assistantConversationDropdownList"
             clip: true
             implicitHeight: Math.min(contentHeight,
                 Style.standardPrimaryButtonHeight * Style.assistantConversationMaximumVisibleItems)

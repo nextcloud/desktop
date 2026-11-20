@@ -37,6 +37,8 @@ public:
 
     /** @brief Requests the account's Assistant chat conversations. */
     virtual void fetchChatConversations(quint64 requestGeneration);
+    /** @brief Deletes a chat conversation and its messages from the server. */
+    virtual void deleteChatConversation(qint64 conversationId, quint64 requestGeneration);
     /** @brief Requests the messages of a chat conversation. */
     virtual void fetchChatMessages(qint64 conversationId, quint64 requestGeneration);
     /** @brief Creates a chat conversation. */
@@ -45,7 +47,7 @@ public:
     virtual void
     createChatMessage(qint64 sessionId, const QString &role, const QString &content, qint64 timestamp, bool firstHumanMessage, quint64 requestGeneration);
     /** @brief Starts response generation for a chat conversation. */
-    virtual void generateChatSession(qint64 conversationId, quint64 requestGeneration);
+    virtual void generateChatSession(qint64 conversationId, quint64 requestGeneration, int agencyConfirm = -1);
     /** @brief Checks a running chat response-generation task. */
     virtual void checkChatGeneration(qint64 taskId, qint64 sessionId, quint64 requestGeneration);
     /** @brief Requests the current generation state of a chat conversation. */
@@ -59,6 +61,7 @@ Q_SIGNALS:
     void taskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void taskDeleted(quint64 requestGeneration, int statusCode);
     void chatConversationsFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void chatConversationDeleted(quint64 requestGeneration, qint64 conversationId, const QJsonDocument &json, int statusCode);
     void chatMessagesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void chatConversationCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void chatMessageCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
@@ -74,6 +77,7 @@ private:
     AccountPtr _account;
     OcsAssistantConnector *_taskConnector = nullptr;
     QPointer<JsonApiJob> _chatConversationsJob;
+    QPointer<JsonApiJob> _deleteChatConversationJob;
     QPointer<JsonApiJob> _chatMessagesJob;
     QPointer<JsonApiJob> _createChatConversationJob;
     QPointer<JsonApiJob> _createChatMessageJob;

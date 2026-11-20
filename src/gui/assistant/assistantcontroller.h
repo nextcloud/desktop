@@ -12,9 +12,13 @@
 #include "assistanttasktypemodel.h"
 
 #include <QAbstractItemModel>
+#include <QColor>
 #include <QJsonDocument>
 #include <QObject>
+#include <QQuickTextDocument>
 #include <QTimer>
+#include <QUrl>
+#include <QVariantMap>
 
 namespace OCC
 {
@@ -29,6 +33,7 @@ class AssistantController final : public QObject
     Q_PROPERTY(QAbstractItemModel *tasks READ tasks CONSTANT)
     Q_PROPERTY(QAbstractItemModel *chatConversations READ chatConversations CONSTANT)
     Q_PROPERTY(QAbstractItemModel *messages READ messages CONSTANT)
+    Q_PROPERTY(QVariantList pendingActions READ pendingActions NOTIFY pendingActionsChanged)
     Q_PROPERTY(QString question READ question NOTIFY questionChanged)
     Q_PROPERTY(QString response READ response NOTIFY responseChanged)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
@@ -87,7 +92,21 @@ public:
     /** @brief Returns whether retrying chat response generation is available. */
     [[nodiscard]] bool showRetryResponseGeneration() const;
 
+    /** @brief Returns the selected conversation's actions awaiting a decision. */
+    [[nodiscard]] QVariantList pendingActions() const;
+
+    /** @brief Creates an attachment loader owned by its QML card. */
+    Q_INVOKABLE QObject *createAttachment(const QVariantMap &attachment, QObject *owner);
+    /** @brief Adds same-account file links in Markdown to the server's attachment list. */
+    Q_INVOKABLE [[nodiscard]] QVariantList chatAttachments(const QString &text, const QVariantList &attachments) const;
+    /** @brief Resolves HTTP links against this account, rejecting other URL schemes. */
+    Q_INVOKABLE [[nodiscard]] QUrl chatLinkUrl(const QString &link) const;
+    /** @brief Colors and underlines chat links without changing their destinations or other formatting. */
+    Q_INVOKABLE void styleChatLinks(QQuickTextDocument *document, const QColor &color) const;
+
 public Q_SLOTS:
+    /** @brief Accepts or rejects the displayed pending actions. */
+    void answerPendingActions(bool confirm);
     /** @brief Loads task types and data for the selected type. */
     void loadData();
     /** @brief Selects a task type and loads its data. */
@@ -100,6 +119,8 @@ public Q_SLOTS:
     void retryTask(qint64 taskId);
     /** @brief Selects a chat conversation and loads its messages. */
     void selectChatConversation(qint64 conversationId);
+    /** @brief Deletes a conversation after user confirmation. */
+    void deleteChatConversation(qint64 conversationId);
     /** @brief Clears the selected conversation for a new chat. */
     void startNewChat();
     /** @brief Restarts response generation for the selected conversation. */
@@ -110,6 +131,7 @@ public Q_SLOTS:
     void clear();
 
 Q_SIGNALS:
+    void pendingActionsChanged();
     void questionChanged();
     void responseChanged();
     void errorChanged();
@@ -129,6 +151,7 @@ private Q_SLOTS:
     void slotTaskScheduled(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void slotTaskDeleted(quint64 requestGeneration, int statusCode);
     void slotChatConversationsFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
+    void slotChatConversationDeleted(quint64 requestGeneration, qint64 conversationId, const QJsonDocument &json, int statusCode);
     void slotChatMessagesFetched(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void slotChatConversationCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
     void slotChatMessageCreated(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
@@ -137,6 +160,7 @@ private Q_SLOTS:
     void slotChatSessionChecked(quint64 requestGeneration, const QJsonDocument &json, int statusCode);
 
 private:
+    void setPendingActions(const QVariantList &actions);
     quint64 beginRequest();
     void refreshTasks(quint64 requestGeneration);
     void submitChatMessage(const QString &message, quint64 requestGeneration);
@@ -150,6 +174,9 @@ private:
     void startChatGeneration(qint64 conversationId, quint64 requestGeneration);
     void requestFailed(const QString &context, int statusCode);
 
+    QVariantList _pendingActions;
+    int _agencyConfirm = -1;
+    bool _actionDecisionInFlight = false;
     AccountStatePtr _accountState;
     AccountPtr _account;
     AssistantClient *_client = nullptr;
