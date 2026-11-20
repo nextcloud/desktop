@@ -566,10 +566,6 @@ public final class FilesDatabaseManager: Sendable {
             if let existingMetadata = listedHere ?? storedElsewhereByOcId[updatedMetadata.ocId],
                listedHere != nil || !existingMetadata.hasSameLocation(as: updatedMetadata)
             {
-                if updatedMetadata.etag == existingMetadata.etag {
-                    updatedMetadata.fileProviderContentVersion = existingMetadata.fileProviderContentVersion
-                }
-
                 if listedHere == nil || (existingMetadata.status == Status.normal.rawValue && !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
@@ -577,13 +573,12 @@ public final class FilesDatabaseManager: Sendable {
                         directoriesNeedingRename.append(updatedMetadata)
                     }
 
-                    if keepExistingDownloadState {
-                        updatedMetadata.downloaded = existingMetadata.downloaded
-                    }
-
-                    updatedMetadata.visitedDirectory = existingMetadata.visitedDirectory
-                    updatedMetadata.keepDownloaded = existingMetadata.keepDownloaded
-                    updatedMetadata.lockToken = pathChanged ? nil : existingMetadata.lockToken
+                    updatedMetadata = existingMetadata.mergingRemoteMetadata(
+                        updatedMetadata,
+                        preserveVisitedDirectory: true,
+                        preserveDownloadState: keepExistingDownloadState,
+                        lock: pathChanged ? .clear : .preserveLocal
+                    )
 
                     returningUpdatedMetadatas.append(updatedMetadata)
 
@@ -729,9 +724,6 @@ public final class FilesDatabaseManager: Sendable {
                 if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
                     // A folder fetch publishes a deleted directory only after its downloads succeed.
                     let canUpdateTarget = !preserveDeletedTarget || !existing.deleted
-                    if readTargetMetadata.etag == existing.etag {
-                        readTargetMetadata.fileProviderContentVersion = existing.fileProviderContentVersion
-                    }
 
                     // `visitedDirectory` is local-only, so it takes no part in the remote-state
                     // comparison and is recorded separately from `metadatasToUpdate`, which is also
@@ -747,10 +739,12 @@ public final class FilesDatabaseManager: Sendable {
                        readTargetMoved || !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
-                        if keepExistingDownloadState {
-                            readTargetMetadata.downloaded = existing.downloaded
-                        }
-                        readTargetMetadata.keepDownloaded = existing.keepDownloaded
+                        readTargetMetadata = existing.mergingRemoteMetadata(
+                            readTargetMetadata,
+                            preserveVisitedDirectory: false,
+                            preserveDownloadState: keepExistingDownloadState,
+                            lock: .useIncoming
+                        )
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
@@ -977,6 +971,7 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    /// Preserves local pin, download and lock state, and visit state for child directories only.
     private func addItemMetadataPreservingLocalState(
         _ metadata: SendableItemMetadata,
         isTargetDirectory: Bool = false,
@@ -990,18 +985,14 @@ public final class FilesDatabaseManager: Sendable {
                 return existing.metadata
             }
 
-            toWrite.downloaded = existing.downloaded
-            toWrite.keepDownloaded = existing.keepDownloaded
-
+            toWrite = existing.mergingRemoteMetadata(
+                metadata,
+                preserveVisitedDirectory: !isTargetDirectory,
+                preserveDownloadState: true,
+                lock: .preserveLocal
+            )
             if isTargetDirectory {
                 toWrite.keepPermissionsListedByParent(from: existing)
-            } else {
-                toWrite.visitedDirectory = existing.visitedDirectory
-            }
-
-            toWrite.lockToken = existing.lockToken
-            if toWrite.etag == existing.etag {
-                toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
             }
 
             // An ocId lookup can find a moved or deleted row, so check location and deletion state.
@@ -1038,17 +1029,12 @@ public final class FilesDatabaseManager: Sendable {
                 .fetchRecords(db, logger: logger)
 
             if logicalCandidates.count == 1, let existing = logicalCandidates.first {
-                toWrite.downloaded = existing.downloaded
-                toWrite.keepDownloaded = existing.keepDownloaded
-
-                if !isTargetDirectory {
-                    toWrite.visitedDirectory = existing.visitedDirectory
-                }
-
-                toWrite.lockToken = existing.lockToken
-                if toWrite.etag == existing.etag {
-                    toWrite.fileProviderContentVersion = existing.fileProviderContentVersion
-                }
+                toWrite = existing.mergingRemoteMetadata(
+                    metadata,
+                    preserveVisitedDirectory: !isTargetDirectory,
+                    preserveDownloadState: true,
+                    lock: .preserveLocal
+                )
             } else {
                 // No prior row at this ocId or logical address: this is a
                 // genuinely new item. Inherit the parent's "Always keep
