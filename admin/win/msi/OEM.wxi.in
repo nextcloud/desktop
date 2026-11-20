@@ -38,6 +38,8 @@
     <!-- MSI upgrade support -->
     <?define UpgradeCode = "@WIN_MSI_UPGRADE_CODE@" ?>
 
+    <?define LegacyUpgradeCode = "@WIN_MSI_LEGACY_UPGRADE_CODE@" ?>
+
     <!-- UI resources -->
     <?define UIBannerBmp = "banner.bmp" ?>
     <?define UIDialogBmp = "dialog.bmp" ?>
