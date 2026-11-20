@@ -281,10 +281,19 @@ bool FileProviderXPC::processFileIdsChanged(const QString &fileProviderDomainIde
 
     __block auto processed = false;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [service processFileIdsChanged:nsFileIds completionHandler:^(BOOL didProcess) {
-        processed = didProcess;
+
+    // A connection that is gone reports an error at once, so the caller falls back without waiting for the timeout.
+    const auto connection = (__bridge NSXPCConnection *)clientCommConnection.xpcConnection;
+    const auto proxy = connection ? (NSObject<ClientCommunicationProtocol> *)[connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        qCWarning(lcFileProviderXPC) << "Could not reach file provider domain" << fileProviderDomainIdentifier << error.localizedDescription;
         dispatch_semaphore_signal(semaphore);
-    }];
+    }]
+                                  : service;
+    [proxy processFileIdsChanged:nsFileIds
+               completionHandler:^(BOOL didProcess) {
+                   processed = didProcess;
+                   dispatch_semaphore_signal(semaphore);
+               }];
 
     const auto waitResult = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
 

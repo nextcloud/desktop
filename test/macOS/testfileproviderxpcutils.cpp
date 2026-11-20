@@ -47,6 +47,7 @@ constexpr auto passwordDeletionReplyTimeout = std::chrono::seconds{1};
 constexpr auto passwordDeletionShortTimeout = std::chrono::milliseconds{50};
 constexpr auto latePasswordDeletionReplyDelay = std::chrono::milliseconds{200};
 constexpr auto setupTimeoutUpperBoundMs = 7000;
+constexpr auto brokenConnectionFallbackUpperBoundMs = 500;
 NSString *const communicationServiceName = @"com.nextcloud.desktopclient.ClientCommunicationService";
 
 NSArray<NSFileProviderDomain *> *discoveredDomains = nil;
@@ -266,6 +267,9 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @property (nonatomic, assign) NSTimeInterval passwordDeletionReplyDelay;
 @property (atomic, assign) NSUInteger passwordDeletionRequestCount;
 @property (atomic, assign) BOOL passwordDeletionReplied;
+@property (nonatomic, assign) BOOL processFileIdsReply;
+@property (nonatomic, assign) BOOL suppressProcessFileIdsReply;
+@property (nonatomic, strong) NSMutableArray<NSArray<NSNumber *> *> *receivedFileIdLists;
 @end
 
 @implementation TestClientCommunicationService
@@ -327,7 +331,11 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 - (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds completionHandler:(void (^)(BOOL))completionHandler
 {
-    completionHandler(NO);
+    [self.receivedFileIdLists addObject:fileIds];
+    if (self.suppressProcessFileIdsReply) {
+        return;
+    }
+    completionHandler(self.processFileIdsReply);
 }
 
 - (void)dealloc
@@ -345,6 +353,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @property (nonatomic, copy) dispatch_block_t invalidationObserver;
 @property (nonatomic, assign) BOOL invalidated;
 @property (nonatomic, assign) BOOL resumed;
+@property (nonatomic, assign) BOOL failsRemoteMessages;
 @end
 
 @implementation TestXPCConnection
@@ -384,6 +393,9 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
 - (id)remoteObjectProxyWithErrorHandler:(void (^)(NSError *))errorHandler
 {
+    if (self.failsRemoteMessages) {
+        errorHandler([NSError errorWithDomain:NSCocoaErrorDomain code:NSXPCConnectionInvalid userInfo:nil]);
+    }
     return self.remoteService;
 }
 
@@ -1035,6 +1047,78 @@ private Q_SLOTS:
         QTest::newRow("clean data, native error") << true << false;
         QTest::newRow("unknown dirty data, late removal") << false << true;
         QTest::newRow("clean data, late removal") << true << true;
+    }
+
+    void refreshRequestsGoThroughTheExtension_data()
+    {
+        QTest::addColumn<QString>("operation");
+        QTest::addColumn<QString>("extension");
+
+        for (const auto &operation : {u"sync now"_s, u"reconnect"_s, u"file IDs"_s}) {
+            for (const auto &extension : {u"takes them"_s, u"refuses them"_s}) {
+                QTest::newRow((operation + u", extension "_s + extension).toUtf8().constData()) << operation << extension;
+            }
+        }
+        for (const auto &extension : {u"does not answer"_s, u"has a broken connection"_s, u"is not connected"_s}) {
+            QTest::newRow((u"sync now, extension "_s + extension).toUtf8().constData()) << u"sync now"_s << extension;
+        }
+    }
+
+    void refreshRequestsGoThroughTheExtension()
+    {
+        if (!OCC::Mac::FileProvider::available()) {
+            QSKIP("File Provider is unavailable on this macOS version.");
+        }
+        QFETCH(QString, operation);
+        QFETCH(QString, extension);
+        const auto changedFileId = qint64{42};
+        installDomainLookupMocks();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        const auto remoteService = [[TestClientCommunicationService alloc] init];
+        remoteService.domainIdentifier = @"registered-domain";
+        remoteService.processFileIdsReply = extension == u"takes them"_s;
+        remoteService.suppressProcessFileIdsReply = extension == u"does not answer"_s || extension == u"has a broken connection"_s;
+        remoteService.receivedFileIdLists = [[NSMutableArray alloc] init];
+        const auto connection = [[TestXPCConnection alloc] init];
+        connection.remoteService = remoteService;
+        const auto service = [[TestFileProviderService alloc] init];
+        service.name = communicationServiceName;
+        service.connection = (NSXPCConnection *)connection;
+        if (extension != u"is not connected"_s) {
+            manager.service = (NSFileProviderService *)service;
+        }
+        OCC::Mac::FileProvider::instance()->configureXPC();
+        connection.failsRemoteMessages = extension == u"has a broken connection"_s;
+        const auto disconnectExtension = qScopeGuard([manager] {
+            manager.service = nil;
+            OCC::Mac::FileProvider::instance()->configureXPC();
+        });
+
+        const auto owner = std::make_unique<OCC::Mac::FileProviderDomainManager>();
+        QElapsedTimer elapsed;
+        elapsed.start();
+        if (operation == u"sync now"_s) {
+            owner->signalEnumeratorChanged(accountState->account().data());
+        } else if (operation == u"reconnect"_s) {
+            owner->reconnectAll();
+        } else {
+            owner->slotHandleFileIdsChanged(accountState->account().data(), {changedFileId});
+        }
+
+        const auto expectedFileIds = operation == u"file IDs"_s ? @[ @(changedFileId) ] : @[];
+        QCOMPARE(remoteService.receivedFileIdLists.count, extension == u"is not connected"_s ? 0 : 1);
+        if (remoteService.receivedFileIdLists.count) {
+            QVERIFY([remoteService.receivedFileIdLists.firstObject isEqualToArray:expectedFileIds]);
+        }
+        QCOMPARE(manager.reconnectCount, operation == u"reconnect"_s ? 1 : 0);
+        QCOMPARE(manager.signalCount, extension == u"takes them"_s ? 0 : 1);
+        if (manager.signalCount) {
+            QVERIFY([manager.lastItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier]);
+        }
+        if (extension == u"has a broken connection"_s) {
+            QVERIFY(elapsed.elapsed() < brokenConnectionFallbackUpperBoundMs);
+        }
     }
 
     void settingsDisableRetainsDomainAfterUnconfirmedRemoval()
