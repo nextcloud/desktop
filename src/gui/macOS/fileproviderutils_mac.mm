@@ -16,11 +16,6 @@
 
 #import <FileProvider/FileProvider.h>
 
-namespace
-{
-constexpr auto fileProviderRequestTimeoutMs = 5000;
-}
-
 namespace OCC {
 
 namespace Mac {
@@ -29,7 +24,11 @@ namespace FileProviderUtils {
 
 Q_LOGGING_CATEGORY(lcMacFileProviderUtils, "nextcloud.gui.macfileproviderutils", QtInfoMsg)
 
-bool waitForFileProviderReplies(const NSUInteger requestCount, const char *operation, void (^startRequests)(RequestReplyHandler), NSArray **results)
+bool waitForFileProviderReplies(const NSUInteger requestCount,
+                                const char *operation,
+                                void (^startRequests)(RequestReplyHandler),
+                                NSArray **results,
+                                std::chrono::milliseconds timeout)
 {
     if (requestCount == 0) {
         *results = @[];
@@ -63,7 +62,7 @@ bool waitForFileProviderReplies(const NSUInteger requestCount, const char *opera
         }
     });
 
-    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, fileProviderRequestTimeoutMs * NSEC_PER_MSEC));
+    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, std::chrono::duration_cast<std::chrono::nanoseconds>(timeout).count()));
     auto completed = false;
     NSError *acceptedError = nil;
     @synchronized(values) {
@@ -85,13 +84,13 @@ bool waitForFileProviderReplies(const NSUInteger requestCount, const char *opera
     return true;
 }
 
-bool waitForFileProviderRequest(const char *operation, void (^startRequest)(RequestReplyHandler), id *result)
+bool waitForFileProviderRequest(const char *operation, void (^startRequest)(RequestReplyHandler), id *result, std::chrono::milliseconds timeout)
 {
     if (result != nullptr) {
         *result = nil;
     }
     NSArray *values = nil;
-    const auto success = waitForFileProviderReplies(1, operation, startRequest, &values);
+    const auto success = waitForFileProviderReplies(1, operation, startRequest, &values, timeout);
     if (success && result != nullptr) {
         *result = values.firstObject;
     }

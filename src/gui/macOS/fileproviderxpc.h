@@ -9,9 +9,11 @@
 #include <QHash>
 #include <QObject>
 
+#include <functional>
 #include <optional>
 
 #include "accountstate.h"
+#include "fileproviderpushbatch.h"
 #include "fileproviderxpcconnection.h"
 
 namespace OCC::Mac {
@@ -33,7 +35,9 @@ public:
     ~FileProviderXPC() override;
 
     [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
-    [[nodiscard]] bool processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const;
+    [[nodiscard]] bool reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier);
+    void
+    deliverFileIds(const QString &domainIdentifier, const FileProviderPushBatch::Delivery &delivery, QObject *context, std::function<void(bool)> completed);
 
 public Q_SLOTS:
     void connectToFileProviderDomains();
@@ -51,6 +55,13 @@ private:
 
     [[nodiscard]] std::optional<bool> fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const;
 
+    void installFileProviderConnection(const QString &domainIdentifier, FileProviderXPCUtils::ClientCommunicationConnection connection);
+    void sendFileIds(const QString &domainIdentifier,
+                     const FileProviderPushBatch::Delivery &delivery,
+                     QObject *context,
+                     std::function<void(bool)> completed,
+                     bool allowReconnect);
+    void setIgnoreListForDomain(const QString &domainIdentifier) const;
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
 

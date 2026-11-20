@@ -178,8 +178,7 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
     return domainIdentifier.toNSString();
 }
 
-ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections,
-                                                                      OCC::Mac::FileProviderService *const service)
+ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *const connections, id<AppProtocol> const delegate)
 {
     ClientCommunicationConnections clientCommConnections;
 
@@ -189,12 +188,12 @@ ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSX
         connection.exportedInterface = [NSXPCInterface interfaceWithProtocol:exportedInterfaceProtocol];
         
         // Set the FileProviderService delegate as the exported object
-        if (service) {
-            connection.exportedObject = (__bridge id<AppProtocol>)service->delegate();
+        if (delegate) {
+            connection.exportedObject = delegate;
         } else {
             qCWarning(lcFileProviderXPCUtils) << "FileProviderService is null, cannot set exported object";
         }
-        
+
         connection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:remoteObjectInterfaceProtocol];
         configureFileProviderConnection(connection);
 
@@ -273,7 +272,7 @@ std::optional<bool> deletePassword(NSFileProviderDomain *const domain, OCC::Mac:
 
     const auto fpServices = getFileProviderServices(@[ manager ]);
     const auto connections = connectToFileProviderServices(fpServices);
-    const auto clientCommConnections = processClientCommunicationConnections(connections, service);
+    const auto clientCommConnections = processClientCommunicationConnections(connections, service ? (__bridge id<AppProtocol>)service->delegate() : nil);
 
     std::optional<bool> deleted;
 

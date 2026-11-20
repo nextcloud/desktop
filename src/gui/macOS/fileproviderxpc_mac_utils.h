@@ -35,13 +35,13 @@ NSString *getFileProviderDomainIdentifier(NSObject<ClientCommunicationProtocol> 
 /**
  * @brief Configures client communication connections and indexes them by domain identifier.
  * @param connections XPC connections obtained from the File Provider services.
- * @param service The app-side service exported through each connection.
+ * @param delegate The app-side delegate exported through each connection.
  * @return A map containing the retained remote proxy and XPC connection for each domain identifier.
  *
  * The opaque pointers carry ownership. The caller must invalidate the connection and transfer both
  * pointers back to ARC when they are no longer needed.
  */
-ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, OCC::Mac::FileProviderService *service);
+ClientCommunicationConnections processClientCommunicationConnections(NSArray<NSXPCConnection *> *connections, id<AppProtocol> delegate);
 
 /**
  * @brief Ask a client communication service to delete the password of its domain and wait for the reply.
