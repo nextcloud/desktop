@@ -47,6 +47,8 @@
 #include "macOS/findersyncxpc.h"
 #include "macOS/findersyncservice.h"
 #include "macOS/lowpowergpu_mac.h"
+#elif defined(Q_OS_LINUX)
+#include "linuxsingleapplication.h"
 #endif
 
 #include <QLocale>
@@ -234,6 +236,8 @@ Application::Application(int &argc, char **argv)
     , _gui(nullptr)
 #if defined KF6DBusAddons_FOUND && KF6DBusAddons_FOUND
     , _dbusService{KDBusService::StartupOption::Unique}
+#elif defined(Q_OS_LINUX)
+    , _singleApp{Utility::makeLinuxSingleApplication(QLatin1String(APPLICATION_EXECUTABLE))}
 #endif
     , _theme(Theme::instance())
 {
@@ -274,7 +278,7 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    parseOptions(arguments());
+    parseOptions(arguments(), OptionSource::Startup);
     //no need to waste time;
     if (_helpOnly || _versionOnly) {
         return;
@@ -744,7 +748,7 @@ void Application::showMainDialogRemoteCommand()
 void Application::parseOptionsRemoteCommand(const QStringList &options)
 {
     _showLogWindow = false;
-    parseOptions(options);
+    parseOptions(options, OptionSource::Forwarded);
     setupLogging();
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
@@ -1004,7 +1008,7 @@ void Application::slotActivateRequestedMessage(const QStringList &arguments, con
     }
 }
 
-void Application::parseOptions(const QStringList &options)
+void Application::parseOptions(const QStringList &options, OptionSource source)
 {
     // Accept both "--option value" and "--option=value" for every option below.
     const auto expandedOptions = Utility::expandCommandLineOptionValues(options);
@@ -1016,6 +1020,7 @@ void Application::parseOptions(const QStringList &options)
     }
 
     bool shouldExit = false;
+    auto rejectConfigDirectory = false;
 
     //parse options; if help or bad option exit
     while (it.hasNext()) {
@@ -1050,13 +1055,22 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--logdebug")) {
             _logDebug = true;
         } else if (option == QLatin1String("--confdir")) {
-            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                QString confDir = it.next();
-                if (!ConfigFile::setConfDir(confDir)) {
-                    showHint("Invalid path passed to --confdir");
-                }
-            } else {
+            const auto confDir = it.hasNext() && !it.peekNext().startsWith(QLatin1String("--")) ? it.next() : QString{};
+            if (source == OptionSource::Forwarded) {
+                continue;
+            }
+            if (confDir.isNull()) {
                 showHint("Path for confdir not specified");
+            }
+#if defined(Q_OS_LINUX) && !KF6DBusAddons_FOUND
+            // Reject the secondary launch before creating a directory or forwarding any commands.
+            if (isRunning()) {
+                rejectConfigDirectory = true;
+                continue;
+            }
+#endif
+            if (!ConfigFile::setConfDir(confDir)) {
+                showHint("Invalid path passed to --confdir");
             }
         } else if (option == QLatin1String("--debug")) {
             _logDebug = true;
@@ -1127,6 +1141,9 @@ void Application::parseOptions(const QStringList &options)
                 showHint("Unrecognized option '" + option.toStdString() + "'");
             }
         }
+    }
+    if (rejectConfigDirectory && !_helpOnly && !_versionOnly) {
+        showHint("Quit the running desktop client before using --confdir");
     }
     if (shouldExit) {
         std::exit(0);
