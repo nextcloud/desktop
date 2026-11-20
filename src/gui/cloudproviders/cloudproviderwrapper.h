@@ -47,6 +47,8 @@ public Q_SLOTS:
     void slotSyncPausedChanged(OCC::Folder*, bool);
 
 private:
+    void addRecentlyChanged(const QString &label, const QString &fullPath);
+
     Folder *_folder;
     CloudProvidersProviderExporter *_cloudProvider;
     CloudProvidersAccountExporter *_cloudProviderAccount;
@@ -54,6 +56,7 @@ private:
     bool _paused;
     GMenu* _mainMenu = nullptr;
     GMenu* _recentMenu = nullptr;
+    GActionGroup* _actionGroup = nullptr;
 };
 
 #endif // CLOUDPROVIDER_H
