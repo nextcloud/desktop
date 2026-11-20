@@ -20,8 +20,6 @@
 #include "common/utility.h"
 #include "httplogger.h"
 
-using namespace Qt::StringLiterals;
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccessManager, "nextcloud.sync.accessmanager", QtInfoMsg)
@@ -99,8 +97,13 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 
     // Generate a new request id
-    QByteArray requestId = generateRequestId();
-    qInfo(lcAccessManager) << opToText(op) << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
+    const auto requestId = generateRequestId();
+    const auto metadataOnly = HttpLogger::isMetadataOnly(newRequest);
+    if (metadataOnly) {
+        qCInfo(lcAccessManager) << opToText(op) << verb << "has X-Request-ID" << requestId;
+    } else {
+        qCInfo(lcAccessManager) << opToText(op) << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
+    }
     newRequest.setRawHeader("X-Request-ID", requestId);
 
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
@@ -119,13 +122,13 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
-    QObject::connect(reply, &QNetworkReply::requestSent, reply, [reply] {
-        qCInfo(lcAccessManager()) << "Request has been sent"
-                                  << reply->url().toString()
-                                  << reply->request().rawHeader("X-Request-ID"_ba)
-                                  << reply->header(QNetworkRequest::ContentTypeHeader).toString()
-                                  << reply->rawHeaderPairs()
-                                  << reply;
+    QObject::connect(reply, &QNetworkReply::requestSent, reply, [reply, requestId, metadataOnly] {
+        if (metadataOnly) {
+            qCInfo(lcAccessManager) << "Request has been sent with X-Request-ID" << requestId;
+            return;
+        }
+        qCInfo(lcAccessManager()) << "Request has been sent" << reply->url().toString() << requestId
+                                  << reply->header(QNetworkRequest::ContentTypeHeader).toString() << reply->rawHeaderPairs() << reply;
     });
     return reply;
 }

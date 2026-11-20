@@ -7,10 +7,20 @@
 #include "owncloudlib.h"
 
 #include <QNetworkReply>
+#include <QNetworkRequest>
 #include <QUrl>
 
 namespace OCC {
 namespace HttpLogger {
+    inline constexpr auto MetadataOnlyAttribute = static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1);
+
+    inline bool isMetadataOnly(const QNetworkRequest &request)
+    {
+        return request.attribute(MetadataOnlyAttribute).toBool();
+    }
+
+    QString requestLogContext(const QNetworkReply &reply);
+
     void OWNCLOUDSYNC_EXPORT logRequest(QNetworkReply *reply, QNetworkAccessManager::Operation operation, QIODevice *device);
 
     /**

@@ -16,6 +16,7 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
+    setHttpLoggingMetadataOnly();
     setPath(_pathForSharesRequest);
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }

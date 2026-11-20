@@ -9,13 +9,16 @@
 #include <QDateTime>
 #include <QFileInfo>
 #include <QFlags>
+#include <QScopeGuard>
 #include <QSignalSpy>
 #include <QTest>
 #include <QTimeZone>
 #include <QUrlQuery>
 
-#include "sharetestutils.h"
+#include <algorithm>
+
 #include "libsync/theme.h"
+#include "sharetestutils.h"
 
 using namespace OCC;
 
@@ -141,6 +144,65 @@ private Q_SLOTS:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share
+    }
+
+    void testFetchSharesLogsOnlyMetadata()
+    {
+        using namespace Qt::StringLiterals;
+
+        helper.resetTestData();
+        auto share = _testLinkShareDefinition;
+        share.shareNote = u"fixture-share-note"_s;
+        helper.appendShareReplyData(share);
+
+        const auto logger = Logger::instance();
+        const auto logRules = QSet<QString>{u"default.debug=true"_s};
+        logger->addLogRule(logRules);
+        const auto restoreLogRules = qScopeGuard([&] {
+            logger->removeLogRule(logRules);
+        });
+        static thread_local auto messages = QList<QPair<QByteArray, QString>>{};
+        messages.clear();
+        const auto previousHandler = qInstallMessageHandler([](QtMsgType, const QMessageLogContext &context, const QString &message) {
+            messages.emplaceBack(context.category, message);
+        });
+        const auto restoreLogHandler = qScopeGuard([previousHandler] {
+            qInstallMessageHandler(previousHandler);
+        });
+
+        ShareManager manager{helper.account};
+        QSignalSpy sharesFetched{&manager, &ShareManager::sharesFetched};
+        manager.fetchShares(QString::fromLatin1(helper.testFileName));
+
+        const auto requestEntry = std::ranges::find_if(std::as_const(messages), [](const auto &entry) {
+            return entry.first == "sync.httplogger"_ba;
+        });
+        QVERIFY(requestEntry != messages.cend());
+        const auto requestTrace = requestEntry->second;
+        const auto requestSuffix = u": Request: GET\""_s;
+        QVERIFY(requestTrace.endsWith(requestSuffix));
+        const auto requestPrefix = requestTrace.chopped(requestSuffix.size());
+        QVERIFY(requestPrefix.size() > 1);
+
+        QVERIFY(sharesFetched.wait());
+        const auto shares = sharesFetched.constFirst().constFirst().value<QList<SharePtr>>();
+        QCOMPARE(shares.size(), 1);
+        const auto linkShare = qSharedPointerDynamicCast<LinkShare>(shares.constFirst());
+        QVERIFY(linkShare);
+        QCOMPARE(linkShare->getNote(), share.shareNote);
+
+        auto traceLines = QStringList{};
+        for (const auto &[category, message] : messages) {
+            QVERIFY(!message.contains(share.shareNote));
+            if (category == "sync.httplogger"_ba && message.startsWith(requestPrefix)) {
+                traceLines.append(message);
+            }
+        }
+        const auto expectedTrace = QStringList{
+            requestTrace,
+            requestPrefix + u": Response: GET 200\""_s,
+        };
+        QCOMPARE(traceLines, expectedTrace);
     }
 
     void testFetchSharesFailedError()
@@ -938,6 +1000,8 @@ private Q_SLOTS:
 
     void testSharePropertySetError()
     {
+        using namespace Qt::StringLiterals;
+
         helper.resetTestData();
 
         // Serve a broken share definition from the server to force an error
@@ -968,10 +1032,32 @@ private Q_SLOTS:
         // Now try changing a property of the share
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         const auto share = shareIndex.data(ShareModel::ShareRole).value<SharePtr>();
+        QVERIFY(share);
+        QSignalSpy shareError(share.data(), &Share::serverError);
         QSignalSpy serverError(&model, &ShareModel::serverError);
 
-        model.toggleShareAllowEditing(share, false);
-        QVERIFY(serverError.wait(3000));
+        {
+            static thread_local auto warnings = QStringList{};
+            warnings.clear();
+            const auto previousHandler = qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &context, const QString &message) {
+                if (type == QtWarningMsg && qstrcmp(context.category, "com.nextcloud.sharemodel") == 0) {
+                    warnings.append(message);
+                }
+            });
+            const auto restoreLogHandler = qScopeGuard([previousHandler] {
+                qInstallMessageHandler(previousHandler);
+            });
+
+            model.toggleShareAllowEditing(share, false);
+            QVERIFY(serverError.wait(3000));
+            QCOMPARE(serverError.count(), 1);
+            QCOMPARE(shareError.count(), 1);
+            const auto signalArguments = serverError.constFirst();
+            QCOMPARE(signalArguments, shareError.constFirst());
+            QCOMPARE(signalArguments.at(0).toInt(), 404);
+            QVERIFY(!signalArguments.at(1).toString().isEmpty());
+            QCOMPARE(warnings, QStringList{u"Share reported an error: 404"_s});
+        }
 
         // Specific signal for password set error
         QSignalSpy passwordSetError(&model, &ShareModel::passwordSetError);

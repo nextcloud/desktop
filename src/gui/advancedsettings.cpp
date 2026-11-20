@@ -33,7 +33,6 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QAbstractButton>
-#include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
@@ -174,10 +173,7 @@ bool createDebugArchive(const QString &filename)
     }
 #endif
 
-    const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
-    zip.prepareWriting("_client_parameters.txt", {}, {}, clientParameters.size());
-    zip.writeData(clientParameters, clientParameters.size());
-    zip.finishWriting(clientParameters.size());
+    OCC::AdvancedSettings::addDiagnosticCommandLineOptions(zip);
 
     const auto buildInfo = QString(OCC::Theme::instance()->aboutInfo() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
     zip.prepareWriting("_client_buildinfo.txt", {}, {}, buildInfo.size());
@@ -228,6 +224,20 @@ bool createDebugArchive(const QString &filename)
 } // namespace
 
 namespace OCC {
+
+void AdvancedSettings::addDiagnosticCommandLineOptions(KArchive &archive)
+{
+    using namespace Qt::StringLiterals;
+    const auto *application = qobject_cast<OCC::Application *>(qApp);
+    if (!application) {
+        return;
+    }
+
+    const auto parameters = application->diagnosticCommandLineOptions().join(u' ').toUtf8();
+    if (!archive.writeFile(u"_client_parameters.txt"_s, parameters)) {
+        qCWarning(lcAdvancedSettings) << "Failed to write command-line options to debug archive.";
+    }
+}
 
 AdvancedSettings::AdvancedSettings(QWidget *parent)
     : QWidget(parent)

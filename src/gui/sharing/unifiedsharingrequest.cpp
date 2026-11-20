@@ -18,6 +18,7 @@ UnifiedSharingRequest::UnifiedSharingRequest(AccountPtr account,
                                              const Options &options)
     : OcsJob{account}
 {
+    setHttpLoggingMetadataOnly();
     setPath(path);
     setVerb(verb);
     for (const auto &[name, value] : options.parameters) {

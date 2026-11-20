@@ -66,6 +66,7 @@ public:
     void showHint(std::string errorHint);
     bool debugMode();
     [[nodiscard]] bool backgroundMode() const;
+    [[nodiscard]] const QStringList &diagnosticCommandLineOptions() const;
     bool versionOnly(); // only display the version?
     void showVersion();
 
@@ -120,6 +121,7 @@ protected Q_SLOTS:
 
 private:
     void setHelp();
+    [[nodiscard]] QStringList summarizeCommandLineOptions() const;
 
     void handleUriFromOptions();
 
@@ -154,6 +156,7 @@ private:
     QElapsedTimer _startedAt;
 
     // options from command line:
+    QStringList _startupCommandLineOptions;
     bool _showLogWindow = false;
     bool _quitInstance = false;
     QString _logFile;

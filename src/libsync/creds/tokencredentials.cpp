@@ -10,13 +10,13 @@
 #include <QSettings>
 #include <QNetworkCookieJar>
 
-#include "account.h"
 #include "accessmanager.h"
+#include "account.h"
 #include "common/utility.h"
-#include "theme.h"
 #include "creds/credentialscommon.h"
 #include "creds/tokencredentials.h"
-
+#include "httplogger.h"
+#include "theme.h"
 
 namespace OCC {
 
@@ -156,7 +156,7 @@ void TokenCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *
     // we cannot use QAuthenticator, because it sends username and passwords with latin1
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
-    qCWarning(lcTokenCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
+    qCWarning(lcTokenCredentials) << "Stop request: Authentication failed for " << HttpLogger::requestLogContext(*reply);
     reply->setProperty(authenticationFailedC, true);
     reply->close();
 }

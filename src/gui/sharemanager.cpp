@@ -543,7 +543,6 @@ void ShareManager::fetchSharedWithMe(const QString &path)
 
 const QList<SharePtr> ShareManager::parseShares(const QJsonDocument &reply) const
 {
-    qDebug() << reply;
     const auto tmpShares = reply.object().value("ocs"_L1).toObject().value("data"_L1).toArray();
     const QString versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
