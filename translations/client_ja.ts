@@ -1589,203 +1589,203 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="326"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="330"/>
         <source>Will require local storage</source>
         <translation>ローカルストレージが必要になります</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="736"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="740"/>
         <source>Proxy settings are incomplete.</source>
         <translation>プロキシ設定が不完全です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="747"/>
         <source>Server address does not seem to be valid</source>
         <translation>サーバーのアドレスが有効ではないようです</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="764"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="768"/>
         <source>Username must not be empty.</source>
         <translation>ユーザー名は空欄にしないでください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="770"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1092"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="774"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
         <source>Checking account access</source>
         <translation>アカウントアクセスの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="848"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="852"/>
         <source>Checking server address</source>
         <translation>サーバーアドレスの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="917"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="921"/>
         <source>Preparing browser login</source>
         <translation>ブラウザーでのログインの準備</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="938"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="942"/>
         <source>Invalid URL</source>
         <translation>無効なURL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="940"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="944"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>%2で%1への接続に失敗しました:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="956"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="960"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>%2の%1への接続中にタイムアウトが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1043"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1047"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>ブラウザーが開けません。リンクをコピーしてブラウザーに貼り付けてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1068"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1073"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1077"/>
         <source>Waiting for authorization</source>
         <translation>承認を待機中</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1078"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1082"/>
         <source>Starting authorization</source>
         <translation>承認を開始</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1083"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
         <source>Link copied to clipboard.</source>
         <translation>リンクをクリップボードにコピーしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1142"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1172"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>認証済みの WebDAV 要求に対する無効な応答がありました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1155"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>サーバーへの認証リクエストは &quot;%1&quot; へリダイレクトされました。URLが正しくありません。サーバーが間違って設定されています。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1163"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1167"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>サーバーによりアクセスが拒否されました。アクセス権限を確認するには、ブラウザーでこのサービスを開いてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1181"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1185"/>
         <source>Account connected.</source>
         <translation>アカウントに接続しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1295"/>
         <source>Will require %1 of storage</source>
         <translation>ストレージの%1が必要になります </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1475"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>空き容量 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1485"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>ローカルフォルダーに十分な空き容量がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Please choose a local sync folder.</source>
         <translation>ローカルの同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1507"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>空のローカル同期フォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1572"/>
         <source>Could not create local folder %1</source>
         <translation>ローカルフォルダー %1 を作成できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1586"/>
         <source>Checking remote folder</source>
         <translation>リモートフォルダーの確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1632"/>
         <source>No remote folder specified!</source>
         <translation>リモートフォルダーが指定されていません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
         <source>Error: %1</source>
         <translation>エラー: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>Creating remote folder</source>
         <translation>リモートフォルダーの作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>フォルダーの作成中にHTTPエラーコード%1が発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1667"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>指定された認証情報が正しくないため、リモートフォルダーの作成に失敗しました。戻って認証情報を確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1669"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>リモートフォルダー %1 の作成がエラーで失敗しました。&lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1716"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>同期フォルダーの作成中にアカウントの設定に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1728"/>
         <source>Could not create the sync folder.</source>
         <translation>同期フォルダーを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1838"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2123"/>
         <source>Select a certificate</source>
         <translation>証明書を選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2130"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>証明書ファイル (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2129"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2143"/>
         <source>Could not access the selected certificate file.</source>
         <translation>選択した証明書ファイルにアクセスできませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2148"/>
         <source>The selected certificate file is empty.</source>
         <translation>選択した証明書ファイルが空です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2182"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>証明書を読み込めませんでした。 パスワードが間違っていますか？</translation>
     </message>
@@ -1863,40 +1863,40 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
         <source>Create Debug Archive</source>
         <translation>デバッグアーカイブを作成</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="252"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="439"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
         <source>Zip Archives</source>
         <translation>Zipアーカイブ</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="452"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
         <translation>ファイルへのアクセスに失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="453"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>選択した場所にアクセスできませんでした。もう一度お試しいただくか、別の場所を選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="462"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
         <source>Debug Archive Created</source>
         <translation>デバッグアーカイブを作成しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="463"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>共有する前に、機密情報と見なされる内容を伏せてください！%1にデバッグアーカイブが作成されました </translation>
     </message>
@@ -7061,15 +7061,14 @@ Server replied with error: %2</source>
         <translation>新しいフォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="142"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="191"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="203"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="215"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
         <source>Failed to create debug archive</source>
         <translation>デバッグアーカイブの作成に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="143"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>選択された場所にデバッグアーカイブを作成できませんでした!</translation>
     </message>
