@@ -156,7 +156,6 @@ Item {
                     text: qsTr("Choose")
                     Layout.minimumWidth: Style.wizardInlineButtonMinimumWidth
                     Layout.preferredHeight: Style.wizardFooterButtonHeight
-                    enabled: root.controller.canUseClassicSync
                     onClicked: root.controller.chooseLocalSyncFolder()
                 }
             }
@@ -178,6 +177,17 @@ Item {
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
                 maximumLineCount: 2
+            }
+
+            EnforcedPlainTextLabel {
+                visible: root.controller.errorText !== ""
+                text: root.controller.errorText
+                color: Style.wizardErrorText
+                font.pixelSize: Style.pixelSize
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                maximumLineCount: 3
+                elide: Text.ElideRight
             }
         }
 

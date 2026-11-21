@@ -63,6 +63,26 @@ public:
         controller.chooseSyncModeAfterCapabilities();
     }
 
+    static void showSyncOptionsAfterAutomaticFinishFailed(AccountWizardController &controller)
+    {
+        controller.showSyncOptionsAfterAutomaticFinishFailed();
+    }
+
+    static void setFinishingAutomatically(AccountWizardController &controller, bool finishingAutomatically)
+    {
+        controller._finishingAutomatically = finishingAutomatically;
+    }
+
+    static void setLocalSyncFolder(AccountWizardController &controller, const QString &folder)
+    {
+        controller._localSyncFolder = folder;
+    }
+
+    static bool finishingAutomatically(const AccountWizardController &controller)
+    {
+        return controller._finishingAutomatically;
+    }
+
     static void setLocalSyncFolderPicker(AccountWizardController &controller, AccountWizardController::LocalSyncFolderPicker picker)
     {
         controller._localSyncFolderPicker = std::move(picker);
@@ -343,6 +363,90 @@ private Q_SLOTS:
         QVERIFY(controller.syncMode() != AccountWizardController::VirtualFiles);
         QVERIFY(controller.needsSyncOptions());
         QVERIFY(controller.localSyncFolderRequired());
+    }
+
+    void skipsSyncOptionsWhenVirtualFilesAreEnforced()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto restoreConfiguration = restoreOverrideState();
+        ConfigFile::setDeviceSourcesFactory([localDir = dir.path()] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{u"virtualFilesMode"_s, Vfs::modeToString(bestAvailableVfsMode())},
+                                                                      {u"overrideServerUrl"_s, u"https://cloud.example"_s},
+                                                                      {u"overrideLocalDir"_s, localDir}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+        if (!controller.canUseVirtualFiles() || controller.canUseClassicSync() || !controller.localSyncFolderRequired()) {
+            QSKIP("This build cannot enforce virtual files in a local sync folder.");
+        }
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::initialiseLocalSyncFolder(controller);
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+
+        QCOMPARE(controller.syncMode(), AccountWizardController::VirtualFiles);
+        QVERIFY(controller.currentStep() != AccountWizardController::SyncOptionsStep);
+        QVERIFY(AccountWizardControllerTestAccess::finishingAutomatically(controller));
+    }
+
+    void showsSyncOptionsWhenEnforcedDefaultFolderIsInvalid()
+    {
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        const auto restoreConfiguration = restoreOverrideState();
+        ConfigFile::setDeviceSourcesFactory([localDir = dir.path()] {
+            std::vector<std::unique_ptr<SettingSource>> sources;
+            sources.push_back(std::make_unique<MapSource>(SettingSourceType::PlatformPolicy,
+                                                          EnforcementState::Enforced,
+                                                          200,
+                                                          QVariantMap{{u"virtualFilesMode"_s, Vfs::modeToString(bestAvailableVfsMode())},
+                                                                      {u"overrideServerUrl"_s, u"https://cloud.example"_s},
+                                                                      {u"overrideLocalDir"_s, localDir}}));
+            return sources;
+        });
+
+        AccountWizardController controller;
+        if (!controller.canUseVirtualFiles() || controller.canUseClassicSync() || !controller.localSyncFolderRequired()) {
+            QSKIP("This build cannot enforce virtual files in a local sync folder.");
+        }
+        AccountWizardControllerTestAccess::setAccountUrl(controller, QUrl(u"https://cloud.example"_s));
+        AccountWizardControllerTestAccess::initialiseLocalSyncFolder(controller);
+        AccountWizardControllerTestAccess::setLocalSyncFolder(controller, {});
+
+        AccountWizardControllerTestAccess::chooseSyncModeAfterCapabilities(controller);
+
+        QCOMPARE(controller.currentStep(), AccountWizardController::SyncOptionsStep);
+        QVERIFY(!AccountWizardControllerTestAccess::finishingAutomatically(controller));
+    }
+
+    void goingBackStopsAutomaticFinish()
+    {
+        AccountWizardController controller;
+        AccountWizardControllerTestAccess::setFinishingAutomatically(controller, true);
+
+        controller.goBack();
+
+        QVERIFY(!AccountWizardControllerTestAccess::finishingAutomatically(controller));
+    }
+
+    void showsSyncOptionsWhenAutomaticFinishFails()
+    {
+        AccountWizardController controller;
+
+        AccountWizardControllerTestAccess::showSyncOptionsAfterAutomaticFinishFailed(controller);
+        QVERIFY(controller.currentStep() != AccountWizardController::SyncOptionsStep);
+
+        AccountWizardControllerTestAccess::setFinishingAutomatically(controller, true);
+        AccountWizardControllerTestAccess::showSyncOptionsAfterAutomaticFinishFailed(controller);
+
+        QCOMPARE(controller.currentStep(), AccountWizardController::SyncOptionsStep);
+        QVERIFY(!AccountWizardControllerTestAccess::finishingAutomatically(controller));
     }
 
     void normalizesCommonServerUrlSuffixes()
