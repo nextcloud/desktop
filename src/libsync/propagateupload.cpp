@@ -159,7 +159,7 @@ bool PollJob::finished()
         _item->_fileId = json["fileId"].toString().toUtf8();
 
         if (SyncJournalFileRecord oldRecord; _journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
-            if (oldRecord._etag != _item->_etag) {
+            if (oldRecord._fileId != _item->_fileId || oldRecord._etag != _item->_etag) {
                 _item->updateLockStateFromDbRecord(oldRecord);
             }
         }
@@ -475,6 +475,11 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
 
 void PropagateUploadFileCommon::slotFolderUnlocked(const QByteArray &folderId, int httpReturnCode)
 {
+    if (httpReturnCode == 200 && _uploadStatus.status == SyncFileItem::Success) {
+        // E2EE commits staged replacements on unlock, after the upload response.
+        propagator()->_journal->schedulePathForRemoteDiscovery(_item->destination());
+        propagator()->_anotherSyncNeeded = true;
+    }
     if (_uploadStatus.status == SyncFileItem::NoStatus && httpReturnCode != 200) {
         qDebug() << "Failed to unlock encrypted folder" << folderId;
         done(SyncFileItem::FatalError, tr("Failed to unlock encrypted folder."));
