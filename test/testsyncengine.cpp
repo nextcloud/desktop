@@ -977,6 +977,102 @@ private Q_SLOTS:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
     }
 
+    // A directory with an invalid server mtime must not block syncing it and its contents
+    void testDirectoryInvalidRemoteMtime()
+    {
+        constexpr qint64 INVALID_MTIME1 = 0;
+        constexpr qint64 INVALID_MTIME2 = 0xFFFFFFFF;
+        constexpr qint64 VALID_MTIME = 1700000000;
+        const auto invalidMtimes = {INVALID_MTIME1, INVALID_MTIME2};
+
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto journalModtime = [&](const QString &path) -> qint64 {
+            SyncJournalFileRecord record;
+            if (!fakeFolder.syncJournal().getFileRecord(path, &record) || !record.isValid()) {
+                return -1;
+            }
+            return record._modtime;
+        };
+
+        // new directories on the server: they get the current time
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("new%1").arg(invalidMtime);
+            fakeFolder.remoteModifier().mkdir(dir);
+            fakeFolder.remoteModifier().insert(dir + "/bar");
+            fakeFolder.remoteModifier().setModTime(dir, QDateTime::fromSecsSinceEpoch(invalidMtime));
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("new%1").arg(invalidMtime);
+            QVERIFY(fakeFolder.currentLocalState().find(QString(dir + "/bar")));
+            QVERIFY(journalModtime(dir) > 0);
+            QVERIFY(QFileInfo(fakeFolder.localPath() + dir).lastModified().toSecsSinceEpoch() > 0);
+        }
+
+        // the journal value wins over the local mtime and the current time: a change in the
+        // directory (new etag) leads to a metadata update that keeps it
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("new%1").arg(invalidMtime);
+            SyncJournalFileRecord record;
+            QVERIFY(fakeFolder.syncJournal().getFileRecord(dir, &record));
+            record._modtime = VALID_MTIME;
+            QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+            fakeFolder.remoteModifier().insert(dir + "/baz");
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("new%1").arg(invalidMtime);
+            QVERIFY(fakeFolder.currentLocalState().find(QString(dir + "/baz")));
+            QCOMPARE(journalModtime(dir), VALID_MTIME);
+        }
+
+        // already synced directories whose server mtime becomes invalid keep the journal value
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("synced%1").arg(invalidMtime);
+            fakeFolder.remoteModifier().mkdir(dir);
+            fakeFolder.remoteModifier().insert(dir + "/bar");
+            fakeFolder.remoteModifier().setModTime(dir, QDateTime::fromSecsSinceEpoch(VALID_MTIME));
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("synced%1").arg(invalidMtime);
+            QCOMPARE(journalModtime(dir), VALID_MTIME);
+            fakeFolder.remoteModifier().setModTime(dir, QDateTime::fromSecsSinceEpoch(invalidMtime));
+            fakeFolder.remoteModifier().insert(dir + "/baz");
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        for (const auto invalidMtime : invalidMtimes) {
+            const auto dir = QStringLiteral("synced%1").arg(invalidMtime);
+            QVERIFY(fakeFolder.currentLocalState().find(QString(dir + "/baz")));
+            QCOMPARE(journalModtime(dir), VALID_MTIME);
+        }
+
+        // a directory that exists locally and on the server but not in the journal gets the local mtime
+        fakeFolder.localModifier().mkdir("both");
+        fakeFolder.localModifier().setModTime("both", QDateTime::fromSecsSinceEpoch(VALID_MTIME));
+        fakeFolder.remoteModifier().mkdir("both");
+        fakeFolder.remoteModifier().setModTime("both", QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(journalModtime("both"), VALID_MTIME);
+
+        // renaming a directory with an invalid server mtime keeps its journal value
+        const auto renamedModtime = journalModtime("new0");
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.remoteModifier().rename("new0", "renamed");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.findItem("renamed")->_instruction, CSYNC_INSTRUCTION_RENAME);
+        QVERIFY(fakeFolder.currentLocalState().find("renamed/bar"));
+        QVERIFY(!fakeFolder.currentLocalState().find("new0"));
+        QCOMPARE(journalModtime("renamed"), renamedModtime);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // files with an invalid server mtime are still rejected
+        fakeFolder.remoteModifier().insert("renamed/invalid");
+        fakeFolder.remoteModifier().setModTime("renamed/invalid", QDateTime::fromSecsSinceEpoch(INVALID_MTIME1));
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentLocalState().find("renamed/invalid"));
+    }
+
     // A local file should not be modified after upload to server if nothing has changed.
     void testLocalFileInitialMtime()
     {
