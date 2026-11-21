@@ -55,6 +55,8 @@ public:
 private:
     bool removeRecursively(const QString &path);
 
+    [[nodiscard]] bool hasDehydratedFiles() const;
+
     QSet<QString> _deleteToClientTrashBin;
 
     bool _moveToTrash = false;

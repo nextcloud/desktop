@@ -15,6 +15,7 @@
 #include <syncengine.h>
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 namespace {
 
@@ -107,7 +108,52 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+
+#ifdef Q_OS_LINUX
+        QVERIFY(createTestTrash());
+#endif
     }
+
+#ifdef Q_OS_LINUX
+    void cleanupTestCase()
+    {
+        // The trash is inside the test mode data folder, so nothing outside the tests is removed
+        QVERIFY(QDir{testTrashPath()}.removeRecursively());
+    }
+
+    void testMoveToTrashSkipsDehydratedFiles()
+    {
+        FakeFolder fakeFolder{FileInfo { }};
+        setupVfs(fakeFolder);
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        fakeFolder.remoteModifier().insert("hydrated");
+        fakeFolder.remoteModifier().insert("dehydrated");
+        fakeFolder.remoteModifier().mkdir("folderWithDehydratedFile");
+        fakeFolder.remoteModifier().insert("folderWithDehydratedFile/dehydrated");
+        QVERIFY(fakeFolder.syncOnce());
+        triggerDownload(fakeFolder, "hydrated");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("hydrated"));
+        QVERIFY(fakeFolder.currentLocalState().find("dehydrated" DVSUFFIX));
+
+        fakeFolder.remoteModifier().remove("hydrated");
+        fakeFolder.remoteModifier().remove("dehydrated");
+        fakeFolder.remoteModifier().remove("folderWithDehydratedFile");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentLocalState().find("hydrated"));
+        QVERIFY(!fakeFolder.currentLocalState().find("dehydrated" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("folderWithDehydratedFile"));
+        const auto trashedPaths = trashedOriginalPaths(fakeFolder.localPath());
+        QVERIFY(trashedPaths.contains(fakeFolder.localPath() + u"hydrated"_s));
+        QVERIFY(!trashedPaths.contains(fakeFolder.localPath() + u"dehydrated"_s + QStringLiteral(DVSUFFIX)));
+        QVERIFY(!trashedPaths.contains(fakeFolder.localPath() + u"folderWithDehydratedFile"_s));
+        QVERIFY(removeTrashedItems(fakeFolder.localPath()));
+    }
+#endif
 
     void testVirtualFileLifecycle_data()
     {

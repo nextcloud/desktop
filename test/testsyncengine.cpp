@@ -108,7 +108,19 @@ private Q_SLOTS:
         Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+
+#ifdef Q_OS_LINUX
+        QVERIFY(createTestTrash());
+#endif
     }
+
+#ifdef Q_OS_LINUX
+    void cleanupTestCase()
+    {
+        // The trash is inside the test mode data folder, so nothing outside the tests is removed
+        QVERIFY(QDir{testTrashPath()}.removeRecursively());
+    }
+#endif
 
     void init()
     {
@@ -248,6 +260,11 @@ private Q_SLOTS:
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+#ifdef Q_OS_LINUX
+        QCOMPARE(trashedOriginalPaths(fakeFolder.localPath()).contains(fakeFolder.localPath() + u"A/a1"_s), moveToTrashEnabled);
+        QVERIFY(removeTrashedItems(fakeFolder.localPath()));
+#endif
     }
 
     void testRemoteDelete() {

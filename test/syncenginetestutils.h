@@ -738,6 +738,20 @@ bool createDirectorySymlink(const QString &target, const QString &link);
 bool createDirectoryJunction(const QString &target, const QString &link);
 #endif
 
+#ifdef Q_OS_LINUX
+/// The trash folder that QFile::moveToTrash() uses in test mode
+QString testTrashPath();
+
+/// Creates the test trash folder, which QFile::moveToTrash() needs to exist
+bool createTestTrash();
+
+/// The original paths of the items in the trash that QFile::moveToTrash() uses for items from \a trashedFrom
+QStringList trashedOriginalPaths(const QString &trashedFrom);
+
+/// Removes the items below \a trashedFrom from that trash
+bool removeTrashedItems(const QString &trashedFrom);
+#endif
+
 struct ItemCompletedSpy : QSignalSpy {
     explicit ItemCompletedSpy(FakeFolder &folder)
         : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
