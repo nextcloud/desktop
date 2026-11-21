@@ -353,6 +353,11 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
         status.setShared(true);
     }
 
+    if (status.tag() == SyncFileStatus::StatusUpToDate && _syncEngine->syncOptions()._vfs->mode() != Vfs::Off) {
+        SyncJournalFileRecord record;
+        status.setDehydrated(_syncEngine->journal()->getFileRecord(relativePath, &record) && record.isVirtualFile());
+    }
+
     return status;
 }
 

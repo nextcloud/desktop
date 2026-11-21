@@ -121,6 +121,8 @@ private:
 
     void broadcastMessage(const QString &msg, bool doWait = false);
 
+    [[nodiscard]] static QString statusString(SyncFileStatus fileStatus);
+
     // opens share dialog, sends reply
     void processShareRequest(const QString &localFile, SocketListener *listener);
     void processLeaveShareRequest(const QString &localFile, SocketListener *listener);
