@@ -78,6 +78,9 @@ protected:
     void startImpl(const VfsSetupParams &params) override;
 
 private:
+    // Lets everything below folderPath inherit the pin state of folderPath again, like Vfs::setPinStateInDb() does.
+    void inheritPinStateBelow(const FileSystem::Path &folderPath);
+
     QMap<QByteArray, HydrationJob *> _hydrationJobs;
     QPointer<QProcess> _openVfsProcess;
 };
