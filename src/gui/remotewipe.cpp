@@ -6,23 +6,23 @@
 #include "remotewipe.h"
 #include "folderman.h"
 
+#include <QBuffer>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkRequest>
-#include <QBuffer>
 
-namespace OCC {
+namespace OCC
+{
 
 Q_LOGGING_CATEGORY(lcRemoteWipe, "nextcloud.gui.remotewipe", QtInfoMsg)
 
 RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
-    : QObject(parent),
-      _account(account),
-      _appPassword(QString()),
-      _networkManager{new QNetworkAccessManager{this}}
+    : QObject(parent)
+    , _account(account)
+    , _appPassword(QString())
+    , _networkManager{new QNetworkAccessManager{this}}
 {
-    QObject::connect(AccountManager::instance(), &AccountManager::accountRemoved,
-                     this, [=, this](AccountState *accountState) {
+    QObject::connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [=, this](AccountState *accountState) {
         if (_account != accountState->account()) {
             return;
         }
@@ -37,14 +37,11 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
     if (FolderMan::instance()) {
         qCDebug(lcRemoteWipe) << "FolderMan instance is present, a remote wipe will clean up local data first";
         _canWipeLocalFiles = true;
-        QObject::connect(this, &RemoteWipe::authorized, FolderMan::instance(),
-                         &FolderMan::slotWipeFolderForAccount);
-        QObject::connect(FolderMan::instance(), &FolderMan::wipeDone, this,
-                         &RemoteWipe::slotWipeDone);
+        QObject::connect(this, &RemoteWipe::authorized, FolderMan::instance(), &FolderMan::slotWipeFolderForAccount);
+        QObject::connect(FolderMan::instance(), &FolderMan::wipeDone, this, &RemoteWipe::slotWipeDone);
     }
 
-    QObject::connect(_account.data(), &Account::appPasswordRetrieved, this,
-                     &RemoteWipe::startCheckJobWithAppPassword);
+    QObject::connect(_account.data(), &Account::appPasswordRetrieved, this, &RemoteWipe::startCheckJobWithAppPassword);
 }
 
 void RemoteWipe::startCheckJobWithAppPassword(QString pwd)
@@ -55,21 +52,17 @@ void RemoteWipe::startCheckJobWithAppPassword(QString pwd)
     }
 
     _appPassword = pwd;
-    QUrl requestUrl = Utility::concatUrlPath(_account->url().toString(),
-                                             QLatin1String("/index.php/core/wipe/check"));
+    QUrl requestUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/core/wipe/check"));
     QNetworkRequest request;
-    request.setHeader(QNetworkRequest::ContentTypeHeader,
-                      "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setUrl(requestUrl);
     request.setSslConfiguration(_account->getOrCreateSslConfig());
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QStringLiteral("token=%1").arg(_appPassword));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
     _networkReplyCheck = _networkManager->post(request, requestBody);
-    QObject::connect(_networkManager, &QNetworkAccessManager::sslErrors,
-        _account.data(), &Account::slotHandleSslErrors);
-    QObject::connect(_networkReplyCheck, &QNetworkReply::finished, this,
-                     &RemoteWipe::slotCheckJob);
+    QObject::connect(_networkManager, &QNetworkAccessManager::sslErrors, _account.data(), &Account::slotHandleSslErrors);
+    QObject::connect(_networkReplyCheck, &QNetworkReply::finished, this, &RemoteWipe::slotCheckJob);
 }
 
 void RemoteWipe::slotCheckJob()
@@ -79,30 +72,28 @@ void RemoteWipe::slotCheckJob()
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     bool wipe = false;
 
-    //check for errors
-    if (_networkReplyCheck->error() != QNetworkReply::NoError ||
-            jsonParseError.error != QJsonParseError::NoError) {
+    // check for errors
+    if (_networkReplyCheck->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
-            qCWarning(lcRemoteWipe) << QStringLiteral("Error returned from the server: <em>%1<em>")
-                                       .arg(errorFromJson.toHtmlEscaped());
+            qCWarning(lcRemoteWipe) << QStringLiteral("Error returned from the server: <em>%1<em>").arg(errorFromJson.toHtmlEscaped());
         } else if (_networkReplyCheck->error() != QNetworkReply::NoError) {
-            qCWarning(lcRemoteWipe) << QStringLiteral("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
-                              .arg(_networkReplyCheck->errorString().toHtmlEscaped());
+            qCWarning(lcRemoteWipe)
+                << QStringLiteral("There was an error accessing the 'token' endpoint: <br><em>%1</em>").arg(_networkReplyCheck->errorString().toHtmlEscaped());
         } else if (jsonParseError.error != QJsonParseError::NoError) {
-            qCWarning(lcRemoteWipe) << QStringLiteral("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                              .arg(jsonParseError.errorString());
+            qCWarning(lcRemoteWipe) << QStringLiteral("Could not parse the JSON returned from the server: <br><em>%1</em>").arg(jsonParseError.errorString());
         } else {
-            qCWarning(lcRemoteWipe) <<  QStringLiteral("The reply from the server did not contain all expected fields");
+            qCWarning(lcRemoteWipe) << QStringLiteral("The reply from the server did not contain all expected fields");
         }
 
-    // check for wipe request
+        // check for wipe request
     } else if (!json.value("wipe").isUndefined()) {
         wipe = json["wipe"].toBool();
     }
 
-    auto manager = AccountManager::instance();
-    auto accountState = manager->account(_account->displayName()).data();
+    // Use the account that was passed to RemoteWipe constructor, not a lookup by display name
+    // This prevents collisions when multiple accounts have the same display name
+    auto accountState = AccountManager::instance()->accountState(_account);
 
     if (wipe) {
         qCInfo(lcRemoteWipe) << "Starting remote wipe for" << _account->displayName();
@@ -136,17 +127,24 @@ void RemoteWipe::slotCheckJob()
     _networkReplyCheck->deleteLater();
 }
 
-void RemoteWipe::slotWipeDone(AccountState *accountState, bool dataWiped)
+void RemoteWipe::slotWipeDone(AccountState *accountState, bool dataWiped, const QStringList &failedFolders)
 {
     const bool isCurrentAccount = _account == accountState->account();
-    if (!(dataWiped && isCurrentAccount)) {
-        qCWarning(lcRemoteWipe).nospace() << "will not notify server about wipe success dataWiped=" << dataWiped << " isCurrentAccount=" << isCurrentAccount;
+
+    // Only proceed if all folders were wiped successfully AND it's the current account
+    if (!dataWiped || !isCurrentAccount) {
+        if (!isCurrentAccount) {
+            qCWarning(lcRemoteWipe) << "Wipe completed for different account, ignoring";
+        }
+        if (!dataWiped) {
+            qCWarning(lcRemoteWipe).nospace() << "Wipe failed for some folders: " << failedFolders.join(", ");
+        }
         return;
     }
 
-    // delete account after wiping local data succeeded
+    // All folders were wiped successfully, now we can delete the account
     // sending the notification to the server will be done after the account got removed
-    qCInfo(lcRemoteWipe) << "Deleting account" << _account->displayName();
+    qCInfo(lcRemoteWipe) << "All folders wiped successfully, deleting account" << _account->displayName();
     auto manager = AccountManager::instance();
     manager->deleteAccount(accountState);
     manager->save();
@@ -155,19 +153,16 @@ void RemoteWipe::slotWipeDone(AccountState *accountState, bool dataWiped)
 void RemoteWipe::notifyServerSuccess()
 {
     qCInfo(lcRemoteWipe) << "Notifying server about successful remote wipe for" << _account->displayName();
-    QUrl requestUrl = Utility::concatUrlPath(_account->url().toString(),
-                                                QLatin1String("/index.php/core/wipe/success"));
+    QUrl requestUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/core/wipe/success"));
     QNetworkRequest request;
-    request.setHeader(QNetworkRequest::ContentTypeHeader,
-                        "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setUrl(requestUrl);
     request.setSslConfiguration(_account->getOrCreateSslConfig());
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QStringLiteral("token=%1").arg(_appPassword));
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
     _networkReplySuccess = _networkManager->post(request, requestBody);
-    QObject::connect(_networkReplySuccess, &QNetworkReply::finished, this,
-                        &RemoteWipe::slotNotifyServerSuccessFinished);
+    QObject::connect(_networkReplySuccess, &QNetworkReply::finished, this, &RemoteWipe::slotNotifyServerSuccessFinished);
 }
 
 void RemoteWipe::slotNotifyServerSuccessFinished()
@@ -175,18 +170,15 @@ void RemoteWipe::slotNotifyServerSuccessFinished()
     auto jsonData = _networkReplySuccess->readAll();
     QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-    if (_networkReplySuccess->error() != QNetworkReply::NoError ||
-            jsonParseError.error != QJsonParseError::NoError) {
+    if (_networkReplySuccess->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError) {
         QString errorFromJson = json["error"].toString();
         if (!errorFromJson.isEmpty()) {
-            qCWarning(lcRemoteWipe) << QStringLiteral("Error returned from the server: <em>%1</em>")
-                              .arg(errorFromJson.toHtmlEscaped());
+            qCWarning(lcRemoteWipe) << QStringLiteral("Error returned from the server: <em>%1</em>").arg(errorFromJson.toHtmlEscaped());
         } else if (_networkReplySuccess->error() != QNetworkReply::NoError) {
             qCWarning(lcRemoteWipe) << QStringLiteral("There was an error accessing the 'success' endpoint: <br><em>%1</em>")
-                              .arg(_networkReplySuccess->errorString().toHtmlEscaped());
+                                           .arg(_networkReplySuccess->errorString().toHtmlEscaped());
         } else if (jsonParseError.error != QJsonParseError::NoError) {
-            qCWarning(lcRemoteWipe) << QStringLiteral("Could not parse the JSON returned from the server: <br><em>%1</em>")
-                              .arg(jsonParseError.errorString());
+            qCWarning(lcRemoteWipe) << QStringLiteral("Could not parse the JSON returned from the server: <br><em>%1</em>").arg(jsonParseError.errorString());
         } else {
             qCWarning(lcRemoteWipe) << QStringLiteral("The reply from the server did not contain all expected fields.");
         }

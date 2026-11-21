@@ -8,9 +8,9 @@
 #define FOLDERMAN_H
 
 #include <QByteArray>
+#include <QList>
 #include <QObject>
 #include <QQueue>
-#include <QList>
 
 #include "folder.h"
 #include "folderwatcher.h"
@@ -32,7 +32,8 @@ class TestFileActionsModel;
 class TestBrowserReAuthController;
 class TestMigration;
 
-namespace OCC {
+namespace OCC
+{
 
 class Application;
 class SyncResult;
@@ -74,7 +75,7 @@ public:
         ErrorRecursiveValidity,
         ErrorContainsFolder,
         ErrorContainedInFolder,
-        ErrorNonEmptyFolder
+        ErrorNonEmptyFolder,
     };
 
     enum class GoodPathStrategy {
@@ -99,7 +100,7 @@ public:
     [[nodiscard]] const Folder::Map &map() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
-      */
+     */
     Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
@@ -113,10 +114,10 @@ public:
     void blacklistFolderPath(const QString &path);
 
     /**
-      * returns a list of local files that exist on the local harddisk for an
-      * incoming relative server path. The method checks with all existing sync
-      * folders.
-      */
+     * returns a list of local files that exist on the local harddisk for an
+     * incoming relative server path. The method checks with all existing sync
+     * folders.
+     */
     QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
 
     /** Returns the folder by alias or \c nullptr if no folder with the alias exists. */
@@ -149,7 +150,10 @@ public:
     SocketApi *socketApi();
 
 #ifdef Q_OS_WIN
-    NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
+    NavigationPaneHelper &navigationPaneHelper()
+    {
+        return _navigationPaneHelper;
+    }
 #endif
 
     /**
@@ -240,10 +244,10 @@ public:
     [[nodiscard]] Result<void, QString> unsupportedConfiguration(const QString &path) const;
 Q_SIGNALS:
     /**
-      * signal to indicate a folder has changed its sync state.
-      *
-      * Attention: The folder may be zero. Do a general update of the state then.
-      */
+     * signal to indicate a folder has changed its sync state.
+     *
+     * Attention: The folder may be zero. Do a general update of the state then.
+     */
     void folderSyncStateChange(OCC::Folder *);
 
     /**
@@ -259,7 +263,7 @@ Q_SIGNALS:
     /**
      * Emitted once slotRemoveFoldersForAccount is done wiping
      */
-    void wipeDone(OCC::AccountState *account, bool success);
+    void wipeDone(OCC::AccountState *account, bool success, const QStringList &failedFolders);
 
 public Q_SLOTS:
 
@@ -341,9 +345,8 @@ private Q_SLOTS:
 private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
-      */
-    Folder *addFolderInternal(FolderDefinition folderDefinition,
-        AccountState *accountState, std::unique_ptr<Vfs> vfs);
+     */
+    Folder *addFolderInternal(FolderDefinition folderDefinition, AccountState *accountState, std::unique_ptr<Vfs> vfs);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder(Folder *);
@@ -357,7 +360,8 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
+    void
+    setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
 
     void runEtagJobsIfPossible(const QList<Folder *> &folderMap);
     void runEtagJobIfPossible(Folder *folder);
