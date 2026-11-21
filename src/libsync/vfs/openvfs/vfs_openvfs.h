@@ -11,12 +11,15 @@
 #include "discoveryphase.h"
 #include "chronoelapsedtimer.h"
 
+#include <QMutex>
 #include <QObject>
-#include <QScopedPointer>
-#include <QProcess>
 #include <QPointer>
+#include <QProcess>
+#include <QScopedPointer>
+#include <QSet>
 
 #include <filesystem>
+#include <optional>
 
 namespace OCC {
 class HydrationJob;
@@ -78,7 +81,17 @@ protected:
     void startImpl(const VfsSetupParams &params) override;
 
 private:
+    // Lets everything below folderPath inherit the pin state of folderPath again, like Vfs::setPinStateInDb() does.
+    void inheritPinStateBelow(const FileSystem::Path &folderPath);
+
+    // Turns a placeholder whose hydration did not finish back into a dehydrated one, so the next access downloads it again.
+    Result<void, QString> restoreDehydratedPlaceholder(const QString &filePath, std::optional<time_t> modtime);
+    void finishHydration(HydrationJob *hydration);
+
     QMap<QByteArray, HydrationJob *> _hydrationJobs;
+    // Local paths of the running hydrations. Discovery reads it from its worker threads.
+    QSet<QString> _hydratingPaths;
+    QMutex _hydratingPathsMutex;
     QPointer<QProcess> _openVfsProcess;
 };
 
