@@ -1727,6 +1727,18 @@ private Q_SLOTS:
         QVERIFY(!fakeFolder.syncOnce());
     }
 
+    void testDirectoryInvalidRemoteMtime()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("foo"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("foo/bar"));
+        fakeFolder.remoteModifier().setModTime(QStringLiteral("foo"), QDateTime::fromSecsSinceEpoch(0));
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("foo/bar" DVSUFFIX));
+    }
+
     void testInvalidFutureMtimeRecovery()
     {
         constexpr auto FUTURE_MTIME = 0xFFFFFFFF;

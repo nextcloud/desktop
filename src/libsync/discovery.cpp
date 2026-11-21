@@ -34,6 +34,11 @@ constexpr const char *editorNamesForDelayedUpload[] = {"PowerPDF"};
 constexpr const char *fileExtensionsToCheckIfOpenForSigning[] = {".pdf"};
 constexpr auto delayIntervalForSyncRetryForOpenedForSigningFilesSeconds = 60;
 constexpr auto delayIntervalForSyncRetryForFilesExceedQuotaSeconds = 60;
+
+bool isValidModtime(const time_t modtime)
+{
+    return modtime > 0 && modtime < 0xFFFFFFFF;
+}
 }
 
 namespace OCC {
@@ -254,6 +259,20 @@ void ProcessDirectoryJob::process()
         // exactly they are not being lobbed off at any of the prior points of processing.
 
         e.serverEntry.etag = Utility::normalizeEtag(e.serverEntry.etag);
+
+        // A directory's mtime is only applied when it is created locally, so an invalid
+        // server mtime must not block the directory and its contents. Prefer the journal
+        // value: it is stable, so the directory is not seen as changed on every sync.
+        if (e.serverEntry.isValid() && e.serverEntry.isDirectory && !isValidModtime(e.serverEntry.modtime)) {
+            if (e.dbEntry.isValid() && isValidModtime(e.dbEntry._modtime)) {
+                e.serverEntry.modtime = e.dbEntry._modtime;
+            } else if (e.localEntry.isValid() && isValidModtime(e.localEntry.modtime)) {
+                e.serverEntry.modtime = e.localEntry.modtime;
+            } else {
+                e.serverEntry.modtime = QDateTime::currentSecsSinceEpoch();
+            }
+            qCInfo(lcDisco) << "Directory" << path._original << "has an invalid modification time on the server, using" << e.serverEntry.modtime;
+        }
 
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
     }
