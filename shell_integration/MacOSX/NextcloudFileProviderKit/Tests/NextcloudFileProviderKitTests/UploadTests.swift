@@ -93,7 +93,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         modificationDate: Date,
         progress: Progress = .init(),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
-    ) -> Task<(ocId: String?, etag: String?, date: Date?, size: Int64?, remoteError: NKError), Never> {
+    ) -> Task<(ocId: String?, etag: String?, date: Date?, size: Int64?, failure: UploadFailure?), Never> {
         let dbManager = Self.dbManager
         return Task.detached { @Sendable in
             await NextcloudFileProviderKit.upload(
@@ -186,7 +186,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         }
 
         let result = try await testTaskValue(of: upload)
-        XCTAssertEqual(result.remoteError.errorCode, expectedError.errorCode)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, expectedError.errorCode)
         XCTAssertEqual(result.ocId, headers["OC-FileID"])
         XCTAssertEqual(result.etag, headers["OC-ETag"])
         XCTAssertEqual(result.size, expectedError == .success ? Int64(data.count) : nil)
@@ -230,7 +230,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, NSURLErrorCancelled)
         XCTAssertNil(result.ocId)
         let cancellationCode = try await nextTestValue(from: networkCompletion)
         XCTAssertEqual(cancellationCode, NSURLErrorCancelled)
@@ -255,7 +255,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(retry.remoteError, .success)
+        XCTAssertNil(retry.failure)
         XCTAssertEqual(remoteInterface.uploadOperationCount, 2)
         XCTAssertEqual(root.children.count, 1)
         XCTAssertEqual(root.children.first?.data, data)
@@ -303,7 +303,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         let stopped = try await nextTestValue(from: stoppedRequests)
         XCTAssertEqual(try XCTUnwrap(stopped).url, interrupted.request.url)
         let result = try await testTaskValue(of: upload)
-        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, NSURLErrorCancelled)
         XCTAssertNil(result.ocId)
         XCTAssertNil(progress.cancellationHandler)
         let remainingChunks = try XCTUnwrap(Self.dbManager.remoteFileChunks(uploadId: uploadId))
@@ -331,7 +331,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         move.respond(status: 201, headers: ["OC-FileID": "assembled-id", "OC-ETag": "assembled-etag"])
 
         let retried = try await testTaskValue(of: retry)
-        XCTAssertEqual(retried.remoteError, .success)
+        XCTAssertNil(retried.failure)
         XCTAssertEqual(retried.ocId, "assembled-id")
         XCTAssertEqual(retried.etag, "assembled-etag")
         XCTAssertEqual(retried.size, Int64(data.count))
@@ -364,7 +364,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, NSURLErrorCancelled)
         XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
         XCTAssertTrue(root.children.isEmpty)
     }
@@ -422,8 +422,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError.errorCode, NSURLErrorCancelled)
-        XCTAssertEqual((result.remoteError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file")) as? CocoaError)?.code, .userCancelled)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, NSURLErrorCancelled)
+        XCTAssertEqual((result.failure?.underlyingError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file")) as? CocoaError)?.code, .userCancelled)
         XCTAssertNil(result.ocId)
         XCTAssertTrue(progress.isCancelled)
         XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
@@ -467,9 +467,9 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                 log: FileProviderLogMock()
             )
 
-            XCTAssertEqual(result.remoteError.errorCode, preparationError.errorCode)
-            XCTAssertEqual(result.remoteError.errorDescription, preparationError.errorDescription)
-            let mappedError = result.remoteError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
+            XCTAssertEqual(result.failure?.underlyingError.errorCode, preparationError.errorCode)
+            XCTAssertEqual(result.failure?.underlyingError.errorDescription, preparationError.errorDescription)
+            let mappedError = result.failure?.underlyingError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: .init("file"))
             XCTAssertEqual((mappedError as? NSFileProviderError)?.code, .cannotSynchronize)
             XCTAssertNotEqual((mappedError as? CocoaError)?.code, .userCancelled)
             XCTAssertEqual(progress.isCancelled, cancelProgress)
@@ -521,7 +521,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -562,7 +562,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -616,7 +616,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError.errorCode, 500)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, 500)
         XCTAssertTrue(FileManager.default.fileExists(atPath: chunkDirectory.path))
         let storedChunks = try FileManager.default.contentsOfDirectory(atPath: chunkDirectory.path)
         XCTAssertEqual(storedChunks.count, Int(ceil(Double(data.count) / Double(chunkSize))))
@@ -654,7 +654,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError, .metadataDatabaseUnreadable)
+        XCTAssertEqual(result.failure?.underlyingError, .metadataDatabaseUnreadable)
         XCTAssertNil(result.ocId)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path), "No chunk was uploaded.")
     }
@@ -688,7 +688,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError.errorCode, 500)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, 500)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path))
         XCTAssertEqual(
             Self.dbManager.remoteChunkStoreFolderNames()?
@@ -754,7 +754,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -792,7 +792,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             log: FileProviderLogMock()
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         let capabilityOptions = try XCTUnwrap(remoteInterface.lastCapabilitiesRequestOptions)
         XCTAssertNil(capabilityOptions.customHeader?["If-Match"])
         XCTAssertEqual(remoteInterface.lastUploadIfMatchHeader, ifMatch)
@@ -877,7 +877,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -955,7 +955,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertEqual(result.size, Int64(data.count))
         XCTAssertNotNil(result.ocId)
         XCTAssertNotNil(result.etag)
@@ -1029,7 +1029,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.record($0) }
         )
 
-        XCTAssertEqual(result.remoteError, .success)
+        XCTAssertNil(result.failure)
 
         // The old metadata pointer is consumed before it is replaced with the new attempt.
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemIdentifier)?.chunkUploadId)

@@ -230,7 +230,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
 
         let expectedChunkCount = Int(ceil(Double(data.count) / Double(chunkSize)))
 
-        XCTAssertEqual(result.nkError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
         XCTAssertEqual(result.chunksDirectory, chunkDirectory)
@@ -309,7 +309,7 @@ final class MockRemoteInterfaceTests: XCTestCase {
             chunkUploadCompleteHandler: { uploadedChunks.append($0) }
         )
 
-        XCTAssertEqual(result.nkError, .success)
+        XCTAssertNil(result.failure)
         XCTAssertNotNil(result.file)
         XCTAssertEqual(result.file?.size, Int64(data.count))
         XCTAssertEqual(result.chunksDirectory, chunkDirectory)

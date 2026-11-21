@@ -232,7 +232,7 @@ public extension Item {
 
         let uploadOptions = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, etag, date, size, error) = await upload(
+        let (_, etag, date, size, failure) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,
@@ -257,7 +257,7 @@ public extension Item {
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
-        guard error == .success else {
+        if let error = failure?.underlyingError {
             logger.error(
                 """
                 Could not upload item \(ocId)
