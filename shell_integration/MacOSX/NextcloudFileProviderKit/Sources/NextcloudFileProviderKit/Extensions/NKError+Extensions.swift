@@ -32,10 +32,18 @@ extension NKError {
         errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
             || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202
             || errorCode == 500 || errorCode == 503 || errorCode == 200
+            // Timeouts and gateway errors from the server or a reverse proxy in front of it.
+            // 524 is not a standard status code; Cloudflare returns it when the origin times out.
+            || errorCode == 408 || errorCode == 502 || errorCode == 504 || errorCode == 524
     }
 
     var isUnauthenticatedError: Bool {
         errorCode == -1013
+    }
+
+    /// NextcloudKit refused a chunked upload because the local disk lacks room for the chunks.
+    var isLocalStorageFullError: Bool {
+        errorCode == NKError.errorChunkNoEnoughMemory.errorCode
     }
 
     var isGoingOverQuotaError: Bool {
@@ -107,6 +115,9 @@ extension NKError {
     ) async -> Error? {
         if isCancelledError {
             return CocoaError(.userCancelled)
+        }
+        if isLocalStorageFullError {
+            return CocoaError(.fileWriteOutOfSpace)
         }
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
