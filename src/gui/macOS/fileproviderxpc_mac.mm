@@ -24,6 +24,7 @@ static_assert(__has_feature(objc_arc), "File Provider XPC requires ARC.");
 namespace {
     constexpr int64_t semaphoreWaitDelta = 1000000000; // 1 seconds
     constexpr auto reachableRetryTimeout = 300; // seconds
+    constexpr auto reachabilityCheckInterval = std::chrono::seconds(15);
 }
 
 namespace OCC::Mac {
@@ -33,6 +34,9 @@ Q_LOGGING_CATEGORY(lcFileProviderXPC, "nextcloud.gui.macos.fileprovider.xpc", Qt
 FileProviderXPC::FileProviderXPC(QObject *parent)
     : QObject{parent}
 {
+    _reachabilityTimer.setInterval(reachabilityCheckInterval);
+    connect(&_reachabilityTimer, &QTimer::timeout, this, &FileProviderXPC::checkFileProviderDomains);
+    _reachabilityTimer.start();
 }
 
 FileProviderXPC::~FileProviderXPC()
@@ -71,6 +75,66 @@ void FileProviderXPC::connectToFileProviderDomains()
     for (const auto &domainIdentifier : clientCommConnections.keys()) {
         const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
         _clientCommConnections.insert(domainIdentifier, clientCommConnection);
+    }
+}
+
+void FileProviderXPC::checkFileProviderDomains()
+{
+    for (const auto &fileProviderDomainIdentifier : fileProviderDomainIdentifiers()) {
+        // A domain which stays unreachable would otherwise block the app on every check.
+        const auto lastUnreachableTime = _unreachableFileProviderDomains.value(fileProviderDomainIdentifier);
+        if (lastUnreachableTime.isValid() && lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
+            continue;
+        }
+
+        (void)fileProviderDomainReachable(fileProviderDomainIdentifier);
+    }
+}
+
+QStringList FileProviderXPC::fileProviderDomainIdentifiers() const
+{
+    QStringList fileProviderDomainIdentifiers;
+    const auto domainManager = FileProvider::instance()->domainManager();
+
+    for (const auto &accountState : AccountManager::instance()->accounts()) {
+        const auto account = accountState->account();
+        if (domainManager && domainManager->domainForAccount(account.data())) {
+            fileProviderDomainIdentifiers.append(account->fileProviderDomainIdentifier());
+        }
+    }
+
+    return fileProviderDomainIdentifiers;
+}
+
+void FileProviderXPC::reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier)
+{
+    const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
+
+    if (!accountState || !accountState->account()) {
+        qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconnect.";
+        return;
+    }
+
+    const auto domain = (NSFileProviderDomain *)(FileProvider::instance()->domainManager()->domainForAccount(accountState->account().data()));
+    const auto manager = [NSFileProviderManager managerForDomain:domain];
+
+    if (manager == nil) {
+        qCWarning(lcFileProviderXPC) << "No file provider manager for domain" << fileProviderDomainIdentifier << "during reconnect.";
+        return;
+    }
+
+    const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[ manager ]);
+    const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
+    const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, FileProvider::instance()->service());
+
+    for (const auto &domainIdentifier : clientCommConnections.keys()) {
+        disconnectFromFileProviderDomain(domainIdentifier);
+        _clientCommConnections.insert(domainIdentifier, clientCommConnections.value(domainIdentifier));
+        authenticateFileProviderDomain(domainIdentifier);
+    }
+
+    if (!clientCommConnections.isEmpty()) {
+        setIgnoreList();
     }
 }
 
@@ -177,18 +241,18 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
     const auto clientCommConnection = _clientCommConnections.value(fileProviderDomainIdentifier);
     const auto service = (__bridge NSObject<ClientCommunicationProtocol> *)clientCommConnection.clientCommunicationService;
 
+    // A domain the app never got a connection to counts as unreachable, so it is connected like one which stopped answering.
+    __block auto response = false;
     if (service == nil) {
         qCWarning(lcFileProviderXPC) << "Could not get service for file provider domain" << fileProviderDomainIdentifier;
-        return false;
+    } else {
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        [service getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const, NSError *const) {
+            response = true;
+            dispatch_semaphore_signal(semaphore);
+        }];
+        dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
     }
-
-    __block auto response = false;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    [service getFileProviderDomainIdentifierWithCompletionHandler:^(NSString *const, NSError *const) {
-        response = true;
-        dispatch_semaphore_signal(semaphore);
-    }];
-    dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, semaphoreWaitDelta));
 
     if (response) {
         _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
@@ -199,26 +263,7 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
             qCWarning(lcFileProviderXPC) << "Could not reach service of file provider domain"
                                          << fileProviderDomainIdentifier
                                          << "going to attempt reconfiguring interface";
-            const auto ncDomainManager = FileProvider::instance()->domainManager();
-            const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
-
-            if (!accountState || !accountState->account()) {
-                qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconfigure.";
-                return response;
-            }
-
-            const auto domain = (NSFileProviderDomain *)(ncDomainManager->domainForAccount(accountState->account().data()));
-            const auto manager = [NSFileProviderManager managerForDomain:domain];
-            const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[manager]);
-            const auto connections = FileProviderXPCUtils::connectToFileProviderServices(fpServices);
-            const auto fileProviderService = FileProvider::instance()->service();
-            const auto clientCommConnections = FileProviderXPCUtils::processClientCommunicationConnections(connections, fileProviderService);
-
-            for (const auto &domainIdentifier : clientCommConnections.keys()) {
-                const auto clientCommConnection = clientCommConnections.value(domainIdentifier);
-                disconnectFromFileProviderDomain(domainIdentifier);
-                _clientCommConnections.insert(domainIdentifier, clientCommConnection);
-            }
+            reconnectFileProviderDomain(fileProviderDomainIdentifier);
         }
 
         if (retry) {
