@@ -23,8 +23,17 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
     private let displayFileActions: Bool
     private let remoteSupportsTrash: Bool
 
+    /// The server drops a lapsed lock lazily and without changing any etag, so a stored lock can outlive the real one. A lock without a known timeout counts as held.
+    private var lockHasExpired: Bool {
+        guard let lockTimeOut = metadata.lockTimeOut else {
+            return false
+        }
+
+        return lockTimeOut <= Date()
+    }
+
     private var lockStateAllowsModifications: Bool {
-        metadata.lock == false || (
+        metadata.lock == false || lockHasExpired || (
             metadata.lockOwnerType == NKLockType.token.rawValue &&
                 account.id == metadata.lockOwner &&
                 metadata.lockToken != nil
@@ -248,10 +257,11 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             ]
         }
 
+        // `lockStateAllowsModifications` answers for the lapsed lock as well, so this decides by the same
+        // rule as the capabilities: a lock without a known timeout counts as held, here as there.
         if metadata.lock,
            !lockStateAllowsModifications,
-           metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username,
-           metadata.lockTimeOut ?? Date() > Date()
+           metadata.lockOwnerType != NKLockType.user.rawValue || metadata.lockOwner != account.username
         {
             return [
                 .userReadable

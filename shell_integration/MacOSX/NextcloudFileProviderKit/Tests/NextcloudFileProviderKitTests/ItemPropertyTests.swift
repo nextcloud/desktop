@@ -254,6 +254,49 @@ final class ItemPropertyTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(lockPredicate.evaluate(with: fileproviderItems))
     }
 
+    ///
+    /// A foreign lock blocks writing, deleting and renaming only while its timeout lies ahead. The server removes a lapsed lock lazily and without an etag change, so the stored lock may outlive the real one.
+    ///
+    func testAForeignLockBlocksModificationsOnlyUntilItsTimeout() {
+        func makeItem(lockTimeOut: Date?) -> Item {
+            var metadata = SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
+            metadata.etag = "test-etag"
+            metadata.permissions = "RGDNVW"
+            metadata.lock = true
+            metadata.lockOwner = "someone-else"
+            metadata.lockOwnerType = NKLockType.user.rawValue
+            metadata.lockTime = Date().addingTimeInterval(-3600)
+            metadata.lockTimeOut = lockTimeOut
+            return Item(
+                metadata: metadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: MockRemoteInterface(account: Self.account),
+                dbManager: Self.dbManager
+            )
+        }
+
+        let heldItem = makeItem(lockTimeOut: Date().addingTimeInterval(3600))
+        let held = heldItem.capabilities
+        XCTAssertFalse(held.contains(.allowsWriting))
+        XCTAssertFalse(held.contains(.allowsDeleting))
+        XCTAssertFalse(held.contains(.allowsRenaming))
+        XCTAssertFalse(heldItem.fileSystemFlags.contains(.userWritable))
+
+        let expiredItem = makeItem(lockTimeOut: Date().addingTimeInterval(-1))
+        let expired = expiredItem.capabilities
+        XCTAssertTrue(expired.contains(.allowsWriting))
+        XCTAssertTrue(expired.contains(.allowsDeleting))
+        XCTAssertTrue(expired.contains(.allowsRenaming))
+        XCTAssertTrue(expiredItem.fileSystemFlags.contains(.userWritable))
+
+        // Both places which answer for a held lock decide by the same rule, so the file system flags say
+        // what the capabilities say for a lock the server gave no timeout.
+        let withoutTimeoutItem = makeItem(lockTimeOut: nil)
+        XCTAssertFalse(withoutTimeoutItem.capabilities.contains(.allowsWriting), "A lock without a known timeout counts as held.")
+        XCTAssertFalse(withoutTimeoutItem.fileSystemFlags.contains(.userWritable), "A lock without a known timeout counts as held.")
+    }
+
     func testItemUserInfoLockingPropsFileUnlocked() {
         var metadata =
             SendableItemMetadata(ocId: "test-id", fileName: "test.txt", account: Self.account)
