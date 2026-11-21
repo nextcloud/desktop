@@ -385,6 +385,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OpenVFS::updateMetada
             Q_UNREACHABLE();
             break;
         case CSyncEnums::ItemTypeSkip:
+        case CSyncEnums::ItemTypeSkipError:
             Q_UNREACHABLE();
             break;
         }
