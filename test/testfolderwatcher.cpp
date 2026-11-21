@@ -73,6 +73,7 @@ void mv(const QString &file1, const QString &file2)
 }
 
 using namespace OCC;
+using namespace Qt::StringLiterals;
 
 class TestFolderWatcher : public QObject
 {
@@ -321,6 +322,89 @@ private Q_SLOTS:
         CHECK_WATCH_COUNT(countFolders(_rootPath) + 1);
 
         QVERIFY(QFile::remove(link));
+    }
+
+    void testExcludedFolderIsNotWatched()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Only the Linux watcher walks and watches every folder");
+#else
+        QTemporaryDir root;
+        QDir rootDir(root.path());
+        const auto rootPath = rootDir.canonicalPath();
+        QVERIFY(rootDir.mkpath(u"synced/a"_s));
+        QVERIFY(rootDir.mkpath(u"excluded/a/b"_s));
+        QVERIFY(rootDir.mkpath(u"excluded/c"_s));
+
+        FolderWatcher watcher;
+        watcher.setFolderExcludedCheck([rootPath](const QString &path) {
+            return path == rootPath + u"/excluded"_s;
+        });
+        watcher.init(rootPath);
+
+        // the root, synced and synced/a
+        QCOMPARE(watcher.testLinuxWatchCount(), 3);
+#endif
+    }
+
+    void testCreatedExcludedFolderIsNotWatched()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Only the Linux watcher walks and watches every folder");
+#else
+        QTemporaryDir root;
+        QDir rootDir(root.path());
+        const auto rootPath = rootDir.canonicalPath();
+
+        FolderWatcher watcher;
+        watcher.setFolderExcludedCheck([rootPath](const QString &path) {
+            return path == rootPath + u"/excluded"_s;
+        });
+        watcher.init(rootPath);
+        QSignalSpy pathChangedSpy(&watcher, &FolderWatcher::pathChanged);
+        QCOMPARE(watcher.testLinuxWatchCount(), 1);
+
+        QVERIFY(rootDir.mkpath(u"excluded/a/b"_s));
+        QVERIFY(rootDir.mkpath(u"synced/a"_s));
+
+        QTRY_COMPARE(watcher.testLinuxWatchCount(), 3);
+        // the excluded folder itself is still reported as a change
+        QVERIFY(std::any_of(pathChangedSpy.cbegin(), pathChangedSpy.cend(), [&rootPath](const QList<QVariant> &arguments) {
+            return arguments.first().toString() == rootPath + u"/excluded"_s;
+        }));
+#endif
+    }
+
+    void testChangeOnExcludedFolderDoesNotListItsContent()
+    {
+#ifndef Q_OS_LINUX
+        QSKIP("Attribute changes of folders are reported this way on Linux");
+#else
+        QTemporaryDir root;
+        QDir rootDir(root.path());
+        const auto rootPath = rootDir.canonicalPath();
+        QVERIFY(rootDir.mkpath(u"excluded/a/b"_s));
+        Utility::writeRandomFile(rootPath + u"/excluded/a/b/file"_s);
+
+        FolderWatcher watcher;
+        watcher.setFolderExcludedCheck([rootPath](const QString &path) {
+            return path == rootPath + u"/excluded"_s;
+        });
+        watcher.init(rootPath);
+        QSignalSpy pathChangedSpy(&watcher, &FolderWatcher::pathChanged);
+
+        // an attribute change of the excluded folder itself, as when its pin state is written
+        const auto excludedPath = QString{rootPath + u"/excluded"_s};
+        QVERIFY(QFile::setPermissions(excludedPath, QFile::permissions(excludedPath) | QFileDevice::ExeOther));
+
+        QTRY_VERIFY(std::any_of(pathChangedSpy.cbegin(), pathChangedSpy.cend(), [&excludedPath](const QList<QVariant> &arguments) {
+            return arguments.first().toString() == excludedPath;
+        }));
+        for (const auto &arguments : std::as_const(pathChangedSpy)) {
+            const auto path = arguments.first().toString();
+            QVERIFY2(!path.startsWith(excludedPath + u'/'), qPrintable(u"listed content of the excluded folder: %1"_s.arg(path)));
+        }
+#endif
     }
 
     void testDetectLockFiles()

@@ -1779,6 +1779,9 @@ void Folder::registerFolderWatcher()
         connect(_folderWatcher.data(), &FolderWatcher::lockedFilesFound, this, &Folder::slotLockedFilesFound);
     }
     connect(_folderWatcher.data(), &FolderWatcher::filesLockImposed, this, &Folder::slotFilesLockImposed, Qt::UniqueConnection);
+    _folderWatcher->setFolderExcludedCheck([this](const QString &folderPath) {
+        return isFileExcludedAbsolute(folderPath);
+    });
     _folderWatcher->init(path());
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
     _folderWatcher->performSetPermissionsTest(path() + QLatin1String(".nextcloudpermissions.log"));
