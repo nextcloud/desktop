@@ -488,6 +488,7 @@ if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
 endif()
 
 IF( WIN32 )
+    set(NC_VERSION_FILETYPE VFT_APP)
     configure_file(
       ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
       ${CMAKE_CURRENT_BINARY_DIR}/version.rc

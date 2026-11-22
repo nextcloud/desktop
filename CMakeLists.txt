@@ -118,6 +118,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 endif()
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+include(NextcloudWindowsVersionResource)
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 # Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"

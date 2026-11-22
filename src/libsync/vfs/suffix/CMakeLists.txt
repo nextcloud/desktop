@@ -5,6 +5,7 @@ add_library(nextcloudsync_vfs_suffix SHARED
     vfs_suffix.h
     vfs_suffix.cpp
 )
+nextcloud_add_windows_version_resource(nextcloudsync_vfs_suffix)
 
 target_link_libraries(nextcloudsync_vfs_suffix PRIVATE Nextcloud::sync)
 

@@ -29,6 +29,19 @@
     </xsl:copy>
   </xsl:template>
 
+  <!-- Let liblzma.dll overwrite a legacy file of the same version -->
+  <xsl:template match="wix:File[contains(@Source, 'liblzma.dll')]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" />
+      <xsl:if test="'@WIN_MSI_LEGACY_UPGRADE_CODE@' != ''">
+        <xsl:attribute name="CompanionFile">
+          <xsl:text>MainExecutable</xsl:text>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="*" />
+    </xsl:copy>
+  </xsl:template>
+
   <!-- Exclude Shell Extensions -->
   <xsl:key name="shellext-search" match="wix:Component[contains(wix:File/@Source, 'NCContextMenu.dll') or contains(wix:File/@Source, 'NCOverlays.dll')]" use="@Id" />
   <xsl:template match="wix:Component[key('shellext-search', @Id)]" />
