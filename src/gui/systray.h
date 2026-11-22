@@ -70,7 +70,7 @@ class Systray : public QSystemTrayIcon
 
 public:
     static Systray *instance();
-    ~Systray() override = default;
+    ~Systray() override;
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);

@@ -12,8 +12,6 @@
 	</dict>
 	<key>CFBundleDisplayName</key>
 	<string>$(OC_APPLICATION_NAME) File Provider UI</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>$(OC_APPLICATION_NAME) File Provider UI needs access to your local network to connect to Nextcloud servers hosted there.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -29,7 +27,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.UnlockFileAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Unlock file</string>
+				<string>Unlock File</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -37,7 +35,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.LockFileAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Lock file</string>
+				<string>Lock File</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -45,7 +43,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.ShareAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Share options</string>
+				<string>Share Options</string>
 			</dict>
 			<dict>
 				<key>NSExtensionFileProviderActionActivationRule</key>
@@ -53,7 +51,7 @@
 				<key>NSExtensionFileProviderActionIdentifier</key>
 				<string>com.nextcloud.desktopclient.FileProviderUIExt.EvictAction</string>
 				<key>NSExtensionFileProviderActionName</key>
-				<string>Free up space</string>
+				<string>Free Up Space</string>
 			</dict>
 		</array>
 		<key>NSExtensionPointIdentifier</key>

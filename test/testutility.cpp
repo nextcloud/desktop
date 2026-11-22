@@ -34,6 +34,33 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+    void testUserAgentString_data()
+    {
+        using namespace Qt::StringLiterals;
+        QTest::addColumn<QString>("applicationName");
+        QTest::addColumn<QByteArray>("expectedName");
+
+        QTest::newRow("ascii") << u"Nextcloud"_s << QByteArray("Nextcloud");
+        QTest::newRow("latin1") << u"Cl\u00f8ud"_s << QByteArray("Cl\xc3\xb8ud");
+        QTest::newRow("outside-latin1") << u"Cloud \u96f2"_s << QByteArray("Cloud \xe9\x9b\xb2");
+        QTest::newRow("supplementary") << u"Cloud \U0001f600"_s << QByteArray("Cloud \xf0\x9f\x98\x80");
+    }
+
+    void testUserAgentString()
+    {
+        QFETCH(QString, applicationName);
+        QFETCH(QByteArray, expectedName);
+
+        const auto previousName = QCoreApplication::applicationName();
+        QCoreApplication::setApplicationName(applicationName);
+        const auto userAgent = userAgentString();
+        QCoreApplication::setApplicationName(previousName);
+
+        const auto expectedBranding = QByteArray("(").append(expectedName).append(", ");
+        QVERIFY(userAgent.contains(expectedBranding));
+        QCOMPARE(QString::fromUtf8(userAgent).toUtf8(), userAgent);
+    }
+
     void testFormatFingerprint()
     {
         QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f")

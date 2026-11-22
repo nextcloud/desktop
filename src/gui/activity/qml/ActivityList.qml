@@ -49,13 +49,6 @@ ScrollView {
     ScrollBar.vertical.width: Math.max(ScrollBar.vertical.implicitWidth, Style.minimumScrollBarWidth)
     ScrollBar.vertical.minimumSize: Style.minimumScrollBarThumbSize
 
-    data: NC.WheelHandler {
-        target: controlRoot.contentItem
-        onWheel: {
-            scrollingToTop = false
-        }
-    }
-
     ListView {
         id: activityList
         objectName: "activityListView"
@@ -68,6 +61,19 @@ ScrollView {
         spacing: 0
         currentIndex: -1
         interactive: true
+
+        WheelHandler {
+            target: null
+            blocking: false
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+
+            onWheel: {
+                if (controlRoot.scrollingToTop) {
+                    controlRoot.scrollingToTop = false
+                    activityList.cancelFlick()
+                }
+            }
+        }
 
         Timer {
             id: repeatUpFlickTimer

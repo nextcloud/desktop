@@ -274,10 +274,13 @@ private:
     using LocalNetworkPermissionCheck = std::function<void(const QUrl &, QObject *, std::function<void(bool)>)>;
     // Reports the chosen folder, or an empty path when cancelled, and its security-scoped bookmark if any.
     using LocalSyncFolderPicker = std::function<void(const QString &, const QString &, std::function<void(const QString &, const QByteArray &)>)>;
+    // Reports the chosen client certificate file, or an empty path when cancelled.
+    using ClientCertificatePicker = std::function<void(std::function<void(const QString &)>)>;
 
     friend class AccountWizardControllerTestAccess;
 
     void pickLocalSyncFolder(const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion);
+    void pickClientCertificate(std::function<void(const QString &)> completion);
 
     // The wizard account is not registered yet, so its own server settings have to be used.
     [[nodiscard]] ManagedVirtualFilesMode accountManagedVirtualFilesMode() const;
@@ -308,6 +311,7 @@ private:
     [[nodiscard]] bool createSyncFolder(AccountState *accountState);
     [[nodiscard]] FolderDefinition syncFolderDefinition() const;
     void openLocalSyncFolderDialog(bool initialSelection);
+    void loadClientCertificateFile(const QUrl &fileUrl);
     [[nodiscard]] QUrl localFolderServerUrl() const;
     [[nodiscard]] QString sanitizedRemoteFolderEntityPath() const;
     void setCurrentStep(Step step);
@@ -333,6 +337,7 @@ private:
     AccountPtr _account;
     LocalNetworkPermissionCheck _localNetworkPermissionCheck;
     LocalSyncFolderPicker _localSyncFolderPicker;
+    ClientCertificatePicker _clientCertificatePicker;
     QPointer<QWindow> _window;
     std::unique_ptr<Flow2Auth> _flow2Auth;
     QPointer<SelectiveSyncDialog> _selectiveSyncDialog;
@@ -393,6 +398,7 @@ private:
     QByteArray _clientCertBundle;
     QByteArray _clientCertPassword;
     QString _clientCertificatePath;
+    QByteArray _clientCertificateData;
     QString _clientCertificatePassword;
     QString _clientCertificateError;
     QSslKey _clientSslKey;

@@ -41,7 +41,16 @@ public extension Item {
         let relativePath = account.filesRootRelativePath(for: metadata.remotePath())
         let isExcluded = relativePath.map { ignoredFiles?.isExcluded($0) ?? false } ?? false
 
+        let refusalAtHoldingPath = { [self] () -> Error in
+            logger.info("Not deleting an item whose folder waits to be placed again by a listing.", [.item: ocId, .name: filename])
+            return NSFileProviderError(.cannotSynchronize)
+        }
+
         guard metadata.isLockFileOfLocalOrigin == false else {
+            guard !metadata.isAtHoldingPath else {
+                return refusalAtHoldingPath()
+            }
+
             return await deleteLockFile(domain: domain, dbManager: dbManager)
         }
 
@@ -75,6 +84,10 @@ public extension Item {
             deletionCompleted = true
             dbManager.deleteItemMetadata(ocId: ocId)
             return nil
+        }
+
+        guard !metadata.isAtHoldingPath else {
+            return refusalAtHoldingPath()
         }
 
         var serverFileNameUrl = metadata.remotePath()

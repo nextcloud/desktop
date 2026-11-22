@@ -10,6 +10,8 @@
 #include <QMetaType>
 #include <QCoreApplication>
 
+#include <limits>
+
 namespace OCC {
 
 ProgressDispatcher *ProgressDispatcher::_instance = nullptr;
@@ -375,7 +377,12 @@ ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
     Estimates est{};
     est.estimatedBandwidth = _progressPerSec;
     if (_progressPerSec != 0) {
-        est.estimatedEta = qRound64(static_cast<double>(_total - _completed) / _progressPerSec) * 1000;
+        constexpr auto millisecondsPerSecond = 1000;
+        constexpr auto maxEta = std::numeric_limits<qint64>::max();
+        constexpr auto maxSeconds = static_cast<double>(maxEta / millisecondsPerSecond);
+        const auto seconds = static_cast<double>(_total - _completed) / _progressPerSec;
+        // The strict bound also accounts for rounding the limit to double.
+        est.estimatedEta = seconds < maxSeconds ? qRound64(seconds) * millisecondsPerSecond : maxEta;
     } else {
         est.estimatedEta = 0; // looks better than qint64 max
     }

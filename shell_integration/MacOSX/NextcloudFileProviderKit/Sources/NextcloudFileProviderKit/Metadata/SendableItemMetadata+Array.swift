@@ -13,6 +13,11 @@ extension [SendableItemMetadata] {
         let allFilters = await Item.getContextMenuItemTypeFilters(account: account, remoteInterface: remoteInterface)
 
         return try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
+            guard !itemMetadata.ocId.isEmpty else {
+                logger.error("Skipping metadata with empty ocId in enumeration.", [.name: itemMetadata.fileName, .url: itemMetadata.serverUrl])
+                return nil
+            }
+
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil
@@ -23,10 +28,15 @@ extension [SendableItemMetadata] {
                 return nil
             }
 
+            // The parked folder above the row is or will be reported deleted, and the row is enumerated again once a listing has placed it.
+            guard !itemMetadata.isAtHoldingPath else {
+                logger.debug("Skipping metadata below a parked folder in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
+                return nil
+            }
+
             guard let parentItemIdentifier = dbManager.parentItemIdentifierFromMetadata(itemMetadata) else {
                 logger.error("Could not get valid parentItemIdentifier for item by ocId.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
-                let targetUrl = itemMetadata.serverUrl
-                throw FilesDatabaseManager.parentMetadataNotFoundError(itemUrl: targetUrl)
+                throw FilesDatabaseManager.parentMetadataNotFoundError(for: itemMetadata)
             }
 
             let displayFileActions = Item.typeHasApplicableContextMenuItems(filters: allFilters, candidate: itemMetadata.contentType)

@@ -91,28 +91,6 @@ class AccountSettings;
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
-void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAccept)
-{
-    const auto messageBox = new QMessageBox;
-    messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    messageBox->setText(AccountSettings::tr("End-to-end Encryption with Virtual Files"));
-    messageBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. "
-                                                       "At the moment, it is not possible to implicitly download virtual files that are "
-                                                       "end-to-end encrypted. To get the best experience with virtual files and "
-                                                       "end-to-end encryption, make sure the encrypted folder is marked with "
-                                                       "\"Make always available locally\"."));
-    messageBox->setIcon(QMessageBox::Warning);
-    const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
-    Q_ASSERT(dontEncryptButton);
-    dontEncryptButton->setText(AccountSettings::tr("Do not encrypt folder"));
-    const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
-    Q_ASSERT(encryptButton);
-    encryptButton->setText(AccountSettings::tr("Encrypt folder"));
-    QObject::connect(messageBox, &QMessageBox::accepted, onAccept);
-
-    messageBox->open();
-}
-
 void showEnableE2eeWarningDialog(std::function<void(void)> onAccept)
 {
     const auto messageBox = new QMessageBox;
@@ -581,11 +559,6 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         connect(job, &OCC::EncryptFolderJob::finished, this, &AccountSettings::slotEncryptFolderFinished);
         job->start();
     };
-
-    if (folder->virtualFilesEnabled() && folder->vfs().mode() == Vfs::WindowsCfApi) {
-        showEnableE2eeWithVirtualFilesWarningDialog(encryptFolder);
-        return;
-    }
 
     showEnableE2eeWarningDialog(encryptFolder);
 }

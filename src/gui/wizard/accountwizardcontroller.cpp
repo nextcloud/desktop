@@ -32,6 +32,7 @@
 #ifdef Q_OS_MACOS
 #include "common/macsandboxpersistentaccess.h"
 #include "common/utility_mac_sandbox.h"
+#include "macOS/macsandboxfilepicker.h"
 #include "macOS/macsandboxfolderpicker.h"
 #endif
 
@@ -106,6 +107,9 @@ AccountWizardController::AccountWizardController(QObject *parent)
     , _localNetworkPermissionCheck(LocalNetworkPermission::checkDeniedForConnection)
     , _localSyncFolderPicker([this](const QString &caption, const QString &startFolder, std::function<void(const QString &, const QByteArray &)> completion) {
         pickLocalSyncFolder(caption, startFolder, std::move(completion));
+    })
+    , _clientCertificatePicker([this](std::function<void(const QString &)> completion) {
+        pickClientCertificate(std::move(completion));
     })
 {
     initialiseAccount();
@@ -2100,24 +2104,54 @@ void AccountWizardController::useClientCertificateForSecureConnection()
 
 void AccountWizardController::chooseClientCertificate()
 {
-    const auto fileUrl = QFileDialog::getOpenFileUrl(nullptr,
-        tr("Select a certificate"),
-        QUrl(),
-        tr("Certificate files (*.p12 *.pfx)"));
-    if (fileUrl.isEmpty()) {
-        return;
-    }
+    const QPointer<AccountWizardController> controller(this);
+    _clientCertificatePicker([controller](const QString &path) {
+        if (controller && !path.isEmpty()) {
+            controller->loadClientCertificateFile(QUrl::fromLocalFile(path));
+        }
+    });
+}
+
+void AccountWizardController::pickClientCertificate(std::function<void(const QString &)> completion)
+{
+    const auto caption = tr("Select a certificate");
 
 #ifdef Q_OS_MACOS
-    const auto scopedAccess = Utility::MacSandboxSecurityScopedAccess::create(fileUrl);
-    if (!scopedAccess->isValid()) {
-        _clientCertificateError = tr("Could not access the selected certificate file.");
+    // QFileDialog gives up the sandbox access to the chosen file before returning, so only the
+    // native panel can keep it while the certificate is read.
+    Mac::SandboxFilePicker::selectFileToOpen(_window, caption, {u"p12"_s, u"pfx"_s}, std::move(completion));
+#else
+    completion(QFileDialog::getOpenFileName(nullptr, caption, {}, tr("Certificate files (*.p12 *.pfx)")));
+#endif
+}
+
+void AccountWizardController::loadClientCertificateFile(const QUrl &fileUrl)
+{
+    // The open panel already granted access; read the file now so nothing has to re-acquire it later.
+    const auto localPath = fileUrl.toLocalFile();
+    QFile certFile(localPath);
+    QByteArray certData;
+    QString error;
+    if (!certFile.open(QFile::ReadOnly)) {
+        qCWarning(lcAccountWizardController) << "Failed to open certificate file:" << localPath << certFile.errorString();
+        error = tr("Could not access the selected certificate file.");
+    } else {
+        certData = certFile.readAll();
+        if (certData.isEmpty()) {
+            qCWarning(lcAccountWizardController) << "Certificate file is empty:" << localPath;
+            error = tr("The selected certificate file is empty.");
+        }
+    }
+    if (certData.isEmpty()) {
+        _clientCertificatePath.clear();
+        _clientCertificateData.clear();
+        _clientCertificateError = error;
         Q_EMIT clientCertificateChanged();
         return;
     }
-#endif
 
-    _clientCertificatePath = fileUrl.toLocalFile();
+    _clientCertificateData = certData;
+    _clientCertificatePath = localPath;
     _clientCertificateError.clear();
     Q_EMIT clientCertificateChanged();
 }
@@ -2128,31 +2162,24 @@ bool AccountWizardController::submitClientCertificate()
         return false;
     }
 
-    QFile certFile(_clientCertificatePath);
-    if (!certFile.open(QFile::ReadOnly)) {
-        qCWarning(lcAccountWizardController) << "Failed to open certificate file:" << _clientCertificatePath;
-        _clientCertificateError = tr("Could not access the selected certificate file.");
-        Q_EMIT clientCertificateChanged();
-        return false;
-    }
-
-    const auto certData = certFile.readAll();
     const auto certPassword = _clientCertificatePassword.toLocal8Bit();
 
-    auto certDataCopy = certData;
-    QBuffer certDataBuffer(&certDataCopy);
-    certDataBuffer.open(QIODevice::ReadOnly);
-    if (!QSslCertificate::importPkcs12(&certDataBuffer,
-            &_clientSslKey,
-            &_clientSslCertificate,
-            &_clientSslCaCertificates,
-            certPassword)) {
-        _clientCertificateError = tr("Could not load certificate. Maybe wrong password?");
-        Q_EMIT clientCertificateChanged();
-        return false;
+    {
+        QBuffer certDataBuffer(&_clientCertificateData);
+        certDataBuffer.open(QIODevice::ReadOnly);
+        if (!QSslCertificate::importPkcs12(&certDataBuffer,
+                &_clientSslKey,
+                &_clientSslCertificate,
+                &_clientSslCaCertificates,
+                certPassword)) {
+            qCWarning(lcAccountWizardController) << "Failed to import PKCS#12 bundle:" << _clientCertificatePath;
+            _clientCertificateError = tr("Could not load certificate. Maybe wrong password?");
+            Q_EMIT clientCertificateChanged();
+            return false;
+        }
     }
 
-    _clientCertBundle = certData;
+    _clientCertBundle = _clientCertificateData;
     _clientCertPassword = certPassword;
 
     clearClientCertificateInput();
@@ -2163,6 +2190,7 @@ bool AccountWizardController::submitClientCertificate()
 void AccountWizardController::clearClientCertificateInput()
 {
     _clientCertificatePath.clear();
+    _clientCertificateData.clear();
     _clientCertificatePassword.clear();
     _clientCertificateError.clear();
     Q_EMIT clientCertificateChanged();
