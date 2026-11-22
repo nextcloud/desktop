@@ -61,6 +61,7 @@ configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library(nextcloud_csync SHARED ${common_SOURCES} ${csync_SRCS})
 add_library(Nextcloud::csync ALIAS nextcloud_csync)
+nextcloud_add_windows_version_resource(nextcloud_csync)
 
 target_compile_definitions(nextcloud_csync PRIVATE QT_NO_KEYWORDS)
 
