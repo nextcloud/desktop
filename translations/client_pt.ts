@@ -1588,203 +1588,203 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="326"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="330"/>
         <source>Will require local storage</source>
         <translation>Exigirá armazenamento local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="736"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="740"/>
         <source>Proxy settings are incomplete.</source>
         <translation>As configurações do proxy estão incompletas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="747"/>
         <source>Server address does not seem to be valid</source>
         <translation>O endereço do servidor parece não ser válido</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="764"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="768"/>
         <source>Username must not be empty.</source>
         <translation>O nome de usuário não pode estar vazio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="770"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1092"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="774"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
         <source>Checking account access</source>
         <translation>Verificando o acesso à conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="848"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="852"/>
         <source>Checking server address</source>
         <translation>Verificando o endereço do servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="917"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="921"/>
         <source>Preparing browser login</source>
         <translation>Preparando login no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="938"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="942"/>
         <source>Invalid URL</source>
         <translation>URL inválido</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="940"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="944"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Falha ao conectar-se a %1 em %2:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="956"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="960"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tempo limite excedido ao tentar conectar-se a %1 em %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1043"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1047"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Não foi possível abrir o navegador. Copie o link para o seu navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1068"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1073"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1077"/>
         <source>Waiting for authorization</source>
         <translation>Aguardando autorização</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1078"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1082"/>
         <source>Starting authorization</source>
         <translation>Iniciando autorização</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1083"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
         <source>Link copied to clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1142"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1172"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Houve uma resposta inválida para uma solicitação WebDAV autenticada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1155"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>A solicitação autenticada ao servidor foi redirecionada para &quot;%1&quot;. O URL está incorreto, o servidor está mal configurado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1163"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1167"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Acesso proibido pelo servidor. Para verificar se você tem acesso adequado, abra o serviço no seu navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1181"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1185"/>
         <source>Account connected.</source>
         <translation>Conta conectada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1295"/>
         <source>Will require %1 of storage</source>
         <translation>Será necessário %1 de espaço de armazenamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1475"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 espaço livre</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1485"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Não há espaço livre suficiente na pasta local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Please choose a local sync folder.</source>
         <translation>Por favor, selecione uma pasta de sincronização local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1507"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Por favor, escolha uma pasta de sincronização local vazia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1572"/>
         <source>Could not create local folder %1</source>
         <translation>Não foi possível criar a pasta local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1586"/>
         <source>Checking remote folder</source>
         <translation>Verificando pasta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1632"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
         <source>Error: %1</source>
         <translation>Erro: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>Creating remote folder</source>
         <translation>Criando pasta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A criação da pasta resultou em um código de erro HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1667"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>A criação da pasta remota falhou porque as credenciais fornecidas estão incorretas. Por favor, verifique suas credenciais novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1669"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>A criação da pasta remota %1 falhou com o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1716"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>A configuração da conta falhou durante a criação da pasta de sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1728"/>
         <source>Could not create the sync folder.</source>
         <translation>Não foi possível criar a pasta de sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1838"/>
         <source>Local Sync Folder</source>
         <translation>Pasta de sincronização local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2123"/>
         <source>Select a certificate</source>
         <translation>Selecione um certificado</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2130"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Arquivos de certificado (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2129"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2143"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Não foi possível acessar o arquivo de certificado selecionado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2148"/>
         <source>The selected certificate file is empty.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2182"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Não foi possível carregar o certificado. Talvez a senha esteja incorreta?</translation>
     </message>
@@ -1862,40 +1862,40 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
         <source>Create Debug Archive</source>
         <translation>Criar arquivo de depuração</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="252"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Avançado</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="439"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
         <source>Zip Archives</source>
         <translation>Arquivos ZIP</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="452"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
         <translation>Falha ao acessar o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="453"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Não foi possível acessar o local selecionado. Tente novamente ou escolha um local diferente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="462"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
         <source>Debug Archive Created</source>
         <translation>Arquivo de depuração criado</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="463"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Oculte as informações consideradas confidenciais antes de compartilhá-las! Arquivo de depuração criado em %1</translation>
     </message>
@@ -7060,15 +7060,14 @@ Servidor respondeu com erro: %2</translation>
         <translation>Nova pasta </translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="142"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="191"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="203"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="215"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
         <source>Failed to create debug archive</source>
         <translation>Falha ao criar arquivo de depuração</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="143"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Não foi possível criar o arquivo de depuração no local selecionado!</translation>
     </message>

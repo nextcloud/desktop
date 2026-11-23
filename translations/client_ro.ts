@@ -1589,203 +1589,203 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
 <context>
     <name>OCC::AccountWizardController</name>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="326"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="330"/>
         <source>Will require local storage</source>
         <translation>Va necesita spațiu de stocare local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="736"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="740"/>
         <source>Proxy settings are incomplete.</source>
         <translation>Setările proxy sunt incomplete.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="743"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="747"/>
         <source>Server address does not seem to be valid</source>
         <translation>Adresa serverului nu pare validă</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="764"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="768"/>
         <source>Username must not be empty.</source>
         <translation>Numele de utilizator nu poate fi gol.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="770"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1092"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="774"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1096"/>
         <source>Checking account access</source>
         <translation>Se verifică accesul la cont</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="848"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="852"/>
         <source>Checking server address</source>
         <translation>Se verifică adresa serverului</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="917"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="921"/>
         <source>Preparing browser login</source>
         <translation>Se pregătește autentificarea în browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="938"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="942"/>
         <source>Invalid URL</source>
         <translation>URL nevalid</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="940"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="944"/>
         <source>Failed to connect to %1 at %2:
 %3</source>
         <translation>Conectarea la %1 la %2 a eșuat:
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="956"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="960"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Timpul a expirat la încercarea de conectare la %1 la %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1043"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1047"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Browserul nu a putut fi deschis. Copiază linkul în browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1068"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1073"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1072"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1077"/>
         <source>Waiting for authorization</source>
         <translation>Se așteaptă autorizarea</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1078"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1082"/>
         <source>Starting authorization</source>
         <translation>Se pornește autorizarea</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1083"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1087"/>
         <source>Link copied to clipboard.</source>
         <translation>Linkul a fost copiat în clipboard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1138"/>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1142"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1172"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>S-a primit un răspuns nevalid la o cerere WebDAV autentificată</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1155"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1159"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Cererea autentificată către server a fost redirecționată către „%1”. URL-ul este greșit, serverul este configurat greșit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1163"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1167"/>
         <source>Access forbidden by server. To verify that you have proper access, open the service in your browser.</source>
         <translation>Accesul este interzis de server. Pentru a verifica dacă ai accesul necesar, deschide serviciul în browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1181"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1185"/>
         <source>Account connected.</source>
         <translation>Contul a fost conectat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1291"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1295"/>
         <source>Will require %1 of storage</source>
         <translation>Va necesita %1 de spațiu de stocare</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1471"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1475"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>Spațiu liber: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1481"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1485"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Nu există suficient spațiu liber în dosarul local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1498"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1502"/>
         <source>Please choose a local sync folder.</source>
         <translation>Alege un dosar local de sincronizare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1503"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1507"/>
         <source>Please choose an empty local sync folder.</source>
         <translation>Alege un dosar local de sincronizare gol.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1568"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1572"/>
         <source>Could not create local folder %1</source>
         <translation>Nu s-a putut crea dosarul local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1582"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1586"/>
         <source>Checking remote folder</source>
         <translation>Se verifică dosarul de pe server</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1628"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1632"/>
         <source>No remote folder specified!</source>
         <translation>Nu a fost specificat niciun dosar de pe server!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1637"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1641"/>
         <source>Error: %1</source>
         <translation>Eroare: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1642"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1646"/>
         <source>Creating remote folder</source>
         <translation>Se creează dosarul pe server</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1661"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Crearea dosarului a dus la codul de eroare HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1663"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1667"/>
         <source>The remote folder creation failed because the provided credentials are wrong. Please go back and check your credentials.</source>
         <translation>Crearea dosarului pe server a eșuat deoarece datele de autentificare sunt greșite. Întoarce-te și verifică datele de autentificare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1665"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1669"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Crearea dosarului %1 pe server a eșuat cu eroarea &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1712"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1716"/>
         <source>Account setup failed while creating the sync folder.</source>
         <translation>Configurarea contului a eșuat la crearea dosarului de sincronizare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1724"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1728"/>
         <source>Could not create the sync folder.</source>
         <translation>Nu s-a putut crea dosarul de sincronizare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1834"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="1838"/>
         <source>Local Sync Folder</source>
         <translation>Dosar local de sincronizare</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2110"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2123"/>
         <source>Select a certificate</source>
         <translation>Selectează un certificat</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2112"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2130"/>
         <source>Certificate files (*.p12 *.pfx)</source>
         <translation>Fișiere de certificat (*.p12 *.pfx)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2129"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2143"/>
         <source>Could not access the selected certificate file.</source>
         <translation>Fișierul de certificat selectat nu a putut fi accesat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2134"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2148"/>
         <source>The selected certificate file is empty.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2168"/>
+        <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2182"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Certificatul nu a putut fi încărcat. Poate parola este greșită?</translation>
     </message>
@@ -1863,40 +1863,40 @@ Această acțiune va opri orice sincronizare aflată în desfășurare.</transla
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
         <source>Create Debug Archive</source>
         <translation>Creează o arhivă de depanare</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="252"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Avansat</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="439"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
         <source>Zip Archives</source>
         <translation>Arhive ZIP</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="452"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="398"/>
         <source>Failed to Access File</source>
         <translation>Fișierul nu a putut fi accesat</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="453"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="399"/>
         <source>Could not access the selected location. Please try again or choose a different location.</source>
         <translation>Locația selectată nu a putut fi accesată. Încearcă din nou sau alege altă locație.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="462"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
         <source>Debug Archive Created</source>
         <translation>Arhiva de depanare a fost creată</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="463"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Elimină informațiile sensibile înainte de a o partaja! Arhiva de depanare a fost creată la %1</translation>
     </message>
@@ -7062,15 +7062,14 @@ Serverul a răspuns cu eroarea: %2</translation>
         <translation>Dosar nou</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="142"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="191"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="203"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="215"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
         <source>Failed to create debug archive</source>
         <translation>Crearea arhivei de depanare a eșuat</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="143"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Arhiva de depanare nu a putut fi creată în locația selectată!</translation>
     </message>
