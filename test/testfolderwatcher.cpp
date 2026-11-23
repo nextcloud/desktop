@@ -323,6 +323,18 @@ private Q_SLOTS:
         QVERIFY(QFile::remove(link));
     }
 
+#ifdef Q_OS_MACOS
+    void testDroppedEventsReportLostChangesInsteadOfPaths()
+    {
+        QSignalSpy lostChangesSpy(_watcher.data(), &FolderWatcher::lostChanges);
+
+        _watcher->testMacSimulateDroppedEvents();
+
+        QCOMPARE(lostChangesSpy.count(), 1);
+        QCOMPARE(_pathChangedSpy->count(), 0);
+    }
+#endif
+
     void testDetectLockFiles()
     {
         QStringList listOfOfficeFiles = {QString(_rootPath + "/document.docx"), QString(_rootPath + "/document.odt")};

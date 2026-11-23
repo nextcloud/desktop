@@ -458,6 +458,9 @@ public Q_SLOTS:
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
 
+    /** The folder watcher dropped events: schedule a sync with full local discovery */
+    void slotWatcherLostChanges();
+
     void setSilenceErrorsUntilNextSync(bool silenceErrors);
 
     /** Deletes local copies of E2EE files.

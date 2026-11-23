@@ -137,15 +137,10 @@ void FolderWatcherPrivate::doNotifyParent(const QStringList &paths)
 
 void FolderWatcherPrivate::notifyAll()
 {
-    QDirIterator dirIterator(_folder, QDirIterator::Subdirectories);
-    QStringList allPaths;
-
-    while(dirIterator.hasNext()) {
-        const auto dirEntry = dirIterator.next();
-        allPaths.append(dirEntry);
-    }
-
-    _parent->changeDetected(allPaths);
+    // Enumerating the whole tree here blocks the main thread long enough for
+    // more events to be dropped. Request a full local discovery instead.
+    qCInfo(lcFolderWatcher) << "Events were dropped, requesting full local discovery of" << _folder;
+    Q_EMIT _parent->lostChanges();
 }
 
 

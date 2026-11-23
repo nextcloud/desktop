@@ -1609,6 +1609,12 @@ void Folder::slotNextSyncFullLocalDiscovery()
     _timeSinceLastFullLocalDiscovery.invalidate();
 }
 
+void Folder::slotWatcherLostChanges()
+{
+    slotNextSyncFullLocalDiscovery();
+    scheduleThisFolderSoon();
+}
+
 void Folder::setSilenceErrorsUntilNextSync(bool silenceErrors)
 {
     _silenceErrorsUntilNextSync = silenceErrors;
@@ -1770,8 +1776,7 @@ void Folder::registerFolderWatcher()
     _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
         this, [this](const QString &path) { slotWatchedPathChanged(path, Folder::ChangeReason::Other); });
-    connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
-        this, &Folder::slotNextSyncFullLocalDiscovery);
+    connect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::slotWatcherLostChanges);
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
         this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
@@ -1791,7 +1796,7 @@ void Folder::disconnectFolderWatcher()
         return;
     }
     disconnect(_folderWatcher.data(), &FolderWatcher::pathChanged, nullptr, nullptr);
-    disconnect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::slotNextSyncFullLocalDiscovery);
+    disconnect(_folderWatcher.data(), &FolderWatcher::lostChanges, this, &Folder::slotWatcherLostChanges);
     disconnect(_folderWatcher.data(), &FolderWatcher::becameUnreliable, this, &Folder::slotWatcherUnreliable);
     if (_accountState->account()->capabilities().filesLockAvailable()) {
         disconnect(_folderWatcher.data(), &FolderWatcher::filesLockReleased, this, &Folder::slotFilesLockReleased);

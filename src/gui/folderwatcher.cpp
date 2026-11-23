@@ -203,6 +203,13 @@ int FolderWatcher::testLinuxWatchCount() const
 #endif
 }
 
+void FolderWatcher::testMacSimulateDroppedEvents()
+{
+#ifdef Q_OS_MACOS
+    _d->notifyAll();
+#endif
+}
+
 void FolderWatcher::slotLockFileDetectedExternally(const QString &lockFile)
 {
     qCInfo(lcFolderWatcher) << "Lock file detected externally, probably a newly-uploaded office file: " << lockFile;
