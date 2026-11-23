@@ -133,6 +133,21 @@ struct PaginatedEnumerationTests {
         )
     }
 
+    @Test func aListingWhoseCachedPagesOmitTheTokenReachesTheEnd() async throws {
+        // The server answers follow-up pages from its pagination cache without a token or total header.
+        remoteInterface.omitsTokenOnFollowUpPages = true
+        _ = seedStaleChildren()
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator())
+
+        try await observer.enumerateItems()
+
+        #expect(observer.items.count == 7, "Every child is listed.")
+        #expect(remoteInterface.readOperationCount == 3, "Seven files and the folder at three per page.")
+        for ocId in ["gone", "goneDir", "deep"] {
+            #expect(manager.itemMetadata(ocId: ocId)?.deleted == true, "The listing reached its end, so \(ocId) is known to be gone.")
+        }
+    }
+
     @Test func aFirstPageFilledExactlyConcludesNothing() async throws {
         // The folder and two children fill the first page of three, and no next page follows.
         for child in Array(folder.children.dropFirst(2)) {
