@@ -2250,6 +2250,41 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         }
     }
 
+    /// The server answers follow-up pages from its pagination cache with neither a token nor a total header.
+    func testPaginationReachesTheEndWhenCachedPagesOmitTheToken() async throws {
+        remoteFolder.children = (0 ..< 25).map { i in
+            let child = MockRemoteItem(
+                identifier: "cachedPageChild\(i)",
+                name: "file_\(i).pdf",
+                remotePath: Self.account.davFilesUrl + "/folder/file_\(i).pdf",
+                account: Self.account.ncKitAccount,
+                username: Self.account.username,
+                userId: Self.account.id,
+                serverUrl: Self.account.serverUrl
+            )
+            child.parent = remoteFolder
+            return child
+        }
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, pagination: true)
+        remoteInterface.capabilities = remoteInterface.capabilities.replacingOccurrences(of: ##""major": 28"##, with: ##""major": 31"##)
+        remoteInterface.omitsTokenOnFollowUpPages = true
+        Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
+
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .init(remoteFolder.identifier),
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager,
+            pageSize: 5,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        try await observer.enumerateItems()
+
+        XCTAssertEqual(observer.items.count, 25, "Every child is listed, not only those of the first two pages.")
+        XCTAssertEqual(remoteInterface.readOperationCount, 6, "26 entries at five per page, and no request past the last page.")
+    }
+
     /// Test that pagination is disabled when server is older than Nextcloud 31
     func testPaginationDisabledForOldServers() async throws {
         // Setup a folder with children

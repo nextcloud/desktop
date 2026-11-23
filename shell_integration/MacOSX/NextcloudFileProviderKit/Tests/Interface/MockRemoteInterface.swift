@@ -607,6 +607,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
+    /// When `true`, pages requested with a token answer without `X-NC-Paginate-Token` and keep accepting that token, like servers that serve follow-up pages from their cache.
+    public var omitsTokenOnFollowUpPages = false
 
     private let readOperationCountLock = NSLock()
     private var lockedReadOperationCount = 0
@@ -1310,6 +1312,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
                 }
                 if finalPage {
                     expectedEnumerationPaginationTokens.removeValue(forKey: account.ncKitAccount)
+                } else if omitsTokenOnFollowUpPages, options.paginateToken != nil {
+                    // The token of the first page stays valid.
                 } else {
                     let token = UUID().uuidString
                     responseHeaders["X-NC-PAGINATE-TOKEN"] = token

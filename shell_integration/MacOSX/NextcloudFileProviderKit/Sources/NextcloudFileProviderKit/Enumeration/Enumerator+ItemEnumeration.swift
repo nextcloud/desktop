@@ -141,6 +141,8 @@ extension Enumerator {
             }
 
             let serverItemTotal = nextPage?.total ?? cursor.total
+            // Cached follow-up pages omit X-NC-Paginate-Total; keep it so the stop check below still fires.
+            nextPage?.total = serverItemTotal
             if let pendingPage = nextPage, let serverItemTotal, pendingPage.index * pageItemCount >= serverItemTotal {
                 // Server will sometimes provide a valid next page data even though there are no
                 // items to enumerate anymore

@@ -338,7 +338,12 @@ extension Enumerator {
 
         // This will be nil if the page settings were also nil, as the server will not give us the
         // pagination-related headers.
-        let nextPage = EnumeratorPageResponse(nkResponseData: data, index: (pageSettings?.index ?? 0) + 1, log: log)
+        let nextPage = EnumeratorPageResponse(
+            nkResponseData: data,
+            index: (pageSettings?.index ?? 0) + 1,
+            fallbackToken: pageSettings == nil ? nil : options.paginateToken,
+            log: log
+        )
 
         guard let receivedFile = files.first else {
             logger.error("Received no items.", [.url: serverUrl])

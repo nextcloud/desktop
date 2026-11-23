@@ -68,6 +68,35 @@ struct EnumeratorPageResponseTests {
         #expect(enumeratorResponse?.total == nil, "Total should be nil when the header is missing.")
     }
 
+    @Test("Init without token header uses the fallback token")
+    func initWithoutTokenHeaderUsesFallbackToken() {
+        let mockResponse = createMockAFDataResponse(headers: ["X-NC-PAGINATE": "true"])
+
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: 2, fallbackToken: "previousToken", log: FileProviderLogMock())
+
+        #expect(enumeratorResponse?.token == "previousToken")
+        #expect(enumeratorResponse?.index == 2)
+    }
+
+    @Test("Init prefers the token header over the fallback token")
+    func initPrefersTokenHeaderOverFallbackToken() {
+        let headers = ["X-NC-PAGINATE": "true", "X-NC-PAGINATE-TOKEN": "newToken"]
+        let mockResponse = createMockAFDataResponse(headers: headers)
+
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: 2, fallbackToken: "previousToken", log: FileProviderLogMock())
+
+        #expect(enumeratorResponse?.token == "newToken")
+    }
+
+    @Test("Init without paginate header ignores the fallback token")
+    func initWithoutPaginateHeaderIgnoresFallbackToken() {
+        let mockResponse = createMockAFDataResponse(headers: [:])
+
+        let enumeratorResponse = EnumeratorPageResponse(nkResponseData: mockResponse, index: 2, fallbackToken: "previousToken", log: FileProviderLogMock())
+
+        #expect(enumeratorResponse == nil)
+    }
+
     @Test("Init with case-insensitive header keys and 'TRUE' succeeds")
     func initWithCaseInsensitiveHeaders() {
         let headers = [
