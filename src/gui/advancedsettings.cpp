@@ -485,10 +485,14 @@ void AdvancedSettings::updateMoveFilesToTrashVfsWarningIcon()
 
 void AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility()
 {
-    const auto isCfApiFolder = [](const auto *folder) {
-        return folder->virtualFilesEnabled() && folder->vfs().mode() == Vfs::WindowsCfApi;
+    const auto usesAffectedVfsMode = [](const auto *folder) {
+        if (!folder->virtualFilesEnabled()) {
+            return false;
+        }
+        const auto mode = folder->vfs().mode();
+        return mode == Vfs::WindowsCfApi || mode == Vfs::OpenVFS;
     };
-    const auto showWarning = _ui->moveFilesToTrashCheckBox->isChecked() && std::ranges::any_of(FolderMan::instance()->map(), isCfApiFolder);
+    const auto showWarning = _ui->moveFilesToTrashCheckBox->isChecked() && std::ranges::any_of(FolderMan::instance()->map(), usesAffectedVfsMode);
     _ui->moveFilesToTrashVfsWarningBanner->setVisible(showWarning);
     if (showWarning) {
         updateMoveFilesToTrashVfsWarningIcon();
