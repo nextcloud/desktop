@@ -10,6 +10,8 @@
 #include "accountsettings.h"
 #include "common/vfs.h"
 #include "configfile.h"
+#include "creds/dummycredentials.h"
+#include "folderman.h"
 #include "systray.h"
 
 #include <QAbstractButton>
@@ -196,20 +198,40 @@ private Q_SLOTS:
         QVERIFY(label);
         QVERIFY(!label->text().isEmpty());
 
-        const auto cfApiAvailable = OCC::isVfsPluginAvailable(OCC::Vfs::WindowsCfApi);
-#ifdef Q_OS_WIN
-        QVERIFY(cfApiAvailable);
-#endif
-
-        moveToTrashSwitch->setChecked(false);
+        moveToTrashSwitch->setChecked(true);
         QVERIFY(banner->isHidden());
 
-        moveToTrashSwitch->setChecked(true);
-        QCOMPARE(!banner->isHidden(), cfApiAvailable);
+#ifdef Q_OS_WIN
+        QVERIFY(OCC::isVfsPluginAvailable(OCC::Vfs::WindowsCfApi));
+        auto syncRoot = QTemporaryDir{};
+        QVERIFY(syncRoot.isValid());
+        auto account = OCC::Account::create();
+        account->setUrl(QUrl(u"https://cloud.example.com"_s));
+        account->setDavUser(u"alice"_s);
+        const auto credentials = new OCC::DummyCredentials;
+        credentials->_user = account->davUser();
+        account->setCredentials(credentials);
+        const auto accountManager = OCC::AccountManager::instance();
+        const auto accountState = accountManager->addAccount(account);
+        const auto removeAccount = qScopeGuard([accountManager, accountState] {
+            accountManager->removeAccountState(accountState);
+        });
+        const auto folderMan = OCC::FolderMan::instance();
+        auto definition = OCC::FolderDefinition{};
+        definition.alias = u"Trash warning test"_s;
+        definition.localPath = syncRoot.path() + u'/';
+        definition.targetPath = u"/"_s;
+        definition.paused = true;
+        definition.virtualFilesMode = OCC::Vfs::WindowsCfApi;
+        const auto folder = folderMan->addFolder(accountState, definition);
+        QVERIFY(folder);
+        auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+
+        QVERIFY(!banner->isHidden());
         const auto lightIcon = icon->pixmap().toImage();
-        if (cfApiAvailable) {
-            QVERIFY(!lightIcon.isNull());
-        }
+        QVERIFY(!lightIcon.isNull());
 
         moveToTrashSwitch->setChecked(false);
         QVERIFY(banner->isHidden());
@@ -221,12 +243,15 @@ private Q_SLOTS:
         QVERIFY(banner->isHidden());
 
         moveToTrashSwitch->setChecked(true);
-        QCOMPARE(!banner->isHidden(), cfApiAvailable);
-        if (cfApiAvailable) {
-            const auto darkIcon = icon->pixmap().toImage();
-            QVERIFY(!darkIcon.isNull());
-            QVERIFY(darkIcon != lightIcon);
-        }
+        QVERIFY(!banner->isHidden());
+        const auto darkIcon = icon->pixmap().toImage();
+        QVERIFY(!darkIcon.isNull());
+        QVERIFY(darkIcon != lightIcon);
+
+        folderMan->removeFolder(folder);
+        removeFolder.dismiss();
+        QVERIFY(banner->isHidden());
+#endif
 
         moveToTrashSwitch->setChecked(false);
         QVERIFY(banner->isHidden());
