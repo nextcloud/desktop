@@ -645,9 +645,9 @@ public extension Item {
             )
         }
 
-        if changedFields.contains(.parentItemIdentifier)
-            && newParentItemIdentifier == .trashContainer
-            && modifiedItem.metadata.isTrashed
+        if changedFields.contains(.parentItemIdentifier),
+           newParentItemIdentifier == .trashContainer,
+           modifiedItem.metadata.isTrashed
         {
             if changedFields.contains(.filename) {
                 logger.error("Tried to modify filename of already trashed item. This is not supported.", [.item: modifiedItem])
@@ -656,7 +656,7 @@ public extension Item {
             logger.info("Tried to trash item that is in fact already trashed.", [.item: modifiedItem])
 
             return (modifiedItem, nil)
-        } else if changedFields.contains(.parentItemIdentifier) && newParentItemIdentifier == .trashContainer {
+        } else if changedFields.contains(.parentItemIdentifier), newParentItemIdentifier == .trashContainer {
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
             guard let capabilities, error == .success else {
@@ -693,9 +693,9 @@ public extension Item {
             modifiedItem = trashedItem
         } else if changedFields.contains(.filename) || changedFields.contains(.parentItemIdentifier) {
             // Recover the item first
-            if modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier &&
-                modifiedItem.parentItemIdentifier == .trashContainer &&
-                modifiedItem.metadata.isTrashed
+            if modifiedItem.parentItemIdentifier != itemTarget.parentItemIdentifier,
+               modifiedItem.parentItemIdentifier == .trashContainer,
+               modifiedItem.metadata.isTrashed
             {
                 let (restoredItem, restoreError) = await Self.restoreFromTrash(
                     modifiedItem,
