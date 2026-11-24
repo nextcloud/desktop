@@ -129,7 +129,6 @@ private Q_SLOTS:
 
         const auto folderPath = fakeFolder.localPath() + QStringLiteral("A");
         QVERIFY(QFile::setPermissions(folderPath, QFileDevice::ReadOwner));
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
         ItemCompletedSpy completeSpy(fakeFolder);
 
         fakeFolder.syncOnce();
@@ -137,7 +136,7 @@ private Q_SLOTS:
         QFile::setPermissions(folderPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
 
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(completeSpy.findItem("A/a1")->_instruction != CSYNC_INSTRUCTION_REMOVE);
+        QCOMPARE(completeSpy.findItem("A/a1")->_instruction, CSYNC_INSTRUCTION_IGNORE);
     }
 #endif
 
