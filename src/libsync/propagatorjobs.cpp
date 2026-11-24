@@ -172,7 +172,7 @@ void PropagateLocalRemove::start()
     if (propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
         moveToTrashIsFeasible = false;
     }
-    const auto fileInfo = QFileInfo{filename};
+    auto fileInfo = QFileInfo{filename};
     if (fileInfo.isDir()) {
         try {
             if (FileSystem::isFolderReadOnly(fileInfo.filesystemAbsolutePath())) {
@@ -205,6 +205,8 @@ void PropagateLocalRemove::start()
             removedByTrash = FileSystem::moveToTrash(filename, &removeError);
             if (!removedByTrash) {
                 qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << removeError;
+                // The trash operation may have removed the item despite reporting failure.
+                fileInfo.refresh();
             }
         } else {
             qCWarning(lcPropagateLocalRemove()) << "move to trash failed" << filename << "was already deleted";
@@ -213,12 +215,12 @@ void PropagateLocalRemove::start()
     }
     if (!removedByTrash) {
         if (_item->isDirectory()) {
-            if (FileSystem::fileExists(filename) && !removeRecursively(QString())) {
+            if (FileSystem::fileExists(filename, fileInfo) && !removeRecursively(QString())) {
                 done(SyncFileItem::NormalError, tr("Temporary error when removing local item removed from server."), ErrorCategory::GenericError);
                 return;
             }
         } else {
-            if (FileSystem::fileExists(filename)) {
+            if (FileSystem::fileExists(filename, fileInfo)) {
                 const auto parentFolderPath = fileInfo.dir().absolutePath();
                 const auto parentPermissionsHandler = FileSystem::FilePermissionsRestore{parentFolderPath, FileSystem::FolderPermissions::ReadWrite};
 
