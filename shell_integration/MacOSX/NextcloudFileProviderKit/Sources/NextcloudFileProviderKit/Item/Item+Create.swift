@@ -155,9 +155,10 @@ public extension Item {
                 )
             }
         }
-        let (ocId, etag, date, size, failure) = await upload(
+        let (ocId, etag, date, size, failure, createAttempt) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
+            sourceMetadata: sourceMetadata,
             usingRemoteInterface: remoteInterface,
             withAccount: account,
             inChunksSized: forcedChunkSize,
@@ -194,18 +195,18 @@ public extension Item {
                 await InsufficientQuotaReporter.reportSummary(domainIdentifier: domain?.identifier, appProxy: appProxy, log: log)
             }
 
-            if case .destinationCollision = failure {
-                let collision = await NSFileProviderError.collision(
-                    atRemotePath: remotePath,
+            if case let .destinationCollision(_, metadata) = failure {
+                let collision = NSFileProviderError.collision(
+                    with: metadata,
                     parentItemIdentifier: itemTemplate.parentItemIdentifier,
-                    sourceMetadata: sourceMetadata,
                     dbManager: dbManager,
                     remoteInterface: remoteInterface,
-                    progress: progress,
-                    taskHandler: taskHandler,
                     log: log
                 )
                 return (nil, collision)
+            }
+            if createAttempt != nil, error.isAmbiguousCreateResponse, !error.isCancelledError {
+                return (nil, NSFileProviderError(.serverUnreachable))
             }
             return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: log) ?? NSFileProviderError(.cannotSynchronize))
         }
@@ -266,7 +267,9 @@ public extension Item {
             userId: account.id
         )
 
-        dbManager.addItemMetadata(newMetadata)
+        guard dbManager.saveCreatedFile(newMetadata, attempt: createAttempt) else {
+            return (nil, NSFileProviderError(.cannotSynchronize))
+        }
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
 

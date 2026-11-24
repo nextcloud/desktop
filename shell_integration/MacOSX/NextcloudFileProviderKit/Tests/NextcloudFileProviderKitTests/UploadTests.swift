@@ -98,7 +98,14 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         creatingNewFile: Bool = false,
         progress: Progress = .init(),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
-    ) -> Task<(ocId: String?, etag: String?, date: Date?, size: Int64?, failure: UploadFailure?), Never> {
+    ) -> Task<(
+        ocId: String?,
+        etag: String?,
+        date: Date?,
+        size: Int64?,
+        failure: UploadFailure?,
+        createAttempt: PendingCreateUploadRecord?
+    ), Never> {
         let dbManager = Self.dbManager
         return Task.detached { @Sendable in
             await NextcloudFileProviderKit.upload(
@@ -530,12 +537,14 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                 headers: ["Content-Type": "application/json"],
                 body: Data(#"{"message":"Destination exists"}"#.utf8)
             )
+            let collisionLookup = try await nextUploadRequest(from: requests, method: "PROPFIND", name: "file.txt")
+            collisionLookup.respond(status: 404)
         }
 
         let result = try await testTaskValue(of: upload)
         XCTAssertNil(result.ocId)
         switch (failingMethod, result.failure) {
-            case let ("PUT", .other(error)), let ("MOVE", .destinationCollision(error)):
+            case let ("PUT", .other(error)), let ("MOVE", .destinationCollision(error, _)):
                 XCTAssertEqual(error.errorCode, 412)
             default:
                 XCTFail("Unexpected upload failure for \(failingMethod): \(String(describing: result.failure))")
@@ -599,11 +608,15 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
             let headers = moveStatus == 201 ? ["OC-FileID": "new-file-id", "OC-ETag": "new-etag"] : [:]
             move.respond(status: moveStatus, headers: headers)
+            if moveStatus == 412 {
+                let collisionLookup = try await nextUploadRequest(from: requests, method: "PROPFIND", name: filename)
+                collisionLookup.respond(status: 404)
+            }
             let result = try await testTaskValue(of: upload)
             XCTAssertEqual(result.ocId, headers["OC-FileID"])
             if moveStatus == 201 {
                 XCTAssertNil(result.failure)
-            } else if case let .destinationCollision(error) = result.failure {
+            } else if case let .destinationCollision(error, _) = result.failure {
                 XCTAssertEqual(error.errorCode, 412)
             } else {
                 XCTFail("Expected a destination collision.")
@@ -789,6 +802,33 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(result.failure?.underlyingError, .metadataDatabaseUnreadable)
         XCTAssertNil(result.ocId)
         XCTAssertFalse(FileManager.default.fileExists(atPath: chunkDirectory.path), "No chunk was uploaded.")
+    }
+
+    func testDirectCreateDoesNotSendPutWhenPendingUploadCannotBeRecorded() async throws {
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data([1, 2, 3]).write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let root = MockRemoteItem.rootItem(account: Self.account)
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: root)
+        try Self.dbManager.breakTableForTesting(PendingCreateUploadRecord.databaseTableName)
+        defer { Self.dbManager.recreateTablesForTesting() }
+
+        let result = await NextcloudFileProviderKit.upload(
+            fileLocatedAt: fileURL.path,
+            toRemotePath: Self.account.davFilesUrl + "/file.txt",
+            usingRemoteInterface: remoteInterface,
+            withAccount: Self.account,
+            inChunksSized: 3,
+            forItemWithIdentifier: UUID().uuidString,
+            dbManager: Self.dbManager,
+            creatingNewFile: true,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(result.failure?.underlyingError, .metadataDatabaseWriteFailed)
+        XCTAssertNil(result.ocId)
+        XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
+        XCTAssertTrue(root.children.isEmpty)
     }
 
     func testFailedChunkedUploadWithoutRemainingChunksRemovesTemporaryDirectory() async throws {

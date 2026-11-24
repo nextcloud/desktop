@@ -21,7 +21,7 @@ extension DatabaseTestSuites {
             }
 
             #expect(!tables.contains(false))
-            #expect(DatabaseSchema.tableNames.count == 7)
+            #expect(DatabaseSchema.tableNames.count == 8)
         }
 
         @Test func reopeningAnExistingDatabaseKeepsItsRows() throws {
@@ -40,6 +40,57 @@ extension DatabaseTestSuites {
             #expect(reopened.storeIdentity == manager.storeIdentity)
             let version = try reopened.writer.read { db in try Int.fetchOne(db, sql: "PRAGMA user_version") }
             #expect(version == StoreVersion.current)
+        }
+
+        @Test func initialSchemaIncludesTheCreateUploadJournal() throws {
+            let database = try DatabaseQueue()
+            try DatabaseSchema.migrator.migrate(database, upTo: "v1_initial")
+
+            #expect(try database.read { db in try db.tableExists(PendingCreateUploadRecord.databaseTableName) })
+        }
+
+        @Test func pendingCreateUploadSurvivesReopeningAndStaleCleanupKeepsTheNewAttempt() throws {
+            let account = DatabaseTestSuites.account
+            let attempt = PendingCreateUploadRecord(
+                account: account.ncKitAccount,
+                itemIdentifier: "template-id",
+                remotePath: account.davFilesUrl + "/file.txt",
+                checksum: "SHA256:" + String(repeating: "a", count: 64)
+            )
+            try #require(manager.recordPendingCreateUpload(attempt))
+
+            let databaseURL = try #require(manager.databaseURL)
+            let reopened = try FilesDatabaseManager(
+                account: account,
+                databaseDirectory: databaseURL.deletingLastPathComponent(),
+                fileProviderDomainIdentifier: .init(databaseURL.deletingPathExtension().lastPathComponent),
+                log: FileProviderLogMock(),
+                defaults: DatabaseTestSuites.defaults
+            )
+            let persisted = try #require(reopened.pendingCreateUpload(itemIdentifier: attempt.itemIdentifier))
+            #expect(persisted.attemptIdentifier == attempt.attemptIdentifier)
+            #expect(persisted.remotePath == attempt.remotePath)
+            #expect(persisted.checksum == attempt.checksum)
+            #expect(reopened.itemMetadata(ocId: attempt.itemIdentifier) == nil)
+
+            let newer = PendingCreateUploadRecord(
+                account: account.ncKitAccount,
+                itemIdentifier: attempt.itemIdentifier,
+                remotePath: account.davFilesUrl + "/renamed.txt",
+                checksum: attempt.checksum
+            )
+            try #require(reopened.recordPendingCreateUpload(newer))
+            manager.discardPendingCreateUpload(attempt)
+            #expect(reopened.pendingCreateUpload(itemIdentifier: attempt.itemIdentifier)?.attemptIdentifier == newer.attemptIdentifier)
+
+            let originalFile = DatabaseTestSuites.makeFile(ocId: "original", fileName: "file.txt")
+            #expect(manager.saveCreatedFile(originalFile, attempt: attempt))
+            #expect(reopened.pendingCreateUpload(itemIdentifier: attempt.itemIdentifier)?.attemptIdentifier == newer.attemptIdentifier)
+
+            let renamedFile = DatabaseTestSuites.makeFile(ocId: "renamed", fileName: "renamed.txt")
+            #expect(reopened.saveCreatedFile(renamedFile, attempt: newer))
+            #expect(manager.itemMetadata(ocId: renamedFile.ocId)?.fileName == "renamed.txt")
+            #expect(manager.pendingCreateUpload(itemIdentifier: attempt.itemIdentifier) == nil)
         }
 
         @Test func aCorruptDatabaseFileIsSetAsideAndReplaced() throws {

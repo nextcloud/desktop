@@ -57,6 +57,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
+    private static let attemptedContents = Data("stored contents".utf8)
+    private static let attemptedChecksum = "SHA256:e78d42f505e9545356b716a57342aaa87c469b579ea440dd5eb8348d66521bbc"
+    private static let differentContents = Data("edited contents".utf8)
+    private static let differentChecksum = "SHA256:9369c08d1eda93053bb7eb7762af624349d64dd00a876230f5c524b7925b9281"
 
     var rootItem: MockRemoteItem!
     static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
@@ -470,6 +474,249 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             chunkSize: nil,
             cachedItemIdentifier: "old-id",
             remoteLookupError: NKError(statusCode: 404, fallbackDescription: "File not found")
+        )
+    }
+
+    private func assertCreateChecksumRecovery(
+        remoteChecksum: String?,
+        remoteContents: Data = ItemCreateTests.attemptedContents,
+        retryContents: Data = ItemCreateTests.attemptedContents,
+        firstFailure: (remoteError: NKError, fileProviderCode: NSFileProviderError.Code)? = (
+            NKError(error: URLError(.networkConnectionLost)),
+            .serverUnreachable
+        ),
+        retryOnceWhileOffline: Bool = false,
+        failFirstRecoveryLookup: Bool = false,
+        shouldRecover: Bool = false
+    ) async throws {
+        let account = Self.account
+        let name = "lost-response.txt"
+        let remotePath = account.davFilesUrl + "/" + name
+        let committedIdentifier = "committed-id"
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let remoteInterface = MockRemoteInterface(account: account, rootItem: rootItem)
+        remoteInterface.targetChecksumsByPath[remotePath] = remoteChecksum
+        var templateMetadata = SendableItemMetadata(ocId: "stable-template-id", fileName: name, account: account)
+        templateMetadata.classFile = NKTypeClassFile.document.rawValue
+        templateMetadata.date = modificationDate
+        let contents = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Self.attemptedContents.write(to: contents)
+        defer { try? FileManager.default.removeItem(at: contents) }
+
+        let databaseDirectory = makeDatabaseDirectory()
+        defer { try? FileManager.default.removeItem(at: databaseDirectory) }
+        let suiteName = "ItemCreateTests-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let domainIdentifier = NSFileProviderDomainIdentifier(suiteName)
+        let log = FileProviderLogMock()
+
+        func openDatabase() throws -> FilesDatabaseManager {
+            try FilesDatabaseManager(
+                account: account,
+                databaseDirectory: databaseDirectory,
+                fileProviderDomainIdentifier: domainIdentifier,
+                log: log,
+                defaults: defaults
+            )
+        }
+
+        func create(using dbManager: FilesDatabaseManager) async -> (Item?, Error?) {
+            let template = Item(
+                metadata: templateMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+            return await Item.create(
+                basedOn: template,
+                contents: contents,
+                account: account,
+                remoteInterface: remoteInterface,
+                progress: Progress(),
+                dbManager: dbManager,
+                log: log
+            )
+        }
+
+        let installRemoteFile: @Sendable () -> Void = { [weak remoteInterface] in
+            guard let rootItem = remoteInterface?.rootItem else { return }
+            let committed = MockRemoteItem(
+                identifier: committedIdentifier,
+                name: name,
+                remotePath: remotePath,
+                modificationDate: modificationDate,
+                data: remoteContents,
+                account: account.ncKitAccount,
+                username: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl
+            )
+            committed.parent = rootItem
+            rootItem.children = [committed]
+        }
+
+        let committedBeforeReply = firstFailure?.fileProviderCode == .serverUnreachable
+        if let firstFailure {
+            let dbManager = try openDatabase()
+            if committedBeforeReply {
+                remoteInterface.uploadHandler = { installRemoteFile() }
+            }
+            remoteInterface.uploadError = firstFailure.remoteError
+            let (item, error) = await create(using: dbManager)
+
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, firstFailure.fileProviderCode)
+            XCTAssertEqual(remoteInterface.lastUploadChecksumHeader, Self.attemptedChecksum)
+            let pendingCreate = dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)
+            XCTAssertEqual(pendingCreate?.checksum, committedBeforeReply ? Self.attemptedChecksum : nil)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+            XCTAssertEqual(rootItem.children.first?.data, committedBeforeReply ? remoteContents : nil)
+            remoteInterface.uploadHandler = nil
+            remoteInterface.uploadError = nil
+        }
+        if rootItem.children.isEmpty {
+            installRemoteFile()
+        }
+        if retryOnceWhileOffline {
+            let dbManager = try openDatabase()
+            let offline = NKError(error: URLError(.notConnectedToInternet))
+            remoteInterface.enumerateErrorBySuffix[name] = offline
+            remoteInterface.uploadError = offline
+            let (item, error) = await create(using: dbManager)
+
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
+            XCTAssertEqual(dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)?.checksum, Self.attemptedChecksum)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+            remoteInterface.enumerateErrorBySuffix.removeValue(forKey: name)
+            remoteInterface.uploadError = nil
+        }
+        if shouldRecover, !failFirstRecoveryLookup {
+            rootItem.quotaAvailableBytes = 0
+        }
+
+        var retryTargetReads = 0
+        if failFirstRecoveryLookup {
+            remoteInterface.enumerateCallHandler = { [weak remoteInterface] path, depth, _, _, _, _, _, _ in
+                guard path == remotePath, depth == .target else { return }
+                retryTargetReads += 1
+                remoteInterface?.enumerateErrorBySuffix[name] = retryTargetReads == 1
+                    ? NKError(statusCode: 503, fallbackDescription: "Retry lookup failed")
+                    : nil
+            }
+        }
+        try retryContents.write(to: contents)
+        let dbManager = try openDatabase()
+        let (item, error) = await create(using: dbManager)
+
+        let remoteItem = try XCTUnwrap(rootItem.children.first)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteItem.data, remoteContents)
+        XCTAssertNil(dbManager.itemMetadata(ocId: templateMetadata.ocId))
+        let shouldKeepPriorAttempt = !shouldRecover && committedBeforeReply && retryContents == Self.attemptedContents
+        XCTAssertEqual(
+            dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)?.checksum,
+            shouldKeepPriorAttempt ? Self.attemptedChecksum : nil
+        )
+        if failFirstRecoveryLookup {
+            XCTAssertEqual(retryTargetReads, 2, "The post-412 lookup must be reused for recovery or collision reporting.")
+        }
+        if shouldRecover {
+            let hadAdditionalPut = retryOnceWhileOffline || failFirstRecoveryLookup
+            XCTAssertEqual(remoteInterface.uploadOperationCount, hadAdditionalPut ? 2 : 1)
+            XCTAssertNil(error)
+            XCTAssertEqual(item?.itemIdentifier.rawValue, committedIdentifier)
+            XCTAssertEqual(item?.metadata.etag, remoteItem.versionIdentifier)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: committedIdentifier)?.uploaded, true)
+        } else {
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .filenameCollision)
+            let occupant = (error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem
+            XCTAssertEqual(occupant?.itemIdentifier.rawValue, committedIdentifier)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+        }
+    }
+
+    func testCreateRecoversMatchingChecksumAfterLostResponse() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateRecoversMatchingChecksumAfterAnInterveningOfflineRetry() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            retryOnceWhileOffline: true,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateRecoversMatchingChecksumAfterProxyErrors() async throws {
+        for status in [520, 524] {
+            rootItem.children = []
+            rootItem.quotaAvailableBytes = -1
+            try await assertCreateChecksumRecovery(
+                remoteChecksum: Self.attemptedChecksum,
+                firstFailure: (
+                    NKError(statusCode: status, fallbackDescription: "Lost origin reply"),
+                    .serverUnreachable
+                ),
+                shouldRecover: true
+            )
+        }
+    }
+
+    func testCreateRecoversMatchingChecksumAfterInitialRetryLookupFails() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            failFirstRecoveryLookup: true,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateKeepsCollisionWhenPostPreconditionLookupHasDifferentChecksum() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.differentChecksum,
+            remoteContents: Self.differentContents,
+            failFirstRecoveryLookup: true
+        )
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenRemoteChecksumDiffers() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.differentChecksum,
+            remoteContents: Self.differentContents
+        )
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenRemoteChecksumIsMissing() async throws {
+        try await assertCreateChecksumRecovery(remoteChecksum: nil)
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenLocalContentsChanged() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            retryContents: Self.differentContents
+        )
+    }
+
+    func testCreateKeepsCollisionForMatchingChecksumWithNoPriorAttempt() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: nil
+        )
+    }
+
+    func testCreateKeepsCollisionForMatchingChecksumAfterDefiniteRejection() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: (
+                NKError(statusCode: 507, fallbackDescription: "Insufficient Storage"),
+                .insufficientQuota
+            )
         )
     }
 

@@ -2,7 +2,6 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
-@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
@@ -36,7 +35,7 @@ struct RemoteInterfaceExtensionTests {
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
 
     @Test(arguments: [false, true], [false, true])
-    func createCollisionChecksDAVResponsePath(inSubfolder: Bool, differentResponseName: Bool) async throws {
+    func uploadDestinationChecksDAVResponsePath(inSubfolder: Bool, differentResponseName: Bool) async throws {
         let host = "bücher-\(UUID().uuidString.lowercased()).example.invalid"
         let serverUrl = "https://\(host)/instance/"
         let server = try #require(URL(string: serverUrl))
@@ -87,15 +86,6 @@ struct RemoteInterfaceExtensionTests {
             session.session.invalidateAndCancel()
             hosts.forEach { MockHTTPURLProtocol.removeHandlers(forHost: $0) }
         }
-        let databaseDirectory = makeDatabaseDirectory()
-        defer { try? FileManager.default.removeItem(at: databaseDirectory) }
-        let log = FileProviderLogMock()
-        let dbManager = try FilesDatabaseManager(
-            account: account,
-            databaseDirectory: databaseDirectory,
-            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(UUID().uuidString),
-            log: log
-        )
         try await confirmation("Depth-zero lookup") { requested in
             for host in hosts {
                 MockHTTPURLProtocol.setHandlers(
@@ -110,27 +100,20 @@ struct RemoteInterfaceExtensionTests {
                     stop: { _ in }
                 )
             }
-            let collision = await NSFileProviderError.collision(
-                atRemotePath: requestPath,
-                parentItemIdentifier: inSubfolder ? NSFileProviderItemIdentifier(parent.ocId) : .rootContainer,
+            let destination = await kit.uploadDestination(
+                at: requestPath,
+                account: account,
                 sourceMetadata: inSubfolder ? parent : nil,
-                dbManager: dbManager,
-                remoteInterface: kit,
-                progress: Progress(),
-                taskHandler: { _ in },
-                log: log
+                taskHandler: { _ in }
             )
-            #expect((collision as NSError).code == NSFileProviderError.Code.filenameCollision.rawValue)
-            let item = (collision as NSError).userInfo[NSFileProviderErrorItemKey] as? Item
             if differentResponseName {
-                #expect(item == nil)
+                #expect(destination == nil)
             } else {
-                let matching = try #require(item)
+                let matching = try #require(destination)
                 #expect(matching.metadata.ocId == "file-id")
                 #expect(matching.metadata.etag == "file-etag")
                 #expect(matching.metadata.remotePath() == "https://\(normalizedHost)\(responseParent)/\(fileName)")
             }
-            #expect(dbManager.itemMetadata(ocId: "file-id") == nil)
         }
     }
 

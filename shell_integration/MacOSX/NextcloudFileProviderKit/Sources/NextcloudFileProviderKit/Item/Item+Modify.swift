@@ -232,7 +232,7 @@ public extension Item {
 
         let uploadOptions = NKRequestOptions(customHeader: headers, queue: .global(qos: .utility))
 
-        let (_, etag, date, size, failure) = await upload(
+        let (_, etag, date, size, failure, _) = await upload(
             fileLocatedAt: newContents.path,
             toRemotePath: remotePath,
             usingRemoteInterface: remoteInterface,

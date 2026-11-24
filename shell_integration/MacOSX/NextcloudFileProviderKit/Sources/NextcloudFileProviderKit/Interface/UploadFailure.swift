@@ -4,12 +4,12 @@
 import NextcloudKit
 
 public enum UploadFailure: Error {
-    case destinationCollision(NKError)
+    case destinationCollision(NKError, metadata: SendableItemMetadata? = nil)
     case other(NKError)
 
     var underlyingError: NKError {
         switch self {
-            case let .destinationCollision(error), let .other(error):
+            case let .destinationCollision(error, _), let .other(error):
                 error
         }
     }

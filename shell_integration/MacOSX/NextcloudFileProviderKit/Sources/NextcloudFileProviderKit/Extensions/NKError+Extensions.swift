@@ -50,6 +50,15 @@ extension NKError {
         errorCode == 412
     }
 
+    var isAmbiguousCreateResponse: Bool {
+        switch errorCode {
+            case NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost, NSURLErrorCancelled, 408, 500, 502, 503, 504, 520, 524:
+                true
+            default:
+                false
+        }
+    }
+
     var isLockedError: Bool {
         errorCode == 423
     }

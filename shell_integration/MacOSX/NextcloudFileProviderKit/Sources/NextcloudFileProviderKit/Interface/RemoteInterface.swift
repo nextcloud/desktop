@@ -165,6 +165,43 @@ public protocol RemoteInterface: Sendable {
     ) async -> AuthenticationAttemptResultState
 }
 
+extension RemoteInterface {
+    /// Read the destination without recording it in the metadata database.
+    func uploadDestination(
+        at remotePath: String,
+        account: Account,
+        sourceMetadata: SendableItemMetadata? = nil,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
+    ) async -> (metadata: SendableItemMetadata, responseBody: Data?)? {
+        guard !remotePath.contains(FilesDatabaseManager.holdingNameSeparator),
+              let relativePath = account.filesRootRelativePath(for: remotePath, sourceMetadata: sourceMetadata)
+        else {
+            return nil
+        }
+
+        let (_, files, response, error) = await enumerate(
+            remotePath: remotePath,
+            depth: .target,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: taskHandler
+        )
+        guard error == .success,
+              let metadata = files.first?.toItemMetadata(),
+              !metadata.ocId.isEmpty,
+              metadata.account == account.ncKitAccount,
+              let responsePath = account.filesRootRelativePath(for: metadata.remotePath(), sourceMetadata: metadata),
+              responsePath.utf8.elementsEqual(relativePath.utf8)
+        else {
+            return nil
+        }
+        return (metadata, response?.data)
+    }
+}
+
 public extension RemoteInterface {
     /// Callers share one capabilities request per account.
     /// Cancelling a caller stops its wait. The request continues only while other callers still need it.

@@ -660,6 +660,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// Records the create-only precondition on the most recent upload.
     public var lastUploadIfNoneMatchHeader: String?
 
+    public private(set) var lastUploadChecksumHeader: String?
+
     /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
     public var lastUploadIfHeader: String?
 
@@ -681,6 +683,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// associated error instead of reading the mock tree. Lets tests reproduce a working-set scan in
     /// which one folder's PROPFIND fails (e.g. a large container timing out) while the rest succeed.
     public var enumerateErrorBySuffix: [String: NKError] = [:]
+    public var targetChecksumsByPath: [String: String] = [:]
     public var enumerateResponseStatusCode = 200
 
     public init(
@@ -860,6 +863,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         uploadOperationCount += 1
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
         lastUploadIfNoneMatchHeader = options.customHeader?["If-None-Match"]
+        lastUploadChecksumHeader = options.customHeader?["OC-Checksum"]
         lastUploadIfHeader = options.customHeader?["If"]
 
         if let uploadRequest {
@@ -1327,7 +1331,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             )
         }
 
-        func generateResponse(itemCount: Int, finalPage: Bool) -> AFDataResponse<Data>? {
+        func generateResponse(itemCount: Int, finalPage: Bool, body: Data = Data()) -> AFDataResponse<Data>? {
             var responseHeaders: [String: String] = [:]
             if pagination, options.paginate {
                 responseHeaders["X-NC-PAGINATE"] = "true"
@@ -1351,10 +1355,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
                     httpVersion: "HTTP/1.1",
                     headerFields: responseHeaders
                 ),
-                data: Data(),
+                data: body,
                 metrics: nil,
                 serializationDuration: 0,
-                result: .success(Data())
+                result: .success(body)
             )
         }
 
@@ -1384,7 +1388,17 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         switch depth {
             case .target:
-                let responseData = generateResponse(itemCount: 1, finalPage: true)
+                let body = targetChecksumsByPath[remotePath].map { checksum in
+                    Data("""
+                    <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+                        <d:response><d:propstat><d:prop>
+                            <oc:id>\(item.identifier)</oc:id>
+                            <oc:checksums><oc:checksum>\(checksum)</oc:checksum></oc:checksums>
+                        </d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response>
+                    </d:multistatus>
+                    """.utf8)
+                } ?? Data()
+                let responseData = generateResponse(itemCount: 1, finalPage: true, body: body)
                 return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
             case .targetAndDirectChildren:
                 let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }
