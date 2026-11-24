@@ -36,6 +36,20 @@ private Q_SLOTS:
         QStandardPaths::setTestModeEnabled(true);
     }
 
+#ifdef Q_OS_MACOS
+    void test_reauthorizationPathMatching()
+    {
+        const auto composedPath = u"/Users/test/sciebo - \u00DCser, Name (user@example.org)@sciebo.example.org/"_s;
+        const auto decomposedPath = u"/Users/test/sciebo - U\u0308ser, Name (user@example.org)@sciebo.example.org"_s;
+
+        QVERIFY(FolderDefinition::localPathsMatch(composedPath, composedPath));
+        QVERIFY(FolderDefinition::localPathsMatch(composedPath, decomposedPath));
+        QVERIFY(FolderDefinition::localPathsMatch(decomposedPath, composedPath));
+        QVERIFY(!FolderDefinition::localPathsMatch(composedPath, decomposedPath + u"-other"_s));
+        QVERIFY(!FolderDefinition::localPathsMatch(composedPath, decomposedPath.toLower()));
+    }
+#endif
+
     void test_sidebarDisplayName()
     {
         const auto createAccount = [](const QString &url, const QString &displayName) -> AccountState * {

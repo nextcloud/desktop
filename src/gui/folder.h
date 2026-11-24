@@ -94,6 +94,9 @@ public:
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
 
+    /** @brief Compare prepared local paths, treating canonically equivalent Unicode spellings as equal on macOS. */
+    [[nodiscard]] static bool localPathsMatch(const QString &expectedPath, const QString &selectedPath);
+
     /// Remove ending /, then ensure starting '/': so "/foo/bar" and "/".
     static QString prepareTargetPath(const QString &path);
 

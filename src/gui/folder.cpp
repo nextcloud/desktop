@@ -1998,6 +1998,17 @@ QString FolderDefinition::prepareLocalPath(const QString &path)
     return Utility::trailingSlashPath(normalisedPath);
 }
 
+bool FolderDefinition::localPathsMatch(const QString &expectedPath, const QString &selectedPath)
+{
+    const auto expected = prepareLocalPath(expectedPath);
+    const auto selected = prepareLocalPath(selectedPath);
+#ifdef Q_OS_MACOS
+    return expected.normalized(QString::NormalizationForm_C) == selected.normalized(QString::NormalizationForm_C);
+#else
+    return expected == selected;
+#endif
+}
+
 QString FolderDefinition::prepareTargetPath(const QString &path)
 {
     QString p = path;

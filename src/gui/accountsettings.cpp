@@ -1044,7 +1044,7 @@ void AccountSettings::slotFixSandboxBookmark(Folder *folder)
         return;
     }
 
-    const auto expectedPath = FolderDefinition::prepareLocalPath(folder->path());
+    const auto expectedPath = folder->path();
 
     const QPointer<AccountSettings> settings(this);
     const QPointer<Folder> pendingFolder(folder);
@@ -1057,9 +1057,7 @@ void AccountSettings::slotFixSandboxBookmark(Folder *folder)
                 return;
             }
 
-            // Validate that the selected path matches the folder's configured local path
-            const auto selectedPath = FolderDefinition::prepareLocalPath(selection.path);
-            if (selectedPath != expectedPath) {
+            if (!FolderDefinition::localPathsMatch(expectedPath, selection.path)) {
                 QMessageBox::warning(settings,
                                      settings->tr("Wrong Folder"),
                                      settings->tr("Please select the original sync folder: %1").arg(QDir::toNativeSeparators(expectedPath)));
