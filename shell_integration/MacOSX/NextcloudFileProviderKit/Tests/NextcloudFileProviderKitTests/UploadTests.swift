@@ -91,6 +91,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         account: Account,
         itemIdentifier: String,
         modificationDate: Date,
+        creatingNewFile: Bool = false,
         progress: Progress = .init(),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) -> Task<(ocId: String?, etag: String?, date: Date?, size: Int64?, failure: UploadFailure?), Never> {
@@ -106,6 +107,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                 dbManager: dbManager,
                 progress: progress,
                 modificationDate: modificationDate,
+                creatingNewFile: creatingNewFile,
                 log: FileProviderLogMock(),
                 taskHandler: taskHandler
             )
@@ -477,6 +479,71 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(remoteInterface.uploadOperationCount, 0)
             XCTAssertTrue(root.children.isEmpty)
         }
+    }
+
+    private func checkChunkedCreatePreconditionFailure(on failingMethod: String) async throws {
+        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP()
+        defer { cleanup() }
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data([1, 2, 3, 4]).write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let destination = try XCTUnwrap(URL(string: account.davFilesUrl + "/file.txt"))
+        let upload = startChunkUpload(
+            fileURL: fileURL,
+            destination: destination,
+            kit: kit,
+            account: account,
+            itemIdentifier: UUID().uuidString,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000),
+            creatingNewFile: true
+        )
+        defer { upload.cancel() }
+
+        let firstChunk = try await nextUploadRequest(from: requests, method: "PUT", name: "1")
+        let uploadId = try XCTUnwrap(firstChunk.request.url?.deletingLastPathComponent().lastPathComponent)
+        defer { try? kit.removeLocalChunks(remoteChunkStoreFolderName: uploadId) }
+
+        if failingMethod == "PUT" {
+            firstChunk.respond(
+                status: 412,
+                headers: ["Content-Type": "application/xml"],
+                body: Data("""
+                <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+                    <s:message>Missing metadata for chunked upload.</s:message>
+                </d:error>
+                """.utf8)
+            )
+        } else {
+            firstChunk.respond(status: 201)
+            let secondChunk = try await nextUploadRequest(from: requests, method: "PUT", name: "2")
+            secondChunk.respond(status: 201)
+            let move = try await nextUploadRequest(from: requests, method: "MOVE", name: ".file")
+            XCTAssertEqual(move.request.value(forHTTPHeaderField: "Overwrite"), "F")
+            assertDestination(move.request.value(forHTTPHeaderField: "Destination").flatMap { URL(string: $0) }, matches: destination)
+            // A JSON error lacks the request context NextcloudKit uses when parsing XML errors.
+            move.respond(
+                status: 412,
+                headers: ["Content-Type": "application/json"],
+                body: Data(#"{"message":"Destination exists"}"#.utf8)
+            )
+        }
+
+        let result = try await testTaskValue(of: upload)
+        XCTAssertNil(result.ocId)
+        switch (failingMethod, result.failure) {
+            case let ("PUT", .other(error)), let ("MOVE", .destinationCollision(error)):
+                XCTAssertEqual(error.errorCode, 412)
+            default:
+                XCTFail("Unexpected upload failure for \(failingMethod): \(String(describing: result.failure))")
+        }
+    }
+
+    func testChunkPutPreconditionFailureIsNotDestinationCollision() async throws {
+        try await checkChunkedCreatePreconditionFailure(on: "PUT")
+    }
+
+    func testChunkMovePreconditionFailureIsDestinationCollision() async throws {
+        try await checkChunkedCreatePreconditionFailure(on: "MOVE")
     }
 
     func testCancellationDuringRejectedChunkAssemblyPreservesServerError() async throws {
