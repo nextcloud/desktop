@@ -186,7 +186,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         }
 
         let result = try await testTaskValue(of: upload)
-        XCTAssertEqual(result.failure?.underlyingError.errorCode, expectedError.errorCode)
+        XCTAssertEqual(result.failure?.underlyingError.errorCode, expectedError == .success ? nil : expectedError.errorCode)
         XCTAssertEqual(result.ocId, headers["OC-FileID"])
         XCTAssertEqual(result.etag, headers["OC-ETag"])
         XCTAssertEqual(result.size, expectedError == .success ? Int64(data.count) : nil)

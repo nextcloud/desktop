@@ -902,7 +902,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         debugPrint("Parent is:", parent.remotePath)
 
         if options.customHeader?["If-None-Match"] == "*",
-           parent.children.contains(where: { $0.remotePath == remotePath }) {
+           parent.children.contains(where: { $0.remotePath == remotePath })
+        {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, NKError(statusCode: 412, fallbackDescription: "Precondition Failed"))
         }
 
