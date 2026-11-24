@@ -574,6 +574,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     public var chunkPreparationHandler: (@Sendable () async -> Void)?
     public var chunkPreparationError: NKError?
+    public var chunkTransferError: NKError?
     public var chunkAssemblyHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
     public var uploadRequest: UploadRequest?
@@ -667,6 +668,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     /// The destination policy supplied to the most recent chunked upload.
     public private(set) var lastChunkedUploadOverwrite: Bool?
+    public private(set) var chunkUploadOperationCount = 0
+    public private(set) var lastChunkUploadChecksumHeader: String?
+    public private(set) var lastChunkAssemblyChecksum: String?
 
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
@@ -977,6 +981,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         requestHandler _: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
+        assemblyChecksum: @escaping () throws -> String? = { nil },
         chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
     ) async -> (
         account: String,
@@ -984,7 +989,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         chunksDirectory: URL?,
         failure: UploadFailure?
     ) {
+        chunkUploadOperationCount += 1
         lastChunkedUploadOverwrite = overwrite
+        lastChunkUploadChecksumHeader = options.customHeader?["OC-Checksum"]
+        lastChunkAssemblyChecksum = nil
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
             return ("", nil, nil, .other(.urlError))
@@ -1041,6 +1049,32 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         chunkUploadStartHandler(newChunks)
 
+        if let chunkTransferError {
+            return (
+                account.ncKitAccount,
+                nil,
+                returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                .other(chunkTransferError)
+            )
+        }
+
+        let completedChunks = chunkUploadCompletedChunkCount.map {
+            newChunks.prefix($0)
+        } ?? newChunks[...]
+        if completedChunks.count == newChunks.count {
+            do {
+                lastChunkAssemblyChecksum = try assemblyChecksum()
+            } catch {
+                completedChunks.forEach { chunkUploadCompleteHandler($0) }
+                return (
+                    account.ncKitAccount,
+                    nil,
+                    returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                    .other(error as? NKError ?? NKError(error: error))
+                )
+            }
+        }
+
         if !overwrite, item(remotePath: remotePath, account: account.ncKitAccount) != nil {
             newChunks.forEach { chunkUploadCompleteHandler($0) }
             return (
@@ -1061,9 +1095,6 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        let completedChunks = chunkUploadCompletedChunkCount.map {
-            newChunks.prefix($0)
-        } ?? newChunks[...]
         completedChunks.forEach { chunkUploadCompleteHandler($0) }
         if let chunkAssemblyHandler {
             await chunkAssemblyHandler()

@@ -38,7 +38,9 @@ to provide a changed content modification date when contents change.
 
 For file creation, the destination is also part of the identifier. The server
 remembers the destination when it creates the upload folder, so a retry under
-a different name or parent needs a fresh upload folder.
+a different name or parent needs a fresh upload folder. A create also includes
+its content checksum when available so resumed chunks match the checksum sent
+on the final `MOVE`.
 
 If no modification date is available, the upload uses a unique identifier.
 That attempt cannot be resumed by deriving the same identifier later, but it

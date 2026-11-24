@@ -52,6 +52,9 @@ extension NKError {
 
     var isAmbiguousCreateResponse: Bool {
         switch errorCode {
+            case NKError.errorChunkMoveFile.errorCode:
+                // NextcloudKit could not read back the file after the MOVE succeeded.
+                true
             case NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost, NSURLErrorCancelled, 408, 500, 502, 503, 504, 520, 524:
                 true
             default:

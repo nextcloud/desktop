@@ -61,6 +61,7 @@ public protocol RemoteInterface: Sendable {
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (Progress) -> Void,
+        assemblyChecksum: @escaping () throws -> String?,
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
     ) async -> (
         account: String,

@@ -67,6 +67,7 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         requestHandler _: @escaping (UploadRequest) -> Void,
         taskHandler _: @Sendable @escaping (URLSessionTask) -> Void,
         progressHandler _: @escaping (Progress) -> Void,
+        assemblyChecksum _: @escaping () throws -> String?,
         chunkUploadCompleteHandler _: @escaping (RemoteFileChunk) -> Void
     ) async -> (
         account: String,

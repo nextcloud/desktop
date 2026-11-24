@@ -124,6 +124,7 @@ extension NextcloudKit: RemoteInterface {
         requestHandler _: @escaping (_ request: UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
+        assemblyChecksum: @escaping () throws -> String? = { nil },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
     ) async -> (
         account: String,
@@ -192,6 +193,7 @@ extension NextcloudKit: RemoteInterface {
                 chunkFolder: remoteChunkStoreFolderName,
                 filesChunk: fileChunks,
                 chunkSize: chunkSize,
+                assemblyChecksum: assemblyChecksum,
                 account: account.ncKitAccount,
                 options: options,
                 overwrite: overwrite,

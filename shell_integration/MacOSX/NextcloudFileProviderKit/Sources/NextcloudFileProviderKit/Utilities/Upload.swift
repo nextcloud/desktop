@@ -21,7 +21,7 @@ func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -
 /// Derives the identifier for a chunked upload's server folder and local `RemoteFileChunk` records.
 ///
 /// The item, size and modification date identify the version whose chunks can be resumed.
-/// Creates also bind the identifier to the destination because the server remembers the original target.
+/// Creates also bind the identifier to the destination and, when available, the content checksum.
 /// The encoded item prefix lets cleanup find older uploads for the same item.
 ///
 /// When no modification date is available the content can't be bound to an id, so a per-attempt unique
@@ -32,7 +32,8 @@ func chunkUploadIdentifier(
     forItemWithIdentifier itemIdentifier: String,
     fileSize: Int64,
     modificationDate: Date?,
-    createDestination: String? = nil
+    createDestination: String? = nil,
+    createChecksum: String? = nil
 ) -> String {
     let prefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
 
@@ -44,10 +45,15 @@ func chunkUploadIdentifier(
     let contentIdentifier = "\(prefix)\(fileSize)_\(mtimeSeconds)"
     guard let createDestination else { return contentIdentifier }
 
-    let destinationHash = SHA256.hash(data: Data(createDestination.utf8))
+    var createIdentity = Data(createDestination.utf8)
+    if let createChecksum {
+        createIdentity.append(0)
+        createIdentity.append(contentsOf: createChecksum.utf8)
+    }
+    let createHash = SHA256.hash(data: createIdentity)
         .map { String(format: "%02x", $0) }
         .joined()
-    return "\(contentIdentifier)_\(destinationHash)"
+    return "\(contentIdentifier)_\(createHash)"
 }
 
 typealias UploadResult = (
@@ -339,7 +345,8 @@ private func performUpload(
         forItemWithIdentifier: itemIdentifier,
         fileSize: fileSize,
         modificationDate: modificationDate,
-        createDestination: creatingNewFile ? remotePath : nil
+        createDestination: creatingNewFile ? remotePath : nil,
+        createChecksum: createChecksum
     )
 
     uploadLogger.info(
@@ -421,6 +428,10 @@ private func performUpload(
         requestHandler: requestHandler,
         taskHandler: taskHandler,
         progressHandler: progressHandler,
+        assemblyChecksum: {
+            createAttempt = try recordCreateAttempt()
+            return createAttempt?.checksum
+        },
         chunkUploadCompleteHandler: { chunk in
             uploadLogger.info(
                 "\(localFilePath) chunk \(chunk.fileName) done"
@@ -447,10 +458,12 @@ private func performUpload(
 
     if chunkUploadCompleted {
         uploadLogger.info("File successfully uploaded in chunks.", [.url: remotePath])
+    } else if let createAttempt, priorAttempt == nil, let failure, !failure.underlyingError.isAmbiguousCreateResponse {
+        dbManager.discardPendingCreateUpload(createAttempt)
     }
 
     if case let .destinationCollision(error, _) = failure {
-        return await resolveCollision(error, attempt: nil)
+        return await resolveCollision(error, attempt: createAttempt)
     }
-    return (file?.ocId, file?.etag, file?.date, file?.size, failure, nil)
+    return (file?.ocId, file?.etag, file?.date, file?.size, failure, createAttempt)
 }
