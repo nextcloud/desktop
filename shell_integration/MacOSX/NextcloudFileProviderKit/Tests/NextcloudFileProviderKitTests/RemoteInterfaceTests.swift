@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
+@preconcurrency import FileProvider
 import Foundation
 import NextcloudCapabilitiesKit
 @testable import NextcloudFileProviderKit
@@ -33,6 +34,105 @@ struct RemoteInterfaceExtensionTests {
         password: "pass"
     )
     let otherAccount = Account(user: "a2", id: "2", serverUrl: "example.com", password: "word")
+
+    @Test(arguments: [false, true], [false, true])
+    func createCollisionChecksDAVResponsePath(inSubfolder: Bool, differentResponseName: Bool) async throws {
+        let host = "bücher-\(UUID().uuidString.lowercased()).example.invalid"
+        let serverUrl = "https://\(host)/instance/"
+        let server = try #require(URL(string: serverUrl))
+        let normalizedHost = try #require(server.host)
+        let account = Account(user: "user", id: "userId", serverUrl: serverUrl, password: "password")
+        let normalizedFilesPath = "/instance" + Account.webDavFilesUrlSuffix + account.id
+        let normalizedRoot = "https://" + normalizedHost + normalizedFilesPath
+        var parent = SendableItemMetadata(ocId: "folder-id", fileName: "Folder", account: account)
+        parent.serverUrl = normalizedRoot
+        parent.directory = true
+
+        let fileName = "Caf\u{00E9}%2F.txt"
+        let requestPath = (inSubfolder ? parent.remotePath() : account.davFilesUrl) + "/" + fileName
+        let encodedRequestPath = try #require(requestPath.urlEncoded)
+        let requestURL = try #require(URL(string: encodedRequestPath))
+        let expectedPath = requestURL.path(percentEncoded: true)
+        let encodedResponseName = differentResponseName ? "Cafe%CC%81%252F.txt" : "Caf%C3%A9%252F.txt"
+        let responseParent = normalizedFilesPath + (inSubfolder ? "/Folder" : "")
+        let listing = """
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:response><d:href>\(responseParent)/\(encodedResponseName)</d:href><d:propstat>
+            <d:prop><oc:id>file-id</oc:id><d:getetag>"file-etag"</d:getetag></d:prop>
+            <d:status>HTTP/1.1 200 OK</d:status>
+          </d:propstat></d:response>
+        </d:multistatus>
+        """
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = Alamofire.Session(configuration: configuration)
+        let kit = NextcloudKit()
+        kit.nkCommonInstance.nksessions.append(NKSession(
+            nkCommonInstance: kit.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "RemoteInterfaceTests",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: session
+        ))
+        let requestHost = try #require(requestURL.host)
+        let hosts = Set([requestHost, normalizedHost])
+        defer {
+            session.session.invalidateAndCancel()
+            hosts.forEach { MockHTTPURLProtocol.removeHandlers(forHost: $0) }
+        }
+        let databaseDirectory = makeDatabaseDirectory()
+        defer { try? FileManager.default.removeItem(at: databaseDirectory) }
+        let log = FileProviderLogMock()
+        let dbManager = try FilesDatabaseManager(
+            account: account,
+            databaseDirectory: databaseDirectory,
+            fileProviderDomainIdentifier: NSFileProviderDomainIdentifier(UUID().uuidString),
+            log: log
+        )
+        try await confirmation("Depth-zero lookup") { requested in
+            for host in hosts {
+                MockHTTPURLProtocol.setHandlers(
+                    forHost: host,
+                    start: { http in
+                        requested()
+                        #expect(http.request.httpMethod == "PROPFIND")
+                        #expect(http.request.value(forHTTPHeaderField: "Depth") == "0")
+                        #expect(http.request.url?.path(percentEncoded: true) == expectedPath)
+                        http.respond(status: 207, headers: ["Content-Type": "application/xml"], body: Data(listing.utf8))
+                    },
+                    stop: { _ in }
+                )
+            }
+            let collision = await NSFileProviderError.collision(
+                atRemotePath: requestPath,
+                parentItemIdentifier: inSubfolder ? NSFileProviderItemIdentifier(parent.ocId) : .rootContainer,
+                sourceMetadata: inSubfolder ? parent : nil,
+                dbManager: dbManager,
+                remoteInterface: kit,
+                progress: Progress(),
+                taskHandler: { _ in },
+                log: log
+            )
+            #expect((collision as NSError).code == NSFileProviderError.Code.filenameCollision.rawValue)
+            let item = (collision as NSError).userInfo[NSFileProviderErrorItemKey] as? Item
+            if differentResponseName {
+                #expect(item == nil)
+            } else {
+                let matching = try #require(item)
+                #expect(matching.metadata.ocId == "file-id")
+                #expect(matching.metadata.etag == "file-etag")
+                #expect(matching.metadata.remotePath() == "https://\(normalizedHost)\(responseParent)/\(fileName)")
+            }
+            #expect(dbManager.itemMetadata(ocId: "file-id") == nil)
+        }
+    }
 
     @Test(arguments: [false, true])
     func cancellingCapabilitiesCallersPreservesRequestUntilLastCaller(cancelRemainingCaller: Bool) async throws {

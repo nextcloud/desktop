@@ -134,6 +134,7 @@ public extension Item {
         localPath: String,
         itemTemplate: NSFileProviderItem,
         parentItemRemotePath: String,
+        sourceMetadata: SendableItemMetadata?,
         parentKeepDownloaded: Bool,
         domain: NSFileProviderDomain? = nil,
         account: Account,
@@ -145,6 +146,15 @@ public extension Item {
         log: any FileProviderLogging
     ) async -> (Item?, Error?) {
         let logger = FileProviderLogger(category: "Item", log: log)
+        let taskHandler: @Sendable (URLSessionTask) -> Void = { [itemIdentifier = itemTemplate.itemIdentifier] task in
+            if let domain {
+                NSFileProviderManager(for: domain)?.register(
+                    task,
+                    forItemWithIdentifier: itemIdentifier,
+                    completionHandler: { _ in }
+                )
+            }
+        }
         let (ocId, etag, date, size, failure) = await upload(
             fileLocatedAt: localPath,
             toRemotePath: remotePath,
@@ -158,15 +168,7 @@ public extension Item {
             modificationDate: itemTemplate.contentModificationDate as? Date,
             creatingNewFile: true,
             log: log,
-            taskHandler: { task in
-                if let domain {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: itemTemplate.itemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            },
+            taskHandler: taskHandler,
             progressHandler: { $0.copyCurrentStateToProgress(progress) }
         )
 
@@ -193,10 +195,14 @@ public extension Item {
             }
 
             if case .destinationCollision = failure {
-                let collision = await NSFileProviderError(.filenameCollision).handlingCollisionAgainstItemInRemotePath(
-                    remotePath,
+                let collision = await NSFileProviderError.collision(
+                    atRemotePath: remotePath,
+                    parentItemIdentifier: itemTemplate.parentItemIdentifier,
+                    sourceMetadata: sourceMetadata,
                     dbManager: dbManager,
                     remoteInterface: remoteInterface,
+                    progress: progress,
+                    taskHandler: taskHandler,
                     log: log
                 )
                 return (nil, collision)
@@ -316,6 +322,7 @@ public extension Item {
         }
 
         let parentItemIdentifier = itemTemplate.parentItemIdentifier
+        let parentItemMetadata: SendableItemMetadata?
         var parentItemRemotePath: String
         var parentItemRelativePath: String
         // Inherit the parent's "Always keep downloaded" flag so a newly-created
@@ -328,6 +335,7 @@ public extension Item {
         var parentIsParked = false
 
         if parentItemIdentifier == .rootContainer {
+            parentItemMetadata = nil
             // Mirrors the lookup `Item.rootContainer(...)` uses to merge persisted
             // per-item toggles onto the synthesised root metadata: the root
             // container can itself be pinned.
@@ -337,7 +345,7 @@ public extension Item {
             parentItemRemotePath = account.davFilesUrl
             parentItemRelativePath = "/"
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(
+            guard let parentMetadata = dbManager.directoryMetadata(
                 ocId: parentItemIdentifier.rawValue
             ) else {
                 logger.error(
@@ -350,10 +358,11 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
-            parentIsParked = parentItemMetadata.isAtHoldingPath
-            parentKeepDownloaded = parentItemMetadata.keepDownloaded
-            parentItemRemotePath = parentItemMetadata.remotePath()
-            guard let relativePath = account.filesRootRelativePath(for: parentItemRemotePath, sourceMetadata: parentItemMetadata) else {
+            parentItemMetadata = parentMetadata
+            parentIsParked = parentMetadata.isAtHoldingPath
+            parentKeepDownloaded = parentMetadata.keepDownloaded
+            parentItemRemotePath = parentMetadata.remotePath()
+            guard let relativePath = account.filesRootRelativePath(for: parentItemRemotePath, sourceMetadata: parentMetadata) else {
                 logger.error("Not creating an item outside the current account files root.", [.item: tempId, .url: parentItemRemotePath])
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
@@ -460,6 +469,7 @@ public extension Item {
             localPath: fileNameLocalPath,
             itemTemplate: itemTemplate,
             parentItemRemotePath: parentItemRemotePath,
+            sourceMetadata: parentItemMetadata,
             parentKeepDownloaded: parentKeepDownloaded,
             domain: domain,
             account: account,

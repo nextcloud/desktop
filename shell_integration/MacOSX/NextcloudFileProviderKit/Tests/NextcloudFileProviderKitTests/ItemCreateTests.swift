@@ -72,7 +72,11 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         super.tearDown()
     }
 
-    private func assertCreatingFilePreservesRemoteCollision(chunkSize: Int?) async throws {
+    private func assertCreatingFilePreservesRemoteCollision(
+        chunkSize: Int?,
+        cachedItemIdentifier: String? = "existing-id",
+        remoteLookupError: NKError? = nil
+    ) async throws {
         let existingContents = Data("Remote version".utf8)
         let existingItem = MockRemoteItem(
             identifier: "existing-id",
@@ -86,13 +90,29 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         )
         existingItem.parent = rootItem
         rootItem.children = [existingItem]
-        var existingMetadata = SendableItemMetadata(
-            ocId: existingItem.identifier, fileName: existingItem.name, account: Self.account
+        let activeChunkUploadId = "active-chunk-upload"
+        let hasActiveUpload = cachedItemIdentifier == existingItem.identifier
+        if let cachedItemIdentifier {
+            var existingMetadata = SendableItemMetadata(
+                ocId: cachedItemIdentifier,
+                fileName: existingItem.name,
+                account: Self.account
+            )
+            existingMetadata.classFile = NKTypeClassFile.document.rawValue
+            if hasActiveUpload {
+                existingMetadata.status = Status.uploading.rawValue
+                existingMetadata.chunkUploadId = activeChunkUploadId
+            }
+            Self.dbManager.addItemMetadata(existingMetadata)
+        }
+        let cachedItem = Self.dbManager.itemMetadata(
+            account: Self.account.ncKitAccount,
+            locatedAtRemoteUrl: existingItem.remotePath
         )
-        existingMetadata.classFile = NKTypeClassFile.document.rawValue
-        Self.dbManager.addItemMetadata(existingMetadata)
+        XCTAssertEqual(cachedItem?.ocId, cachedItemIdentifier)
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.enumerateErrorBySuffix[existingItem.name] = remoteLookupError
         var templateMetadata = SendableItemMetadata(
             ocId: "new-local-id", fileName: existingItem.name, account: Self.account
         )
@@ -122,10 +142,26 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         XCTAssertNil(createdItem)
         XCTAssertEqual((error as? NSFileProviderError)?.code, .filenameCollision)
-        XCTAssertEqual(
-            ((error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem)?.itemIdentifier.rawValue,
-            existingItem.identifier
+        let collidingItem = (error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem
+        let storedItem = Self.dbManager.itemMetadata(ocId: existingItem.identifier)
+        if remoteLookupError == nil {
+            XCTAssertEqual(collidingItem?.itemIdentifier.rawValue, existingItem.identifier)
+            XCTAssertEqual(collidingItem?.parentItemIdentifier, .rootContainer)
+            XCTAssertEqual(collidingItem?.filename, existingItem.name)
+        } else {
+            XCTAssertNil(collidingItem)
+        }
+        if hasActiveUpload {
+            XCTAssertEqual(storedItem?.status, Status.uploading.rawValue)
+            XCTAssertEqual(storedItem?.chunkUploadId, activeChunkUploadId)
+        } else {
+            XCTAssertNil(storedItem)
+        }
+        let cachedItemAfterCollision = Self.dbManager.itemMetadata(
+            account: Self.account.ncKitAccount,
+            locatedAtRemoteUrl: existingItem.remotePath
         )
+        XCTAssertEqual(cachedItemAfterCollision?.ocId, cachedItemIdentifier)
         XCTAssertEqual(existingItem.data, existingContents)
         XCTAssertEqual(rootItem.children.count, 1)
         XCTAssertNil(Self.dbManager.itemMetadata(ocId: "new-local-id"))
@@ -133,6 +169,21 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
         } else {
             XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
+        }
+
+        if cachedItemIdentifier == nil, remoteLookupError == nil {
+            let enumerator = try Enumerator(
+                enumeratedItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+            let observer = MockChangeObserver(enumerator: enumerator)
+            try await observer.enumerateChanges()
+
+            XCTAssertTrue(observer.changedItems.contains { $0.itemIdentifier.rawValue == existingItem.identifier })
+            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: existingItem.identifier))
         }
     }
 
@@ -398,6 +449,28 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
     func testCreateChunkedFileDoesNotOverwriteExistingRemoteFile() async throws {
         try await assertCreatingFilePreservesRemoteCollision(chunkSize: 2)
+    }
+
+    func testCreateReportsRemoteOnlyCollisionAndLeavesDiscoveryToEnumeration() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: nil
+        )
+    }
+
+    func testCreateReportsCurrentRemoteItemWhenCachedItemHasSameName() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: "old-id"
+        )
+    }
+
+    func testCreateKeepsFilenameCollisionWhenRemoteLookupFails() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: "old-id",
+            remoteLookupError: NKError(statusCode: 404, fallbackDescription: "File not found")
+        )
     }
 
     func testChunkedCreateDoesNotReportMissingUploadSessionAsFilenameCollision() async throws {
