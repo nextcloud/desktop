@@ -350,7 +350,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>When Virtual Files are enabled, cloud-only (unhydrated) files cannot be moved to the trash. If trashing a folder fails, its contents will be deleted permanently instead.</string>
+            <string>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
