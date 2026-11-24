@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
 import Alamofire
+import CryptoKit
 import Foundation
 import NextcloudCapabilitiesKit
 import NextcloudKit
@@ -17,22 +18,21 @@ func chunkUploadIdentifierPrefix(forItemWithIdentifier itemIdentifier: String) -
     return encodedIdentifier + "_"
 }
 
-/// Derives a stable, *content-scoped* identifier for a chunked upload's server folder and its local
-/// `RemoteFileChunk` bookkeeping.
+/// Derives the identifier for a chunked upload's server folder and local `RemoteFileChunk` records.
 ///
-/// The identity is `(item, size, modificationDate)`: the same content re-uploads under the same id,
-/// so an interrupted transfer resumes and reuses the chunks already stored on the server. Any content
-/// change yields a different id, so chunks from a previous version are never spliced into a different
-/// one (see F3). The value is prefixed with an unambiguous encoding of the item id so stale sets
-/// can be swept by prefix without collisions between identifiers such as `a` and `a_b`, or `a/b`
-/// and `ab`.
+/// The item, size and modification date identify the version whose chunks can be resumed.
+/// Creates also bind the identifier to the destination because the server remembers the original target.
+/// The encoded item prefix lets cleanup find older uploads for the same item.
 ///
 /// When no modification date is available the content can't be bound to an id, so a per-attempt unique
 /// id is used: this forgoes resume for that upload but never risks a bad splice. In the File Provider
 /// model a real content change always bumps `contentModificationDate` (that is how the change was
 /// detected), so equal `(size, modificationDate)` reliably means identical content.
 func chunkUploadIdentifier(
-    forItemWithIdentifier itemIdentifier: String, fileSize: Int64, modificationDate: Date?
+    forItemWithIdentifier itemIdentifier: String,
+    fileSize: Int64,
+    modificationDate: Date?,
+    createDestination: String? = nil
 ) -> String {
     let prefix = chunkUploadIdentifierPrefix(forItemWithIdentifier: itemIdentifier)
 
@@ -41,7 +41,13 @@ func chunkUploadIdentifier(
     }
 
     let mtimeSeconds = Int64(modificationDate.timeIntervalSince1970.rounded())
-    return "\(prefix)\(fileSize)_\(mtimeSeconds)"
+    let contentIdentifier = "\(prefix)\(fileSize)_\(mtimeSeconds)"
+    guard let createDestination else { return contentIdentifier }
+
+    let destinationHash = SHA256.hash(data: Data(createDestination.utf8))
+        .map { String(format: "%02x", $0) }
+        .joined()
+    return "\(contentIdentifier)_\(destinationHash)"
 }
 
 func upload(
@@ -221,7 +227,10 @@ private func performUpload(
     }
 
     let chunkUploadId = chunkUploadIdentifier(
-        forItemWithIdentifier: itemIdentifier, fileSize: fileSize, modificationDate: modificationDate
+        forItemWithIdentifier: itemIdentifier,
+        fileSize: fileSize,
+        modificationDate: modificationDate,
+        createDestination: creatingNewFile ? remotePath : nil
     )
 
     uploadLogger.info(
@@ -247,10 +256,8 @@ private func performUpload(
         }
     }
 
-    // A prior interrupted upload of different content has a different identifier. Remove its local
-    // chunks and bookkeeping, while preserving the current identifier for a genuine resume. If local
-    // removal fails, its rows remain so a later attempt can retry the cleanup; the exact-identifier
-    // query below prevents those stale rows from being used for this upload.
+    // Discard local chunks for older contents or create destinations. The lookup by the current
+    // identifier below keeps stale rows out of this upload even if their cleanup fails.
     discardChunkUploads(
         forItemIdentifiers: [itemIdentifier],
         excluding: chunkUploadId,

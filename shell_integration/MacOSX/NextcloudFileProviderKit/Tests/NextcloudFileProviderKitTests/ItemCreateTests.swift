@@ -1088,15 +1088,13 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         let tempData = Data(repeating: 1, count: chunkSize * 3)
         try tempData.write(to: tempUrl)
 
-        // New-item creation has no persisted ItemMetadata (the OS supplies the template), so the chunk
-        // id is derived from the template's itemIdentifier plus the content's (size, modificationDate),
-        // with illegal path characters stripped. Seed the prior interrupted attempt under exactly that
-        // derived id so the resume path recognises identical content.
+        // Seed a prior interrupted attempt for the same item, contents and destination.
         let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
         let chunkUploadId = chunkUploadIdentifier(
             forItemWithIdentifier: illegalChunkUploadId,
             fileSize: Int64(tempData.count),
-            modificationDate: modificationDate
+            modificationDate: modificationDate,
+            createDestination: Self.account.davFilesUrl + "/file"
         )
         XCTAssertTrue(
             chunkUploadId.hasPrefix(

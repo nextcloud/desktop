@@ -18,7 +18,10 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         setUpDatabase(Self.dbManager)
     }
 
-    private func makeChunkUploadHTTP(observeStoppingChunk: String? = nil) throws -> (
+    private func makeChunkUploadHTTP(
+        observeStoppingChunk: String? = nil,
+        observeUploadFolderLookup: Bool = false
+    ) throws -> (
         account: Account,
         kit: NextcloudKit,
         requests: AsyncStream<MockHTTPURLProtocol>,
@@ -52,9 +55,10 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         MockHTTPURLProtocol.setHandlers(
             forHost: host,
             start: { http in
+                let respondsToUploadFolder = !observeUploadFolderLookup && http.request.url?.path.hasPrefix("/remote.php/dav/uploads/") == true
                 if http.request.httpMethod == "PROPFIND",
                    let path = http.request.url?.path,
-                   path == parentPath || path.hasPrefix("/remote.php/dav/uploads/")
+                   path == parentPath || respondsToUploadFolder
                 {
                     let listing = """
                     <d:multistatus xmlns:d="DAV:">
@@ -99,7 +103,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         return Task.detached { @Sendable in
             await NextcloudFileProviderKit.upload(
                 fileLocatedAt: fileURL.path,
-                toRemotePath: destination.absoluteString,
+                toRemotePath: destination.absoluteString.removingPercentEncoding ?? destination.absoluteString,
                 usingRemoteInterface: kit,
                 withAccount: account,
                 inChunksSized: 3,
@@ -544,6 +548,67 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
     func testChunkMovePreconditionFailureIsDestinationCollision() async throws {
         try await checkChunkedCreatePreconditionFailure(on: "MOVE")
+    }
+
+    func testRenamedChunkedCreateStartsFreshUploadSession() async throws {
+        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP(observeUploadFolderLookup: true)
+        defer { cleanup() }
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data([1, 2, 3, 4]).write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let parent = try XCTUnwrap(URL(string: account.davFilesUrl))
+        let itemIdentifier = UUID().uuidString
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        var uploadFolders = Set<URL>()
+
+        for (filename, moveStatus) in [("file.txt", 412), ("file 2.txt", 201)] {
+            let destination = parent.appendingPathComponent(filename)
+            let upload = startChunkUpload(
+                fileURL: fileURL,
+                destination: destination,
+                kit: kit,
+                account: account,
+                itemIdentifier: itemIdentifier,
+                modificationDate: modificationDate,
+                creatingNewFile: true
+            )
+            defer { upload.cancel() }
+
+            let lookup = try await nextTestValue(from: requests)
+            let folderLookup = try XCTUnwrap(lookup)
+            XCTAssertEqual(folderLookup.request.httpMethod, "PROPFIND")
+            let uploadFolder = try XCTUnwrap(folderLookup.request.url)
+            guard uploadFolders.insert(uploadFolder).inserted else {
+                XCTFail("Retried a different destination with the original upload folder.")
+                return
+            }
+            folderLookup.respond(status: 404)
+            let createFolder = try await nextUploadRequest(from: requests, method: "MKCOL", name: uploadFolder.lastPathComponent)
+            assertDestination(createFolder.request.value(forHTTPHeaderField: "Destination").flatMap { URL(string: $0) }, matches: destination)
+            createFolder.respond(status: 201)
+            defer { try? kit.removeLocalChunks(remoteChunkStoreFolderName: uploadFolder.lastPathComponent) }
+
+            for part in ["1", "2"] {
+                let chunk = try await nextUploadRequest(from: requests, method: "PUT", name: part)
+                XCTAssertEqual(chunk.request.url?.deletingLastPathComponent().pathComponents, uploadFolder.pathComponents)
+                chunk.respond(status: 201)
+            }
+            let move = try await nextUploadRequest(from: requests, method: "MOVE", name: ".file")
+            XCTAssertEqual(move.request.value(forHTTPHeaderField: "Overwrite"), "F")
+            assertDestination(move.request.value(forHTTPHeaderField: "Destination").flatMap { URL(string: $0) }, matches: destination)
+
+            let headers = moveStatus == 201 ? ["OC-FileID": "new-file-id", "OC-ETag": "new-etag"] : [:]
+            move.respond(status: moveStatus, headers: headers)
+            let result = try await testTaskValue(of: upload)
+            XCTAssertEqual(result.ocId, headers["OC-FileID"])
+            if moveStatus == 201 {
+                XCTAssertNil(result.failure)
+            } else if case let .destinationCollision(error) = result.failure {
+                XCTAssertEqual(error.errorCode, 412)
+            } else {
+                XCTFail("Expected a destination collision.")
+            }
+        }
     }
 
     func testCancellationDuringRejectedChunkAssemblyPreservesServerError() async throws {
