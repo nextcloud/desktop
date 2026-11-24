@@ -111,8 +111,6 @@ bool SyncConflictsModel::setData(const QModelIndex &index, const QVariant &value
         case SyncConflictRoles::ConflictPreviewUrl:
             break;
         }
-
-        result = false;
     }
 
     return result;
@@ -137,15 +135,11 @@ QHash<int, QByteArray> SyncConflictsModel::roleNames() const
 
 Qt::ItemFlags SyncConflictsModel::flags(const QModelIndex &index) const
 {
-    auto result = Qt::ItemFlags{};
-
-    if (!index.parent().isValid()) {
-        result = QAbstractListModel::flags(index);
-        return result;
+    if (!index.isValid() || index.parent().isValid()) {
+        return {};
     }
 
-    result = Qt::ItemIsSelectable | Qt::ItemIsEditable;
-    return result;
+    return QAbstractListModel::flags(index) | Qt::ItemIsEditable;
 }
 
 ActivityList SyncConflictsModel::conflictActivities() const

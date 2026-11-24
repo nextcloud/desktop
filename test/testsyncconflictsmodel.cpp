@@ -103,6 +103,11 @@ private Q_SLOTS:
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictPreviewUrl)), QVariant::fromValue(QUrl{QStringLiteral("image://tray-image-provider/:/fileicon%1%2").arg(fakeFolder.localPath(), conflicts.constFirst())}));
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ExistingSelected)), false);
         QCOMPARE(model.data(model.index(0), static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSelected)), false);
+
+        const auto index = model.index(0);
+        QVERIFY(model.flags(index).testFlag(Qt::ItemIsEditable));
+        QVERIFY(model.setData(index, true, static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSelected)));
+        QCOMPARE(model.data(index, static_cast<int>(SyncConflictsModel::SyncConflictRoles::ConflictSelected)), true);
     }
 };
 
