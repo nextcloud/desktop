@@ -29,6 +29,14 @@
 #include <QProcess>
 #endif
 
+#ifdef Q_OS_LINUX
+#include <QDirIterator>
+#include <QStandardPaths>
+#include <QStorageInfo>
+
+#include <unistd.h>
+#endif
+
 using namespace Qt::StringLiterals;
 
 PathComponents::PathComponents(const char *path)
@@ -1721,5 +1729,77 @@ bool createDirectorySymlink(const QString &target, const QString &link)
 bool createDirectoryJunction(const QString &target, const QString &link)
 {
     return QProcess::execute(u"cmd"_s, {u"/c"_s, u"mklink"_s, u"/J"_s, QDir::toNativeSeparators(link), QDir::toNativeSeparators(target)}) == 0;
+}
+#endif
+
+#ifdef Q_OS_LINUX
+QString testTrashPath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + u"/Trash"_s;
+}
+
+bool createTestTrash()
+{
+    return QDir{}.mkpath(testTrashPath() + u"/files"_s) && QDir{}.mkpath(testTrashPath() + u"/info"_s);
+}
+
+namespace
+{
+struct TrashedItem {
+    QString infoPath;
+    QString contentPath;
+    QString originalPath;
+};
+
+// QFile::moveToTrash() uses the home trash, or for an item on another file system the trash at the top of that
+// file system, which stores the original paths relative to it: https://specifications.freedesktop.org/trash-spec/latest/
+QList<TrashedItem> trashedItems(const QString &trashedFrom)
+{
+    const auto topDir = QStorageInfo{trashedFrom}.rootPath();
+    const auto uid = QString::number(::getuid());
+    const auto trashPaths = QStringList{testTrashPath(), topDir + u"/.Trash/"_s + uid, topDir + u"/.Trash-"_s + uid};
+
+    auto items = QList<TrashedItem>{};
+    for (const auto &trashPath : trashPaths) {
+        const auto pathsBase = QDir{trashPath == testTrashPath() ? u"/"_s : topDir};
+        QDirIterator trashInfos{trashPath + u"/info"_s, {u"*.trashinfo"_s}, QDir::Files};
+        while (trashInfos.hasNext()) {
+            QFile trashInfo{trashInfos.next()};
+            if (!trashInfo.open(QIODevice::ReadOnly)) {
+                continue;
+            }
+            const auto lines = trashInfo.readAll().split('\n');
+            for (const auto &line : lines) {
+                if (line.startsWith("Path=")) {
+                    const auto contentPath = trashPath + u"/files/"_s + trashInfos.fileInfo().completeBaseName();
+                    items.append({trashInfo.fileName(), contentPath, pathsBase.filePath(QUrl::fromPercentEncoding(line.mid(5)))});
+                }
+            }
+        }
+    }
+    return items;
+}
+}
+
+QStringList trashedOriginalPaths(const QString &trashedFrom)
+{
+    auto originalPaths = QStringList{};
+    for (const auto &item : trashedItems(trashedFrom)) {
+        originalPaths.append(item.originalPath);
+    }
+    return originalPaths;
+}
+
+bool removeTrashedItems(const QString &trashedFrom)
+{
+    auto removed = true;
+    for (const auto &item : trashedItems(trashedFrom)) {
+        if (!item.originalPath.startsWith(trashedFrom)) {
+            continue;
+        }
+        const auto contentRemoved = QFileInfo{item.contentPath}.isDir() ? QDir{item.contentPath}.removeRecursively() : QFile::remove(item.contentPath);
+        removed = contentRemoved && QFile::remove(item.infoPath) && removed;
+    }
+    return removed;
 }
 #endif

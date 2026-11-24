@@ -138,6 +138,22 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     return success;
 }
 
+bool PropagateLocalRemove::hasDehydratedFiles() const
+{
+    if (!_item->isDirectory()) {
+        return _item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload;
+    }
+
+    auto foundDehydratedFile = false;
+    const auto queryOk = propagator()->_journal->getFilesBelowPath(_item->_file.toUtf8(), [&foundDehydratedFile](const SyncJournalFileRecord &record) {
+        foundDehydratedFile = foundDehydratedFile || record.isVirtualFile();
+    });
+    if (!queryOk) {
+        qCWarning(lcPropagateLocalRemove) << "could not check for dehydrated files below" << _item->_file;
+    }
+    return foundDehydratedFile || !queryOk;
+}
+
 void PropagateLocalRemove::start()
 {
     qCInfo(lcPropagateLocalRemove) << "Start propagate local remove job";
@@ -168,10 +184,9 @@ void PropagateLocalRemove::start()
     }
 
     QString removeError;
-    auto moveToTrashIsFeasible = true;
-    if (propagator()->syncOptions()._vfs->mode() != OCC::Vfs::WindowsCfApi) {
-        moveToTrashIsFeasible = false;
-    }
+    // A dehydrated placeholder has no local contents to keep. Moving it to a trash on another file system reads it,
+    // which hydrates it while the client waits for the move.
+    auto moveToTrashIsFeasible = propagator()->syncOptions()._vfs->mode() == Vfs::Off || !hasDehydratedFiles();
     const auto fileInfo = QFileInfo{filename};
     if (fileInfo.isDir()) {
         try {
