@@ -242,6 +242,7 @@ AdvancedSettings::AdvancedSettings(QWidget *parent)
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::saveMiscSettings);
     connect(_ui->moveFilesToTrashCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility);
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &AdvancedSettings::slotShowInExplorerNavigationPane);
     connect(_ui->remotePollIntervalSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AdvancedSettings::slotRemotePollIntervalChanged);
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &AdvancedSettings::slotIgnoreFilesEditor);
@@ -481,7 +482,10 @@ void AdvancedSettings::updateMoveFilesToTrashVfsWarningIcon()
 
 void AdvancedSettings::updateMoveFilesToTrashVfsWarningVisibility()
 {
-    const auto showWarning = isVfsPluginAvailable(Vfs::WindowsCfApi) && _ui->moveFilesToTrashCheckBox->isChecked();
+    const auto isCfApiFolder = [](const auto *folder) {
+        return folder->virtualFilesEnabled() && folder->vfs().mode() == Vfs::WindowsCfApi;
+    };
+    const auto showWarning = _ui->moveFilesToTrashCheckBox->isChecked() && std::ranges::any_of(FolderMan::instance()->map(), isCfApiFolder);
     _ui->moveFilesToTrashVfsWarningBanner->setVisible(showWarning);
     if (showWarning) {
         updateMoveFilesToTrashVfsWarningIcon();
