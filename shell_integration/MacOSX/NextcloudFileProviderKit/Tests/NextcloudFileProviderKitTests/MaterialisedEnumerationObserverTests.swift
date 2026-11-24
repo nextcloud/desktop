@@ -190,7 +190,7 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
         XCTAssertTrue(dbManager.itemMetadata(ocId: dataless.ocId)?.downloaded == false)
     }
 
-    /// Late page callbacks must neither change download flags nor complete materialized-item enumeration a second time.
+    /// Late callbacks must not request another page, change download flags or complete enumeration a second time.
     func testMaterialisedObserverIgnoresCallbacksAfterCompletion() throws {
         for fails in [false, true] {
             let dbManager = try makeDatabaseManager()
@@ -198,21 +198,37 @@ final class MaterialisedEnumerationObserverTests: NextcloudFileProviderKitTestCa
             var dataless = downloadedFile(ocId: "dataless")
             dataless.downloaded = false
             [downloaded, dataless].forEach { dbManager.addItemMetadata($0) }
+            let enumerator = MockEnumerator(
+                account: Self.account,
+                dbManager: dbManager,
+                remoteInterface: MockRemoteInterface(account: Self.account)
+            )
+            let latePage = NSFileProviderPage(Data("late-page".utf8))
             var completionCount = 0
             let observer = MaterializedEnumerationObserver(account: Self.account, dbManager: dbManager, log: FileProviderLogMock()) { _, _ in
                 completionCount += 1
             }
+            enumerator.enumerateItemsHandler = { _, _ in }
+            enumerator.invalidateHandler = { [weak observer] in
+                observer?.finishEnumerating(upTo: latePage)
+            }
+
+            observer.enumerateItems(using: enumerator)
+            observer.enumerateItems(using: enumerator)
             if fails {
                 observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
             } else {
                 observer.finishEnumerating(upTo: nil)
             }
 
+            observer.enumerateItems(using: enumerator)
             observer.didEnumerate([materializedItem(downloaded), materializedItem(dataless)])
-            observer.finishEnumerating(upTo: NSFileProviderPage(Data("late-page".utf8)))
+            observer.finishEnumerating(upTo: latePage)
             observer.finishEnumerating(upTo: nil)
             observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
 
+            XCTAssertEqual(enumerator.enumeratedPages, [NSFileProviderPage(Data())])
+            XCTAssertEqual(enumerator.invalidationCount, 1)
             XCTAssertEqual(completionCount, 1)
             XCTAssertEqual(dbManager.itemMetadata(ocId: downloaded.ocId)?.downloaded, fails)
             XCTAssertTrue(dbManager.itemMetadata(ocId: dataless.ocId)?.downloaded == false)

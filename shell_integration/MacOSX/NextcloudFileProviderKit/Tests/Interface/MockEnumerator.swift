@@ -12,6 +12,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
     let remoteInterface: MockRemoteInterface
     public var enumeratorItems: [SendableItemMetadata] = []
     public var enumerateItemsHandler: ((any NSFileProviderEnumerationObserver, NSFileProviderPage) -> Void)?
+    public var invalidateHandler: (() -> Void)?
     public private(set) var enumeratedPages: [NSFileProviderPage] = []
     public private(set) var invalidationCount = 0
 
@@ -54,6 +55,7 @@ public class MockEnumerator: NSObject, NSFileProviderEnumerator {
 
     public func invalidate() {
         invalidationCount += 1
+        invalidateHandler?()
         print("MockEnumerator invalidated")
     }
 }
