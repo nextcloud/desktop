@@ -165,7 +165,7 @@ void ProcessDirectoryJob::process()
                 if (!hasOtherData) {
                     entries.erase(e.name);
                 }
-            } else if (!hasOtherData) {
+            } else if (!hasOtherData && e.isVirtualFile) {
                 // Normally a lone local suffixed file would be processed under the
                 // unsuffixed name. In this special case it's under the suffixed name.
                 // To avoid lots of special casing, make sure PathTuple::addName()
