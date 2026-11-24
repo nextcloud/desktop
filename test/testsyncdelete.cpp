@@ -92,6 +92,24 @@ private Q_SLOTS:
         QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/sub/synced.txt"));
     }
 
+    void testDeleteDirectoryKeepsIgnoredFileWithPartialLocalDiscovery()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("*.ign");
+        fakeFolder.remoteModifier().mkdir("A/sub");
+        fakeFolder.remoteModifier().insert("A/sub/synced.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.localModifier().insert("A/sub/local.ign");
+        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {});
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(QFileInfo::exists(fakeFolder.localPath() + "A/sub/local.ign"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/a1"));
+        QVERIFY(!QFileInfo::exists(fakeFolder.localPath() + "A/sub/synced.txt"));
+    }
+
     void testDeleteNestedDirectoryWithoutIgnoredFile()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};

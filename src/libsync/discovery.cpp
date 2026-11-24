@@ -89,7 +89,8 @@ void ProcessDirectoryJob::start()
     }
 
     // Check whether a normal local query is even necessary
-    if (_queryLocal == NormalQuery) {
+    const auto isFolderToRemove = _dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE;
+    if (_queryLocal == NormalQuery && !isFolderToRemove) {
         if (!_discoveryData->_shouldDiscoverLocaly(_currentFolder._local)
             && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))
             && !_discoveryData->isInSelectiveSyncBlackList(_currentFolder._original)) {
@@ -1379,9 +1380,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->isPermissionsInvalid = localEntry.isPermissionsInvalid;
 
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
+        if (recurseQueryLocal == ParentNotChanged && item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE
+            && item->_direction == SyncFileItem::Down && FileSystem::fileExists(_discoveryData->_localDir + path._local)) {
+            recurseQueryLocal = NormalQuery;
+        }
+
         if (item->isDirectory() && serverEntry.isValid() && dbEntry.isValid() && serverEntry.etag == dbEntry._etag && serverEntry.remotePerm == dbEntry._remotePerm) {
             recurseQueryServer = ParentNotChanged;
         }
+
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
 
