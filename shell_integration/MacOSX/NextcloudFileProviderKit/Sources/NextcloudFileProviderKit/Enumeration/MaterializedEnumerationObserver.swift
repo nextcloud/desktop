@@ -18,10 +18,9 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     /// All materialized items enumerated by the system.
     ///
     private var enumeratedItems = Set<NSFileProviderItemIdentifier>()
+    // File Provider can call back inline, so call the enumerator outside this lock.
     private let enumerationLock = NSLock()
     private var enumerator: (any NSFileProviderEnumerator)?
-    private var pendingPage: NSFileProviderPage?
-    private var requestingPage = false
     private var finished = false
 
     public required init(account: Account, dbManager: FilesDatabaseManager, log: any FileProviderLogging, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
@@ -40,30 +39,7 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             return true
         }
         guard canStart else { return }
-        requestPage(NSFileProviderPage(Data()))
-    }
-
-    private func requestPage(_ page: NSFileProviderPage) {
-        let shouldRequest = enumerationLock.withLock {
-            guard !finished else { return false }
-            pendingPage = page
-            guard !requestingPage else { return false }
-            requestingPage = true
-            return true
-        }
-        guard shouldRequest else { return }
-
-        // A synchronous page callback queues its continuation for this loop instead of recursing.
-        while let request = enumerationLock.withLock({ () -> (any NSFileProviderEnumerator, NSFileProviderPage)? in
-            guard !finished, let enumerator, let pendingPage else {
-                requestingPage = false
-                return nil
-            }
-            self.pendingPage = nil
-            return (enumerator, pendingPage)
-        }) {
-            request.0.enumerateItems(for: self, startingAt: request.1)
-        }
+        enumerator.enumerateItems(for: self, startingAt: NSFileProviderPage(Data()))
     }
 
     public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
@@ -76,7 +52,8 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
 
     public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
         if let nextPage {
-            requestPage(nextPage)
+            let activeEnumerator = enumerationLock.withLock { enumerator }
+            activeEnumerator?.enumerateItems(for: self, startingAt: nextPage)
             return
         }
         guard let identifiers = completeEnumeration() else { return }
@@ -99,7 +76,6 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
             let result = (enumeratedItems, enumerator)
             enumeratedItems.removeAll()
             enumerator = nil
-            pendingPage = nil
             return result
         }
         result?.1?.invalidate()
