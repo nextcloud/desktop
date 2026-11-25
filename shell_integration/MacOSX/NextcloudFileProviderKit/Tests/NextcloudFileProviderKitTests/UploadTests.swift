@@ -20,7 +20,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
 
     private func makeChunkUploadHTTP(
         observeStoppingChunk: String? = nil,
-        observeUploadFolderLookup: Bool = false
+        observeUploadFolderLookup: Bool = false,
+        destinationLookupStatus: Int? = nil
     ) throws -> (
         account: Account,
         kit: NextcloudKit,
@@ -69,6 +70,12 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                     </d:multistatus>
                     """
                     http.respond(status: 207, headers: ["Content-Type": "application/xml"], body: Data(listing.utf8))
+                } else if http.request.httpMethod == "PROPFIND",
+                          let destinationLookupStatus,
+                          let path = http.request.url?.path,
+                          path.hasPrefix(parentPath + "/")
+                {
+                    http.respond(status: destinationLookupStatus)
                 } else {
                     requestEvents.yield(http)
                 }
@@ -510,6 +517,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         )
         defer { upload.cancel() }
 
+        let preflight = try await nextUploadRequest(from: requests, method: "PROPFIND", name: "file.txt")
+        preflight.respond(status: failingMethod == "PUT" ? 404 : 503)
         let firstChunk = try await nextUploadRequest(from: requests, method: "PUT", name: "1")
         let uploadId = try XCTUnwrap(firstChunk.request.url?.deletingLastPathComponent().lastPathComponent)
         defer { try? kit.removeLocalChunks(remoteChunkStoreFolderName: uploadId) }
@@ -583,6 +592,8 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             )
             defer { upload.cancel() }
 
+            let preflight = try await nextUploadRequest(from: requests, method: "PROPFIND", name: filename)
+            preflight.respond(status: 404)
             let lookup = try await nextTestValue(from: requests)
             let folderLookup = try XCTUnwrap(lookup)
             XCTAssertEqual(folderLookup.request.httpMethod, "PROPFIND")
@@ -622,6 +633,45 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
                 XCTFail("Expected a destination collision.")
             }
         }
+    }
+
+    func testFreshChunkedCreateReportsAnOccupiedDestinationBeforeStartingUpload() async throws {
+        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP(observeUploadFolderLookup: true)
+        defer { cleanup() }
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Data([1, 2, 3, 4]).write(to: fileURL)
+        defer { try? FileManager.default.removeItem(at: fileURL) }
+        let destination = try XCTUnwrap(URL(string: account.davFilesUrl + "/occupied.txt"))
+        let upload = startChunkUpload(
+            fileURL: fileURL,
+            destination: destination,
+            kit: kit,
+            account: account,
+            itemIdentifier: UUID().uuidString,
+            modificationDate: Date(timeIntervalSince1970: 1_700_000_000),
+            creatingNewFile: true
+        )
+        defer { upload.cancel() }
+
+        let preflight = try await nextUploadRequest(from: requests, method: "PROPFIND", name: "occupied.txt")
+        let listing = """
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          <d:response><d:href>\(destination.path)</d:href><d:propstat>
+            <d:prop><oc:id>existing-id</oc:id><d:getcontentlength>4</d:getcontentlength><d:resourcetype/></d:prop>
+            <d:status>HTTP/1.1 200 OK</d:status>
+          </d:propstat></d:response>
+        </d:multistatus>
+        """
+        preflight.respond(status: 207, headers: ["Content-Type": "application/xml"], body: Data(listing.utf8))
+
+        // Only the target read gets a response, so starting a chunk session would time out here.
+        let result = try await testTaskValue(of: upload)
+        guard case let .destinationCollision(error, metadata) = result.failure else {
+            return XCTFail("Expected the occupied destination to stop chunking.")
+        }
+        XCTAssertEqual(error.errorCode, 412)
+        XCTAssertEqual(metadata?.ocId, "existing-id")
+        XCTAssertNil(result.createAttempt)
     }
 
     func testCancellationDuringRejectedChunkAssemblyPreservesServerError() async throws {
@@ -832,7 +882,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
     }
 
     func testChunkedCreateDoesNotSendFinalMoveWhenPendingUploadCannotBeRecorded() async throws {
-        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP()
+        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP(destinationLookupStatus: 404)
         defer { cleanup() }
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try Data([1, 2, 3, 4]).write(to: fileURL)

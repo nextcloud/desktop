@@ -203,14 +203,17 @@ private func performUpload(
     }
 
     // The prior upload may already occupy the destination and consume the remaining quota.
+    let priorDestination: (metadata: SendableItemMetadata, responseBody: Data?)?
     if priorAttempt != nil {
-        let destination = await readDestination()
+        priorDestination = await readDestination()
         guard !cancellation.isCancelled, !Task.isCancelled else {
             return (nil, nil, nil, nil, .other(.cancelled), nil)
         }
-        if let recovered = recoverCreate(from: destination) {
+        if let recovered = recoverCreate(from: priorDestination) {
             return recovered
         }
+    } else {
+        priorDestination = nil
     }
 
     // Pre-flight quota check: a depth-0 PROPFIND on the destination's parent picks up
@@ -393,6 +396,17 @@ private func performUpload(
     guard let remainingChunks = dbManager.remoteFileChunks(uploadId: chunkUploadId) else {
         uploadLogger.error("Could not read the recorded chunks of the upload. The upload is retried later.", [.name: chunkUploadId])
         return (nil, nil, nil, nil, .other(.metadataDatabaseUnreadable), nil)
+    }
+
+    if creatingNewFile, remainingChunks.isEmpty {
+        let destination = priorAttempt == nil ? await readDestination() : priorDestination
+        guard !cancellation.isCancelled, !Task.isCancelled else {
+            return (nil, nil, nil, nil, .other(.cancelled), nil)
+        }
+        if let destination {
+            let collision = NKError(statusCode: 412, fallbackDescription: "Precondition Failed")
+            return (nil, nil, nil, nil, .destinationCollision(collision, metadata: destination.metadata), nil)
+        }
     }
 
     let (_, file, chunksDirectory, failure) = await remoteInterface.chunkedUpload(

@@ -172,7 +172,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         if chunkSize == nil {
             XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
         } else {
-            XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
+            XCTAssertEqual(remoteInterface.chunkUploadOperationCount, 0)
         }
 
         if cachedItemIdentifier == nil, remoteLookupError == nil {
@@ -568,7 +568,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
                 remoteInterface.uploadHandler = { installRemoteFile() }
             }
             if collidedOnAssembly {
-                installRemoteFile()
+                // The new file appears after the chunked create's preflight.
+                remoteInterface.chunkPreparationHandler = { installRemoteFile() }
             } else if failsBeforeAssembly {
                 remoteInterface.chunkTransferError = firstFailure.remoteError
             } else {
@@ -591,6 +592,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(rootItem.children.first?.data, committedBeforeReply || collidedOnAssembly ? remoteContents : nil)
             remoteInterface.uploadHandler = nil
             remoteInterface.uploadError = nil
+            remoteInterface.chunkPreparationHandler = nil
             remoteInterface.chunkTransferError = nil
         }
         if rootItem.children.isEmpty {
@@ -641,7 +643,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(retryTargetReads, 2, "The post-412 lookup must be reused for recovery or collision reporting.")
         }
         if forcedChunkSize != nil {
-            let skippedChunkUpload = shouldRecover && !failFirstRecoveryLookup
+            let skippedChunkUpload = collidedOnAssembly || (shouldRecover && !failFirstRecoveryLookup)
             XCTAssertEqual(remoteInterface.chunkUploadOperationCount, skippedChunkUpload ? 1 : 2)
         }
         if shouldRecover {
@@ -1400,11 +1402,12 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
         let log = FileProviderLogMock()
         let checksum = try CreateUploadChecksum.header(forFileAt: tempUrl.path, cancellation: NetworkOperationCancellation(log: log))
+        let remotePath = Self.account.davFilesUrl + "/file"
         let chunkUploadId = chunkUploadIdentifier(
             forItemWithIdentifier: illegalChunkUploadId,
             fileSize: Int64(tempData.count),
             modificationDate: modificationDate,
-            createDestination: Self.account.davFilesUrl + "/file",
+            createDestination: remotePath,
             createChecksum: checksum
         )
         XCTAssertTrue(
@@ -1436,6 +1439,12 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
+        var destinationReads = 0
+        remoteInterface.enumerateCallHandler = { path, depth, _, _, _, _, _, _ in
+            if path == remotePath, depth == .target {
+                destinationReads += 1
+            }
+        }
 
         var fileItemMetadata = SendableItemMetadata(
             ocId: illegalChunkUploadId, fileName: "file", account: Self.account
@@ -1478,6 +1487,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(tempData.count) - preexistingChunk.size
         )
+        XCTAssertEqual(destinationReads, 0)
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
