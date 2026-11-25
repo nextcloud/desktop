@@ -353,10 +353,11 @@ public extension Item {
             parentIsParked = parentItemMetadata.isAtHoldingPath
             parentKeepDownloaded = parentItemMetadata.keepDownloaded
             parentItemRemotePath = parentItemMetadata.remotePath()
-            parentItemRelativePath = parentItemRemotePath.replacingOccurrences(
-                of: account.davFilesUrl, with: ""
-            )
-            assert(parentItemRelativePath.starts(with: "/"))
+            guard let relativePath = account.filesRootRelativePath(for: parentItemRemotePath, sourceMetadata: parentItemMetadata) else {
+                logger.error("Not creating an item outside the current account files root.", [.item: tempId, .url: parentItemRemotePath])
+                return (nil, NSFileProviderError(.cannotSynchronize))
+            }
+            parentItemRelativePath = "/" + relativePath
         }
 
         let itemTemplateIsFolder = itemTemplate.contentType?.conforms(to: .directory) ?? false
