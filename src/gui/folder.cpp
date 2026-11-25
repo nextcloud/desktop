@@ -447,10 +447,11 @@ void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime
     _lastEtag = etag;
 }
 
-void Folder::rootFileIdReceivedFromSyncEngine(const qint64 fileId)
+void Folder::rootFileIdReceivedFromSyncEngine(qint64 fileId, const QByteArray &instanceId)
 {
     qCDebug(lcFolder).nospace() << "retrieved root fileId=" << fileId;
     _rootFileId = fileId;
+    _rootFileIdInstanceId = instanceId;
 }
 
 void Folder::showSyncResultPopup()
@@ -1062,9 +1063,15 @@ void Folder::migrateBlackListPath(const QString &legacyPath)
     }
 }
 
-bool Folder::hasFileIds(const QList<qint64>& fileIds) const
+bool Folder::hasFileIds(const QList<qint64> &fileIds) const
 {
-    return fileIds.contains(_rootFileId) || journalDb()->hasFileIds(fileIds);
+    if (fileIds.isEmpty()) {
+        return false;
+    }
+    if (_rootFileId != 0 && fileIds.contains(_rootFileId)) {
+        return true;
+    }
+    return !_rootFileIdInstanceId.isNull() && journalDb()->hasFileIds(fileIds, _rootFileIdInstanceId);
 }
 
 QString Folder::filePath(const QString& fileName)

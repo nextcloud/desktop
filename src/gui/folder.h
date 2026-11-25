@@ -366,8 +366,8 @@ public:
     void blacklistPath(const QString &path);
     void migrateBlackListPath(const QString &legacyPath);
 
-    /// whether the current folder contains any of the passed fileIds
-    [[nodiscard]] bool hasFileIds(const QList<qint64>& fileIds) const;
+    /// Returns whether a nonempty file ID notification should schedule this folder.
+    [[nodiscard]] bool hasFileIds(const QList<qint64> &fileIds) const;
 
 Q_SIGNALS:
     void syncStateChange();
@@ -482,7 +482,7 @@ private Q_SLOTS:
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
     void etagRetrievedFromSyncEngine(const QByteArray &, const QDateTime &time);
 
-    void rootFileIdReceivedFromSyncEngine(qint64 fileId);
+    void rootFileIdReceivedFromSyncEngine(qint64 fileId, const QByteArray &instanceId);
 
     void slotEmitFinishedDelayed();
 
@@ -660,6 +660,7 @@ private:
 
     /// The remote file ID of the current folder.
     qint64 _rootFileId = 0;
+    QByteArray _rootFileIdInstanceId;
 };
 }
 
