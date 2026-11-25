@@ -10,7 +10,7 @@ import NextcloudFileProviderKitMocks
 import Testing
 @testable import TestInterface
 
-@Suite(.serialized)
+@Suite(.serialized, .timeLimit(.minutes(1)))
 struct RemoteInterfaceExtensionTests {
     private func capabilitiesFromMockJSON(jsonString: String = mockCapabilities) -> (Capabilities, Data) {
         let data = jsonString.data(using: .utf8)!
@@ -53,12 +53,9 @@ struct RemoteInterfaceExtensionTests {
                 #expect(options.customHeader == nil)
                 taskHandler(networkTask)
                 startedContinuation.yield(())
-                do {
-                    guard try await nextTestValue(from: finish) != nil else {
-                        return (account.ncKitAccount, nil, nil, .invalidResponseError)
-                    }
-                } catch {
-                    return (account.ncKitAccount, nil, nil, .cancelled)
+                var finishIterator = finish.makeAsyncIterator()
+                guard await finishIterator.next() != nil else {
+                    return (account.ncKitAccount, nil, nil, Task.isCancelled ? .cancelled : .invalidResponseError)
                 }
                 #expect(!Task.isCancelled)
                 return (account.ncKitAccount, capabilities, data, .success)
@@ -84,7 +81,7 @@ struct RemoteInterfaceExtensionTests {
             }
             progress.cancel()
 
-            let cancelled = try await testTaskValue(of: first)
+            let cancelled = try await testTaskValue(of: first, timeout: progressCancellationTimeout)
             #expect(cancelled.error.errorCode == NSURLErrorCancelled)
             #expect(cancelled.capabilities == nil)
             #expect(networkTask.state == .suspended)
@@ -100,7 +97,11 @@ struct RemoteInterfaceExtensionTests {
             #expect(result.error == .success)
             #expect(result.capabilities == capabilities)
             #expect(result.data == data)
-            let cached = await remote.currentCapabilities(account: testAccount)
+            let cacheOnlyRemote = TestableRemoteInterface { account, _, _ in
+                Issue.record("The shared capabilities response must be cached")
+                return (account.ncKitAccount, nil, nil, .invalidResponseError)
+            }
+            let cached = await cacheOnlyRemote.currentCapabilities(account: testAccount)
             #expect(cached.error == .success)
             #expect(cached.capabilities == capabilities)
             #expect(cached.data == nil)
@@ -123,8 +124,14 @@ struct RemoteInterfaceExtensionTests {
         let (releaseOld, releaseOldContinuation) = AsyncStream<Void>.makeStream()
         let (releaseNew, releaseNewContinuation) = AsyncStream<Void>.makeStream()
         // Separate gates let the backend deliver a late response despite its caller's cancellation.
-        let oldGate = Task.detached { try? await nextTestValue(from: releaseOld) }
-        let newGate = Task.detached { try? await nextTestValue(from: releaseNew) }
+        let oldGate = Task.detached {
+            var iterator = releaseOld.makeAsyncIterator()
+            _ = await iterator.next()
+        }
+        let newGate = Task.detached {
+            var iterator = releaseNew.makeAsyncIterator()
+            _ = await iterator.next()
+        }
         defer {
             startedContinuation.finish()
             releaseOldContinuation.finish()
@@ -137,7 +144,7 @@ struct RemoteInterfaceExtensionTests {
                 taskHandler(networkTask)
             }
             startedContinuation.yield(())
-            _ = await oldGate.value
+            await oldGate.value
             if registerAfterCancellation {
                 taskHandler(networkTask)
             }
@@ -156,7 +163,7 @@ struct RemoteInterfaceExtensionTests {
         }
         let replacementRemote = TestableRemoteInterface { account, _, _ in
             startedContinuation.yield(())
-            _ = await newGate.value
+            await newGate.value
             #expect(!Task.isCancelled)
             return (account.ncKitAccount, newCapabilities, newData, .success)
         }

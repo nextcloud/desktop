@@ -10,15 +10,20 @@ import Testing
 @Suite(.timeLimit(.minutes(1)))
 struct NetworkOperationCancellationTests {
     @Test
-    func progressCancellationCancelsRunningTask() async {
+    func progressCancellationCancelsRunningTask() async throws {
         let progress = Progress()
-        let cancelled = await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { _ in
-            progress.cancel()
-            let cancelled = await waitForCancellation()
-            #expect(cancelled)
-            return Task.isCancelled
+        let (pending, continuation) = AsyncStream<Void>.makeStream()
+        defer { continuation.finish() }
+        let task = Task {
+            await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { _ in
+                progress.cancel()
+                // Leave the worker suspended until its task is cancelled.
+                var iterator = pending.makeAsyncIterator()
+                _ = await iterator.next()
+                return Task.isCancelled
+            }
         }
-        #expect(cancelled)
+        #expect(try await testTaskValue(of: task, timeout: progressCancellationTimeout))
         #expect(progress.cancellationHandler == nil)
     }
 
@@ -64,7 +69,7 @@ struct NetworkOperationCancellationTests {
     }
 
     @Test
-    func networkRequestIsCancelledAndHandlersAreReleased() async {
+    func networkRequestIsCancelledAndHandlersAreReleased() async throws {
         let (cancelledRequests, continuation) = AsyncStream<ObjectIdentifier>.makeStream()
         defer { continuation.finish() }
         let monitor = ClosureEventMonitor()
@@ -77,22 +82,22 @@ struct NetworkOperationCancellationTests {
         ]
         for request in requests {
             let progress = Progress()
-            let cancelled = await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { cancellation in
-                cancellation.register(request: request)
-                #expect(progress.pausingHandler != nil)
-                #expect(progress.resumingHandler != nil)
-                progress.cancel()
-                let cancelled = await waitForCancellation()
-                #expect(cancelled)
-                // The worker must outlive cancellation of the registered request.
-                let cancelledRequest = await Task.detached {
-                    try? await nextTestValue(from: cancelledRequests)
-                }.value
-                #expect(cancelledRequest == ObjectIdentifier(request))
-                #expect(request.isCancelled)
-                return Task.isCancelled
+            let task = Task {
+                await NetworkOperationCancellation(log: FileProviderLogMock()).run(progress: progress) { cancellation in
+                    cancellation.register(request: request)
+                    #expect(progress.pausingHandler != nil)
+                    #expect(progress.resumingHandler != nil)
+                    progress.cancel()
+                    // Like a request callback, this wait outlives cancellation of the worker task.
+                    return await Task.detached {
+                        var iterator = cancelledRequests.makeAsyncIterator()
+                        return await iterator.next()
+                    }.value
+                }
             }
-            #expect(cancelled)
+            let cancelledRequest = try await testTaskValue(of: task, timeout: progressCancellationTimeout)
+            #expect(cancelledRequest == ObjectIdentifier(request))
+            #expect(request.isCancelled)
             #expect(progress.cancellationHandler == nil)
             #expect(progress.pausingHandler == nil)
             #expect(progress.resumingHandler == nil)
