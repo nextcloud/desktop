@@ -2529,12 +2529,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Prišlo je do napake med preklicem brisanja datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Prišlo je do napake med preklicem brisanja datoteke%1 </translation>
     </message>
@@ -2542,23 +2542,23 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Napaka strežnika: odziv PROPFIND ni zapisan kot XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation type="unfinished"/>
     </message>
@@ -2566,27 +2566,27 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="358"/>
         <source>Error while opening directory %1</source>
         <translation>Prišlo je do napake med odpiranjem mape %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Mapa v programu ni dosegljiva, ni ustreznih dovoljenj.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
         <source>Directory not found: %1</source>
         <translation>Mape ni mogoče najti: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>Filename encoding is not valid</source>
         <translation>Kodiranje imena datoteke ni veljavno</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
         <source>Error while reading directory %1</source>
         <translation>Prišlo je do napake med branjem mape %1</translation>
     </message>
@@ -2901,30 +2901,30 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je posodobljena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="539"/>
+        <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Datoteka %1 je preimenovana v %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="547"/>
         <source>%1 has been moved to %2.</source>
         <translation>Datoteka %1 je premaknjena v %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
@@ -2944,128 +2944,128 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>Dodana je datoteka %1.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="537"/>
+        <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovana je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovana je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovane so bile še %n druge datoteke.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovanih je bilo še %n drugih datotek.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="544"/>
+        <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjena je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjeni sta bili še %n drugi datoteki.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjene so bile še %n druge datoteke.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjenih je bilo še %n drugih datotek.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="551"/>
+        <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>Pri datoteki %1 in še %n drugi datoteki je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>Pri datoteki %1 je zaznan spor usklajevanja. Preverite datoteko!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>Datoteke %1 in še %n druge datoteke ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="560"/>
+        <location filename="../src/gui/folder.cpp" line="561"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Datoteke %1 zaradi napake ni mogoče uskladiti. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je trenutno zaklenjena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta trenutno zaklenjeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so trenutno zaklenjene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je trenutno  zaklenjenih.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="567"/>
+        <location filename="../src/gui/folder.cpp" line="568"/>
         <source>%1 is currently locked.</source>
         <translation>Datoteka %1 je trenutno zaklenjena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="575"/>
+        <location filename="../src/gui/folder.cpp" line="576"/>
         <source>Sync Activity</source>
         <translation>Dejavnost usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Could not read system exclude file</source>
         <translation>Ni mogoče prebrati sistemske izločitvene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Dodana je nova mapa, ki presega %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1497"/>
+        <location filename="../src/gui/folder.cpp" line="1504"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dodana je mapa iz zunanje shrambe.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1498"/>
+        <location filename="../src/gui/folder.cpp" line="1505"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Med nastavitvami jo je mogoče izbrati in označiti za prejem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>Keep syncing</source>
         <translation>Nadaljuj z usklajevanjem</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1574"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>Stop syncing</source>
         <translation>Zaustavi usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1585"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1586"/>
+        <location filename="../src/gui/folder.cpp" line="1593"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ali želite zaustaviti usklajevanje te mape?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1663"/>
+        <location filename="../src/gui/folder.cpp" line="1670"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Mapa %1 je bila ustvarjena, a je bila izločena s seznama usklajevanja. Podatki v tej mapi ne bodo usklajeni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Datoteka %1 je bila ustvarjena, a je bila izločena s seznama usklajevanja. Podatki ne bodo usklajeni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1677"/>
+        <location filename="../src/gui/folder.cpp" line="1684"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3078,41 +3078,41 @@ To pomeni, da odjemalec usklajevanja ne pošilja krajevnih sprememb takoj in mor
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Prejemanje navidezne datoteke je spodletelo s kodo »%1«, stanjem »%2« in sporočilom o napaki »%3«.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1811"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1812"/>
+        <location filename="../src/gui/folder.cpp" line="1819"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1813"/>
+        <location filename="../src/gui/folder.cpp" line="1820"/>
         <source>Remove all files?</source>
         <translation>Ali želite odstraniti vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1817"/>
+        <location filename="../src/gui/folder.cpp" line="1824"/>
         <source>Proceed with Deletion</source>
         <translation>Nadaljuj z brisanjem</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files to Server</source>
         <translation>Obnovi datoteke s strežnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files from Server</source>
         <translation>Obnovi datoteke s strežnika</translation>
     </message>
@@ -6046,12 +6046,12 @@ Server replied with error: %2</source>
         <translation>Ni mogoče odpreti ali ustvariti krajevne usklajevalne podatkovne zbirke. Prepričajte se, da imate ustrezna dovoljenja za pisanje v usklajevani mapi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Zmanjkuje prostora na disku: prejem predmetov, ki bi zmanjšali prostor na disku pod %1 bo prekinjen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1500"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Za usklajevanje je na strežniku premalo prostora.</translation>
     </message>
@@ -6096,7 +6096,7 @@ Server replied with error: %2</source>
         <translation>Ni mogoče brati iz dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="832"/>
         <source>Cannot open the sync journal</source>
         <translation>Ni mogoče odpreti dnevnika usklajevanja</translation>
     </message>
@@ -6121,13 +6121,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1574"/>
         <source>You need to accept the terms of service</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1566"/>
         <source>Reauthorization required</source>
         <translation type="unfinished"/>
     </message>
@@ -6145,7 +6145,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Nekaterih datotek ni mogoče uskladiti!</translation>
     </message>
@@ -6171,7 +6171,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
         <source>Some files could not be synced!</source>
         <translation>Nekaterih datotek ni mogoče uskladiti!</translation>
     </message>
@@ -6485,115 +6485,115 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="443"/>
         <source>Trigger the migration</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="540"/>
         <source>%n notification(s)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="783"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
         <source>“%1” was not synchronized</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="824"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="827"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="830"/>
         <source>Insufficient storage on the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="866"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="882"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Retry all uploads</source>
         <translation>Ponovi pošiljanje vseh predmetov</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1450"/>
         <source>Rename file</source>
         <translation>Preimenuj datoteko</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1558"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1701"/>
         <source>Public Share Link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1918"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1938"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
         <source>Assistant is not available for this account.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1974"/>
         <source>Assistant is already processing a request.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2011"/>
         <source>Sending your request …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2084"/>
         <source>No response yet. Please try again later.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2103"/>
         <source>No supported assistant task types were returned.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2185"/>
         <source>Waiting for the assistant response…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2207"/>
         <source>Assistant request failed (%1).</source>
         <translation type="unfinished"/>
     </message>
@@ -6601,32 +6601,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>Confirm Account Removal</source>
         <translation>Potrdi odstranjevanje računa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ali res želite odstraniti povezavo z računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; odstranitev povezave &lt;b&gt;ne izbriše&lt;/b&gt; nobene datoteke.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Remove connection</source>
         <translation>Odstrani povezavo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2306"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Leave share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Remove account</source>
         <translation type="unfinished"/>
     </message>
@@ -7069,33 +7069,33 @@ Server replied with error: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="361"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
         <source>You renamed %1</source>
         <translation>Preimenovali ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>You deleted %1</source>
         <translation>Izbrisali ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
         <source>You created %1</source>
         <translation>Ustvarili ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>You changed %1</source>
         <translation>Spremenili ste %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Synced %1</source>
         <translation>Usklajeno %1</translation>
     </message>

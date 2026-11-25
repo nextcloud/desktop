@@ -2532,12 +2532,12 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Klaida atšaukiant failo ištrynimą</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Klaida atšaukiant %1 ištrynimą</translation>
     </message>
@@ -2545,23 +2545,23 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverio klaida: PROPFIND atsakymas nėra XML formato!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Serveris pateikė nenumatytą atsakymą, kurio nepavyko perskaityti. Susisiekite su serverio administratoriumi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Šifruotų metaduomenų sąrankos klaida!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Užšifruotų metaduomenų sąrankos klaida: pradinis serverio parašas tuščias.</translation>
     </message>
@@ -2569,27 +2569,27 @@ Vienintelis virtualių failų palaikymo išjungimo privalumas yra tai, kad vėl 
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="358"/>
         <source>Error while opening directory %1</source>
         <translation>Klaida atveriant katalogą %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Katalogas nepasiekiamas kliento kompiuteryje, leidimas nesuteiktas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
         <source>Directory not found: %1</source>
         <translation>Katalogas nerastas: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>Filename encoding is not valid</source>
         <translation>Neteisinga failo pavadinimo koduotė</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
         <source>Error while reading directory %1</source>
         <translation>Klaida skaitant katalogą %1</translation>
     </message>
@@ -2904,30 +2904,30 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 pašalintas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 atnaujintas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="539"/>
+        <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 pevadintas į %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="547"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 perkeltas į %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>Pašalintas %1 ir dar %n failas.</numerusform><numerusform>Pašalinti %1 ir dar %n failai.</numerusform><numerusform>Pašalinta %1 ir dar %n failų.</numerusform><numerusform>Pašalinta %1 ir dar %n failų.</numerusform></translation>
     </message>
@@ -2947,129 +2947,129 @@ Tai gali būti susiję su jūsų „OpenSSL“ bibliotekomis.</translation>
         <translation>Pasirinkite kitą vietą. %1 nėra skaitomas aplankas.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>Pridėtas %1 ir dar %n kitas failas.</numerusform><numerusform>Pridėti %1 ir dar %n kiti failai.</numerusform><numerusform>Pridėta %1 ir dar %n kitų failų.</numerusform><numerusform>Pridėta %1 ir dar %n kitų failų.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 pridėtas.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform> %1 ir  %n failas buvo atnaujintas.</numerusform><numerusform> %1 ir  %n failai buvo atnaujinti.</numerusform><numerusform> %1 ir  %n failų buvo atnaujinta.</numerusform><numerusform> %1 ir  %n failai buvo atnaujinti.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="537"/>
+        <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>Failo %1 pavadinimas pakeistas į %2 ir dar %n failo pavadinimas buvo pakeistas.</numerusform><numerusform>Failo %1 pavadinimas pakeistas į %2 ir dar %n failų pavadinimai buvo pakeisti.</numerusform><numerusform>Failo %1 pavadinimas pakeistas į %2 ir dar %n failų pavadinimai buvo pakeisti.</numerusform><numerusform>Failo %1 pavadinimas pakeistas į %2 ir dar %n failų pavadinimai buvo pakeisti.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="544"/>
+        <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 perkeltas į %2, o taip pat buvo perkeltas dar %n failas.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkelti dar %n failai.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkelta dar %n failų.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkeltas dar %n failas.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="551"/>
+        <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 ir dar %n failas turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failai turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failų turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failas turi sinchronizavimo konfliktus.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 turi sinchronizavimo konfliktą. Patikrinkite „konfliktų“ failą!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failo. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failų. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failų. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failo. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="560"/>
+        <location filename="../src/gui/folder.cpp" line="561"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Dėl klaidos nepavyko sinchronizuotu %1.  Daugiau informacijos rasite įvykių registravimo žurnale.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>Šiuo metu yra užrakintas %1 ir dar %n failas.</numerusform><numerusform>Šiuo metu yra užrakintas %1 ir dar %n failai.</numerusform><numerusform>Šiuo metu yra užrakintas %1 ir dar %n failų.</numerusform><numerusform>Šiuo metu yra užrakintas %1 ir dar %n failas.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="567"/>
+        <location filename="../src/gui/folder.cpp" line="568"/>
         <source>%1 is currently locked.</source>
         <translation>Šiuo metu %1 yra užrakintas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="575"/>
+        <location filename="../src/gui/folder.cpp" line="576"/>
         <source>Sync Activity</source>
         <translation>Sinchronizavimo veikla</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Could not read system exclude file</source>
         <translation>Nepavyko perskaityti sistemos išimčių failo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Buvo pridėtas naujas, didesnis nei  %1 MB, aplankas: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1497"/>
+        <location filename="../src/gui/folder.cpp" line="1504"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Buvo pridėtas aplankas iš išorinės saugyklos.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1498"/>
+        <location filename="../src/gui/folder.cpp" line="1505"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Jei norite atsisiųsti, eikite į nustatymus ir pasirinkite.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Aplankas viršijo nustatytą aplanko dydžio ribą – %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>Keep syncing</source>
         <translation>Sinchronizuoti toliau</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1574"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>Stop syncing</source>
         <translation>Sustabdyti sinchronizavimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1585"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>%1 aplankas viršijo nustatytą aplanko dydžio ribą – %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1586"/>
+        <location filename="../src/gui/folder.cpp" line="1593"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Ar norite sustabdyti šio aplanko sinchronizavimą?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1663"/>
+        <location filename="../src/gui/folder.cpp" line="1670"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Aplankas %1 buvo sukurtas, tačiau anksčiau išskirtas iš sinchronizavimo. Aplanke esantys duomenys nebus sinchronizuoti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Failas %1 buvo sukurtas, tačiau anksčiau išskirtas iš sinchronizavimo. Failas nebus sinchronizuotas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1677"/>
+        <location filename="../src/gui/folder.cpp" line="1684"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3082,12 +3082,12 @@ Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pa
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtualaus failo atsisiuntimas nepavyko. Kodas „%1“, būsena „%2“ ir klaidos pranešimas „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1811"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -3096,7 +3096,7 @@ Patvirtinkite, jei norite tęsti šiuos trynimus.
 Arba galite atkurti visus ištrintus failus įkeldami juos iš aplanko „%1“ į serverį.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1812"/>
+        <location filename="../src/gui/folder.cpp" line="1819"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -3105,22 +3105,22 @@ Patvirtinkite, ar norite tęsti šiuos trynimus.
 Arba galite atkurti visus ištrintus failus atsisiųsdami juos iš serverio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1813"/>
+        <location filename="../src/gui/folder.cpp" line="1820"/>
         <source>Remove all files?</source>
         <translation>Pašalinti visus failus?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1817"/>
+        <location filename="../src/gui/folder.cpp" line="1824"/>
         <source>Proceed with Deletion</source>
         <translation>Tęsti ištrynimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files to Server</source>
         <translation>Atkurti failus į serverį</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files from Server</source>
         <translation>Atkurti failus iš serverio</translation>
     </message>
@@ -6066,12 +6066,12 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Nepavyko atidaryti arba sukurti vietinės sinchronizavimo duomenų bazės. Įsitikinkite, kad turite rašymo teises sinchronizavimo aplanke.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Mažai vietos diske: atsisiuntimai, kurie sumažintų vietą iki %1 buvo praleisti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1500"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Serveryje nepakanka vietos kai kuriems įkėlimams.</translation>
     </message>
@@ -6116,7 +6116,7 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Nepavyko nuskaityti iš sinchronizavimo žurnalo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="832"/>
         <source>Cannot open the sync journal</source>
         <translation>Nepavyksta atverti sinchronizavimo žurnalo</translation>
     </message>
@@ -6141,13 +6141,13 @@ Serveris atsakė su klaida: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1574"/>
         <source>You need to accept the terms of service</source>
         <translation>Turite sutikti su paslaugų teikimo sąlygomis.</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1566"/>
         <source>Reauthorization required</source>
         <translation>Reikalingas pakartotinis leidimas</translation>
     </message>
@@ -6165,7 +6165,7 @@ Serveris atsakė su klaida: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Kai kurių failų nepavyko sinchronizuoti!</translation>
     </message>
@@ -6191,7 +6191,7 @@ Serveris atsakė su klaida: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
         <source>Some files could not be synced!</source>
         <translation>Kai kurių failų nepavyko sinchronizuoti!</translation>
     </message>
@@ -6505,115 +6505,115 @@ Serveris atsakė su klaida: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>Ištisinio šifravimo sertifikatą reikia perkelti į naują</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="443"/>
         <source>Trigger the migration</source>
         <translation>Pradėti perkėlimą</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="540"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n pranešimas</numerusform><numerusform>%n pranešimai</numerusform><numerusform>%n pranešimų</numerusform><numerusform>%n pranešimų</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="783"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
         <source>“%1” was not synchronized</source>
         <translation>„%1“ dar nesinchronizuota</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="824"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Serveryje nepakanka vietos. Failui reikia %1, bet yra tik %2 laisvos vietos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="827"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Serveryje nepakanka vietos. Failui reikalinga %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="830"/>
         <source>Insufficient storage on the server.</source>
         <translation>Nepakanka vietos serveryje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="866"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Serveryje nepakanka vietos kai kuriems įkėlimams.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="882"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Retry all uploads</source>
         <translation>Pakartoti visus įkėlimus</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Resolve conflict</source>
         <translation>Išspręsti konfilktą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1450"/>
         <source>Rename file</source>
         <translation>Pervadinti failą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1558"/>
         <source>Sync conflicts</source>
         <translation>Sinchronizavimo konfliktai</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1701"/>
         <source>Public Share Link</source>
         <translation>Vieša nuoroda</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1918"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvota atnaujinama; naudojamas %1 procentas(-ų) visos vietos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1938"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotos įspėjimas – naudojama %1 procentai(-ų) ar daugiau saugyklos vietos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
         <source>Assistant is not available for this account.</source>
         <translation>Asistentas šiai paskyrai nepasiekiamas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1974"/>
         <source>Assistant is already processing a request.</source>
         <translation>Asistentas jau apdoroja užklausą.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2011"/>
         <source>Sending your request …</source>
         <translation>Siunčiamas jūsų prašymas  …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2084"/>
         <source>No response yet. Please try again later.</source>
         <translation>Kol kas nėra atsakymo. Bandykite dar kartą vėliau.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2103"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Nerasta jokių palaikomų asistento užduočių tipų.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2185"/>
         <source>Waiting for the assistant response…</source>
         <translation>Laukiama asistento atsakymo…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2207"/>
         <source>Assistant request failed (%1).</source>
         <translation>Asistento užklausa nepavyko (%1).</translation>
     </message>
@@ -6621,32 +6621,32 @@ Serveris atsakė su klaida: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>Confirm Account Removal</source>
         <translation>Patvirtinti paskyros šalinimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ar tikrai norite pašalinti ryšį su paskyra &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Pastaba:&lt;/b&gt; Tai &lt;b&gt;neištrins&lt;/b&gt; jokių failų.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Remove connection</source>
         <translation>Šalinti ryšį</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2306"/>
         <source>Cancel</source>
         <translation>Atsisakyti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Leave share</source>
         <translation>Palikti bendrinimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Remove account</source>
         <translation>Šalinti paskyrą</translation>
     </message>
@@ -7089,33 +7089,33 @@ Serveris atsakė su klaida: %2</translation>
         <translation>Nepavyko perkelti derinimo archyvo į pasirinktą vietą!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="361"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation>Atsakymas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
         <source>You renamed %1</source>
         <translation>Jūs pervadinote %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>You deleted %1</source>
         <translation>Jūs ištrynėte %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
         <source>You created %1</source>
         <translation>Jūs sukūrėte %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>You changed %1</source>
         <translation>Jūs pakeitėte %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Synced %1</source>
         <translation>Sinchronizuota %1</translation>
     </message>

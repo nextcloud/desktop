@@ -18,6 +18,7 @@
 #include "common/asserts.h"
 #include "common/checksums.h"
 #include "common/filesystembase.h"
+#include "common/syncjournaldb.h"
 
 #include <csync_exclude.h>
 #include "vio/csync_vio_local.h"
@@ -519,14 +520,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
         if (map.contains("fileid"_L1)) {
             // this is from the "oc:fileid" property, this is the plain ID without any special format (e.g. "2")
             _localFileId = map.value("fileid"_L1).toUtf8();
-
-            bool ok = false;
-            if (qint64 numericFileId = _localFileId.toLongLong(&ok, 10); ok) {
-                qCDebug(lcDiscovery).nospace() << "received numericFileId=" << numericFileId;
-                Q_EMIT firstDirectoryFileId(numericFileId);
-            } else {
-                qCWarning(lcDiscovery).nospace() << "conversion to qint64 failed _localFileId=" << _localFileId;
-            }
         }
         if (map.contains("id"_L1)) {
             // this is from the "oc:id" property, the format is e.g. "00000002oc123xyz987e"
@@ -591,7 +584,23 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         Q_EMIT finished(HttpError{ 0, _error });
         deleteLater();
         return;
-    } else if (isE2eEncrypted() && _account->capabilities().clientSideEncryptionAvailable()) {
+    }
+
+    if (_isRootPath) {
+        auto ok = false;
+        const auto numericId = _localFileId.toLongLong(&ok, 10);
+        const auto rootFileId = ok && numericId > 0 ? numericId : 0;
+        auto instanceId = QByteArray{};
+        if (rootFileId > 0) {
+            const auto prefix = SyncJournalDb::formatDavFileIdPrefix(rootFileId);
+            if (_fileId.startsWith(prefix)) {
+                instanceId = _fileId.size() == prefix.size() ? ""_ba : _fileId.sliced(prefix.size());
+            }
+        }
+        Q_EMIT firstDirectoryFileId(rootFileId, instanceId);
+    }
+
+    if (isE2eEncrypted() && _account->capabilities().clientSideEncryptionAvailable()) {
         Q_EMIT etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;

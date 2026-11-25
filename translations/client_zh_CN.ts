@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/wizard/browserreauthcontroller.cpp" line="131"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>无法打开浏览器，请将链接复制到浏览器。</translation>
     </message>
 </context>
 <context>
@@ -216,22 +216,22 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="44"/>
         <source>New conversation</source>
-        <translation type="unfinished"/>
+        <translation>新对话</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="70"/>
         <source>Reload conversations</source>
-        <translation type="unfinished"/>
+        <translation>重新加载对话</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="100"/>
         <source>Assistant is thinking…</source>
-        <translation type="unfinished"/>
+        <translation>助手正在思考…</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantChatView.qml" line="110"/>
         <source>Retry response generation</source>
-        <translation type="unfinished"/>
+        <translation>重新生成响应</translation>
     </message>
 </context>
 <context>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="24"/>
         <source>No conversation selected</source>
-        <translation type="unfinished"/>
+        <translation>未选择对话</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantConversationPicker.qml" line="27"/>
         <source>Selected conversation</source>
-        <translation type="unfinished"/>
+        <translation>已选择对话</translation>
     </message>
 </context>
 <context>
@@ -253,22 +253,22 @@
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="37"/>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="40"/>
         <source>Delete assistant task?</source>
-        <translation type="unfinished"/>
+        <translation>删除助手任务？</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="49"/>
         <source>This removes the task from the server.</source>
-        <translation type="unfinished"/>
+        <translation>这将从服务器删除该任务。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="66"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantDeleteTaskDialog.qml" line="73"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantMessageList.qml" line="50"/>
         <source>Start a conversation with Nextcloud Assistant.</source>
-        <translation type="unfinished"/>
+        <translation>与 Nextcloud 助手开始对话。</translation>
     </message>
 </context>
 <context>
@@ -285,17 +285,17 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="27"/>
         <source>%1 · %2</source>
         <extracomment>%1 is the assistant task status and %2 is the task's date and time in the locale's short format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 · %2</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="60"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重试</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskDelegate.qml" line="67"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/assistant/qml/AssistantTaskList.qml" line="52"/>
         <source>No assistant tasks for this type.</source>
-        <translation type="unfinished"/>
+        <translation>此类型没有助手任务。</translation>
     </message>
 </context>
 <context>
@@ -312,7 +312,7 @@
         <location filename="../src/gui/assistant/qml/AssistantTaskTypeDelegate.qml" line="101"/>
         <source>Select assistant task type %1</source>
         <extracomment>%1 is the name of an assistant task type, for example &quot;Chat&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>选择助手任务类型 %1</translation>
     </message>
 </context>
 <context>
@@ -321,22 +321,22 @@
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="24"/>
         <location filename="../src/gui/accountsettings.cpp" line="185"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>助手</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="65"/>
         <source>Type a message</source>
-        <translation type="unfinished"/>
+        <translation>输入消息</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="66"/>
         <source>Describe the task</source>
-        <translation type="unfinished"/>
+        <translation>描述任务</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="138"/>
         <source>AI can make mistakes. Review generated content before using it.</source>
-        <translation type="unfinished"/>
+        <translation>AI 可能会出错。使用前请检查生成的内容。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/qml/AssistantWindow.qml" line="76"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>在浏览器中打开</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
@@ -581,13 +581,13 @@
         <location filename="../src/libsync/configfile.cpp" line="750"/>
         <source>Managed by your organization</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>由您的组织管理</translation>
     </message>
     <message>
         <location filename="../src/libsync/configfile.cpp" line="752"/>
         <source>Managed by your system administrator</source>
         <comment>User label when setting is enforced and cannot be changed.</comment>
-        <translation type="unfinished"/>
+        <translation>由您的系统管理员管理</translation>
     </message>
 </context>
 <context>
@@ -608,22 +608,22 @@
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="17"/>
         <source>Delete share?</source>
-        <translation type="unfinished"/>
+        <translation>删除共享？</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="21"/>
         <source>This removes the share and its access for all recipients.</source>
-        <translation type="unfinished"/>
+        <translation>这将删除共享及其对所有收件人的访问权限。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="28"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/DeleteShareConfirmation.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -673,28 +673,28 @@
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="25"/>
         <source>%1 (required)</source>
-        <translation type="unfinished"/>
+        <translation>%1（必填）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="103"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="133"/>
         <source>Enter a valid date within the allowed range.</source>
-        <translation type="unfinished"/>
+        <translation>请输入允许范围内的有效日期。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="288"/>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="347"/>
         <source>This value is shorter than the minimum length.</source>
-        <translation type="unfinished"/>
+        <translation>此值短于最小长度。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/FieldDelegate.qml" line="363"/>
         <source>This setting is not supported by this version of the desktop client.</source>
-        <translation type="unfinished"/>
+        <translation>此设置不受此版本桌面客户端支持。</translation>
     </message>
 </context>
 <context>
@@ -844,7 +844,7 @@
     <message>
         <location filename="../src/gui/localnetworkpermission.cpp" line="21"/>
         <source>Local Network access is disabled. Enable it to connect to the server.</source>
-        <translation type="unfinished"/>
+        <translation>本地网络访问已禁用。启用后才能连接到服务器。</translation>
     </message>
 </context>
 <context>
@@ -852,7 +852,7 @@
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="799"/>
         <source>Assistant</source>
-        <translation type="unfinished"/>
+        <translation>助手</translation>
     </message>
 </context>
 <context>
@@ -860,37 +860,37 @@
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="20"/>
         <source>Undo</source>
-        <translation type="unfinished"/>
+        <translation>撤销</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="26"/>
         <source>Redo</source>
-        <translation type="unfinished"/>
+        <translation>重做</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="34"/>
         <source>Cut</source>
-        <translation type="unfinished"/>
+        <translation>剪切</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="40"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="46"/>
         <source>Paste</source>
-        <translation type="unfinished"/>
+        <translation>粘贴</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="52"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../src/gui/common/NCContextMenuTextField.qml" line="60"/>
         <source>Select All</source>
-        <translation type="unfinished"/>
+        <translation>全选</translation>
     </message>
 </context>
 <context>
@@ -975,12 +975,12 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="200"/>
         <source>File Provider is enabled, but this account still has classic sync folders. The Finder integration stays unavailable until this is resolved.</source>
-        <translation type="unfinished"/>
+        <translation>文件提供程序已启用，但此帐户仍有经典同步文件夹。在解决此问题之前，Finder 集成不可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="216"/>
         <source>Resolve…</source>
-        <translation type="unfinished"/>
+        <translation>解决…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="286"/>
@@ -1012,19 +1012,19 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="575"/>
         <source>If this account&apos;s files appear stuck, missing, or out of sync in Finder, reset its File Provider storage. Unsynced local changes are preserved.</source>
-        <translation type="unfinished"/>
+        <translation>如果此帐户的文件在 Finder 中卡住、缺失或不同步，请重置其文件提供程序存储。未同步的本地更改将被保留。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
         <location filename="../src/gui/accountsettings.cpp" line="2121"/>
         <source>Reset File Provider Domain</source>
-        <translation type="unfinished"/>
+        <translation>重置文件提供程序域</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
         <location filename="../src/gui/accountsettings.cpp" line="1582"/>
         <source>Log out, log back in, or remove this account from the client.</source>
-        <translation type="unfinished"/>
+        <translation>注销、重新登录，或从客户端移除此帐户。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
@@ -1036,7 +1036,7 @@ Should the account be imported?</source>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
         <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>移除帐户</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="338"/>
@@ -1228,7 +1228,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>&lt;p&gt;Could not add the folder sync connection for &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>无法为 %2 添加文件夹同步连接（%1）。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1010"/>
@@ -1346,12 +1346,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Leave share</source>
-        <translation type="unfinished"/>
+        <translation>离开共享</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1581"/>
         <source>Remove this public share connection from the client.</source>
-        <translation type="unfinished"/>
+        <translation>从客户端移除此公共共享连接。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1769"/>
@@ -1376,17 +1376,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2107"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>这将把 %1 的文件提供程序重置为初始状态。当此帐户的文件在 Finder 中卡住、缺失或不同步时使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2111"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
-        <translation type="unfinished"/>
+        <translation>该位置将暂时从 Finder 中消失，然后重新出现。任何尚未上传的本地更改都会被保留，并在文件夹中显示。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2116"/>
         <source>Reset File Provider Domain for this account?</source>
-        <translation type="unfinished"/>
+        <translation>为此帐户重置文件提供程序域？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="2019"/>
@@ -1779,7 +1779,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2148"/>
         <source>The selected certificate file is empty.</source>
-        <translation type="unfinished"/>
+        <translation>选定的证书文件为空。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/accountwizardcontroller.cpp" line="2182"/>
@@ -1990,39 +1990,39 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="219"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="337"/>
         <source>Assistant is not available for this account.</source>
-        <translation type="unfinished"/>
+        <translation>此帐户无法使用助手。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="342"/>
         <source>Assistant is already processing a request.</source>
-        <translation type="unfinished"/>
+        <translation>助手已在处理请求。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="431"/>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="451"/>
         <source>No response yet. Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>尚未收到响应。请稍后重试。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="480"/>
         <source>No supported assistant task types were returned.</source>
-        <translation type="unfinished"/>
+        <translation>未返回受支持的助手任务类型。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="557"/>
         <source>Assistant task scheduled.</source>
-        <translation type="unfinished"/>
+        <translation>助手任务已排定。</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="770"/>
         <source>Scheduling assistant task…</source>
-        <translation type="unfinished"/>
+        <translation>正在排定助手任务…</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistantcontroller.cpp" line="840"/>
         <source>Assistant request failed (%1).</source>
         <extracomment>%1 is the HTTP status code returned by the server.</extracomment>
-        <translation type="unfinished"/>
+        <translation>助手请求失败（%1）。</translation>
     </message>
 </context>
 <context>
@@ -2030,27 +2030,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="106"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="108"/>
         <source>Scheduled</source>
-        <translation type="unfinished"/>
+        <translation>已排定</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="110"/>
         <source>In progress</source>
-        <translation type="unfinished"/>
+        <translation>进行中</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="112"/>
         <source>Completed</source>
-        <translation type="unfinished"/>
+        <translation>已完成</translation>
     </message>
     <message>
         <location filename="../src/gui/assistant/assistanttaskmodel.cpp" line="114"/>
         <source>Failed</source>
-        <translation type="unfinished"/>
+        <translation>失败</translation>
     </message>
 </context>
 <context>
@@ -2059,7 +2059,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/assistant/assistanttasktypemodel.cpp" line="98"/>
         <source>Chat</source>
         <extracomment>Name of the Chat assistant task type.</extracomment>
-        <translation type="unfinished"/>
+        <translation>聊天</translation>
     </message>
 </context>
 <context>
@@ -2529,12 +2529,12 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of a file</source>
         <translation>取消删除一个文件时出错</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of %1</source>
         <translation>取消删除 %1 时发生错误</translation>
     </message>
@@ -2542,23 +2542,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>服务器错误：PROPFIND 回复的格式不是 XML！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>服务器返回了无法读取的意外响应。请联系您的服务器管理员。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error!</source>
         <translation>已加密的元数据设置错误！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>加密元数据设置错误：来自服务器的初始签名为空。</translation>
     </message>
@@ -2566,27 +2566,27 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="358"/>
         <source>Error while opening directory %1</source>
         <translation>打开目录 %1 时出错</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>目录在客户端上不可访问，权限被拒</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
         <source>Directory not found: %1</source>
         <translation>找不到目录：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>Filename encoding is not valid</source>
         <translation>文件名编码无效</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
         <source>Error while reading directory %1</source>
         <translation>读取目录 %1 时出错</translation>
     </message>
@@ -2667,7 +2667,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="524"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="538"/>
         <source>Lock has no expiry. You can unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>锁没有过期时间。完成编辑后，你可以手动解锁此文件。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="527"/>
@@ -2901,30 +2901,30 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已移除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已更新。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="539"/>
+        <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 已更名为 %2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="547"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 已移动至 %2。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 和 %n 个其他文件已被移除。</numerusform></translation>
     </message>
@@ -2944,129 +2944,129 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>请选择其他位置，%1 不是可读文件夹。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>已添加 %1 和其他 %n 个文件</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>已添加 %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 和 %n 个其他文件已更新。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="537"/>
+        <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 已经更名为 %2，%n 个其他文件也已更名。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="544"/>
+        <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 已移动到 %2，%n 个其他文件也已移动。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="551"/>
+        <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 和 %n 个其他文件有同步冲突。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 有同步冲突。请检查冲突文件！</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 和 %n 个其他文件由于错误无法同步。详情请查看日志。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="560"/>
+        <location filename="../src/gui/folder.cpp" line="561"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 同步出错。详情请查看日志。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 和 %n 个其他文件目前均已被锁定。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="567"/>
+        <location filename="../src/gui/folder.cpp" line="568"/>
         <source>%1 is currently locked.</source>
         <translation>%1 已经被锁定</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="575"/>
+        <location filename="../src/gui/folder.cpp" line="576"/>
         <source>Sync Activity</source>
         <translation>同步动态</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Could not read system exclude file</source>
         <translation>无法读取系统排除的文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>一个大于 %1 MB 的新文件夹 %2 已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1497"/>
+        <location filename="../src/gui/folder.cpp" line="1504"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>一个来自外部存储的文件夹已被添加。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1498"/>
+        <location filename="../src/gui/folder.cpp" line="1505"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>如果您想下载，请到设置页面选择它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>文件夹已超过设置的文件夹大小限制 %1MB：%2。
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>Keep syncing</source>
         <translation>保持同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1574"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>Stop syncing</source>
         <translation>停止同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1585"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>文件夹 %1 已超过设置的文件夹大小限制 %2MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1586"/>
+        <location filename="../src/gui/folder.cpp" line="1593"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>你想要停止同步此文件夹吗？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1663"/>
+        <location filename="../src/gui/folder.cpp" line="1670"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>文件夹 %1 已创建但之前被排除出同步过程。文件夹中的数据将不会被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>文件 %1 已创建但之前被排除出同步过程。这个文件将不会被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1677"/>
+        <location filename="../src/gui/folder.cpp" line="1684"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3079,12 +3079,12 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>虚拟文件下载失败，错误代码 “%1”，状态 “%2”，错误信息 “%3”。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1811"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -3093,7 +3093,7 @@ Alternatively, you can restore all deleted files by uploading from &apos;%1&apos
 或者，你可以通过从 “%1” 文件夹上传到服务器来还原所有已删除的文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1812"/>
+        <location filename="../src/gui/folder.cpp" line="1819"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -3102,22 +3102,22 @@ Alternatively, you can restore all deleted files by downloading them from the se
 或者，你可以通过从服务器重新下载以恢复删除的文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1813"/>
+        <location filename="../src/gui/folder.cpp" line="1820"/>
         <source>Remove all files?</source>
         <translation>删除所有文件？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1817"/>
+        <location filename="../src/gui/folder.cpp" line="1824"/>
         <source>Proceed with Deletion</source>
         <translation>继续删除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files to Server</source>
         <translation>恢复文件至服务器</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files from Server</source>
         <translation>从服务器恢复文件</translation>
     </message>
@@ -3669,12 +3669,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>Enable &amp;File Provider</source>
-        <translation type="unfinished"/>
+        <translation>启用&amp;文件提供程序</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="165"/>
         <source>Files appear in Finder under the &quot;Locations&quot; section and do not use local storage space; contents download automatically when you open a file. Applies to all accounts and replaces classic sync folders and their Finder integration.</source>
-        <translation type="unfinished"/>
+        <translation>文件将显示在 Finder 的“位置”部分，不会占用本地存储空间；打开文件时会自动下载内容。适用于所有帐户，并会替代经典同步文件夹及其 Finder 集成。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="293"/>
@@ -3719,32 +3719,32 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="252"/>
         <source>Unknown account</source>
-        <translation type="unfinished"/>
+        <translation>未知帐户</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="259"/>
         <source>File Provider will be enabled for all accounts. Your files will appear in Finder under the &quot;Locations&quot; section. Accounts added later will also be set up as File Providers.</source>
-        <translation type="unfinished"/>
+        <translation>将为所有帐户启用文件提供程序。你的文件将显示在 Finder 的“位置”部分。以后添加的帐户也会设置为文件提供程序。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="268"/>
         <source>This removes classic sync folder connections from the following accounts:</source>
-        <translation type="unfinished"/>
+        <translation>这将移除以下帐户的经典同步文件夹连接：</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="272"/>
         <source>Synced files stay on your computer, but they will no longer be kept up to date and settings such as selective sync are discarded.</source>
-        <translation type="unfinished"/>
+        <translation>同步文件仍保留在你的计算机上，但将不再保持最新状态，并且选择性同步等设置会被丢弃。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="276"/>
         <source>Enable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>启用文件提供程序？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="281"/>
         <source>Enable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>启用文件提供程序</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="282"/>
@@ -3755,22 +3755,22 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="293"/>
         <source>File Provider will be turned off for all accounts, and your files will no longer be available in Finder under the &quot;Locations&quot; section.</source>
-        <translation type="unfinished"/>
+        <translation>将为所有帐户关闭文件提供程序，你的文件将不再显示在 Finder 的“位置”部分。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="295"/>
         <source>Items that were not uploaded yet will be preserved and shown to you. Classic sync folders are not set up again automatically — you can add folder sync connections afterwards in each account&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>尚未上传的项目会被保留并显示给你。经典同步文件夹不会自动重新设置，你可以稍后在每个帐户的设置中添加文件夹同步连接。</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="298"/>
         <source>Disable File Provider?</source>
-        <translation type="unfinished"/>
+        <translation>禁用文件提供程序？</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Disable File Provider</source>
-        <translation type="unfinished"/>
+        <translation>禁用文件提供程序</translation>
     </message>
 </context>
 <context>
@@ -3805,12 +3805,12 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="80"/>
         <source>View only</source>
-        <translation type="unfinished"/>
+        <translation>仅查看</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/unifiedshare.cpp" line="83"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>可以编辑</translation>
     </message>
 </context>
 <context>
@@ -3818,35 +3818,35 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="172"/>
         <source>The server did not generate a valid public-link identifier.</source>
-        <translation type="unfinished"/>
+        <translation>服务器未生成有效的公共链接标识符。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="178"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="181"/>
         <source>Could not create the public link.</source>
-        <translation type="unfinished"/>
+        <translation>无法创建公共链接。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="217"/>
         <source>Could not retrieve the internal link.</source>
-        <translation type="unfinished"/>
+        <translation>无法获取内部链接。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="263"/>
         <source>The server returned an invalid share.</source>
-        <translation type="unfinished"/>
+        <translation>服务器返回了无效的共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="272"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="275"/>
         <source>Could not create the share.</source>
-        <translation type="unfinished"/>
+        <translation>无法创建共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="320"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="324"/>
         <source>Could not delete the share.</source>
-        <translation type="unfinished"/>
+        <translation>无法删除共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="353"/>
@@ -3854,30 +3854,30 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="763"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="766"/>
         <source>Could not add the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>无法添加收件人。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="384"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="387"/>
         <source>Could not remove the recipient.</source>
-        <translation type="unfinished"/>
+        <translation>无法移除收件人。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="412"/>
         <source>The server did not generate a valid sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>服务器未生成有效的共享链接。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="423"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="426"/>
         <source>Could not update the sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>无法更新共享链接。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="431"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="434"/>
         <source>Could not generate a sharing link.</source>
-        <translation type="unfinished"/>
+        <translation>无法生成共享链接。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="464"/>
@@ -3885,30 +3885,30 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="571"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="579"/>
         <source>Could not update the permissions.</source>
-        <translation type="unfinished"/>
+        <translation>无法更新权限。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="528"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="536"/>
         <source>Could not update the recipient permissions.</source>
-        <translation type="unfinished"/>
+        <translation>无法更新收件人权限。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="612"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="616"/>
         <source>Could not update the sharing setting.</source>
-        <translation type="unfinished"/>
+        <translation>无法更新共享设置。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="666"/>
         <source>The server did not activate the share.</source>
-        <translation type="unfinished"/>
+        <translation>服务器未激活共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="669"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="672"/>
         <source>Could not send the share.</source>
-        <translation type="unfinished"/>
+        <translation>无法发送共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="713"/>
@@ -3917,18 +3917,18 @@ For advanced users: this issue might be related to multiple sync database files 
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="757"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="774"/>
         <source>The newly created share is no longer available.</source>
-        <translation type="unfinished"/>
+        <translation>新创建的共享已不可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="735"/>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="738"/>
         <source>Could not attach the item to the share.</source>
-        <translation type="unfinished"/>
+        <translation>无法将项目附加到共享。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/sharingcontroller.cpp" line="834"/>
         <source>Could not save all changes to the share.</source>
-        <translation type="unfinished"/>
+        <translation>无法保存对共享的所有更改。</translation>
     </message>
 </context>
 <context>
@@ -3959,13 +3959,13 @@ For advanced users: this issue might be related to multiple sync database files 
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="37"/>
         <source>Failed to find fileId: %1 in db</source>
-        <translation type="unfinished"/>
+        <translation>无法在数据库中找到 fileId：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/hydrationjob.cpp" line="63"/>
         <source>Unexpected file size transferred. Expected %1 received %2</source>
         <extracomment>%1: expected file size in bytes, %2: actual file size in bytes</extracomment>
-        <translation type="unfinished"/>
+        <translation>传输的文件大小异常。预期为 %1，实际收到 %2。</translation>
     </message>
 </context>
 <context>
@@ -4637,17 +4637,17 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="201"/>
         <source>Unable to claim the sync root for files on demand, the folder is already claimed by %1</source>
         <extracomment>%1: system user name who is the owner of the sync root directory</extracomment>
-        <translation type="unfinished"/>
+        <translation>无法为按需文件获取同步根目录，该文件夹已由 %1 占用。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="204"/>
         <source>Unable to retrieve registration info. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>无法获取注册信息。错误：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
-        <translation type="unfinished"/>
+        <translation>文件已更改，无法将占位符脱水。</translation>
     </message>
 </context>
 <context>
@@ -4655,32 +4655,32 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="289"/>
         <source>Failed to read /proc/self/mountinfo</source>
-        <translation type="unfinished"/>
+        <translation>无法读取 /proc/self/mountinfo。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="302"/>
         <source>Failed to unmount the OpenVFS mount %1 Error:%2</source>
-        <translation type="unfinished"/>
+        <translation>无法卸载 OpenVFS 挂载点 %1。错误：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="311"/>
         <source>The filesystem for %1 does not support xattributes.</source>
-        <translation type="unfinished"/>
+        <translation>%1 的文件系统不支持扩展属性。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="314"/>
         <source>The sync path is already claimed by %1</source>
-        <translation type="unfinished"/>
+        <translation>同步路径已由 %1 占用。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="318"/>
         <source>OpenVFS executable not found, please install it</source>
-        <translation type="unfinished"/>
+        <translation>未找到 OpenVFS 可执行文件，请安装。</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="324"/>
         <source>Failed to find the OpenVFS config file, please check your installation.</source>
-        <translation type="unfinished"/>
+        <translation>无法找到 OpenVFS 配置文件，请检查安装。</translation>
     </message>
 </context>
 <context>
@@ -5194,7 +5194,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="220"/>
         <source>Failed to create encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>无法创建加密文件夹。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
@@ -5625,77 +5625,77 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="235"/>
         <source>Lock File</source>
-        <translation type="unfinished"/>
+        <translation>锁定文件</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="236"/>
         <source>Unlock File</source>
-        <translation type="unfinished"/>
+        <translation>解锁文件</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="237"/>
         <source>Share Options</source>
-        <translation type="unfinished"/>
+        <translation>共享选项</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="238"/>
         <source>Open in Browser</source>
-        <translation type="unfinished"/>
+        <translation>在浏览器中打开</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="239"/>
         <source>Copy Internal Link</source>
-        <translation type="unfinished"/>
+        <translation>复制内部链接</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="240"/>
         <source>File Actions</source>
-        <translation type="unfinished"/>
+        <translation>文件操作</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="241"/>
         <source>Leave This Share</source>
-        <translation type="unfinished"/>
+        <translation>离开此共享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="242"/>
         <source>Apply Labels</source>
-        <translation type="unfinished"/>
+        <translation>应用标签</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="243"/>
         <source>Resolve Conflict …</source>
-        <translation type="unfinished"/>
+        <translation>解决冲突…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="244"/>
         <source>Move and Rename …</source>
-        <translation type="unfinished"/>
+        <translation>移动并重命名…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="245"/>
         <source>Move, Rename and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>移动、重命名并上传…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="246"/>
         <source>Delete Local Changes</source>
-        <translation type="unfinished"/>
+        <translation>删除本地更改</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="247"/>
         <source>Move and Upload …</source>
-        <translation type="unfinished"/>
+        <translation>移动并上传…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="248"/>
         <source>Copy Private Link to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>将私有链接复制到剪贴板</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="249"/>
         <source>Send Private Link by Email …</source>
-        <translation type="unfinished"/>
+        <translation>通过电子邮件发送私有链接…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="652"/>
@@ -5787,7 +5787,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="226"/>
         <source>Apply labels</source>
-        <translation type="unfinished"/>
+        <translation>应用标签</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="227"/>
@@ -6061,12 +6061,12 @@ Server replied with error: %2</source>
         <translation>无法打开或创建本地同步数据库。请确保您在同步文件夹下有写入权限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>硬盘剩余容量过低：下载后将会导致剩余容量低于 %1 的文件将会被跳过。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1500"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>服务器上的空间不足以用于某些上传。</translation>
     </message>
@@ -6111,7 +6111,7 @@ Server replied with error: %2</source>
         <translation>无法读取同步日志。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="832"/>
         <source>Cannot open the sync journal</source>
         <translation>无法打开同步日志</translation>
     </message>
@@ -6121,7 +6121,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="1078"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>无法连接数据库。</translation>
     </message>
 </context>
 <context>
@@ -6136,13 +6136,13 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1574"/>
         <source>You need to accept the terms of service</source>
         <translation>您需要接受服务条款</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1566"/>
         <source>Reauthorization required</source>
         <translation>需要重新授权</translation>
     </message>
@@ -6160,7 +6160,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>无法同步某些文件！</translation>
     </message>
@@ -6186,7 +6186,7 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
         <source>Some files could not be synced!</source>
         <translation>某些文件无法同步！</translation>
     </message>
@@ -6287,7 +6287,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="923"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>退出</translation>
     </message>
 </context>
 <context>
@@ -6296,7 +6296,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/theme.cpp" line="471"/>
         <source>%1 Desktop Client Version %2</source>
         <comment>%1 is application name. %2 is the human version string.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 桌面客户端版本 %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="688"/>
@@ -6317,12 +6317,12 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="130"/>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="156"/>
         <source>People search is unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>人员搜索不可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchpeoplemodel.cpp" line="192"/>
         <source>Could not load people. Try again.</source>
-        <translation type="unfinished"/>
+        <translation>无法加载人员。请重试。</translation>
     </message>
 </context>
 <context>
@@ -6334,7 +6334,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="320"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="617"/>
         <source>Search is unavailable while this account is offline.</source>
-        <translation type="unfinished"/>
+        <translation>此帐户离线时搜索不可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="457"/>
@@ -6360,87 +6360,87 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="613"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="660"/>
         <source>Failed to fetch search providers.</source>
-        <translation type="unfinished"/>
+        <translation>无法获取搜索提供程序。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="737"/>
         <source>No search providers are available.</source>
-        <translation type="unfinished"/>
+        <translation>没有可用的搜索提供程序。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="771"/>
         <source>Search cleared</source>
-        <translation type="unfinished"/>
+        <translation>已清除搜索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="811"/>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1314"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>正在搜索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1033"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部分匹配</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1302"/>
         <source>Search failed for all available sources. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>所有可用来源的搜索均失败。请重试。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1325"/>
         <source>%1 results in %2</source>
         <extracomment>%1 is the number of search results. %2 is the search provider name, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>在 %2 中找到 %1 个结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1327"/>
         <source>No matching results</source>
-        <translation type="unfinished"/>
+        <translation>没有匹配的结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1330"/>
         <source>%1 results. Some sources are unavailable.</source>
         <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共 %1 个结果。部分来源不可用。</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1333"/>
         <source>%1 results</source>
         <extracomment>%1 is the number of search results.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 个结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1507"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1510"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>最近 7 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1513"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>最近 30 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1517"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1521"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>去年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/unifiedsearchresultslistmodel.cpp" line="1542"/>
         <source>%1 – %2</source>
         <extracomment>%1 is the start date and %2 is the end date of a custom search date range. Both use the locale's short date format.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 – %2</translation>
     </message>
 </context>
 <context>
@@ -6500,115 +6500,115 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>端到端证书需要迁移到新证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="443"/>
         <source>Trigger the migration</source>
         <translation>触发迁移</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="540"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n 个通知</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="783"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1”未同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="824"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>服务器存储空间不足。该文件需要 %1，但只有 %2 可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="827"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>服务器存储空间不足。该文件需要 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="830"/>
         <source>Insufficient storage on the server.</source>
         <translation>服务器存储空间不足。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="866"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>服务器可用空间不足，无法上传部分文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="882"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Retry all uploads</source>
         <translation>重试所有上传</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Resolve conflict</source>
         <translation>解决冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1450"/>
         <source>Rename file</source>
         <translation>重命名文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1558"/>
         <source>Sync conflicts</source>
-        <translation type="unfinished"/>
+        <translation>同步冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1701"/>
         <source>Public Share Link</source>
         <translation>公开分享链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1918"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>配额已更新；已使用总空间的 %1%。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1938"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>配额警告 - %1% 或更多存储空间正在使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
         <source>Assistant is not available for this account.</source>
         <translation>此账号无法使用助手。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1974"/>
         <source>Assistant is already processing a request.</source>
         <translation>助手已在处理请求。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2011"/>
         <source>Sending your request …</source>
         <translation>正在发送您的请求 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2084"/>
         <source>No response yet. Please try again later.</source>
         <translation>还没有响应，请稍后重试。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2103"/>
         <source>No supported assistant task types were returned.</source>
         <translation>未返回支持的助手任务类型。</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2185"/>
         <source>Waiting for the assistant response…</source>
         <translation>正在等待助手响应…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2207"/>
         <source>Assistant request failed (%1).</source>
         <translation>助手请求失败（%1）。</translation>
     </message>
@@ -6616,32 +6616,32 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>Confirm Account Removal</source>
         <translation>确认移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您确定要移除与账号&lt;i&gt;%1&lt;/i&gt;的连接吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Remove connection</source>
         <translation>移除连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2306"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Leave share</source>
         <translation>离开分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Remove account</source>
         <translation>移除账号</translation>
     </message>
@@ -6890,7 +6890,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="845"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>选择新位置…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="917"/>
@@ -7084,33 +7084,33 @@ Server replied with error: %2</source>
         <translation>无法将调试存档移动到所选位置！</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="361"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation>接听</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
         <source>You renamed %1</source>
         <translation>你重命名了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>You deleted %1</source>
         <translation>你删除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
         <source>You created %1</source>
         <translation>你创建了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>You changed %1</source>
         <translation>你修改了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
@@ -7260,17 +7260,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Permissions for %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 的权限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="51"/>
         <source>Recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>收件人权限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientPermissionDialog.qml" line="90"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -7278,12 +7278,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Search for recipients</source>
-        <translation type="unfinished"/>
+        <translation>搜索收件人</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/RecipientSearchField.qml" line="48"/>
         <source>Sharing is not available for this folder</source>
-        <translation type="unfinished"/>
+        <translation>此文件夹无法共享</translation>
     </message>
 </context>
 <context>
@@ -7333,54 +7333,54 @@ Server replied with error: %2</source>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>Search</source>
         <extracomment>Name of the Search feature.</extracomment>
-        <translation type="unfinished"/>
+        <translation>搜索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="125"/>
         <source>Search is available when this account is connected</source>
-        <translation type="unfinished"/>
+        <translation>此帐户连接后即可搜索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="126"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>搜索文件、消息、事件…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="150"/>
         <source>Search results list</source>
-        <translation type="unfinished"/>
+        <translation>搜索结果列表</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="171"/>
         <source>Remove %1 filter</source>
         <extracomment>%1 is an active search filter label, such as a provider name, date range, or person name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>移除 %1 筛选条件</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="195"/>
         <location filename="../src/gui/search/SearchWindow.qml" line="264"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重试</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="228"/>
         <source>Search results</source>
-        <translation type="unfinished"/>
+        <translation>搜索结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="263"/>
         <source>Some sources unavailable</source>
-        <translation type="unfinished"/>
+        <translation>部分来源不可用</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>Less from connected services</source>
-        <translation type="unfinished"/>
+        <translation>减少显示已连接服务的结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/SearchWindow.qml" line="271"/>
         <source>More from connected services</source>
-        <translation type="unfinished"/>
+        <translation>显示更多已连接服务的结果</translation>
     </message>
 </context>
 <context>
@@ -7411,7 +7411,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareAdvancedSettingsPage.qml" line="71"/>
         <source>No advanced settings are available for this share.</source>
-        <translation type="unfinished"/>
+        <translation>此共享没有可用的高级设置。</translation>
     </message>
 </context>
 <context>
@@ -7427,37 +7427,37 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="115"/>
         <source>Changes to this share are applied immediately.</source>
-        <translation type="unfinished"/>
+        <translation>对此共享的更改会立即应用。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="125"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>删除共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="137"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"/>
+        <translation>正在取消…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Saving…</source>
-        <translation type="unfinished"/>
+        <translation>正在保存…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsFrame.qml" line="151"/>
         <source>Save</source>
-        <translation type="unfinished"/>
+        <translation>保存</translation>
     </message>
 </context>
 <context>
@@ -7546,52 +7546,52 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="119"/>
         <source>Added by %1</source>
-        <translation type="unfinished"/>
+        <translation>由 %1 添加</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="138"/>
         <source>Configure recipient permissions</source>
-        <translation type="unfinished"/>
+        <translation>配置收件人权限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="159"/>
         <source>Copy recipient link</source>
-        <translation type="unfinished"/>
+        <translation>复制收件人链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Regenerate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>重新生成收件人链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="175"/>
         <source>Generate recipient link</source>
-        <translation type="unfinished"/>
+        <translation>生成收件人链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="193"/>
         <source>Remove recipient</source>
-        <translation type="unfinished"/>
+        <translation>移除收件人</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="223"/>
         <source>Can view</source>
-        <translation type="unfinished"/>
+        <translation>可查看</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="227"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>可以编辑</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="231"/>
         <source>Custom permissions</source>
-        <translation type="unfinished"/>
+        <translation>自定义权限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDetailsPage.qml" line="273"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>共享设置</translation>
     </message>
 </context>
 <context>
@@ -7600,51 +7600,51 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="43"/>
         <source>Share &quot;%1&quot;</source>
         <extracomment>%1 is the name of the item. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共享“%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="36"/>
         <source>File</source>
         <extracomment>Generic fallback name for a shared item when its name is unavailable.</extracomment>
-        <translation type="unfinished"/>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="65"/>
         <source>Share settings</source>
         <extracomment>&quot;Share&quot; is a noun referring to the share whose settings are shown.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共享设置</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="79"/>
         <source>Share with %1</source>
         <extracomment>%1 is a list of recipient names. &quot;Share&quot; is a verb.</extracomment>
-        <translation type="unfinished"/>
+        <translation>与 %1 共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="82"/>
         <source>New share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a newly created share.</extracomment>
-        <translation type="unfinished"/>
+        <translation>新建共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to share details</source>
-        <translation type="unfinished"/>
+        <translation>返回共享详细信息</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="185"/>
         <source>Back to shares</source>
-        <translation type="unfinished"/>
+        <translation>返回共享列表</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="205"/>
         <source>Sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>共享设置</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareDialog.qml" line="237"/>
         <source>Advanced sharing settings</source>
-        <translation type="unfinished"/>
+        <translation>高级共享设置</translation>
     </message>
 </context>
 <context>
@@ -7652,28 +7652,28 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="78"/>
         <source>Creating share…</source>
-        <translation type="unfinished"/>
+        <translation>正在创建共享…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="150"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>内部链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="151"/>
         <source>For people who already have access</source>
-        <translation type="unfinished"/>
+        <translation>对已有访问权限的人员</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="153"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>复制内部链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="164"/>
         <location filename="../src/gui/sharing/ShareListPage.qml" line="167"/>
         <source>Create public link</source>
-        <translation type="unfinished"/>
+        <translation>创建公共链接</translation>
     </message>
 </context>
 <context>
@@ -7682,44 +7682,44 @@ Server replied with error: %2</source>
         <location filename="../src/gui/sharing/ShareRow.qml" line="49"/>
         <source>Share link</source>
         <extracomment>&quot;Share link&quot; is a noun phrase referring to a public link that grants access to the shared item.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共享链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="56"/>
         <source>Unfinished share</source>
         <extracomment>&quot;Unfinished share&quot; is a noun phrase referring to a share entry that has not been sent yet.</extracomment>
-        <translation type="unfinished"/>
+        <translation>未完成的共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="59"/>
         <source>Share</source>
         <extracomment>&quot;Share&quot; is a noun referring to a share entry without a recipient name.</extracomment>
-        <translation type="unfinished"/>
+        <translation>共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="69"/>
         <source>Not active — select to finish</source>
-        <translation type="unfinished"/>
+        <translation>未激活 — 选择以完成</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharing/ShareRow.qml" line="74"/>
         <source>%n recipient(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 位收件人</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="91"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>复制公共链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="104"/>
         <source>Configure share</source>
-        <translation type="unfinished"/>
+        <translation>配置共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharing/ShareRow.qml" line="120"/>
         <source>Delete share</source>
-        <translation type="unfinished"/>
+        <translation>删除共享</translation>
     </message>
 </context>
 <context>
@@ -7788,12 +7788,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="90"/>
         <source>Virtual files (beta)</source>
-        <translation type="unfinished"/>
+        <translation>虚拟文件（测试版）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="92"/>
         <source>Download files on-demand. This feature is in an early preview. Recommended only for testing.</source>
-        <translation type="unfinished"/>
+        <translation>按需下载文件。此功能处于早期预览阶段，仅建议用于测试。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/SyncOptionsPage.qml" line="93"/>
@@ -7867,42 +7867,42 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="636"/>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="660"/>
         <source>Open</source>
-        <translation type="unfinished"/>
+        <translation>打开</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="673"/>
         <source>Recent activity</source>
-        <translation type="unfinished"/>
+        <translation>最近活动</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="680"/>
         <source>No recent activity</source>
-        <translation type="unfinished"/>
+        <translation>没有最近活动</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="698"/>
         <source>More activity…</source>
-        <translation type="unfinished"/>
+        <translation>更多活动…</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="767"/>
         <source>Resolve: %1</source>
-        <translation type="unfinished"/>
+        <translation>解决：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="774"/>
         <source>User status</source>
-        <translation type="unfinished"/>
+        <translation>用户状态</translation>
     </message>
     <message>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="807"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>搜索</translation>
     </message>
 </context>
 <context>
@@ -7911,7 +7911,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="737"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="790"/>
         <source>Local folder</source>
-        <translation type="unfinished"/>
+        <translation>本地文件夹</translation>
     </message>
 </context>
 <context>
@@ -7927,38 +7927,38 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="22"/>
         <source>Custom date range</source>
-        <translation type="unfinished"/>
+        <translation>自定义日期范围</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="34"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="40"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="52"/>
         <source>Start date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>开始日期（YYYY-MM-DD）</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="59"/>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="70"/>
         <source>YYYY-MM-DD</source>
-        <translation type="unfinished"/>
+        <translation>YYYY-MM-DD</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="63"/>
         <source>End date (YYYY-MM-DD)</source>
-        <translation type="unfinished"/>
+        <translation>结束日期（YYYY-MM-DD）</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchCustomDateRangeDialog.qml" line="75"/>
         <source>Enter valid dates with the start date before the end date.</source>
-        <translation type="unfinished"/>
+        <translation>请输入有效日期，开始日期应早于结束日期。</translation>
     </message>
 </context>
 <context>
@@ -7966,12 +7966,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="28"/>
         <source>Back</source>
-        <translation type="unfinished"/>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchDetailHeader.qml" line="35"/>
         <source>Back to all search results</source>
-        <translation type="unfinished"/>
+        <translation>返回全部搜索结果</translation>
     </message>
 </context>
 <context>
@@ -7980,79 +7980,79 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="51"/>
         <source>Type</source>
         <extracomment>Search filter for selecting a result provider type.</extracomment>
-        <translation type="unfinished"/>
+        <translation>类型</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="58"/>
         <source>Filter by type</source>
-        <translation type="unfinished"/>
+        <translation>按类型筛选</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="103"/>
         <source>Date</source>
         <extracomment>Search filter for restricting results by date.</extracomment>
-        <translation type="unfinished"/>
+        <translation>日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="111"/>
         <source>Filter by date</source>
-        <translation type="unfinished"/>
+        <translation>按日期筛选</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="112"/>
         <source>No search source supports date filtering</source>
-        <translation type="unfinished"/>
+        <translation>没有搜索来源支持按日期筛选</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="123"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>今天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="127"/>
         <source>Last 7 days</source>
-        <translation type="unfinished"/>
+        <translation>最近 7 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="131"/>
         <source>Last 30 days</source>
-        <translation type="unfinished"/>
+        <translation>最近 30 天</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="135"/>
         <source>This year</source>
-        <translation type="unfinished"/>
+        <translation>今年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="139"/>
         <source>Last year</source>
-        <translation type="unfinished"/>
+        <translation>去年</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="144"/>
         <source>Custom range …</source>
-        <translation type="unfinished"/>
+        <translation>自定义范围…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="148"/>
         <source>Clear date</source>
-        <translation type="unfinished"/>
+        <translation>清除日期</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="160"/>
         <source>People</source>
         <extracomment>Search filter for restricting results to a person.</extracomment>
-        <translation type="unfinished"/>
+        <translation>人员</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="168"/>
         <source>Filter by person</source>
-        <translation type="unfinished"/>
+        <translation>按人员筛选</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchFilterBar.qml" line="169"/>
         <source>No search source supports people filtering</source>
-        <translation type="unfinished"/>
+        <translation>没有搜索来源支持按人员筛选</translation>
     </message>
 </context>
 <context>
@@ -8065,12 +8065,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="85"/>
         <source>Clear search</source>
-        <translation type="unfinished"/>
+        <translation>清除搜索</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchInputContainer.qml" line="86"/>
         <source>Keeps the active filters</source>
-        <translation type="unfinished"/>
+        <translation>保留当前筛选条件</translation>
     </message>
 </context>
 <context>
@@ -8078,12 +8078,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="45"/>
         <source>Search people</source>
-        <translation type="unfinished"/>
+        <translation>搜索人员</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchPeoplePopup.qml" line="57"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>重试</translation>
     </message>
 </context>
 <context>
@@ -8100,27 +8100,27 @@ Server replied with error: %2</source>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="84"/>
         <source>More from %1  →</source>
         <extracomment>%1 is the name of a search provider, for example &quot;Files&quot;.</extracomment>
-        <translation type="unfinished"/>
+        <translation>来自 %1 的更多结果 →</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="131"/>
         <source>Partial matches</source>
-        <translation type="unfinished"/>
+        <translation>部分匹配</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="194"/>
         <source>Loading more results …</source>
-        <translation type="unfinished"/>
+        <translation>正在加载更多结果…</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Retry loading more results</source>
-        <translation type="unfinished"/>
+        <translation>重试加载更多结果</translation>
     </message>
     <message>
         <location filename="../src/gui/search/UnifiedSearchResultDelegate.qml" line="196"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>加载更多结果</translation>
     </message>
 </context>
 <context>
@@ -8169,12 +8169,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="124"/>
         <source>Could not handle link</source>
-        <translation type="unfinished"/>
+        <translation>无法处理链接</translation>
     </message>
     <message>
         <location filename="../src/gui/urischemehandler.cpp" line="192"/>
         <source>Adding another account is not allowed in this client.</source>
-        <translation type="unfinished"/>
+        <translation>此客户端不允许添加其他帐户。</translation>
     </message>
 </context>
 <context>
@@ -8183,79 +8183,79 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindow.qml" line="22"/>
         <location filename="../src/gui/accountsettings.cpp" line="184"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>在线状态</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="99"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="213"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="225"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>在线</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="108"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="215"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>离开</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="118"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="217"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>忙碌</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="127"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="219"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>请勿打扰</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="128"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>静音所有通知</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="139"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="221"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>隐身</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="140"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>显示为离线</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="156"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>状态消息</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="182"/>
         <source>Choose emoji</source>
-        <translation type="unfinished"/>
+        <translation>选择表情符号</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="204"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>你的状态是什么？</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="290"/>
         <location filename="../src/gui/UserStatusWindow.qml" line="311"/>
         <source>Clear status after</source>
-        <translation type="unfinished"/>
+        <translation>在此时间后清除状态</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="343"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>清除状态消息</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusWindow.qml" line="354"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>设置状态消息</translation>
     </message>
 </context>
 <context>
@@ -8264,7 +8264,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/UserStatusWindowPredefinedStatusRow.qml" line="30"/>
         <source>%1, resets after %2</source>
         <extracomment>%1 is the status text and %2 is a time string.</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1，%2 后重置</translation>
     </message>
 </context>
 <context>
@@ -8349,7 +8349,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/WindowAccountHeader.qml" line="63"/>
         <source>Account avatar</source>
-        <translation type="unfinished"/>
+        <translation>帐户头像</translation>
     </message>
 </context>
 <context>
@@ -8597,7 +8597,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="109"/>
         <source>Make Always Available Locally</source>
-        <translation type="unfinished"/>
+        <translation>始终在本地可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="117"/>
@@ -8607,7 +8607,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="119"/>
         <source>Free Up Local Space</source>
-        <translation type="unfinished"/>
+        <translation>释放本地空间</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="143"/>

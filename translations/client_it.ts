@@ -2531,12 +2531,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Errore nell&apos;annullamento della cancellazione di un file</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Errore nell&apos;annullamento della cancellazione di %1</translation>
     </message>
@@ -2544,23 +2544,23 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Errore del server: la risposta PROPFIND non è in formato XML!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Il server ha restituito una risposta inaspettata che non è stato possibile leggere. Contatta l&apos;amministratore del server.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Eerrore nell&apos;impostazione dei metadati di crittografia!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Errore di configurazione dei metadati crittografati: la firma iniziale del server è vuota.</translation>
     </message>
@@ -2568,27 +2568,27 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="358"/>
         <source>Error while opening directory %1</source>
         <translation>Errore durante l&apos;apertura della cartella %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Cartella non accessibile sul client, permesso negato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
         <source>Directory not found: %1</source>
         <translation>Cartella non trovata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>Filename encoding is not valid</source>
         <translation>La codifica del nome del file non è valida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
         <source>Error while reading directory %1</source>
         <translation>Errore durante la lettura della cartella %1</translation>
     </message>
@@ -2903,30 +2903,30 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato rimosso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiornato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="539"/>
+        <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="547"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 e %n altro file è stato rimosso.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform></translation>
     </message>
@@ -2946,80 +2946,80 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <translation>Si prega di scegliere una posizione diversa.. %1 non è una cartella leggibile.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 e %n altro file sono stati aggiunti.</numerusform><numerusform>%1 e %n altri file sono stati aggiunti.</numerusform><numerusform>%1 e %n altri file sono stati aggiunti.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiunto.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 e %n altro file sono stati aggiornati.</numerusform><numerusform>%1 e %n altri file sono stati aggiornati.</numerusform><numerusform>%1 e %n altri file sono stati aggiornati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="537"/>
+        <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 è stato rinominato in %2 e %n altro file sono stati rinominati.</numerusform><numerusform>%1 è stato rinominato in %2 e %n altri file sono stati rinominati.</numerusform><numerusform>%1 è stato rinominato in %2 e %n altri file sono stati rinominati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="544"/>
+        <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 è stato spostato in %2 e %n altro file sono stati spostati.</numerusform><numerusform>%1 è stato spostato in %2 e %n altri file sono stati spostati.</numerusform><numerusform>%1 è stato spostato in %2 e %n altri file sono stati spostati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="551"/>
+        <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 e %n altro file hanno conflitti di sincronizzazione.</numerusform><numerusform>%1 e %n altri file hanno conflitti di sincronizzazione.</numerusform><numerusform>%1 e %n altri file hanno conflitti di sincronizzazione.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 ha un conflitto di sincronizzazione. Controlla il file in conflitto!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>1% e %n altro file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform><numerusform>1% e %n altri file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform><numerusform>1% e %n altri file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="560"/>
+        <location filename="../src/gui/folder.cpp" line="561"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 non può essere sincronizzato a causa di un errore. Controlla il log per i dettagli.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="567"/>
+        <location filename="../src/gui/folder.cpp" line="568"/>
         <source>%1 is currently locked.</source>
         <translation>%1 è attualmente bloccato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="575"/>
+        <location filename="../src/gui/folder.cpp" line="576"/>
         <source>Sync Activity</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una nuova cartella più grande di %1 MB è stata aggiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1497"/>
+        <location filename="../src/gui/folder.cpp" line="1504"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una nuova cartella da un&apos;archiviazione esterna è stata aggiunta.
@@ -3027,49 +3027,49 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1498"/>
+        <location filename="../src/gui/folder.cpp" line="1505"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vai nelle impostazioni e selezionala se vuoi scaricarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>Una cartella ha superato il limite di dimensione impostato per la cartella di %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>Keep syncing</source>
         <translation>Continua a sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1574"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>Stop syncing</source>
         <translation>Ferma la sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1585"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>La cartella %1 ha superato il limite di dimensione impostato di %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1586"/>
+        <location filename="../src/gui/folder.cpp" line="1593"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Vuoi interrompere la sincronizzazione di questa cartella?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1663"/>
+        <location filename="../src/gui/folder.cpp" line="1670"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La cartella %1 è stata creata, ma è stata esclusa dalla sincronizzazione in precedenza. I dati al suo interno non saranno sincronizzati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Il file %1 è stato creato, ma è stato escluso dalla sincronizzazione in precedenza. Non sarà sincronizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1677"/>
+        <location filename="../src/gui/folder.cpp" line="1684"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3082,12 +3082,12 @@ Questo significa che il client di sincronizzazione potrebbe non caricare le modi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Download del file virtuale fallito con codice &quot;%1&quot;, stato &quot;%2&quot; e messaggio di errore &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1811"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -3096,7 +3096,7 @@ Conferma se vuoi procedere con queste eliminazioni.
 In alternativa, puoi ripristinare tutti i file eliminati caricandoli dalla cartella &apos;%1&apos; sul server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1812"/>
+        <location filename="../src/gui/folder.cpp" line="1819"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -3105,22 +3105,22 @@ Si prega di confermare se si desidera procedere con queste eliminazioni.
 In alternativa, è possibile ripristinare tutti i file eliminati scaricandoli dal server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1813"/>
+        <location filename="../src/gui/folder.cpp" line="1820"/>
         <source>Remove all files?</source>
         <translation>Rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1817"/>
+        <location filename="../src/gui/folder.cpp" line="1824"/>
         <source>Proceed with Deletion</source>
         <translation>Procedi con la cancellazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files to Server</source>
         <translation>Ripristina i file sul server</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files from Server</source>
         <translation>Ripristina i file dal server</translation>
     </message>
@@ -6058,12 +6058,12 @@ Il server ha risposto con errore: %2</translation>
         <translation>Impossibile aprire o creare il database locale di sincronizzazione. Assicurati di avere accesso in scrittura alla cartella di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Lo spazio su disco è basso: gli scaricamenti che potrebbero ridurre lo spazio libero sotto %1 saranno saltati.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1500"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Spazio disponibile insufficiente sul server per alcuni caricamenti.</translation>
     </message>
@@ -6108,7 +6108,7 @@ Il server ha risposto con errore: %2</translation>
         <translation>Impossibile leggere dal registro di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="832"/>
         <source>Cannot open the sync journal</source>
         <translation>Impossibile aprire il registro di sincronizzazione</translation>
     </message>
@@ -6133,13 +6133,13 @@ Il server ha risposto con errore: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1574"/>
         <source>You need to accept the terms of service</source>
         <translation>Devi accettare i termini del servizio</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1566"/>
         <source>Reauthorization required</source>
         <translation>È necessaria una nuova autorizzazione.</translation>
     </message>
@@ -6157,7 +6157,7 @@ Il server ha risposto con errore: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
@@ -6183,7 +6183,7 @@ Il server ha risposto con errore: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
         <source>Some files could not be synced!</source>
         <translation>Alcuni file non possono essere sincronizzati!</translation>
     </message>
@@ -6497,115 +6497,115 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>Il certificato end-to-end deve essere migrato a uno nuovo</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="443"/>
         <source>Trigger the migration</source>
         <translation>Avviare la migrazione</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="540"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n notifica</numerusform><numerusform>%n notifiche</numerusform><numerusform>%n notifiche</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="783"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1” non era sincronizzato</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="824"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Spazio di archiviazione insufficiente sul server. Il file richiede%1 ma solo %2 sono disponibili.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="827"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Spazio di archiviazione insufficiente sul server. Il file richiede %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="830"/>
         <source>Insufficient storage on the server.</source>
         <translation>Spazio di archiviazione insufficiente sul server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="866"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Sul server non è disponibile spazio sufficiente per alcuni caricamenti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="882"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Retry all uploads</source>
         <translation>Riprova tutti i caricamenti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Resolve conflict</source>
         <translation>Risolvi il conflitto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1450"/>
         <source>Rename file</source>
         <translation>Rinominare il file</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1558"/>
         <source>Sync conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1701"/>
         <source>Public Share Link</source>
         <translation>Collegamento di condivisione pubblico</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1918"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>La quota è aggiornata; %1 percento dello spazio totale è utilizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1938"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Avviso di quota - %1 percento o più di spazio di archiviazione in uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
         <source>Assistant is not available for this account.</source>
         <translation>L&apos;assistente non è disponibile per questo account.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1974"/>
         <source>Assistant is already processing a request.</source>
         <translation>L&apos;assistente sta già elaborando una richiesta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2011"/>
         <source>Sending your request …</source>
         <translation>Invio della richiesta …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2084"/>
         <source>No response yet. Please try again later.</source>
         <translation>Nessuna risposta ancora. Riprova più tardi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2103"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Non è stato restituita alcun tipo di attività di assistenza supportata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2185"/>
         <source>Waiting for the assistant response…</source>
         <translation>In attesa della risposta dell&apos;assistente…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2207"/>
         <source>Assistant request failed (%1).</source>
         <translation>Richiesta di assistenza non riuscita (%1). </translation>
     </message>
@@ -6613,32 +6613,32 @@ Il server ha risposto con errore: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>Confirm Account Removal</source>
         <translation>Conferma rimozione account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vuoi davvero rimuovere la connessione all&apos;account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; ciò &lt;b&gt;non&lt;/b&gt; eliminerà alcun file.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Remove connection</source>
         <translation>Rimuovi connessione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2306"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Leave share</source>
         <translation>Lascia condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Remove account</source>
         <translation>Rimuovi account</translation>
     </message>
@@ -7081,33 +7081,33 @@ Il server ha risposto con errore: %2</translation>
         <translation>Impossibile spostare l&apos;archivio di debug nella posizione selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="361"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
         <source>You renamed %1</source>
         <translation>Hai rinominato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>You deleted %1</source>
         <translation>Hai eliminato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
         <source>You created %1</source>
         <translation>Hai creato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>You changed %1</source>
         <translation>Hai modificato %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Synced %1</source>
         <translation>%1 sincronizzato</translation>
     </message>

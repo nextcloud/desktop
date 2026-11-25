@@ -17,6 +17,10 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
     /// All materialized items enumerated by the system.
     ///
     private var enumeratedItems = Set<NSFileProviderItemIdentifier>()
+    // File Provider can call back inline, so call the enumerator outside this lock.
+    private let enumerationLock = NSLock()
+    private var enumerator: (any NSFileProviderEnumerator)?
+    private var finished = false
 
     public required init(account: Account, dbManager: FilesDatabaseManager, log: any FileProviderLogging, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
         self.account = account
@@ -26,22 +30,55 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         super.init()
     }
 
-    public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
-        updatedItems
-            .map(\.itemIdentifier)
-            .forEach { enumeratedItems.insert($0) }
+    /// Lists every page from the system's materialized-item enumerator, then completes once.
+    public func enumerateItems(using enumerator: any NSFileProviderEnumerator) {
+        let canStart = enumerationLock.withLock {
+            guard !finished, self.enumerator == nil else { return false }
+            self.enumerator = enumerator
+            return true
+        }
+        guard canStart else { return }
+        enumerator.enumerateItems(for: self, startingAt: NSFileProviderPage(Data()))
     }
 
-    public func finishEnumerating(upTo _: NSFileProviderPage?) {
+    public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
+        let identifiers = updatedItems.map(\.itemIdentifier)
+        enumerationLock.withLock {
+            guard !finished else { return }
+            enumeratedItems.formUnion(identifiers)
+        }
+    }
+
+    public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
+        if let nextPage {
+            let activeEnumerator = enumerationLock.withLock { enumerator }
+            activeEnumerator?.enumerateItems(for: self, startingAt: nextPage)
+            return
+        }
+        guard let identifiers = completeEnumeration() else { return }
         logger.debug("Handling enumerated materialized items.")
-        handleEnumeratedItems(enumeratedItems, account: account, dbManager: dbManager, completionHandler: completionHandler)
+        handleEnumeratedItems(identifiers, account: account, dbManager: dbManager, completionHandler: completionHandler)
     }
 
     public func finishEnumeratingWithError(_ error: Error) {
+        guard completeEnumeration() != nil else { return }
         logger.error("Finishing enumeration with error.", [.error: error])
         // An incomplete enumeration is not evidence that missing items were evicted.
         // Do not reconcile against a partial snapshot on failure.
         completionHandler([], [])
+    }
+
+    private func completeEnumeration() -> Set<NSFileProviderItemIdentifier>? {
+        let result = enumerationLock.withLock { () -> (Set<NSFileProviderItemIdentifier>, (any NSFileProviderEnumerator)?)? in
+            guard !finished else { return nil }
+            finished = true
+            let result = (enumeratedItems, enumerator)
+            enumeratedItems.removeAll()
+            enumerator = nil
+            return result
+        }
+        result?.1?.invalidate()
+        return result?.0
     }
 
     func handleEnumeratedItems(_ identifiers: Set<NSFileProviderItemIdentifier>, account: Account, dbManager: FilesDatabaseManager, completionHandler: @escaping (_ materialized: Set<NSFileProviderItemIdentifier>, _ evicted: Set<NSFileProviderItemIdentifier>) -> Void) {
