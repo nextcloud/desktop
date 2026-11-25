@@ -55,6 +55,13 @@
         https://www.joyofsetup.com/2010/01/16/major-upgrades-now-easier-than-ever/
     -->
     <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes" />
+
+    <!-- Replace a legacy MSI product that has a different UpgradeCode -->
+    <?if $(var.LegacyUpgradeCode) != "" ?>
+    <Upgrade Id="{$(var.LegacyUpgradeCode)}">
+        <UpgradeVersion Property="LEGACYPRODUCTFOUND" Minimum="0.0.0" IncludeMinimum="yes" OnlyDetect="no" />
+    </Upgrade>
+    <?endif?>
     <Property Id="REINSTALLMODE" Value="omus" />
     <Property Id="MSIRMSHUTDOWN" Value="1" />
     <Property Id="REBOOT" Value="ReallySuppress" />

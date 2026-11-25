@@ -11,7 +11,8 @@ if (WIN32)
         vfs_cfapi.h
         vfs_cfapi.cpp
     )
-    
+    nextcloud_add_windows_version_resource(nextcloudsync_vfs_cfapi)
+
 	add_subdirectory(shellext)
 
     target_link_libraries(nextcloudsync_vfs_cfapi PRIVATE

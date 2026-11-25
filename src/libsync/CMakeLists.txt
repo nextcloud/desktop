@@ -260,6 +260,7 @@ find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS WebSockets Xml Sql Gui Sv
 
 add_library(nextcloudsync SHARED ${libsync_SRCS})
 add_library(Nextcloud::sync ALIAS nextcloudsync)
+nextcloud_add_windows_version_resource(nextcloudsync)
 
 target_link_libraries(nextcloudsync
   PUBLIC

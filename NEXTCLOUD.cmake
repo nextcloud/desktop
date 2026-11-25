@@ -139,6 +139,9 @@ if(WIN32)
     # MSI Upgrade Code (without brackets)
     set( WIN_MSI_UPGRADE_CODE                "FD2FCCA9-BB8F-4485-8F70-A0621B84A7F4" )
 
+    # UpgradeCode (without brackets) of a legacy MSI product to replace set via brander
+    set( WIN_MSI_LEGACY_UPGRADE_CODE         "" )
+
     # Windows build options
     option( BUILD_WIN_MSI "Build MSI scripts and helper DLL" OFF )
     option( BUILD_WIN_TOOLS "Build Win32 migration tools" OFF )
