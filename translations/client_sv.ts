@@ -2532,12 +2532,12 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoveryPhase</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="192"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
         <source>Error while canceling deletion of a file</source>
         <translation>Ett fel uppstod när radering av en fil skulle avbrytas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="193"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="194"/>
         <source>Error while canceling deletion of %1</source>
         <translation>Ett fel uppstod när radering av %1 skulle avbrytas</translation>
     </message>
@@ -2545,23 +2545,23 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="587"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfel: PROPFIND-svar är inte XML-formaterat!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="617"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Servern returnerade ett oväntat svar som inte kunde läsas. Kontakta din serveradministratör.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="648"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="702"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Inställningsfel för krypterad metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="681"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Inställningsfel för krypterad metadata: initial signatur från servern är tom.</translation>
     </message>
@@ -2569,27 +2569,27 @@ Den här åtgärden avbryter alla pågående synkroniseringar.</translation>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="357"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="358"/>
         <source>Error while opening directory %1</source>
         <translation>Fel uppstod när mappen %1 öppnades</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="359"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="360"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation>Mappen kan inte öppnas av klienten, åtkomst nekad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="363"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="364"/>
         <source>Directory not found: %1</source>
         <translation>Mappen hittades inte: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="397"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnamnets teckenuppsättning är ogiltig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="426"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
         <source>Error while reading directory %1</source>
         <translation>Ett fel uppstod när mappen %1 skulle öppnas</translation>
     </message>
@@ -2904,30 +2904,30 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har tagits bort.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="532"/>
+        <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har uppdaterats.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="539"/>
+        <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 har döpts om till %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="547"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 har flyttats till %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 och %n annan fil har tagits bort.</numerusform><numerusform>%1 och %n andra filer har tagits bort.</numerusform></translation>
     </message>
@@ -2947,129 +2947,129 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <translation>Välj en annan plats. %1 är inte en läsbar mapp.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="523"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 och %n annan fil har lagts till.</numerusform><numerusform>%1 och %n andra filer har lagts till.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="525"/>
+        <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har lagts till.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="530"/>
+        <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 och %n andra filer har uppdaterats.</numerusform><numerusform>%1 och %n andra filer har uppdaterats.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="537"/>
+        <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 har döpts om till %2 och %n andra filer har döpts om.</numerusform><numerusform>%1 har döpts om till %2 och %n andra filer har döpts om.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="544"/>
+        <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 har flyttats till %2 och %n andra filer har flyttats.</numerusform><numerusform>%1 har flyttats till %2 och %n andra filer har flyttats.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="551"/>
+        <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 har och %n annan fil har synkroniseringskonflikter.</numerusform><numerusform>%1 har och %n andra filer har synkroniseringskonflikter.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="554"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 har en synkroniseringskonflikt. Vänligen kontrollera konfliktfilen!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 och %n andra filer kunde inte synkas på grund av fel. Se loggen för detaljer.</numerusform><numerusform>%1 och %n andra filer kunde inte synkroniseras på grund av fel. Se loggen för detaljer.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="560"/>
+        <location filename="../src/gui/folder.cpp" line="561"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 kunde inte synkroniseras på grund av ett fel. Se loggen för detaljer.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="565"/>
+        <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 och %n andra fil(er) är för närvarande låsta.</numerusform><numerusform>%1 och %n andra fil(er) är för närvarande låsta.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="567"/>
+        <location filename="../src/gui/folder.cpp" line="568"/>
         <source>%1 is currently locked.</source>
         <translation>%1 är för närvarande låst.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="575"/>
+        <location filename="../src/gui/folder.cpp" line="576"/>
         <source>Sync Activity</source>
         <translation>Synkroniseringsaktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Could not read system exclude file</source>
         <translation>Kunde inte läsa systemets exkluderings-fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1494"/>
+        <location filename="../src/gui/folder.cpp" line="1501"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>En ny mapp större än %1 MB har lagts till: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1497"/>
+        <location filename="../src/gui/folder.cpp" line="1504"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>En mapp från en extern lagringsyta har lagts till.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1498"/>
+        <location filename="../src/gui/folder.cpp" line="1505"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vänligen gå till inställningar och välj den om du önskar att hämta den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1555"/>
+        <location filename="../src/gui/folder.cpp" line="1562"/>
         <source>A folder has surpassed the set folder size limit of %1MB: %2.
 %3</source>
         <translation>En mapp har överskridit den inställda mappstorleksgränsen på %1MB: %2.
 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1566"/>
+        <location filename="../src/gui/folder.cpp" line="1573"/>
         <source>Keep syncing</source>
         <translation>Fortsätt synkronisera</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1574"/>
+        <location filename="../src/gui/folder.cpp" line="1581"/>
         <source>Stop syncing</source>
         <translation>Sluta synkronisera</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1585"/>
+        <location filename="../src/gui/folder.cpp" line="1592"/>
         <source>The folder %1 has surpassed the set folder size limit of %2MB.</source>
         <translation>Mappen %1 har överskridit den inställda mappstorleksgränsen på %2MB.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1586"/>
+        <location filename="../src/gui/folder.cpp" line="1593"/>
         <source>Would you like to stop syncing this folder?</source>
         <translation>Vill du sluta synkronisera den här mappen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1663"/>
+        <location filename="../src/gui/folder.cpp" line="1670"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Mappen %1 skapades men var tidigare exkluderad från synkronisering. Data i denna mapp kommer inte att synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1666"/>
+        <location filename="../src/gui/folder.cpp" line="1673"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Filen %1 skapades men var tidigare exkluderad från synkronisering. Den kommer inte att synkroniseras.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1677"/>
+        <location filename="../src/gui/folder.cpp" line="1684"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -3082,12 +3082,12 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1715"/>
+        <location filename="../src/gui/folder.cpp" line="1722"/>
         <source>Virtual file download failed with code &quot;%1&quot;, status &quot;%2&quot; and error message &quot;%3&quot;</source>
         <translation>Virtuell filnedladdning misslyckades med koden &quot;%1&quot;, status &quot;%2&quot; och felmeddelandet &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1811"/>
+        <location filename="../src/gui/folder.cpp" line="1818"/>
         <source>A large number of files in the server have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by uploading from &apos;%1&apos; folder to the server.</source>
@@ -3096,7 +3096,7 @@ Bekräfta om du vill fortsätta med dessa raderingar.
 Alternativt kan du återställa alla raderade filer genom att ladda upp från &apos;%1&apos; mappen till servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1812"/>
+        <location filename="../src/gui/folder.cpp" line="1819"/>
         <source>A large number of files in your local '%1' folder have been deleted.
 Please confirm if you'd like to proceed with these deletions.
 Alternatively, you can restore all deleted files by downloading them from the server.</source>
@@ -3105,22 +3105,22 @@ Bekräfta om du vill fortsätta med dessa raderingar.
 Alternativt kan du återställa alla raderade filer genom att ladda ner dem från servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1813"/>
+        <location filename="../src/gui/folder.cpp" line="1820"/>
         <source>Remove all files?</source>
         <translation>Ta bort alla filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1817"/>
+        <location filename="../src/gui/folder.cpp" line="1824"/>
         <source>Proceed with Deletion</source>
         <translation>Fortsätt med radering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files to Server</source>
         <translation>Återställ filer till server</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1818"/>
+        <location filename="../src/gui/folder.cpp" line="1825"/>
         <source>Restore Files from Server</source>
         <translation>Återställ filer från servern</translation>
     </message>
@@ -6066,12 +6066,12 @@ Servern svarade med fel: %2</translation>
         <translation>Kunde inte öppna eller återskapa den lokala synkroniseringsdatabasen. Säkerställ att du har skrivrättigheter till synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1494"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Diskutrymmet är lågt: Hämtningar som skulle reducera det fria utrymmet under %1 hoppas över.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1501"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1500"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
@@ -6116,7 +6116,7 @@ Servern svarade med fel: %2</translation>
         <translation>Det går inte att läsa från synkroniseringsjournalen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="832"/>
         <source>Cannot open the sync journal</source>
         <translation>Det går inte att öppna synkroniseringsjournalen</translation>
     </message>
@@ -6141,13 +6141,13 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="164"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1574"/>
         <source>You need to accept the terms of service</source>
         <translation>Du behöver acceptera användarvillkoren</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="175"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1565"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1566"/>
         <source>Reauthorization required</source>
         <translation>Ny autentisering krävs</translation>
     </message>
@@ -6165,7 +6165,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="246"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1584"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
         <source>Some files couldn&apos;t be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
@@ -6191,7 +6191,7 @@ Servern svarade med fel: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activity/syncstatussummary.cpp" line="272"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1586"/>
         <source>Some files could not be synced!</source>
         <translation>Vissa filer kunde inte synkroniseras!</translation>
     </message>
@@ -6505,115 +6505,115 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="440"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="441"/>
         <source>End-to-end certificate needs to be migrated to a new one</source>
         <translation>End-to-end-certifikatet måste migreras till ett nytt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="442"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="443"/>
         <source>Trigger the migration</source>
         <translation>Initiera migreringen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="540"/>
         <source>%n notification(s)</source>
         <translation><numerusform>%n avisering</numerusform><numerusform>%n aviseringar</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="782"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="821"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="783"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="822"/>
         <source>“%1” was not synchronized</source>
         <translation>“%1” synkroniserades inte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="823"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="824"/>
         <source>Insufficient storage on the server. The file requires %1 but only %2 are available.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1 men endast %2 är tillgängligt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="826"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="827"/>
         <source>Insufficient storage on the server. The file requires %1.</source>
         <translation>Otillräckligt lagringsutrymme på servern. Filen kräver %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="829"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="830"/>
         <source>Insufficient storage on the server.</source>
         <translation>Otillräckligt lagringsutrymme på servern.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="865"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="866"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="881"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1246"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="882"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1247"/>
         <source>Retry all uploads</source>
         <translation>Försök ladda upp igen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1297"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1459"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1298"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1460"/>
         <source>Resolve conflict</source>
         <translation>Lös konflikt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1449"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1450"/>
         <source>Rename file</source>
         <translation>Byt namn på fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1557"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1558"/>
         <source>Sync conflicts</source>
         <translation>Synkroniseringskonflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1700"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1701"/>
         <source>Public Share Link</source>
         <translation>Offentlig delningslänk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1917"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1918"/>
         <source>Quota is updated; %1 percent of the total space is used.</source>
         <translation>Kvoten har uppdaterats; %1 procent av det totala utrymmet är använt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1937"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1938"/>
         <source>Quota Warning - %1 percent or more storage in use</source>
         <translation>Kvotvarning - %1 procent eller mer av lagringsutrymmet används</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1967"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1968"/>
         <source>Assistant is not available for this account.</source>
         <translation>Assistenten är inte tillgänglig för detta konto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1973"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1974"/>
         <source>Assistant is already processing a request.</source>
         <translation>Assistenten behandlar redan en begäran.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2010"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2011"/>
         <source>Sending your request …</source>
         <translation>Skickar din förfrågan …</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2083"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2084"/>
         <source>No response yet. Please try again later.</source>
         <translation>Inget svar ännu. Försök igen senare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2102"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2103"/>
         <source>No supported assistant task types were returned.</source>
         <translation>Inga supporterade assistentuppgiftstyper returnerades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2184"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2185"/>
         <source>Waiting for the assistant response…</source>
         <translation>Väntar på svar från assistenten...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2206"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2207"/>
         <source>Assistant request failed (%1).</source>
         <translation>Förfrågan till assistenten misslyckades (%1).</translation>
     </message>
@@ -6621,32 +6621,32 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2299"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2300"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2301"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; att radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2304"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2305"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2306"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Leave share</source>
         <translation>Lämna delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="2389"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="2390"/>
         <source>Remove account</source>
         <translation>Ta bort konto</translation>
     </message>
@@ -7089,33 +7089,33 @@ Servern svarade med fel: %2</translation>
         <translation>Det gick inte att flytta felsökningsarkivet till den valda platsen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="360"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="361"/>
         <source>Answer</source>
         <extracomment>Action for answering an incoming Talk call.</extracomment>
         <translation>Svar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1378"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1379"/>
         <source>You renamed %1</source>
         <translation>Du döpte om %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1380"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1381"/>
         <source>You deleted %1</source>
         <translation>Du raderade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1382"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1383"/>
         <source>You created %1</source>
         <translation>Du skapade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1384"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1385"/>
         <source>You changed %1</source>
         <translation>Du ändrade %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1408"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1409"/>
         <source>Synced %1</source>
         <translation>Synkroniserade %1</translation>
     </message>
