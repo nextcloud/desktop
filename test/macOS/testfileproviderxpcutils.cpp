@@ -1509,6 +1509,19 @@ private Q_SLOTS:
         QVERIFY(extension.ignoreList != nil);
     }
 
+    void anUnregisteredDomainStartsNoExtension()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"removed-domain"_s);
+        discoveredDomains = @[];
+
+        OCC::Mac::FileProviderXPC owner;
+        QMetaObject::invokeMethod(&owner, "checkFileProviderDomains");
+
+        // With a nil domain, macOS hands out the default domain's manager and launches an extension for it.
+        QCOMPARE(domainManagerLookupCount, 0);
+    }
+
     void concurrentServiceLookupsCanBeCollected()
     {
         constexpr auto managerCount = 128;
