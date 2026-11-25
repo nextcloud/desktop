@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <!--
+            Wizard page to choose between a per-machine and a per-user installation.
+
+            The banner and the descriptions of both options are the texts of the WiX InstallScopeDlg (WixUIExtension),
+            which are already translated for all the cultures of the installer. The option labels (plain text instead
+            of the bold WiX ones) and the per-user limitation warning are defined in InstallScopeDlg_<culture>.wxl.
+
+            The choice is stored in NC_INSTALL_SCOPE ("perMachine" or "perUser"). When to show the page
+            and the properties set when leaving it are defined in the <UI> element of Nextcloud.wxs.
+        -->
+        <Property Id="NC_INSTALL_SCOPE" Value="perMachine" />
+
+        <UI>
+            <Dialog Id="NcInstallScopeDlg" Width="370" Height="270" Title="!(loc.InstallScopeDlg_Title)" KeepModeless="yes">
+                <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallScopeDlgBannerBitmap)" />
+                <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+                <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.InstallScopeDlgTitle)" />
+                <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.InstallScopeDlgDescription)" />
+
+                <!-- The default choice comes first, each option is followed by its description -->
+                <Control Id="Scope" Type="RadioButtonGroup" X="20" Y="55" Width="330" Height="66" Property="NC_INSTALL_SCOPE">
+                    <RadioButtonGroup Property="NC_INSTALL_SCOPE">
+                        <RadioButton Value="perMachine" X="0" Y="0" Width="330" Height="14" Text="!(loc.NcInstallScopeDlgPerMachine)" />
+                        <RadioButton Value="perUser" X="0" Y="52" Width="330" Height="14" Text="!(loc.NcInstallScopeDlgPerUser)" />
+                    </RadioButtonGroup>
+                </Control>
+                <Control Id="PerMachineDescription" Type="Text" X="33" Y="71" Width="317" Height="32" NoPrefix="yes" Text="!(loc.InstallScopeDlgPerMachineDescription)" />
+                <Control Id="PerUserDescription" Type="Text" X="33" Y="123" Width="317" Height="32" NoPrefix="yes" Text="!(loc.InstallScopeDlgPerUserDescription)" />
+
+                <!-- A per-user installation cannot register the Explorer overlay icons (see NCOverlays in WinShellExt.wxs.in) -->
+                <Control Id="PerUserWarningIcon" Type="Icon" X="33" Y="160" Width="16" Height="16" FixedSize="yes" IconSize="16" Text="WixUI_Ico_Exclam" />
+                <Control Id="PerUserWarning" Type="Text" X="53" Y="160" Width="297" Height="40" NoPrefix="yes" Text="!(loc.NcInstallScopeDlgPerUserWarning)" />
+
+                <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+                <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+                <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" />
+                <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+                    <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+                </Control>
+            </Dialog>
+        </UI>
+    </Fragment>
+</Wix>

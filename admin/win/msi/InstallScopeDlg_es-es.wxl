@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  - SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
+  - SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<!-- Texts of the installation scope wizard page (InstallScopeDlg.wxs) -->
+<WixLocalization Culture="es-es" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+    <String Id="NcInstallScopeDlgPerMachine">Instalar para todos los usuarios de este &amp;equipo</String>
+    <String Id="NcInstallScopeDlgPerUser">Instalar solo para &amp;mí ([LogonUser])</String>
+    <String Id="NcInstallScopeDlgPerUserWarning">Con esta opción, el Explorador de archivos no puede mostrar los iconos de estado de sincronización de archivos y carpetas cuando se usa la sincronización selectiva. Los archivos virtuales no se ven afectados.</String>
+</WixLocalization>
