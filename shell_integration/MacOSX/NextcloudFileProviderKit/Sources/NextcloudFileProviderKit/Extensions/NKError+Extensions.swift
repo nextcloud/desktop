@@ -28,14 +28,32 @@ extension NKError {
         errorCode == -5 && (error as NSError).domain == NSCocoaErrorDomain
     }
 
+    /// Server errors a retry cannot fix: 501 Not Implemented, 505 HTTP Version Not Supported, and 507 Insufficient
+    /// Storage, which maps to `insufficientQuota` instead.
+    ///
+    /// Every other 5xx status counts as a temporary outage. Proxies, CDNs and hosters return many non-standard 5xx
+    /// statuses when the server behind them is slow, overloaded or unreachable (Cloudflare's 520 to 530, CloudLinux's
+    /// 508, 598 and 599), so no list of them is complete.
+    static let permanentServerErrorStatusCodes: Set<Int> = [501, 505, 507]
+
+    /// Client error statuses that a proxy or the server returns while it is slow or busy:
+    /// 408 Request Timeout and 429 Too Many Requests.
+    static let temporaryClientErrorStatusCodes: Set<Int> = [408, 429]
+
     var isCouldntConnectError: Bool {
         errorCode == -9999 || errorCode == -1001 || errorCode == -1004 || errorCode == -1005
             || errorCode == -1009 || errorCode == -1012 || errorCode == -1200 || errorCode == -1202
-            || errorCode == 500 || errorCode == 503 || errorCode == 200
+            || errorCode == 200 || Self.temporaryClientErrorStatusCodes.contains(errorCode)
+            || ((500 ... 599).contains(errorCode) && !Self.permanentServerErrorStatusCodes.contains(errorCode))
     }
 
     var isUnauthenticatedError: Bool {
         errorCode == -1013
+    }
+
+    /// The local disk has no room for an upload: NextcloudKit's free space check or writing the chunks failed.
+    var isLocalStorageFullError: Bool {
+        kind == .localStorageFull
     }
 
     var isGoingOverQuotaError: Bool {
@@ -107,6 +125,9 @@ extension NKError {
     ) async -> Error? {
         if isCancelledError {
             return CocoaError(.userCancelled)
+        }
+        if isLocalStorageFullError {
+            return CocoaError(.fileWriteOutOfSpace)
         }
         guard fileProviderError?.code == .filenameCollision else {
             return fileProviderError as Error?
