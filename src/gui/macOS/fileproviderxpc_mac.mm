@@ -131,13 +131,7 @@ void FileProviderXPC::reconnectFileProviderDomain(const QString &fileProviderDom
     for (const auto &domainIdentifier : clientCommConnections.keys()) {
         disconnectFromFileProviderDomain(domainIdentifier);
         _clientCommConnections.insert(domainIdentifier, clientCommConnections.value(domainIdentifier));
-
-        if (accountWithdrawnFromExtension(accountState->state())) {
-            // The account reaches the extension through slotAccountStateChanged once it is connected again.
-            connect(accountState.data(), &AccountState::stateChanged, this, &FileProviderXPC::slotAccountStateChanged, Qt::UniqueConnection);
-        } else {
-            authenticateFileProviderDomain(domainIdentifier);
-        }
+        authenticateFileProviderDomain(domainIdentifier);
     }
 
     if (!clientCommConnections.isEmpty()) {
@@ -164,6 +158,12 @@ void FileProviderXPC::authenticateFileProviderDomain(const QString &fileProvider
     }
 
     connect(accountState.data(), &AccountState::stateChanged, this, &FileProviderXPC::slotAccountStateChanged, Qt::UniqueConnection);
+
+    if (accountWithdrawnFromExtension(accountState->state())) {
+        // The account reaches the extension through slotAccountStateChanged once it is connected again.
+        qCInfo(lcFileProviderXPC) << "Not authenticating file provider domain" << fileProviderDomainIdentifier << "while its account is signed out.";
+        return;
+    }
 
     const auto account = accountState->account();
     const auto credentials = account->credentials();

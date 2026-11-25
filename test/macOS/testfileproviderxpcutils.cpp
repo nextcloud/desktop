@@ -1509,6 +1509,22 @@ private Q_SLOTS:
         QVERIFY(extension.ignoreList != nil);
     }
 
+    void aSignedOutAccountIsNotSentWhenReconfiguring()
+    {
+        installDomainLookupMocks();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+        accountState->handleInvalidCredentials();
+
+        OCC::Mac::FileProviderXPC owner;
+        owner.connectToFileProviderDomains();
+        owner.authenticateFileProviderDomains();
+
+        QVERIFY(extension.serverUrl == nil);
+    }
+
     void anUnregisteredDomainStartsNoExtension()
     {
         installDomainLookupMocks();
