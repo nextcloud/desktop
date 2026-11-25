@@ -598,6 +598,81 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(updatedMetadata?.serverUrl, newServerUrl, "Server URL should be updated")
     }
 
+    func testMoveReconciliationRollsBackFolderWhenCancelled() throws {
+        let manager = Self.dbManager
+        let parentPath = Self.account.davFilesUrl
+        var folder = SendableItemMetadata(ocId: "move-folder", fileName: "source", account: Self.account)
+        folder.directory = true
+        folder.lockToken = "folder-lock"
+        let sourcePath = folder.remotePath()
+        var child = SendableItemMetadata(ocId: "move-child", fileName: "report.txt", account: Self.account)
+        child.serverUrl = sourcePath
+        child.lockToken = "child-lock"
+
+        let database = manager.ncDatabase()
+        defer { withExtendedLifetime(database) {} }
+        try database.write {
+            database.add(RealmItemMetadata(value: folder))
+            database.add(RealmItemMetadata(value: child))
+        }
+
+        // Cancel after the transaction moves the parent and its child.
+        var didCheckCancellation = false
+        XCTAssertThrowsError(try manager.reconcileCompletedMove(
+            ocId: folder.ocId,
+            sourcePath: sourcePath,
+            newServerUrl: parentPath,
+            newFileName: "renamed",
+            isCancelled: {
+                defer { didCheckCancellation = true }
+                return didCheckCancellation
+            }
+        )) { error in
+            XCTAssertTrue(error is CancellationError)
+        }
+
+        XCTAssertEqual(manager.itemMetadata(ocId: folder.ocId)?.remotePath(), sourcePath)
+        XCTAssertEqual(manager.itemMetadata(ocId: folder.ocId)?.lockToken, folder.lockToken)
+        XCTAssertEqual(manager.itemMetadata(ocId: child.ocId)?.serverUrl, sourcePath)
+        XCTAssertEqual(manager.itemMetadata(ocId: child.ocId)?.lockToken, child.lockToken)
+        XCTAssertNil(manager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: parentPath + "/renamed"))
+    }
+
+    func testMoveReconciliationPreservesAmbiguousSourceFolder() throws {
+        let manager = Self.dbManager
+        let parentPath = Self.account.davFilesUrl
+        var folder = SendableItemMetadata(ocId: "move-folder", fileName: "source", account: Self.account)
+        folder.directory = true
+        let sourcePath = folder.remotePath()
+        var staleFolder = folder
+        staleFolder.ocId = "stale-folder"
+        staleFolder.deleted = true
+        var child = SendableItemMetadata(ocId: "move-child", fileName: "report.txt", account: Self.account)
+        child.serverUrl = sourcePath
+
+        let database = manager.ncDatabase()
+        defer { withExtendedLifetime(database) {} }
+        try database.write {
+            database.add(RealmItemMetadata(value: folder))
+            database.add(RealmItemMetadata(value: staleFolder))
+            database.add(RealmItemMetadata(value: child))
+        }
+
+        XCTAssertThrowsError(try manager.reconcileCompletedMove(
+            ocId: folder.ocId,
+            sourcePath: sourcePath,
+            newServerUrl: parentPath,
+            newFileName: "renamed",
+            isCancelled: { false }
+        )) { error in
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        }
+
+        XCTAssertEqual(manager.itemMetadata(ocId: folder.ocId)?.remotePath(), sourcePath)
+        XCTAssertEqual(manager.itemMetadata(ocId: staleFolder.ocId)?.remotePath(), sourcePath)
+        XCTAssertEqual(manager.itemMetadata(ocId: child.ocId)?.serverUrl, sourcePath)
+    }
+
     func testDeleteItemMetadatasBasedOnUpdate() throws {
         // Existing metadata in the database
         let existingMetadata1 = RealmItemMetadata()

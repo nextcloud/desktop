@@ -246,32 +246,18 @@ public extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = itemMetadatas.where { item in
-            item.account == directoryMetadata.account &&
-                RealmItemMetadata.hasServerUrl(item, equalTo: oldDirectoryServerUrl, includingDescendants: true)
-        }
-
         renameItemMetadata(ocId: ocId, newServerUrl: newServerUrl, newFileName: newFileName)
         logger.debug("Renamed root renaming directory from \"\(oldDirectoryServerUrl)\" to \"\(newDirectoryServerUrl)\".", [.item: ocId])
 
         do {
             let database = ncDatabase()
             try database.write {
-                for childItem in childItemResults {
-                    let oldServerUrl = childItem.serverUrl
-                    let movedServerUrl = oldServerUrl.replacingOccurrences(
-                        of: oldDirectoryServerUrl, with: newDirectoryServerUrl
-                    )
-                    childItem.updateLocation(serverUrl: movedServerUrl, fileName: childItem.fileName)
-                    childItem.lockToken = nil
-                    database.add(childItem, update: .all)
-                    logger.debug(
-                        """
-                        Moved childItem at: \(oldServerUrl)
-                                        to: \(movedServerUrl)
-                        """
-                    )
-                }
+                renameDirectoryDescendants(
+                    from: oldDirectoryServerUrl,
+                    to: newDirectoryServerUrl,
+                    account: directoryMetadata.account,
+                    in: database
+                )
             }
         } catch {
             logger.error("Could not rename directory metadata.", [.error: error, .item: ocId, .url: newServerUrl])
@@ -284,5 +270,27 @@ public extension FilesDatabaseManager {
                     RealmItemMetadata.hasServerUrl(item, equalTo: newDirectoryServerUrl, includingDescendants: true)
             }
             .toUnmanagedResults()
+    }
+
+    func renameDirectoryDescendants(
+        from oldDirectoryServerUrl: String,
+        to newDirectoryServerUrl: String,
+        account: String,
+        in database: Realm
+    ) {
+        let children = database.objects(RealmItemMetadata.self).where { item in
+            item.account == account
+                && RealmItemMetadata.hasServerUrl(item, equalTo: oldDirectoryServerUrl, includingDescendants: true)
+        }
+        for child in Array(children) {
+            let oldServerUrl = child.serverUrl
+            let movedServerUrl = oldServerUrl.replacingOccurrences(
+                of: oldDirectoryServerUrl,
+                with: newDirectoryServerUrl
+            )
+            child.updateLocation(serverUrl: movedServerUrl, fileName: child.fileName)
+            child.lockToken = nil
+            logger.debug("Updated the cached path of a moved descendant.", [.item: child.ocId, .url: movedServerUrl])
+        }
     }
 }
