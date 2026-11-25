@@ -1455,15 +1455,24 @@ private Q_SLOTS:
         addTestAccount(u"registered-domain"_s);
         const auto manager = installRegisteredDomain();
         manager.synchronousServiceReply = YES;
-        serveExtension(manager).suppressDomainIdentifierReply = YES;
+        const auto firstExtension = serveExtension(manager);
+        const auto firstConnection = (TestXPCConnection *)((TestFileProviderService *)manager.service).connection;
 
         OCC::Mac::FileProviderXPC owner;
         owner.connectToFileProviderDomains();
         const auto restartedExtension = serveExtension(manager);
-        QMetaObject::invokeMethod(&owner, "checkFileProviderDomains");
+
+        // While the first extension answers, the check leaves its connection alone.
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+        QVERIFY(restartedExtension.serverUrl == nil);
+        QCOMPARE(domainManagerLookupCount, 1);
+
+        firstExtension.suppressDomainIdentifierReply = YES;
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
 
         QCOMPARE(QString::fromNSString(restartedExtension.serverUrl), u"https://cloud.example.test"_s);
         QVERIFY(restartedExtension.ignoreList != nil);
+        QVERIFY(firstConnection.invalidated);
     }
 
     void aDomainWithoutConnectionGetsTheAccount()
@@ -1475,7 +1484,7 @@ private Q_SLOTS:
         const auto extension = serveExtension(manager);
 
         OCC::Mac::FileProviderXPC owner;
-        QMetaObject::invokeMethod(&owner, "checkFileProviderDomains");
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
 
         QCOMPARE(QString::fromNSString(extension.serverUrl), u"https://cloud.example.test"_s);
     }
@@ -1505,7 +1514,7 @@ private Q_SLOTS:
         accountState->handleInvalidCredentials();
 
         OCC::Mac::FileProviderXPC owner;
-        QMetaObject::invokeMethod(&owner, "checkFileProviderDomains");
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
 
         QVERIFY(extension.serverUrl == nil);
         QVERIFY(extension.ignoreList != nil);
@@ -1534,7 +1543,7 @@ private Q_SLOTS:
         discoveredDomains = @[];
 
         OCC::Mac::FileProviderXPC owner;
-        QMetaObject::invokeMethod(&owner, "checkFileProviderDomains");
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
 
         // With a nil domain, macOS hands out the default domain's manager and launches an extension for it.
         QCOMPARE(domainManagerLookupCount, 0);
