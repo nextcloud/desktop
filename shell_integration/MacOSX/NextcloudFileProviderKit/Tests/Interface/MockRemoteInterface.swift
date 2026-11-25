@@ -607,8 +607,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     public var pagination: Bool
     public var expectedEnumerationPaginationTokens: [String: String] = [:]
     public var forceNextPageOnLastContentPage: Bool = false
-    /// When `true`, pages requested with a token answer without `X-NC-Paginate-Token` and keep accepting that token, like servers that serve follow-up pages from their cache.
-    public var omitsTokenOnFollowUpPages = false
+    /// When `true`, the default, pages requested with a token answer without `X-NC-Paginate-Token` and keep accepting that token, like servers that serve follow-up pages from their cache. The pages are still cut from the live tree, not from a snapshot taken with the first page.
+    /// When `false`, every follow-up page, the last included, comes with a new token and the total, like a server whose cache misses and which lists the directory again for every page.
+    public var omitsTokenOnFollowUpPages = true
 
     /// When set, stop sending pagination headers once this many pages have been served, although children the
     /// server counted in its own total remain unsent. Models a listing which ends early: the client sees a response
@@ -1313,10 +1314,11 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             var responseHeaders: [String: String] = [:]
             if pagination, options.paginate, paginationHeaders {
                 responseHeaders["X-NC-PAGINATE"] = "true"
-                if options.paginateToken == nil {
+                let listedAgain = !omitsTokenOnFollowUpPages && options.paginateToken != nil
+                if options.paginateToken == nil || listedAgain {
                     responseHeaders["X-NC-PAGINATE-TOTAL"] = String(itemCount)
                 }
-                if finalPage {
+                if finalPage, !listedAgain {
                     expectedEnumerationPaginationTokens.removeValue(forKey: account.ncKitAccount)
                 } else if omitsTokenOnFollowUpPages, options.paginateToken != nil {
                     // The token of the first page stays valid.

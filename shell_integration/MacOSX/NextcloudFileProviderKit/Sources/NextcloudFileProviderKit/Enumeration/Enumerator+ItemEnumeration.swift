@@ -91,7 +91,7 @@ extension Enumerator {
 
             let cursor = paginationCursor(from: page)
             // Rows a page writes carry a fresh `syncTime`, so the last page can tell the children no page returned by this moment. A continuation from a build which did not record it reconciles nothing.
-            let listingStart: Date? = cursor.index == 0 ? Date() : cursor.startedAt
+            var listingStart: Date? = cursor.index == 0 ? Date() : cursor.startedAt
 
             // Check server version to determine if pagination should be enabled.
             // Pagination was fixed in Nextcloud 31 (server bug: https://github.com/nextcloud/server/issues/53674)
@@ -140,6 +140,12 @@ extension Enumerator {
                 logger.error("Finishing enumeration with invalid metadata.", [.account: self.account.ncKitAccount, .url: self.serverUrl])
                 observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
                 return
+            }
+
+            // A follow-up page carries a token of its own only when the server could not serve it from the cache its first page created and listed the directory again. Its pages then come from two listings and a child can fall between them, so the listing concludes nothing.
+            if cursor.index > 0, let token = nextPage?.token, token != cursor.token {
+                logger.info("Concluding no deletion: the server listed the directory again between pages.", [.url: serverUrl])
+                listingStart = nil
             }
 
             let serverItemTotal = nextPage?.total ?? cursor.total
@@ -221,24 +227,24 @@ extension Enumerator {
     ///
     /// The framework's default initial pages are not valid Nextcloud pagination tokens, so they —
     /// and any page that fails to decode — map to a fresh first-page cursor `(index: 0, total: nil,
-    /// page: nil)`. A decoded continuation returns its stored index and total alongside the original
-    /// page, which the server needs as the pagination token.
+    /// page: nil)`. A decoded continuation returns what it stored, the token the request sends among it, alongside
+    /// the original page.
     ///
     private func paginationCursor(
         from page: NSFileProviderPage
-    ) -> (index: Int, total: Int?, page: NSFileProviderPage?, startedAt: Date?) {
+    ) -> (index: Int, total: Int?, page: NSFileProviderPage?, startedAt: Date?, token: String?) {
         guard page != NSFileProviderPage.initialPageSortedByName as NSFileProviderPage,
               page != NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage
         else {
-            return (index: 0, total: nil, page: nil, startedAt: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil, token: nil)
         }
 
         guard let response = try? JSONDecoder().decode(EnumeratorPageResponse.self, from: page.rawValue) else {
             logger.error("Could not parse page")
-            return (index: 0, total: nil, page: nil, startedAt: nil)
+            return (index: 0, total: nil, page: nil, startedAt: nil, token: nil)
         }
 
-        return (index: response.index, total: response.total, page: page, startedAt: response.startedAt)
+        return (index: response.index, total: response.total, page: page, startedAt: response.startedAt, token: response.token)
     }
 
     ///

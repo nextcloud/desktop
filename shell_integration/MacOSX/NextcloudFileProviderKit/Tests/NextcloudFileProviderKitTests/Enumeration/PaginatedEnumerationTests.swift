@@ -165,6 +165,33 @@ struct PaginatedEnumerationTests {
         }
     }
 
+    @Test(arguments: [4, 7])
+    func aListingTheServerListedAgainBetweenPagesTombstonesNothing(childCount: Int) async throws {
+        // A server whose pagination cache misses lists the folder again for every follow-up page and issues a new token.
+        remoteInterface.omitsTokenOnFollowUpPages = false
+        for child in Array(folder.children.dropFirst(childCount)) {
+            folder.removeChild(child)
+        }
+        _ = seedStaleChildren()
+        for child in folder.children {
+            seed(child.toItemMetadata(account: account))
+        }
+        let observer = try MockEnumerationObserver(enumerator: makeEnumerator())
+        try await observer.enumerateItemsPage(page: NSFileProviderPage.initialPageSortedByName as NSFileProviderPage)
+
+        // The first page held the folder, f0 and f1. With f0 gone, the next listing starts at f3, so f2 is on no page.
+        try folder.removeChild(#require(folder.children.first { $0.identifier == "f0" }))
+        while let page = observer.page, !observer.isComplete {
+            try await observer.enumerateItemsPage(page: page)
+        }
+
+        #expect(!observer.items.map(\.itemIdentifier.rawValue).contains("f2"), "The listing shifted between the pages.")
+        #expect(manager.itemMetadata(ocId: "f2")?.deleted == false, "f2 is still on the server.")
+        for ocId in ["gone", "goneDir", "deep"] {
+            #expect(manager.itemMetadata(ocId: ocId)?.deleted == false, "A listing made of two listings concludes no deletion.")
+        }
+    }
+
     @Test func aContinuationWithoutAListingStartTombstonesNothing() async throws {
         _ = seedStaleChildren()
         let observer = try MockEnumerationObserver(enumerator: makeEnumerator())

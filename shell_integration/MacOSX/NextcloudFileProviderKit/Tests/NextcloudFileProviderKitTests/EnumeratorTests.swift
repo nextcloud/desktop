@@ -2219,6 +2219,8 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             account: Self.account, rootItem: rootItem, pagination: true
         )
         remoteInterface.capabilities = remoteInterface.capabilities.replacingOccurrences(of: ##""major": 28"##, with: ##""major": 31"##)
+        // A server which lists the folder again for every page issues a new token with each.
+        remoteInterface.omitsTokenOnFollowUpPages = false
 
         Self.dbManager.addItemMetadata(remoteFolder.toItemMetadata(account: Self.account))
 
