@@ -452,6 +452,14 @@ private:
         domainLookupMocksInstalled = true;
     }
 
+    // The client's only domain manager belongs to FileProvider, which earlier tests may have created already. Recreate
+    // it, so it starts with the accounts that exist now and no older manager reacts to the account as well.
+    OCC::Mac::FileProviderDomainManager *restartFileProvider()
+    {
+        delete OCC::Mac::FileProvider::instance();
+        return OCC::Mac::FileProvider::instance()->domainManager();
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -701,6 +709,56 @@ private Q_SLOTS:
         QCOMPARE(owner->addDomainForAccount(accountState), pendingIdentifier);
         QCOMPARE(addedDomainIdentifiers.count, 2);
         QCOMPARE(accountState->account()->fileProviderDomainIdentifier(), pendingIdentifier);
+    }
+
+    void losingAuthenticationDisconnectsDomainThatExistedAtStart()
+    {
+        installDomainLookupMocks();
+        const auto manager = installRegisteredDomain();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        restartFileProvider();
+        const auto deleteFileProvider = qScopeGuard([] {
+            delete OCC::Mac::FileProvider::instance();
+        });
+
+        accountState->handleInvalidCredentials();
+
+        QCOMPARE(manager.disconnectCount, 1);
+        QVERIFY([manager.lastDisconnectionReason containsString:@"not authenticated"]);
+    }
+
+    void losingAuthenticationDisconnectsDomainOfAccountAddedAfterStart()
+    {
+        installDomainLookupMocks();
+        const auto manager = installRegisteredDomain();
+        restartFileProvider();
+        const auto deleteFileProvider = qScopeGuard([] {
+            delete OCC::Mac::FileProvider::instance();
+        });
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+
+        accountState->handleInvalidCredentials();
+
+        QCOMPARE(manager.disconnectCount, 1);
+        QVERIFY([manager.lastDisconnectionReason containsString:@"not authenticated"]);
+    }
+
+    void losingAuthenticationDisconnectsOnceAfterDomainWasAddedRepeatedly()
+    {
+        installDomainLookupMocks();
+        const auto manager = installRegisteredDomain();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        const auto owner = restartFileProvider();
+        const auto deleteFileProvider = qScopeGuard([] {
+            delete OCC::Mac::FileProvider::instance();
+        });
+        QCOMPARE(owner->addDomainForAccount(accountState), u"registered-domain"_s);
+        QCOMPARE(owner->addDomainForAccount(accountState), u"registered-domain"_s);
+
+        accountState->handleInvalidCredentials();
+
+        QCOMPARE(manager.disconnectCount, 1);
+        QVERIFY([manager.lastDisconnectionReason containsString:@"not authenticated"]);
     }
 
     void removeAllDomainsReportsDiscoveryAndRemovalFailures()
