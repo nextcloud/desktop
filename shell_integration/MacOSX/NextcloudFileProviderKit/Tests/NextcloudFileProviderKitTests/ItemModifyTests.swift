@@ -6,7 +6,8 @@ import Alamofire
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import NextcloudFileProviderXPC
-import NextcloudKit
+@testable import NextcloudKit
+import os
 import TestInterface
 import UniformTypeIdentifiers
 import XCTest
@@ -1081,6 +1082,373 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             remoteFolder.remotePath, modifiedFolderMetadata.serverUrl + "/" + modifiedFolderMetadata.fileName
         )
         // We do not yet support modification of folder contents
+    }
+
+    func testMoveCollisionOmitsCachedLiveDestinationItem() async throws {
+        try await assertMove(
+            sourceIsDirectory: true,
+            hasCachedDestination: true,
+            destinationLookup: .listing("other-id"),
+            sourceLookup: .listing("source-id"),
+            expected: .failure(.filenameCollision)
+        )
+    }
+
+    func testMoveReconcilesFolderAlreadyAtDestination() async throws {
+        try await assertMove(
+            sourceIsDirectory: true,
+            hasCachedDestination: true,
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(404),
+            expected: .success
+        )
+    }
+
+    func testMoveReconcilesFileWhenSourceWasReplaced() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .listing("replacement-id"),
+            expected: .success
+        )
+    }
+
+    func testMovePreservesNewerCachedPathDuringRecovery() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(404),
+            cachedSourceNameDuringLookup: "newer.txt",
+            expected: .failure(.cannotSynchronize)
+        )
+    }
+
+    func testMoveReturnsAlreadyReconciledMetadataDuringRecovery() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(404),
+            cachedSourceNameDuringLookup: "renamed.txt",
+            expected: .success
+        )
+    }
+
+    func testMovePreservesStateWhenBothPathsHaveTheSameIdentifier() async throws {
+        try await assertMove(
+            sourceIsDirectory: true,
+            hasCachedDestination: true,
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .listing("source-id"),
+            expected: .failure(.cannotSynchronize)
+        )
+    }
+
+    func testMovePreservesStateWhenSourceDisappearsAndDestinationHasAnotherItem() async throws {
+        try await assertMove(
+            destinationLookup: .listing("other-id"),
+            sourceLookup: .status(404),
+            expected: .failure(.cannotSynchronize)
+        )
+    }
+
+    func testMovePreservesStateWhenSourceLookupFails() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(403),
+            expected: .failure(.cannotSynchronize)
+        )
+    }
+
+    func testMoveStopsWithoutWritingWhenLookupIsCancelled() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .cancelled,
+            expected: .cancelled
+        )
+    }
+
+    func testMoveStopsWithoutWritingWhenProgressIsCancelled() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(404),
+            cancelProgressDuringSourceLookup: true,
+            expected: .cancelled
+        )
+    }
+
+    func testMoveReportsServerUnreachableWhenDestinationLookupIsUnavailable() async throws {
+        try await assertMove(destinationLookup: .status(503), expected: .failure(.serverUnreachable))
+    }
+
+    func testMoveReportsNotAuthenticatedWhenSourceLookupRequiresLogin() async throws {
+        try await assertMove(
+            destinationLookup: .listing("source-id"),
+            sourceLookup: .status(401),
+            expected: .failure(.notAuthenticated)
+        )
+    }
+
+    func testMoveDoesNotTreatUnsupportedLookupAsCollision() async throws {
+        try await assertMove(destinationLookup: .status(405), expected: .failure(.cannotSynchronize))
+    }
+
+    func testMovePreservesStateWhenDestinationLookupFails() async throws {
+        try await assertMove(destinationLookup: .status(404), expected: .failure(.cannotSynchronize))
+    }
+
+    func testMovePreservesStateWhenDestinationIdentityIsUnusable() async throws {
+        for response in [
+            MoveLookupResponse.listing(""),
+            .listing("source-id", pathSuffixes: ["-other"]),
+            .listing("source-id", pathSuffixes: ["", "-other"])
+        ] {
+            try await assertMove(destinationLookup: response, expected: .failure(.cannotSynchronize))
+        }
+    }
+
+    func testMoveReportsCannotSynchronizeWhenLocked() async throws {
+        try await assertMove(statusCode: 423, expected: .failure(.cannotSynchronize))
+    }
+
+    private enum ExpectedMoveOutcome: Equatable {
+        case success
+        case failure(NSFileProviderError.Code)
+        case cancelled
+    }
+
+    private enum MoveLookupResponse: Sendable {
+        case listing(String, pathSuffixes: [String] = [""])
+        case status(Int)
+        case cancelled
+
+        func respond(to http: MockHTTPURLProtocol, isDirectory: Bool) {
+            switch self {
+                case let .status(code):
+                    http.respond(status: code)
+                case .cancelled:
+                    http.client?.urlProtocol(http, didFailWithError: URLError(.cancelled))
+                case let .listing(ocId, pathSuffixes):
+                    guard let path = http.request.url?.path else {
+                        http.respond(status: 400)
+                        return
+                    }
+
+                    let collection = isDirectory ? "<d:collection/>" : ""
+                    let items = pathSuffixes.map { suffix in
+                        """
+                        <d:response><d:href>\(path)\(suffix)</d:href><d:propstat>
+                          <d:prop><oc:id>\(ocId)</oc:id><d:resourcetype>\(collection)</d:resourcetype></d:prop>
+                          <d:status>HTTP/1.1 200 OK</d:status>
+                        </d:propstat></d:response>
+                        """
+                    }.joined()
+                    let listing = """
+                    <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">\(items)</d:multistatus>
+                    """
+                    http.respond(status: 207, headers: ["Content-Type": "application/xml"], body: Data(listing.utf8))
+            }
+        }
+    }
+
+    private func assertMove(
+        statusCode: Int = 412,
+        sourceIsDirectory: Bool = false,
+        hasCachedDestination: Bool = false,
+        destinationLookup: MoveLookupResponse? = nil,
+        sourceLookup: MoveLookupResponse? = nil,
+        cachedSourceNameDuringLookup: String? = nil,
+        cancelProgressDuringSourceLookup: Bool = false,
+        expected: ExpectedMoveOutcome
+    ) async throws {
+        let host = UUID().uuidString.lowercased() + ".example.invalid"
+        let account = Account(
+            user: "login",
+            id: "user-id",
+            serverUrl: "https://" + host,
+            password: "test"
+        )
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let sourceName = sourceIsDirectory ? "source" : "source.txt"
+        let destinationName = sourceIsDirectory ? "renamed" : "renamed.txt"
+        var sourceMetadata = DatabaseTestSuites.makeFile(ocId: "source-id", fileName: sourceName, account: account)
+        sourceMetadata.directory = sourceIsDirectory
+        sourceMetadata.keepDownloaded = true
+        sourceMetadata.lockToken = "stale-lock-token"
+        manager.addItemMetadata(sourceMetadata)
+        let concurrentMetadata = cachedSourceNameDuringLookup.map { fileName in
+            var metadata = sourceMetadata
+            metadata.fileName = fileName
+            metadata.fileNameView = fileName
+            metadata.lockToken = "newer-lock-token"
+            return metadata
+        }
+
+        let sourcePath = sourceMetadata.remotePath()
+        let sourceURL = try XCTUnwrap(URL(string: sourcePath))
+        let destinationPath = account.davFilesUrl + "/" + destinationName
+        let destinationURL = try XCTUnwrap(URL(string: destinationPath))
+        let capabilitiesURL = try XCTUnwrap(URL(string: account.serverUrl + "/ocs/v1.php/cloud/capabilities"))
+        let capabilities = Data(#"{"ocs":{"meta":{"status":"ok","statuscode":100,"message":"OK"},"data":{"version":{"string":"32.0.5","minor":0,"micro":5,"major":32},"capabilities":{}}}}"#.utf8)
+        let sourceChildId = "source-child"
+        let cachedDestinationId = "cached-destination-id"
+        let cachedDestinationChildId = "cached-destination-child"
+        if sourceIsDirectory {
+            manager.addItemMetadata(DatabaseTestSuites.makeFile(
+                ocId: sourceChildId,
+                fileName: "child.txt",
+                serverUrl: sourcePath,
+                account: account
+            ))
+        }
+        if hasCachedDestination {
+            var cachedMetadata = DatabaseTestSuites.makeFile(
+                ocId: cachedDestinationId,
+                fileName: destinationName,
+                account: account
+            )
+            cachedMetadata.directory = sourceIsDirectory
+            manager.addItemMetadata(cachedMetadata)
+
+            let storedDestination = try XCTUnwrap(
+                manager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: destinationPath)
+            )
+            XCTAssertEqual(storedDestination.ocId, cachedMetadata.ocId)
+
+            if sourceIsDirectory {
+                manager.addItemMetadata(DatabaseTestSuites.makeFile(
+                    ocId: cachedDestinationChildId,
+                    fileName: "child.txt",
+                    serverUrl: destinationPath,
+                    account: account
+                ))
+            }
+        }
+
+        let progress = Progress()
+        let requests = OSAllocatedUnfairLock(initialState: [URLRequest]())
+        MockHTTPURLProtocol.setHandlers(
+            forHost: host,
+            start: { http in
+                if http.request.httpMethod == "GET", http.request.url == capabilitiesURL {
+                    http.respond(status: 200, headers: ["Content-Type": "application/json"], body: capabilities)
+                    return
+                }
+
+                requests.withLock { $0.append(http.request) }
+                switch http.request.httpMethod {
+                    case "MOVE":
+                        http.respond(status: statusCode)
+                    case "PROPFIND":
+                        if http.request.url == destinationURL, let destinationLookup {
+                            destinationLookup.respond(to: http, isDirectory: sourceIsDirectory)
+                        } else if http.request.url == sourceURL, let sourceLookup {
+                            if let concurrentMetadata {
+                                manager.addItemMetadata(concurrentMetadata)
+                            }
+                            if cancelProgressDuringSourceLookup {
+                                progress.cancel()
+                            }
+                            sourceLookup.respond(to: http, isDirectory: sourceIsDirectory)
+                        } else {
+                            http.respond(status: 405)
+                        }
+                    default:
+                        http.respond(status: 405)
+                }
+            },
+            stop: { _ in }
+        )
+        defer { MockHTTPURLProtocol.removeHandlers(forHost: host) }
+
+        let remote = NextcloudKit()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockHTTPURLProtocol.self]
+        let session = NKSession(
+            nkCommonInstance: remote.nkCommonInstance,
+            urlBase: account.serverUrl,
+            user: account.username,
+            userId: account.id,
+            password: account.password,
+            account: account.ncKitAccount,
+            userAgent: "FileProvider-test",
+            groupIdentifier: "",
+            httpMaximumConnectionsPerHost: 1,
+            httpMaximumConnectionsPerHostInDownload: 1,
+            httpMaximumConnectionsPerHostInUpload: 1,
+            sessionDataOverride: Alamofire.Session(configuration: configuration)
+        )
+        remote.nkCommonInstance.nksessions = SynchronizedNKSessionArray([session])
+        let item = Item(
+            metadata: sourceMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: account,
+            remoteInterface: remote,
+            dbManager: manager
+        )
+
+        let (moved, error) = await item.move(
+            newFileName: destinationName,
+            newParentItemIdentifier: .rootContainer,
+            newParentItemRemotePath: account.davFilesUrl,
+            progress: progress,
+            dbManager: manager
+        )
+
+        let sentRequests = requests.withLock { $0 }
+        let lookedUpURLs = [destinationLookup == nil ? nil : destinationURL, sourceLookup == nil ? nil : sourceURL]
+            .compactMap(\.self)
+        let moveRequest = try XCTUnwrap(sentRequests.first)
+        XCTAssertEqual(moveRequest.httpMethod, "MOVE")
+        XCTAssertEqual(moveRequest.url, sourceURL)
+        XCTAssertEqual(moveRequest.value(forHTTPHeaderField: "Destination"), destinationPath)
+        XCTAssertEqual(moveRequest.value(forHTTPHeaderField: "Overwrite"), "F")
+        XCTAssertNil(moveRequest.value(forHTTPHeaderField: "If-Match"))
+        let lookupRequests = sentRequests.dropFirst()
+        XCTAssertEqual(lookupRequests.map(\.url), lookedUpURLs)
+        for request in lookupRequests {
+            XCTAssertEqual(request.httpMethod, "PROPFIND")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Depth"), "0")
+        }
+
+        let movedSuccessfully = expected == .success
+        let latestSourcePath = concurrentMetadata?.remotePath() ?? sourcePath
+        let expectedPath = movedSuccessfully ? destinationPath : latestSourcePath
+        let storedSource = try XCTUnwrap(manager.itemMetadata(ocId: sourceMetadata.ocId))
+        let expectedLockToken = concurrentMetadata?.lockToken ?? (movedSuccessfully ? nil : sourceMetadata.lockToken)
+        XCTAssertEqual(storedSource.remotePath(), expectedPath)
+        XCTAssertEqual(storedSource.lockToken, expectedLockToken)
+        XCTAssertTrue(storedSource.keepDownloaded)
+        if sourceIsDirectory {
+            XCTAssertEqual(manager.itemMetadata(ocId: sourceChildId)?.serverUrl, expectedPath)
+        }
+        if hasCachedDestination {
+            let cachedDestination = try XCTUnwrap(manager.itemMetadata(ocId: cachedDestinationId))
+            XCTAssertEqual(cachedDestination.deleted, movedSuccessfully)
+            let cachedDestinationPath = cachedDestination.remotePath()
+            if movedSuccessfully {
+                XCTAssertNotEqual(cachedDestinationPath, destinationPath)
+            } else {
+                XCTAssertEqual(cachedDestinationPath, destinationPath)
+            }
+            if sourceIsDirectory {
+                XCTAssertEqual(manager.itemMetadata(ocId: cachedDestinationChildId)?.serverUrl, cachedDestinationPath)
+            }
+        }
+
+        switch expected {
+            case .success:
+                XCTAssertNil(error)
+                let moved = try XCTUnwrap(moved)
+                XCTAssertEqual(moved.itemIdentifier, item.itemIdentifier)
+                XCTAssertEqual(moved.filename, destinationName)
+            case let .failure(code):
+                XCTAssertNil(moved)
+                XCTAssertEqual((error as? NSFileProviderError)?.code, code)
+                if code == .filenameCollision {
+                    let collision = try XCTUnwrap(error as NSError?)
+                    XCTAssertFalse(collision.userInfo.values.contains { $0 is any NSFileProviderItem })
+                }
+            case .cancelled:
+                XCTAssertNil(moved)
+                XCTAssertEqual((error as? CocoaError)?.code, .userCancelled)
+        }
     }
 
     /// Verify the framework callback sequence caused by excluding a remotely synced bundle.
