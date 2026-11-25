@@ -7,6 +7,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <array>
 
 #include "cfapiwrapper.h"
 #include "common/filesystembase.h"
@@ -280,6 +281,71 @@ bool VfsCfApi::isDehydratedPlaceholder(const QString &filePath)
 {
     const auto path = QDir::toNativeSeparators(filePath);
     return cfapi::isSparseFile(path);
+}
+
+static quint64 queryEmptyPlaceholderFileId(HANDLE handle)
+{
+    auto attributes = FILE_ATTRIBUTE_TAG_INFO{};
+    if (!GetFileInformationByHandleEx(handle, FileAttributeTagInfo, &attributes, sizeof(attributes))
+        || (attributes.FileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+        return 0;
+    }
+    const auto state = CfGetPlaceholderStateFromAttributeTag(attributes.FileAttributes, attributes.ReparseTag);
+    if (state == CF_PLACEHOLDER_STATE_INVALID || !(state & CF_PLACEHOLDER_STATE_PLACEHOLDER)) {
+        return 0;
+    }
+
+    alignas(CF_PLACEHOLDER_STANDARD_INFO) std::array<char, sizeof(CF_PLACEHOLDER_STANDARD_INFO) + CF_PLACEHOLDER_MAX_FILE_IDENTITY_LENGTH> buffer{};
+    if (CfGetPlaceholderInfo(handle, CF_PLACEHOLDER_INFO_STANDARD, buffer.data(), static_cast<DWORD>(buffer.size()), nullptr) != S_OK) {
+        return 0;
+    }
+
+    const auto *info = reinterpret_cast<const CF_PLACEHOLDER_STANDARD_INFO *>(buffer.data());
+    return info->OnDiskDataSize.QuadPart == 0 && info->ModifiedDataSize.QuadPart == 0 ? static_cast<quint64>(info->FileId.QuadPart) : 0;
+}
+
+quint64 VfsCfApi::emptyPlaceholderFileId(const QString &filePath, quint64 inode)
+{
+    const auto path = FileSystem::longWinPath(filePath).toStdWString();
+    const auto handle = CreateFileW(path.c_str(),
+                                    FILE_READ_ATTRIBUTES,
+                                    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                                    nullptr,
+                                    OPEN_EXISTING,
+                                    FILE_FLAG_OPEN_REPARSE_POINT,
+                                    nullptr);
+    if (handle == INVALID_HANDLE_VALUE) {
+        return 0;
+    }
+
+    const auto file = cfapi::FileHandle{handle, [](HANDLE handleToClose) {
+                                            CloseHandle(handleToClose);
+                                        }};
+    const auto fileId = queryEmptyPlaceholderFileId(file.get());
+    // The journal stores the NTFS file-record number without its sequence number.
+    constexpr auto fileRecordMask = quint64{0x0000FFFFFFFFFFFF};
+    return (fileId & fileRecordMask) == inode ? fileId : 0;
+}
+
+bool VfsCfApi::removeEmptyPlaceholder(const QString &filePath, quint64 fileId)
+{
+    const auto path = FileSystem::longWinPath(filePath).toStdWString();
+    // Require exclusive access so a reader cannot start hydration while we check and delete.
+    const auto handle = CreateFileW(path.c_str(), FILE_READ_ATTRIBUTES | DELETE, 0, nullptr, OPEN_EXISTING, FILE_FLAG_OPEN_REPARSE_POINT, nullptr);
+    if (handle == INVALID_HANDLE_VALUE) {
+        const auto error = GetLastError();
+        return error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND;
+    }
+
+    const auto file = cfapi::FileHandle{handle, [](HANDLE handleToClose) {
+                                            CloseHandle(handleToClose);
+                                        }};
+    if (fileId == 0 || queryEmptyPlaceholderFileId(file.get()) != fileId) {
+        return false;
+    }
+
+    auto disposition = FILE_DISPOSITION_INFO{TRUE};
+    return SetFileInformationByHandle(file.get(), FileDispositionInfo, &disposition, sizeof(disposition)) != FALSE;
 }
 
 bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)

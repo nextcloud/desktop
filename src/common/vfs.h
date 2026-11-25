@@ -254,6 +254,18 @@ public:
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
     [[nodiscard]] virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
 
+    /// Check that the journal still identifies this placeholder and that it has no local file data.
+    [[nodiscard]] virtual quint64 emptyPlaceholderFileId(const QString &, quint64)
+    {
+        return 0;
+    }
+
+    /// Delete an empty placeholder by its previously observed file ID.
+    [[nodiscard]] virtual bool removeEmptyPlaceholder(const QString &, quint64)
+    {
+        return false;
+    }
+
     /** Similar to isDehydratedPlaceholder() but used from sync discovery.
      *
      * This function shall set stat->type if appropriate.

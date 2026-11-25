@@ -129,6 +129,7 @@ private:
         SyncJournalFileRecord dbEntry;
         RemoteInfo serverEntry;
         LocalInfo localEntry;
+        quint64 obsoletePlaceholderFileId = 0;
     };
 
     /** Iterate over entries inside the directory (non-recursively).
@@ -141,7 +142,7 @@ private:
 
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
-    bool handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden, bool isBlacklisted);
+    bool handleExcluded(const QString &path, Entries &entries, const std::map<QString, Entries> &allEntries, bool isHidden, bool isBlacklisted);
 
     bool canRemoveCaseClashConflictedCopy(const QString &path, const std::map<QString, Entries> &allEntries);
 
@@ -155,7 +156,7 @@ private:
      *
      * This main function delegates some work to the processFile* functions.
      */
-    void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, quint64 obsoletePlaceholderFileId);
 
     void postProcessServerNew(const SyncFileItemPtr &item,
                               PathTuple &path,

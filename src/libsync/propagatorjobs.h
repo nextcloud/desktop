@@ -53,6 +53,7 @@ public:
     void start() override;
 
 private:
+    void finishRemoval();
     bool removeRecursively(const QString &path);
 
     QSet<QString> _deleteToClientTrashBin;

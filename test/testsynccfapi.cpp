@@ -11,12 +11,17 @@
 
 #include "common/filesystembase.h"
 #include "common/vfs.h"
+#include "filesystem.h"
 #include "openfilemanager.h"
 #include "owncloudpropagator.h"
 #include "syncengine.h"
 #include "vfs/cfapi/cfapiwrapper.h"
 
+#include <QProcess>
 #include <QtTest>
+
+#include <algorithm>
+#include <array>
 
 using namespace Qt::StringLiterals;
 
@@ -128,6 +133,28 @@ QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
 class TestSyncCfApi : public QObject
 {
     Q_OBJECT
+
+private:
+    static bool seedJournaledPlaceholder(FakeFolder &folder, const QString &path, qint64 size = 64)
+    {
+        folder.remoteModifier().insert(path, size);
+        const auto *remote = folder.remoteModifier().find(path);
+        if (!remote) {
+            return false;
+        }
+
+        auto record = SyncJournalFileRecord{};
+        record._path = path.toUtf8();
+        record._type = ItemTypeVirtualFile;
+        record._fileId = remote->fileId;
+        record._fileSize = remote->size;
+        record._etag = remote->etag;
+        record._modtime = remote->lastModified.toSecsSinceEpoch();
+
+        const auto localPath = folder.localPath() + path;
+        return cfapi::createPlaceholderInfo(localPath, record._modtime, record._fileSize, record._fileId) && FileSystem::getInode(localPath, &record._inode)
+            && record._inode != 0 && folder.syncJournal().setFileRecord(record);
+    }
 
 private Q_SLOTS:
     void initTestCase()
@@ -1784,6 +1811,284 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
         const auto directoryItem = fakeFolder.remoteModifier().find("directory");
         QCOMPARE(directoryItem, nullptr);
+    }
+
+    void testRemoteDeletionRemovesIgnoredMetadataPlaceholder_data()
+    {
+        QTest::addColumn<QString>("name");
+        QTest::addColumn<QString>("pattern");
+        QTest::addColumn<bool>("cachedLocalDiscovery");
+        QTest::newRow("desktop.ini") << u"desktop.ini"_s << QString{} << false;
+        QTest::newRow("DS_Store with Allow Deletion") << u".DS_Store"_s << u"].DS_Store"_s << false;
+        QTest::newRow("Thumbs.db with Allow Deletion") << u"Thumbs.db"_s << u"]Thumbs.db"_s << false;
+        QTest::newRow("custom exclusion") << u"ignored.tmp"_s << u"ignored.tmp"_s << false;
+        QTest::newRow("cached local discovery") << u".DS_Store"_s << u"].DS_Store"_s << true;
+    }
+
+    void testRemoteDeletionRemovesIgnoredMetadataPlaceholder()
+    {
+        QFETCH(QString, name);
+        QFETCH(QString, pattern);
+        QFETCH(bool, cachedLocalDiscovery);
+        const QString remotePath = u"A/"_s + name;
+        FakeFolder folder{FileInfo{}};
+        if (!pattern.isEmpty()) {
+            folder.syncEngine().excludedFiles().addManualExclude(pattern);
+        }
+        setupVfs(folder);
+        folder.remoteModifier().mkdir("A");
+        folder.remoteModifier().mkdir("B");
+        folder.localModifier().mkdir("A");
+        folder.localModifier().mkdir("B");
+        const QString localOnlyPath = u"B/"_s + name;
+        folder.localModifier().insert(localOnlyPath);
+        QVERIFY(folder.syncOnce());
+
+        const auto removedPath = u"A/remove-control.txt"_s;
+        const auto keptPath = u"A/keep-control.txt"_s;
+        const auto excluded = folder.localPath() + remotePath;
+        const auto removed = folder.localPath() + removedPath;
+        const auto kept = folder.localPath() + keptPath;
+
+        // Simulate placeholders left by an older client independently of on-demand enumeration.
+        for (const auto &path : {remotePath, removedPath, keptPath}) {
+            QVERIFY(seedJournaledPlaceholder(folder, path));
+            CFVERIFY_VIRTUAL(folder, path);
+        }
+        folder.syncJournal().commit(u"seed existing placeholders"_s);
+
+        qInfo("Before remote deletion: ignored file and both controls are Windows cloud placeholders.");
+
+        folder.remoteModifier().remove(remotePath);
+        folder.remoteModifier().remove(removedPath);
+        QVERIFY(!folder.remoteModifier().find(remotePath));
+        QVERIFY(!folder.remoteModifier().find(removedPath));
+        QVERIFY(folder.remoteModifier().find(keptPath));
+        qInfo("After remote deletion: ignored file and one control are absent remotely.");
+        if (cachedLocalDiscovery) {
+            folder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+        }
+
+        for (auto round = 1; round <= 2; ++round) {
+            QVERIFY(folder.syncOnce());
+            qInfo("Completed sync round %d. CFAPI states: ignored file=%d, removed control=%d, kept control=%d.",
+                  round,
+                  int(placeholderState(excluded)),
+                  int(placeholderState(removed)),
+                  int(placeholderState(kept)));
+        }
+
+        CFVERIFY_GONE(folder, removedPath);
+        CFVERIFY_GONE(folder, remotePath);
+        CFVERIFY_VIRTUAL(folder, keptPath);
+        QVERIFY(QFileInfo::exists(folder.localPath() + localOnlyPath));
+        QVERIFY(!folder.remoteModifier().find(localOnlyPath));
+    }
+
+    void testRetainsIgnoredMetadataPlaceholder_data()
+    {
+        QTest::addColumn<QString>("scenario");
+        QTest::newRow("exists on server") << u"remote"_s;
+        QTest::newRow("partially hydrated") << u"partial"_s;
+        QTest::newRow("fully hydrated") << u"full"_s;
+        QTest::newRow("modified data") << u"modified"_s;
+        QTest::newRow("journal inode mismatch") << u"inode"_s;
+        QTest::newRow("file already absent") << u"missing"_s;
+    }
+
+    void testRetainsIgnoredMetadataPlaceholder()
+    {
+        QFETCH(QString, scenario);
+        const auto path = u"A/desktop.ini"_s;
+        FakeFolder folder{FileInfo{}};
+        setupVfs(folder);
+        folder.localModifier().mkdir(u"A"_s);
+        folder.remoteModifier().mkdir(u"A"_s);
+        QVERIFY(folder.syncOnce());
+        constexpr auto blockSize = 4096;
+        constexpr auto fileSize = 4 * blockSize;
+        QVERIFY(seedJournaledPlaceholder(folder, path, fileSize));
+
+        const auto localPath = folder.localPath() + path;
+        auto record = dbRecord(folder, path);
+        const auto withLocalData = scenario == u"partial" || scenario == u"full" || scenario == u"modified";
+        const auto nativePath = FileSystem::longWinPath(localPath).toStdWString();
+        if (withLocalData) {
+            QVERIFY(QFile::remove(localPath));
+            QFile localFile(localPath);
+            QVERIFY(localFile.open(QIODevice::WriteOnly));
+            const auto content = QByteArray(fileSize, 'W');
+            QCOMPARE(localFile.write(content), content.size());
+            localFile.close();
+
+            const auto rawHandle = CreateFileW(nativePath.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+            QVERIFY(rawHandle != INVALID_HANDLE_VALUE);
+            const auto handle = cfapi::FileHandle{rawHandle, [](HANDLE handleToClose) {
+                                                      CloseHandle(handleToClose);
+                                                  }};
+            QCOMPARE(CfConvertToPlaceholder(handle.get(),
+                                            record._fileId.constData(),
+                                            static_cast<DWORD>(record._fileId.size()),
+                                            CF_CONVERT_FLAG_MARK_IN_SYNC,
+                                            nullptr,
+                                            nullptr),
+                     S_OK);
+            if (scenario == u"partial") {
+                constexpr auto start = LARGE_INTEGER{.QuadPart = 0};
+                constexpr auto length = LARGE_INTEGER{.QuadPart = blockSize};
+                QCOMPARE(CfDehydratePlaceholder(handle.get(), start, length, CF_DEHYDRATE_FLAG_NONE, nullptr), S_OK);
+            } else if (scenario == u"modified") {
+                auto bytesWritten = DWORD{};
+                QVERIFY(WriteFile(handle.get(), "M", 1, &bytesWritten, nullptr));
+                QCOMPARE(bytesWritten, DWORD{1});
+            }
+
+            alignas(CF_PLACEHOLDER_STANDARD_INFO) std::array<char, sizeof(CF_PLACEHOLDER_STANDARD_INFO) + CF_PLACEHOLDER_MAX_FILE_IDENTITY_LENGTH> buffer{};
+            QCOMPARE(CfGetPlaceholderInfo(handle.get(), CF_PLACEHOLDER_INFO_STANDARD, buffer.data(), static_cast<DWORD>(buffer.size()), nullptr), S_OK);
+            const auto *info = reinterpret_cast<const CF_PLACEHOLDER_STANDARD_INFO *>(buffer.data());
+            QVERIFY(info->OnDiskDataSize.QuadPart > 0);
+            if (scenario == u"partial") {
+                QVERIFY(info->OnDiskDataSize.QuadPart < fileSize);
+            } else {
+                QCOMPARE(info->OnDiskDataSize.QuadPart, qint64{fileSize});
+            }
+            QCOMPARE(info->ModifiedDataSize.QuadPart > 0, scenario == u"modified");
+        }
+        if (withLocalData) {
+            QVERIFY(FileSystem::getInode(localPath, &record._inode));
+        } else if (scenario == u"inode") {
+            ++record._inode;
+        } else if (scenario == u"missing") {
+            QVERIFY(QFile::remove(localPath));
+        }
+        QVERIFY(folder.syncJournal().setFileRecord(record));
+        folder.syncJournal().commit(u"seed existing placeholder"_s);
+
+        if (scenario != u"remote") {
+            folder.remoteModifier().remove(path);
+        }
+        QVERIFY(folder.syncOnce());
+        if (scenario == u"missing") {
+            CFVERIFY_GONE(folder, path);
+        } else {
+            QVERIFY(placeholderState(localPath) != CF_PLACEHOLDER_STATE_INVALID);
+            QVERIFY(placeholderState(localPath) & CF_PLACEHOLDER_STATE_PLACEHOLDER);
+            const auto retained = dbRecord(folder, path);
+            QVERIFY(retained.isValid());
+            QCOMPARE(retained._inode, record._inode);
+            QCOMPARE(retained._fileId, record._fileId);
+            if (scenario == u"modified") {
+                QFile localFile(localPath);
+                QVERIFY(localFile.open(QIODevice::ReadOnly));
+                QCOMPARE(localFile.read(1), QByteArray("M"));
+            }
+        }
+    }
+
+    void testObsoletePlaceholderChangesBeforeDeletion_data()
+    {
+        QTest::addColumn<QString>("scenario");
+        QTest::newRow("replacement at same path") << u"replacement"_s;
+        QTest::newRow("hydration in progress") << u"hydration"_s;
+        QTest::newRow("removed during propagation") << u"missing"_s;
+    }
+
+    void testObsoletePlaceholderChangesBeforeDeletion()
+    {
+        QFETCH(QString, scenario);
+        const auto path = u"A/desktop.ini"_s;
+        FakeFolder folder{FileInfo{}};
+        setupVfs(folder);
+        folder.localModifier().mkdir(u"A"_s);
+        folder.remoteModifier().mkdir(u"A"_s);
+        QVERIFY(folder.syncOnce());
+        QVERIFY(seedJournaledPlaceholder(folder, path));
+        const auto originalRecord = dbRecord(folder, path);
+        folder.syncJournal().commit(u"seed existing placeholder"_s);
+        const auto localPath = folder.localPath() + path;
+        const auto renamedPath = localPath + u".original"_s;
+        const auto replacementData = QByteArray("ordinary local replacement");
+
+        auto hydrationSource = folder.remoteModifier();
+        QPointer<FakeGetReply> pendingReply;
+        QProcess reader;
+        if (scenario == u"hydration") {
+            // Model a read served by the mock server even after discovery reported the entry absent.
+            folder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+                if (op != QNetworkAccessManager::GetOperation || !request.url().path().endsWith(path)) {
+                    return nullptr;
+                }
+                pendingReply = new FakeGetReply(hydrationSource, op, request, this, false);
+                return pendingReply;
+            });
+        }
+        folder.remoteModifier().remove(path);
+
+        bool aboutToRemove = false;
+        connect(&folder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&](const auto &items) {
+            const auto removal = std::find_if(items.cbegin(), items.cend(), [&](const auto &item) {
+                return item->_file == path && item->_instruction == CSYNC_INSTRUCTION_REMOVE && item->_direction == SyncFileItem::Down;
+            });
+            if (removal == items.cend()) {
+                return;
+            }
+            aboutToRemove = true;
+            if (scenario == u"replacement") {
+                QVERIFY(QFile::rename(localPath, renamedPath));
+                QFile replacement(localPath);
+                QVERIFY(replacement.open(QIODevice::WriteOnly));
+                QCOMPARE(replacement.write(replacementData), replacementData.size());
+            } else if (scenario == u"hydration") {
+                auto environment = QProcessEnvironment::systemEnvironment();
+                environment.insert(u"NC_TEST_FILE"_s, QDir::toNativeSeparators(localPath));
+                reader.setProcessEnvironment(environment);
+                reader.setProgram(u"powershell.exe"_s);
+                reader.setNativeArguments(
+                    uR"(-NoProfile -NonInteractive -Command "$ErrorActionPreference='Stop'; [IO.File]::ReadAllBytes($env:NC_TEST_FILE).Length")"_s);
+                reader.start();
+                QVERIFY(reader.waitForStarted());
+                QTRY_VERIFY_WITH_TIMEOUT(pendingReply, 5000);
+            } else {
+                QVERIFY(QFile::remove(localPath));
+            }
+        });
+
+        ItemCompletedSpy completed(folder);
+        const auto syncSucceeded = folder.syncOnce();
+        const auto recordAfterRemoval = dbRecord(folder, path);
+        const auto hydrationWasPending = pendingReply && reader.state() == QProcess::Running;
+        if (pendingReply) {
+            pendingReply->respond();
+        }
+        if (scenario == u"hydration") {
+            QTRY_COMPARE_WITH_TIMEOUT(reader.state(), QProcess::NotRunning, 10000);
+        }
+        QVERIFY(syncSucceeded);
+        QVERIFY(aboutToRemove);
+        const auto removal = completed.findItem(path);
+        QVERIFY(removal);
+        if (scenario == u"missing") {
+            QCOMPARE(removal->_status, SyncFileItem::Success);
+            CFVERIFY_GONE(folder, path);
+            return;
+        }
+
+        QVERIFY2(QFileInfo::exists(localPath), "Removal must preserve the replacement file or the placeholder being hydrated.");
+        QCOMPARE(removal->_status, SyncFileItem::FileIgnored);
+        QVERIFY(recordAfterRemoval.isValid());
+        QCOMPARE(recordAfterRemoval._inode, originalRecord._inode);
+        if (scenario == u"replacement") {
+            QVERIFY(placeholderState(renamedPath) & CF_PLACEHOLDER_STATE_PLACEHOLDER);
+            QFile replacement(localPath);
+            QVERIFY(replacement.open(QIODevice::ReadOnly));
+            QCOMPARE(replacement.readAll(), replacementData);
+        } else {
+            QVERIFY(hydrationWasPending);
+            QCOMPARE(reader.exitCode(), 0);
+            QCOMPARE(reader.readAllStandardOutput().trimmed(), QByteArray::number(originalRecord._fileSize));
+            QTRY_COMPARE(dbRecord(folder, path)._type, ItemTypeFile);
+            QVERIFY(QFileInfo::exists(localPath));
+        }
     }
 
     void syncFoldersOnDemand()

@@ -298,6 +298,7 @@ public:
     QByteArray _etag;
     qint64 _size = 0;
     quint64 _inode = 0;
+    quint64 _obsoletePlaceholderFileId = 0;
     QByteArray _fileId;
 
     // This is the value for the 'new' side, matching with _size and _modtime.

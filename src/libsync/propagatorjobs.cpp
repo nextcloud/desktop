@@ -152,6 +152,18 @@ void PropagateLocalRemove::start()
     const QString filename = propagator()->fullLocalPath(_item->_file);
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
+    if (_item->_obsoletePlaceholderFileId != 0) {
+        if (propagator()->localPathContainsSymlink(_item->_file) || propagator()->localFileNameClash(_item->_file)
+            || !propagator()->syncOptions()._vfs->removeEmptyPlaceholder(filename, _item->_obsoletePlaceholderFileId)) {
+            qCInfo(lcPropagateLocalRemove) << "Retaining an obsolete placeholder that could not be verified and removed" << filename;
+            propagator()->_journal->schedulePathForRemoteDiscovery(_item->_originalFile);
+            done(SyncFileItem::FileIgnored, {}, ErrorCategory::NoError);
+            return;
+        }
+        finishRemoval();
+        return;
+    }
+
     if (propagator()->localPathContainsSymlink(_item->_file)) {
         qCWarning(lcPropagateLocalRemove) << "Do not delete through a symlink, dropping the stale record" << _item->_file;
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
@@ -232,6 +244,11 @@ void PropagateLocalRemove::start()
             }
         }
     }
+    finishRemoval();
+}
+
+void PropagateLocalRemove::finishRemoval()
+{
     propagator()->reportProgress(*_item, 0);
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
         qCWarning(lcPropagateLocalRemove()) << "could not delete file from local DB" << _item->_originalFile;
