@@ -165,6 +165,14 @@ private Q_SLOTS:
         QFETCH(QStringList, expectedPaths);
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"].DS_Store"_s);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"]Thumbs.db"_s);
+        fakeFolder.syncEngine().excludedFiles().addManualExclude(u"ignore-me/"_s);
+        fakeFolder.remoteModifier().insert(u"desktop.ini"_s);
+        fakeFolder.remoteModifier().insert(u"A/Desktop.INI"_s);
+        fakeFolder.remoteModifier().insert(u"A/.DS_Store"_s);
+        fakeFolder.remoteModifier().insert(u"A/Thumbs.db"_s);
+        fakeFolder.remoteModifier().mkdir(u"A/ignore-me"_s);
         fakeFolder.remoteModifier().mkdir("A/sub1");
         fakeFolder.remoteModifier().mkdir("A/sub1/sub2");
         fakeFolder.remoteModifier().mkdir("A/sub1/sub2");
@@ -212,7 +220,7 @@ private Q_SLOTS:
 
         fakeFolder.syncJournal().clearFileTable(); // pretend we only need to fetch placeholders
 
-        account->listRemoteFolder(&lsPropPromise, remotePath, subPath, &fakeFolder.syncJournal());
+        account->listRemoteFolder(&lsPropPromise, remotePath, subPath, &fakeFolder.syncJournal(), &fakeFolder.syncEngine().excludedFiles());
         localEventLoop.exec();
 
         receivedPaths.sort();

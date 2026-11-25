@@ -5,6 +5,7 @@
  */
 #pragma once
 
+#include "csync_exclude.h"
 #include "ocsynclib.h"
 
 #include "result.h"
@@ -14,11 +15,12 @@
 
 #include "common/remoteinfo.h"
 
+#include <QMap>
 #include <QObject>
+#include <QPointer>
 #include <QScopedPointer>
 #include <QSharedPointer>
 #include <QString>
-#include <QMap>
 
 #include <deque>
 #include <memory>
@@ -82,6 +84,9 @@ struct OCSYNC_EXPORT VfsSetupParams
      * Note: The journal must live at least until the Vfs::stop() call.
      */
     SyncJournalDb *journal = nullptr;
+
+    /// The sync engine's live exclude rules for on-demand folder listings.
+    QPointer<ExcludedFiles> excludedFiles;
 
     /// Strings potentially passed on to the platform
     QString providerName;
