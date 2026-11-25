@@ -308,6 +308,59 @@
        </layout>
       </item>
       <item>
+       <widget class="QWidget" name="moveFilesToTrashVfsWarningBanner" native="true">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="moveFilesToTrashVfsWarningLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="moveFilesToTrashVfsWarningIcon">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="moveFilesToTrashVfsWarningLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QFrame" name="showInExplorerNavigationPaneSeparator">
         <property name="frameShape">
          <enum>QFrame::Shape::HLine</enum>
