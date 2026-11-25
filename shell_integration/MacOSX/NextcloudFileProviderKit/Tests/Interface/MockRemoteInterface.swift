@@ -1339,9 +1339,9 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         func generateReturn(files: [NKFile]) -> (
             account: String, files: [NKFile], data: AFDataResponse<Data>?, error: NKError
         ) {
-            if pagination &&
-                options.paginate &&
-                options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
+            if pagination,
+               options.paginate,
+               options.paginateToken != expectedEnumerationPaginationTokens[account.ncKitAccount]
             {
                 return (account.ncKitAccount, [], nil, .invalidData)
             }
