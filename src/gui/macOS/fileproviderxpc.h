@@ -33,7 +33,7 @@ public:
     explicit FileProviderXPC(QObject *parent = nullptr);
     ~FileProviderXPC() override;
 
-    [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, bool retry = true, bool reconfigureOnFail = true);
+    [[nodiscard]] bool fileProviderDomainReachable(const QString &fileProviderDomainIdentifier);
     [[nodiscard]] bool processFileIdsChanged(const QString &fileProviderDomainIdentifier, const QList<qint64> &fileIds) const;
 
 public Q_SLOTS:
@@ -57,7 +57,8 @@ private:
     void disconnectFromFileProviderDomains();
     void disconnectFromFileProviderDomain(const QString &fileProviderDomainIdentifier);
     //! Replace the connection to a domain's extension and send it the account and the ignore list again.
-    void reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier);
+    //! Returns whether the extension answered on the new connection.
+    bool reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier);
 
     //! keys are File Provider domain identifiers
     FileProviderXPCUtils::ClientCommunicationConnections _clientCommConnections;

@@ -97,31 +97,31 @@ void FileProviderXPC::checkFileProviderDomains()
     }
 }
 
-void FileProviderXPC::reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier)
+bool FileProviderXPC::reconnectFileProviderDomain(const QString &fileProviderDomainIdentifier)
 {
     if (!FileProvider::available()) {
-        return;
+        return false;
     }
 
     const auto accountState = AccountManager::instance()->accountFromFileProviderDomainIdentifier(fileProviderDomainIdentifier);
 
     if (!accountState || !accountState->account()) {
         qCWarning(lcFileProviderXPC) << "Could not get account for domain" << fileProviderDomainIdentifier << "during reconnect.";
-        return;
+        return false;
     }
 
     const auto domain = (NSFileProviderDomain *)(FileProvider::instance()->domainManager()->domainForAccount(accountState->account().data()));
 
     if (domain == nil) {
         qCWarning(lcFileProviderXPC) << "No file provider domain" << fileProviderDomainIdentifier << "to reconnect.";
-        return;
+        return false;
     }
 
     const auto manager = [NSFileProviderManager managerForDomain:domain];
 
     if (manager == nil) {
         qCWarning(lcFileProviderXPC) << "No file provider manager for domain" << fileProviderDomainIdentifier << "during reconnect.";
-        return;
+        return false;
     }
 
     const auto fpServices = FileProviderXPCUtils::getFileProviderServices(@[ manager ]);
@@ -137,6 +137,8 @@ void FileProviderXPC::reconnectFileProviderDomain(const QString &fileProviderDom
     if (!clientCommConnections.isEmpty()) {
         setIgnoreList();
     }
+
+    return clientCommConnections.contains(fileProviderDomainIdentifier);
 }
 
 void FileProviderXPC::authenticateFileProviderDomains()
@@ -222,7 +224,7 @@ void FileProviderXPC::slotAccountStateChanged(const AccountState::State state) c
     // In the other states File Provider will by itself figure out the connection issue.
 }
 
-bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDomainIdentifier, const bool retry, const bool reconfigureOnFail)
+bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDomainIdentifier)
 {
     const auto lastUnreachableTime = _unreachableFileProviderDomains.value(fileProviderDomainIdentifier);
     if (lastUnreachableTime.isValid() && lastUnreachableTime.secsTo(QDateTime::currentDateTime()) < ::reachableRetryTimeout) {
@@ -248,24 +250,20 @@ bool FileProviderXPC::fileProviderDomainReachable(const QString &fileProviderDom
 
     if (response) {
         _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
-    } else {
-        qCWarning(lcFileProviderXPC) << "Could not reach file provider domain service.";
-
-        if (reconfigureOnFail) {
-            qCWarning(lcFileProviderXPC) << "Could not reach service of file provider domain"
-                                         << fileProviderDomainIdentifier
-                                         << "going to attempt reconfiguring interface";
-            reconnectFileProviderDomain(fileProviderDomainIdentifier);
-        }
-
-        if (retry) {
-            qCWarning(lcFileProviderXPC) << "Could not reach file provider domain" << fileProviderDomainIdentifier << ", retrying.";
-            return fileProviderDomainReachable(fileProviderDomainIdentifier, false, false);
-        } else {
-            _unreachableFileProviderDomains.insert(fileProviderDomainIdentifier, QDateTime::currentDateTime());
-        }
+        return true;
     }
-    return response;
+
+    qCWarning(lcFileProviderXPC) << "Could not reach service of file provider domain" << fileProviderDomainIdentifier
+                                 << "going to attempt reconfiguring interface";
+    // The extension just answered on the new connection. A ping now would queue behind the account setup sent with it and time out.
+    if (reconnectFileProviderDomain(fileProviderDomainIdentifier)) {
+        _unreachableFileProviderDomains.remove(fileProviderDomainIdentifier);
+        return true;
+    }
+
+    // Pinging the old connection again would only wait for the extension which just did not answer.
+    _unreachableFileProviderDomains.insert(fileProviderDomainIdentifier, QDateTime::currentDateTime());
+    return false;
 }
 
 std::optional<bool> FileProviderXPC::fileProviderDomainHasDirtyUserData(const QString &fileProviderDomainIdentifier) const

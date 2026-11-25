@@ -263,6 +263,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
+@property (nonatomic, assign) BOOL busyAfterAccountConfiguration;
 @property (nonatomic, assign) BOOL passwordDeletionReply;
 @property (nonatomic, assign) BOOL suppressPasswordDeletionReply;
 @property (nonatomic, assign) NSTimeInterval passwordDeletionReplyDelay;
@@ -293,6 +294,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
                        userAgent:(NSString *)userAgent
 {
     self.serverUrl = serverUrl;
+    self.suppressDomainIdentifierReply = self.busyAfterAccountConfiguration;
 }
 
 - (void)removeAccountConfig
@@ -1536,6 +1538,21 @@ private Q_SLOTS:
 
         // With a nil domain, macOS hands out the default domain's manager and launches an extension for it.
         QCOMPARE(domainManagerLookupCount, 0);
+    }
+
+    void anExtensionBusyWithTheNewAccountIsReachable()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+        extension.busyAfterAccountConfiguration = YES;
+
+        OCC::Mac::FileProviderXPC owner;
+
+        QVERIFY(owner.fileProviderDomainReachable(u"registered-domain"_s));
+        QCOMPARE(QString::fromNSString(extension.serverUrl), u"https://cloud.example.test"_s);
     }
 
     void concurrentServiceLookupsCanBeCollected()
