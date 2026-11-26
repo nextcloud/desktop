@@ -30,6 +30,8 @@
 
 #include <deque>
 
+class TestNextcloudPropagator;
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
@@ -425,6 +427,8 @@ class PropagateUploadFileCommon;
 class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
 {
     Q_OBJECT
+    friend class ::TestNextcloudPropagator;
+
 public:
     SyncJournalDb *const _journal;
     bool _finishedEmited = false; // used to ensure that finished is only emitted once

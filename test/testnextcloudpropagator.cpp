@@ -34,6 +34,33 @@ class TestNextcloudPropagator : public QObject
 {
     Q_OBJECT
 
+    static SyncFileItemPtr item(const QString &file, const ItemType type, const SyncInstructions instruction, const SyncFileItem::Direction direction)
+    {
+        auto syncItem = SyncFileItemPtr::create();
+        syncItem->_file = file;
+        syncItem->_type = type;
+        syncItem->_instruction = instruction;
+        syncItem->_direction = direction;
+        return syncItem;
+    }
+
+    static SyncFileItemVector sortedItems(QList<SyncFileItemPtr> items)
+    {
+        std::sort(items.begin(), items.end());
+        return items;
+    }
+
+    static std::pair<SyncInstructions, SyncFileItem::Direction> itemState(const SyncFileItemVector &items, const QString &file)
+    {
+        const auto found = std::ranges::find_if(items, [&file](const auto &syncItem) {
+            return syncItem->_file == file;
+        });
+        if (found == items.cend()) {
+            return {};
+        }
+        return {SyncInstructions{(*found)->_instruction}, SyncFileItem::Direction{(*found)->_direction}};
+    }
+
 private Q_SLOTS:
     void initTestCase()
     {
@@ -120,6 +147,93 @@ private Q_SLOTS:
         QVERIFY(!exceptionParsed.second.isEmpty());
         // verify buffer is not changed
         QCOMPARE(reply->readAll().size(), body.size());
+    }
+
+    void testAdjustDeletedFolders_newFolderInRemovedTree_removedParentsUploaded()
+    {
+        auto items = sortedItems({
+            item(u"A"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/B"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/B/new"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up),
+            item(u"A/Bx"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/file"_s, ItemTypeFile, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A2"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+        });
+
+        OwncloudPropagator::adjustDeletedFoldersWithNewChildren(items);
+
+        QCOMPARE(itemState(items, u"A"_s), std::pair(CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+        QCOMPARE(itemState(items, u"A/B"_s), std::pair(CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+        QCOMPARE(itemState(items, u"A/B/new"_s), std::pair(CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+        QCOMPARE(itemState(items, u"A/Bx"_s), std::pair(CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down));
+        QCOMPARE(itemState(items, u"A/file"_s), std::pair(CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down));
+        QCOMPARE(itemState(items, u"A2"_s), std::pair(CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down));
+    }
+
+    void testAdjustDeletedFolders_topLevelFolderUnchanged_removedParentsUploaded()
+    {
+        // Unchanged folders are not part of the sync items, here the top-level folder "A"
+        auto items = sortedItems({
+            item(u"A/B"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/B/C"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/B/C/new"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up),
+        });
+
+        OwncloudPropagator::adjustDeletedFoldersWithNewChildren(items);
+
+        QCOMPARE(itemState(items, u"A/B"_s), std::pair(CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+        QCOMPARE(itemState(items, u"A/B/C"_s), std::pair(CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+    }
+
+    void testAdjustDeletedFolders_newFileInRemovedTree_unchanged()
+    {
+        auto items = sortedItems({
+            item(u"A"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down),
+            item(u"A/new.txt"_s, ItemTypeFile, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up),
+        });
+
+        OwncloudPropagator::adjustDeletedFoldersWithNewChildren(items);
+
+        QCOMPARE(itemState(items, u"A"_s), std::pair(CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Down));
+    }
+
+    void testAdjustDeletedFolders_parentRemovedOnServer_unchanged()
+    {
+        // Only folders that are about to be removed locally are kept
+        auto items = sortedItems({
+            item(u"A"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Up),
+            item(u"A/new"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up),
+        });
+
+        OwncloudPropagator::adjustDeletedFoldersWithNewChildren(items);
+
+        QCOMPARE(itemState(items, u"A"_s), std::pair(CSYNC_INSTRUCTION_REMOVE, SyncFileItem::Up));
+    }
+
+    void testAdjustDeletedFolders_manyNewFolders_benchmark()
+    {
+        // A new local tree with many folders, like a cloned repository with its build output
+        constexpr auto folderCount = 5000;
+        constexpr auto filesPerFolder = 4;
+        constexpr auto timeLimitMs = 1000;
+
+        auto list = QList<SyncFileItemPtr>{item(u"Repo"_s, ItemTypeDirectory, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up)};
+        for (auto folder = 0; folder < folderCount; ++folder) {
+            const auto folderPath = u"Repo/dir%1"_s.arg(folder);
+            list.append(item(folderPath, ItemTypeDirectory, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+            for (auto file = 0; file < filesPerFolder; ++file) {
+                list.append(item(u"%1/file%2"_s.arg(folderPath).arg(file), ItemTypeFile, CSYNC_INSTRUCTION_NEW, SyncFileItem::Up));
+            }
+        }
+        auto items = sortedItems(list);
+
+        QElapsedTimer timer;
+        timer.start();
+        OwncloudPropagator::adjustDeletedFoldersWithNewChildren(items);
+        const auto elapsedMs = timer.elapsed();
+
+        QTest::setBenchmarkResult(static_cast<qreal>(elapsedMs), QTest::WalltimeMilliseconds);
+        QVERIFY2(elapsedMs < timeLimitMs, qPrintable(u"took %1 ms for %2 items"_s.arg(elapsedMs).arg(items.size())));
     }
 
 #ifdef HAVE_QHTTPSERVER
