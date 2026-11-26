@@ -109,6 +109,23 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         return metadata
     }
 
+    private func seedSplitDAVFilesRoot() {
+        let account = Self.account
+        rootItem.identifier = "server-root"
+        rootItem.name = account.id
+        rootItem.parent = MockRemoteItem(
+            identifier: "files-collection",
+            name: "files",
+            remotePath: account.serverUrl + String(Account.webDavFilesUrlSuffix.dropLast()),
+            directory: true,
+            account: account.ncKitAccount,
+            username: account.username,
+            userId: account.id,
+            serverUrl: account.serverUrl
+        )
+        seed(rootItem, visitedDirectory: true)
+    }
+
     private func makeFolder(name: String, parent: MockRemoteItem, etag: String) -> MockRemoteItem {
         let folder = MockRemoteItem(
             identifier: name,
@@ -165,6 +182,55 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
     }
 
     // MARK: - Tests
+
+    func testWorkingSetItemsOmitTheServerIdentifierForTheFilesRoot() async throws {
+        let database = Self.dbManager.ncDatabase()
+        defer { withExtendedLifetime(database) {} }
+        seedSplitDAVFilesRoot()
+        let folder = makeFolder(name: Self.account.id, parent: rootItem, etag: "folder-v1")
+        seed(folder, visitedDirectory: true)
+
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let enumerator = try Enumerator(
+            enumeratedItemIdentifier: .workingSet,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+        let observer = MockEnumerationObserver(enumerator: enumerator)
+        observer.suggestedPageSize = 1
+        try await observer.enumerateItems()
+
+        XCTAssertEqual(observer.items.map(\.itemIdentifier.rawValue), [folder.identifier])
+        XCTAssertEqual(observer.items.first?.parentItemIdentifier, .rootContainer)
+        XCTAssertEqual(remote.readOperationCount, 0)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: rootItem.identifier)?.visitedDirectory, true)
+    }
+
+    func testWorkingSetChangesOmitTheServerIdentifierForTheFilesRoot() async throws {
+        let database = Self.dbManager.ncDatabase()
+        defer { withExtendedLifetime(database) {} }
+        seedSplitDAVFilesRoot()
+        let parent = makeFolder(name: "Test", parent: rootItem, etag: "test-v1")
+        let folder = makeFolder(name: "e2eetests", parent: parent, etag: "folder-v1")
+        let file = makeFile(name: "report.txt", parent: folder, etag: "file-v1")
+        seed(parent, visitedDirectory: true)
+        seed(folder, visitedDirectory: true)
+        seed(file, downloaded: true)
+        rootItem.versionIdentifier = "root-v2"
+        file.versionIdentifier = "file-v2"
+        file.modificationDate = Date()
+
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let observer = try await runWorkingSetChanges(remote)
+
+        let changedFile = observer.changedItems.first { $0.itemIdentifier.rawValue == file.identifier } as? Item
+        XCTAssertEqual(changedFile?.metadata.etag, "file-v2")
+        XCTAssertFalse(reportedIds(observer).contains(rootItem.identifier))
+        XCTAssertEqual(observer.finishes.last?.moreComing, false)
+        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: rootItem.identifier)?.etag, "root-v2")
+    }
 
     /// Baseline (sanity): a downloaded (materialized) file that changed on the server is reported.
     /// Materialized files are PROPFIND'd at `.target` depth and re-stamped every scan, so this is
