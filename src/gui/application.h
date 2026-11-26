@@ -98,7 +98,11 @@ public Q_SLOTS:
     void tryTrayAgain();
 
 protected:
-    void parseOptions(const QStringList &);
+    enum class OptionSource {
+        Startup,
+        Forwarded,
+    };
+    void parseOptions(const QStringList &options, OptionSource source);
     void setupTranslations();
     void setupLogging();
 

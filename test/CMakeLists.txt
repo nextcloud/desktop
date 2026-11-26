@@ -63,6 +63,22 @@ endif()
 
 nextcloud_add_test(Utility)
 
+if(LINUX)
+    add_executable(LinuxSingleApplicationTest testlinuxsingleapplication.cpp)
+    target_include_directories(LinuxSingleApplicationTest PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    target_link_libraries(LinuxSingleApplicationTest PRIVATE Qt::Core Qt::Network Qt::Test KDAB::kdsingleapplication)
+    target_compile_definitions(LinuxSingleApplicationTest PRIVATE QT_NO_KEYWORDS)
+    set_target_properties(LinuxSingleApplicationTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY} FOLDER Tests)
+    add_test(NAME LinuxSingleApplicationTest COMMAND LinuxSingleApplicationTest)
+
+    if(NOT KF6DBusAddons_FOUND)
+        nextcloud_add_test(ApplicationOptions)
+        add_dependencies(ApplicationOptionsTest nextcloud)
+        target_compile_definitions(ApplicationOptionsTest PRIVATE NEXTCLOUD_EXECUTABLE_PATH="$<TARGET_FILE:nextcloud>")
+        set_tests_properties(ApplicationOptionsTest PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+    endif()
+endif()
+
 if (APPLE)
     add_subdirectory(macOS)
 endif()

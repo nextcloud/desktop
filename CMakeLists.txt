@@ -264,7 +264,7 @@ if(BUILD_CLIENT)
     find_package(ZLIB REQUIRED)
     find_package(SQLite3 3.9.0 REQUIRED)
 
-    find_package(KDSingleApplication-qt6 REQUIRED)
+    find_package(KDSingleApplication-qt6 1.1 REQUIRED)
 
     if(NOT WIN32 AND NOT APPLE)
         find_package(PkgConfig REQUIRED)
