@@ -1005,7 +1005,7 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1368"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1366"/>
         <source>Connection settings</source>
         <translation>Forbindelsesindstillinger</translation>
     </message>
@@ -1016,25 +1016,25 @@ Skal kontoen importeres?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2119"/>
         <source>Reset File Provider Domain</source>
         <translation>Nulstil File Provider-domæne</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1582"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1580"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation>Log ud, log ind igen, eller fjern kontoen fra klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <source>Log out</source>
         <translation>Log ud</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Remove account</source>
         <translation>Fjern konto</translation>
     </message>
@@ -1046,8 +1046,8 @@ Skal kontoen importeres?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2120"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
@@ -1245,38 +1245,38 @@ Vent på den nye synkronisering, og krypter derefter mappen.</translation>
         <translation>Giv adgang til synkroniseringsmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Wrong Folder</source>
         <translation>Forkert mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Vælg den oprindelige synkroniseringsmappe: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1069"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Bookmark Error</source>
         <translation>Fejl ved bogmærke</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Kunne ikke oprette et sikkerhedsbogmærke for mappen. Prøv igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Kunne ikke åbne sikkerhedsbogmærket. Prøv igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1179"/>
         <source>Disable virtual file support?</source>
         <translation>Deaktiver understøttelse af virtuelle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1180"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1289,150 +1289,150 @@ Den eneste fordel ved at deaktivere understøttelsen af virtuelle filer er, at f
 Denne handling afbryder alle igangværende synkroniseringer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1189"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1187"/>
         <source>Disable support</source>
         <translation>Deaktiver understøttelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Huskesætning til end-to-end-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>For at beskytte din kryptografiske identitet krypterer vi den med en huskesætning på 12 ord fra en ordbog. Skriv den ned, og opbevar den sikkert. Du får brug for den, når du skal konfigurere synkronisering af krypterede mapper på dine andre enheder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Glem end-to-end-krypteringen på denne enhed</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Vil du glemme indstillingerne for ende-til-ende-kryptering for %1 på denne enhed?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Hvis du glemmer ende-til-ende-krypteringen, fjernes de følsomme data og alle krypterede filer fra denne enhed.&lt;br&gt;De krypterede filer bliver dog på serveren og på dine andre enheder, hvis de er konfigureret.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1412"/>
         <source>Sync Running</source>
         <translation>Synkronisering i gang</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1413"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Synkroniseringen er i gang.&lt;br/&gt;Vil du afslutte den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation>%1 i brug</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation>Forbundet til %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Log in</source>
         <translation>Log ind</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Leave share</source>
         <translation>Forlad deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1581"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove this public share connection from the client.</source>
         <translation>Fjern denne offentlige deling fra klienten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1769"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1767"/>
         <source>Migrate certificate to a new one</source>
         <translation>Migrer certifikatet til et nyt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Der er mapper, som er vokset ud over %1MB: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1951"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1949"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Ende-til-ende-kryptering er initialiseret på kontoen med en anden enhed.&lt;br&gt;Angiv din huskesætning for også at synkronisere de krypterede mapper på denne enhed.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Kontoen understøtter ende-til-ende-kryptering, men den skal konfigureres først.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2105"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation>Dette nulstiller File Provider for %1 til den oprindelige tilstand. Brug det, når kontoens filer ser ud til at sidde fast, mangle eller ikke være synkroniseret i Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2111"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2109"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation>Placeringen forsvinder kortvarigt fra Finder og dukker op igen. Lokale ændringer, der endnu ikke er overført, bevares og vises i en mappe i Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2116"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2114"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation>Nulstil File Provider-domænet for denne konto?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2017"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>File Provider-udvidelsen understøtter endnu ikke ende-til-ende-kryptering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2026"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>Set up encryption</source>
         <translation>Konfigurer kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>Connected to %1.</source>
         <translation>Forbundet til %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Serveren %1 er midlertidigt utilgængelig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Serveren %1 er i vedligeholdelsestilstand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>Signed out from %1.</source>
         <translation>Logget ud fra %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Der er mapper, som ikke blev synkroniseret, fordi de er for store: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1862"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Der er mapper, som ikke blev synkroniseret, fordi de er eksterne lagre: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1865"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Der er mapper, som ikke blev synkroniseret, fordi de er for store eller eksterne lagre: </translation>
     </message>
@@ -1463,49 +1463,49 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
         <translation>&lt;p&gt;Vil du virkelig stoppe synkroniseringen af mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Bemærk:&lt;/b&gt; Dette sletter &lt;b&gt;ikke&lt;/b&gt; nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1481"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>%1 af %2 er i brug</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serverversion %1 understøttes ikke! Fortsæt på egen risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Serveren %1 bliver i øjeblikket omdirigeret, eller din forbindelse går gennem en captive portal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1547"/>
         <source>Connecting to %1 …</source>
         <translation>Forbinder til %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Unable to connect to %1.</source>
         <translation>Kan ikke oprette forbindelse til %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1556"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Serverkonfigurationsfejl: %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1567"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Du skal acceptere tjenestevilkårene på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1570"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1-forbindelse konfigureret.</translation>
     </message>
@@ -1852,31 +1852,36 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
         <translation>Flyt fjernede filer til papirkurven</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="338"/>
+        <location filename="../src/gui/advancedsettings.ui" line="353"/>
+        <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="391"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Vis synkroniseringsmapper i &amp;Stifinders navigationsrude</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="377"/>
+        <location filename="../src/gui/advancedsettings.ui" line="430"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Rediger &amp;ignorerede filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
+        <location filename="../src/gui/advancedsettings.ui" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="420"/>
         <source>Create Debug Archive</source>
         <translation>Opret fejlsøgningsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="234"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Avanceret</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="428"/>
         <source>Zip Archives</source>
         <translation>Zip-arkiver</translation>
     </message>
@@ -1891,12 +1896,12 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
         <translation>Kunne ikke få adgang til den valgte placering. Prøv igen, eller vælg en anden placering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="441"/>
         <source>Debug Archive Created</source>
         <translation>Fejlsøgningsarkiv oprettet</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="442"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Fjern følsomme oplysninger, før du deler arkivet! Fejlsøgningsarkivet er oprettet i %1</translation>
     </message>
@@ -2545,23 +2550,23 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="581"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Serverfejl: PROPFIND-svaret er ikke i XML-format!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="627"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Serveren returnerede et uventet svar, som ikke kunne læses. Kontakt din serveradministrator.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="658"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Fejl i opsætningen af krypterede metadata!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="691"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Fejl i opsætningen af krypterede metadata: Serverens første signatur er tom.</translation>
     </message>
@@ -2584,12 +2589,12 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
         <translation>Mappen blev ikke fundet: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnavnets kodning er ugyldig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="428"/>
         <source>Error while reading directory %1</source>
         <translation>Fejl ved læsning af mappen %1</translation>
     </message>
@@ -4650,7 +4655,7 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
         <translation>Kunne ikke hente registreringsoplysninger. Fejl: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="466"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
         <translation>Kan ikke fjerne den lokale kopi bag en pladsholder, fordi filen er ændret</translation>
     </message>
@@ -4888,48 +4893,53 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
         <translation>Kunne ikke overføre filen, fordi den er åben i &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1412"/>
+        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <source>Could not read local file. It will be checked again on a later sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1421"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fejl under sletning af filposten %1 fra databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1730"/>
+        <location filename="../src/libsync/discovery.cpp" line="2253"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Flyttet til ugyldigt mål, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2091"/>
+        <location filename="../src/libsync/discovery.cpp" line="2100"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Kan ikke ændre krypteret element, fordi det valgte certifikat ikke er gyldigt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2161"/>
+        <location filename="../src/libsync/discovery.cpp" line="2170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoreret på grund af blokeringslisten &quot;vælg, hvad der skal synkroniseres&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2195"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje undermapper til denne mappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2204"/>
+        <location filename="../src/libsync/discovery.cpp" line="2213"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tilladt, fordi du ikke har rettigheder til at tilføje filer i denne mappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2221"/>
+        <location filename="../src/libsync/discovery.cpp" line="2230"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Det er ikke tilladt at overføre denne fil, fordi den er skrivebeskyttet på serveren, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2258"/>
+        <location filename="../src/libsync/discovery.cpp" line="2267"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Det er ikke tilladt at fjerne, gendanner</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2431"/>
+        <location filename="../src/libsync/discovery.cpp" line="2440"/>
         <source>Error while reading the database</source>
         <translation>Fejl under læsning af databasen</translation>
     </message>
@@ -5061,39 +5071,39 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>could not delete file %1, error: %2</source>
         <translation>kunne ikke slette fil %1, fejl: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="292"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Mappen %1 kan ikke oprettes på grund af en navnekonflikt med en lokal fil eller mappe!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="324"/>
         <source>Could not create folder %1</source>
         <translation>Kunne ikke oprette mappen %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="332"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="336"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="342"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Mappen %1 kan ikke gøres skrivebeskyttet: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>unknown exception</source>
         <translation>ukendt fejl</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="377"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="381"/>
         <source>Error updating metadata: %1</source>
         <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="380"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="384"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er i brug</translation>
     </message>
@@ -5106,14 +5116,13 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
         <translation>Kunne ikke fjerne %1 på grund af lokal filnavnskonflikt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="215"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="225"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Midlertidig fejl ved fjernelse af et lokalt element, der er fjernet fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="234"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="238"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
@@ -5121,49 +5130,49 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="451"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="455"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Mappen %1 kan ikke omdøbes på grund af en navnekonflikt med en lokal fil eller mappe!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="459"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="463"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Filen %1 er hentet, men gav en navnekonflikt med en lokal fil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="648"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="652"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Kunne ikke hente filen %1 fra den lokale database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="572"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="635"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="576"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="639"/>
         <source>Error setting pin state</source>
         <translation>Fejl ved angivelse af pin-status</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="585"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="589"/>
         <source>Error updating metadata: %1</source>
         <translation>Fejl under opdatering af metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="588"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="592"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 er aktuelt i brug</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="625"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="629"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Kunne ikke føre omdøbningen af mappen videre i hierarkiet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="630"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="634"/>
         <source>Failed to rename file</source>
         <translation>Kunne ikke omdøbe fil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="653"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="657"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunne ikke slette filposten %1 fra den lokale database</translation>
     </message>
@@ -7062,14 +7071,14 @@ Serveren svarede med fejl: %2</translation>
         <translation>Ny mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="148"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="195"/>
         <source>Failed to create debug archive</source>
         <translation>Fejlsøgningsarkivet kunne ikke oprettes</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="149"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="196"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Kunne ikke oprette fejlsøgningsarkiv på den valgte placering!</translation>
     </message>

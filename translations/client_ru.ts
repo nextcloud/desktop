@@ -1005,7 +1005,7 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1368"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1366"/>
         <source>Connection settings</source>
         <translation>Настройки подключения</translation>
     </message>
@@ -1016,25 +1016,25 @@ Should the account be imported?</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2119"/>
         <source>Reset File Provider Domain</source>
         <translation>Сбросить домен поставщика файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1582"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1580"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation>Выйдите из учётной записи, войдите снова или удалите её из клиента.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Remove account</source>
         <translation>Удалить учётную запись</translation>
     </message>
@@ -1046,8 +1046,8 @@ Should the account be imported?</source>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2120"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1245,38 +1245,38 @@ Wait for the new sync, then encrypt it.</source>
         <translation>Предоставить доступ к папке синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Wrong Folder</source>
         <translation>Неверная папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Выберите исходную папку синхронизации: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1069"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Bookmark Error</source>
         <translation>Ошибка закладки</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Не удалось создать безопасную закладку для папки. Повторите попытку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Не удалось обработать безопасную закладку. Повторите попытку.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1179"/>
         <source>Disable virtual file support?</source>
         <translation>Отключить поддержку виртуальных файлов?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1180"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1289,150 +1289,150 @@ This action will abort any currently running synchronization.</source>
 Текущая синхронизация будет прервана.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1189"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1187"/>
         <source>Disable support</source>
         <translation>Отключить поддержку</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Мнемоническая фраза сквозного шифрования</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Для защиты личного идентификатора сквозного шифрования используется мнемоническая фраза из двенадцати слов. Запишите её и храните в надёжном месте: она понадобится, чтобы настроить синхронизацию зашифрованных папок на других ваших устройствах.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Удалить параметры сквозного шифрования на этом устройстве</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Забыть параметры сквозного шифрования для %1 на этом устройстве?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Если забыть сквозное шифрование, с этого устройства будут удалены конфиденциальные данные и все зашифрованные файлы.&lt;br&gt;На сервере и на других ваших устройствах (если они настроены) зашифрованные файлы останутся.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1412"/>
         <source>Sync Running</source>
         <translation>Синхронизация запущена</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1413"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Выполняется синхронизация.&lt;br/&gt;Действительно прервать операцию?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation>Используется %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation>Подключено к %1 (%2).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Log in</source>
         <translation>Войти</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Leave share</source>
         <translation>Покинуть общий ресурс</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1581"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove this public share connection from the client.</source>
         <translation>Удалить из клиента это подключение к общему ресурсу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1769"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1767"/>
         <source>Migrate certificate to a new one</source>
         <translation>Перенести сертификат на новый</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Обнаружены папки, размер которых превысил %1 МБ: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1951"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1949"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Для этой учётной записи сквозное шифрование уже было настроено на другом устройстве.&lt;br&gt;Чтобы зашифрованные папки синхронизировались и на этом устройстве, введите мнемоническую фразу из двенадцати слов.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Эта учётная запись поддерживает сквозное шифрование, но его нужно сначала настроить.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2105"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation>Поставщик файлов для %1 будет сброшен до исходного состояния. Используйте это, если файлы этой учётной записи в Finder зависли, пропали или не синхронизируются.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2111"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2109"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation>Расположение ненадолго исчезнет из Finder и снова появится. Локальные изменения, которые ещё не загружены на сервер, будут сохранены и показаны в папке в Finder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2116"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2114"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation>Сбросить домен Поставщика файлов для этой учётной записи?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2017"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>Расширение Поставщика файлов пока не поддерживает сквозное шифрование.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2026"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>Set up encryption</source>
         <translation>Настроить шифрование</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>Connected to %1.</source>
         <translation>Подключено к %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Сервер %1 временно недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Сервер %1 в настоящее время находится в режиме технического обслуживания.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>Signed out from %1.</source>
         <translation>Выполнен выход из %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Есть папки, которые не синхронизированы, так как их размер превышает установленное ограничение: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1862"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как они являются внешними хранилищами: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1865"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как их размер превышает установленное ограничение или они являются внешними хранилищами: </translation>
     </message>
@@ -1463,49 +1463,49 @@ This action will abort any currently running synchronization.</source>
         <translation>&lt;p&gt;Действительно остановить синхронизацию папки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; файлы при этом &lt;b&gt;не&lt;/b&gt; удаляются.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1481"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>Используется %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Сервер версии %1 не поддерживается. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>Сервер %1 перенаправляет запросы, или для доступа в Интернет требуется войти на специальной странице (captive portal).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1547"/>
         <source>Connecting to %1 …</source>
         <translation>Подключение к %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Unable to connect to %1.</source>
         <translation>Не удалось подключиться к %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1556"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Ошибка конфигурации сервера: %1 по адресу %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1567"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>Необходимо принять условия использования: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1570"/>
         <source>No %1 connection configured.</source>
         <translation>Нет настроенного подключения %1.</translation>
     </message>
@@ -1852,31 +1852,36 @@ This action will abort any currently running synchronization.</source>
         <translation>Перемещать удалённые файлы в корзину</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="338"/>
+        <location filename="../src/gui/advancedsettings.ui" line="353"/>
+        <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="391"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>Показывать папки синхронизации на панели навигации &amp;Explorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="377"/>
+        <location filename="../src/gui/advancedsettings.ui" line="430"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Изменить &amp;игнорируемые файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
+        <location filename="../src/gui/advancedsettings.ui" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="420"/>
         <source>Create Debug Archive</source>
         <translation>Создать архив отладки</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="234"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="428"/>
         <source>Zip Archives</source>
         <translation>Архивы ZIP</translation>
     </message>
@@ -1891,12 +1896,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Не удалось получить доступ к выбранному местоположению. Повторите попытку или выберите другое.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="441"/>
         <source>Debug Archive Created</source>
         <translation>Архив отладки создан</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="442"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Прежде чем делиться архивом, скройте в нём конфиденциальную информацию! Архив отладки создан: %1</translation>
     </message>
@@ -2545,23 +2550,23 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="581"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Ошибка сервера: ответ PROPFIND не в формате XML.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="627"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Сервер вернул неожиданный ответ, который невозможно прочитать. Обратитесь к администратору сервера.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="658"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Ошибка настройки зашифрованных метаданных!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="691"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Ошибка настройки зашифрованных метаданных: первоначальная подпись с сервера пуста.</translation>
     </message>
@@ -2584,12 +2589,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Папка «%1» не найдена</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>Filename encoding is not valid</source>
         <translation>Некорректная кодировка имени файла</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="428"/>
         <source>Error while reading directory %1</source>
         <translation>Не удалось прочитать содержимое папки «%1»</translation>
     </message>
@@ -4650,7 +4655,7 @@ Note that using any logging command line options will override this setting.</so
         <translation>Не удалось получить сведения о регистрации. Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="466"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
         <translation>Невозможно заменить файл файлом-заполнителем, так как файл изменился</translation>
     </message>
@@ -4888,48 +4893,53 @@ Note that using any logging command line options will override this setting.</so
         <translation>Не удалось загрузить файл, так как он открыт в «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1412"/>
+        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <source>Could not read local file. It will be checked again on a later sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1421"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Не удалось удалить из базы данных запись %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1730"/>
+        <location filename="../src/libsync/discovery.cpp" line="2253"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Перемещено в некорректное расположение, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2091"/>
+        <location filename="../src/libsync/discovery.cpp" line="2100"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Не удалось изменить зашифрованный элемент, поскольку выбранный сертификат недействителен.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2161"/>
+        <location filename="../src/libsync/discovery.cpp" line="2170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорируется из-за списка исключений выборочной синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2195"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Недостаточно прав для создания вложенных папок</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2204"/>
+        <location filename="../src/libsync/discovery.cpp" line="2213"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Недостаточно прав для создания файлов в этой папке</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2221"/>
+        <location filename="../src/libsync/discovery.cpp" line="2230"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Передача этого файла на сервер не разрешена, так как на сервере он доступен только для чтения, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2258"/>
+        <location filename="../src/libsync/discovery.cpp" line="2267"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Удаление недопустимо, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2431"/>
+        <location filename="../src/libsync/discovery.cpp" line="2440"/>
         <source>Error while reading the database</source>
         <translation>Ошибка чтения базы данных</translation>
     </message>
@@ -5061,39 +5071,39 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>could not delete file %1, error: %2</source>
         <translation>не удалось удалить файл «%1», ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="292"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>Не удалось создать папку «%1»: имя конфликтует с именем локального файла или папки.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="324"/>
         <source>Could not create folder %1</source>
         <translation>Не удалось создать папку «%1»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="332"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="336"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="342"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>Не удалось сделать папку «%1» доступной только для чтения: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>unknown exception</source>
         <translation>Неизвестное исключение</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="377"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="381"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="380"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="384"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл «%1» используется</translation>
     </message>
@@ -5106,14 +5116,13 @@ Note that using any logging command line options will override this setting.</so
         <translation>Не удалось удалить «%1» из-за локального конфликта имён</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="215"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="225"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Временная ошибка при удалении локального элемента, удалённого на сервере.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="234"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="238"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не удалось удалить запись о файле %1 из локальной базы данных</translation>
     </message>
@@ -5121,49 +5130,49 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="451"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="455"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Не удалось переименовать папку «%1»: имя конфликтует с именем локального файла или папки.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="459"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="463"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>Файл «%1» скачан, но это привело к конфликту имён локальных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="648"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="652"/>
         <source>Could not get file %1 from local DB</source>
         <translation>Не удалось получить файл %1 из локальной базы данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="572"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="635"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="576"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="639"/>
         <source>Error setting pin state</source>
         <translation>Не удалось задать состояние закрепления</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="585"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="589"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="588"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="592"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл «%1» используется</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="625"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="629"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Не удалось распространить переименование папки по иерархии</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="630"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="634"/>
         <source>Failed to rename file</source>
         <translation>Не удалось переименовать файл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="653"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="657"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не удалось удалить запись о файле %1 из локальной базы данных</translation>
     </message>
@@ -7062,14 +7071,14 @@ Server replied with error: %2</source>
         <translation>Новая папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="148"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="195"/>
         <source>Failed to create debug archive</source>
         <translation>Не удалось создать архив со сведениями для отладки</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="149"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="196"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Не удалось создать архив со сведениями для отладки в выбранном расположении.</translation>
     </message>

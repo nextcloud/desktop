@@ -1005,7 +1005,7 @@ Hesap içe aktarılsın mı?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="443"/>
         <location filename="../src/gui/accountsettings.cpp" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1368"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1366"/>
         <source>Connection settings</source>
         <translation>Bağlantı ayarları</translation>
     </message>
@@ -1016,25 +1016,25 @@ Hesap içe aktarılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="591"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2119"/>
         <source>Reset File Provider Domain</source>
         <translation>Dosya hizmeti sağlayıcı etki alanını sıfırla</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="640"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1582"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1580"/>
         <source>Log out, log back in, or remove this account from the client.</source>
         <translation>Oturumu kapatıp yeniden açın ya da istemciden bu hesabı kaldırın.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="656"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <source>Log out</source>
         <translation>Oturumu kapat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="669"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Remove account</source>
         <translation>Hesabı kaldır</translation>
     </message>
@@ -1046,8 +1046,8 @@ Hesap içe aktarılsın mı?</translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="325"/>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1190"/>
-        <location filename="../src/gui/accountsettings.cpp" line="2122"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2120"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -1245,38 +1245,38 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <translation>Eşitleme klasörüne erişme izni ver</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Wrong Folder</source>
         <translation>Klasör yanlış</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1065"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1063"/>
         <source>Please select the original sync folder: %1</source>
         <translation>Lütfen özgün eşitleme klasörünü seçin: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1071"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1069"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Bookmark Error</source>
         <translation>Yer imi sorunu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Could not create a security bookmark for the folder. Please try again.</source>
         <translation>Klasör için bir güvenlik yer imi oluşturulamadı. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1079"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1077"/>
         <source>Could not resolve the security bookmark. Please try again.</source>
         <translation>Güvenlik yer imi çözümlenemedi. Lütfen yeniden deneyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1179"/>
         <source>Disable virtual file support?</source>
         <translation>Sanal dosya desteği kapatılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1180"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -1289,150 +1289,150 @@ Sanal dosya desteğini kullanımdan kaldırmanın tek faydası isteğe bağlı e
 Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1189"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1187"/>
         <source>Disable support</source>
         <translation>Desteği kullanımdan kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1274"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1278"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1276"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note it down and keep it safe. You will need it to set-up the synchronization of encrypted folders on your other devices.</source>
         <translation>Şifrelenmiş kimliğinizi 12 sözcükten oluşan bir anımsatıcı ile şifreleyerek koruyoruz. Lütfen bu anımsatıcıyı not edin ve güvenli bir yerde tutun. Diğer aygıtlarınızda şifrelenmiş klasörlerin eşitlenmesini ayarlamak için buna gerek duyacaksınız.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1305"/>
         <source>Forget the end-to-end encryption on this device</source>
         <translation>Bu aygıttaki uçtan uca şifreleme unutulsun</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1308"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1306"/>
         <source>Do you want to forget the end-to-end encryption settings for %1 on this device?</source>
         <translation>Bu aygıt üzerindeki %1 için uçtan uca şifreleme ayarlarının unutulmasını istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1307"/>
         <source>Forgetting end-to-end encryption will remove the sensitive data and all the encrypted files from this device.&lt;br&gt;However, the encrypted files will remain on the server and all your other devices, if configured.</source>
         <translation>Uçtan uca şifrelemeyi unutturmak, önemli verileri ve tüm şifrelenmiş dosyaları bu aygıttan kaldıracak.&lt;br&gt;Ancak şifrelenmiş dosyalar yapılandırılmışsa, bunlar sunucuda ve diğer tüm aygıtlarınızda kalır.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1414"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1412"/>
         <source>Sync Running</source>
         <translation>Eşitleme çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1415"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1413"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Eşitleme işlemi sürüyor.&lt;br/&gt;Durdurmak istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>%1 in use</source>
         <extracomment>%1 is the used storage size.</extracomment>
         <translation>%1 kullanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Connected to %1 (%2).</source>
         <extracomment>%1 is the server and user description. %2 is the storage usage description.</extracomment>
         <translation>%1 ile bağlı (%2).(</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1578"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1576"/>
         <location filename="../src/gui/trayaccountpopup_qt.cpp" line="749"/>
         <source>Log in</source>
         <translation>Oturum aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1577"/>
         <source>Leave share</source>
         <translation>Paylaşımdan ayrıl</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1581"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1579"/>
         <source>Remove this public share connection from the client.</source>
         <translation>Bu herkese açık paylaşım bağlantısını istemciden kaldırın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1769"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1767"/>
         <source>Migrate certificate to a new one</source>
         <translation>Sertifikayı yeni birine aktarın</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1874"/>
         <source>There are folders that have grown in size beyond %1MB: %2</source>
         <translation>Boyutu %1MB değerini aşan klasörler var: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1951"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1949"/>
         <source>End-to-end encryption has been initialized on this account with another device.&lt;br&gt;Enter the unique mnemonic to have the encrypted folders synchronize on this device as well.</source>
         <translation>Bu hesap için uçtan uca şifreleme başka bir aygıttan başlatılmış.&lt;br&gt;Şifrelenmiş klasörlerin bu aygıtla da eşitlenmesi için benzersiz anımsatıcıyı yazın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2022"/>
         <source>This account supports end-to-end encryption, but it needs to be set up first.</source>
         <translation>Bu hesap uçtan uca şifrelemeyi destekler, ancak önce kurulması gerekir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2107"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2105"/>
         <source>This resets the File Provider for %1 to its initial state. Use it when this account&apos;s files appear stuck, missing, or out of sync in Finder.</source>
         <translation>Bu işlem, %1 için dosya hizmeti sağlayıcısını başlangıç durumuna sıfırlar. Bu hesabın dosyaları Finder üzerinde takılmış, eksik veya eşitlenmemiş görünüyorsa bunu yapın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2111"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2109"/>
         <source>The location will briefly disappear from and reappear in Finder. Any local changes that have not been uploaded yet are preserved and revealed in a folder in Finder.</source>
         <translation>Konum, Finder üzerinde kısa bir süre için kaybolup yeniden görünecek. Henüz yüklenmemiş tüm yerel değişiklikler, Bir Finder klasöründe korunur ve görüntülenir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2116"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2114"/>
         <source>Reset File Provider Domain for this account?</source>
         <translation>Bu hesabın dosya hizmeti sağlayıcı etki alanı sıfırlansın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2019"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2017"/>
         <source>The File Provider extension does not support end-to-end encryption yet.</source>
         <translation>Dosya hizmeti sağlayıcı eklentisi henüz uçtan uca eşitlemeyi desteklemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="2026"/>
+        <location filename="../src/gui/accountsettings.cpp" line="2024"/>
         <source>Set up encryption</source>
         <translation>Şifreleme kurulumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
         <source>Connected to %1.</source>
         <translation>%1 ile bağlı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1535"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>%1 sunucusu geçici olarak kullanılamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1540"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1538"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>%1 sunucusu bakım kipinde.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1546"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1544"/>
         <source>Signed out from %1.</source>
         <translation>%1 oturumu kapatıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1861"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Çok büyük oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1864"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1862"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Dış depolama alanlarında bulundukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1865"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1863"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Çok büyük oldukları için ya da dış depolama alanında bulundukları için eşitlenmeyen klasörler var:</translation>
     </message>
@@ -1463,49 +1463,49 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; klasörünün eşitlemesini durdurmak istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1481"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1479"/>
         <source>%1 of %2 in use</source>
         <extracomment>%1 is the used storage size. %2 is the total storage size.</extracomment>
         <translation>%1 / %2 kullanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1517"/>
         <source>%1 as %2</source>
         <extracomment>%1 is a link to the server. %2 is the user display name or username.</extracomment>
         <translation>%1, %2 olarak</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>%1 sunucu sürümü desteklenmiyor! Riski üstlenerek sürdürebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1541"/>
         <source>Server %1 is currently being redirected, or your connection is behind a captive portal.</source>
         <translation>%1 sunucusu yönlendiriliyor veya bağlantınız bir erişim sistemi arkasında.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1547"/>
         <source>Connecting to %1 …</source>
         <translation>%1 bağlantısı kuruluyor …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1553"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1551"/>
         <source>Unable to connect to %1.</source>
         <translation>%1 ile bağlantı kurulamadı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1556"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Sunucu yapılandırma sorunu: %1 ile %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1567"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1565"/>
         <source>You need to accept the terms of service at %1.</source>
         <translation>%1 adresindeki hizmet koşullarını kabul etmelisiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1572"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1570"/>
         <source>No %1 connection configured.</source>
         <translation>Henüz bir %1 bağlantısı yapılandırılmamış.</translation>
     </message>
@@ -1852,31 +1852,36 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Silinen dosyalar çöpe atılsın</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="338"/>
+        <location filename="../src/gui/advancedsettings.ui" line="353"/>
+        <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/advancedsettings.ui" line="391"/>
         <source>Show sync folders in &amp;Explorer&apos;s navigation pane</source>
         <translation>&amp;Eşitleme klasörleri gezgin panosunda görüntülensin</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="377"/>
+        <location filename="../src/gui/advancedsettings.ui" line="430"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Yok sayılan &amp;dosyaları düzenle</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.ui" line="384"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="415"/>
+        <location filename="../src/gui/advancedsettings.ui" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="420"/>
         <source>Create Debug Archive</source>
         <translation>Hata ayıklama arşivi oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/qml/AccountWizardWindow.qml" line="274"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="232"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="234"/>
         <location filename="../src/gui/settingsdialog.cpp" line="188"/>
         <source>Advanced</source>
         <extracomment>Name of the Advanced settings feature.</extracomment>
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="423"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="428"/>
         <source>Zip Archives</source>
         <translation>Zip arşivleri</translation>
     </message>
@@ -1891,12 +1896,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Seçilmiş konuma erişilemedi. Lütfen yeniden deneyin ya da başka bir konum seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="436"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="441"/>
         <source>Debug Archive Created</source>
         <translation>Hata ayıklama arşivi oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="437"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="442"/>
         <source>Redact information deemed sensitive before sharing! Debug archive created at %1</source>
         <translation>Paylaşmadan önce önemli olan bilgileri sansürleyin! Hata ayıklama arşivi %1 konumunda oluşturuldu</translation>
     </message>
@@ -2545,23 +2550,23 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="580"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="581"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="626"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="627"/>
         <source>The server returned an unexpected response that couldn’t be read. Please reach out to your server administrator.”</source>
         <translation>Sunucu, okunamayan beklenmedik bir yanıt verdi. Lütfen sunucu yöneticiniz ile görüşün.&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="657"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="711"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="658"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="712"/>
         <source>Encrypted metadata setup error!</source>
         <translation>Şifrelenmiş üst veri kurulumu sorunu!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="690"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="691"/>
         <source>Encrypted metadata setup error: initial signature from server is empty.</source>
         <translation>Şifrelenmiş üst veri kurulum hatası: Sunucudan gelen ilk imza boş.</translation>
     </message>
@@ -2584,12 +2589,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Klasör bulunamadı: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="398"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>Filename encoding is not valid</source>
         <translation>Dosya adı kodlaması geçersiz</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="427"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="428"/>
         <source>Error while reading directory %1</source>
         <translation>%1 klasörü okunurken sorun çıktı</translation>
     </message>
@@ -4648,7 +4653,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <translation>Kayıt bilgileri alınamadı. Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="465"/>
+        <location filename="../src/libsync/vfs/openvfs/vfs_openvfs.cpp" line="466"/>
         <source>Cannot dehydrate a placeholder because the file changed</source>
         <translation>Dosya değiştiği için bir yer belirtici kurutulamadı</translation>
     </message>
@@ -4886,48 +4891,53 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <translation>Dosya &quot;%1&quot; içinde açık olduğundan yüklenemedi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1412"/>
+        <location filename="../src/libsync/discovery.cpp" line="1392"/>
+        <source>Could not read local file. It will be checked again on a later sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1421"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>%1 dosya kaydı veri tabanından silinirken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1721"/>
-        <location filename="../src/libsync/discovery.cpp" line="2244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1730"/>
+        <location filename="../src/libsync/discovery.cpp" line="2253"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Geçersiz bir hedefe taşındı, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2091"/>
+        <location filename="../src/libsync/discovery.cpp" line="2100"/>
         <source>Cannot modify encrypted item because the selected certificate is not valid.</source>
         <translation>Seçilmiş sertifika geçersiz olduğundan şifrelenmiş öge değiştirilemez.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2161"/>
+        <location filename="../src/libsync/discovery.cpp" line="2170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecek ögeleri seçin&quot; izin verilmeyenler listesinde olduğundan yok sayıldı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2195"/>
+        <location filename="../src/libsync/discovery.cpp" line="2204"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Bu klasöre alt klasör ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2204"/>
+        <location filename="../src/libsync/discovery.cpp" line="2213"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Bu klasöre dosya ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2221"/>
+        <location filename="../src/libsync/discovery.cpp" line="2230"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucu üzerinde salt okunur olduğundan, bu dosya yüklenemedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2258"/>
+        <location filename="../src/libsync/discovery.cpp" line="2267"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Silmeye izin verilmedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="2431"/>
+        <location filename="../src/libsync/discovery.cpp" line="2440"/>
         <source>Error while reading the database</source>
         <translation>Veri tabanı okunurken sorun çıktı</translation>
     </message>
@@ -5059,39 +5069,39 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>could not delete file %1, error: %2</source>
         <translation>%1 dosyası silinemedi, hata: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="288"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="292"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
         <translation>%1 klasörü, adının yerel bir dosya ya da klasör ile çakışması nedeniyle oluşturulamadı!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="324"/>
         <source>Could not create folder %1</source>
         <translation>%1 klasörü oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="332"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="336"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="342"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>The folder %1 cannot be made read-only: %2</source>
         <translation>%1 klasörü salt okunur yapılamaz: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="344"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>unknown exception</source>
         <translation>bilinmeyen bir sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="377"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="381"/>
         <source>Error updating metadata: %1</source>
         <translation>Üst veriler güncellenirken sorun çıktı: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="380"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="384"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 dosyası şu anda kullanılıyor</translation>
     </message>
@@ -5104,14 +5114,13 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
         <translation>Yerel bir dosya adı ile çakışması nedeniyle %1 dosyası %2 olarak adlandırılamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="215"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="225"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="229"/>
         <source>Temporary error when removing local item removed from server.</source>
         <translation>Sunucudan silinen yerel öge silinirken geçici bir sorun çıktı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="234"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="238"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>%1 dosya kaydı yerel veri tabanından silinemedi</translation>
     </message>
@@ -5119,49 +5128,49 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="451"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="455"/>
         <source>Folder %1 cannot be renamed because of a local file or folder name clash!</source>
         <translation>Yerel dosya veya klasör adı çakışması nedeniyle %1 klasörü yeniden adlandırılamadı!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="459"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="463"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
         <translation>%1 dosyası indirildi ancak adı yerel bir dosya ile çakışıyor!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="559"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="648"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="563"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="652"/>
         <source>Could not get file %1 from local DB</source>
         <translation>%1 dosyası yerel veri tabanından alınamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="572"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="635"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="576"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="639"/>
         <source>Error setting pin state</source>
         <translation>Sabitleme durumu ayarlanırken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="585"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="589"/>
         <source>Error updating metadata: %1</source>
         <translation>Üst veriler güncellenirken sorun çıktı: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="588"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="592"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 dosyası şu anda kullanılıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="625"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="629"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Hiyerarşi içinde klasörü yeniden adlandırma işlemi yapılamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="630"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="634"/>
         <source>Failed to rename file</source>
         <translation>Dosya yeniden adlandırılamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="653"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="657"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>%1 dosya kaydı yerel veri tabanından silinemedi</translation>
     </message>
@@ -7060,14 +7069,14 @@ Sunucunun verdiği hata yanıtı: %2</translation>
         <translation>Yeni klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="146"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="193"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="148"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="195"/>
         <source>Failed to create debug archive</source>
         <translation>Hata ayıklama arşivi oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/advancedsettings.cpp" line="147"/>
-        <location filename="../src/gui/advancedsettings.cpp" line="194"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="149"/>
+        <location filename="../src/gui/advancedsettings.cpp" line="196"/>
         <source>Could not create debug archive in selected location!</source>
         <translation>Seçilmiş konumda hata ayıklama arşivi oluşturulamadı!</translation>
     </message>
