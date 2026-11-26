@@ -681,7 +681,7 @@ void FolderWizardSelectiveSync::initializePage()
 bool FolderWizardSelectiveSync::validatePage()
 {
     const auto mode = bestAvailableVfsMode();
-    const bool useVirtualFiles = (mode == Vfs::WindowsCfApi) && (_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked());
+    const bool useVirtualFiles = (mode != Vfs::Off) && (_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked());
     if (useVirtualFiles) {
         const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString(), mode);
         if (!availability) {
