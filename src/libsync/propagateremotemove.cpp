@@ -218,6 +218,15 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
             auto restoredItem = *_item;
             restoredItem._renameTarget = _item->_originalFile;
+            // The rename item carries no lock state, so keep the one from the journal.
+            // A MOVE sends no lock token, so a 423 here means the file is locked (possibly
+            // by this client, after an office lock file appeared), not that our token is
+            // stale. Dropping the lock state would lose the token, and the lock could then
+            // never be released.
+            SyncJournalFileRecord oldRecord;
+            if (propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord) && oldRecord.isValid()) {
+                restoredItem.updateLockStateFromDbRecord(oldRecord);
+            }
             const auto result = propagator()->updateMetadata(restoredItem);
             if (!result) {
                 done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
