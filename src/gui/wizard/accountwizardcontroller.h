@@ -306,6 +306,8 @@ private:
     [[nodiscard]] qint64 requiredLocalSpace() const;
     [[nodiscard]] bool ensureLocalSyncFolder();
     void startRemoteFolderCheck();
+    [[nodiscard]] bool virtualFilesEnforced() const;
+    void showSyncOptionsAfterAutomaticFinishFailed();
     void createRemoteFolder();
     void completeRemoteFolderCheck();
     [[nodiscard]] bool createSyncFolder(AccountState *accountState);
@@ -383,6 +385,7 @@ private:
     bool _localSyncFolderPickerOpen = false;
     SyncMode _syncMode = SyncEverything;
     bool _needsSyncOptions = false;
+    bool _finishingAutomatically = false;
     bool _syncModeChosen = false;
     bool _askBeforeLargeFolders = true;
     int _largeFolderThresholdMb = 500;
