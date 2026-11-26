@@ -12,7 +12,8 @@
 class QJsonDocument;
 class TestRemoteWipe;
 
-namespace OCC {
+namespace OCC
+{
 
 class RemoteWipe : public QObject
 {
@@ -24,7 +25,7 @@ Q_SIGNALS:
     /**
      * Notify if wipe was requested
      */
-    void authorized(OCC::AccountState*);
+    void authorized(OCC::AccountState *);
 
     /**
      * Notify if user only needs to login again
@@ -48,7 +49,7 @@ private Q_SLOTS:
     /**
      * Local sync folders were wiped, this will now remove the account.
      */
-    void slotWipeDone(OCC::AccountState *accountState, bool);
+    void slotWipeDone(OCC::AccountState *accountState, bool success, const QStringList &failedFolders);
 
     /**
      * Once the client has wiped all the required data a POST to
@@ -56,7 +57,6 @@ private Q_SLOTS:
      */
     void notifyServerSuccess();
     void slotNotifyServerSuccessFinished();
-
 
 private:
     AccountPtr _account;

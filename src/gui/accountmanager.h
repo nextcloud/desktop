@@ -9,7 +9,8 @@
 #include "account.h"
 #include "accountstate.h"
 
-namespace OCC {
+namespace OCC
+{
 
 /**
    @brief The AccountManager class
@@ -27,9 +28,9 @@ public:
         AccountsNotFound,
         AccountsRestoreSuccess,
         AccountsRestoreSuccessFromLegacyVersion,
-        AccountsRestoreSuccessWithSkipped
+        AccountsRestoreSuccessWithSkipped,
     };
-    Q_ENUM (AccountsRestoreResult);
+    Q_ENUM(AccountsRestoreResult);
 
     static AccountManager *instance();
     ~AccountManager() override = default;
@@ -58,6 +59,12 @@ public:
      * Return the account state pointer for an account identified by its display name
      */
     AccountStatePtr account(const QString &name);
+
+    /**
+     * Return the account state pointer for a given account pointer
+     * This is safer than lookup by display name as it avoids collisions
+     */
+    [[nodiscard]] AccountStatePtr accountState(const AccountPtr &account) const;
 
     /**
      * Return the account state pointer for an account from its id
