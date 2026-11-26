@@ -82,6 +82,84 @@ struct CraftMasterConfigurationTests {
     }
 
     @Test
+    func buildUsesConfiguredDefaults() throws {
+        let contents = """
+        [GeneralSettings]
+        Compile/BuildType = Release
+
+        [BlueprintSettings]
+        craft/craft-blueprints-kde.revision = stable-kde
+        craft/craft-blueprints-nextcloud.revision = stable-client
+        nextcloud-client.buildTests = False
+
+        [macos-clang-arm64-BlueprintSettings]
+        craft/craft-blueprints-nextcloud.revision = 6e684481b778f177944642f588e6e6f3ed95f558
+        nextcloud-client.buildType = MinSizeRel
+        nextcloud-client.buildTests = Yes
+        """
+
+        try withConfiguration(contents) { file, craftMasterDirectory in
+            let build = try Build.parse([])
+            let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.kdeBlueprintsRepository.hasSuffix("||stable-kde"))
+            #expect(settings.clientBlueprintsRepository.hasSuffix("||6e684481b778f177944642f588e6e6f3ed95f558"))
+            #expect(settings.compileBuildType == "Release")
+            #expect(settings.buildType == "MinSizeRel")
+            #expect(settings.buildTests)
+        }
+    }
+
+    @Test(arguments: ["--build-tests", "--no-build-tests"])
+    func commandLineOverridesConfiguredValues(_ testFlag: String) throws {
+        let configuredBuildTests = testFlag == "--build-tests" ? "False" : "True"
+        let contents = """
+        [Variables]
+        Revision = stable
+        BuildType = Release
+
+        [GeneralSettings]
+        Compile/BuildType = ${Variables:BuildType}
+
+        [BlueprintSettings]
+        craft/craft-blueprints-kde.revision = ${Variables:Revision}
+        craft/craft-blueprints-nextcloud.revision = ${Variables:Revision}
+        nextcloud-client.buildType = MinSizeRel
+        nextcloud-client.buildTests = \(configuredBuildTests)
+        """
+
+        try withConfiguration(contents) { file, craftMasterDirectory in
+            let build = try Build.parse([
+                "--kde-blueprints-git-ref=custom-kde",
+                "--client-blueprints-git-ref=custom-client",
+                "--build-type=Debug",
+                testFlag,
+            ])
+            let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.kdeBlueprintsRepository.hasSuffix("|custom-kde|"))
+            #expect(settings.clientBlueprintsRepository.hasSuffix("|custom-client|"))
+            #expect(settings.compileBuildType == "Debug")
+            #expect(settings.buildType == "Debug")
+            #expect(settings.buildTests == (testFlag == "--build-tests"))
+        }
+    }
+
+    @Test
+    func buildFallsBackWhenSettingsAreAbsent() throws {
+        try withConfiguration("[macos-clang-arm64]\nGeneral/ABI = macos-clang-arm64\n") { file, craftMasterDirectory in
+            let build = try Build.parse([])
+            let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.kdeBlueprintsRepository.hasSuffix("|master|"))
+            #expect(settings.clientBlueprintsRepository.hasSuffix("|master|"))
+            #expect(settings.compileBuildType == "RelWithDebInfo")
+            #expect(settings.buildType == "RelWithDebInfo")
+            #expect(!settings.buildTests)
+        }
+    }
+
+    @Test
     func rejectsInvalidBoolean() throws {
         try withConfiguration("[BlueprintSettings]\nnextcloud-client.buildTests = maybe\n") { file, craftMasterDirectory in
             #expect(throws: MacCrafterError.self) {
