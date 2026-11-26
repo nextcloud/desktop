@@ -24,10 +24,6 @@ if( UNIX AND NOT APPLE )
   endif()
 endif()
 
-if(CLOUDPROVIDERS_FOUND)
-  add_subdirectory(libcloudproviders)
-endif()
-
 if(MSVC)
   add_subdirectory(windows)
 endif()

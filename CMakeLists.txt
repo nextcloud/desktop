@@ -268,10 +268,9 @@ if(BUILD_CLIENT)
 
     if(NOT WIN32 AND NOT APPLE)
         find_package(PkgConfig REQUIRED)
-        pkg_check_modules(CLOUDPROVIDERS cloudproviders IMPORTED_TARGET)
+        pkg_check_modules(CLOUDPROVIDERS cloudproviders>=0.3.3 IMPORTED_TARGET)
 
         if(CLOUDPROVIDERS_FOUND)
-            pkg_check_modules(DBUS-1 REQUIRED dbus-1 IMPORTED_TARGET)
             pkg_check_modules(GIO REQUIRED gio-2.0 IMPORTED_TARGET)
             pkg_check_modules(GLIB2 REQUIRED glib-2.0 IMPORTED_TARGET)
         endif()
