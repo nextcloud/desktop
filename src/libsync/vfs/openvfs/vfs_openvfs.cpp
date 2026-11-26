@@ -519,14 +519,15 @@ bool OpenVFS::isHydrating() const
     return false;
 }
 
+// OpenVFS placeholders have no "in sync" mark to maintain, unlike Windows placeholders
 Result<Vfs::ConvertToPlaceholderResult, QString> OpenVFS::updatePlaceholderMarkInSync([[maybe_unused]] const QString &filePath, [[maybe_unused]] const SyncFileItem &item)
 {
-    return {Vfs::ConvertToPlaceholderResult::Error};
+    return {Vfs::ConvertToPlaceholderResult::Ok};
 }
 
 bool OpenVFS::isPlaceHolderInSync([[maybe_unused]] const QString &filePath) const
 {
-    return false;
+    return true;
 }
 
 Result<void, QString> OpenVFS::createPlaceholders([[maybe_unused]] const QList<SyncFileItemPtr> &items)
@@ -595,11 +596,11 @@ bool OpenVFS::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
         const auto attribs = placeHolderAttributes(path);
         if (attribs.state == ::OpenVFS::Constants::States::DeHydrated) {
             stat->type = ItemTypeVirtualFile;
-            if (attribs.pinState == convertPinState(PinState::AlwaysLocal)) {
+            if (pin && *pin == PinState::AlwaysLocal) {
                 stat->type = ItemTypeVirtualFileDownload;
             }
         } else {
-            if (attribs.pinState == convertPinState(PinState::OnlineOnly)) {
+            if (pin && *pin == PinState::OnlineOnly) {
                 stat->type = ItemTypeVirtualFileDehydration;
             }
         }
@@ -620,7 +621,38 @@ bool OpenVFS::setPinState(const QString &folderPath, PinState state)
     if (!setPlaceholderAttributes(attribs)) {
         return false;
     }
+    // the content of an excluded folder is not synced, and walking it on every sync blocks the client
+    if (state != PinState::Excluded && std::filesystem::is_directory(localPath.get())) {
+        inheritPinStateBelow(localPath);
+    }
     return true;
+}
+
+void OpenVFS::inheritPinStateBelow(const FileSystem::Path &folderPath)
+{
+    auto error = std::error_code{};
+    const auto end = std::filesystem::recursive_directory_iterator{};
+    for (auto it = std::filesystem::recursive_directory_iterator{folderPath.get(), error}; !error && it != end; it.increment(error)) {
+        auto attribs = placeHolderAttributes(it->path());
+        if (!attribs) {
+            continue;
+        }
+        // excluded items are not synced, they keep their pin state
+        if (attribs.pinState == ::OpenVFS::Constants::PinStates::Excluded) {
+            it.disable_recursion_pending();
+            continue;
+        }
+        if (attribs.pinState == ::OpenVFS::Constants::PinStates::Inherited) {
+            continue;
+        }
+        attribs.pinState = ::OpenVFS::Constants::PinStates::Inherited;
+        if (const auto result = setPlaceholderAttributes(attribs); !result) {
+            qCWarning(lcOpenVFS) << "Failed to reset the pin state of" << it->path().native() << result.error();
+        }
+    }
+    if (error) {
+        qCWarning(lcOpenVFS) << "Failed to reset the pin states below" << folderPath.toString() << QString::fromStdString(error.message());
+    }
 }
 
 Optional<PinState> OpenVFS::pinState(const QString &folderPath)
@@ -640,33 +672,23 @@ Optional<PinState> OpenVFS::pinState(const QString &folderPath)
 
 Vfs::AvailabilityResult OpenVFS::availability(const QString &folderPath, [[maybe_unused]] const AvailabilityRecursivity recursiveCheck)
 {
-    const auto attribs = placeHolderAttributes(params().root() / folderPath);
-    if (attribs) {
-        switch (convertPinState(attribs.pinState)) {
-        case OCC::PinState::AlwaysLocal:
-            return VfsItemAvailability::AlwaysLocal;
-        case OCC::PinState::OnlineOnly:
-            return VfsItemAvailability::OnlineOnly;
-        case OCC::PinState::Inherited: {
-            switch (attribs.state) {
-            case ::OpenVFS::Constants::States::Hydrated:
-                return VfsItemAvailability::AllHydrated;
-            case ::OpenVFS::Constants::States::DeHydrated:
-                return VfsItemAvailability::AllDehydrated;
-            case ::OpenVFS::Constants::States::Hydrating:
-                return VfsItemAvailability::Mixed;
-            }
-        }
-            Q_UNREACHABLE();
-        case OCC::PinState::Unspecified:
-            [[fallthrough]];
-        case OCC::PinState::Excluded:
-            return VfsItemAvailability::Mixed;
-        };
-    } else {
+    if (!placeHolderAttributes(params().root() / folderPath)) {
         return AvailabilityError::NoSuchItem;
     }
-    return VfsItemAvailability::Mixed;
+    // the pin state of a folder does not tell whether the files below it are hydrated, the journal knows that
+    const auto pin = pinState(folderPath);
+    const auto availability = availabilityFromPinState(folderPath, pin);
+    if (availability || availability.error() != AvailabilityError::NoSuchItem) {
+        return availability;
+    }
+    // the journal has no files below an empty folder, its pin state is all there is
+    if (pin && *pin == PinState::AlwaysLocal) {
+        return VfsItemAvailability::AlwaysLocal;
+    }
+    if (pin && *pin == PinState::OnlineOnly) {
+        return VfsItemAvailability::OnlineOnly;
+    }
+    return VfsItemAvailability::AllHydrated;
 }
 
 void OpenVFS::fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus)
