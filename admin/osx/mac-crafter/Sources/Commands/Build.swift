@@ -116,9 +116,14 @@ struct Build: AsyncParsableCommand {
         return file
     }
 
-    func craftSettings(at config: URL, target: String, craftMasterDirectory: URL) throws -> (
-        kdeBlueprintsRepository: String,
-        clientBlueprintsRepository: String,
+    func craftSettings(
+        at config: URL,
+        target: String,
+        craftMasterDirectory: URL,
+        overrideFile: URL? = nil
+    ) throws -> (
+        kdeBlueprintsRevision: String?,
+        clientBlueprintsRevision: String?,
         compileBuildType: String,
         buildType: String,
         buildTests: Bool
@@ -127,32 +132,51 @@ struct Build: AsyncParsableCommand {
             at: config,
             target: target,
             blueprint: craftBlueprintName,
-            craftMasterDirectory: craftMasterDirectory
+            craftMasterDirectory: craftMasterDirectory,
+            overrideFile: overrideFile,
+            buildTestsOverride: buildTests
         )
-
-        func repository(_ url: String, branch: String?, revision: String?) -> String {
-            if branch == nil, let revision {
-                return "\(url)||\(revision)"
-            }
-            return "\(url)|\(branch ?? "master")|"
-        }
 
         let compileBuildType = buildType ?? configuration.compileBuildType ?? "RelWithDebInfo"
         return (
-            kdeBlueprintsRepository: repository(
-                kdeBlueprintsGitUrl,
-                branch: kdeBlueprintsGitRef,
-                revision: configuration.kdeBlueprintsRevision
-            ),
-            clientBlueprintsRepository: repository(
-                clientBlueprintsGitUrl,
-                branch: clientBlueprintsGitRef,
-                revision: configuration.clientBlueprintsRevision
-            ),
+            kdeBlueprintsRevision: configuration.kdeBlueprintsRevision,
+            clientBlueprintsRevision: configuration.clientBlueprintsRevision,
             compileBuildType: compileBuildType,
             buildType: buildType ?? configuration.blueprintBuildType ?? compileBuildType,
-            buildTests: buildTests ?? configuration.buildTests ?? false
+            buildTests: configuration.buildTests ?? false
         )
+    }
+
+    func blueprintOverrides(target: String, craftTargetURL: URL, registeringBlueprints: Bool = false) throws -> String? {
+        func checkoutName(_ repositoryURL: String) -> Substring? {
+            repositoryURL.firstMatch(of: #/.*[\/:]([^.:|\n\/]+)/#)?.1
+        }
+
+        let kdeCheckout = checkoutName(kdeBlueprintsGitUrl)
+        let legacyKDE = craftTargetURL.appendingPathComponent("etc/blueprints/locations/craft-kde")
+        let usesLegacyKDE = FileManager.default.fileExists(atPath: legacyKDE.path)
+            || (registeringBlueprints && kdeCheckout == "craft-kde")
+        let kdeRecipeCheckout: Substring = usesLegacyKDE ? "craft-kde" : "craft-blueprints-kde"
+        let repositories = [
+            (CraftMasterConfiguration.kdeBlueprintsRevisionKey, kdeBlueprintsGitRef, kdeCheckout == kdeRecipeCheckout),
+            (CraftMasterConfiguration.clientBlueprintsRevisionKey, clientBlueprintsGitRef, checkoutName(clientBlueprintsGitUrl) == "craft-blueprints-nextcloud"),
+        ]
+        let overrides = try repositories.compactMap { revisionKey, branch, matchesCheckout -> String? in
+            guard let branch else { return nil }
+            guard !branch.contains(where: \.isNewline) else {
+                throw ValidationError("Invalid blueprint branch for \(revisionKey).")
+            }
+            guard matchesCheckout else { return nil }
+
+            let branchKey = revisionKey.replacingOccurrences(of: ".revision", with: ".branch")
+            let escaped = branch.replacingOccurrences(of: "$", with: "$$")
+            return "\(branchKey) = \(escaped)\n\(revisionKey) ="
+        }
+        guard !overrides.isEmpty else { return nil }
+
+        // Apply the branch override wherever CraftMaster may read the original revision.
+        let values = overrides.joined(separator: "\n")
+        return "[BlueprintSettings]\n\(values)\n[\(target)-BlueprintSettings]\n\(values)\n"
     }
     
     mutating func run() async throws {
@@ -207,7 +231,27 @@ struct Build: AsyncParsableCommand {
             }
         }
 
-        let settings = try craftSettings(at: craftMasterIni, target: craftTarget, craftMasterDirectory: craftMasterDir)
+        let overrideContent = try blueprintOverrides(
+            target: craftTarget,
+            craftTargetURL: craftTargetURL,
+            registeringBlueprints: configureCraft
+        )
+        let overrideFile = overrideContent.map { _ in fm.temporaryDirectory.appendingPathComponent("mac-crafter-\(UUID()).ini") }
+        defer {
+            if let overrideFile {
+                try? fm.removeItem(at: overrideFile)
+            }
+        }
+        if let overrideContent, let overrideFile {
+            try overrideContent.write(to: overrideFile, atomically: true, encoding: .utf8)
+        }
+
+        let settings = try craftSettings(
+            at: craftMasterIni,
+            target: craftTarget,
+            craftMasterDirectory: craftMasterDir,
+            overrideFile: overrideFile
+        )
         let buildType = settings.buildType
         let buildTestsOption = "\(craftBlueprintName).buildTests=\(settings.buildTests ? "True" : "False")"
         var craftArguments = [
@@ -219,27 +263,7 @@ struct Build: AsyncParsableCommand {
             craftTarget,
         ]
 
-        let blueprintOverrides = [
-            (CraftMasterConfiguration.kdeBlueprintsRevisionKey, kdeBlueprintsGitRef),
-            (CraftMasterConfiguration.clientBlueprintsRevisionKey, clientBlueprintsGitRef),
-        ]
-        let overrides = try blueprintOverrides.compactMap { key, value -> String? in
-            guard let value else { return nil }
-            guard !value.contains(where: \.isNewline) else {
-                throw ValidationError("Invalid blueprint branch for \(key).")
-            }
-            return "\(key) = \(value.replacingOccurrences(of: "$", with: "$$"))"
-        }
-        let overrideFile = fm.temporaryDirectory.appendingPathComponent("mac-crafter-\(UUID()).ini")
-        defer {
-            if !overrides.isEmpty {
-                try? fm.removeItem(at: overrideFile)
-            }
-        }
-        if !overrides.isEmpty {
-            // Craft can revisit blueprint revisions while resolving dependencies.
-            let content = (["[\(craftTarget)-BlueprintSettings]"] + overrides).joined(separator: "\n")
-            try content.write(to: overrideFile, atomically: true, encoding: .utf8)
+        if let overrideFile {
             craftArguments += ["--config-override", overrideFile.path]
         }
         craftArguments.append("-c")
@@ -252,11 +276,21 @@ struct Build: AsyncParsableCommand {
             Log.info("Configuring required KDE Craft blueprint repositories...")
             stopwatch.record("Craft Blueprints Configuration")
 
-            guard await craft(["--add-blueprint-repository", settings.kdeBlueprintsRepository]) == 0 else {
+            let kdeRepository = try await craftBlueprintRepository(
+                kdeBlueprintsGitUrl,
+                branch: kdeBlueprintsGitRef,
+                revision: settings.kdeBlueprintsRevision
+            )
+            let clientRepository = try await craftBlueprintRepository(
+                clientBlueprintsGitUrl,
+                branch: clientBlueprintsGitRef,
+                revision: settings.clientBlueprintsRevision
+            )
+            guard await craft(["--add-blueprint-repository", kdeRepository]) == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
             }
 
-            guard await craft(["--add-blueprint-repository", settings.clientBlueprintsRepository]) == 0 else {
+            guard await craft(["--add-blueprint-repository", clientRepository]) == 0 else {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
             

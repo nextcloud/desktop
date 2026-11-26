@@ -8,7 +8,16 @@ from pathlib import Path
 
 
 def main():
-    path, target, blueprint, craftmaster_directory, kde_revision_key, client_revision_key = sys.argv[1:]
+    (
+        path,
+        target,
+        blueprint,
+        craftmaster_directory,
+        kde_revision_key,
+        client_revision_key,
+        override_path,
+        build_tests_override,
+    ) = sys.argv[1:]
     config_file = Path(craftmaster_directory).absolute() / "Config.py"
     if not config_file.is_file():
         raise FileNotFoundError(f"CraftMaster configuration module does not exist: {config_file}")
@@ -25,7 +34,10 @@ def main():
                 return False
             return super().get(section, key, *args, **kwargs)
 
-    config = ReadOnlyConfig([Path(path).absolute()], variables=None)
+    paths = [Path(path).absolute()]
+    if override_path:
+        paths.append(Path(override_path).absolute())
+    config = ReadOnlyConfig(paths, variables=None)
 
     def blueprint_value(key):
         return config.get("BlueprintSettings", key, default=None, target=target) or None
@@ -37,11 +49,11 @@ def main():
         compile_type = config.get("GeneralSettings", compile_key, default=None, target=target)
 
     tests_key = f"{blueprint}.buildTests"
-    build_tests = (
-        config.getBool("BlueprintSettings", tests_key, target=target)
-        if blueprint_value(tests_key) is not None
-        else None
-    )
+    build_tests = None
+    if build_tests_override:
+        build_tests = build_tests_override == "true"
+    elif blueprint_value(tests_key) is not None:
+        build_tests = config.getBool("BlueprintSettings", tests_key, target=target)
 
     print(json.dumps({
         "kdeBlueprintsRevision": blueprint_value(kde_revision_key),

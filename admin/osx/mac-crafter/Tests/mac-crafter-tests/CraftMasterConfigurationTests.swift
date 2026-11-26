@@ -8,7 +8,11 @@ import Testing
 struct CraftMasterConfigurationTests {
     private let target = "macos-clang-arm64"
 
-    private func withConfiguration(_ contents: String, validate: (URL, URL) throws -> Void) throws {
+    private func withConfiguration(
+        _ contents: String,
+        fixtureSuffix: String = "",
+        validate: (URL, URL) throws -> Void
+    ) throws {
         let fileManager = FileManager.default
         let directory = fileManager.temporaryDirectory
             .appendingPathComponent("mac-crafter test \(UUID().uuidString)")
@@ -17,7 +21,8 @@ struct CraftMasterConfigurationTests {
         let craftMasterDirectory = directory.appendingPathComponent("craftmaster")
         try fileManager.createDirectory(at: craftMasterDirectory, withIntermediateDirectories: true)
         let fixture = try #require(Bundle.module.url(forResource: "Config", withExtension: "py"))
-        try fileManager.copyItem(at: fixture, to: craftMasterDirectory.appendingPathComponent("Config.py"))
+        let parser = try String(contentsOf: fixture, encoding: .utf8) + fixtureSuffix
+        try parser.write(to: craftMasterDirectory.appendingPathComponent("Config.py"), atomically: true, encoding: .utf8)
 
         let file = directory.appendingPathComponent("craftmaster.ini")
         try contents.write(to: file, atomically: true, encoding: .utf8)
@@ -82,6 +87,17 @@ struct CraftMasterConfigurationTests {
     }
 
     @Test
+    func readsSettingsWhenCraftMasterWritesDiagnostics() throws {
+        let diagnostic = "\nimport sys\nprint('CraftMaster fixture diagnostic', file=sys.stderr)\n"
+
+        try withConfiguration("[GeneralSettings]\nCompile/BuildType = Debug\n", fixtureSuffix: diagnostic) { file, craftMasterDirectory in
+            let settings = try readConfiguration(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.compileBuildType == "Debug")
+        }
+    }
+
+    @Test
     func buildUsesConfiguredDefaults() throws {
         let contents = """
         [GeneralSettings]
@@ -102,8 +118,8 @@ struct CraftMasterConfigurationTests {
             let build = try Build.parse([])
             let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
 
-            #expect(settings.kdeBlueprintsRepository.hasSuffix("||stable-kde"))
-            #expect(settings.clientBlueprintsRepository.hasSuffix("||6e684481b778f177944642f588e6e6f3ed95f558"))
+            #expect(settings.kdeBlueprintsRevision == "stable-kde")
+            #expect(settings.clientBlueprintsRevision == "6e684481b778f177944642f588e6e6f3ed95f558")
             #expect(settings.compileBuildType == "Release")
             #expect(settings.buildType == "MinSizeRel")
             #expect(settings.buildTests)
@@ -130,18 +146,103 @@ struct CraftMasterConfigurationTests {
 
         try withConfiguration(contents) { file, craftMasterDirectory in
             let build = try Build.parse([
-                "--kde-blueprints-git-ref=custom-kde",
-                "--client-blueprints-git-ref=custom-client",
                 "--build-type=Debug",
                 testFlag,
             ])
             let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
 
-            #expect(settings.kdeBlueprintsRepository.hasSuffix("|custom-kde|"))
-            #expect(settings.clientBlueprintsRepository.hasSuffix("|custom-client|"))
+            #expect(settings.kdeBlueprintsRevision == "stable")
+            #expect(settings.clientBlueprintsRevision == "stable")
             #expect(settings.compileBuildType == "Debug")
             #expect(settings.buildType == "Debug")
             #expect(settings.buildTests == (testFlag == "--build-tests"))
+        }
+    }
+
+    @Test(arguments: ["--build-tests", "--no-build-tests"])
+    func commandLineOverridesInvalidBuildTestsValue(_ testFlag: String) throws {
+        try withConfiguration("[BlueprintSettings]\nnextcloud-client.buildTests = maybe\n") { file, craftMasterDirectory in
+            let build = try Build.parse([testFlag])
+            let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.buildTests == (testFlag == "--build-tests"))
+        }
+    }
+
+    @Test
+    func matchingBlueprintOverrideReplacesConfiguredBranchAndRevision() throws {
+        let contents = """
+        [BlueprintSettings]
+        craft/craft-blueprints-kde.branch = configured-kde
+        craft/craft-blueprints-kde.revision = ${Variables:MissingRevision}
+        craft/craft-blueprints-nextcloud.revision = stable-client
+
+        [\(target)-BlueprintSettings]
+        craft/craft-blueprints-kde.branch = target-kde
+        craft/craft-blueprints-kde.revision = ${Variables:MissingRevision}
+        """
+
+        try withConfiguration(contents) { file, craftMasterDirectory in
+            let build = try Build.parse([
+                "--kde-blueprints-git-ref=custom-kde",
+                "--client-blueprints-git-ref=custom-client",
+            ])
+            let directory = file.deletingLastPathComponent()
+            let craftTargetURL = directory.appendingPathComponent(target)
+            let generatedOverride = try build.blueprintOverrides(target: target, craftTargetURL: craftTargetURL)
+            let overlay = try #require(generatedOverride)
+            let lines = overlay.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }
+
+            #expect(lines.contains("[BlueprintSettings]"))
+            #expect(lines.contains("[\(target)-BlueprintSettings]"))
+            #expect(lines.filter { $0 == "craft/craft-blueprints-kde.branch = custom-kde" }.count == 2)
+            #expect(lines.filter { $0 == "craft/craft-blueprints-kde.revision =" }.count == 2)
+            #expect(!overlay.contains("craft/craft-blueprints-nextcloud."))
+
+            let overrideFile = directory.appendingPathComponent("override.ini")
+            try overlay.write(to: overrideFile, atomically: true, encoding: .utf8)
+            let settings = try build.craftSettings(
+                at: file,
+                target: target,
+                craftMasterDirectory: craftMasterDirectory,
+                overrideFile: overrideFile
+            )
+
+            #expect(settings.kdeBlueprintsRevision == nil)
+            #expect(settings.clientBlueprintsRevision == "stable-client")
+        }
+    }
+
+    @Test
+    func unrelatedBlueprintOverrideDoesNotChangeCraftConfiguration() throws {
+        try withConfiguration("") { file, _ in
+            let build = try Build.parse([
+                "--kde-blueprints-git-url=https://example.test/different.git",
+                "--kde-blueprints-git-ref=custom-kde",
+                "--client-blueprints-git-ref=custom-client",
+            ])
+            let craftTargetURL = file.deletingLastPathComponent().appendingPathComponent(target)
+
+            #expect(try build.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
+        }
+    }
+
+    @Test
+    func kdeOverrideFollowsLegacyCheckoutWhenPresent() throws {
+        try withConfiguration("") { file, _ in
+            let craftTargetURL = file.deletingLastPathComponent().appendingPathComponent(target)
+            let legacyCheckout = craftTargetURL.appendingPathComponent("etc/blueprints/locations/craft-kde")
+            let arguments = ["--kde-blueprints-git-ref=stable"]
+            let current = try Build.parse(arguments)
+            let legacy = try Build.parse(arguments + ["--kde-blueprints-git-url=git@example.test:craft-kde.git"])
+
+            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
+            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL, registeringBlueprints: true) != nil)
+
+            try FileManager.default.createDirectory(at: legacyCheckout, withIntermediateDirectories: true)
+
+            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) != nil)
+            #expect(try current.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
         }
     }
 
@@ -151,8 +252,8 @@ struct CraftMasterConfigurationTests {
             let build = try Build.parse([])
             let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
 
-            #expect(settings.kdeBlueprintsRepository.hasSuffix("|master|"))
-            #expect(settings.clientBlueprintsRepository.hasSuffix("|master|"))
+            #expect(settings.kdeBlueprintsRevision == nil)
+            #expect(settings.clientBlueprintsRevision == nil)
             #expect(settings.compileBuildType == "RelWithDebInfo")
             #expect(settings.buildType == "RelWithDebInfo")
             #expect(!settings.buildTests)
