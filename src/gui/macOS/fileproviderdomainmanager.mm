@@ -108,7 +108,7 @@ public:
             [manager reconnectWithCompletionHandler:^(NSError *error) { reply(nil, error); }];
         });
         if (reconnected) {
-            signalEnumerator(domain);
+            forwardFileIdsChanged(domain, {});
         }
     }
 
@@ -173,6 +173,25 @@ public:
             [manager signalEnumeratorForContainerItemIdentifier:NSFileProviderWorkingSetContainerItemIdentifier
                                               completionHandler:^(NSError *error) { reply(nil, error); }];
         });
+    }
+
+    /**
+     * @brief Hand changed file IDs to the domain's extension, an empty list meaning that anything may have changed, or signal its working set when the
+     * extension does not take them.
+     */
+    void forwardFileIdsChanged(NSFileProviderDomain *domain, const QList<qint64> &fileIds)
+    {
+        const auto fileProvider = FileProvider::instance();
+        const auto xpc = fileProvider ? fileProvider->xpc() : nullptr;
+        const auto domainIdentifier = QString::fromNSString(domain.identifier);
+
+        if (xpc && xpc->processFileIdsChanged(domainIdentifier, fileIds)) {
+            return;
+        }
+
+        qCInfo(lcMacFileProviderDomainManager) << "Could not hand the change to the extension of domain" << domainIdentifier
+                                               << "so signalling its working set.";
+        signalEnumerator(domain);
     }
 
     /**
@@ -504,7 +523,7 @@ void FileProviderDomainManager::signalEnumeratorChanged(const Account * const ac
         return;
     }
 
-    d->signalEnumerator(domain);
+    d->forwardFileIdsChanged(domain, {});
 }
 
 QString FileProviderDomainManager::userVisibleUrlForDomainIdentifier(const QString &domainIdentifier) const
@@ -615,18 +634,7 @@ void FileProviderDomainManager::slotHandleFileIdsChanged(const OCC::Account * co
         return;
     }
 
-    const auto fileProvider = FileProvider::instance();
-    const auto xpc = fileProvider ? fileProvider->xpc() : nullptr;
-    const auto domainIdentifier = QString::fromNSString(domain.identifier);
-
-    if (xpc && xpc->processFileIdsChanged(domainIdentifier, fileIds)) {
-        return;
-    }
-
-    qCWarning(lcMacFileProviderDomainManager) << "Could not forward file ID changes to domain"
-                                               << domainIdentifier
-                                               << "refreshing without filtering.";
-    d->signalEnumerator(domain);
+    d->forwardFileIdsChanged(domain, fileIds);
 }
 
 std::optional<QString> FileProviderDomainManager::removeDomainByAccount(const AccountState *const accountState)

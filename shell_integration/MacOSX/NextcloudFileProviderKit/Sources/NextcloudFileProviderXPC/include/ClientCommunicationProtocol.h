@@ -46,7 +46,7 @@
 /**
  * @brief Process numeric WebDAV file IDs received from notify-push.
  *
- * An empty array represents a legacy notification without file IDs and must trigger a refresh.
+ * An empty array means that something changed without naming it, such as "Sync now", and must trigger a refresh of everything.
  * Otherwise, the extension refreshes only if at least one file ID belongs to locally known metadata.
  */
 - (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds
