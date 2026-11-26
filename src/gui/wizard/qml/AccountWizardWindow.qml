@@ -22,8 +22,9 @@ WizardStyledWindow {
     minimizable: true
     width: Style.accountWizardWidth
     height: compactHeight
-    minimumWidth: Style.accountWizardWidth
-    minimumHeight: compactHeight
+    minimumWidth: wizardFrame.implicitWidth
+    minimumHeight: wizardFrame.implicitHeight
+
     title: ""
     function defaultHeightForCurrentStep() {
         return controller && controller.currentStep === AccountWizardController.SyncOptionsStep
@@ -201,11 +202,30 @@ WizardStyledWindow {
         }
     }
 
-    WizardDialogFrame {
+    ColumnLayout {
+        id: wizardFrame
+
+        property bool footerVisible: true
+        property bool footerSeparatorVisible: false
+        property int footerTopPadding: 0
+        readonly property int windowMargin: Style.wizardWindowMargin
+        readonly property int footerButtonHeight: Style.wizardFooterButtonHeight
+
         anchors.fill: parent
 
+        spacing: 0
+
         Loader {
-            anchors.fill: parent
+            id: body
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            Layout.leftMargin: Style.wizardWindowMargin
+            Layout.rightMargin: Style.wizardWindowMargin
+            Layout.topMargin: Style.wizardWindowMargin
+            Layout.bottomMargin: Style.wizardWindowMargin
+
             sourceComponent: {
                 if (!root.controller) {
                     return null
@@ -223,13 +243,28 @@ WizardStyledWindow {
             }
         }
 
-        footer: [
+        RowLayout {
+            id: footerLayout
+
+            Layout.fillWidth: true
+            Layout.preferredHeight: wizardFrame.footerVisible
+                ? wizardFrame.footerButtonHeight + wizardFrame.windowMargin + wizardFrame.footerTopPadding + (wizardFrame.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+                : 0
+            Layout.leftMargin: wizardFrame.windowMargin
+            Layout.rightMargin: wizardFrame.windowMargin
+            Layout.topMargin: wizardFrame.footerTopPadding + (wizardFrame.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+            Layout.bottomMargin: wizardFrame.windowMargin
+
+            visible: wizardFrame.footerVisible
+
+            spacing: Style.wizardFooterSpacing
+
             BrowserAuthFooter {
                 controller: root.controller
                 visible: root.controller && root.controller.currentStep === AccountWizardController.BrowserAuthStep
                 Layout.fillWidth: visible
                 Layout.fillHeight: visible
-            },
+            }
 
             WizardButton {
                 visible: root.controller
@@ -254,7 +289,7 @@ WizardStyledWindow {
                         root.controller.goBack()
                     }
                 }
-            },
+            }
 
             WizardButton {
                 visible: root.controller && root.controller.currentStep === AccountWizardController.SyncOptionsStep
@@ -263,7 +298,7 @@ WizardStyledWindow {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
                 onClicked: root.controller.skipFolderConfiguration()
-            },
+            }
 
             WizardButton {
                 visible: root.controller
@@ -275,7 +310,7 @@ WizardStyledWindow {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
                 onClicked: root.controller.openAdvancedOptions()
-            },
+            }
 
             WizardButton {
                 visible: root.controller
@@ -287,7 +322,7 @@ WizardStyledWindow {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
                 onClicked: root.controller.openSignup()
-            },
+            }
 
             WizardButton {
                 visible: root.controller
@@ -299,7 +334,7 @@ WizardStyledWindow {
                 Layout.fillWidth: true
                 Layout.preferredWidth: 1
                 onClicked: root.controller.openSelfHostedServerGuide()
-            },
+            }
 
             Button {
                 id: proxySettingsButton
@@ -324,7 +359,7 @@ WizardStyledWindow {
                     hoverEnabled: enabled
                     cursorShape: Qt.PointingHandCursor
                 }
-            },
+            }
 
             Item {
                 visible: root.controller
@@ -333,7 +368,7 @@ WizardStyledWindow {
                     && root.controller.currentStep !== AccountWizardController.BasicAuthStep
                     && root.controller.currentStep !== AccountWizardController.SyncOptionsStep
                 Layout.fillWidth: visible
-            },
+            }
 
             WizardButton {
                 visible: root.controller
@@ -380,7 +415,7 @@ WizardStyledWindow {
                     }
                 }
             }
-        ]
+        }
     }
 
     Component {
@@ -393,6 +428,7 @@ WizardStyledWindow {
     Component {
         id: browserAuthPage
         BrowserAuthPage {
+            anchors.fill: parent
             controller: root.controller
         }
     }
@@ -400,6 +436,7 @@ WizardStyledWindow {
     Component {
         id: basicAuthPage
         BasicAuthPage {
+            anchors.fill: parent
             controller: root.controller
         }
     }
@@ -407,6 +444,7 @@ WizardStyledWindow {
     Component {
         id: syncOptionsPage
         SyncOptionsPage {
+            anchors.fill: parent
             controller: root.controller
         }
     }
