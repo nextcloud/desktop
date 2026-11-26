@@ -145,6 +145,8 @@ extension Enumerator {
         var failedItemIds = Set<String>()
         var notFoundOcIds = Set<String>()
 
+        let materialisedIndex = MaterialisedItemIndex(materialisedItems)
+
         // Reads are issued in waves by remote-path depth, so a directory's read is merged before the deeper items it covers are read.
         func remotePathDepth(_ metadata: SendableItemMetadata) -> Int {
             metadata.remotePath().count(where: { $0 == "/" })
@@ -248,11 +250,7 @@ extension Enumerator {
                                 // above via `accumulatedUpdates` / `accumulatedCreations`.
                                 if changedChildOcIds.contains(childDirectory.ocId) {
                                     let childPath = childDirectory.remotePath()
-                                    let childHasMaterialisedDescendant = materialisedItems.contains {
-                                        $0.ocId != childDirectory.ocId
-                                            && ($0.hasSameRemotePath(as: childPath)
-                                                || $0.isDescendant(of: childPath))
-                                    }
+                                    let childHasMaterialisedDescendant = materialisedIndex.hasContent(at: childPath, excluding: childDirectory.ocId)
                                     // The pin is read from the stored row because the read applies the parent's pin to its own copy.
                                     let childIsPinned = dbManager
                                         .itemMetadata(ocId: childDirectory.ocId)?
@@ -268,16 +266,13 @@ extension Enumerator {
 
                                 // Only skip unchanged child directories with no materialised descendants.
                                 // Lock changes don't propagate etags, so dirs with visible children must be enumerated.
-                                guard let localItem = materialisedItems.first(
-                                    where: { $0.ocId == childDirectory.ocId }
-                                ), localItem.isInSameDatabaseStoreableRemoteState(childDirectory) else {
+                                guard let localItem = materialisedIndex.item(ocId: childDirectory.ocId),
+                                      localItem.isInSameDatabaseStoreableRemoteState(childDirectory)
+                                else {
                                     continue
                                 }
 
-                                let hasMaterialisedDescendants = materialisedItems.contains {
-                                    $0.ocId != localItem.ocId
-                                        && $0.isDescendant(of: localItem.remotePath())
-                                }
+                                let hasMaterialisedDescendants = materialisedIndex.hasDescendant(of: localItem.remotePath())
 
                                 if !hasMaterialisedDescendants {
                                     childrenCoveredByThisRead.insert(childDirectory.ocId)
