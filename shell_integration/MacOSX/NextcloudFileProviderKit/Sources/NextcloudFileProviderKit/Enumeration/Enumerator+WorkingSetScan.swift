@@ -122,8 +122,8 @@ extension Enumerator {
     ///
     /// A pass starts no further sibling after its budget is spent (``WorkingSetScanLimits``): the
     /// system issues no folder enumeration while a change enumeration is outstanding, so a long pass
-    /// freezes Finder. The first descent below every directory just listed is still taken, so each
-    /// pass completes at least one chain and the set of unreconciled directories shrinks. The
+    /// freezes Finder. The chain of first descents down from the root is still taken, so each
+    /// pass completes one chain and the set of unreconciled directories shrinks. The
     /// unfinished chains are not recorded, so the next pass, asked for once this one's batches are
     /// acknowledged, resumes there. Such a pass reports no deletions: it cannot tell a deletion from
     /// a move into a part it did not reach, so it revives the tombstones it wrote and forgets the
@@ -264,10 +264,22 @@ extension Enumerator {
         readLimiter: ScanReadLimiter,
         state: inout WorkingSetScanState
     ) async -> Bool {
-        // Past the deadline the first directory below each listing is still read, so every pass completes a
-        // chain; its siblings wait for the next pass. The chain up to here keeps no reconciled state, so the
-        // next pass descends to this point again and skips what this one completed.
-        guard startsChainBelowParent || ContinuousClock.now < state.deadline else {
+        // Past the deadline only the chain of first directories down from the root is still read, so every pass
+        // completes one chain; everything else waits for the next pass. The chain up to here keeps no reconciled state, so the
+        // next pass descends to this point again and skips what this one completed. The budget is checked before
+        // waiting for a slot and again once it is granted, which can be long after, when the listings ahead of this
+        // one in the whole pass are done.
+        let budgetIsSpent = { [deadline = state.deadline] in !startsChainBelowParent && ContinuousClock.now >= deadline }
+        var spent = budgetIsSpent()
+        if !spent {
+            await readLimiter.acquire()
+            spent = budgetIsSpent()
+            if spent {
+                await readLimiter.release()
+            }
+        }
+
+        guard !spent else {
             logger.debug("Not starting another listing in this pass; the listing budget is spent.", [.url: remotePath])
             state.stoppedAtDeadline = true
             return false
@@ -276,7 +288,6 @@ extension Enumerator {
         logger.debug("Listing a directory for working-set changes.", [.url: remotePath])
         state.listedCount += 1
 
-        await readLimiter.acquire()
         let readResult = await Enumerator.readServerUrl(
             remotePath,
             account: account,
@@ -370,7 +381,8 @@ extension Enumerator {
 
         if !toDescend.isEmpty {
             let descents = await descend(
-                into: toDescend, below: ocId, ancestorOcIds: ancestorOcIds, readLimiter: readLimiter, state: &state
+                into: toDescend, below: ocId, ancestorOcIds: ancestorOcIds, continuingChain: startsChainBelowParent, readLimiter: readLimiter,
+                state: &state
             )
             allDescentsSucceeded = descents
         }
@@ -392,9 +404,10 @@ extension Enumerator {
     /// connection limit, however deep it has recursed, and the window below keeps the number of subtrees
     /// being walked at once from growing with the tree.
     ///
-    /// The listing budget is decided by the listing itself, not here: a task whose turn comes after the
-    /// deadline reads nothing and reports its subtree as unfinished, so adding the tasks ahead of time
-    /// does not spend budget the pass no longer has.
+    /// The listing budget is decided by the listing itself, not here: a listing which gets its slot after
+    /// the deadline reads nothing, unless it continues the chain from the root, and reports its subtree as
+    /// unfinished, so adding the tasks ahead of time does not spend budget the pass no longer has. Only the
+    /// first child below a listing on that chain continues it.
     ///
     /// - Returns: Whether every subtree was walked to its end.
     ///
@@ -402,6 +415,7 @@ extension Enumerator {
         into children: [SendableItemMetadata],
         below ocId: String,
         ancestorOcIds: [String],
+        continuingChain: Bool,
         readLimiter: ScanReadLimiter,
         state: inout WorkingSetScanState
     ) async -> Bool {
@@ -425,7 +439,7 @@ extension Enumerator {
                         metadata: child,
                         remoteStateAsListed: FilesDatabaseManager.scanRemoteState(of: child),
                         ancestorOcIds: ancestors,
-                        startsChainBelowParent: offset == 0,
+                        startsChainBelowParent: continuingChain && offset == 0,
                         readLimiter: readLimiter,
                         state: &subtree
                     )

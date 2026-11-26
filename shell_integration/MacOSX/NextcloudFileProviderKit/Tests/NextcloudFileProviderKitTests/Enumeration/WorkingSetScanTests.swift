@@ -172,6 +172,38 @@ struct WorkingSetScanTests {
         #expect(manager.scannedRemoteStateForTesting(ocId: "c") == nil, "The subtree which never started keeps no state.")
     }
 
+    ///
+    /// Past its budget a pass reads only what already had a slot and the chain of first directories down from the root.
+    ///
+    @Test func pastItsBudgetAPassContinuesOnlyTheChainFromTheRoot() async throws {
+        for name in ["a", "b"] {
+            let folder = makeFolder(name, in: rootItem)
+            for index in 1 ... 2 {
+                let child = makeFolder("\(name)\(index)", in: folder)
+                let grandchild = makeFolder("\(name)\(index)x", in: child)
+                makeFile("f-\(name)\(index)", in: grandchild)
+            }
+        }
+        seedTree()
+        // a1 takes the slot b leaves free and a2 the one b gives back after 100 ms, before the budget runs out. b1 and
+        // b2 are queued then and get their slots only when a1 and a2 finish, after it; slots go out in the order they
+        // were asked for. a1 is on the chain from the root, a2 is not, so only a1x is read below them.
+        remoteInterface.enumerateLatencyBySuffix = [
+            "/b": .milliseconds(100),
+            "/a1": .milliseconds(600), "/a2": .milliseconds(600), "/b1": .milliseconds(600), "/b2": .milliseconds(600)
+        ]
+
+        let cut = try await pass(limits: WorkingSetScanLimits(listingBudget: .milliseconds(300), resumeDelay: .zero, concurrentListings: 2))
+
+        #expect(cut.observer.error == nil)
+        #expect(cut.paths.contains("/a/a1/a1x"), "The chain from the root is read to its end. Got: \(cut.paths)")
+        #expect(!cut.paths.contains("/a/a2/a2x"), "A listing which finished after the budget continues no chain of its own. Got: \(cut.paths)")
+        for path in ["/b/b1", "/b/b2"] {
+            #expect(!cut.paths.contains(path), "A listing which got its slot after the budget does not go out. Got: \(cut.paths)")
+        }
+        #expect(remoteInterface.peakInFlightEnumerations <= 2, "Never more in flight than the pass was allowed.")
+    }
+
     /// A delivered batch is acknowledged right after the observer's finish, on the main actor, so its effect on the store can trail the pass by a moment.
     private func waitUntil(_ comment: Comment, _ condition: @escaping () -> Bool) async throws {
         for _ in 0 ..< 200 where !condition() {

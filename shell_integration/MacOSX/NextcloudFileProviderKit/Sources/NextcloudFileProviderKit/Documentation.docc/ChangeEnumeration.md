@@ -173,10 +173,11 @@ The framework issues no folder enumeration for the domain while a
 working-set change enumeration is outstanding, so a long pass freezes Finder
 for its duration. A pass therefore starts no further listing after its
 budget (`WorkingSetScanLimits`, 20 seconds) is spent; the listings in flight
-finish on their own, and the first directory below each listing is still
-read, so every pass completes at least one chain. The budget is decided when
-a listing is about to go out, so a subtree whose turn comes after the
-deadline reads nothing and counts as unfinished. The changes
+finish on their own, and the chain of first directories down from the root
+is still read, so every pass completes one chain. The budget is checked
+before a listing waits for its slot and again once it has one, so a listing
+which gets its slot after the deadline reads nothing, unless it continues that
+chain, and counts as unfinished. The changes
 found so far are delivered and the anchor advances. Such a pass reports no
 deletions, because it cannot tell a deletion from a move into a part it did
 not reach: it revives the tombstones it wrote and forgets the directories
