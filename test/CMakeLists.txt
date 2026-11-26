@@ -10,7 +10,7 @@ set(CMAKE_AUTOMOC TRUE)
 
 find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS HttpServer CONFIG QUIET)
-find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS QuickTest)
+find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS QuickTest Svg)
 
 add_library(testutils
   STATIC
@@ -115,6 +115,13 @@ nextcloud_add_test(IconUtils)
 nextcloud_add_test(CustomStateIcons)
 target_compile_definitions(CustomStateIconsTest PRIVATE NEXTCLOUD_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 target_link_libraries(CustomStateIconsTest PRIVATE Qt::Gui)
+nextcloud_add_test(IconRasterization)
+target_compile_definitions(IconRasterizationTest PRIVATE NEXTCLOUD_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_link_libraries(IconRasterizationTest PRIVATE Qt::Gui Qt::Svg)
+add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/svgtopng" svgtopng)
+nextcloud_add_test(SvgToPng)
+target_compile_definitions(SvgToPngTest PRIVATE SVGTOPNG_EXECUTABLE="$<TARGET_FILE:svgtopng>")
+add_dependencies(SvgToPngTest svgtopng)
 nextcloud_add_test(NotificationSoundPlayer)
 nextcloud_add_test(SetUserStatusDialog)
 nextcloud_add_test(TrayAccountMenuPolicy)

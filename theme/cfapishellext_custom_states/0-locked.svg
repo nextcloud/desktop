@@ -1,3 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16" width="16" height="16">
-  <path d="m8 1c-2.319 0-3.967 1.8644-4 4v2.5h-1.5v7.5h11v-7.5h-1.5v-2.5c0-2.27-1.8-3.9735-4-4zm0 2c1.25 0 2 0.963 2 2v2.5h-4v-2.5c0-1.174 0.747-2 2-2z" fill="#fff" stroke="#000" stroke-width="1.25" stroke-linejoin="round" paint-order="stroke fill"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1024 1024" width="16" height="16">
+  <defs>
+    <path id="shape" d="m512 64c-148.416 0-253.888 119.3216-256 256v160h-96v480h704v-480h-96v-160c0-145.28-115.2-254.304-256-256zm0 128c80 0 128 61.632 128 128v160h-256v-160c0-75.136 47.808-128 128-128z"/>
+  </defs>
+  <use xlink:href="#shape" fill="none" stroke="#000" stroke-width="80" stroke-linejoin="round"/>
+  <use xlink:href="#shape" fill="#fff"/>
 </svg>

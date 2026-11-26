@@ -99,19 +99,6 @@ jobs:
             ${{ github.workspace }}\${{ env.CRAFT_TARGET }}
           key: ${{ runner.os }}-craft-v1-${{ env.CRAFT_TARGET }}-python-${{ env.PYTHON_VERSION }}-${{ steps.craft-revisions.outputs.key }}
 
-      #- name: Cache Install inkscape
-      #  id: cache-install-inkscape
-      #  uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      #  with:
-      #    path: C:\Program Files\inkscape
-      #    key: ${{ runner.os }}-cache-install-inkscape
-
-      - name: Install inkscape
-      #  if: steps.cache-install-inkscape.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          choco install inkscape
-
       - name: Setup PATH
         shell: pwsh
         run: |

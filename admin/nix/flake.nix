@@ -37,7 +37,6 @@
           with pkgs;
           [
             cmake
-            inkscape
             pkg-config
 
             qt6Packages.wrapQtAppsHook

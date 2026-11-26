@@ -137,7 +137,6 @@ struct Build: AsyncParsableCommand {
             installCommandEnv: ["NONINTERACTIVE": "1"]
         )
         try await installIfMissing("wget", "brew install wget")
-        try await installIfMissing("inkscape", "brew install inkscape")
         try await installIfMissing("python3", "brew install pyenv && pyenv install 3.12.4")
         
         Log.info("Build dependencies are installed.")

@@ -58,11 +58,6 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install Homebrew dependencies
-        if: steps.cache-craft-restore.outputs.cache-hit != 'true'
-        run: |
-          brew install homebrew/cask/inkscape
-
       - name: Download Craft
         if: steps.cache-craft-restore.outputs.cache-hit != 'true'
         run: |

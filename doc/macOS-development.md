@@ -21,8 +21,7 @@ This is the entry point for contributors who want to work on the Nextcloud deskt
 - [Xcode](https://developer.apple.com/xcode/)
 - An Apple Development certificate for signing in your keychain (any Apple Developer account is sufficient — see below)
 - Python 3
-- [Homebrew](https://brew.sh) (for installing additional tools like `inkscape`, `pyenv`, and `create-dmg`)
-- [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
+- [Homebrew](https://brew.sh) (for installing additional tools like `pyenv` and `create-dmg`)
 
 The Xcode workspace orchestrates the rest of the toolchain (KDE Craft, CMake, Qt, OpenSSL, QtKeychain, SQLite) through `mac-crafter`. You do not need to install these dependencies separately for a contributor build.
 
