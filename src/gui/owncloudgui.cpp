@@ -861,6 +861,7 @@ void ownCloudGui::slotMoveItem(const QString &localPath, const QString &defaultT
         ConflictSolver solver;
         solver.setLocalVersionFilename(localPath);
         solver.setRemoteVersionFilename(targetUrl.toLocalFile());
+        solver.exec(ConflictSolver::KeepLocalVersion);
     });
     dialog->open();
     raiseDialog(dialog);
