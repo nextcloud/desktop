@@ -159,7 +159,7 @@ bool PollJob::finished()
         _item->_fileId = json["fileId"].toString().toUtf8();
 
         if (SyncJournalFileRecord oldRecord; _journal->getFileRecord(_item->destination(), &oldRecord) && oldRecord.isValid()) {
-            if (oldRecord._etag != _item->_etag) {
+            if (oldRecord._fileId != _item->_fileId || oldRecord._etag != _item->_etag) {
                 _item->updateLockStateFromDbRecord(oldRecord);
             }
         }

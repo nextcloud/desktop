@@ -261,14 +261,16 @@ SyncFileItemPtr SyncFileItem::fromProperties(const QString &filePath, const QMap
 
 void SyncFileItem::updateLockStateFromDbRecord(const SyncJournalFileRecord &dbRecord)
 {
-    _locked = dbRecord._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
-    _lockOwnerId = dbRecord._lockstate._lockOwnerId;
-    _lockOwnerDisplayName = dbRecord._lockstate._lockOwnerDisplayName;
-    _lockOwnerType = static_cast<LockOwnerType>(dbRecord._lockstate._lockOwnerType);
-    _lockEditorApp = dbRecord._lockstate._lockEditorApp;
-    _lockTime = dbRecord._lockstate._lockTime;
-    _lockTimeout = dbRecord._lockstate._lockTimeout;
-    _lockToken = dbRecord._lockstate._lockToken;
+    // Locks belong to a file identity, even when a replacement keeps the same path.
+    const auto lockState = _fileId == dbRecord._fileId ? dbRecord._lockstate : SyncJournalFileLockInfo{};
+    _locked = lockState._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
+    _lockOwnerId = lockState._lockOwnerId;
+    _lockOwnerDisplayName = lockState._lockOwnerDisplayName;
+    _lockOwnerType = static_cast<LockOwnerType>(lockState._lockOwnerType);
+    _lockEditorApp = lockState._lockEditorApp;
+    _lockTime = lockState._lockTime;
+    _lockTimeout = lockState._lockTimeout;
+    _lockToken = lockState._lockToken;
 }
 
 SyncJournalFileRecord SyncFileItem::fromSyncFileItem(const SyncFileItem &syncFile)
