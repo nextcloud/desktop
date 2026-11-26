@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include <QMutex>
+#include <QPointer>
 #include <QThread>
 #include <QString>
 #include <QSet>
@@ -33,6 +34,7 @@ class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
 class ProcessDirectoryJob;
+class UnlockEncryptFolderApiJob;
 
 enum AnotherSyncNeeded {
     NoFollowUpSync,
@@ -300,6 +302,9 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
+    void recoverE2eeLocks();
+    void startSyncAfterE2eeRecovery();
+
     void processCaseClashConflictsBeforeDiscovery();
 
     // Aggregate scheduled sync runs into interval buckets. Can be used to
@@ -327,6 +332,7 @@ private:
     AccountPtr _account;
     bool _needsUpdate = false;
     bool _syncRunning = false;
+    QPointer<UnlockEncryptFolderApiJob> _e2eeUnlockJob;
     QString _localPath;
     QString _remotePath;
     QByteArray _remoteRootEtag;
