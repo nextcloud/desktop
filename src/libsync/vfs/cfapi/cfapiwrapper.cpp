@@ -1287,6 +1287,11 @@ OCC::CfApiWrapper::convertToPlaceholder(const QString &path, const SyncFileItem 
         | (item.isDirectory() ? (item._type == ItemType::ItemTypeVirtualDirectory ? CF_CONVERT_FLAG_ENABLE_ON_DEMAND_POPULATION : CF_CONVERT_FLAG_ALWAYS_FULL)
                               : CF_CONVERT_FLAG_MARK_IN_SYNC);
 
+    // An ignored file carries the excluded pin state, which CfConvertToPlaceholder() rejects.
+    if (const auto stateResult = setPinState(path, PinState::Inherited, NoRecurse); !stateResult) {
+        return stateResult;
+    }
+
     const auto result =
         CfConvertToPlaceholder(handleForPath(path).get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), createPlaceholderFlags, nullptr, nullptr);
     Q_ASSERT(result == S_OK);
@@ -1304,9 +1309,7 @@ OCC::CfApiWrapper::convertToPlaceholder(const QString &path, const SyncFileItem 
             return stateResult;
         }
     }
-    const auto stateResult = setPinState(path, PinState::Inherited, NoRecurse);
-    Q_ASSERT(stateResult);
-    return stateResult;
+    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
 }
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString>
