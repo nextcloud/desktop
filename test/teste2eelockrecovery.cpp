@@ -230,6 +230,11 @@ private Q_SLOTS:
         job->start();
         QTRY_COMPARE(error.size(), 1);
         QTRY_VERIFY(guardedJob.isNull());
+        auto finished = QSignalSpy(&_folder->syncEngine(), &SyncEngine::finished);
+        _folder->syncEngine().startSync();
+        QTRY_COMPARE(finished.size(), 1);
+        QVERIFY(!finished.first().first().toBool());
+        QVERIFY(!_folder->syncEngine().isSyncRunning());
         QCOMPARE(requests, 0);
         QCOMPARE(_folder->syncJournal().e2EeLockedFolder(_folderId), corruptToken);
     }
@@ -263,6 +268,126 @@ private Q_SLOTS:
         QTRY_VERIFY(guardedJob.isNull());
         QCOMPARE(requests, 1);
         QCOMPARE(journal.e2EeLockedFolder(_folderId), encrypted);
+    }
+
+    void testSyncWaitsForRecovery_data()
+    {
+        QTest::addColumn<double>("apiVersion");
+        QTest::addColumn<int>("unlockStatus");
+        QTest::addColumn<int>("failureOnAttempt");
+        for (const auto apiVersion : {1.0, 2.0}) {
+            for (const auto status : {200, 403, 500}) {
+                for (const auto attempt : {1, 2}) {
+                    const auto name = u"v%1-http%2-attempt%3"_s.arg(apiVersion).arg(status).arg(attempt).toLatin1();
+                    QTest::newRow(name.constData()) << apiVersion << status << attempt;
+                }
+            }
+        }
+    }
+
+    void testSyncWaitsForRecovery()
+    {
+        QFETCH(double, apiVersion);
+        QFETCH(int, unlockStatus);
+        QFETCH(int, failureOnAttempt);
+        setApiVersion(apiVersion);
+        const auto encrypted = saveToken(_folderId);
+        QVERIFY(!encrypted.isEmpty());
+        QVERIFY(!saveToken("43611").isEmpty());
+        auto unlockRequests = QList<QNetworkRequest>{};
+        auto discoveryBeforeRecovery = false;
+        _folder->setServerOverride([&](auto op, const auto &request, QIODevice *) -> QNetworkReply * {
+            if (request.url().path().contains(u"/lock/"_s)) {
+                unlockRequests.append(request);
+                if (unlockStatus != 200 && unlockRequests.size() >= failureOnAttempt) {
+                    return new FakeErrorReply(op, request, _folder->networkAccessManager(), unlockStatus);
+                }
+                return new FakeJsonReply(op, request, _folder->networkAccessManager(), 200);
+            }
+            discoveryBeforeRecovery |= !_folder->syncJournal().e2EeLockedFolders().isEmpty();
+            return nullptr;
+        });
+        auto finished = QSignalSpy(&_folder->syncEngine(), &SyncEngine::finished);
+        _folder->syncEngine().startSync();
+        QVERIFY(_folder->syncEngine().isSyncRunning());
+        QCOMPARE(unlockRequests.size(), 1);
+        _folder->syncEngine().startSync();
+        QCOMPARE(unlockRequests.size(), 1);
+        QTRY_COMPARE(finished.size(), 1);
+        QCOMPARE(finished.first().first().toBool(), unlockStatus == 200);
+        QVERIFY(!_folder->syncEngine().isSyncRunning());
+        QCOMPARE(unlockRequests.size(), unlockStatus == 200 ? 2 : failureOnAttempt);
+        QVERIFY(!discoveryBeforeRecovery);
+        for (const auto &request : std::as_const(unlockRequests)) {
+            QCOMPARE(request.rawHeader("e2e-token"), _token);
+            QCOMPARE(QUrlQuery(request.url()).queryItemValue(u"abort"_s), u"true"_s);
+        }
+        if (unlockStatus == 200) {
+            QVERIFY(_folder->syncJournal().e2EeLockedFolders().isEmpty());
+        } else {
+            QCOMPARE(_folder->syncJournal().e2EeLockedFolders().size(), 3 - failureOnAttempt);
+            // A later sync makes one new attempt, rather than looping in the failed job.
+            _folder->syncEngine().startSync();
+            QTRY_COMPARE(finished.size(), 2);
+            QCOMPARE(unlockRequests.size(), failureOnAttempt + 1);
+        }
+    }
+
+    void testCancelRecoveryThenSyncAgain()
+    {
+        const auto encrypted = saveToken(_folderId);
+        QVERIFY(!encrypted.isEmpty());
+        auto pendingReply = QPointer<FakeHangingReply>{};
+        _folder->setServerOverride([&](auto op, const auto &request, QIODevice *) -> QNetworkReply * {
+            if (!request.url().path().contains(u"/lock/"_s)) {
+                return nullptr;
+            }
+            auto pendingRequest = request;
+            pendingRequest.setTransferTimeout(0);
+            pendingReply = new FakeHangingReply(op, pendingRequest, _folder->networkAccessManager());
+            return pendingReply;
+        });
+        auto finished = QSignalSpy(&_folder->syncEngine(), &SyncEngine::finished);
+        _folder->syncEngine().startSync();
+        QVERIFY(!pendingReply.isNull());
+        _folder->syncEngine().abort();
+        QCOMPARE(finished.size(), 1);
+        QVERIFY(!finished.first().first().toBool());
+        QVERIFY(!_folder->syncEngine().isSyncRunning());
+        QTRY_VERIFY(pendingReply.isNull());
+        QCOMPARE(_folder->syncJournal().e2EeLockedFolder(_folderId), encrypted);
+
+        _folder->setServerOverride([&](auto op, const auto &request, QIODevice *) -> QNetworkReply * {
+            if (request.url().path().contains(u"/lock/"_s)) {
+                return new FakeJsonReply(op, request, _folder->networkAccessManager(), 200);
+            }
+            return nullptr;
+        });
+        _folder->syncEngine().startSync();
+        QTRY_COMPARE(finished.size(), 2);
+        QVERIFY(finished.last().first().toBool());
+        QVERIFY(_folder->syncJournal().e2EeLockedFolders().isEmpty());
+    }
+
+    void testCancelledRecoveryIgnoresLateSuccess()
+    {
+        const auto encrypted = saveToken(_folderId);
+        QVERIFY(!encrypted.isEmpty());
+        auto pendingReply = QPointer<FakeJsonReply>{};
+        _folder->setServerOverride([&](auto op, const auto &request, QIODevice *) {
+            pendingReply = new FakeJsonReply(op, request, _folder->networkAccessManager(), 200);
+            return pendingReply.data();
+        });
+        auto finished = QSignalSpy(&_folder->syncEngine(), &SyncEngine::finished);
+        _folder->syncEngine().startSync();
+        QVERIFY(!pendingReply.isNull());
+        _folder->syncEngine().abort();
+        // Deliver a success before deleteLater() disposes of the cancelled job.
+        pendingReply->slotSetFinished();
+        QCOMPARE(finished.size(), 1);
+        QVERIFY(!finished.first().first().toBool());
+        QCOMPARE(_folder->syncJournal().e2EeLockedFolder(_folderId), encrypted);
+        QTRY_VERIFY(pendingReply.isNull());
     }
 };
 
