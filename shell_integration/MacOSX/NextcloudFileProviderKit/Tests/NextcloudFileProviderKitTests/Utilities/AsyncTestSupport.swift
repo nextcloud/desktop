@@ -4,6 +4,7 @@
 import Foundation
 
 let asyncTestTimeout: Duration = .seconds(5)
+let progressCancellationTimeout: Duration = .seconds(15)
 
 /// Returns false if cancellation never reaches the operation before the test timeout.
 func waitForCancellation(timeout: Duration = asyncTestTimeout) async -> Bool {

@@ -24,6 +24,13 @@
 #include <functional>
 #include <system_error>
 
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#else
+#include <QProcess>
+#include <QScopeGuard>
+#endif
+
 using namespace OCC;
 using namespace Qt::StringLiterals;
 
@@ -59,6 +66,82 @@ private Q_SLOTS:
 
         QTRY_COMPARE_WITH_TIMEOUT(finishedSpy.count(), 1, 5000);
     }
+
+#ifndef Q_OS_WIN
+    void testStatErrorDoesNotDeleteRemoteFiles()
+    {
+        if (geteuid() == 0) {
+            QSKIP("Needs a non root user so stat() fails inside an unsearchable directory");
+        }
+
+        FakeFolder fakeFolder{FileInfo { }};
+        fakeFolder.localModifier().mkdir("sub");
+        fakeFolder.localModifier().insert("sub/a.txt", 100);
+        fakeFolder.localModifier().insert("sub/b.txt", 100);
+        fakeFolder.localModifier().mkdir("sub/inner");
+        fakeFolder.localModifier().mkdir("sub/inner/deep");
+        fakeFolder.localModifier().insert("sub/inner/deep/c.txt", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto subPath = fakeFolder.localPath() + QStringLiteral("sub");
+        QVERIFY(QFile::setPermissions(subPath, QFileDevice::ReadOwner));
+
+        fakeFolder.syncOnce();
+
+        QFile::setPermissions(subPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/a.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/b.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("sub/inner/deep/c.txt"));
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // A server side removal of the parent must not turn into a local removal either.
+        QVERIFY(QFile::setPermissions(subPath, QFileDevice::ReadOwner));
+        fakeFolder.remoteModifier().remove("sub");
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.syncOnce();
+
+        QFile::setPermissions(subPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+
+        QVERIFY(completeSpy.findItem("sub")->_instruction != CSYNC_INSTRUCTION_REMOVE);
+        QVERIFY(QFileInfo::exists(subPath + QStringLiteral("/a.txt")));
+    }
+#else
+    void testStatErrorDoesNotDeleteRemoteFiles()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.localModifier().insert("a.txt", 100);
+        fakeFolder.localModifier().insert("b.txt", 100);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const auto filePath = fakeFolder.localPath() + u"a.txt"_s;
+        const auto userName = qEnvironmentVariable("USERNAME");
+        const auto restoreAccess = [&filePath, &userName] {
+            return QProcess::execute(u"icacls"_s, {filePath, u"/remove:d"_s, userName});
+        };
+
+        // Denying SYNCHRONIZE makes the open in csync_vio_local_stat() fail. Denying read attributes does not.
+        QCOMPARE(QProcess::execute(u"icacls"_s, {filePath, u"/deny"_s, u"%1:(S)"_s.arg(userName)}), 0);
+        const auto restoreGuard = qScopeGuard([&restoreAccess] {
+            restoreAccess();
+        });
+
+        fakeFolder.syncOnce();
+
+        QCOMPARE(restoreAccess(), 0);
+
+        QVERIFY(fakeFolder.currentRemoteState().find("a.txt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("b.txt"));
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+#endif
 
     void testSelectiveSyncQuotaExceededDataLoss()
     {

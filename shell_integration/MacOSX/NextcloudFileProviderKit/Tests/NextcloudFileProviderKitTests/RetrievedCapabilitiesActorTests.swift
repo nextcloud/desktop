@@ -34,11 +34,8 @@ struct RetrievedCapabilitiesActorTests {
         }
         let first = Task {
             await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
-                do {
-                    _ = try await nextTestValue(from: release)
-                } catch {
-                    Issue.record("Shared fetch was not released: \(error)")
-                }
+                var releaseIterator = release.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 #expect(!Task.isCancelled)
                 return (account1, capabilities, nil, .success)
             }
@@ -82,11 +79,8 @@ struct RetrievedCapabilitiesActorTests {
         }
         let first = Task {
             await actor.currentCapabilities(forAccount: account1, onWaiting: { waitingContinuation.yield(()) }) { _ in
-                do {
-                    _ = try await nextTestValue(from: release)
-                } catch {
-                    Issue.record("Shared fetch was not released: \(error)")
-                }
+                var releaseIterator = release.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 return (account1, nil, nil, error)
             }
         }
@@ -132,7 +126,8 @@ struct RetrievedCapabilitiesActorTests {
             await actor.currentCapabilities(forAccount: account1) { taskHandler in
                 taskHandler(networkTask)
                 continuation.yield(())
-                _ = try? await nextTestValue(from: release)
+                var releaseIterator = release.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 return (account1, capabilities, nil, .success)
             }
         }
@@ -203,7 +198,8 @@ struct RetrievedCapabilitiesActorTests {
         let task = Task {
             await actor.currentCapabilities(forAccount: account1) { _ in
                 startedContinuation.yield(())
-                _ = try? await nextTestValue(from: release)
+                var releaseIterator = release.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 return (account1, capabilities, nil, .success)
             }
         }
@@ -240,14 +236,16 @@ struct RetrievedCapabilitiesActorTests {
         let first = Task {
             await actor.currentCapabilities(forAccount: account1) { _ in
                 startedContinuation.yield(())
-                _ = try? await nextTestValue(from: releaseFirst)
+                var releaseIterator = releaseFirst.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 return (account1, capabilities, nil, .success)
             }
         }
         let second = Task {
             await actor.currentCapabilities(forAccount: account2) { _ in
                 startedContinuation.yield(())
-                _ = try? await nextTestValue(from: releaseSecond)
+                var releaseIterator = releaseSecond.makeAsyncIterator()
+                _ = await releaseIterator.next()
                 return (account2, capabilities, nil, .success)
             }
         }

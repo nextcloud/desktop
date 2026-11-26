@@ -291,6 +291,7 @@ SyncJournalFileRecord SyncFileItem::fromSyncFileItem(const SyncFileItem &syncFil
     case CSyncEnums::ItemTypeSoftLink:
     case CSyncEnums::ItemTypeDirectory:
     case CSyncEnums::ItemTypeSkip:
+    case CSyncEnums::ItemTypeSkipError:
     case CSyncEnums::ItemTypeVirtualFile:
     case CSyncEnums::ItemTypeVirtualDirectory:
         break;

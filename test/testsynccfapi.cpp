@@ -1457,6 +1457,43 @@ private Q_SLOTS:
         CFVERIFY_VIRTUAL(fakeFolder, "file1");
     }
 
+    void testRemoteDeleteMixedDirectoryWithTrashEnabled()
+    {
+        // Start with an existing directory so its children are discoverable after VFS is enabled.
+        const auto directory = u"A"_s;
+        const auto onlineOnlyFile = u"A/online.txt"_s;
+        const auto downloadedFile = u"A/downloaded.txt"_s;
+        const auto unrelatedFile = u"keep.txt"_s;
+        auto fakeFolder = FakeFolder{FileInfo{QString{}, {FileInfo{directory}, FileInfo{unrelatedFile, 1}}}};
+        setupVfs(fakeFolder);
+
+        fakeFolder.remoteModifier().insert(onlineOnlyFile);
+        fakeFolder.remoteModifier().insert(downloadedFile);
+        QVERIFY(fakeFolder.syncOnce());
+        CFVERIFY_VIRTUAL(fakeFolder, onlineOnlyFile);
+        CFVERIFY_VIRTUAL(fakeFolder, downloadedFile);
+
+        triggerDownload(fakeFolder, downloadedFile.toUtf8());
+        QVERIFY(fakeFolder.syncOnce());
+        CFVERIFY_VIRTUAL(fakeFolder, onlineOnlyFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, downloadedFile);
+
+        QVERIFY(dbRecord(fakeFolder, directory).isValid());
+
+        auto syncOptions = fakeFolder.syncEngine().syncOptions();
+        syncOptions._moveFilesToTrash = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        auto completed = ItemCompletedSpy{fakeFolder};
+        fakeFolder.remoteModifier().remove(directory);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completed.findItem(directory)->_status, SyncFileItem::Success);
+        CFVERIFY_GONE(fakeFolder, directory);
+        CFVERIFY_GONE(fakeFolder, onlineOnlyFile);
+        CFVERIFY_GONE(fakeFolder, downloadedFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, unrelatedFile);
+    }
+
     void testFolderReplacedByJunctionBeforePropagation()
     {
         FakeFolder fakeFolder{FileInfo{QString{}, {FileInfo{u"A"_s}}}};

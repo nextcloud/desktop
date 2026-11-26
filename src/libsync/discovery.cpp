@@ -150,7 +150,7 @@ void ProcessDirectoryJob::process()
         // This is done in a second path in order to not depend on the order of
         // _localNormalQueryEntries.
         for (auto &e : _localNormalQueryEntries) {
-            if (!e.isVirtualFile) {
+            if (!e.isVirtualFile && !(e.type == ItemTypeSkipError && hasVirtualFileSuffix(e.name))) {
                 continue;
             }
             auto &suffixedEntry = entries[e.name];
@@ -165,7 +165,7 @@ void ProcessDirectoryJob::process()
                 if (!hasOtherData) {
                     entries.erase(e.name);
                 }
-            } else if (!hasOtherData) {
+            } else if (!hasOtherData && e.isVirtualFile) {
                 // Normally a lone local suffixed file would be processed under the
                 // unsuffixed name. In this special case it's under the suffixed name.
                 // To avoid lots of special casing, make sure PathTuple::addName()
@@ -1384,6 +1384,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
+
+    if (localEntry.type == ItemTypeSkipError) {
+        _childIgnored = true;
+        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+        item->_status = SyncFileItem::SoftError;
+        item->_errorString = tr("Could not read local file. It will be checked again on a later sync.");
+        Q_EMIT _discoveryData->itemDiscovered(item);
+        return;
+    }
 
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
