@@ -40,16 +40,21 @@ public:
     void setShared(bool isShared);
     [[nodiscard]] bool shared() const;
 
+    /// Marks a dehydrated placeholder, whose contents are not available locally
+    void setDehydrated(bool isDehydrated);
+    [[nodiscard]] bool dehydrated() const;
+
     [[nodiscard]] QString toSocketAPIString() const;
 
 private:
     SyncFileStatusTag _tag = StatusNone;
     bool _shared = false;
+    bool _dehydrated = false;
 };
 
 inline bool operator==(const SyncFileStatus &a, const SyncFileStatus &b)
 {
-    return a.tag() == b.tag() && a.shared() == b.shared();
+    return a.tag() == b.tag() && a.shared() == b.shared() && a.dehydrated() == b.dehydrated();
 }
 
 inline bool operator!=(const SyncFileStatus &a, const SyncFileStatus &b)

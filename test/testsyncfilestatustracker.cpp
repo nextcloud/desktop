@@ -8,9 +8,11 @@
  * any purpose.
  */
 
-#include <QtTest>
-#include "syncenginetestutils.h"
+#include "common/vfs.h"
+#include "config.h"
 #include "csync_exclude.h"
+#include "syncenginetestutils.h"
+#include <QtTest>
 
 using namespace OCC;
 
@@ -79,6 +81,38 @@ private Q_SLOTS:
         OCC::Logger::instance()->setLogDebug(true);
 
         QStandardPaths::setTestModeEnabled(true);
+    }
+
+    void dehydratedFilesAreMarked()
+    {
+        const auto dehydrated = QStringLiteral("dehydrated" APPLICATION_DOTVIRTUALFILE_SUFFIX);
+        const auto sharedDehydrated = QStringLiteral("sharedDehydrated" APPLICATION_DOTVIRTUALFILE_SUFFIX);
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.switchToVfs(QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release()));
+        fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::Unspecified);
+        fakeFolder.remoteModifier().insert("dehydrated");
+        fakeFolder.remoteModifier().insert("sharedDehydrated");
+        fakeFolder.remoteModifier().find("sharedDehydrated")->permissions = RemotePermissions::fromServerString(QStringLiteral("SRGDNVW"));
+        fakeFolder.localModifier().insert("hydrated");
+        StatusPushSpy statusSpy(fakeFolder.syncEngine());
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        auto &tracker = fakeFolder.syncEngine().syncFileStatusTracker();
+        QCOMPARE(tracker.fileStatus(dehydrated).toSocketAPIString(), QStringLiteral("OK+VIRT"));
+        QCOMPARE(tracker.fileStatus(sharedDehydrated).toSocketAPIString(), QStringLiteral("OK+SWM+VIRT"));
+        QCOMPARE(tracker.fileStatus(QStringLiteral("hydrated")).toSocketAPIString(), QStringLiteral("OK"));
+        QCOMPARE(statusSpy.statusOf(dehydrated).toSocketAPIString(), QStringLiteral("OK+VIRT"));
+    }
+
+    void dehydratedMarkerOnlyForUpToDateFiles()
+    {
+        auto status = SyncFileStatus{SyncFileStatus::StatusSync};
+        status.setDehydrated(true);
+        QCOMPARE(status.toSocketAPIString(), QStringLiteral("SYNC"));
+        status.set(SyncFileStatus::StatusUpToDate);
+        QCOMPARE(status.toSocketAPIString(), QStringLiteral("OK+VIRT"));
     }
 
     void parentsGetSyncStatusUploadDownload() {
