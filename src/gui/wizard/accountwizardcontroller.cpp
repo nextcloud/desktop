@@ -1859,11 +1859,7 @@ void AccountWizardController::openSelectiveSync()
     const auto previousSelectiveSyncSize = _selectiveSyncSize;
     setSyncMode(SelectiveSync);
     if (!_selectiveSyncDialog) {
-        _selectiveSyncDialog = new SelectiveSyncDialog(_account,
-            _remoteFolder,
-            _selectiveSyncBlacklist,
-            nullptr,
-            Qt::Dialog | Qt::FramelessWindowHint);
+        _selectiveSyncDialog = new SelectiveSyncDialog(_account, _remoteFolder, _selectiveSyncBlacklist, nullptr, Qt::Dialog);
         _selectiveSyncDialog->setAttribute(Qt::WA_DeleteOnClose);
         _selectiveSyncDialog->setWindowModality(Qt::ApplicationModal);
         connect(_selectiveSyncDialog, &SelectiveSyncDialog::finished, this, [this, previousSyncMode, previousBlacklist, previousSelectiveSyncSize] {
