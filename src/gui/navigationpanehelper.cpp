@@ -8,6 +8,7 @@
 #include "accountmanager.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "navigationpaneentrypolicy.h"
 
 #include <QDir>
 #include <QCoreApplication>
@@ -64,17 +65,33 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
 #ifdef Q_OS_WIN
     const auto nameSpaceKey = QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)");
     if (Utility::registryKeyExists(HKEY_CURRENT_USER, nameSpaceKey)) {
-        Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
-            [&entriesToRemove, &currentAppName](HKEY key, const QString &subKey) {
-                const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-                qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey << "for appName:" << appName.toString();
-                if (appName.toString() == currentAppName || appName.toString() == unbrandedApplicationName) {
-                    QUuid clsid{ subKey };
-                    Q_ASSERT(!clsid.isNull());
-                    entriesToRemove.append(clsid);
-                    qCDebug(lcNavPane) << "Going to remove:" << subKey;
+        QStringList folderPaths;
+        for (const auto &folder : std::as_const(_folderMan->map())) {
+            folderPaths.append(folder->cleanPath());
+        }
+
+        Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey, [&entriesToRemove, &currentAppName, &folderPaths](HKEY key, const QString &subKey) {
+            const auto appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName")).toString();
+            qCDebug(lcNavPane) << "Searching for user with subKey:" << subKey << "for appName:" << appName;
+            const auto isOwnEntry = appName == currentAppName || appName == unbrandedApplicationName;
+            if (!isOwnEntry && !appName.isEmpty()) {
+                return;
+            }
+            if (!isOwnEntry) {
+                const auto initPropertyBagPath = QString() % R"(Software\Classes\CLSID\)" % subKey % R"(\Instance\InitPropertyBag)";
+                const auto targetFolderPath =
+                    Utility::registryGetKeyValue(HKEY_CURRENT_USER, initPropertyBagPath, QStringLiteral("TargetFolderPath")).toString();
+                if (!NavigationPaneEntryPolicy::isLegacyEntryOfFolder(appName, targetFolderPath, folderPaths)) {
+                    return;
                 }
-            });
+            }
+            const QUuid clsid{subKey};
+            if (clsid.isNull()) {
+                return;
+            }
+            entriesToRemove.append(clsid);
+            qCDebug(lcNavPane) << "Going to remove:" << subKey;
+        });
     }
 #endif
 
