@@ -17,6 +17,7 @@ def main():
         client_revision_key,
         override_path,
         build_tests_override,
+        blueprint_root_only,
     ) = sys.argv[1:]
     config_file = Path(craftmaster_directory).absolute() / "Config.py"
     if not config_file.is_file():
@@ -42,11 +43,20 @@ def main():
     def blueprint_value(key):
         return config.get("BlueprintSettings", key, default=None, target=target) or None
 
-    compile_key = "Compile/BuildType"
-    if (target, compile_key) in config:
-        compile_type = config.get(target, compile_key)
-    else:
-        compile_type = config.get("GeneralSettings", compile_key, default=None, target=target)
+    def target_setting(key, *, boolean=False):
+        get_value = config.getBool if boolean else config.get
+        if (target, key) in config:
+            return get_value(target, key)
+        if (f"{target}-GeneralSettings", key) in config or ("GeneralSettings", key) in config:
+            return get_value("GeneralSettings", key, target=target)
+        return None
+
+    if blueprint_root_only == "true":
+        blueprint_root = target_setting("Blueprints/BlueprintRoot")
+        if blueprint_root is not None:
+            blueprint_root = str(Path(blueprint_root).absolute())
+        print(json.dumps({"blueprintRoot": blueprint_root}))
+        return
 
     tests_key = f"{blueprint}.buildTests"
     build_tests = None
@@ -58,9 +68,10 @@ def main():
     print(json.dumps({
         "kdeBlueprintsRevision": blueprint_value(kde_revision_key),
         "clientBlueprintsRevision": blueprint_value(client_revision_key),
-        "compileBuildType": compile_type or None,
+        "compileBuildType": target_setting("Compile/BuildType") or None,
         "blueprintBuildType": blueprint_value(f"{blueprint}.buildType"),
         "buildTests": build_tests,
+        "workOffline": target_setting("General/WorkOffline", boolean=True),
     }))
 
 

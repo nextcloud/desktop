@@ -8,6 +8,8 @@ import Foundation
 
 struct Build: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Client building script")
+    private static let defaultKDEBlueprintsURL = "https://github.com/nextcloud/craft-blueprints-kde.git"
+    private static let defaultClientBlueprintsURL = "https://github.com/nextcloud/desktop-client-blueprints.git"
 
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
     var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
@@ -31,13 +33,13 @@ struct Build: AsyncParsableCommand {
     var craftMasterGitUrl = "https://github.com/KDE/craftmaster.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
-    var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
+    var kdeBlueprintsGitUrl = Build.defaultKDEBlueprintsURL
     
     @Option(name: [.long], help: "Override the KDE Craft blueprint branch from craftmaster.ini.")
     var kdeBlueprintsGitRef: String?
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
-    var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+    var clientBlueprintsGitUrl = Build.defaultClientBlueprintsURL
     
     @Option(name: [.long], help: "Override the Nextcloud Desktop Client blueprint branch from craftmaster.ini.")
     var clientBlueprintsGitRef: String?
@@ -126,7 +128,8 @@ struct Build: AsyncParsableCommand {
         clientBlueprintsRevision: String?,
         compileBuildType: String,
         buildType: String,
-        buildTests: Bool
+        buildTests: Bool,
+        workOffline: Bool
     ) {
         let configuration = try CraftMasterConfiguration(
             at: config,
@@ -138,22 +141,40 @@ struct Build: AsyncParsableCommand {
         )
 
         let compileBuildType = buildType ?? configuration.compileBuildType ?? "RelWithDebInfo"
+        let useKDERevision = craftGitURL(kdeBlueprintsGitUrl) == Self.defaultKDEBlueprintsURL
+        let useClientRevision = craftGitURL(clientBlueprintsGitUrl) == Self.defaultClientBlueprintsURL
         return (
-            kdeBlueprintsRevision: configuration.kdeBlueprintsRevision,
-            clientBlueprintsRevision: configuration.clientBlueprintsRevision,
+            kdeBlueprintsRevision: useKDERevision ? configuration.kdeBlueprintsRevision : nil,
+            clientBlueprintsRevision: useClientRevision ? configuration.clientBlueprintsRevision : nil,
             compileBuildType: compileBuildType,
             buildType: buildType ?? configuration.blueprintBuildType ?? compileBuildType,
-            buildTests: configuration.buildTests ?? false
+            buildTests: configuration.buildTests ?? false,
+            workOffline: configuration.workOffline ?? false
         )
     }
 
-    func blueprintOverrides(target: String, craftTargetURL: URL, registeringBlueprints: Bool = false) throws -> String? {
+    func craftBlueprintRoot(at config: URL, target: String, craftMasterDirectory: URL, craftTargetURL: URL) throws -> URL {
+        let defaultRoot = craftTargetURL.appendingPathComponent("etc/blueprints/locations")
+        guard kdeBlueprintsGitRef != nil else { return defaultRoot }
+
+        let configuration = try CraftMasterConfiguration(
+            at: config,
+            target: target,
+            blueprint: craftBlueprintName,
+            craftMasterDirectory: craftMasterDirectory,
+            blueprintRootOnly: true
+        )
+        guard let root = configuration.blueprintRoot else { return defaultRoot }
+        return URL(fileURLWithPath: root, isDirectory: true)
+    }
+
+    func blueprintOverrides(target: String, blueprintRoot: URL, registeringBlueprints: Bool = false) throws -> String? {
         func checkoutName(_ repositoryURL: String) -> Substring? {
             repositoryURL.firstMatch(of: #/.*[\/:]([^.:|\n\/]+)/#)?.1
         }
 
         let kdeCheckout = checkoutName(kdeBlueprintsGitUrl)
-        let legacyKDE = craftTargetURL.appendingPathComponent("etc/blueprints/locations/craft-kde")
+        let legacyKDE = blueprintRoot.appendingPathComponent("craft-kde")
         let usesLegacyKDE = FileManager.default.fileExists(atPath: legacyKDE.path)
             || (registeringBlueprints && kdeCheckout == "craft-kde")
         let kdeRecipeCheckout: Substring = usesLegacyKDE ? "craft-kde" : "craft-blueprints-kde"
@@ -231,9 +252,15 @@ struct Build: AsyncParsableCommand {
             }
         }
 
+        let blueprintRoot = try craftBlueprintRoot(
+            at: craftMasterIni,
+            target: craftTarget,
+            craftMasterDirectory: craftMasterDir,
+            craftTargetURL: craftTargetURL
+        )
         let overrideContent = try blueprintOverrides(
             target: craftTarget,
-            craftTargetURL: craftTargetURL,
+            blueprintRoot: blueprintRoot,
             registeringBlueprints: configureCraft
         )
         let overrideFile = overrideContent.map { _ in fm.temporaryDirectory.appendingPathComponent("mac-crafter-\(UUID()).ini") }
@@ -279,12 +306,14 @@ struct Build: AsyncParsableCommand {
             let kdeRepository = try await craftBlueprintRepository(
                 kdeBlueprintsGitUrl,
                 branch: kdeBlueprintsGitRef,
-                revision: settings.kdeBlueprintsRevision
+                revision: settings.kdeBlueprintsRevision,
+                offline: settings.workOffline
             )
             let clientRepository = try await craftBlueprintRepository(
                 clientBlueprintsGitUrl,
                 branch: clientBlueprintsGitRef,
-                revision: settings.clientBlueprintsRevision
+                revision: settings.clientBlueprintsRevision,
+                offline: settings.workOffline
             )
             guard await craft(["--add-blueprint-repository", kdeRepository]) == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")

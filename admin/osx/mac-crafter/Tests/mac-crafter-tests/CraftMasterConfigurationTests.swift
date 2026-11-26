@@ -126,6 +126,49 @@ struct CraftMasterConfigurationTests {
         }
     }
 
+    @Test
+    func customRepositoryURLsDoNotInheritStockRevisions() throws {
+        let contents = """
+        [BlueprintSettings]
+        craft/craft-blueprints-kde.revision = stable-kde
+        craft/craft-blueprints-nextcloud.revision = stable-client
+        """
+
+        try withConfiguration(contents) { file, craftMasterDirectory in
+            let build = try Build.parse([
+                "--kde-blueprints-git-url=https://example.test/kde-fork.git",
+                "--client-blueprints-git-url=https://example.test/client-fork.git",
+            ])
+            let settings = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+
+            #expect(settings.kdeBlueprintsRevision == nil)
+            #expect(settings.clientBlueprintsRevision == nil)
+        }
+    }
+
+    @Test
+    func buildUsesConfiguredOfflineMode() throws {
+        let contents = """
+        [GeneralSettings]
+        General/WorkOffline = Off
+
+        [\(target)-GeneralSettings]
+        General/WorkOffline = No
+
+        [\(target)]
+        General/WorkOffline = Yes
+        """
+
+        try withConfiguration(contents) { file, craftMasterDirectory in
+            let build = try Build.parse([])
+            let arm = try build.craftSettings(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
+            let intel = try build.craftSettings(at: file, target: "macos-64-clang", craftMasterDirectory: craftMasterDirectory)
+
+            #expect(arm.workOffline)
+            #expect(!intel.workOffline)
+        }
+    }
+
     @Test(arguments: ["--build-tests", "--no-build-tests"])
     func commandLineOverridesConfiguredValues(_ testFlag: String) throws {
         let configuredBuildTests = testFlag == "--build-tests" ? "False" : "True"
@@ -189,7 +232,13 @@ struct CraftMasterConfigurationTests {
             ])
             let directory = file.deletingLastPathComponent()
             let craftTargetURL = directory.appendingPathComponent(target)
-            let generatedOverride = try build.blueprintOverrides(target: target, craftTargetURL: craftTargetURL)
+            let blueprintRoot = try build.craftBlueprintRoot(
+                at: file,
+                target: target,
+                craftMasterDirectory: craftMasterDirectory,
+                craftTargetURL: craftTargetURL
+            )
+            let generatedOverride = try build.blueprintOverrides(target: target, blueprintRoot: blueprintRoot)
             let overlay = try #require(generatedOverride)
             let lines = overlay.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }
 
@@ -221,28 +270,69 @@ struct CraftMasterConfigurationTests {
                 "--kde-blueprints-git-ref=custom-kde",
                 "--client-blueprints-git-ref=custom-client",
             ])
-            let craftTargetURL = file.deletingLastPathComponent().appendingPathComponent(target)
+            let blueprintRoot = file.deletingLastPathComponent().appendingPathComponent("blueprints")
 
-            #expect(try build.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
+            #expect(try build.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) == nil)
         }
     }
 
     @Test
     func kdeOverrideFollowsLegacyCheckoutWhenPresent() throws {
         try withConfiguration("") { file, _ in
-            let craftTargetURL = file.deletingLastPathComponent().appendingPathComponent(target)
-            let legacyCheckout = craftTargetURL.appendingPathComponent("etc/blueprints/locations/craft-kde")
+            let blueprintRoot = file.deletingLastPathComponent().appendingPathComponent("blueprints")
+            let legacyCheckout = blueprintRoot.appendingPathComponent("craft-kde")
             let arguments = ["--kde-blueprints-git-ref=stable"]
             let current = try Build.parse(arguments)
             let legacy = try Build.parse(arguments + ["--kde-blueprints-git-url=git@example.test:craft-kde.git"])
 
-            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
-            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL, registeringBlueprints: true) != nil)
+            #expect(try legacy.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) == nil)
+            #expect(try legacy.blueprintOverrides(target: target, blueprintRoot: blueprintRoot, registeringBlueprints: true) != nil)
 
             try FileManager.default.createDirectory(at: legacyCheckout, withIntermediateDirectories: true)
 
-            #expect(try legacy.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) != nil)
-            #expect(try current.blueprintOverrides(target: target, craftTargetURL: craftTargetURL) == nil)
+            #expect(try legacy.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) != nil)
+            #expect(try current.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) == nil)
+        }
+    }
+
+    @Test
+    func targetBlueprintRootControlsWhichCheckoutReceivesTheOverride() throws {
+        try withConfiguration("") { file, craftMasterDirectory in
+            let directory = file.deletingLastPathComponent()
+            let craftTargetURL = directory.appendingPathComponent(target)
+            let targetRoot = directory.appendingPathComponent("configured blueprints")
+            let contents = """
+            [Variables]
+            SelectedRoot = \(targetRoot.path)
+
+            [GeneralSettings]
+            Blueprints/BlueprintRoot = \(directory.appendingPathComponent("global").path)
+
+            [\(target)-GeneralSettings]
+            Blueprints/BlueprintRoot = \(directory.appendingPathComponent("legacy target").path)
+
+            [\(target)]
+            Blueprints/BlueprintRoot = ${Variables:SelectedRoot}
+            """
+            try contents.write(to: file, atomically: true, encoding: .utf8)
+            try FileManager.default.createDirectory(
+                at: targetRoot.appendingPathComponent("craft-kde"),
+                withIntermediateDirectories: true
+            )
+
+            let arguments = ["--kde-blueprints-git-ref=stable"]
+            let current = try Build.parse(arguments)
+            let legacy = try Build.parse(arguments + ["--kde-blueprints-git-url=git@example.test:craft-kde.git"])
+            let blueprintRoot = try current.craftBlueprintRoot(
+                at: file,
+                target: target,
+                craftMasterDirectory: craftMasterDirectory,
+                craftTargetURL: craftTargetURL
+            )
+
+            #expect(blueprintRoot.path == targetRoot.path)
+            #expect(try current.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) == nil)
+            #expect(try legacy.blueprintOverrides(target: target, blueprintRoot: blueprintRoot) != nil)
         }
     }
 
@@ -257,6 +347,7 @@ struct CraftMasterConfigurationTests {
             #expect(settings.compileBuildType == "RelWithDebInfo")
             #expect(settings.buildType == "RelWithDebInfo")
             #expect(!settings.buildTests)
+            #expect(!settings.workOffline)
         }
     }
 
@@ -272,9 +363,11 @@ struct CraftMasterConfigurationTests {
     @Test
     func rejectsMalformedConfiguration() throws {
         try withConfiguration("Compile/BuildType = Debug\n") { file, craftMasterDirectory in
-            #expect(throws: MacCrafterError.self) {
+            let error = #expect(throws: MacCrafterError.self) {
                 try readConfiguration(at: file, target: target, craftMasterDirectory: craftMasterDirectory)
             }
+
+            #expect(error?.description.contains("MissingSectionHeaderError") == true)
         }
     }
 }
