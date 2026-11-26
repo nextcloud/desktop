@@ -882,6 +882,14 @@ void populateTrayMenu(QMenu *menu, Systray *systray)
         });
     }
 
+    if (systray->canSyncNow()) {
+        const auto syncNowAction = addMenuAction(menu, QIcon{}, Systray::tr("Sync now"));
+        QObject::connect(syncNowAction, &QAction::triggered, syncNowAction, [systray] {
+            closeTrayPopup();
+            systray->syncAllFoldersNow();
+        });
+    }
+
     const auto syncControlState = systray->syncControlState();
     const auto addSyncControlAction = [menu, systray, &menuIconPalette, &menuIconSize](const bool pausesSync) {
         const auto syncControlIconName = pausesSync ? QStringLiteral("pause.svg") : QStringLiteral("play.svg");
