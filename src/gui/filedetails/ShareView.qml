@@ -7,6 +7,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 import com.nextcloud.desktopclient
 import Style
@@ -260,6 +261,81 @@ ColumnLayout {
                     onSetExpireDate: shareModel.setShareExpireDateFromQml(model.share, milliseconds)
                     onSetPassword: shareModel.setSharePasswordFromQml(model.share, password)
                     onSetNote: shareModel.setShareNoteFromQml(model.share, note)
+                }
+
+                footer: Item {
+                    width: ListView.view.width
+
+                    implicitHeight: footerGrid.implicitHeight + Style.smallSpacing
+                    
+                    GridLayout {
+                        id: footerGrid
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        rowSpacing: Style.standardSpacing / 2
+                        columnSpacing: Style.standardSpacing / 2
+                        columns: 3
+                        
+                        Item {
+                            id: imageItem
+
+                            Layout.column: 0
+                            Layout.rowSpan: root.rows
+                            Layout.preferredWidth: root.iconSize
+                            Layout.preferredHeight: root.iconSize
+
+                            Rectangle {
+                                id: blueCircle
+                                anchors.fill: parent
+                                radius: width / 2
+                                color: root.accentColor
+                            }
+
+                            Image {
+                                id: folderIcon
+                                anchors.centerIn: parent
+                                verticalAlignment: Image.AlignVCenter
+                                horizontalAlignment: Image.AlignHCenter
+                                fillMode: Image.PreserveAspectFit
+
+                                source: "image://svgimage-custom-color/folder.svg/" + "white"
+                                
+                                sourceSize.width: root.iconSize / 4
+                                sourceSize.height: root.iconSize / 4
+                            }
+                        }
+
+                        EnforcedPlainTextLabel {
+                            id: openFolderLabel
+                            Layout.column: 1
+                            Layout.fillWidth: true
+                            elide: Text.ElideRight
+                            text: root.fileDetails.fileManagerText()
+                        }
+
+                        Button {
+                            Layout.column: 2
+
+                            Layout.alignment: Qt.AlignCenter
+                            Layout.preferredWidth: Style.activityListButtonWidth
+                            Layout.preferredHeight: Style.activityListButtonHeight
+
+                            icon.source: "image://svgimage-custom-color/folder.svg/" + palette.buttonText
+                            icon.width: Style.activityListButtonIconSize
+                            icon.height: Style.activityListButtonIconSize
+                            display: AbstractButton.IconOnly
+                            
+                            onClicked: {
+                                let success = root.fileDetails.openContainingFolder();
+                                        
+                                if (!success) {
+                                    openFolderLabel.text = qsTr("Folder not found");
+                                    openFolderLabel.color = Style.wizardErrorText;
+                                    enabled = false;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 Loader {

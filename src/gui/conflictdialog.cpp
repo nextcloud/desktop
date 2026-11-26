@@ -6,12 +6,15 @@
 #include "conflictdialog.h"
 #include "ui_conflictdialog.h"
 
-#include "conflictsolver.h"
 #include "common/utility.h"
+#include "conflictsolver.h"
+#include "folderman.h"
 
 #include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
+#include <QDir>
+#include <QDirIterator>
 #include <QFileInfo>
 #include <QMimeDatabase>
 #include <QPushButton>
@@ -34,6 +37,8 @@ void setBoldFont(QWidget *widget, bool bold)
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcConflictDialog, "nextcloud.gui.conflictdialog", QtInfoMsg)
 
 ConflictDialog::ConflictDialog(QWidget *parent)
     : QDialog(parent)
@@ -59,6 +64,8 @@ ConflictDialog::ConflictDialog(QWidget *parent)
 
     connect(_solver, &ConflictSolver::localVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
     connect(_solver, &ConflictSolver::remoteVersionFilenameChanged, this, &ConflictDialog::updateWidgets);
+
+    connect(_ui->openInFileManagerLink, &QLabel::linkActivated, this, &ConflictDialog::openLocalConflictFolder);
 }
 
 QString ConflictDialog::baseFilename() const
@@ -157,6 +164,15 @@ void ConflictDialog::updateWidgets()
 
     setBoldFont(_ui->localVersionMtime, localMtime > remoteMtime);
     setBoldFont(_ui->remoteVersionMtime, remoteMtime > localMtime);
+
+    const auto localPath = _solver->localVersionFilename();
+    const auto folderUrl = QUrl::fromLocalFile(QFileInfo(localPath).absolutePath());
+
+    const auto linkText = Utility::isMac() ? tr("Open in Finder") : Utility::isWindows() ? tr("Open in File Explorer") : tr("Open in file manager");
+    _ui->openInFileManagerLink->setStyleSheet(QString());
+    const auto linkString = QStringLiteral("<a href=\"%1\">%2</a>").arg(Utility::escape(folderUrl.toString()), linkText);
+
+    _ui->openInFileManagerLink->setText(linkString);
 }
 
 void ConflictDialog::updateButtonStates()
@@ -170,6 +186,32 @@ void ConflictDialog::updateButtonStates()
                     : isRemotePicked ? tr("Keep server version")
                     : tr("Keep selected version");
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(text);
+}
+
+void ConflictDialog::openLocalConflictFolder()
+{
+    auto localPath = _solver->localVersionFilename();
+    QFileInfo fileInfo(localPath);
+
+    if (!localPath.isEmpty() && !fileInfo.exists()) {
+        const auto fileName = fileInfo.fileName();
+
+        if (const auto folder = FolderMan::instance()->folderForPath(localPath)) {
+            QDirIterator it(folder->path(), {fileName}, QDir::Files, QDirIterator::Subdirectories);
+            if (it.hasNext()) {
+                localPath = it.next();
+                _solver->setLocalVersionFilename(localPath);
+                fileInfo.setFile(localPath);
+            }
+        }
+    }
+
+    if (localPath.isEmpty() || !fileInfo.exists() || !QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.absolutePath()))) {
+        qCWarning(lcConflictDialog) << "Conflict file does not exist at path:" << localPath;
+
+        _ui->openInFileManagerLink->setText(tr("Folder not found"));
+        _ui->openInFileManagerLink->setStyleSheet(QStringLiteral("color: #b00020;"));
+    }
 }
 
 } // namespace OCC

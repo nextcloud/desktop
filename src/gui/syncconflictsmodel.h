@@ -81,6 +81,8 @@ public:
 
     [[nodiscard]] bool allConflictingSelected() const;
 
+    Q_INVOKABLE QString fileManagerText() const;
+
 public Q_SLOTS:
     void setConflictActivities(OCC::ActivityList conflicts);
 
@@ -89,6 +91,8 @@ public Q_SLOTS:
     void selectAllConflicting(bool selected);
 
     void applySolution();
+
+    bool openConflictFolder(int row);
 
 Q_SIGNALS:
     void conflictActivitiesChanged();
