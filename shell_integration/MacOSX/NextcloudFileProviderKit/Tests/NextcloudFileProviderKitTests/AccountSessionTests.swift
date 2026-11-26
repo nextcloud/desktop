@@ -34,6 +34,21 @@ struct AccountSessionTests {
         #expect(session.userAgent == "FileProviderUIExt-test")
     }
 
+    @Test("A working-set pass leaves connections of the account's data session to transfers.")
+    func aWorkingSetPassLeavesConnectionsToTransfers() throws {
+        let (kit, defaults, suiteName) = try makeKit()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let account = makeAccount()
+
+        kit.appendSession(account: account, userAgent: "FileProviderExt-test")
+
+        let session = try #require(kit.nkCommonInstance.nksessions.session(forAccount: account.ncKitAccount))
+        #expect(
+            WorkingSetScanLimits.default.concurrentListings < session.httpMaximumConnectionsPerHost,
+            "Downloads and uploads use the same connections as the listings of a working-set pass."
+        )
+    }
+
     @Test("Replacing credentials updates an existing session and clears its errors.")
     func replacingCredentialsRecoversExistingSession() throws {
         let (kit, defaults, suiteName) = try makeKit()

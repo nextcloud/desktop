@@ -5,7 +5,7 @@
 import Foundation
 
 /// How many reads of one kind run at a time, so a sweep over many directories does not open one connection per directory.
-public let workingSetScanConcurrency = 6
+public let workingSetScanConcurrency = 4
 
 ///
 /// Working-set change derivation. Because a change notification only ever signals `.workingSet`,
@@ -295,6 +295,7 @@ extension Enumerator {
             dbManager: dbManager,
             depth: .targetAndDirectChildren,
             recordVisit: false,
+            storedParentChecks: 1,
             log: logger.log
         )
         await readLimiter.release()
@@ -400,8 +401,8 @@ extension Enumerator {
     /// The children of one listing are subtrees of their own: nothing one of them finds decides what another
     /// descends into, so their listings go out together. Each walks a state of its own, and what they
     /// accumulated is taken over in the order the children were listed, so the pass reports the same thing
-    /// however the subtrees interleave. `readLimiter` keeps the listings of the whole pass within the
-    /// connection limit, however deep it has recursed, and the window below keeps the number of subtrees
+    /// however the subtrees interleave. `readLimiter` keeps the listings of the whole pass within
+    /// `concurrentListings`, however deep it has recursed, and the window below keeps the number of subtrees
     /// being walked at once from growing with the tree.
     ///
     /// The listing budget is decided by the listing itself, not here: a listing which gets its slot after

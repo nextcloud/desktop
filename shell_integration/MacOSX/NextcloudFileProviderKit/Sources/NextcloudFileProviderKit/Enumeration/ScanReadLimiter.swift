@@ -7,12 +7,13 @@ import Foundation
 /// Keeps the listings one working-set pass has in flight at or below a limit.
 ///
 /// The walk reads the children of a directory together, and each of those reads its own children, so the
-/// number of listings in flight would otherwise grow with the depth of the tree. Six is NextcloudKit's
-/// default per-host connection limit on the data session, which downloads and uploads share, so a pass
-/// above it would queue the user's own transfers behind its listings.
+/// number of listings in flight would otherwise grow with the depth of the tree. The default limit stays
+/// below NextcloudKit's per-host connection limit on the data session, which downloads and uploads share, so
+/// against a server speaking HTTP/1.1 a pass leaves connections to the user's own transfers.
 ///
 /// A slot is held for one listing, never while a subtree below it is walked, so a chain deeper than the
-/// limit cannot wait for itself.
+/// limit cannot wait for itself. The stored parents a listing reads to tell a move from a second mount are
+/// read one at a time under its slot, so a pass has no more requests out than it has slots.
 ///
 actor ScanReadLimiter {
     private let limit: Int

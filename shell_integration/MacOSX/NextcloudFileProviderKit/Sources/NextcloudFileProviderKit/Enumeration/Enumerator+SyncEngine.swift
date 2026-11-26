@@ -237,6 +237,10 @@ extension Enumerator {
     ///
     /// Non-paginated reads will update the database with all of the discovered files and folders
     /// that have been found to be created, updated, and deleted. No extra work required.
+    ///
+    /// A listing which finds folders stored at another path reads up to `storedParentChecks` of their stored
+    /// parents at once to tell a move from a second mount; the working-set scan, which bounds its own listings,
+    /// reads them one at a time.
     static func readServerUrl(
         _ serverUrl: String,
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
@@ -250,6 +254,7 @@ extension Enumerator {
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         recordVisit: Bool = true,
+        storedParentChecks: Int = workingSetScanConcurrency,
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
         guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
@@ -415,6 +420,7 @@ extension Enumerator {
             dbManager: dbManager,
             taskHandler: registeringTaskHandler,
             isCancelled: isCancelled,
+            width: storedParentChecks,
             logger: logger
         ) else {
             return RemoteReadResult(error: .cancelled)
@@ -489,7 +495,7 @@ extension Enumerator {
     ///
     /// Only a folder stored at the root or below another live parent can be a second mount. A single such folder below a parent
     /// is read at its stored path, several are checked with one listing of their stored parent, and a folder the server no
-    /// longer has there, or whose check fails, was moved. Up to ``workingSetScanConcurrency`` stored parents are checked at once.
+    /// longer has there, or whose check fails, was moved. Up to `width` stored parents are checked at once.
     ///
     /// - Returns: `nil` when the read was cancelled.
     ///
@@ -500,6 +506,7 @@ extension Enumerator {
         dbManager: FilesDatabaseManager,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void,
         isCancelled: @Sendable () -> Bool,
+        width: Int,
         logger: FileProviderLogger
     ) async -> [String: SendableItemMetadata]? {
         let listedDirectories = files.filter(\.directory)
@@ -527,7 +534,7 @@ extension Enumerator {
 
         await withTaskGroup(of: [SendableItemMetadata].self) { group in
             for (index, (storedParentPath, storedDirectories)) in Dictionary(grouping: candidates, by: \.serverUrl).enumerated() {
-                if index >= workingSetScanConcurrency, let kept = await group.next() {
+                if index >= max(1, width), let kept = await group.next() {
                     kept.forEach { secondMounts[$0.ocId] = $0 }
                 }
 

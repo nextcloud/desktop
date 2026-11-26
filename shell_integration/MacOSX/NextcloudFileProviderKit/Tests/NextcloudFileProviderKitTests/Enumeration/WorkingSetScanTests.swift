@@ -204,6 +204,32 @@ struct WorkingSetScanTests {
         #expect(remoteInterface.peakInFlightEnumerations <= 2, "Never more in flight than the pass was allowed.")
     }
 
+    ///
+    /// The stored parents a listing reads to tell a move from a second mount count against the pass's listings, so they are read one at a time.
+    ///
+    @Test func aPassReadsTheStoredParentsOfMovedFoldersOneAtATime() async throws {
+        let destination = makeFolder("dst", in: rootItem)
+        seed(rootItem, visited: true)
+        seed(destination, visited: true)
+        for index in 1 ... 4 {
+            let client = makeFolder("Client\(index)", in: rootItem)
+            seed(client)
+            // Moved on the server from Client<index> into dst; the store still has it at its old path.
+            let moved = makeFolder("Project\(index)", in: destination)
+            var row = moved.toItemMetadata(account: account)
+            row.serverUrl = client.remotePath
+            row.syncTime = oldSyncTime
+            manager.addItemMetadata(row)
+        }
+        remoteInterface.enumerateLatencyBySuffix = Dictionary(uniqueKeysWithValues: (1 ... 4).map { ("/Project\($0)", Duration.milliseconds(50)) })
+
+        let cold = try await pass()
+
+        #expect(cold.observer.error == nil)
+        #expect(cold.paths.filter { $0.hasPrefix("/Client") }.count == 4, "Every stored path was read. Got: \(cold.paths)")
+        #expect(remoteInterface.peakInFlightEnumerations == 1, "The checks went out one after another, not together.")
+    }
+
     /// A delivered batch is acknowledged right after the observer's finish, on the main actor, so its effect on the store can trail the pass by a moment.
     private func waitUntil(_ comment: Comment, _ condition: @escaping () -> Bool) async throws {
         for _ in 0 ..< 200 where !condition() {

@@ -18,7 +18,7 @@ public struct WorkingSetScanLimits: Sendable {
     ///
     /// How many directories one pass lists at the same time.
     ///
-    /// The children of a listing are subtrees of their own, so their listings go out together. The default is NextcloudKit's per-host connection limit on the data session, which downloads and uploads share, so a pass above it would queue the user's own transfers behind its listings. One makes a pass read one directory after another.
+    /// The children of a listing are subtrees of their own, so their listings go out together. The default stays below NextcloudKit's per-host connection limit on the data session, which downloads and uploads share, so against a server speaking HTTP/1.1 a pass leaves connections to the user's own transfers. One makes a pass read one directory after another.
     ///
     public let concurrentListings: Int
 
