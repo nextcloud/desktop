@@ -6,6 +6,7 @@
 #include "asyncimageresponse.h"
 #include "trayimageutils.h"
 
+#include <QFileInfo>
 #include <QIcon>
 #include <QMimeDatabase>
 #include <QPainter>
