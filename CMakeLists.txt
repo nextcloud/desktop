@@ -262,7 +262,7 @@ if(BUILD_CLIENT)
     option(CLIENTSIDEENCRYPTION_ENFORCE_USB_TOKEN "Enforce use of an hardware token for end-to-end encryption" false)
 
     find_package(ZLIB REQUIRED)
-    find_package(SQLite3 3.9.0 REQUIRED)
+    find_package(SQLite3 3.24.0 REQUIRED)
 
     find_package(KDSingleApplication-qt6 REQUIRED)
 
