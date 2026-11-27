@@ -70,6 +70,16 @@ bool FolderWatcher::pathIsIgnored(const QString &path) const
     return path.isEmpty();
 }
 
+void FolderWatcher::setFolderExcludedCheck(const std::function<bool(const QString &)> &isFolderExcluded)
+{
+    _isFolderExcluded = isFolderExcluded;
+}
+
+bool FolderWatcher::folderIsExcluded(const QString &path) const
+{
+    return _isFolderExcluded && _isFolderExcluded(path);
+}
+
 bool FolderWatcher::isReliable() const
 {
     return _isReliable;
@@ -87,7 +97,7 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList &subPaths)
         QString path = dir.path() + "/" + newSubPath;
         QFileInfo fileInfo(path);
         subPaths.append(path);
-        if (isTraversableDir(path, fileInfo)) {
+        if (isTraversableDir(path, fileInfo) && !folderIsExcluded(path)) {
             QDir dir(path);
             appendSubPaths(dir, subPaths);
         }
@@ -222,7 +232,7 @@ int FolderWatcher::lockChangeDebouncingTimout() const
 void FolderWatcher::changeDetected(const QString &path)
 {
     QStringList paths(path);
-    if (isTraversableDir(path, QFileInfo{path})) {
+    if (isTraversableDir(path, QFileInfo{path}) && !folderIsExcluded(path)) {
         QDir dir(path);
         appendSubPaths(dir, paths);
     }
