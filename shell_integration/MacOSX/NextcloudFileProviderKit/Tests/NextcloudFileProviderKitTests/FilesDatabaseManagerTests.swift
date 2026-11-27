@@ -443,8 +443,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
                 incoming.size = original.size + 1
 
                 let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
-                    account: Self.account.ncKitAccount, serverUrl: folder.remotePath(),
-                    updatedMetadatas: [folder, incoming], keepExistingDownloadState: true
+                    serverUrl: folder.remotePath(),
+                    updatedMetadatas: [folder, incoming],
+                    keepExistingDownloadState: true
                 ))
 
                 var expected = incoming
@@ -490,8 +491,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             }
 
             let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
-                account: Self.account.ncKitAccount, serverUrl: folder.remotePath(),
-                updatedMetadatas: [folder, incoming], keepExistingDownloadState: true
+                serverUrl: folder.remotePath(),
+                updatedMetadatas: [folder, incoming],
+                keepExistingDownloadState: true
             ))
 
             XCTAssertTrue(changes.updated.isEmpty)
@@ -534,8 +536,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             incoming.size = existing.size + 1
 
             let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
-                account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
-                updatedMetadatas: [incoming], keepExistingDownloadState: true
+                serverUrl: incoming.remotePath(),
+                updatedMetadatas: [incoming],
+                keepExistingDownloadState: true
             ))
 
             var expected = incoming
@@ -580,8 +583,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
                 }
 
                 let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
-                    account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
-                    updatedMetadatas: [incoming], keepExistingDownloadState: true
+                    serverUrl: incoming.remotePath(),
+                    updatedMetadatas: [incoming],
+                    keepExistingDownloadState: true
                 ))
 
                 var expected = existing
@@ -609,8 +613,9 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
             incoming.etag = "new-etag"
 
             let changes = try XCTUnwrap(Self.dbManager.depth1ReadUpdateItemMetadatas(
-                account: Self.account.ncKitAccount, serverUrl: incoming.remotePath(),
-                updatedMetadatas: [incoming], keepExistingDownloadState: true
+                serverUrl: incoming.remotePath(),
+                updatedMetadatas: [incoming],
+                keepExistingDownloadState: true
             ))
 
             var expected = incoming
@@ -1502,7 +1507,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
     }
 
-    func testAddItemMetadataPreservingLocalState_InheritsPinnedParentForNewItem() throws {
+    func testPaginatedMetadataInheritsPinnedParentForNewItem() throws {
         let account = Self.account
 
         // Pinned parent folder.
@@ -1529,7 +1534,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbChild.keepDownloaded, "Inherited keepDownloaded should be persisted to the database")
     }
 
-    func testAddItemMetadataPreservingLocalState_DoesNotInheritFromUnpinnedParent() throws {
+    func testPaginatedMetadataDoesNotInheritFromUnpinnedParent() throws {
         let account = Self.account
 
         // Unpinned parent folder.
@@ -2310,7 +2315,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testAddItemMetadataPreservingLocalStateFallsBackOnOcIdRotation() throws {
+    func testPaginatedMetadataFallsBackOnOcIdRotation() throws {
         let account = Self.account
 
         var original = SendableItemMetadata(ocId: "originalOcId", fileName: "rotated.txt", account: account)
@@ -2338,7 +2343,57 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(storedRotated.downloaded)
     }
 
-    func testAddItemMetadataPreservingLocalStateKeepsContentVersionForSameEtag() {
+    func testPaginatedMetadataStoresMergedMetadataForBothIdentityLookups() throws {
+        for rotatesIdentifier in [false, true] {
+            for preserveVisitedDirectory in [false, true] {
+                for unchangedEtag in [false, true] {
+                    let suffix = "\(rotatesIdentifier)-\(preserveVisitedDirectory)-\(unchangedEtag)"
+                    var original = SendableItemMetadata(ocId: "original-\(suffix)", fileName: "\(suffix).txt", account: Self.account)
+                    original.directory = true
+                    original.downloaded = true
+                    original.keepDownloaded = false
+                    original.visitedDirectory = false
+                    original.lockToken = "stored-lock"
+                    original.etag = "stored-etag"
+                    original.fileProviderContentVersion = "stored-content-version"
+                    try Self.dbManager.insertForTesting(original)
+
+                    var incoming = original
+                    if rotatesIdentifier {
+                        incoming.ocId = "rotated-\(suffix)"
+                    }
+                    incoming.downloaded = false
+                    incoming.keepDownloaded = true
+                    incoming.visitedDirectory = true
+                    incoming.lockToken = "incoming-lock"
+                    incoming.etag = unchangedEtag ? original.etag : "new-etag"
+                    incoming.fileProviderContentVersion = "incoming-content-version"
+                    incoming.size = 1024
+                    incoming.status = Status.uploadError.rawValue
+                    incoming.chunkUploadId = "incoming-upload"
+
+                    let page = try XCTUnwrap(Self.dbManager.persistPaginatedMetadata(
+                        target: preserveVisitedDirectory ? nil : incoming,
+                        children: preserveVisitedDirectory ? [incoming] : []
+                    ))
+
+                    var expected = incoming
+                    expected.downloaded = true
+                    expected.keepDownloaded = false
+                    expected.visitedDirectory = !preserveVisitedDirectory
+                    expected.lockToken = original.lockToken
+                    expected.fileProviderContentVersion = unchangedEtag ? original.fileProviderContentVersion : incoming.fileProviderContentVersion
+                    XCTAssertEqual(page, preserveVisitedDirectory ? [expected] : [], "Unexpected page for \(suffix)")
+                    XCTAssertEqual(Self.dbManager.itemMetadata(ocId: incoming.ocId), expected, "Persisted metadata differs for \(suffix)")
+                    if rotatesIdentifier {
+                        XCTAssertEqual(Self.dbManager.itemMetadata(ocId: original.ocId)?.deleted, true)
+                    }
+                }
+            }
+        }
+    }
+
+    func testPaginatedMetadataKeepsContentVersionForSameEtag() throws {
         let account = Self.account
 
         var original = SendableItemMetadata(ocId: "item", fileName: "locked.txt", account: account)
@@ -2360,7 +2415,7 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         )
     }
 
-    func testAddItemMetadataPreservingLocalStateFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
+    func testPaginatedMetadataFallbackDoesNotMergeWhenAlreadyDuplicated() throws {
         let account = Self.account
         let fileName = "duped.txt"
 
@@ -2573,7 +2628,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
         let root = folder(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, fileName: "/", permissions: rootPermissions, etag: "root-v1")
 
         return Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: Self.account.ncKitAccount,
             serverUrl: Self.account.davFilesUrl,
             updatedMetadatas: [root] + children,
             keepExistingDownloadState: true
@@ -2582,7 +2636,6 @@ final class FilesDatabaseManagerTests: NextcloudFileProviderKitTestCase {
 
     private func readFolder(_ target: SendableItemMetadata) -> ChangeSet? {
         Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: Self.account.ncKitAccount,
             serverUrl: Self.account.davFilesUrl + "/" + target.fileName,
             updatedMetadatas: [target],
             keepExistingDownloadState: true

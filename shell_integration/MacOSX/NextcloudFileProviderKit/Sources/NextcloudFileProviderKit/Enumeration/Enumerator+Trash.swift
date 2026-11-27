@@ -39,7 +39,9 @@ extension Enumerator {
             return
         }
         defer { SyncOperations.Operation.current?.finish() }
-        let orphanedIdentifiers = batch.deleted.map { NSFileProviderItemIdentifier($0.ocId) }
+        let orphanedIdentifiers = batch.deleted.compactMap {
+            $0.ocId.isEmpty ? nil : NSFileProviderItemIdentifier($0.ocId)
+        }
         if !orphanedIdentifiers.isEmpty {
             observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
         }

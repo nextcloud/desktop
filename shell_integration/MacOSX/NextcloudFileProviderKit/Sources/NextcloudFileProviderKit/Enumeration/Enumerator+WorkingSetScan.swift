@@ -310,7 +310,7 @@ extension Enumerator {
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
             // Check and write in one transaction, so a move that commits in between is not overwritten.
-            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
+            let writeResult: SendableItemMetadata?? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
                 let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
 
                 if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
@@ -324,24 +324,20 @@ extension Enumerator {
                     return nil
                 }
 
-                var deleteMarked = deletedMetadata
+                var deleteMarked = current ?? deletedMetadata
                 deleteMarked.deleted = true
                 deleteMarked.syncTime = Date()
                 try dbManager.insertItemMetadata(deleteMarked, in: db)
                 return deleteMarked
-            } ?? nil
+            }
+            guard let deleteMarked = writeResult else {
+                hadReadFailure = true
+                continue
+            }
 
             if let deleteMarked {
                 reportedDeletions.append(deleteMarked)
             }
-            var deleteMarked = deletedMetadata
-            deleteMarked.deleted = true
-            deleteMarked.syncTime = Date()
-            guard dbManager.deleteItemMetadata(ocId: deleteMarked.ocId, syncTime: deleteMarked.syncTime) else {
-                hadReadFailure = true
-                continue
-            }
-            reportedDeletions.append(deleteMarked)
         }
 
         // Deduplicate the discovered new/updated metadata by ocId, preserving order.
@@ -400,7 +396,7 @@ extension Enumerator {
                     merge(readItem, result)
                 }
 
-                group.addTaskUnlessCancelled {
+                _ = group.addTaskUnlessCancelled {
                     let result = await Enumerator.readServerUrl(
                         item.remotePath(),
                         sourceMetadata: item,

@@ -42,7 +42,21 @@ public class MaterializedEnumerationObserver: NSObject, NSFileProviderEnumeratio
         enumerator.enumerateItems(for: self, startingAt: NSFileProviderPage(Data()))
     }
 
-    public func finishEnumerating(upTo _: NSFileProviderPage?) {
+    public func didEnumerate(_ updatedItems: [NSFileProviderItemProtocol]) {
+        let identifiers = updatedItems.map(\.itemIdentifier)
+        enumerationLock.withLock {
+            guard !finished else { return }
+            enumeratedItems.formUnion(identifiers)
+        }
+    }
+
+    public func finishEnumerating(upTo nextPage: NSFileProviderPage?) {
+        if let nextPage, syncOperation?.isStopped != true {
+            let activeEnumerator = enumerationLock.withLock { enumerator }
+            activeEnumerator?.enumerateItems(for: self, startingAt: nextPage)
+            return
+        }
+        guard let identifiers = completeEnumeration() else { return }
         guard syncOperation?.beginDelivery() != false else {
             completionHandler([], [])
             return

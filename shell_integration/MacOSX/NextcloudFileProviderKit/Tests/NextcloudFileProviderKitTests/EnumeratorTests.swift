@@ -1450,14 +1450,14 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 existing.keepDownloaded = storedValue
                 existing.visitedDirectory = true
                 existing.lockToken = "stored-lock"
-                existing.status = Status.uploading.rawValue
-                existing.chunkUploadId = "stored-upload"
                 try Self.dbManager.insertForTesting(existing)
                 let previousReadCount = remote.readOperationCount
 
                 let result = await Enumerator.readServerUrl(
-                    remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
-                    dbManager: Self.dbManager, log: FileProviderLogMock()
+                    remoteItemA.remotePath,
+                    remoteInterface: remote,
+                    dbManager: Self.dbManager,
+                    log: FileProviderLogMock()
                 )
 
                 XCTAssertNil(result.error)
@@ -1472,7 +1472,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 XCTAssertEqual(metadata.downloaded, storedValue)
                 XCTAssertEqual(metadata.keepDownloaded, storedValue)
                 XCTAssertFalse(metadata.visitedDirectory)
-                XCTAssertEqual(metadata.lockToken, existing.lockToken)
+                XCTAssertNil(metadata.lockToken)
                 XCTAssertEqual(metadata.fileProviderContentVersion, unchangedEtag ? storedVersion : nil)
                 XCTAssertEqual(metadata.etag, remoteItemA.versionIdentifier)
                 XCTAssertEqual(metadata.remotePath(), remoteItemA.remotePath)
@@ -1493,8 +1493,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             try Self.dbManager.insertForTesting(parent)
 
             let result = await Enumerator.readServerUrl(
-                remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteItemA.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)
@@ -1547,8 +1550,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             let previousReadCount = remote.readOperationCount
 
             let result = await Enumerator.readServerUrl(
-                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteFolder.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)
@@ -1590,8 +1596,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             let previousReadCount = remote.readOperationCount
 
             let result = await Enumerator.readServerUrl(
-                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteFolder.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)

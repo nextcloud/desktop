@@ -527,6 +527,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         }
 
         try checkCancellation()
+        guard !identifier.rawValue.isEmpty else {
+            throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
+        }
+
         if identifier == .rootContainer || identifier == .trashContainer {
             guard dbManager.isForCurrentDAVAccount() else { throw lookupRetryError }
             let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
@@ -619,7 +623,10 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             identifier,
             retryError: retryError
         ) else { throw retryError }
-        guard metadata.directory, !metadata.deleted else { throw NSFileProviderError(.cannotSynchronize) }
+        // A parked directory is marked deleted while its local-only items still use it.
+        guard metadata.directory,
+              !metadata.deleted || metadata.isAtHoldingPath
+        else { throw NSFileProviderError(.cannotSynchronize) }
 
         let remoteURL = metadata.remotePath()
         guard let pathFromFilesRoot = account.filesRootRelativePath(for: remoteURL),

@@ -14,75 +14,46 @@ extension Enumerator {
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
         guard !isCancelled() else { return (nil, .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
-        // First PROPFIND contains the target item, but we do not want to report this in the
-        // retrieved metadatas (the enumeration observers don't expect you to enumerate the
-        // target item, hence why we always strip the target item out)
-        let startIndex = pageIndex > 0 ? 0 : 1
-        if pageIndex == 0 {
-            guard let firstFile = files.first else { return (nil, .invalidResponseError) }
-            var metadata = firstFile.toItemMetadata()
-
-            if metadata.directory {
-                metadata.visitedDirectory = true
-            }
-            do {
-                _ = try dbManager.persistItemMetadataFromPagedListing(metadata, preserveVisitedDirectory: !metadata.directory)
-            } catch {
-                logger.error("Could not persist the listed directory.", [.item: metadata.ocId, .error: error])
-                return (nil, .invalidData)
-            }
+        let isFirstPage = pageIndex == 0
+        guard !isFirstPage || !files.isEmpty else {
+            return (nil, .invalidResponseError)
         }
 
-        // Persist children — including those on follow-up pages — while
-        // carrying over any local-only state previously set on existing rows
-        // (e.g. `keepDownloaded` from a recursive "Always keep downloaded"
-        // enable). A plain `addItemMetadata` would clobber those flags via
-        // a full-row upsert, which is the root cause of #9923.
-        //
-        // Use the merged metadata returned by the helper for both the DB
-        // write and the value reported back to the framework. Returning the
-        // pre-merge fresh-from-server metadata would tell the framework
-        // `keepDownloaded == false` for items that are pinned in the
-        // database, leaving the OS view (`isKeepDownloaded`, `contentPolicy`)
-        // out of sync with the local truth.
-        //
-        // Conversion and persistence are timed separately (convAccum / dbAccum) so the JSONL PERF
-        // line splits CPU spent building metadata from CPU spent in the database. Today each item opens its
-        // own write transaction inside `persistItemMetadataFromPagedListing`; `db_items_per_s` is the
-        // throughput number to watch, and the enclosing `ConvertAndPersistPage` signpost bounds the
-        // whole page for Instruments. (Phase 2 batches these into one transaction per page.)
         let signposter = EnumerationSignposter.signposter
         let convAndPersistState = signposter.beginInterval(
             "ConvertAndPersistPage",
             id: signposter.makeSignpostID(),
             "pageIndex=\(pageIndex) files=\(files.count)"
         )
+        var itemCount = 0
+        defer { signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(itemCount)") }
+
         let clock = ContinuousClock()
-        var convAccum: Duration = .zero
-        var dbAccum: Duration = .zero
-        var metadatas: [SendableItemMetadata] = []
-        metadatas.reserveCapacity(max(0, files.count - startIndex))
-        defer { signposter.endInterval("ConvertAndPersistPage", convAndPersistState, "items=\(metadatas.count)") }
-
-        for file in files[startIndex...] {
-            guard !isCancelled() else { return (nil, .cancelled) }
-            let convStart = clock.now
-            let itemMetadata = file.toItemMetadata()
-            convAccum += clock.now - convStart
-
-            let dbStart = clock.now
-            do {
-                let savedMetadata = try dbManager.persistItemMetadataFromPagedListing(itemMetadata)
-                metadatas.append(savedMetadata)
-            } catch {
-                logger.error("Could not persist the listed item.", [.item: itemMetadata.ocId, .error: error])
-                return (nil, .invalidData)
+        let conversionStart = clock.now
+        var target: SendableItemMetadata?
+        if isFirstPage {
+            // The initial response includes the target. Persist its visit with the page and report only children.
+            var metadata = files[0].toItemMetadata()
+            if metadata.directory {
+                metadata.visitedDirectory = true
             }
-            dbAccum += clock.now - dbStart
+            target = metadata
         }
 
-        let itemCount = metadatas.count
-        let dbSeconds = dbAccum.fpSeconds
+        let children = files.dropFirst(isFirstPage ? 1 : 0).map { $0.toItemMetadata() }
+        let dbStart = clock.now
+        guard let metadatas = dbManager.persistPaginatedMetadata(
+            target: target,
+            children: children,
+            isCancelled: isCancelled
+        ) else {
+            return (nil, isCancelled() ? .cancelled : .metadataDatabaseWriteFailed)
+        }
+        guard !isCancelled() else { return (nil, .cancelled) }
+
+        itemCount = metadatas.count
+        let convAccum = dbStart - conversionStart
+        let dbSeconds = (clock.now - dbStart).fpSeconds
         let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
         logger.performance(
             "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
@@ -226,6 +197,11 @@ extension Enumerator {
         guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
+        guard !serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) else {
+            logger.info("Not reading a folder that waits to be placed again by a listing.", [.url: serverUrl])
+            return RemoteReadResult(error: .parkedFolderPath)
+        }
+
         let account = dbManager.account
         guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
             logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
@@ -271,6 +247,7 @@ extension Enumerator {
         let networkStart = networkClock.now
 
         let registeringTaskHandler: @Sendable (URLSessionTask) -> Void = { task in
+            operation?.registerReadTask(task)
             taskHandler(task)
             if let domain, let enumeratedItemIdentifier {
                 NSFileProviderManager(for: domain)?.register(
@@ -289,17 +266,7 @@ extension Enumerator {
             requestBody: nil,
             account: account,
             options: options,
-            taskHandler: { task in
-                operation?.registerReadTask(task)
-                taskHandler(task)
-                if let domain, let enumeratedItemIdentifier {
-                    NSFileProviderManager(for: domain)?.register(
-                        task,
-                        forItemWithIdentifier: enumeratedItemIdentifier,
-                        completionHandler: { _ in }
-                    )
-                }
-            }
+            taskHandler: registeringTaskHandler
         )
 
         var files = enumeratedFiles
@@ -315,7 +282,8 @@ extension Enumerator {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
             // A 404 at the account's Files root means the domain could not be read. Let Finder retry.
             if error.isNotFoundError,
-               account.davPath(forURL: serverUrl)?.isFilesRoot == true {
+               account.davPath(forURL: serverUrl)?.isFilesRoot == true
+            {
                 return RemoteReadResult(error: .invalidData)
             }
             return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
@@ -381,7 +349,32 @@ extension Enumerator {
                 || receivedFile.matchesResponseItemURL(dbManager.account.davFilesUrl + "/.")
                 || (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
         }
-        if depth == .target || (!isFollowUpPaginatedRequest && !responseIsDirectory) {
+
+        if !isFollowUpPaginatedRequest, !responseIsDirectory {
+            return await finishTargetRead(receivedFile.toItemMetadata())
+        }
+
+        // A folder stored elsewhere can be a second mount with the same identifier (#10106).
+        let listsTarget = depth != .target && !isFollowUpPaginatedRequest
+        guard let secondMounts = await secondMountedDirectories(
+            among: listsTarget ? Array(files.dropFirst()) : files,
+            account: account,
+            remoteInterface: remoteInterface,
+            dbManager: dbManager,
+            taskHandler: registeringTaskHandler,
+            isCancelled: readIsCancelled,
+            logger: logger
+        ) else {
+            return RemoteReadResult(error: .cancelled)
+        }
+        files.removeAll { secondMounts[$0.ocId] != nil }
+
+        if depth == .target {
+            if let storedMetadata = secondMounts[receivedFile.ocId] {
+                let result = RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+                return await resultForCurrentDAVAccount(result)
+            }
+
             return await finishTargetRead(receivedFile.toItemMetadata())
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
@@ -447,9 +440,15 @@ extension Enumerator {
             let storedByOcId = manager.itemMetadatas(ocIds: listedDirectories.map(\.ocId)) ?? [:]
 
             return listedDirectories.compactMap { listed -> SendableItemMetadata? in
-                guard let stored = storedByOcId[listed.ocId], stored.directory, !stored.deleted, !stored.isTrashed, !stored.isAtHoldingPath,
-                      stored.serverUrl.precomposedStringWithCanonicalMapping != listed.serverUrl.precomposedStringWithCanonicalMapping,
-                      stored.serverUrl == account.davFilesUrl || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
+                guard let stored = storedByOcId[listed.ocId],
+                      stored.directory,
+                      !stored.deleted,
+                      !stored.isFilesRoot,
+                      !stored.isTrashed,
+                      !stored.isAtHoldingPath,
+                      !account.hasSameDAVPath(stored.serverUrl, listed.serverUrl),
+                      account.davPath(forURL: stored.serverUrl)?.isFilesRoot == true
+                      || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
                 else {
                     return nil
                 }
@@ -500,6 +499,7 @@ extension Enumerator {
             at: checkedPath,
             depth: checksSingleFolder ? .target : .targetAndDirectChildren,
             account: account,
+            sourceMetadata: storedDirectories.first,
             remoteInterface: remoteInterface,
             taskHandler: taskHandler
         )
@@ -523,9 +523,14 @@ extension Enumerator {
         at remotePath: String,
         depth: EnumerateDepth,
         account: Account,
+        sourceMetadata: SendableItemMetadata? = nil,
         remoteInterface: RemoteInterface,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (ocIds: Set<String>, error: NKError) {
+        guard account.ownsDAVReadURL(remotePath, sourceMetadata: sourceMetadata) else {
+            return ([], .invalidData)
+        }
+
         let (_, files, _, error) = await remoteInterface.enumerate(
             remotePath: remotePath,
             depth: depth,

@@ -265,7 +265,7 @@ extension FilesDatabaseManager {
     /// - Returns: The descendants of `incoming` that moved with it.
     ///
     func placeDirectory(_ incoming: any ItemMetadata, in db: Database) throws -> [SendableItemMetadata] {
-        guard incoming.directory, incoming.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue else {
+        guard incoming.directory, !incoming.isFilesRoot, !incoming.ocId.isEmpty else {
             return []
         }
 
@@ -280,7 +280,7 @@ extension FilesDatabaseManager {
 
         let movesAlone = try !countsAsLive && ItemMetadataRecord
             .filter(
-                ItemMetadataRecord.hasLocation(serverUrl: stored.serverUrl, fileName: stored.fileName)
+                matchesParentURLAndFileName(parentURL: stored.serverUrl, fileName: stored.fileName)
                     && ItemMetadataRecord.Columns.directory == true
                     && ItemMetadataRecord.Columns.deleted == false
                     && ItemMetadataRecord.Columns.ocId != stored.ocId
@@ -303,17 +303,18 @@ extension FilesDatabaseManager {
     /// the descendants of the two directories cannot then be told apart.
     ///
     func parkDirectories(at serverUrl: String, fileName: String, otherThan ocId: String, in db: Database) throws {
-        guard try ItemMetadataRecord.filter(key: ocId).filter(ItemMetadataRecord.hasLocation(serverUrl: serverUrl, fileName: fileName)).fetchCount(db) == 0 else {
+        let matchesLocation = matchesParentURLAndFileName(parentURL: serverUrl, fileName: fileName)
+        guard try ItemMetadataRecord.filter(key: ocId).filter(matchesLocation).isEmpty(db) else {
             return
         }
 
         let occupants = try ItemMetadataRecord
             .filter(
-                ItemMetadataRecord.hasLocation(serverUrl: serverUrl, fileName: fileName)
+                matchesLocation
                     && ItemMetadataRecord.Columns.directory == true
                     && ItemMetadataRecord.Columns.ocId != ocId
             )
-            .fetchRecords(db, logger: logger)
+            .fetchRecords(db, account: account, logger: logger)
 
         for occupant in occupants {
             let separator = occupant.deleted ? Self.holdingNameSeparator + Self.holdingNameSeparator : Self.holdingNameSeparator
@@ -339,7 +340,7 @@ extension FilesDatabaseManager {
         let oldItemFilename = directoryMetadata.fileName
         let oldDirectoryServerUrl = oldItemServerUrl + "/" + oldItemFilename
         let newDirectoryServerUrl = newServerUrl + "/" + newFileName
-        let childItemResults = try ItemMetadataRecord
+        let descendants = try ItemMetadataRecord
             .filter(matchesParentDirectoryURL(oldDirectoryServerUrl, includingDescendants: true))
             .fetchRecords(db, account: account, logger: logger)
 
@@ -372,9 +373,6 @@ extension FilesDatabaseManager {
             )
         }
 
-        return try ItemMetadataRecord
-            .filter(matchesParentDirectoryURL(newDirectoryServerUrl, includingDescendants: true))
-            .fetchRecords(db, account: account, logger: logger)
-            .map(\.metadata)
+        return movedChildren
     }
 }

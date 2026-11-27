@@ -222,6 +222,11 @@ public extension ItemMetadata {
         isFilesRoot && ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
     }
 
+    /// Whether the row is a parked directory or below one, so its path exists only in the database.
+    var isAtHoldingPath: Bool {
+        remotePath().contains(FilesDatabaseManager.holdingNameSeparator)
+    }
+
     func remotePath() -> String {
         if isFilesRoot {
             return serverUrl

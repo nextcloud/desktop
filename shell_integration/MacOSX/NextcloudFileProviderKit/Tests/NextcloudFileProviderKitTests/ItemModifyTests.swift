@@ -1357,7 +1357,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             manager.addItemMetadata(cachedMetadata)
 
             let storedDestination = try XCTUnwrap(
-                manager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: destinationPath)
+                manager.itemMetadata(locatedAtRemoteUrl: destinationPath)
             )
             XCTAssertEqual(storedDestination.ocId, cachedMetadata.ocId)
 

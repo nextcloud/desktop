@@ -1074,11 +1074,11 @@ final class RemoteChangePropagationTests: NextcloudFileProviderKitTestCase {
         projects.versionIdentifier = "projects-v2"
         archive.versionIdentifier = "archive-v2"
 
-        let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock()).scanMaterialisedItemsForRemoteChanges()
+        let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock()).scanMaterialisedItemsForRemoteChanges()
         XCTAssertFalse(scan.hadFailure)
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, true, "Nothing in the scan lists the file at its new path.")
-        _ = await Enumerator.readServerUrl(archive.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
-        let inFolder = await Enumerator.readServerUrl(ontwerp.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        _ = await Enumerator.readServerUrl(archive.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let inFolder = await Enumerator.readServerUrl(ontwerp.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
 
         XCTAssertTrue(inFolder.changes?.updated.contains { $0.ocId == file.identifier } == true, "The file must be reported where it is listed.")
         XCTAssertEqual(Self.dbManager.itemMetadata(ocId: file.identifier)?.deleted, false)

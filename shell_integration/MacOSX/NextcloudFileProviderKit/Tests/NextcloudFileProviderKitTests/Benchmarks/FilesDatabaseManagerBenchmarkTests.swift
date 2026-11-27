@@ -142,7 +142,12 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             durations.append(clock.now - start)
             stopMeasuring()
 
-            XCTAssertEqual(manager.itemMetadatas().count, Self.preservingLocalStateRowCount)
+            XCTAssertEqual(cold.compactMap { $0?.map(\.ocId) }, expectedPageIds)
+            XCTAssertEqual(warm.compactMap { $0?.map(\.ocId) }, expectedPageIds)
+            let stored = manager.itemMetadatas()
+            XCTAssertEqual(stored.count, rows.count)
+            XCTAssertEqual(Dictionary(uniqueKeysWithValues: stored.map { ($0.ocId, $0.etag) }), expectedEtags)
+            XCTAssertEqual(stored.first { $0.ocId == target.ocId }?.visitedDirectory, true)
         }
 
         report("PersistPaginatedMetadataColdAndWarm", items: 2 * rows.count, durations: durations)

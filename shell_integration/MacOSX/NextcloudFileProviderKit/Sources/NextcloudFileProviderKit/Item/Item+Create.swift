@@ -334,6 +334,7 @@ public extension Item {
                     account: account,
                     dbManager: dbManager
                 )
+                parentIsParked = destination.metadata.isAtHoldingPath
                 parentKeepDownloaded = destination.metadata.keepDownloaded
                 parentItemRemotePath = destination.metadata.remotePath()
                 parentItemRelativePath = "/" + destination.pathFromFilesRoot

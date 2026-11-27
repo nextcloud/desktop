@@ -77,11 +77,10 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(items.map(\.itemIdentifier.rawValue), ["valid-id"])
     }
 
-    func testChangeBatchSkipsEmptyOcIdDeletions() throws {
+    func testChangeBatchSkipsEmptyOcIdDeletions() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             log: FileProviderLogMock()
@@ -91,6 +90,8 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
         let valid = SendableItemMetadata(ocId: "del-valid", fileName: "a.txt", account: Self.account)
         let poison = SendableItemMetadata(ocId: "", fileName: "b.txt", account: Self.account)
 
+        let delivery = expectation(description: "Change batch delivered")
+        observer.beforeFinishEnumeratingChanges = { delivery.fulfill() }
         enumerator.completeChangesBatch(
             observer,
             updated: [],
@@ -103,6 +104,7 @@ final class MissingIdentifierCrashGuardTests: NextcloudFileProviderKitTestCase {
             dbManager: dbManager
         )
 
+        await fulfillment(of: [delivery], timeout: 5)
         XCTAssertEqual(observer.deletedItemIdentifiers.map(\.rawValue), ["del-valid"])
     }
 

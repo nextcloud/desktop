@@ -39,7 +39,7 @@ extension Enumerator {
                     account: account,
                     remoteInterface: remoteInterface,
                     dbManager: dbManager,
-                    log: self.logger.log
+                    log: logger.log
                 )
                 signposter.endInterval("ToFileProviderItems", toItemsState)
 
@@ -172,8 +172,8 @@ extension Enumerator {
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager
     ) {
-        // An older version could queue a root deletion after a failed read of the Files endpoint.
-        let deletedItemsToReport = deleted.filter { !$0.isFilesRoot }
+        // Older versions could queue a root deletion after a failed Files endpoint read.
+        let deletedItemsToReport = deleted.filter { !$0.isFilesRoot && !$0.ocId.isEmpty }
         let deletedFileProviderItemIdentifiers = deletedItemsToReport.map { NSFileProviderItemIdentifier($0.ocId) }
 
         // Per-item trace so a debug archive can reconstruct exactly which items each batch carried.
@@ -220,7 +220,7 @@ extension Enumerator {
                 return
             }
             do {
-                let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: self.logger.log)
+                let updatedItems = try await updated.toFileProviderItems(account: account, remoteInterface: remoteInterface, dbManager: dbManager, log: logger.log)
 
                 if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
                     observer.finishEnumeratingWithError(error)

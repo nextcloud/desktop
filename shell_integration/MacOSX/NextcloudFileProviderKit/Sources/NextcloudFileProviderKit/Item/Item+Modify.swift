@@ -71,6 +71,16 @@ public extension Item {
     ) async -> (Item?, Error?) {
         let ocId = itemIdentifier.rawValue
         let oldRemotePath = metadata.serverUrl + "/" + filename
+        let newRemotePath = newParentItemRemotePath + "/" + newFileName
+        let registerTask: @Sendable (URLSessionTask) -> Void = { task in
+            if let domain {
+                NSFileProviderManager(for: domain)?.register(
+                    task,
+                    forItemWithIdentifier: self.itemIdentifier,
+                    completionHandler: { _ in }
+                )
+            }
+        }
         guard SyncOperations.beginServerWrite() else {
             return (nil, NSFileProviderError(.serverUnreachable))
         }
@@ -206,7 +216,7 @@ public extension Item {
             }
             guard files.count == 1,
                   let file = files.first,
-                  file.fullUrlMatches(remotePath)
+                  file.matchesResponseItemURL(remotePath)
             else {
                 logger.error("The move path lookup did not return exactly the requested item.", [.item: itemIdentifier, .url: remotePath])
                 throw NSFileProviderError(.cannotSynchronize)
@@ -631,6 +641,12 @@ public extension Item {
                     account: account,
                     dbManager: dbManager
                 )
+                guard !destination.metadata.isAtHoldingPath
+                    || changedFields.isDisjoint(with: [.contents, .filename, .parentItemIdentifier])
+                else {
+                    logger.info("Not modifying an item whose target folder waits to be placed again by a listing.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                    return (nil, NSFileProviderError(.cannotSynchronize))
+                }
                 newParentItemRemoteUrl = destination.metadata.remotePath()
             } catch {
                 logger.error("Could not look up the destination folder before modifying the item.", [.item: newParentItemIdentifier, .error: error])

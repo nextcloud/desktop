@@ -14,8 +14,8 @@ extension Enumerator {
     /// Read the container from the server, diff it against the local database and report the
     /// resulting creations, updates and deletions to the change observer.
     ///
-    /// A 404 from the folder listing reports a deletion once the database records it.
-    /// A `nil` change set means the database write that derives the changes failed.
+    /// A 404 reports a deletion only after the parent listing confirms it and the database records it.
+    /// A nil change set means the database write that derives the changes failed.
     ///
     func enumerateContainerChanges(
         for observer: NSFileProviderChangeObserver,
@@ -61,8 +61,8 @@ extension Enumerator {
             let readPath = currentItem?.remotePath() ?? serverUrl
 
             let readResult = await Self.readServerUrl(
-                serverUrl,
-                sourceMetadata: enumeratedItemMetadata,
+                readPath,
+                sourceMetadata: currentItem ?? enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: logger.log
@@ -75,14 +75,41 @@ extension Enumerator {
             }
 
             if let readError {
-                logger.error("Finished enumerating changes.", [.url: serverUrl, .error: readError])
+                logger.error("Finished enumerating changes.", [.url: readPath, .error: readError])
 
                 let error = readError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
 
                 if readError.isNotFoundError {
-                    guard let itemMetadata = enumeratedItemMetadata else {
+                    guard let itemMetadata = currentItem ?? enumeratedItemMetadata else {
                         logger.error("Missing folder metadata. Could not report deletion.")
                         observer.finishEnumeratingWithError(error)
+                        return
+                    }
+
+                    // A stale path can return 404 while the item is still listed by its parent.
+                    let operation = SyncOperations.Operation.current
+                    let (parentListing, parentError) = await Self.listedIdentifiers(
+                        at: itemMetadata.serverUrl,
+                        depth: .targetAndDirectChildren,
+                        account: account,
+                        sourceMetadata: itemMetadata,
+                        remoteInterface: remoteInterface,
+                        taskHandler: { operation?.registerReadTask($0) }
+                    )
+
+                    if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                        observer.finishEnumeratingWithError(error)
+                        return
+                    }
+
+                    guard parentError == .success, !parentListing.contains(itemMetadata.ocId) else {
+                        if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
+                            observer.finishEnumeratingWithError(error)
+                            return
+                        }
+                        defer { operation?.finish() }
+                        logger.info("Could not confirm deletion from the parent listing.", [.item: itemMetadata.ocId, .url: readPath, .error: parentError])
+                        observer.finishEnumeratingChanges(upTo: anchor, moreComing: false)
                         return
                     }
 

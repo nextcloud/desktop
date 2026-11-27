@@ -58,7 +58,7 @@ extension DatabaseTestSuites {
         private func write(_ listing: [SendableItemMetadata], through read: Read) -> ChangeSet? {
             switch read {
                 case .depthOne:
-                    return manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: listing[0].serverUrl + "/" + listing[0].fileName, updatedMetadatas: listing, keepExistingDownloadState: true)
+                    return manager.depth1ReadUpdateItemMetadatas(serverUrl: listing[0].serverUrl + "/" + listing[0].fileName, updatedMetadatas: listing, keepExistingDownloadState: true)
                 case .paged:
                     let files = listing.map { metadata in
                         let item = remoteItem(metadata.ocId, metadata.fileName, at: metadata.serverUrl, directory: metadata.directory)
@@ -74,7 +74,7 @@ extension DatabaseTestSuites {
         }
 
         private func liveRows(at serverUrl: String, named fileName: String) -> [SendableItemMetadata] {
-            manager.itemMetadatas(account: account.ncKitAccount, underServerUrl: serverUrl)
+            manager.itemMetadatas(underServerUrl: serverUrl)
                 .filter { $0.serverUrl == serverUrl && $0.fileName == fileName && !$0.deleted }
         }
 
@@ -119,7 +119,7 @@ extension DatabaseTestSuites {
             let destination = metadata("dst", "dst", at: filesUrl, directory: true)
             let moved = metadata("folder", "oud", at: filesUrl + "/dst", directory: true)
 
-            let changes = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/dst", updatedMetadatas: [destination, moved], keepExistingDownloadState: true)
+            let changes = manager.depth1ReadUpdateItemMetadatas(serverUrl: filesUrl + "/dst", updatedMetadatas: [destination, moved], keepExistingDownloadState: true)
 
             #expect(manager.itemMetadata(ocId: "folder")?.serverUrl == filesUrl + "/dst")
             #expect(manager.itemMetadata(ocId: "folder")?.fileName == "oud")
@@ -136,7 +136,7 @@ extension DatabaseTestSuites {
             let destination = metadata("dst", "dst", at: filesUrl, directory: true)
             let moved = metadata("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)
 
-            _ = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/dst", updatedMetadatas: [destination, moved], keepExistingDownloadState: true)
+            _ = manager.depth1ReadUpdateItemMetadatas(serverUrl: filesUrl + "/dst", updatedMetadatas: [destination, moved], keepExistingDownloadState: true)
 
             expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
         }
@@ -161,7 +161,7 @@ extension DatabaseTestSuites {
             moved.parent = destination
             let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/dst/oud", account: account, remoteInterface: remoteInterface, dbManager: manager, depth: .target, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst/oud", remoteInterface: remoteInterface, dbManager: manager, depth: .target, log: log)
 
             #expect(result.error == nil)
             #expect(manager.itemMetadata(ocId: "folder")?.fileName == "oud")
@@ -232,7 +232,7 @@ extension DatabaseTestSuites {
             let movedOut = metadata("subfolder", "sub", at: filesUrl + "/src", directory: true)
             let children = renamedFolderListedFirst ? [renamed, movedOut] : [movedOut, renamed]
 
-            let changes = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/src", updatedMetadatas: [source] + children, keepExistingDownloadState: true)
+            let changes = manager.depth1ReadUpdateItemMetadatas(serverUrl: filesUrl + "/src", updatedMetadatas: [source] + children, keepExistingDownloadState: true)
 
             #expect(manager.itemMetadata(ocId: "subfolder")?.serverUrl == filesUrl + "/src")
             #expect(manager.itemMetadata(ocId: "nested")?.serverUrl == filesUrl + "/src/sub")
@@ -382,10 +382,14 @@ extension DatabaseTestSuites {
                 metadata("new-report", "Report.docx", at: filesUrl + "/src/Project")
             )
 
-            let changes = manager.depth1ReadUpdateItemMetadatas(account: account.ncKitAccount, serverUrl: filesUrl + "/dst", updatedMetadatas: [
-                metadata("dst", "dst", at: filesUrl, directory: true),
-                metadata("new-project", "Project", at: filesUrl + "/dst", directory: true)
-            ], keepExistingDownloadState: true)
+            let changes = manager.depth1ReadUpdateItemMetadatas(
+                serverUrl: filesUrl + "/dst",
+                updatedMetadatas: [
+                    metadata("dst", "dst", at: filesUrl, directory: true),
+                    metadata("new-project", "Project", at: filesUrl + "/dst", directory: true)
+                ],
+                keepExistingDownloadState: true
+            )
 
             #expect(manager.itemMetadata(ocId: "old-project")?.deleted == true)
             #expect(liveRows(at: filesUrl + "/dst/Project", named: "Report.docx").map(\.ocId) == ["new-report"])
@@ -532,7 +536,7 @@ extension DatabaseTestSuites {
             remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
                 recorder.add(remotePath)
             }
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("child"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("child"), remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             let error = await #expect(throws: NSFileProviderError.self) {
                 try await observer.enumerateChanges()
@@ -551,7 +555,7 @@ extension DatabaseTestSuites {
             write([metadata("new-docs", "Docs", at: filesUrl + "/dst", directory: true)], through: .depthOne)
             let remoteInterface = MockRemoteInterface(account: account, rootItem: MockRemoteItem.rootItem(account: account))
 
-            let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
+            let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
 
             #expect(!scan.hadFailure)
             #expect(!scan.deleted.map(\.ocId).contains("other"))
@@ -569,7 +573,7 @@ extension DatabaseTestSuites {
             manager.removeItemMetadata(ocId: "old-docs")
             #expect(manager.itemMetadata(ocId: "child")?.isAtHoldingPath == true)
             let remoteInterface = MockRemoteInterface(account: account, rootItem: MockRemoteItem.rootItem(account: account))
-            let observer = try MockEnumerationObserver(enumerator: Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockEnumerationObserver(enumerator: Enumerator(enumeratedItemIdentifier: .workingSet, remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             try await observer.enumerateItems()
 
@@ -594,7 +598,7 @@ extension DatabaseTestSuites {
             destination.children = [newDocs]
             newDocs.parent = destination
             let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: .workingSet, remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             try await observer.enumerateChanges(from: Enumerator.syncAnchor(at: Date(timeIntervalSinceNow: -300), storeIdentity: manager.storeIdentity))
 
@@ -860,7 +864,7 @@ extension DatabaseTestSuites {
                 }
             }
 
-            let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, account: account, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
+            let scan = try await Enumerator(enumeratedItemIdentifier: .workingSet, remoteInterface: remoteInterface, dbManager: manager, log: log).scanMaterialisedItemsForRemoteChanges()
 
             #expect(scan.hadFailure)
             #expect(!scan.updated.map(\.ocId).contains("folder"))
@@ -873,7 +877,7 @@ extension DatabaseTestSuites {
             let remoteInterface = remoteInterface(secondMount: false)
             addSeededContents(to: remoteInterface, below: "dst")
             remoteInterface.enumerateErrorBySuffix = ["/dst/Ontwerp/sub": NKError(statusCode: 404, fallbackDescription: "Not Found")]
-            let staleEnumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let staleEnumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             write([metadata("dst", "dst", at: filesUrl, directory: true), metadata("folder", "Ontwerp", at: filesUrl + "/dst", directory: true)], through: .depthOne)
             let recorder = EnumeratePathRecorder()
@@ -895,11 +899,11 @@ extension DatabaseTestSuites {
             seedFolderBelowSource()
             let remoteInterface = remoteInterface(secondMount: false)
             addSeededContents(to: remoteInterface, below: "dst")
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             try await observer.enumerateChanges()
             _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
-            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(observer.deletedItemIdentifiers.isEmpty)
             expectDescendantsMoved(to: filesUrl + "/dst/Ontwerp")
@@ -910,12 +914,12 @@ extension DatabaseTestSuites {
             seedFolderBelowSource()
             let remoteInterface = remoteInterface(secondMount: false)
             addSeededContents(to: remoteInterface, below: "dst")
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             try await observer.enumerateChanges()
             _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
-            let inFolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
-            let inSubfolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp/sub", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let inFolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let inSubfolder = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp/sub", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(observer.deletedItemIdentifiers.map(\.rawValue) == ["folder"])
             #expect(["folder", "file", "subfolder", "nested"].allSatisfy { manager.itemMetadata(ocId: $0)?.deleted == false })
@@ -934,7 +938,7 @@ extension DatabaseTestSuites {
             parent.parent = root
             root.children = [parent]
             let remoteInterface = MockRemoteInterface(account: account, rootItem: root)
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("old-docs"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("old-docs"), remoteInterface: remoteInterface, dbManager: manager, log: log))
             write([metadata("new-docs", "Docs", at: filesUrl + "/P", directory: true)], through: .depthOne)
             let recorder = EnumeratePathRecorder()
             remoteInterface.enumerateCallHandler = { remotePath, _, _, _, _, _, _, _ in
@@ -957,7 +961,7 @@ extension DatabaseTestSuites {
             addSeededContents(to: remoteInterface, below: "src")
             let atSource = remoteInterface.rootItem?.children.first { $0.identifier == "src" }?.children.first { $0.identifier == "folder" }
             atSource?.children.removeAll { $0.identifier == "subfolder" }
-            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log))
+            let observer = try MockChangeObserver(enumerator: Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("subfolder"), remoteInterface: remoteInterface, dbManager: manager, log: log))
 
             try await observer.enumerateChanges()
 
@@ -1008,7 +1012,6 @@ extension DatabaseTestSuites {
             await Enumerator.readServerUrl(
                 filesUrl + "/dst",
                 pageSettings: read == .paged ? (page: nil, index: 0, size: 100) : nil,
-                account: account,
                 remoteInterface: remoteInterface,
                 dbManager: manager,
                 log: log
@@ -1051,7 +1054,7 @@ extension DatabaseTestSuites {
         @Test func aSingleItemReadOfASecondMountKeepsTheStoredFolder() async {
             seedFolderBelowSource()
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface(secondMount: true), dbManager: manager, depth: .target, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", remoteInterface: remoteInterface(secondMount: true), dbManager: manager, depth: .target, log: log)
 
             #expect(result.error == nil)
             expectDescendantsStayBelowSource()
@@ -1135,7 +1138,7 @@ extension DatabaseTestSuites {
             addSeededContents(to: remoteInterface, below: "src")
             addSeededContents(to: remoteInterface, below: "dst")
 
-            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            _ = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(["folder", "file", "subfolder", "nested"].allSatisfy { manager.itemMetadata(ocId: $0)?.deleted == false })
             #expect(manager.itemMetadata(ocId: "nested").flatMap { manager.parentItemIdentifierFromMetadata($0) } == NSFileProviderItemIdentifier("subfolder"))
@@ -1147,7 +1150,7 @@ extension DatabaseTestSuites {
             let remoteInterface = remoteInterface(secondMount: true)
             addSeededContents(to: remoteInterface, below: "src")
             addSeededContents(to: remoteInterface, below: "dst")
-            let enumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let enumerator = try Enumerator(enumeratedItemIdentifier: NSFileProviderItemIdentifier("folder"), remoteInterface: remoteInterface, dbManager: manager, log: log)
             remoteInterface.enumerateErrorBySuffix = ["/src/Ontwerp": NKError(statusCode: 500, fallbackDescription: "Internal server error")]
             _ = await readDestination(through: .depthOne, remoteInterface: remoteInterface)
             remoteInterface.enumerateErrorBySuffix = [:]
@@ -1185,7 +1188,7 @@ extension DatabaseTestSuites {
                 recorder.add(remotePath)
             }
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/src", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/src", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(result.error == nil)
             #expect(recorder.paths == [filesUrl + "/src"])
@@ -1220,7 +1223,7 @@ extension DatabaseTestSuites {
                 recorder.add(remotePath)
             }
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/dst", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(result.error == nil)
             #expect(recorder.paths == [filesUrl + "/dst"])
@@ -1271,7 +1274,7 @@ extension DatabaseTestSuites {
                 }
             }
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/dst", account: account, remoteInterface: remoteInterface, dbManager: manager, isCancelled: { !cancelled.paths.isEmpty }, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst", remoteInterface: remoteInterface, dbManager: manager, isCancelled: { !cancelled.paths.isEmpty }, log: log)
 
             #expect(result.error == .cancelled)
             expectDescendantsStayBelowSource()
@@ -1296,7 +1299,7 @@ extension DatabaseTestSuites {
                 mount?.children = [sub]
             }
 
-            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let result = await Enumerator.readServerUrl(filesUrl + "/dst/Ontwerp", remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(result.error == nil)
             #expect(manager.itemMetadata(ocId: "subfolder")?.serverUrl == filesUrl + "/dst/Ontwerp")
@@ -1312,9 +1315,9 @@ extension DatabaseTestSuites {
             file.parent = destination
             destination?.children.insert(file, at: 0)
 
-            let firstPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: nil, index: 0, size: 2), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let firstPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: nil, index: 0, size: 2), remoteInterface: remoteInterface, dbManager: manager, log: log)
             let token = try #require(firstPage.nextPage?.token?.data(using: .utf8))
-            let secondPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: NSFileProviderPage(token), index: 1, size: 2), account: account, remoteInterface: remoteInterface, dbManager: manager, log: log)
+            let secondPage = await Enumerator.readServerUrl(filesUrl + "/dst", pageSettings: (page: NSFileProviderPage(token), index: 1, size: 2), remoteInterface: remoteInterface, dbManager: manager, log: log)
 
             #expect(firstPage.error == nil)
             #expect(secondPage.error == nil)

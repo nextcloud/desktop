@@ -411,8 +411,10 @@ struct DAVPathPersistenceTests {
         let manager = try openManager()
         let remote = MockRemoteInterface(account: Self.currentAccount, rootItem: .rootItem(account: Self.currentAccount))
         let folderUrl = Self.currentAccount.davFilesUrl + "/" + Self.folderName
+        let parentPaths = container == .teamFolder ? [Self.currentAccount.davFilesUrl] : []
+        let expectedPaths = [folderUrl, folderUrl + "/" + Self.fileName] + parentPaths
         remote.enumerateCallHandler = { path, _, _, _, _, _, _, _ in
-            #expect(path == folderUrl || path == folderUrl + "/" + Self.fileName)
+            #expect(expectedPaths.contains(path))
         }
 
         let observer = try await enumerateChanges(in: container, manager: manager, remote: remote)

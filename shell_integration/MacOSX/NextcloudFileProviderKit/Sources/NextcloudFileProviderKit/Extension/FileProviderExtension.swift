@@ -712,12 +712,11 @@ import OSLog
             self?.refreshDeferredMaterializedItems()
         }
         observer.syncOperation = operation
-        let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
-
         if let enumerateMaterializedItems {
+            let startingPage = NSFileProviderPage(NSFileProviderPage.initialPageSortedByName as Data)
             enumerateMaterializedItems(observer, startingPage)
-        } else {
-            manager?.enumeratorForMaterializedItems().enumerateItems(for: observer, startingAt: startingPage)
+        } else if let manager {
+            observer.enumerateItems(using: manager.enumeratorForMaterializedItems())
         }
     }
 
