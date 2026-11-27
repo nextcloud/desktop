@@ -154,6 +154,7 @@ public extension Item {
             forItemWithIdentifier: itemTemplate.itemIdentifier.rawValue,
             dbManager: dbManager,
             progress: progress,
+            domain: domain,
             creationDate: itemTemplate.creationDate as? Date,
             modificationDate: itemTemplate.contentModificationDate as? Date,
             log: log,
