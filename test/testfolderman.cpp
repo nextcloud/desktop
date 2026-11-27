@@ -138,6 +138,36 @@ private Q_SLOTS:
         QCOMPARE(_openedInternalLinks.size(), 2);
     }
 
+    void testWatcherLostChangesSchedulesSync()
+    {
+        QTemporaryDir configDir;
+        QVERIFY(configDir.isValid());
+        ConfigFile::setConfDir(configDir.path());
+        FolderMan::resetInstance();
+        _fm = FolderMan::instance();
+
+        const auto previousFileAge = SyncEngine::minimumFileAgeForUpload;
+        SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
+        const auto restoreFileAge = qScopeGuard([previousFileAge] {
+            SyncEngine::minimumFileAgeForUpload = previousFileAge;
+        });
+
+        FakeFolder fakeFolder{FileInfo{}};
+        const auto cleanupFolders = qScopeGuard([this] {
+            _fm->unloadAndDeleteAllFolders();
+        });
+        const auto folder = _fm->addFolder(&fakeFolder.accountState(), folderDefinition(fakeFolder.localPath()));
+        QVERIFY(folder);
+        QVERIFY(folder->canSync());
+
+        QSignalSpy scheduleQueueChangedSpy(_fm, &FolderMan::scheduleQueueChanged);
+        QVERIFY(!scheduleQueueChangedSpy.wait(200));
+
+        folder->slotWatcherLostChanges();
+
+        QVERIFY(scheduleQueueChangedSpy.wait(1000));
+    }
+
     void testDeleteEncryptedFiles()
     {
         FolderMan::resetInstance();

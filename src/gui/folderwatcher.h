@@ -81,6 +81,9 @@ public:
     /// For testing linux behavior only
     [[nodiscard]] int testLinuxWatchCount() const;
 
+    /// For testing on macOS: behave as if the OS reported dropped events.
+    void testMacSimulateDroppedEvents();
+
     void slotLockFileDetectedExternally(const QString &lockFile);
 
     void setShouldWatchForFileUnlocking(bool shouldWatchForFileUnlocking);
