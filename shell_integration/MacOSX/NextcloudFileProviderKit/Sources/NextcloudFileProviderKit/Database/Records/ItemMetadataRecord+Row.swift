@@ -36,9 +36,8 @@ extension ItemMetadataRecord {
         }
     }
 
-    init(row: Row) throws {
+    init(row: Row, account domainAccount: Account) throws {
         ocId = try row.decode(forColumn: "ocId")
-        account = try row.decode(forColumn: "account")
         checksums = try row.decode(forColumn: "checksums")
         chunkUploadId = try row.decode(forColumn: "chunkUploadId")
         classFile = try row.decode(forColumn: "classFile")
@@ -77,13 +76,11 @@ extension ItemMetadataRecord {
         lockTime = try (row.decode(Double?.self, forColumn: "lockTime")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockTimeOut = try (row.decode(Double?.self, forColumn: "lockTimeOut")).map(Date.init(timeIntervalSinceReferenceDate:))
         lockToken = try row.decode(forColumn: "lockToken")
-        path = try row.decode(forColumn: "path")
         permissions = try row.decode(forColumn: "permissions")
         quotaUsedBytes = try row.decode(forColumn: "quotaUsedBytes")
         quotaAvailableBytes = try row.decode(forColumn: "quotaAvailableBytes")
         resourceType = try row.decode(forColumn: "resourceType")
         richWorkspace = try row.decode(forColumn: "richWorkspace")
-        serverUrl = try row.decode(forColumn: "serverUrl")
         session = try row.decode(forColumn: "session")
         sessionError = try row.decode(forColumn: "sessionError")
         sessionTaskIdentifier = try row.decode(forColumn: "sessionTaskIdentifier")
@@ -101,16 +98,35 @@ extension ItemMetadataRecord {
         trashbinOriginalLocation = try row.decode(forColumn: "trashbinOriginalLocation")
         trashbinDeletionTime = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "trashbinDeletionTime"))
         uploadDate = try Date(timeIntervalSinceReferenceDate: row.decode(forColumn: "uploadDate"))
-        urlBase = try row.decode(forColumn: "urlBase")
-        user = try row.decode(forColumn: "user")
-        userId = try row.decode(forColumn: "userId")
-        normalizedServerUrl = try row.decode(forColumn: "normalizedServerUrl")
+        normalizedParentPath = try row.decode(forColumn: "normalizedParentPath")
         normalizedFileName = try row.decode(forColumn: "normalizedFileName")
+
+        // Build the parent URL from the saved Files or Trash root and the domain's current account.
+        account = domainAccount.ncKitAccount
+        urlBase = domainAccount.serverUrl
+        user = domainAccount.username
+        userId = domainAccount.id
+        let storedPath: String = try row.decode(forColumn: "parentPath")
+        let rootValue: String = try row.decode(forColumn: "davRoot")
+        guard let davRoot = DAVRoot(rawValue: rootValue) else {
+            throw DecodingError.dataCorrupted(.init(
+                codingPath: [CodingKeys.davRoot],
+                debugDescription: "Unknown DAV root."
+            ))
+        }
+        guard storedPath.isEmpty || storedPath.hasPrefix("/") else {
+            throw DecodingError.dataCorrupted(.init(
+                codingPath: [CodingKeys.parentPath],
+                debugDescription: "A parent path below a DAV root must start with a slash."
+            ))
+        }
+        let davParent = DAVPath(root: davRoot, path: storedPath)
+        storedDAVParent = davParent
+        serverUrl = Account.absoluteURL(for: davParent, accountBaseURL: urlBase, backendUserID: userId)
     }
 
     func encode(to container: inout PersistenceContainer) throws {
         container["ocId"] = ocId
-        container["account"] = account
         container["checksums"] = checksums
         container["chunkUploadId"] = chunkUploadId
         container["classFile"] = classFile
@@ -119,6 +135,7 @@ extension ItemMetadataRecord {
         container["creationDate"] = creationDate.timeIntervalSinceReferenceDate
         container["dataFingerprint"] = dataFingerprint
         container["date"] = date.timeIntervalSinceReferenceDate
+        container["davRoot"] = storedDAVParent.root.rawValue
         container["syncTime"] = syncTime.timeIntervalSinceReferenceDate
         container["deleted"] = deleted
         container["directory"] = directory
@@ -149,13 +166,12 @@ extension ItemMetadataRecord {
         container["lockTime"] = lockTime?.timeIntervalSinceReferenceDate
         container["lockTimeOut"] = lockTimeOut?.timeIntervalSinceReferenceDate
         container["lockToken"] = lockToken
-        container["path"] = path
         container["permissions"] = permissions
         container["quotaUsedBytes"] = quotaUsedBytes
         container["quotaAvailableBytes"] = quotaAvailableBytes
         container["resourceType"] = resourceType
         container["richWorkspace"] = richWorkspace
-        container["serverUrl"] = serverUrl
+        container["parentPath"] = parentPath
         container["session"] = session
         container["sessionError"] = sessionError
         container["sessionTaskIdentifier"] = sessionTaskIdentifier
@@ -173,10 +189,7 @@ extension ItemMetadataRecord {
         container["trashbinOriginalLocation"] = trashbinOriginalLocation
         container["trashbinDeletionTime"] = trashbinDeletionTime.timeIntervalSinceReferenceDate
         container["uploadDate"] = uploadDate.timeIntervalSinceReferenceDate
-        container["urlBase"] = urlBase
-        container["user"] = user
-        container["userId"] = userId
-        container["normalizedServerUrl"] = normalizedServerUrl
+        container["normalizedParentPath"] = normalizedParentPath
         container["normalizedFileName"] = normalizedFileName
     }
 
@@ -184,7 +197,6 @@ extension ItemMetadataRecord {
     func databaseValues() throws -> [(any DatabaseValueConvertible)?] {
         try [
             ocId,
-            account,
             checksums,
             chunkUploadId,
             classFile,
@@ -193,6 +205,7 @@ extension ItemMetadataRecord {
             creationDate.timeIntervalSinceReferenceDate,
             dataFingerprint,
             date.timeIntervalSinceReferenceDate,
+            storedDAVParent.root.rawValue,
             deleted,
             directory,
             downloaded,
@@ -222,17 +235,16 @@ extension ItemMetadataRecord {
             mountType,
             name,
             normalizedFileName,
-            normalizedServerUrl,
+            normalizedParentPath,
             note,
             ownerDisplayName,
             ownerId,
-            path,
+            parentPath,
             permissions,
             quotaAvailableBytes,
             quotaUsedBytes,
             resourceType,
             richWorkspace,
-            serverUrl,
             session,
             sessionError,
             sessionTaskIdentifier,
@@ -248,9 +260,6 @@ extension ItemMetadataRecord {
             trashbinOriginalLocation,
             uploadDate.timeIntervalSinceReferenceDate,
             uploaded,
-            urlBase,
-            user,
-            userId,
             visitedDirectory
         ]
     }

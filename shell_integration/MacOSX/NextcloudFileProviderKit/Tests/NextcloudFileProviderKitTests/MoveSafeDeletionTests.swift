@@ -29,26 +29,26 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteDirectorySkipsChildrenWithPendingUpload() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "upload-dir")
-        dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
+        dir.account = Self.account.ncKitAccount
+        dir.serverUrl = Self.account.davFilesUrl
         dir.fileName = "uploads"
         dir.directory = true
 
         var normalChild = SendableItemMetadata.rawRow(ocId: "normal-child")
-        normalChild.account = "TestAccount"
-        normalChild.serverUrl = "https://cloud.example.com/files/uploads"
+        normalChild.account = Self.account.ncKitAccount
+        normalChild.serverUrl = Self.account.davFilesUrl + "/uploads"
         normalChild.fileName = "synced.txt"
         normalChild.status = Status.normal.rawValue
 
         var uploadingChild = SendableItemMetadata.rawRow(ocId: "uploading-child")
-        uploadingChild.account = "TestAccount"
-        uploadingChild.serverUrl = "https://cloud.example.com/files/uploads"
+        uploadingChild.account = Self.account.ncKitAccount
+        uploadingChild.serverUrl = Self.account.davFilesUrl + "/uploads"
         uploadingChild.fileName = "uploading.txt"
         uploadingChild.status = Status.uploading.rawValue
 
         var inUploadChild = SendableItemMetadata.rawRow(ocId: "inupload-child")
-        inUploadChild.account = "TestAccount"
-        inUploadChild.serverUrl = "https://cloud.example.com/files/uploads"
+        inUploadChild.account = Self.account.ncKitAccount
+        inUploadChild.serverUrl = Self.account.davFilesUrl + "/uploads"
         inUploadChild.fileName = "queued.txt"
         inUploadChild.status = Status.inUpload.rawValue
 
@@ -87,14 +87,14 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
     /// This keeps the upload-error state visible to the user rather than losing it silently.
     func testDeleteDirectorySkipsChildrenWithUploadError() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "uperr-dir")
-        dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
+        dir.account = Self.account.ncKitAccount
+        dir.serverUrl = Self.account.davFilesUrl
         dir.fileName = "work"
         dir.directory = true
 
         var uploadErrorChild = SendableItemMetadata.rawRow(ocId: "uperr-child")
-        uploadErrorChild.account = "TestAccount"
-        uploadErrorChild.serverUrl = "https://cloud.example.com/files/work"
+        uploadErrorChild.account = Self.account.ncKitAccount
+        uploadErrorChild.serverUrl = Self.account.davFilesUrl + "/work"
         uploadErrorChild.fileName = "failed.txt"
         uploadErrorChild.status = Status.uploadError.rawValue
 
@@ -117,14 +117,14 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteDirectoryDeletesChildrenWithDownloadError() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "dl-err-dir")
-        dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
+        dir.account = Self.account.ncKitAccount
+        dir.serverUrl = Self.account.davFilesUrl
         dir.fileName = "errors"
         dir.directory = true
 
         var dlErrorChild = SendableItemMetadata.rawRow(ocId: "dl-err-child")
-        dlErrorChild.account = "TestAccount"
-        dlErrorChild.serverUrl = "https://cloud.example.com/files/errors"
+        dlErrorChild.account = Self.account.ncKitAccount
+        dlErrorChild.serverUrl = Self.account.davFilesUrl + "/errors"
         dlErrorChild.fileName = "broken.pdf"
         dlErrorChild.status = Status.downloadError.rawValue
 
@@ -145,20 +145,20 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
     func testDeleteDirectorySkipsLocalOriginLockFile() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "lock-del-dir")
-        dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
+        dir.account = Self.account.ncKitAccount
+        dir.serverUrl = Self.account.davFilesUrl
         dir.fileName = "work"
         dir.directory = true
 
         var normalChild = SendableItemMetadata.rawRow(ocId: "lock-del-normal")
-        normalChild.account = "TestAccount"
-        normalChild.serverUrl = "https://cloud.example.com/files/work"
+        normalChild.account = Self.account.ncKitAccount
+        normalChild.serverUrl = Self.account.davFilesUrl + "/work"
         normalChild.fileName = "report.docx"
         normalChild.status = Status.normal.rawValue
 
         var lockFile = SendableItemMetadata.rawRow(ocId: "lock-del-lockfile")
-        lockFile.account = "TestAccount"
-        lockFile.serverUrl = "https://cloud.example.com/files/work"
+        lockFile.account = Self.account.ncKitAccount
+        lockFile.serverUrl = Self.account.davFilesUrl + "/work"
         lockFile.fileName = ".~lock.report.docx#"
         lockFile.isLockFileOfLocalOrigin = true
 
@@ -244,7 +244,6 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -276,7 +275,6 @@ final class MoveSafeDeletionTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()

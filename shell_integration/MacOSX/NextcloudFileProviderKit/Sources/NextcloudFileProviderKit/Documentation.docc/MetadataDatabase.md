@@ -18,7 +18,7 @@ Rows leave the database as ``SendableItemMetadata`` and the other value types; t
 ## Storage choices
 
 - Dates are stored as `REAL` seconds since the reference date, the same number a `Date` holds, so they round-trip exactly. Predicates bind that number, never a `Date`, because GRDB would bind a `Date` as text.
-- The location keys `normalizedServerUrl` and `normalizedFileName` hold the NFC form of the raw location. See <doc:UnicodePathNormalization>.
+- SQLite stores the DAV root (`files` or `trash`) in `davRoot` and the path below it (such as `/Docs`) in `parentPath`. The database manager uses the domain's current account to build the WebDAV URL. Item parents must be under one of those roots. See <doc:UnicodePathNormalization> for the lookup keys.
 - Items below a directory are matched with a byte-wise range over the location index rather than a pattern, so names with pattern characters or different case never match by accident.
 - Array fields are stored as JSON text. Booleans are integers.
 - Recorded upload chunks are keyed by upload identifier and chunk number and returned in chunk order.
@@ -32,7 +32,9 @@ Writes run with `PRAGMA synchronous = FULL` by default: when a write returns, it
 
 Lookups return the empty value when a read fails, and the failure is logged. Two lookups guard an action which must not happen on a guess: `excludedFromSyncMarkerExists(ocId:)` throws, and `Item.delete` then refuses the deletion with `cannotSynchronize` instead of deleting on the server; `hasRemoteFileChunks(uploadId:)` answers `true`, so local chunks are kept; `remoteFileChunks(uploadId:)` and `remoteChunkStoreFolderNames()` return `nil`, so an upload is not started from scratch and no stale upload is discarded on a guess. The two `changeDeliverySession` lookups and `prepareChangeDeliveryBatch` throw, so a failed read is never taken for an absent session or an empty batch. `pendingWorkingSetChanges(since:)` returns `nil`, which the working-set enumeration treats like a failed server scan: it keeps the incoming anchor so the changes are retried on the next signal.
 
-A single damaged value does not take a query with it. A list column holding malformed JSON decodes as empty and is logged with the item's identifier; a mistyped scalar reads as the column type's zero value, which is how SQLite coerces it. Item rows are decoded one by one, so a row which cannot be decoded at all is skipped and logged rather than failing the result; such a row behaves like a missing one, and the next write of that item replaces it. `materialisedItemMetadatas(account:)` returns `nil` when the read itself fails; the working-set enumeration then finishes with an error, the working-set scan keeps its sync point, and the materialized-item reconciliation does nothing.
+A single damaged value does not take a query with it. A list column holding malformed JSON decodes as empty and is logged with the item's identifier; a mistyped scalar reads as the column type's zero value, which is how SQLite coerces it. Item rows are decoded one by one, so a row which cannot be decoded at all is skipped and logged rather than failing the result; such a row behaves like a missing one, and the next write of that item replaces it.
+
+If the database read for the working-set snapshot fails, enumeration finishes with an error. If `materialisedItemMetadatas()` cannot read the current account's items, the scan keeps its sync point and materialized-item reconciliation does nothing.
 
 The change-delivery buffer treats a failed read of its stored session or items the same way: it finishes the enumeration with an error and keeps the session, instead of taking an empty read for the last batch and acknowledging changes which were never delivered. The startup cleanup of chunk uploads decides in one read and skips the cleanup when that read fails.
 
@@ -51,13 +53,23 @@ On open, the higher of the two recorded versions is compared with the running bu
 
 The store version and the store identity are part of every sync anchor, so after such a reset the framework re-enumerates every container and the database is repopulated from the server.
 
+The first SQLite schema creates the final tables directly.
+
 ## Store identity
 
 Every database file carries a random identity in its `storeIdentity` table, minted the first time the file is opened and read once per `FilesDatabaseManager`. Together with the store version it is part of every sync anchor the enumerators hand to the framework. An anchor from another file, whether that file was set aside as corrupt, removed after a downgrade or deleted by hand, is answered with `syncAnchorExpired`, so the framework re-enumerates the container instead of taking an empty store for a store without changes. Nothing is reimported, because the item identifiers are the server's `ocId` values and survive the replacement.
 
+The database stores the last configured server URL, login, and backend user ID once per domain. When these details change, setup assigns a new store identity, discards change batches from the previous account, and clears old lock tokens in one transaction. Item paths and identifiers stay the same, as do download flags and pins. Interrupted uploads remain pending. Writes and enumeration callbacks check the store identity so a delayed response from the previous account cannot overwrite rows or report changes to Finder.
+
+When the extension is already running, it checks the incoming credentials in a separate session while the current account continues syncing. Once the check succeeds, it stops accepting sync requests and cancels DAV reads and downloads, including reads that prepare a write. A request that has started a server write can finish and save the result before the switch. Results already being delivered to File Provider also finish before setup continues. The extension updates the account in one SQLite transaction, publishes the replacement, and tells File Provider to retry interrupted requests. If the transaction fails, the previous manager resumes accepting work while it still owns the database.
+
+## Updating cached DAV paths during account setup
+
+Older extensions could save a new server URL or backend user ID in the domain settings while cached rows still pointed to earlier DAV roots. The extension assumes a change to the DAV root preserves the same sync location and history. During account setup, before the domain starts syncing, the Realm import uses the details on each row to strip its old Files or Trash root. It saves the root and parent path separately, for example `files` and `/Team`. Normal enumeration then reconciles server moves, replacements, and deletions by item ID.
+
 ## Import from Realm
 
-Builds before the switch kept the same tables in a Realm database, `<domain identifier>.realm`. When that file exists, it is imported before the SQLite database is opened: the Realm file is opened with the last Realm schema so Realm applies its own upgrades first, every table is copied into a staging file, and the staging file is moved into place in one step. The Realm files are removed only after the move succeeded, so a crash leaves either the untouched Realm file or a complete database behind. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
+Builds before the switch kept the metadata in a Realm database, `<domain identifier>.realm`. The importer opens it with the last Realm schema so Realm applies its own upgrades. It creates a staging SQLite file with the final schema, then imports item paths and queued changes in one transaction. Queued changes from a previous DAV account are discarded. It then moves the finished SQLite file into place and removes the Realm files. A Realm file which cannot be read is renamed with the suffix `.import-failed` and the database starts empty.
 
 A Realm file next to an existing SQLite database means an older, Realm-based build ran last, so its content replaces the SQLite database. Only a Realm file which cannot be read at all is set aside; a file Realm cannot open for a passing reason, such as a permission or lock problem, is left in place and the open fails until the import succeeds.
 

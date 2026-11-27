@@ -31,7 +31,7 @@ extension Enumerator {
 
         let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
 
-        Task {
+        runEnumerationTask { [self] in
             // Derive the change set once per drain sequence. The scan is destructive — it persists its
             // discoveries to the database as it recurses — so on the framework's moreComing
             // re-invocations we must drain the buffer rather than re-derive, or every change beyond the
@@ -51,6 +51,10 @@ extension Enumerator {
                 logger.debug("Working-set change buffer not primed for anchor \(anchorKey); deriving changes.", [.account: account])
 
                 let serverChanges = await scanMaterialisedItemsForRemoteChanges()
+                if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                    observer.finishEnumeratingWithError(error)
+                    return
+                }
                 // A failed local read is treated like a failed server scan: the incoming anchor is kept so the changes are retried on the next signal.
                 let localChanges = dbManager.pendingWorkingSetChanges(since: date)
                 let pendingLocalChanges = localChanges ?? ([], [])
@@ -129,7 +133,7 @@ extension Enumerator {
         // Visited folders and downloaded files. Sort in terms of their remote URLs.
         // This way we ensure we visit parent folders before their children.
         // A failed read counts as a read failure of the whole scan, so the sync point does not advance past changes this pass could not see.
-        let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount)
+        let storedMaterialisedItems = dbManager.materialisedItemMetadatas()
         let materialisedItems = (storedMaterialisedItems ?? [])
             .filter { !$0.deleted && !$0.isTrashed && !$0.isAtHoldingPath }
             .sorted { $0.remotePath().count < $1.remotePath().count }
@@ -166,7 +170,7 @@ extension Enumerator {
         // Items a successful read listed, which exist on the server whatever their own read at an older path returned.
         var listedOcIds = Set<String>()
 
-        while let waveDepth = scanQueue.keys.min() {
+        while !Task.isCancelled, let waveDepth = scanQueue.keys.min() {
             let wave = scanQueue.removeValue(forKey: waveDepth) ?? []
 
             let toRead = wave.filter { candidate in
@@ -186,7 +190,7 @@ extension Enumerator {
 
             await concurrentlyReadForWorkingSetScan(toRead) { itemToScan, readResult in
                 // A sibling merged earlier in this wave covers this item when the server moved it into that sibling or onto its path.
-                guard !scannedItemIds.contains(itemToScan.ocId) else { return }
+                guard !Task.isCancelled, !scannedItemIds.contains(itemToScan.ocId) else { return }
 
                 let itemRemoteUrl = itemToScan.remotePath()
                 let changes = readResult.changes ?? ChangeSet()
@@ -293,6 +297,8 @@ extension Enumerator {
             }
         }
 
+        guard !Task.isCancelled else { return ([], [], true) }
+
         // Catches moves across directories: items found at a new location (updated or new)
         // should not be marked deleted at the old location.
         let survivingOcIds = Set(accumulatedUpdates.map(\.ocId))
@@ -304,7 +310,7 @@ extension Enumerator {
         var reportedDeletions = [SendableItemMetadata]()
         for deletedMetadata in accumulatedDeletions {
             // Check and write in one transaction, so a move that commits in between is not overwritten.
-            let deleteMarked: SendableItemMetadata? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
+            let writeResult: SendableItemMetadata?? = dbManager.write("Could not mark item deleted.", [.item: deletedMetadata.ocId]) { db in
                 let current = try dbManager.itemMetadata(ocId: deletedMetadata.ocId, in: db)?.metadata
 
                 if (current ?? deletedMetadata).status >= Status.inUpload.rawValue {
@@ -318,12 +324,16 @@ extension Enumerator {
                     return nil
                 }
 
-                var deleteMarked = deletedMetadata
+                var deleteMarked = current ?? deletedMetadata
                 deleteMarked.deleted = true
                 deleteMarked.syncTime = Date()
                 try dbManager.insertItemMetadata(deleteMarked, in: db)
                 return deleteMarked
-            } ?? nil
+            }
+            guard let deleteMarked = writeResult else {
+                hadReadFailure = true
+                continue
+            }
 
             if let deleteMarked {
                 reportedDeletions.append(deleteMarked)
@@ -386,10 +396,9 @@ extension Enumerator {
                     merge(readItem, result)
                 }
 
-                group.addTask {
+                _ = group.addTaskUnlessCancelled {
                     let result = await Enumerator.readServerUrl(
                         item.remotePath(),
-                        account: self.account,
                         sourceMetadata: item,
                         remoteInterface: self.remoteInterface,
                         dbManager: self.dbManager,

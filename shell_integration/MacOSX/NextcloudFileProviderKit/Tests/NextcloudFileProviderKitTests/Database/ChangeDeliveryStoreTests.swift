@@ -22,6 +22,51 @@ extension DatabaseTestSuites {
             try manager.prepareChangeDeliveryBatch(sessionId: sessionId, maxItems: maxItems) { "a\($0)" }
         }
 
+        @Test(arguments: DAVRoot.allCases)
+        func queuedSnapshotsStoreTheDAVRootAndParentPathSeparately(root: DAVRoot) throws {
+            let account = DatabaseTestSuites.account
+            let folder = "Docs #?%20"
+            let rootURL = root == .files ? account.davFilesUrl : account.trashUrl
+            let file = DatabaseTestSuites.makeFile(
+                ocId: "report",
+                fileName: "Report.txt",
+                serverUrl: rootURL
+            )
+            manager.addItemMetadata(file)
+            let original = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+            #expect(original.davRoot == root)
+            #expect(original.parentPath.isEmpty)
+            manager.renameItemMetadata(
+                ocId: file.ocId,
+                newServerUrl: rootURL + "/" + folder,
+                newFileName: file.fileName
+            )
+            let movedFile = try #require(manager.itemMetadata(ocId: file.ocId))
+            let movedParentPath = "/" + folder
+            let stored = try #require(try manager.storedParentLocationKeysForTesting(ocId: file.ocId))
+            #expect(stored.davRoot == root)
+            #expect(stored.parentPath == movedParentPath)
+            try #require(manager.createChangeDeliverySession(
+                sessionId: "s",
+                containerKey: "c",
+                anchorKey: "a0",
+                finalAnchorRawValue: Data(),
+                updated: [movedFile],
+                deleted: [],
+                incomplete: false,
+                hardRemoveDeleted: true
+            ))
+
+            let item = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 0, limit: 1)?.first)
+            let fields = try #require(JSONSerialization.jsonObject(with: item.metadataData) as? [String: Any])
+            #expect(fields["ocId"] as? String == file.ocId)
+            #expect(fields["serverUrl"] == nil)
+            #expect(fields["path"] == nil)
+            #expect(fields["davRoot"] as? String == root.rawValue)
+            #expect(fields["parentDAVPath"] as? String == movedParentPath)
+            #expect(try ChangeDeliveryItemRecord.decodeMetadata(item.metadataData).serverUrl == movedFile.serverUrl)
+        }
+
         @Test func itemsAreReturnedInSequenceOrderUpToTheLimit() throws {
             let updated = makeRows(count: 4)
             let deleted = [DatabaseTestSuites.makeFile(ocId: "gone", fileName: "gone.txt")]
@@ -34,7 +79,7 @@ extension DatabaseTestSuites {
             let tail = try #require(manager.changeDeliveryItems(sessionId: "s", fromSequence: 4, limit: 10))
             #expect(tail.map(\.sequence) == [4])
             #expect(tail.first?.deleted == true)
-            #expect(try JSONDecoder().decode(SendableItemMetadata.self, from: #require(tail.first?.metadataData)).ocId == "gone")
+            #expect(try ChangeDeliveryItemRecord.decodeMetadata(#require(tail.first?.metadataData)).ocId == "gone")
 
             let session = try #require(try manager.changeDeliverySession(forContinuationKey: "a0", containerKey: "c"))
             #expect(session.sessionId == "s")

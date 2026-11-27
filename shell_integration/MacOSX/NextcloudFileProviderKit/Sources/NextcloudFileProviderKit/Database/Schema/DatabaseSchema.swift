@@ -1,7 +1,6 @@
 //  SPDX-FileCopyrightText: 2026 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: GPL-2.0-or-later
 
-import Foundation
 import GRDB
 
 ///
@@ -27,12 +26,11 @@ enum DatabaseSchema {
     static var migrator: DatabaseMigrator {
         var migrator = DatabaseMigrator()
 
-        migrator.registerMigration("v1_initial") { db in
+        migrator.registerMigration("v1_metadata") { db in
             try db.create(table: ItemMetadataRecord.databaseTableName) { table in
                 table.primaryKey("ocId", .text)
 
                 for name in [
-                    "account",
                     "checksums",
                     "classFile",
                     "contentType",
@@ -47,19 +45,15 @@ enum DatabaseSchema {
                     "mountType",
                     "name",
                     "normalizedFileName",
-                    "normalizedServerUrl",
+                    "normalizedParentPath",
                     "note",
                     "ownerDisplayName",
                     "ownerId",
-                    "path",
+                    "parentPath",
                     "permissions",
                     "resourceType",
-                    "serverUrl",
                     "trashbinFileName",
-                    "trashbinOriginalLocation",
-                    "urlBase",
-                    "user",
-                    "userId"
+                    "trashbinOriginalLocation"
                 ] {
                     table.column(name, .text).notNull().defaults(to: "")
                 }
@@ -78,6 +72,8 @@ enum DatabaseSchema {
                 ] {
                     table.column(name, .text)
                 }
+
+                table.column("davRoot", .text).notNull().check { DAVRoot.allCases.map(\.rawValue).contains($0) }
 
                 for name in [
                     "commentsUnread",
@@ -132,11 +128,15 @@ enum DatabaseSchema {
                 }
             }
 
-            // Serves the location lookup (both columns) and the directory lookups (leading column, equality and range).
+            // Exact lookup uses all three columns. Directory lookup matches the root and searches a path range.
             try db.create(
                 index: "itemMetadata_on_location",
                 on: ItemMetadataRecord.databaseTableName,
-                columns: ["normalizedServerUrl", "normalizedFileName"]
+                columns: [
+                    "davRoot",
+                    "normalizedParentPath",
+                    "normalizedFileName"
+                ]
             )
 
             // Serves the push-notification lookup by server file identifier, which arrives in batches of thousands.
@@ -193,6 +193,8 @@ enum DatabaseSchema {
             try db.create(table: StoreIdentityRecord.databaseTableName) { table in
                 table.primaryKey("id", .integer).check(sql: "id = 1")
                 table.column("identity", .text).notNull()
+                // The DAV login, server URL, and backend user ID last saved for this database.
+                table.column("accountBinding", .blob)
             }
         }
 

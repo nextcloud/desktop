@@ -47,6 +47,18 @@ public extension Item {
         return error
     }
 
+    /// File Provider accepts only Cocoa and File Provider errors from a download.
+    private func fileProviderErrorForDownloadFailure(_ error: Error) -> Error {
+        if error is CancellationError {
+            return CocoaError(.userCancelled)
+        }
+        let domain = (error as NSError).domain
+        guard domain == NSCocoaErrorDomain || domain == NSFileProviderErrorDomain else {
+            return NSFileProviderError(.cannotSynchronize)
+        }
+        return error
+    }
+
     /// Download the folder at `directoryRemotePath` and its descendants.
     /// `requestedFolderIsPackage` classifies that folder using the database row read by `beginDownload`.
     /// Inside packages, stage listed children whose rows are marked `deleted` for folder completion.
@@ -88,7 +100,6 @@ public extension Item {
             let remoteDirectoryPath = directory.metadata.remotePath()
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
-                account: account,
                 sourceMetadata: directory.metadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -129,7 +140,7 @@ public extension Item {
                 let childLocalPath = directoryLocalPath + relativePath
                 let childOperation = operation.childOperation(for: metadata.ocId)
 
-                guard let stagedMetadata = dbManager.beginDownload(
+                guard let stagedMetadata = try dbManager.beginDownload(
                     childOperation,
                     listedMetadata: metadata,
                     allowsDeletedPackageMember: directory.packageContents
@@ -169,12 +180,14 @@ public extension Item {
                     guard error == .success else {
                         logger.error("Could not acquire contents of item.", [.name: metadata.fileName, .url: remotePath, .error: error])
                         let cancelled = error.errorCode == NSURLErrorCancelled
-                        _ = try? dbManager.finishDownload(
-                            childOperation,
-                            status: cancelled ? .normal : .downloadError,
-                            downloaded: false,
-                            error: cancelled ? nil : error.errorDescription
-                        )
+                        SyncOperations.Operation.$current.withValue(nil) {
+                            _ = try? dbManager.finishDownload(
+                                childOperation,
+                                status: cancelled ? .normal : .downloadError,
+                                downloaded: false,
+                                error: cancelled ? nil : error.errorDescription
+                            )
+                        }
                         throw operation.error(for: fetchError(error))
                     }
                     try dbManager.validateDownload(childOperation)
@@ -229,8 +242,18 @@ public extension Item {
         // Give each fetch its own destination so cleanup cannot remove another fetch's contents.
         let localPath = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let operation = DownloadOperation(ocId: ocId, cancellation: cancellation, log: logger.log)
-        guard var updatedMetadata = dbManager.beginDownload(operation) else {
-            logger.error("Could not acquire updated metadata, unable to update item status to downloading.", [.item: itemIdentifier])
+        let stagedMetadata: SendableItemMetadata?
+        do {
+            stagedMetadata = try dbManager.beginDownload(operation)
+        } catch {
+            logger.error("Could not start download in database.", [.item: itemIdentifier, .error: error])
+            if cancellation.isCancelled || Task.isCancelled {
+                return (nil, nil, CocoaError(.userCancelled))
+            }
+            return (nil, nil, fileProviderErrorForDownloadFailure(error))
+        }
+        guard var updatedMetadata = stagedMetadata else {
+            logger.error("Could not find the item in the database to download.", [.item: itemIdentifier])
 
             return (
                 nil,
@@ -252,16 +275,20 @@ public extension Item {
         var fetchWasCancelled = false
         defer {
             if !contentsReturned {
-                for childOperation in childOperations {
-                    _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                // Release our download rows even if setup cancelled the request.
+                // The database still checks the manager's identity and download ownership.
+                SyncOperations.Operation.$current.withValue(nil) {
+                    for childOperation in childOperations {
+                        _ = try? dbManager.finishDownload(childOperation, status: .normal, downloaded: false)
+                    }
+                    let cancelled = fetchWasCancelled || cancellation.isCancelled || Task.isCancelled
+                    _ = try? dbManager.finishDownload(
+                        operation,
+                        status: cancelled ? .normal : .downloadError,
+                        downloaded: false,
+                        error: cancelled ? nil : fetchErrorDescription
+                    )
                 }
-                let cancelled = fetchWasCancelled || cancellation.isCancelled || Task.isCancelled
-                _ = try? dbManager.finishDownload(
-                    operation,
-                    status: cancelled ? .normal : .downloadError,
-                    downloaded: false,
-                    error: cancelled ? nil : fetchErrorDescription
-                )
                 do {
                     try FileManager.default.removeItem(at: localPath)
                 } catch CocoaError.fileNoSuchFile {
@@ -309,7 +336,7 @@ public extension Item {
 
                 fetchWasCancelled = error is CancellationError || (error as? CocoaError)?.code == .userCancelled
                 fetchErrorDescription = error.localizedDescription
-                return (nil, nil, operation.error(for: error))
+                return (nil, nil, operation.error(for: fileProviderErrorForDownloadFailure(error)))
             }
 
         } else {
@@ -327,6 +354,10 @@ public extension Item {
 
                 fetchWasCancelled = error.errorCode == NSURLErrorCancelled
                 fetchErrorDescription = error.errorDescription
+                // The old DAV URL may return 404 after an account change while the item still exists at the new URL.
+                if error.isNotFoundError, !dbManager.isForCurrentDAVAccount() {
+                    return (nil, nil, operation.error(for: NSFileProviderError(.cannotSynchronize)))
+                }
                 return (nil, nil, operation.error(for: error.fileProviderError(
                     handlingNoSuchItemErrorUsingItemIdentifier: itemIdentifier
                 ) ?? NSFileProviderError(.cannotSynchronize)))
@@ -351,7 +382,6 @@ public extension Item {
         let parentItemIdentifier = await dbManager.parentItemIdentifierWithRemoteFallback(
             fromMetadata: updatedMetadata,
             remoteInterface: remoteInterface,
-            account: account,
             taskHandler: { cancellation.register(task: $0) },
             isCancelled: { cancellation.isCancelled }
         )
@@ -375,6 +405,9 @@ public extension Item {
         guard !progress.isCancelled, !Task.isCancelled else {
             return (nil, nil, operation.error(for: CocoaError(.userCancelled)))
         }
+        guard SyncOperations.Operation.current?.beginDelivery() != false else {
+            return (nil, nil, operation.error(for: CocoaError(.userCancelled)))
+        }
         do {
             if isDirectory {
                 updatedMetadata = try dbManager.finishDirectoryDownload(operation, children: childOperations, metadatas: downloadedMetadatas)
@@ -389,15 +422,7 @@ public extension Item {
             }
         } catch {
             fetchErrorDescription = error.localizedDescription
-            // File Provider accepts only Cocoa and File Provider errors.
-            // Report a metadata write failure as a retryable synchronization error.
-            let errorDomain = (error as NSError).domain
-            let completionError: Error = if errorDomain == NSCocoaErrorDomain || errorDomain == NSFileProviderErrorDomain {
-                error
-            } else {
-                NSFileProviderError(.cannotSynchronize)
-            }
-            return (nil, nil, operation.error(for: completionError))
+            return (nil, nil, operation.error(for: fileProviderErrorForDownloadFailure(error)))
         }
 
         // Refresh ancestor actions after the successful download state has been saved (#10085).

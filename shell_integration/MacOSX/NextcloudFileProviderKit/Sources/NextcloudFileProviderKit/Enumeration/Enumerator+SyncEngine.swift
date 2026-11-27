@@ -9,8 +9,11 @@ extension Enumerator {
         files: [NKFile],
         pageIndex: Int,
         dbManager: FilesDatabaseManager,
+        isCancelled: @Sendable () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) -> (metadatas: [SendableItemMetadata]?, error: NKError?) {
+        guard !isCancelled() else { return (nil, .cancelled) }
+        let logger = FileProviderLogger(category: "Enumerator", log: log)
         let isFirstPage = pageIndex == 0
         guard !isFirstPage || !files.isEmpty else {
             return (nil, .invalidResponseError)
@@ -39,15 +42,20 @@ extension Enumerator {
 
         let children = files.dropFirst(isFirstPage ? 1 : 0).map { $0.toItemMetadata() }
         let dbStart = clock.now
-        guard let metadatas = dbManager.persistPaginatedMetadata(target: target, children: children) else {
-            return (nil, .metadataDatabaseWriteFailed)
+        guard let metadatas = dbManager.persistPaginatedMetadata(
+            target: target,
+            children: children,
+            isCancelled: isCancelled
+        ) else {
+            return (nil, isCancelled() ? .cancelled : .metadataDatabaseWriteFailed)
         }
+        guard !isCancelled() else { return (nil, .cancelled) }
 
         itemCount = metadatas.count
         let convAccum = dbStart - conversionStart
         let dbSeconds = (clock.now - dbStart).fpSeconds
         let dbRate = dbSeconds > 0 ? Double(itemCount) / dbSeconds : 0
-        FileProviderLogger(category: "Enumerator", log: log).performance(
+        logger.performance(
             "PERF ConvertAndPersistPage pageIndex=\(pageIndex) items=\(itemCount) conv_s=\(convAccum.fpSeconds) db_s=\(dbSeconds) db_items_per_s=\(dbRate)"
         )
 
@@ -59,11 +67,12 @@ extension Enumerator {
     /// therefore only returns the acquired metadatas.
     static func handleDepth1ReadFileOrFolder(
         serverUrl: String,
-        account: Account,
         dbManager: FilesDatabaseManager,
         files: [NKFile],
         pageIndex: Int?,
         preserveDeletedTarget: Bool,
+        requiresCompleteListing: Bool = false,
+        isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> (
         metadatas: [SendableItemMetadata]?,
@@ -71,13 +80,20 @@ extension Enumerator {
         readError: NKError?
     ) {
         let logger = FileProviderLogger(category: "Enumerator", log: log)
+        let accountKey = dbManager.account.ncKitAccount
 
-        logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(account.ncKitAccount)")
+        logger.debug("Starting async conversion of NKFiles for serverUrl: \(serverUrl) for user: \(accountKey)")
 
         if let pageIndex {
             // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
             let (metadatas, error) = await dbManager.perform { dbManager in
-                handlePagedReadResults(files: files, pageIndex: pageIndex, dbManager: dbManager, log: log)
+                handlePagedReadResults(
+                    files: files,
+                    pageIndex: pageIndex,
+                    dbManager: dbManager,
+                    isCancelled: isCancelled,
+                    log: log
+                )
             }
             return (metadatas, nil, error)
         }
@@ -91,10 +107,10 @@ extension Enumerator {
             id: signposter.makeSignpostID(),
             "serverUrl=\(serverUrl, privacy: .public) files=\(files.count)"
         )
-        let convertedDirectory = await files.toSendableDirectoryMetadata(account: account, directoryToRead: serverUrl)
+        let convertedDirectory = await files.toSendableDirectoryMetadata(requestedDirectoryURL: serverUrl)
         signposter.endInterval("ConvertDirectoryMetadata", convDirState)
 
-        guard var (directory, _, files) = convertedDirectory else {
+        guard let (directory, _, children) = convertedDirectory else {
             logger.error("Failed to convert array of NKFile to directory and files metadata objects!")
             return (nil, nil, .invalidData)
         }
@@ -105,54 +121,47 @@ extension Enumerator {
             return (nil, nil, .invalidData)
         }
 
-        // Both database calls run off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
-        let directoryOcId = directory.ocId
-        if let existingMetadata = await dbManager.perform({ $0.itemMetadata(ocId: directoryOcId) }) {
-            directory.downloaded = existingMetadata.downloaded
-            directory.keepDownloaded = existingMetadata.keepDownloaded
-        }
+        let listingMetadata = [directory] + children
 
-        directory.visitedDirectory = true
-
-        files.insert(directory, at: 0)
-
-        guard !Task.isCancelled else { return (nil, nil, .cancelled) }
-        let (changes, batchElapsed) = await dbManager.perform { [files] dbManager in
+        guard !isCancelled() else { return (nil, nil, .cancelled) }
+        // Persist off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
+        let (listingWriteResult, batchElapsed) = await dbManager.perform { dbManager in
             let batchClock = ContinuousClock()
             let batchStart = batchClock.now
             let batchWriteState = signposter.beginInterval(
                 "Depth1BatchWrite",
                 id: signposter.makeSignpostID(),
-                "serverUrl=\(serverUrl, privacy: .public) items=\(files.count)"
+                "serverUrl=\(serverUrl, privacy: .public) items=\(listingMetadata.count)"
             )
-            let changes = dbManager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
+            let listingWriteResult = dbManager.saveDepth1ListingMetadata(
                 serverUrl: serverUrl,
-                updatedMetadatas: files,
+                updatedMetadatas: listingMetadata,
                 keepExistingDownloadState: true,
-                preserveDeletedTarget: preserveDeletedTarget
+                preserveDeletedTarget: preserveDeletedTarget,
+                requiresCompleteListing: requiresCompleteListing
             )
             signposter.endInterval("Depth1BatchWrite", batchWriteState)
 
-            return (changes, batchClock.now - batchStart)
+            return (listingWriteResult, batchClock.now - batchStart)
         }
 
         // The non-paginated depth-1 write (change / working-set full-folder re-read) is the measured
         // enumeration bottleneck: its per-item logical-dedup scans are O(N²) over a flat folder. Log its
         // wall-clock + items/sec so the effect of the normalizedFileName index is visible in the JSONL
         // (the `Depth1BatchWrite` signpost shows the same in Instruments).
-        let batchRate = batchElapsed.fpSeconds > 0 ? Double(files.count) / batchElapsed.fpSeconds : 0
+        let batchRate = batchElapsed.fpSeconds > 0 ? Double(listingMetadata.count) / batchElapsed.fpSeconds : 0
         logger.performance(
-            "PERF Depth1BatchWrite items=\(files.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
+            "PERF Depth1BatchWrite items=\(listingMetadata.count) write_s=\(batchElapsed.fpSeconds) items_per_s=\(batchRate)",
             [.url: serverUrl]
         )
 
-        guard let changes else {
+        guard let listingWriteResult else {
             logger.error("Could not persist directory metadata.", [.url: serverUrl])
             return (nil, nil, .metadataDatabaseWriteFailed)
         }
 
-        return (files, changes, nil)
+        let listedItems = listingMetadata.map { listingWriteResult.itemMetadataToReportByID[$0.ocId] ?? $0 }
+        return (listedItems, listingWriteResult.changes, nil)
     }
 
     /// READ THIS CAREFULLY.
@@ -172,7 +181,6 @@ extension Enumerator {
     static func readServerUrl(
         _ serverUrl: String,
         pageSettings: (page: NSFileProviderPage?, index: Int, size: Int)? = nil,
-        account: Account,
         sourceMetadata: SendableItemMetadata? = nil,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
@@ -184,7 +192,9 @@ extension Enumerator {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> RemoteReadResult {
-        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
+        let operation = SyncOperations.Operation.current
+        let readIsCancelled: @Sendable () -> Bool = { isCancelled() || operation?.isStopped == true }
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
         let logger = FileProviderLogger(category: "Enumerator", log: log)
 
         guard !serverUrl.contains(FilesDatabaseManager.holdingNameSeparator) else {
@@ -192,9 +202,21 @@ extension Enumerator {
             return RemoteReadResult(error: .parkedFolderPath)
         }
 
+        let account = dbManager.account
         guard account.ownsDAVReadURL(serverUrl, sourceMetadata: sourceMetadata) else {
             logger.error("Skipping DAV read outside the current account roots.", [.url: serverUrl])
             return RemoteReadResult(error: .invalidData)
+        }
+
+        let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
+        guard isCurrent else { return RemoteReadResult(error: .davAccountChanged) }
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
+
+        // The database can switch accounts while the server request or its write is in flight.
+        func resultForCurrentDAVAccount(_ result: RemoteReadResult) async -> RemoteReadResult {
+            let isCurrent = await dbManager.perform { $0.isForCurrentDAVAccount() }
+            guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
+            return isCurrent ? result : RemoteReadResult(error: .davAccountChanged)
         }
 
         logger.debug("Starting to read server URL.", [.url: serverUrl])
@@ -225,6 +247,7 @@ extension Enumerator {
         let networkStart = networkClock.now
 
         let registeringTaskHandler: @Sendable (URLSessionTask) -> Void = { task in
+            operation?.registerReadTask(task)
             taskHandler(task)
             if let domain, let enumeratedItemIdentifier {
                 NSFileProviderManager(for: domain)?.register(
@@ -254,20 +277,26 @@ extension Enumerator {
             [.url: serverUrl]
         )
 
+        guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
         guard error == .success else {
             logger.error("Read of URL did fail.", [.error: error, .url: serverUrl])
-            return RemoteReadResult(error: error)
+            // A 404 at the account's Files root means the domain could not be read. Let Finder retry.
+            if error.isNotFoundError,
+               account.davPath(forURL: serverUrl)?.isFilesRoot == true
+            {
+                return RemoteReadResult(error: .invalidData)
+            }
+            return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
         }
 
         guard let data else {
             logger.error("\(depth.rawValue) depth read of url \(serverUrl) did not return data.")
-            return RemoteReadResult(error: error)
+            return await resultForCurrentDAVAccount(RemoteReadResult(error: error))
         }
 
-        guard !isCancelled() else { return RemoteReadResult(error: .cancelled) }
         if let expectedDirectoryOcId {
             // A path may now refer to a different item from the one this download owns.
-            let target = files.first { files.isDirectoryToRead($0, directoryToRead: serverUrl) }?.toItemMetadata()
+            let target = files.first { $0.matchesRequestedDirectoryURL(serverUrl) }?.toItemMetadata()
             guard let target, target.directory, target.ocId == expectedDirectoryOcId, target.account == account.ncKitAccount else {
                 logger.error("Read directory no longer matches the download's item.", [.item: expectedDirectoryOcId, .url: serverUrl])
                 return RemoteReadResult(error: .invalidData)
@@ -282,55 +311,50 @@ extension Enumerator {
             logger.error("Received no items.", [.url: serverUrl])
             // This is technically possible when doing a paginated request with the index too high.
             // It's technically not an error reply.
-            return RemoteReadResult(metadatas: [], nextPage: nextPage)
+            return await resultForCurrentDAVAccount(RemoteReadResult(metadatas: [], nextPage: nextPage))
         }
 
-        func finishTargetRead(_ received: SendableItemMetadata) async -> RemoteReadResult {
-            // Read and merge off the cooperative pool: see `FilesDatabaseManager.perform(_:)`.
-            let (metadata, changes) = await dbManager.perform {
-                dbManager -> (SendableItemMetadata, ChangeSet) in
-                if let existing = dbManager.itemMetadata(ocId: received.ocId) {
-                    let metadata = existing.mergingRemoteMetadata(
-                        received,
-                        preserveVisitedDirectory: true,
-                        preserveDownloadState: true,
-                        lock: .preserveLocal
-                    )
-                    return (metadata, ChangeSet(updated: [metadata]))
-                }
-
-                // Inherit the parent's pin so the overlay and content policy match its siblings.
-                var metadata = received
-                metadata.keepDownloaded = dbManager.inheritedKeepDownloaded(for: metadata)
-                return (metadata, ChangeSet(created: [metadata]))
-            }
-
+        func finishTargetRead(_ metadata: SendableItemMetadata) async -> RemoteReadResult {
+            let resolved: (metadata: SendableItemMetadata, isNew: Bool)
             do {
-                try await dbManager.addItemMetadataFromRemoteRead(metadata, isCancelled: isCancelled)
+                resolved = try await dbManager.addItemMetadataFromRemoteRead(
+                    metadata,
+                    requestedURL: serverUrl,
+                    isCancelled: readIsCancelled
+                )
             } catch is CancellationError {
                 return RemoteReadResult(error: .cancelled)
+            } catch let error as NSFileProviderError where error.code == .cannotSynchronize {
+                return RemoteReadResult(error: .davAccountChanged)
+            } catch let error as NKError {
+                return RemoteReadResult(error: error)
             } catch {
                 // A single-item lookup can still return the server result if caching fails.
                 logger.error("Could not persist remote item metadata.", [.item: metadata.ocId, .error: error])
+                resolved = await dbManager.perform { $0.itemMetadataFromRemoteReadWithoutSaving(metadata) }
+                guard !readIsCancelled() else { return RemoteReadResult(error: .cancelled) }
             }
-            return RemoteReadResult(metadatas: [metadata], changes: changes, nextPage: nextPage)
+            let changes = resolved.isNew
+                ? ChangeSet(created: [resolved.metadata])
+                : ChangeSet(updated: [resolved.metadata])
+            let result = RemoteReadResult(metadatas: [resolved.metadata], changes: changes, nextPage: nextPage)
+            return await resultForCurrentDAVAccount(result)
         }
 
-        // Generally speaking a PROPFIND will provide the target of the PROPFIND as the first result
-        // That is NOT the case for paginated results with offsets
+        // Follow-up pages begin with a child instead of the target.
         let isFollowUpPaginatedRequest = (pageSettings?.page != nil && pageSettings?.index ?? 0 > 0)
-        if !isFollowUpPaginatedRequest {
-            guard receivedFile.directory ||
-                serverUrl == dbManager.account.davFilesUrl ||
-                receivedFile.fullUrlMatches(dbManager.account.davFilesUrl + "/.") ||
-                (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
-            else {
-                logger.debug("Read item is a file, converting.", [.url: serverUrl])
-                return await finishTargetRead(receivedFile.toItemMetadata())
-            }
+        var responseIsDirectory: Bool {
+            receivedFile.directory
+                || serverUrl == dbManager.account.davFilesUrl
+                || receivedFile.matchesResponseItemURL(dbManager.account.davFilesUrl + "/.")
+                || (receivedFile.fileName == NextcloudKit.shared.nkCommonInstance.rootFileName && receivedFile.serverUrl == dbManager.account.davFilesUrl)
         }
 
-        // A listed folder stored at another path was either moved here or is a second mount of the same folder, which shares its identifier (#10106).
+        if !isFollowUpPaginatedRequest, !responseIsDirectory {
+            return await finishTargetRead(receivedFile.toItemMetadata())
+        }
+
+        // A folder stored elsewhere can be a second mount with the same identifier (#10106).
         let listsTarget = depth != .target && !isFollowUpPaginatedRequest
         guard let secondMounts = await secondMountedDirectories(
             among: listsTarget ? Array(files.dropFirst()) : files,
@@ -338,7 +362,7 @@ extension Enumerator {
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             taskHandler: registeringTaskHandler,
-            isCancelled: isCancelled,
+            isCancelled: readIsCancelled,
             logger: logger
         ) else {
             return RemoteReadResult(error: .cancelled)
@@ -347,32 +371,40 @@ extension Enumerator {
 
         if depth == .target {
             if let storedMetadata = secondMounts[receivedFile.ocId] {
-                return RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+                let result = RemoteReadResult(metadatas: [storedMetadata], changes: ChangeSet(), nextPage: nextPage)
+                return await resultForCurrentDAVAccount(result)
             }
 
             return await finishTargetRead(receivedFile.toItemMetadata())
         } else if depth == .targetAndDirectChildren {
             let depth1Read = await handleDepth1ReadFileOrFolder(
                 serverUrl: serverUrl,
-                account: account,
                 dbManager: dbManager,
                 files: files,
                 pageIndex: pageSettings?.index,
                 preserveDeletedTarget: expectedDirectoryOcId != nil,
+                requiresCompleteListing: expectedDirectoryOcId != nil,
+                isCancelled: readIsCancelled,
                 log: logger.log
             )
 
-            return RemoteReadResult(
+            let result = RemoteReadResult(
                 metadatas: depth1Read.metadatas,
                 changes: depth1Read.changes,
                 nextPage: nextPage,
                 error: depth1Read.readError
             )
+            return await resultForCurrentDAVAccount(result)
         } else if let pageIndex = pageSettings?.index {
             let (metadatas, error) = handlePagedReadResults(
-                files: files, pageIndex: pageIndex, dbManager: dbManager, log: log
+                files: files,
+                pageIndex: pageIndex,
+                dbManager: dbManager,
+                isCancelled: readIsCancelled,
+                log: log
             )
-            return RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
+            let result = RemoteReadResult(metadatas: metadatas, nextPage: nextPage, error: error)
+            return await resultForCurrentDAVAccount(result)
         } else {
             // Infinite depth unpaged reads are a bad idea
             logger.error("Infinite depth read requested.")
@@ -408,9 +440,15 @@ extension Enumerator {
             let storedByOcId = manager.itemMetadatas(ocIds: listedDirectories.map(\.ocId)) ?? [:]
 
             return listedDirectories.compactMap { listed -> SendableItemMetadata? in
-                guard let stored = storedByOcId[listed.ocId], stored.directory, !stored.deleted, !stored.isTrashed, !stored.isAtHoldingPath,
-                      stored.serverUrl.precomposedStringWithCanonicalMapping != listed.serverUrl.precomposedStringWithCanonicalMapping,
-                      stored.serverUrl == account.davFilesUrl || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
+                guard let stored = storedByOcId[listed.ocId],
+                      stored.directory,
+                      !stored.deleted,
+                      !stored.isFilesRoot,
+                      !stored.isTrashed,
+                      !stored.isAtHoldingPath,
+                      !account.hasSameDAVPath(stored.serverUrl, listed.serverUrl),
+                      account.davPath(forURL: stored.serverUrl)?.isFilesRoot == true
+                      || manager.parentDirectoryMetadataForItem(stored).map({ !$0.deleted }) == true
                 else {
                     return nil
                 }
@@ -461,6 +499,7 @@ extension Enumerator {
             at: checkedPath,
             depth: checksSingleFolder ? .target : .targetAndDirectChildren,
             account: account,
+            sourceMetadata: storedDirectories.first,
             remoteInterface: remoteInterface,
             taskHandler: taskHandler
         )
@@ -484,9 +523,14 @@ extension Enumerator {
         at remotePath: String,
         depth: EnumerateDepth,
         account: Account,
+        sourceMetadata: SendableItemMetadata? = nil,
         remoteInterface: RemoteInterface,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in }
     ) async -> (ocIds: Set<String>, error: NKError) {
+        guard account.ownsDAVReadURL(remotePath, sourceMetadata: sourceMetadata) else {
+            return ([], .invalidData)
+        }
+
         let (_, files, _, error) = await remoteInterface.enumerate(
             remotePath: remotePath,
             depth: depth,

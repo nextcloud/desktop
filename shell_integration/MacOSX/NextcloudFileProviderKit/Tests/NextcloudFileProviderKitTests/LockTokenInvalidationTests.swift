@@ -29,8 +29,8 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
     func testRenameItemMetadataClearsLockToken() throws {
         var metadata = SendableItemMetadata.rawRow(ocId: "lock-1")
-        metadata.account = "TestAccount"
-        metadata.serverUrl = "https://cloud.example.com/files/old"
+        metadata.account = Self.account.ncKitAccount
+        metadata.serverUrl = Self.account.davFilesUrl + "/old"
         metadata.fileName = "doc.txt"
         metadata.lockToken = "opaquelocktoken:abc123"
 
@@ -38,7 +38,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
         Self.dbManager.renameItemMetadata(
             ocId: "lock-1",
-            newServerUrl: "https://cloud.example.com/files/new",
+            newServerUrl: Self.account.davFilesUrl + "/new",
             newFileName: "doc.txt"
         )
 
@@ -49,14 +49,14 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
     func testRenameDirectoryClearsLockTokenOnChildren() throws {
         var dir = SendableItemMetadata.rawRow(ocId: "lock-dir")
-        dir.account = "TestAccount"
-        dir.serverUrl = "https://cloud.example.com/files"
+        dir.account = Self.account.ncKitAccount
+        dir.serverUrl = Self.account.davFilesUrl
         dir.fileName = "folder"
         dir.directory = true
 
         var child = SendableItemMetadata.rawRow(ocId: "lock-child")
-        child.account = "TestAccount"
-        child.serverUrl = "https://cloud.example.com/files/folder"
+        child.account = Self.account.ncKitAccount
+        child.serverUrl = Self.account.davFilesUrl + "/folder"
         child.fileName = "important.docx"
         child.lockToken = "opaquelocktoken:xyz789"
 
@@ -65,7 +65,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 
         _ = Self.dbManager.renameDirectoryAndPropagateToChildren(
             ocId: "lock-dir",
-            newServerUrl: "https://cloud.example.com/files",
+            newServerUrl: Self.account.davFilesUrl,
             newFileName: "renamed-folder"
         )
 
@@ -77,14 +77,12 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(
             updatedChild?.serverUrl,
-            "https://cloud.example.com/files/renamed-folder"
+            Self.account.davFilesUrl + "/renamed-folder"
         )
     }
 
     func testProcessUpdateClearsLockTokenWhenFileNameChanges() {
-        let account = Account(
-            user: "lockClear", id: "lc", serverUrl: "https://example.com", password: ""
-        )
+        let account = Self.account
 
         var parentDir = SendableItemMetadata(
             ocId: "lock-clear-parent", fileName: "parentDir", account: account
@@ -114,7 +112,6 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         renamed.etag = "etag-2"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl + "/parentDir",
             updatedMetadatas: [updatedParent, renamed],
             keepExistingDownloadState: true
@@ -129,9 +126,7 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
     }
 
     func testProcessUpdatePreservesLockTokenWhenPathUnchanged() {
-        let account = Account(
-            user: "lockKeep", id: "lk", serverUrl: "https://example.com", password: ""
-        )
+        let account = Self.account
 
         var parentDir = SendableItemMetadata(
             ocId: "lock-keep-parent", fileName: "parentDir", account: account
@@ -159,7 +154,6 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
         updated.etag = "etag-2"
 
         let result = Self.dbManager.depth1ReadUpdateItemMetadatas(
-            account: account.ncKitAccount,
             serverUrl: account.davFilesUrl + "/parentDir",
             updatedMetadatas: [updatedParent, updated],
             keepExistingDownloadState: true

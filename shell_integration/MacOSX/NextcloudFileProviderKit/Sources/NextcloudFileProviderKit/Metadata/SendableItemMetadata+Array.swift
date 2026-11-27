@@ -18,6 +18,9 @@ extension [SendableItemMetadata] {
                 return nil
             }
 
+            // A server root row is cached under its ocId, but Finder uses the synthetic root.
+            guard !itemMetadata.isFilesRootWithServerID else { return nil }
+
             guard !itemMetadata.e2eEncrypted else {
                 logger.info("Skipping encrypted metadata in enumeration.", [.item: itemMetadata.ocId, .name: itemMetadata.fileName])
                 return nil

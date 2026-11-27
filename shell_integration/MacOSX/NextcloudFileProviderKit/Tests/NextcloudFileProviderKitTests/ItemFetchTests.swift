@@ -333,14 +333,14 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
                 for child in remoteItem.children {
                     child.remotePath = child.remotePath.replacingOccurrences(of: oldPath, with: remoteItem.remotePath)
                 }
-                let rename = await Enumerator.readServerUrl(Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                let rename = await Enumerator.readServerUrl(Self.account.davFilesUrl, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
                 XCTAssertNil(rename.error)
                 XCTAssertTrue(try XCTUnwrap(rename.changes).updated.contains { $0.ocId == remoteItem.identifier })
                 XCTAssertEqual(Self.dbManager.itemMetadata(ocId: remoteItem.identifier)?.fileName, remoteItem.name)
 
                 remoteItem.versionIdentifier = "updated-content"
                 remoteItem.data = directory ? nil : Data("New server contents".utf8)
-                let contents = await Enumerator.readServerUrl(directory ? remoteItem.remotePath : Self.account.davFilesUrl, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+                let contents = await Enumerator.readServerUrl(directory ? remoteItem.remotePath : Self.account.davFilesUrl, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
                 XCTAssertNil(contents.error)
                 XCTAssertTrue(try XCTUnwrap(contents.changes).updated.contains { $0.ocId == remoteItem.identifier })
                 let updatedMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: remoteItem.identifier))
@@ -1279,7 +1279,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         }
         XCTAssertTrue(rootItem.children.contains { $0.identifier == directory.identifier })
         directory.versionIdentifier = "changed-after-exclusion"
-        let read = await Enumerator.readServerUrl(rootItem.remotePath, account: Self.account, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
+        let read = await Enumerator.readServerUrl(rootItem.remotePath, remoteInterface: remoteInterface, dbManager: Self.dbManager, log: FileProviderLogMock())
         XCTAssertNil(read.error)
         let restoredMetadata = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
         XCTAssertFalse(restoredMetadata.deleted)
@@ -1361,7 +1361,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             }
             let rename = await Enumerator.readServerUrl(
                 Self.account.davFilesUrl,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager,
                 log: FileProviderLogMock()
@@ -1492,7 +1491,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertTrue(completedChild.visitedDirectory)
             XCTAssertEqual(completedChild.lockToken, localMetadata.lockToken)
             XCTAssertEqual(completedChild.fileProviderContentVersion, versionChanged ? nil : localMetadata.fileProviderContentVersion)
-            XCTAssertEqual(Self.dbManager.itemMetadata(account: Self.account.ncKitAccount, locatedAtRemoteUrl: child.remotePath)?.ocId, child.identifier)
+            XCTAssertEqual(Self.dbManager.itemMetadata(locatedAtRemoteUrl: child.remotePath)?.ocId, child.identifier)
             let completedDirectory = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: directory.identifier))
             XCTAssertEqual(completedDirectory.etag, directory.versionIdentifier)
             XCTAssertEqual(try XCTUnwrap(fetchedItem).itemVersion.contentVersion, Data(directory.versionIdentifier.utf8))
@@ -1735,7 +1734,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             directory.children.removeAll { $0.identifier == removedChild.identifier }
             let read = await Enumerator.readServerUrl(
                 directory.remotePath,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: FileProviderLogMock()
@@ -1806,7 +1804,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         movedChild.remotePath = destination.remotePath + "/" + movedChild.name
         let listing = await Enumerator.readServerUrl(
             destination.remotePath,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             log: FileProviderLogMock()
@@ -1977,7 +1974,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let listing = await Enumerator.readServerUrl(
             Self.account.davFilesUrl,
             pageSettings: (page: nil, index: 0, size: 5),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: dbManager,
             log: FileProviderLogMock()
@@ -2030,7 +2026,6 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
             XCTAssertEqual(move.error, .success)
             let listing = await Enumerator.readServerUrl(
                 parentPath,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
                 log: FileProviderLogMock()
@@ -2313,6 +2308,117 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         XCTAssertNil(url)
         XCTAssertNil(fetchedItem)
         XCTAssertEqual((error as? NSFileProviderError)?.code, .noSuchItem)
+    }
+
+    func testFolderFetchPreservesChildUploadInProgress() async throws {
+        let (folder, remote, directory) = makeFetchItem(directory: true)
+        let child = try XCTUnwrap(directory.children.first)
+        directory.children = [child]
+        let dbManager = Self.dbManager
+        child.versionIdentifier = "previous-version"
+        var childMetadata = child.toItemMetadata(account: Self.account)
+        childMetadata.downloaded = true
+        childMetadata.uploaded = true
+        dbManager.addItemMetadata(childMetadata)
+        let childItem = Item(
+            metadata: childMetadata,
+            parentItemIdentifier: NSFileProviderItemIdentifier(directory.identifier),
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: dbManager
+        )
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let editedContents = Data("Edited contents".utf8)
+        try editedContents.write(to: contentsURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+
+        let (uploadStarted, notifyUploadStarted) = AsyncStream<Void>.makeStream()
+        let (resumeUpload, notifyResumeUpload) = AsyncStream<Void>.makeStream()
+        remote.uploadHandler = {
+            notifyUploadStarted.yield(())
+            notifyUploadStarted.finish()
+            var iterator = resumeUpload.makeAsyncIterator()
+            _ = await iterator.next()
+        }
+        let upload = Task {
+            await childItem.modify(
+                itemTarget: childItem,
+                changedFields: [.contents],
+                contents: contentsURL,
+                dbManager: dbManager
+            )
+        }
+        defer {
+            notifyUploadStarted.finish()
+            notifyResumeUpload.finish()
+            upload.cancel()
+        }
+        let started = try await nextTestValue(from: uploadStarted)
+        XCTAssertNotNil(started)
+        let uploading = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(uploading.status, Status.uploading.rawValue)
+
+        let (contents, fetched, fetchError) = await folder.fetchContents(dbManager: dbManager)
+        defer {
+            if let contents {
+                try? FileManager.default.removeItem(at: contents)
+            }
+        }
+
+        XCTAssertNil(contents)
+        XCTAssertNil(fetched)
+        XCTAssertEqual((fetchError as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remote.downloadOperationCount, 0)
+        let stillUploading = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(stillUploading.status, Status.uploading.rawValue)
+        XCTAssertEqual(stillUploading.session, uploading.session)
+
+        let uploadedETag = "edited-version"
+        child.versionIdentifier = uploadedETag
+        notifyResumeUpload.finish()
+        let (modified, uploadError) = try await testTaskValue(of: upload)
+        XCTAssertNil(uploadError)
+        XCTAssertEqual(modified?.metadata.etag, uploadedETag)
+        XCTAssertEqual(remote.uploadOperationCount, 1)
+        XCTAssertEqual(child.data, editedContents)
+        let completed = try XCTUnwrap(dbManager.itemMetadata(ocId: child.identifier))
+        XCTAssertEqual(completed.status, Status.normal.rawValue)
+        XCTAssertEqual(completed.etag, uploadedETag)
+        XCTAssertTrue(completed.uploaded)
+    }
+
+    func testFolderFetchDoesNotPublishContentsIfPendingChildWasRenamed() async throws {
+        let (folder, remote, directory) = makeFetchItem(directory: true)
+        let child = try XCTUnwrap(directory.children.first)
+        var pending = child.toItemMetadata(account: Self.account)
+        pending.status = Status.uploadError.rawValue
+        pending.uploaded = false
+        pending.downloaded = true
+        pending.chunkUploadId = "pending-child-edit"
+        let dbManager = Self.dbManager
+        dbManager.addItemMetadata(pending)
+        let moved = await remote.move(
+            remotePathSource: child.remotePath,
+            remotePathDestination: directory.remotePath + "/Renamed.txt",
+            account: Self.account
+        )
+        XCTAssertEqual(moved.error, .success)
+
+        let (contents, fetched, error) = await folder.fetchContents(dbManager: dbManager)
+        defer {
+            if let contents {
+                try? FileManager.default.removeItem(at: contents)
+            }
+        }
+
+        XCTAssertNil(contents)
+        XCTAssertNil(fetched)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertEqual(remote.downloadOperationCount, 0)
+        let saved = try XCTUnwrap(dbManager.itemMetadata(ocId: pending.ocId))
+        XCTAssertEqual(saved.remotePath(), pending.remotePath())
+        XCTAssertEqual(saved.chunkUploadId, pending.chunkUploadId)
+        XCTAssertTrue(saved.hasUnfinishedUpload)
     }
 
     func testDiscardedFolderDownloadLeavesCompletedChildrenDataless() async throws {
@@ -2692,13 +2798,11 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
         let (item, remoteInterface, directory) = makeNestedFetchItem()
         let dbManager = Self.dbManager
         let metadata = item.metadata
-        let account = Self.account
         let lookup = Task<Bool, Never> { @Sendable in
             withUnsafeCurrentTask { $0?.cancel() }
             let parent = await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
-                remoteInterface: remoteInterface,
-                account: account
+                remoteInterface: remoteInterface
             )
             return parent == nil
         }
@@ -3045,6 +3149,7 @@ final class ItemFetchTests: NextcloudFileProviderKitTestCase {
 
         let (localPathMaybe, fetchedItemMaybe, error) = await item.fetchContents(dbManager: Self.dbManager)
         XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
         let localPath = try XCTUnwrap(localPathMaybe)
         let fetchedItem = try XCTUnwrap(fetchedItemMaybe)
         let contents = try Data(contentsOf: localPath)

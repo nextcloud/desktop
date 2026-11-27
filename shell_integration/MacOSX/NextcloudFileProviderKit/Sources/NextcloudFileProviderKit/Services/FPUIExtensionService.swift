@@ -33,7 +33,8 @@ public let fpUiExtensionServiceName = NSFileProviderServiceName("com.nextcloud.d
     func credentials() async -> NSDictionary
 
     ///
-    /// Get a server URL for the given local file provider item.
+    /// Get the item's path under the account's WebDAV Files root, including the leading slash.
+    /// Returns nil for items that cannot be located under that root.
     ///
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString?
 

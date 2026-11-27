@@ -26,14 +26,6 @@ extension Enumerator {
             return
         }
 
-        let orphanedIdentifiers = batch.deleted.compactMap {
-            $0.ocId.isEmpty ? nil : NSFileProviderItemIdentifier($0.ocId)
-        }
-
-        if orphanedIdentifiers.isEmpty == false {
-            observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
-        }
-
         let reportedAnchor = if let continuationAnchorRawValue = batch.continuationAnchorRawValue {
             NSFileProviderSyncAnchor(rawValue: continuationAnchorRawValue)
         } else if let finalAnchorRawValue = batch.finalAnchorRawValue {
@@ -42,6 +34,17 @@ extension Enumerator {
             anchor
         }
 
+        if let error = beginEnumerationDelivery(staleAccountError: .syncAnchorExpired) {
+            observer.finishEnumeratingWithError(error)
+            return
+        }
+        defer { SyncOperations.Operation.current?.finish() }
+        let orphanedIdentifiers = batch.deleted.compactMap {
+            $0.ocId.isEmpty ? nil : NSFileProviderItemIdentifier($0.ocId)
+        }
+        if !orphanedIdentifiers.isEmpty {
+            observer.didDeleteItems(withIdentifiers: orphanedIdentifiers)
+        }
         observer.finishEnumeratingChanges(upTo: reportedAnchor, moreComing: batch.moreComing)
         changeBuffer.acknowledgeBatch(batch.acknowledgement)
 
@@ -58,13 +61,17 @@ extension Enumerator {
     func enumerateTrashItems(for observer: NSFileProviderEnumerationObserver) {
         logger.info("Enumerating items in trash.", [.account: account.ncKitAccount, .url: serverUrl])
 
-        Task { [weak self] in
+        runEnumerationTask { [weak self] in
             guard let self else {
                 return
             }
 
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
+            if let stopError = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(stopError)
+                return
+            }
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                 observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
@@ -80,6 +87,11 @@ extension Enumerator {
             // We only want to list items deleted on the local device.
             // That cannot happen before the initial content enumeration for a file provider domain because the latter does not exist yet.
             // Hence the initial trash content enumeration can be finished with an empty set.
+            if let error = beginEnumerationDelivery(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
+            defer { SyncOperations.Operation.current?.finish() }
             observer.finishEnumerating(upTo: nil)
         }
     }
@@ -94,7 +106,7 @@ extension Enumerator {
 
         let anchorKey = String(data: anchor.rawValue, encoding: .utf8) ?? ""
 
-        Task { [weak self] in
+        runEnumerationTask { [weak self] in
             guard let self else {
                 return
             }
@@ -118,6 +130,10 @@ extension Enumerator {
 
             let (_, capabilities, _, error) = await remoteInterface.currentCapabilities(account: account)
 
+            if let stopError = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(stopError)
+                return
+            }
             guard let capabilities, error == .success else {
                 logger.error("Could not acquire capabilities, cannot check trash.", [.error: error])
                 observer.finishEnumeratingWithError(NSFileProviderError(.serverUnreachable))
@@ -135,6 +151,7 @@ extension Enumerator {
 
             let domain = domain
             let enumeratedItemIdentifier = enumeratedItemIdentifier
+            let operation = SyncOperations.Operation.current
 
             let (_, trashedItems, _, trashReadError) = await remoteInterface.listingTrashAsync(
                 filename: nil,
@@ -142,6 +159,7 @@ extension Enumerator {
                 account: account.ncKitAccount,
                 options: .init(),
                 taskHandler: { task in
+                    operation?.registerReadTask(task)
                     if let domain {
                         NSFileProviderManager(for: domain)?.register(
                             task,
@@ -152,6 +170,10 @@ extension Enumerator {
                 }
             )
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .syncAnchorExpired) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             guard trashReadError == .success else {
                 let error = trashReadError.fileProviderError(handlingNoSuchItemErrorUsingItemIdentifier: self.enumeratedItemIdentifier) ?? NSFileProviderError(.cannotSynchronize)
                 observer.finishEnumeratingWithError(error)
@@ -161,7 +183,7 @@ extension Enumerator {
             // Orphans = local trash rows absent from the remote trash listing = permanently deleted
             // remotely. Derive once, then drain in batches.
             let remoteSet = Set((trashedItems ?? []).map(\.ocId))
-            let orphans = dbManager.trashedItemMetadatas(account: account)
+            let orphans = dbManager.trashedItemMetadatas()
                 .filter { !remoteSet.contains($0.ocId) }
 
             for orphan in orphans {

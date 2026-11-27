@@ -29,8 +29,8 @@ extension FilesDatabaseManager {
     /// visibility.
     ///
     /// - Parameters:
-    ///   - incoming: The metadata about to be persisted; its `(account,
-    ///     serverUrl, fileName)` defines the logical address used for the
+    ///   - incoming: The metadata about to be persisted; its parent path and name define the
+    ///     logical address used for the
     ///     collision query, while its `ocId` is excluded from candidates so
     ///     that the normal same-`ocId` upsert is unaffected.
     ///   - db: The open database.
@@ -40,7 +40,7 @@ extension FilesDatabaseManager {
     /// - Returns: The `ocId` values of rows that were soft-deleted.
     ///
     @discardableResult
-    func evictLogicalDuplicates(of incoming: any ItemMetadata, in db: Database, now: Date = Date()) throws -> [String] {
+    func evictLogicalDuplicates(of incoming: ItemMetadataRecord, in db: Database, now: Date = Date()) throws -> [String] {
         // A lock file created by the local OS should never trigger eviction:
         // it is not authoritative about the server-side state at its logical
         // address and could otherwise soft-delete a legitimate server row.
@@ -48,10 +48,16 @@ extension FilesDatabaseManager {
             return []
         }
 
+        // Finder's `.rootContainer` row holds the root's pin. Keep it alongside the row keyed
+        // by the server's ocId, even though both have the same URL and filename.
+        if incoming.isFilesRoot {
+            return []
+        }
+
         // A soft-deleted incoming row is a tombstone, not an authoritative live
         // occupant of its logical address, so it must never evict a live sibling.
         // A deletion is authoritative only about its own ocId; if another live row
-        // shares the (account, serverUrl, fileName) it is the current truth and
+        // shares the parent path and name it is the current truth and
         // must survive. Without this, persisting the tombstone of a stale ocId
         // after an app "safe save" (create -> delete -> recreate, which rotates the
         // ocId) soft-deletes the freshly recreated live file. (Ticket 96101301)
@@ -63,9 +69,10 @@ extension FilesDatabaseManager {
         let candidates = try ItemLogicalAddressRow.fetchAll(
             db.cachedStatement(sql: Self.logicalDuplicateCandidatesSQL),
             arguments: [
-                incoming.fileName.precomposedStringWithCanonicalMapping,
-                incoming.serverUrl.precomposedStringWithCanonicalMapping,
-                incoming.ocId
+                incoming.normalizedFileName,
+                incoming.ocId,
+                incoming.storedDAVParent.root.rawValue,
+                incoming.normalizedParentPath
             ]
         )
 
@@ -76,7 +83,7 @@ extension FilesDatabaseManager {
                 logger.error("Skipping eviction of in-flight logical duplicate.", [
                     .item: candidate.ocId,
                     .name: candidate.fileName,
-                    .url: candidate.serverUrl,
+                    .url: candidate.parentPath,
                     .syncTime: candidate.syncTime
                 ])
 
@@ -89,7 +96,7 @@ extension FilesDatabaseManager {
             logger.info("Evicted logical duplicate.", [
                 .item: candidate.ocId,
                 .name: candidate.fileName,
-                .url: candidate.serverUrl,
+                .url: candidate.parentPath,
                 .syncTime: now
             ])
         }
@@ -99,9 +106,23 @@ extension FilesDatabaseManager {
 
     /// Live, non-lock-file rows at a normalized location other than the given identifier, in the columns of ``ItemLogicalAddressRow``.
     private static let logicalDuplicateCandidatesSQL = """
-    SELECT ocId, serverUrl, fileName, normalizedServerUrl, normalizedFileName, deleted, isLockFileOfLocalOrigin, status, syncTime
+    SELECT ocId,
+           davRoot,
+           parentPath,
+           fileName,
+           normalizedParentPath,
+           normalizedFileName,
+           deleted,
+           isLockFileOfLocalOrigin,
+           status,
+           syncTime
     FROM itemMetadata
-    WHERE normalizedFileName = ? AND normalizedServerUrl = ? AND ocId <> ? AND deleted = 0 AND isLockFileOfLocalOrigin = 0
+    WHERE normalizedFileName = ?
+        AND ocId <> ?
+        AND deleted = 0
+        AND isLockFileOfLocalOrigin = 0
+        AND davRoot = ?
+        AND normalizedParentPath = ?
     """
 
     private static let softDeleteSQL = "UPDATE itemMetadata SET deleted = 1, syncTime = ? WHERE ocId = ?"
@@ -120,15 +141,15 @@ extension FilesDatabaseManager {
     }
 
     private func repairPersistedLogicalAddresses(in db: Database) throws -> (repaired: Int, evicted: Int) {
-        let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
-
-        struct LogicalKey: Hashable {
-            let serverUrl: String
-            let fileName: String
+        struct ParentLocationAndFileName: Hashable {
+            let davRoot: String
+            let normalizedParentPath: String
+            let normalizedFileName: String
         }
 
+        let rootContainerOcId = NSFileProviderItemIdentifier.rootContainer.rawValue
         var drifted: [ItemLogicalAddressRow] = []
-        var buckets: [LogicalKey: [ItemLogicalAddressRow]] = [:]
+        var rowsByParentLocationAndFileName: [ParentLocationAndFileName: [ItemLogicalAddressRow]] = [:]
 
         // Bucketing on the keys computed here rather than on the stored ones is what lets a
         // drifted row be repaired and deduplicated in the same walk.
@@ -143,22 +164,31 @@ extension FilesDatabaseManager {
                 continue
             }
 
-            let serverUrl = row.serverUrl.precomposedStringWithCanonicalMapping
-            let fileName = row.fileName.precomposedStringWithCanonicalMapping
+            let normalizedParentPath = row.parentPath.precomposedStringWithCanonicalMapping
+            let normalizedFileName = row.fileName.precomposedStringWithCanonicalMapping
 
-            if row.normalizedServerUrl != serverUrl || row.normalizedFileName != fileName {
+            if row.normalizedParentPath != normalizedParentPath || row.normalizedFileName != normalizedFileName {
                 drifted.append(row)
             }
 
             // The exclusions decide which rows may be soft-deleted, not which rows are repaired.
-            guard !row.deleted, !row.isLockFileOfLocalOrigin, row.ocId != rootContainerOcId else {
+            guard !row.deleted,
+                  !row.isLockFileOfLocalOrigin,
+                  row.ocId != rootContainerOcId,
+                  row.fileName != SendableItemMetadata.filesRootPlaceholderName
+            else {
                 continue
             }
 
-            buckets[LogicalKey(serverUrl: serverUrl, fileName: fileName), default: []].append(row)
+            let key = ParentLocationAndFileName(
+                davRoot: row.davRoot,
+                normalizedParentPath: normalizedParentPath,
+                normalizedFileName: normalizedFileName
+            )
+            rowsByParentLocationAndFileName[key, default: []].append(row)
         }
 
-        let collisions = buckets.values.filter { $0.count > 1 }
+        let collisions = rowsByParentLocationAndFileName.values.filter { $0.count > 1 }
 
         guard !drifted.isEmpty || !collisions.isEmpty else {
             return (0, 0)
@@ -178,7 +208,7 @@ extension FilesDatabaseManager {
                 .filter(key: row.ocId)
                 .updateAll(
                     db,
-                    ItemMetadataRecord.Columns.normalizedServerUrl.set(to: row.serverUrl.precomposedStringWithCanonicalMapping),
+                    ItemMetadataRecord.Columns.normalizedParentPath.set(to: row.parentPath.precomposedStringWithCanonicalMapping),
                     ItemMetadataRecord.Columns.normalizedFileName.set(to: row.fileName.precomposedStringWithCanonicalMapping)
                 )
         }
@@ -195,7 +225,7 @@ extension FilesDatabaseManager {
             }) else {
                 logger.info("Startup deduplication: all candidates are in-flight, leaving bucket intact.", [
                     .name: group.first?.fileName,
-                    .url: group.first?.serverUrl
+                    .url: group.first?.parentPath
                 ])
 
                 continue
@@ -204,7 +234,7 @@ extension FilesDatabaseManager {
             logger.info("Startup deduplication: kept canonical row.", [
                 .item: winner.ocId,
                 .name: winner.fileName,
-                .url: winner.serverUrl,
+                .url: winner.parentPath,
                 .syncTime: winner.syncTime
             ])
 
@@ -213,7 +243,7 @@ extension FilesDatabaseManager {
                     logger.error("Startup deduplication: skipped in-flight logical duplicate.", [
                         .item: candidate.ocId,
                         .name: candidate.fileName,
-                        .url: candidate.serverUrl,
+                        .url: candidate.parentPath,
                         .syncTime: candidate.syncTime
                     ])
 
@@ -226,7 +256,7 @@ extension FilesDatabaseManager {
                 logger.info("Startup deduplication: evicted duplicate.", [
                     .item: candidate.ocId,
                     .name: candidate.fileName,
-                    .url: candidate.serverUrl,
+                    .url: candidate.parentPath,
                     .syncTime: now
                 ])
             }

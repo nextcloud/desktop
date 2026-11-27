@@ -12,16 +12,30 @@ import Testing
 /// This is the only place in the test target which touches the storage engine. Tests seed and inspect rows through these methods so that an engine change touches one file.
 ///
 extension FilesDatabaseManager {
+    func storedParentLocationKeysForTesting(ocId: String) throws -> (davRoot: DAVRoot, parentPath: String, normalizedParentPath: String)? {
+        try writer.read { db in
+            try Row.fetchOne(
+                db,
+                sql: "SELECT davRoot, parentPath, normalizedParentPath FROM itemMetadata WHERE ocId = ?",
+                arguments: [ocId]
+            ).map { row in
+                let rawValue: String = try row.decode(forColumn: "davRoot")
+                let root = try #require(DAVRoot(rawValue: rawValue))
+                return (root, row["parentPath"], row["normalizedParentPath"])
+            }
+        }
+    }
+
     ///
     /// Store a row exactly as given, bypassing duplicate eviction and the inheritance of local flags.
     ///
     /// The normalized location keys are derived from the raw location unless overridden, which builds rows whose keys drifted.
     ///
     func insertForTesting(_ metadata: SendableItemMetadata, normalizedServerUrl: String? = nil, normalizedFileName: String? = nil) throws {
-        var record = ItemMetadataRecord(metadata)
+        var record = try ItemMetadataRecord(metadata, domainAccount: account)
 
         if let normalizedServerUrl {
-            record.normalizedServerUrl = normalizedServerUrl
+            record.normalizedParentPath = normalizedServerUrl
         }
 
         if let normalizedFileName {
@@ -38,14 +52,15 @@ extension FilesDatabaseManager {
     ///
     func normalizedLocationForTesting(ocId: String) -> (serverUrl: String, fileName: String)? {
         let record = try? writer.read { db in
-            try ItemMetadataRecord.fetchOne(db, key: ocId)
+            try ItemMetadataRecord.filter(ItemMetadataRecord.Columns.ocId == ocId)
+                .fetchRecord(db, account: account, logger: logger)
         }
 
         guard let record = record ?? nil else {
             return nil
         }
 
-        return (record.normalizedServerUrl, record.normalizedFileName)
+        return (record.normalizedParentPath, record.normalizedFileName)
     }
 
     ///
@@ -53,7 +68,8 @@ extension FilesDatabaseManager {
     ///
     func allItemMetadatasForTesting() -> [SendableItemMetadata] {
         let rows = try? writer.read { db in
-            try ItemMetadataRecord.order(ItemMetadataRecord.Columns.ocId).fetchAll(db)
+            try ItemMetadataRecord.order(ItemMetadataRecord.Columns.ocId)
+                .fetchRecords(db, account: account, logger: logger)
         }
 
         return (rows ?? []).map(\.metadata)
@@ -241,14 +257,14 @@ extension FilesDatabaseManager {
 
 extension SendableItemMetadata {
     ///
-    /// A row carrying only the storage defaults: empty strings, `false`, zero and the current date.
+    /// A row carrying only the storage defaults, with a Files root when given an account.
     ///
     /// Use it where a test used to build a bare database object and set a handful of fields, so the untouched fields keep the values the engine would have given them.
     ///
-    static func rawRow(ocId: String) -> SendableItemMetadata {
+    static func rawRow(ocId: String, account: Account? = nil) -> SendableItemMetadata {
         SendableItemMetadata(
             ocId: ocId,
-            account: "",
+            account: account?.ncKitAccount ?? "",
             classFile: "",
             contentType: "",
             creationDate: Date(),
@@ -260,13 +276,12 @@ extension SendableItemMetadata {
             fileNameView: "",
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             permissions: "",
-            serverUrl: "",
+            serverUrl: account?.davFilesUrl ?? "",
             size: 0,
-            urlBase: "",
-            user: "",
-            userId: ""
+            urlBase: account?.serverUrl ?? "",
+            user: account?.username ?? "",
+            userId: account?.id ?? ""
         )
     }
 }

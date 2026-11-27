@@ -263,7 +263,6 @@ public extension Item {
 
             let readResult = await Enumerator.readServerUrl(
                 remoteDirectoryPath,
-                account: account,
                 sourceMetadata: directory,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,

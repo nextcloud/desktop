@@ -31,6 +31,10 @@ extension NSError {
     /// Convenience initializer for custom error objects to pass over XPC.
     ///
     convenience init(_ code: FileProviderErrorCode) {
-        self.init(domain: Bundle.main.bundleIdentifier!, code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: code.localizedDescription])
+        self.init(
+            domain: Bundle.main.bundleIdentifier ?? "com.nextcloud.desktopclient.FileProviderExt",
+            code: code.rawValue,
+            userInfo: [NSLocalizedDescriptionKey: code.localizedDescription]
+        )
     }
 }

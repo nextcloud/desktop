@@ -86,9 +86,16 @@ enum RealmStoreImporter {
 
     ///
     /// Import the Realm file at `realmURL` into a new SQLite database at `sqliteURL`, if the Realm file exists.
+    /// Strip the DAV root from each eligible item's parent before moving the SQLite file into place.
     ///
     @discardableResult
-    static func importIfNeeded(realmURL: URL, sqliteURL: URL, logger: FileProviderLogger) -> Outcome {
+    static func importIfNeeded(
+        realmURL: URL,
+        sqliteURL: URL,
+        account: Account,
+        previouslyConfiguredAccount: DAVAccountIdentity?,
+        logger: FileProviderLogger
+    ) -> Outcome {
         let fileManager = FileManager.default
 
         guard fileManager.fileExists(atPath: realmURL.path) else {
@@ -122,7 +129,13 @@ enum RealmStoreImporter {
             }
 
             do {
-                let rows = try copy(realm, to: stagingURL)
+                let rows = try copy(
+                    realm,
+                    to: stagingURL,
+                    account: account,
+                    previouslyConfiguredAccount: previouslyConfiguredAccount,
+                    logger: logger
+                )
                 return .imported(rows: rows)
             } catch {
                 logger.fault("Could not write the imported metadata database. The import is retried on the next start.", [.url: stagingURL.path, .error: error])
@@ -160,26 +173,60 @@ enum RealmStoreImporter {
         return outcome
     }
 
-    /// Copy every table into a fresh database at `stagingURL` in one transaction and return the number of rows written.
-    private static func copy(_ realm: Realm, to stagingURL: URL) throws -> Int {
+    /// Copy the tables and strip eligible items' DAV roots in one transaction.
+    private static func copy(
+        _ realm: Realm,
+        to stagingURL: URL,
+        account: Account,
+        previouslyConfiguredAccount: DAVAccountIdentity?,
+        logger: FileProviderLogger
+    ) throws -> Int {
         var configuration = Configuration()
         configuration.label = "RealmStoreImporter"
 
         let queue = try DatabaseQueue(path: stagingURL.path, configuration: configuration)
         try DatabaseSchema.migrator.migrate(queue)
 
-        return try queue.write { db in
+        let counts = try queue.write { db in
             var rows = 0
+            var skippedItems = 0
+            var importedItemsFromPreviousDAVAccount = false
+            let currentAccount = account.davAccountIdentity
+            let previousAccount = previouslyConfiguredAccount.flatMap {
+                $0.matchesByteForByte(currentAccount) ? nil : $0
+            }
 
             for row in realm.objects(LegacyRealmItemMetadata.self) {
-                try autoreleasepool {
-                    var record = ItemMetadataRecord(row)
-                    // The keys are copied as stored so the startup repair treats them exactly as it treated the Realm rows.
-                    record.normalizedServerUrl = row.normalizedServerUrl
-                    record.normalizedFileName = row.normalizedFileName
+                let imported = try autoreleasepool {
+                    guard let sourceAccount = accountForImportedItem(
+                        row,
+                        currentAccount: currentAccount,
+                        previousAccount: previousAccount
+                    ) else {
+                        logSkippedItem(
+                            row,
+                            message: "Skipping a Realm item whose DAV root could not be associated with the domain account.",
+                            logger: logger
+                        )
+                        return false
+                    }
+
+                    let usesPreviousRoot = !sourceAccount.matchesByteForByte(currentAccount)
+                    guard let record = recordForImportedItem(
+                        row,
+                        sourceAccount: sourceAccount,
+                        usesPreviousRoot: usesPreviousRoot,
+                        logger: logger
+                    ) else { return false }
                     try record.upsertRow(db)
+                    importedItemsFromPreviousDAVAccount = importedItemsFromPreviousDAVAccount || usesPreviousRoot
+                    return true
                 }
-                rows += 1
+                if imported {
+                    rows += 1
+                } else {
+                    skippedItems += 1
+                }
             }
 
             for row in realm.objects(LegacyRealmExcludedFromSyncItem.self) {
@@ -219,16 +266,140 @@ enum RealmStoreImporter {
                 try ChangeDeliveryItemRecord(
                     sessionId: row.sessionId,
                     sequence: row.sequence,
-                    metadataData: row.metadataData,
+                    metadataData: try ChangeDeliveryItemRecord.migrateLegacySnapshot(row.metadataData) ?? row.metadataData,
                     deleted: row.deleted
                 ).insert(db, onConflict: .ignore)
                 rows += 1
             }
 
+            _ = try StoreIdentityRecord.updateDatabaseForCurrentDAVAccount(
+                account,
+                importedItemsFromPreviousDAVAccount: importedItemsFromPreviousDAVAccount,
+                in: db
+            )
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
 
-            return rows
+            return (imported: rows, skipped: skippedItems)
         }
+
+        if counts.skipped > 0 {
+            logger.info("Skipped item metadata rows while importing the Realm database.", [.skippedCount: counts.skipped])
+        }
+        return counts.imported
+    }
+
+    /// Supply missing account details to strip the recorded DAV root without writing those details to SQLite.
+    private static func recordForImportedItem(
+        _ row: LegacyRealmItemMetadata,
+        sourceAccount: DAVAccountIdentity,
+        usesPreviousRoot: Bool,
+        logger: FileProviderLogger
+    ) -> ItemMetadataRecord? {
+        var metadata = SendableItemMetadata(value: row)
+        metadata.account = sourceAccount.accountKey
+        metadata.user = sourceAccount.username
+        metadata.urlBase = sourceAccount.serverBaseURL
+        metadata.userId = sourceAccount.backendUserID
+        var record: ItemMetadataRecord
+        do {
+            record = try ItemMetadataRecord(metadata)
+        } catch {
+            logSkippedItem(
+                row,
+                message: "Skipping a Realm item that could not be converted to a metadata record.",
+                error: error,
+                logger: logger
+            )
+            return nil
+        }
+
+        let parent = record.storedDAVParent
+        guard !parent.path.split(separator: "/").contains(where: { $0 == "." || $0 == ".." }) else {
+            logSkippedItem(row, message: "Skipping a Realm item with an invalid DAV parent path.", logger: logger)
+            return nil
+        }
+
+        let isFilesRoot = record.directory
+            && record.fileName == SendableItemMetadata.filesRootPlaceholderName
+            && parent.isFilesRoot
+        let isValidFileName = !["", ".", ".."].contains(record.fileName) && !record.fileName.contains("/")
+        guard isFilesRoot || isValidFileName else {
+            logSkippedItem(row, message: "Skipping a Realm item with an invalid file name.", logger: logger)
+            return nil
+        }
+
+        if usesPreviousRoot {
+            record.lockToken = nil
+            if record.isDownload {
+                record.status = Status.normal.rawValue
+            } else if record.status == Status.uploading.rawValue {
+                record.status = Status.uploadError.rawValue
+                record.session = ""
+            }
+        }
+        return record
+    }
+
+    private static func logSkippedItem(
+        _ row: LegacyRealmItemMetadata,
+        message: String,
+        error: (any Error)? = nil,
+        logger: FileProviderLogger
+    ) {
+        let details: [FileProviderLogDetailKey: (any Sendable)?] = [.item: row.ocId, .error: error]
+        if row.hasUnfinishedUpload {
+            logger.fault(message, details)
+        } else {
+            logger.error(message, details)
+        }
+    }
+
+    /// Use the current or previous domain settings to fill in missing Realm fields.
+    /// Rows with the current login can also identify an earlier DAV root from their own fields.
+    private static func accountForImportedItem(
+        _ row: LegacyRealmItemMetadata,
+        currentAccount: DAVAccountIdentity,
+        previousAccount: DAVAccountIdentity?
+    ) -> DAVAccountIdentity? {
+        func matchesRow(_ account: DAVAccountIdentity) -> Bool {
+            let matchesAccount = row.account.isEmpty || row.account.utf8.elementsEqual(account.accountKey.utf8)
+            let matchesLogin = row.user.isEmpty || row.user.utf8.elementsEqual(account.username.utf8)
+            let matchesServer = row.urlBase.isEmpty || row.urlBase.utf8.elementsEqual(account.serverBaseURL.utf8)
+            let matchesBackendID = row.userId.isEmpty || row.userId.utf8.elementsEqual(account.backendUserID.utf8)
+            return matchesAccount
+                && matchesLogin
+                && matchesServer
+                && matchesBackendID
+                && Account.normalizedDAVParent(
+                    parentURL: row.serverUrl,
+                    fileName: row.fileName,
+                    accountBaseURL: account.serverBaseURL,
+                    backendUserID: account.backendUserID
+                ) != nil
+        }
+
+        if matchesRow(currentAccount) { return currentAccount }
+        if let previousAccount, matchesRow(previousAccount) { return previousAccount }
+
+        guard let root = ItemMetadataRecord.serverBaseURLAndBackendUserID(for: row),
+              let server = URLComponents(string: root.serverBaseURL),
+              let scheme = server.scheme?.lowercased(),
+              ["http", "https"].contains(scheme),
+              server.host?.isEmpty == false,
+              server.query == nil,
+              server.fragment == nil,
+              !["", ".", ".."].contains(root.backendUserID),
+              !root.backendUserID.contains("/")
+        else { return nil }
+
+        let recordedAccount = DAVAccountIdentity(
+            username: currentAccount.username,
+            serverBaseURL: root.serverBaseURL,
+            backendUserID: root.backendUserID
+        )
+        // A row with no recorded login can still identify it in its NextcloudKit account key.
+        guard !row.user.isEmpty || !row.account.isEmpty, matchesRow(recordedAccount) else { return nil }
+        return recordedAccount
     }
 
     /// Whether a Realm open error names a condition which can pass, such as file access, permissions, a held file or a full disk, rather than an unusable file. The open can write, because the legacy configuration upgrades an older file in place.

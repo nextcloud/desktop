@@ -101,8 +101,8 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
             let clock = ContinuousClock()
             startMeasuring()
             let start = clock.now
-            let coldChangeSet = manager.depth1ReadUpdateItemMetadatas(account: Self.account.ncKitAccount, serverUrl: folderUrl, updatedMetadatas: cold, keepExistingDownloadState: true)
-            let warmChangeSet = manager.depth1ReadUpdateItemMetadatas(account: Self.account.ncKitAccount, serverUrl: folderUrl, updatedMetadatas: warm, keepExistingDownloadState: true)
+            let coldChangeSet = manager.depth1ReadUpdateItemMetadatas(serverUrl: folderUrl, updatedMetadatas: cold, keepExistingDownloadState: true)
+            let warmChangeSet = manager.depth1ReadUpdateItemMetadatas(serverUrl: folderUrl, updatedMetadatas: warm, keepExistingDownloadState: true)
             durations.append(clock.now - start)
             stopMeasuring()
 
@@ -144,7 +144,7 @@ final class FilesDatabaseManagerBenchmarkTests: NextcloudFileProviderKitTestCase
 
             XCTAssertEqual(cold.compactMap { $0?.map(\.ocId) }, expectedPageIds)
             XCTAssertEqual(warm.compactMap { $0?.map(\.ocId) }, expectedPageIds)
-            let stored = manager.itemMetadatas(account: Self.account.ncKitAccount)
+            let stored = manager.itemMetadatas()
             XCTAssertEqual(stored.count, rows.count)
             XCTAssertEqual(Dictionary(uniqueKeysWithValues: stored.map { ($0.ocId, $0.etag) }), expectedEtags)
             XCTAssertEqual(stored.first { $0.ocId == target.ocId }?.visitedDirectory, true)

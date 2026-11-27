@@ -18,7 +18,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         setUpDatabase(Self.dbManager)
     }
 
-    private func makeChunkUploadHTTP(observeStoppingChunk: String? = nil) throws -> (
+    private func makeUploadHTTP(observeStoppingChunk: String? = nil) throws -> (
         account: Account,
         kit: NextcloudKit,
         requests: AsyncStream<MockHTTPURLProtocol>,
@@ -144,7 +144,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
         readbackAttempts: Int = 0,
         expectedError: NKError
     ) async throws {
-        let (account, kit, requests, _, cleanup) = try makeChunkUploadHTTP()
+        let (account, kit, requests, _, cleanup) = try makeUploadHTTP()
         defer { cleanup() }
         let data = Data(repeating: 1, count: 8)
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
@@ -262,7 +262,7 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
     }
 
     func testCancellingChunkUploadStopsInFlightPUTAndResumesRemainingChunks() async throws {
-        let (account, kit, requests, stoppedRequests, cleanup) = try makeChunkUploadHTTP(observeStoppingChunk: "2")
+        let (account, kit, requests, stoppedRequests, cleanup) = try makeUploadHTTP(observeStoppingChunk: "2")
         defer { cleanup() }
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let data = Data(repeating: 1, count: 8)
@@ -500,6 +500,134 @@ final class UploadTests: NextcloudFileProviderKitTestCase {
             readbackAttempts: 3,
             expectedError: .errorChunkMoveFile
         )
+    }
+
+    func testRejectedConditionalUploadCanRefreshAndFetchServerVersionAfterDirectoryListing() async throws {
+        try await assertRejectedConditionalUploadCanRefreshAndFetchServerVersion(listFolder: true)
+    }
+
+    func testRejectedConditionalUploadCanRefreshAndFetchServerVersionAfterSingleItemRead() async throws {
+        try await assertRejectedConditionalUploadCanRefreshAndFetchServerVersion(listFolder: false)
+    }
+
+    private func assertRejectedConditionalUploadCanRefreshAndFetchServerVersion(listFolder: Bool) async throws {
+        let (account, kit, requests, _, cleanup) = try makeUploadHTTP()
+        defer { cleanup() }
+        let manager = DatabaseTestSuites.makeManager(account: account)
+        let log = FileProviderLogMock()
+        var folder = DatabaseTestSuites.makeFile(ocId: "folder-id", fileName: "Docs", account: account)
+        folder.directory = true
+        folder.uploaded = true
+        manager.addItemMetadata(folder)
+
+        let parentURL = try XCTUnwrap(URL(string: folder.remotePath()))
+        var file = DatabaseTestSuites.makeFile(
+            ocId: "file-id",
+            fileName: "Report.txt",
+            serverUrl: parentURL.absoluteString,
+            account: account
+        )
+        file.etag = "before"
+        file.uploaded = true
+        file.downloaded = true
+        manager.addItemMetadata(file)
+        let fileURL = try XCTUnwrap(URL(string: file.remotePath()))
+
+        let parentID = NSFileProviderItemIdentifier(folder.ocId)
+        let item = Item(
+            metadata: file,
+            parentItemIdentifier: parentID,
+            account: account,
+            remoteInterface: kit,
+            dbManager: manager
+        )
+        let edit = Data("Local edit".utf8)
+        let editURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try edit.write(to: editURL)
+        defer { try? FileManager.default.removeItem(at: editURL) }
+
+        let options: NSFileProviderModifyItemOptions = if #available(macOS 26.0, *) { .failOnConflict } else { [] }
+        let upload = Task {
+            await item.modify(
+                itemTarget: item,
+                changedFields: [.contents],
+                contents: editURL,
+                options: options,
+                forcedChunkSize: edit.count,
+                dbManager: manager
+            )
+        }
+        defer { upload.cancel() }
+
+        let quota = try await nextUploadRequest(from: requests, method: "PROPFIND", name: "Docs")
+        XCTAssertEqual(quota.request.value(forHTTPHeaderField: "Depth"), "0")
+        quota.respond(status: 403)
+        let put = try await nextUploadRequest(from: requests, method: "PUT", name: "Report.txt")
+        XCTAssertEqual(put.request.url?.path, fileURL.path)
+        XCTAssertEqual(put.request.value(forHTTPHeaderField: "If-Match"), "\"before\"")
+        put.respond(status: 412)
+        let (modified, uploadError) = try await testTaskValue(of: upload)
+        XCTAssertNil(modified)
+        if #available(macOS 26.0, *) {
+            XCTAssertEqual((uploadError as? NSFileProviderError)?.code, .localVersionConflictingWithServer)
+        } else {
+            XCTAssertEqual((uploadError as? CocoaError)?.code, .fileWriteUnknown)
+        }
+        XCTAssertEqual(manager.itemMetadata(ocId: file.ocId)?.etag, "before")
+        XCTAssertEqual(manager.itemMetadata(ocId: file.ocId)?.status, Status.uploadError.rawValue)
+
+        let readURL = listFolder ? parentURL : fileURL
+        let read = Task {
+            await Enumerator.readServerUrl(
+                readURL.absoluteString,
+                remoteInterface: kit,
+                dbManager: manager,
+                depth: listFolder ? .targetAndDirectChildren : .target,
+                log: log
+            )
+        }
+        defer { read.cancel() }
+        let propfind = try await nextUploadRequest(from: requests, method: "PROPFIND", name: readURL.lastPathComponent)
+        XCTAssertEqual(propfind.request.value(forHTTPHeaderField: "Depth"), listFolder ? "1" : "0")
+        let folderResponse = """
+          <d:response><d:href>\(parentURL.path)/</d:href><d:propstat>
+            <d:prop><oc:id>folder-id</oc:id><d:resourcetype><d:collection/></d:resourcetype></d:prop>
+            <d:status>HTTP/1.1 200 OK</d:status>
+          </d:propstat></d:response>
+        """
+        let listing = """
+        <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+          \(listFolder ? folderResponse : "")
+          <d:response><d:href>\(fileURL.path)</d:href><d:propstat>
+            <d:prop><oc:id>file-id</oc:id><d:getetag>"after"</d:getetag><d:getcontenttype>text/plain</d:getcontenttype></d:prop>
+            <d:status>HTTP/1.1 200 OK</d:status>
+          </d:propstat></d:response>
+        </d:multistatus>
+        """
+        propfind.respond(status: 207, headers: ["Content-Type": "application/xml"], body: Data(listing.utf8))
+        let result = try await testTaskValue(of: read)
+        XCTAssertNil(result.error)
+        let refreshed = try XCTUnwrap(result.metadatas?.first { $0.ocId == file.ocId })
+        XCTAssertEqual(refreshed.etag, "after")
+        XCTAssertEqual(manager.itemMetadata(ocId: file.ocId)?.etag, "after")
+        guard refreshed.etag == "after" else { return }
+
+        let serverBytes = Data("New server version".utf8)
+        let fetch = Task { await item.fetchContents(dbManager: manager) }
+        defer { fetch.cancel() }
+        let get = try await nextUploadRequest(from: requests, method: "GET", name: "Report.txt")
+        XCTAssertEqual(get.request.url?.path, fileURL.path)
+        get.respond(status: 200, headers: ["ETag": "\"after\""], body: serverBytes)
+        let capabilities = try await nextUploadRequest(from: requests, method: "GET", name: "capabilities")
+        let capabilityResponse = #"{"ocs":{"meta":{"status":"ok","statuscode":100,"message":"OK"},"data":{"version":{"string":"32.0.5","minor":0,"micro":5,"major":32},"capabilities":{}}}}"#
+        capabilities.respond(status: 200, headers: ["Content-Type": "application/json"], body: Data(capabilityResponse.utf8))
+        let (fetchedURL, fetchedItem, fetchError) = try await testTaskValue(of: fetch)
+        XCTAssertNil(fetchError)
+        let contentsURL = try XCTUnwrap(fetchedURL)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        XCTAssertEqual(try Data(contentsOf: contentsURL), serverBytes)
+        XCTAssertEqual(fetchedItem?.itemVersion.contentVersion, Data("after".utf8))
+        XCTAssertEqual(try Data(contentsOf: editURL), edit)
     }
 
     func testStandardUpload() async throws {

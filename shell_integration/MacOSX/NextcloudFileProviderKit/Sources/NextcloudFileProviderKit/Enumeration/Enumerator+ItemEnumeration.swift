@@ -11,8 +11,7 @@ import NextcloudKit
 ///
 extension Enumerator {
     ///
-    /// Enumerate the working set: the items the system keeps track of, i.e. visited folders and
-    /// downloaded files, read straight from the local database.
+    /// Return the working-set snapshot of visited folders and downloaded files from the database.
     ///
     func enumerateWorkingSetItems(
         for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage
@@ -24,14 +23,13 @@ extension Enumerator {
         // Sort by a stable key (ocId) so the offset cursor stays consistent across the paginated
         // re-invocations the framework drives; the read itself is non-destructive, so re-reading and
         // slicing on each page needs no cross-call buffer.
-        guard let storedMaterialisedItems = dbManager.materialisedItemMetadatas(account: account.ncKitAccount) else {
-            // Reporting nothing would tell the framework the working set is empty; the framework asks again later.
-            logger.error("Could not read the materialized items. Finishing the enumeration with an error.", [.account: account.ncKitAccount])
+        guard let workingSet = dbManager.materialisedItemMetadatas() else {
+            logger.error("Could not read a complete working set. Finishing the enumeration with an error.", [.account: account.ncKitAccount])
             observer.finishEnumeratingWithError(NSFileProviderError(.cannotSynchronize))
             return
         }
 
-        let materialisedItems = storedMaterialisedItems
+        let materialisedItems = workingSet
             .filter { !$0.deleted }
             .sorted { $0.ocId < $1.ocId }
 
@@ -73,7 +71,7 @@ extension Enumerator {
 
         logger.debug("Enumerating page: \(String(data: page.rawValue, encoding: .utf8) ?? "")", [.account: account.ncKitAccount, .url: serverUrl])
 
-        Task {
+        runEnumerationTask { [self] in
             // Bound the synchronous page work (cursor decode + capabilities + network + convert +
             // persist) for a trace, and record its wall-clock for the JSONL fallback. The `defer` ends
             // the interval on every exit — including the error returns below — so no interval dangles.
@@ -89,6 +87,10 @@ extension Enumerator {
             let pageWorkClock = ContinuousClock()
             let pageWorkStart = pageWorkClock.now
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             let cursor = paginationCursor(from: page)
 
             // Check server version to determine if pagination should be enabled.
@@ -113,7 +115,6 @@ extension Enumerator {
             let readResult = await Self.readServerUrl(
                 serverUrl,
                 pageSettings: pageSettings,
-                account: account,
                 sourceMetadata: enumeratedItemMetadata,
                 remoteInterface: remoteInterface,
                 dbManager: dbManager,
@@ -125,6 +126,10 @@ extension Enumerator {
             let readError = readResult.error
             var nextPage = readResult.nextPage
 
+            if let error = enumerationErrorIfStopped(staleAccountError: .cannotSynchronize) {
+                observer.finishEnumeratingWithError(error)
+                return
+            }
             guard readError == nil else {
                 logger.error("Finishing enumeration for page with error.", [.account: self.account.ncKitAccount, .error: readError, .url: self.serverUrl])
 

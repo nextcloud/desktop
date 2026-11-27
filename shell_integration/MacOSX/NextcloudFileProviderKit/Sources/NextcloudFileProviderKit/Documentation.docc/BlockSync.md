@@ -31,11 +31,12 @@ as far as the file provider framework is concerned the server genuinely is unrea
 framework already knows how to behave — it presents the situation to the user, throttles the items
 it could not sync, and retries once the extension says the trouble has passed.
 
-Five requests are refused:
+The extension refuses the following requests when they need the server.
 
-| Request | Direction |
+| Request | Why it needs the server |
 | --- | --- |
 | ``FileProviderExtension/enumerator(for:request:)`` | remote changes arriving |
+| Item lookup, Keep Downloaded, or eviction when the parent is missing from the database | Look up the parent over WebDAV |
 | ``FileProviderExtension/fetchContents(for:version:request:completionHandler:)`` | downloads |
 | ``FileProviderExtension/createItem(basedOn:fields:contents:options:request:completionHandler:)`` | uploads |
 | ``FileProviderExtension/modifyItem(_:baseVersion:changedFields:contents:options:request:completionHandler:)`` | uploads |
@@ -48,9 +49,7 @@ sends the extension carries no data. It signals the working set, the framework i
 the framework then asks the extension for an enumerator. Declining that request declines everything
 which was discovered, whichever way it was discovered, and the app needs to know nothing about it.
 
-Looking an item up is deliberately **not** refused. It is answered from the local database, so the
-Finder keeps showing the name and size of everything already known. Classic sync does not hide what
-it has while it is paused, and neither should this.
+Item lookups can use the database while synchronization is paused when the item and its parent are cached for the current account.
 
 ## What blocking does not do
 

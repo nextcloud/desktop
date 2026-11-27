@@ -372,14 +372,13 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             e2eEncrypted: false, // Default as not set in original code
             etag: "", // Placeholder as not set in original code
             fileId: "", // Placeholder as not set in original code
-            fileName: "/",
-            fileNameView: "/",
+            fileName: SendableItemMetadata.filesRootPlaceholderName,
+            fileNameView: SendableItemMetadata.filesRootPlaceholderName,
             hasPreview: false, // Default as not set in original code
             iconName: "", // Placeholder as not set in original code
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             permissions: "RGDNVCK",
             serverUrl: account.davFilesUrl,
             size: 0, // Default as not set in original code
@@ -435,7 +434,6 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             mountType: "", // Placeholder as not set in original code
             ownerId: "", // Placeholder as not set in original code
             ownerDisplayName: "", // Placeholder as not set in original code
-            path: "", // Placeholder as not set in original code
             permissions: "RGDNVCK",
             serverUrl: account.trashUrl,
             size: 0, // Default as not set in original code
@@ -494,7 +492,7 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
     ) async -> Item? {
-        try? await resolveStoredItem(
+        try? await lookupItemAndFindParentIdentifier(
             identifier: identifier,
             account: account,
             remoteInterface: remoteInterface,
@@ -505,13 +503,19 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         )
     }
 
-    static func resolveStoredItem(
+    /// Look up an item and find the File Provider ID of its parent folder.
+    /// If the parent is missing from the database, look it up on the server when allowed.
+    /// When synchronization is paused, set `allowsRemoteLookup` to false so the lookup can
+    /// return `serverUnreachable` without a DAV read.
+    /// Use `lookupRetryError` if the parent cannot be found or the database switches DAV accounts.
+    static func lookupItemAndFindParentIdentifier(
         identifier: NSFileProviderItemIdentifier,
         account: Account,
         remoteInterface: RemoteInterface,
         dbManager: FilesDatabaseManager,
         includeDeleted: Bool = true,
-        unresolvedParentError: any Error = NSFileProviderError(.cannotSynchronize),
+        allowsRemoteLookup: Bool = true,
+        lookupRetryError: any Error = NSFileProviderError(.cannotSynchronize),
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled },
         log: any FileProviderLogging
@@ -527,19 +531,20 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
-        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
-        try checkCancellation()
-
-        guard identifier != .rootContainer else {
-            return Item.rootContainer(
-                account: account,
-                remoteInterface: remoteInterface,
-                dbManager: dbManager,
-                remoteSupportsTrash: remoteSupportsTrash,
-                log: log
-            )
-        }
-        guard identifier != .trashContainer else {
+        if identifier == .rootContainer || identifier == .trashContainer {
+            guard dbManager.isForCurrentDAVAccount() else { throw lookupRetryError }
+            let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+            try checkCancellation()
+            guard dbManager.isForCurrentDAVAccount() else { throw lookupRetryError }
+            if identifier == .rootContainer {
+                return Item.rootContainer(
+                    account: account,
+                    remoteInterface: remoteInterface,
+                    dbManager: dbManager,
+                    remoteSupportsTrash: remoteSupportsTrash,
+                    log: log
+                )
+            }
             return Item.trashContainer(
                 remoteInterface: remoteInterface,
                 account: account,
@@ -549,17 +554,25 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             )
         }
 
-        guard let metadata = dbManager.itemMetadata(identifier), includeDeleted || !metadata.deleted else {
+        let retryError = allowsRemoteLookup ? lookupRetryError : NSFileProviderError(.serverUnreachable)
+        guard let metadata = try dbManager.itemMetadataIfCurrentDAVAccount(identifier, retryError: retryError),
+              !metadata.isFilesRootWithServerID,
+              includeDeleted || !metadata.deleted
+        else {
+            guard dbManager.isForCurrentDAVAccount() else { throw lookupRetryError }
             throw NSError.fileProviderErrorForNonExistentItem(withIdentifier: identifier)
         }
 
+        try checkCancellation()
+
         let parentItemIdentifier: NSFileProviderItemIdentifier? = if metadata.isTrashed {
             .trashContainer
+        } else if !allowsRemoteLookup {
+            dbManager.parentItemIdentifierFromMetadata(metadata)
         } else {
             await dbManager.parentItemIdentifierWithRemoteFallback(
                 fromMetadata: metadata,
                 remoteInterface: remoteInterface,
-                account: account,
                 taskHandler: taskHandler,
                 isCancelled: isCancelled
             )
@@ -568,14 +581,18 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
         try checkCancellation()
         // A failed parent read says nothing about whether the cached child was removed.
         guard let parentItemIdentifier else {
-            throw unresolvedParentError
+            throw retryError
         }
+
+        let remoteSupportsTrash = await remoteInterface.supportsTrash(account: account)
+        try checkCancellation()
 
         // Display File Actions
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: metadata.contentType)
 
         try checkCancellation()
+        guard dbManager.isForCurrentDAVAccount() else { throw lookupRetryError }
 
         return Item(
             metadata: metadata,
@@ -587,6 +604,36 @@ public final class Item: NSObject, NSFileProviderItem, Sendable {
             remoteSupportsTrash: remoteSupportsTrash,
             log: log
         )
+    }
+
+    /// Ask File Provider to retry a mutation while the source or destination is unavailable.
+    static let itemLookupRetryErrorForMutations = CocoaError(
+        .xpcConnectionReplyInvalid,
+        userInfo: [NSUnderlyingErrorKey: NSFileProviderError(.cannotSynchronize) as NSError]
+    )
+
+    /// Look up the destination folder for a create or move under the current account's Files root.
+    static func destinationFolderMetadata(
+        for identifier: NSFileProviderItemIdentifier,
+        account: Account,
+        dbManager: FilesDatabaseManager
+    ) throws -> (metadata: SendableItemMetadata, pathFromFilesRoot: String) {
+        let retryError = itemLookupRetryErrorForMutations
+        guard let metadata = try dbManager.itemMetadataIfCurrentDAVAccount(
+            identifier,
+            retryError: retryError
+        ) else { throw retryError }
+        // A parked directory is marked deleted while its local-only items still use it.
+        guard metadata.directory,
+              !metadata.deleted || metadata.isAtHoldingPath
+        else { throw NSFileProviderError(.cannotSynchronize) }
+
+        let remoteURL = metadata.remotePath()
+        guard let pathFromFilesRoot = account.filesRootRelativePath(for: remoteURL),
+              account.ownsDAVReadURL(remoteURL, sourceMetadata: metadata)
+        else { throw retryError }
+
+        return (metadata, pathFromFilesRoot)
     }
 
     public func localUrlForContents(domain: NSFileProviderDomain) async -> URL? {

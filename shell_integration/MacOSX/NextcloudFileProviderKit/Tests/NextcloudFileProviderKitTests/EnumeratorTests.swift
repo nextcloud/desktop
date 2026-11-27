@@ -129,7 +129,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -208,7 +207,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -259,7 +257,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -306,7 +303,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let initialReadResult = await Enumerator.readServerUrl(
             remoteFolder.remotePath,
             pageSettings: (page: nil, index: 0, size: 5), // index is 0
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -346,7 +342,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let followUpReadResult = await Enumerator.readServerUrl(
             remoteFolder.remotePath,
             pageSettings: (page: followUpPage, index: 1, size: 5), // index > 0 and page is non-nil
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -382,26 +377,30 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let parentNKFile = remoteFolder.toNKFile()
         let childrenNKFiles = (0 ..< 5).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
         let followUpChildrenNKFiles = (5 ..< 10).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         // --- Scenario A: First Page (pageIndex == 0) ---
@@ -492,21 +491,24 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let pinnedChildren = ["pagedChild0", "pagedChild2"]
         for ocId in pinnedChildren {
             var seeded = SendableItemMetadata(ocId: ocId, fileName: "\(ocId).txt", account: Self.account)
+            seeded.serverUrl = remoteFolder.remotePath
             seeded.keepDownloaded = true
             dbManager.addItemMetadata(seeded)
         }
 
         let parentNKFile = remoteFolder.toNKFile()
         let childrenNKFiles = (0 ..< 3).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
@@ -543,19 +545,22 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let dbManager = Self.dbManager
 
         var seeded = SendableItemMetadata(ocId: "pagedChild5", fileName: "pagedChild5.txt", account: Self.account)
+        seeded.serverUrl = remoteFolder.remotePath
         seeded.keepDownloaded = true
         dbManager.addItemMetadata(seeded)
 
         let followUpChildrenNKFiles = (5 ..< 8).map { i in
-            MockRemoteItem(
+            let child = MockRemoteItem(
                 identifier: "pagedChild\(i)",
                 name: "pagedChild\(i).txt",
-                remotePath: Self.account.davFilesUrl + "/folder/pagedChild\(i).txt",
+                remotePath: remoteFolder.remotePath + "/pagedChild\(i).txt",
                 account: Self.account.ncKitAccount,
                 username: Self.account.username,
                 userId: Self.account.id,
                 serverUrl: Self.account.serverUrl
-            ).toNKFile()
+            )
+            child.parent = remoteFolder
+            return child.toNKFile()
         }
 
         let (returnedMetadatas, error) = Enumerator.handlePagedReadResults(
@@ -719,7 +724,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -802,7 +806,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Act: Enumerate changes for the working set
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -879,7 +882,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -934,7 +936,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -967,7 +968,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: remoteItemB.identifier))
         let enumerator2 = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemB.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1012,7 +1012,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1128,7 +1127,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1217,7 +1215,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1293,7 +1290,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1326,7 +1322,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1349,7 +1344,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1385,7 +1379,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1417,7 +1410,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1458,14 +1450,14 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 existing.keepDownloaded = storedValue
                 existing.visitedDirectory = true
                 existing.lockToken = "stored-lock"
-                existing.status = Status.uploading.rawValue
-                existing.chunkUploadId = "stored-upload"
                 try Self.dbManager.insertForTesting(existing)
                 let previousReadCount = remote.readOperationCount
 
                 let result = await Enumerator.readServerUrl(
-                    remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
-                    dbManager: Self.dbManager, log: FileProviderLogMock()
+                    remoteItemA.remotePath,
+                    remoteInterface: remote,
+                    dbManager: Self.dbManager,
+                    log: FileProviderLogMock()
                 )
 
                 XCTAssertNil(result.error)
@@ -1480,7 +1472,7 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
                 XCTAssertEqual(metadata.downloaded, storedValue)
                 XCTAssertEqual(metadata.keepDownloaded, storedValue)
                 XCTAssertFalse(metadata.visitedDirectory)
-                XCTAssertEqual(metadata.lockToken, existing.lockToken)
+                XCTAssertNil(metadata.lockToken)
                 XCTAssertEqual(metadata.fileProviderContentVersion, unchangedEtag ? storedVersion : nil)
                 XCTAssertEqual(metadata.etag, remoteItemA.versionIdentifier)
                 XCTAssertEqual(metadata.remotePath(), remoteItemA.remotePath)
@@ -1501,8 +1493,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             try Self.dbManager.insertForTesting(parent)
 
             let result = await Enumerator.readServerUrl(
-                remoteItemA.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteItemA.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)
@@ -1555,8 +1550,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             let previousReadCount = remote.readOperationCount
 
             let result = await Enumerator.readServerUrl(
-                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteFolder.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)
@@ -1598,8 +1596,11 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             let previousReadCount = remote.readOperationCount
 
             let result = await Enumerator.readServerUrl(
-                remoteFolder.remotePath, account: Self.account, remoteInterface: remote,
-                dbManager: Self.dbManager, depth: .target, log: FileProviderLogMock()
+                remoteFolder.remotePath,
+                remoteInterface: remote,
+                dbManager: Self.dbManager,
+                depth: .target,
+                log: FileProviderLogMock()
             )
 
             XCTAssertNil(result.error)
@@ -1632,7 +1633,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1666,7 +1666,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .rootContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1693,7 +1692,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteItemA.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1761,7 +1759,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             pageSize: 5,
@@ -1798,7 +1795,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Create enumerator for the empty folder with a specific pageSize.
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: NSFileProviderItemIdentifier(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             pageSize: 5, // Page size can be anything, as the folder is empty
@@ -1863,7 +1859,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Create enumerator with pageSize > number of children.
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: NSFileProviderItemIdentifier(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             pageSize: 5,
@@ -1930,7 +1925,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Act: Enumerate the folder, which will trigger an update
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -1969,7 +1963,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Act: Enumerate the folder (depth-1 read)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2017,7 +2010,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 2. Act: Enumerate working set
         let workingSetEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2050,7 +2042,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let folderEnumerator = try Enumerator(
             enumeratedItemIdentifier: .init(notVisitedFolder.ocId),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2066,7 +2057,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         // 6. Act: Enumerate working set again
         let workingSetEnumerator2 = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2127,7 +2117,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             pageSize: 5, // Small page size to force multiple pages
@@ -2195,7 +2184,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             pageSize: 5, // Page size doesn't matter when pagination is disabled
@@ -2235,7 +2223,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             fileNameView: "file.txt",
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             serverUrl: Self.account.davFilesUrl,
             size: 0,
             urlBase: Self.account.serverUrl,
@@ -2283,7 +2270,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let readResult = await Enumerator.readServerUrl(
             Self.account.davFilesUrl + "/lockTokenTestFile.txt",
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             depth: .target,
@@ -2298,6 +2284,40 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
             "local-lock-token-123",
             "lockToken must be preserved across target-depth reads"
         )
+    }
+
+    func testTargetReadRejectsAResponseWithAParentOutsideTheAccountDAVRoots() async throws {
+        let oldMetadata = remoteItemA.toItemMetadata(account: Self.account)
+        Self.dbManager.addItemMetadata(oldMetadata)
+        let unexpectedParent = MockRemoteItem(
+            identifier: "unexpected-parent",
+            name: "elsewhere",
+            remotePath: Self.account.serverUrl + "/elsewhere",
+            directory: true,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        // The mock uses remotePath to find the requested item and parent to build the response URL.
+        remoteItemA.parent = unexpectedParent
+        remoteItemA.versionIdentifier = "unexpected-version"
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+
+        let result = await Enumerator.readServerUrl(
+            oldMetadata.remotePath(),
+            remoteInterface: remote,
+            dbManager: Self.dbManager,
+            depth: .target,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertEqual(remote.readOperationCount, 1)
+        XCTAssertEqual(result.error, .invalidData)
+        XCTAssertNil(result.metadatas)
+        let saved = try XCTUnwrap(Self.dbManager.itemMetadata(ocId: oldMetadata.ocId))
+        XCTAssertEqual(saved.remotePath(), oldMetadata.remotePath())
+        XCTAssertEqual(saved.etag, oldMetadata.etag)
     }
 
     func testNewFileInheritsItsParentsPinDuringTargetDepthRead() async {
@@ -2333,7 +2353,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let readResult = await Enumerator.readServerUrl(
             remoteFile.remotePath,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             depth: .target,
@@ -2391,7 +2410,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2441,7 +2459,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     private func enumerateWorkingSetChanges(from anchor: NSFileProviderSyncAnchor, remoteInterface: MockRemoteInterface, batchSize: Int = 2) async throws -> MockChangeObserver {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2552,7 +2569,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let firstEnumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2581,7 +2597,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         while moreComing, batchCount < 10 {
             let nextEnumerator = try Enumerator(
                 enumeratedItemIdentifier: .workingSet,
-                account: Self.account,
                 remoteInterface: remoteInterface,
                 dbManager: Self.dbManager,
                 log: FileProviderLogMock()
@@ -2631,7 +2646,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2653,7 +2667,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2678,7 +2691,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2727,7 +2739,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .init(remoteFolder.identifier),
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2789,7 +2800,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account, rootItem: rootItem),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2830,7 +2840,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
     func testEffectiveBatchSizeClampsAndFallsBack() throws {
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .workingSet,
-            account: Self.account,
             remoteInterface: MockRemoteInterface(account: Self.account),
             dbManager: Self.dbManager,
             log: FileProviderLogMock()
@@ -2873,7 +2882,6 @@ final class EnumeratorTests: NextcloudFileProviderKitTestCase {
 
         let enumerator = try Enumerator(
             enumeratedItemIdentifier: .trashContainer,
-            account: Self.account,
             remoteInterface: remoteInterface,
             dbManager: Self.dbManager,
             log: FileProviderLogMock()

@@ -4,14 +4,11 @@
 import GRDB
 
 extension FilesDatabaseManager {
-    func trashedItemMetadatas(account: Account) -> [SendableItemMetadata] {
+    func trashedItemMetadatas() -> [SendableItemMetadata] {
         read("Could not fetch the trashed item metadata.", [.account: account.ncKitAccount]) { db in
             try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.account == account.ncKitAccount
-                        && ItemMetadataRecord.hasServerUrl(equalTo: account.trashUrl, includingDescendants: true)
-                )
-                .fetchRecords(db, logger: logger)
+                .filter(ItemMetadataRecord.Columns.davRoot == DAVRoot.trash.rawValue)
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []
     }

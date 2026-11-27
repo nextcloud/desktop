@@ -4,6 +4,7 @@
 @preconcurrency import FileProvider
 import Foundation
 import GRDB
+import NextcloudKit
 import os
 
 ///
@@ -75,20 +76,31 @@ public final class FilesDatabaseManager: Sendable {
 
     let logger: FileProviderLogger
     let account: Account
+    let syncOperations = SyncOperations()
     /// Share ownership and the starting ETag and path across managers accessing the same database.
     static let downloadOperations = OSAllocatedUnfairLock(initialState: [String: [String: ActiveDownload]]())
 
     /// The open database: a pool on the domain's file, or an in-memory queue when no directory is available.
     let writer: any DatabaseWriter
 
-    /// Random identity of the open database file, minted on its first open. It is part of every sync anchor, so the anchors of a replaced file expire.
+    /// The database identifier at the time this manager opened it. Replacing the database or
+    /// switching its DAV account changes the identifier and expires previous sync anchors.
     let storeIdentity: String
 
     /// Location of the database file, `nil` when the database lives in memory.
     let databaseURL: URL?
 
-    /// Downloads of this domain which the system has not yet reported as materialized, kept here because one process can host several domains and each has its own manager.
-    let pendingMaterializations = PendingMaterializationRegistry()
+    /// Downloads the system has not yet reported as materialized. Managers opened by the extension share its registry across account setup.
+    let pendingMaterializations: PendingMaterializationRegistry
+
+    init(account: Account, continuingFrom previousManager: FilesDatabaseManager, storeIdentity: String) {
+        self.account = account
+        self.storeIdentity = storeIdentity
+        writer = previousManager.writer
+        databaseURL = previousManager.databaseURL
+        pendingMaterializations = previousManager.pendingMaterializations
+        logger = FileProviderLogger(category: "FilesDatabaseManager", log: previousManager.logger.log)
+    }
 
     ///
     /// Open the domain's database, creating, importing or migrating it as needed.
@@ -104,8 +116,33 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// - Throws: ``OpenError`` when no usable database can be opened. The caller must not set the domain up with a substitute, because nothing written to one would survive, and the next attempt may well succeed.
     ///
-    public init(account: Account, databaseDirectory customDatabaseDirectory: URL? = nil, fileProviderDomainIdentifier: NSFileProviderDomainIdentifier, log: any FileProviderLogging, defaults: UserDefaults = .standard) throws {
+    public convenience init(
+        account: Account,
+        databaseDirectory: URL? = nil,
+        fileProviderDomainIdentifier: NSFileProviderDomainIdentifier,
+        log: any FileProviderLogging,
+        defaults: UserDefaults = .standard
+    ) throws {
+        try self.init(
+            account: account,
+            databaseDirectory: databaseDirectory,
+            fileProviderDomainIdentifier: fileProviderDomainIdentifier,
+            log: log,
+            pendingMaterializations: PendingMaterializationRegistry(),
+            defaults: defaults
+        )
+    }
+
+    init(
+        account: Account,
+        databaseDirectory customDatabaseDirectory: URL?,
+        fileProviderDomainIdentifier: NSFileProviderDomainIdentifier,
+        log: any FileProviderLogging,
+        pendingMaterializations: PendingMaterializationRegistry,
+        defaults: UserDefaults = .standard
+    ) throws {
         self.account = account
+        self.pendingMaterializations = pendingMaterializations
         logger = FileProviderLogger(category: "FilesDatabaseManager", log: log)
 
         let defaultDatabaseDirectory = FileManager.default.fileProviderDomainSupportDirectory(for: fileProviderDomainIdentifier)
@@ -137,12 +174,25 @@ public final class FilesDatabaseManager: Sendable {
             .appendingPathComponent(fileProviderDomainIdentifier.rawValue)
             .appendingPathExtension("realm")
 
-        if RealmStoreImporter.importIfNeeded(realmURL: realmLocation, sqliteURL: databaseLocation, logger: logger) == .failed {
+        let previousAccount = domainDefaults.configuredDAVAccountIdentity
+        let importOutcome = RealmStoreImporter.importIfNeeded(
+            realmURL: realmLocation,
+            sqliteURL: databaseLocation,
+            account: account,
+            previouslyConfiguredAccount: previousAccount,
+            logger: logger
+        )
+        if importOutcome == .failed {
             // The next start retries the import; until then nothing may be written which that import would replace.
             throw OpenError.importFailed(realmLocation)
         }
 
-        (writer, storeIdentity) = try Self.openDatabase(at: databaseLocation, label: fileProviderDomainIdentifier.rawValue, logger: logger)
+        (writer, storeIdentity) = try Self.openDatabase(
+            at: databaseLocation,
+            label: fileProviderDomainIdentifier.rawValue,
+            account: account,
+            logger: logger
+        )
         logger.info("Opened metadata database.", [.url: databaseLocation.path])
         domainDefaults.latestSeenDatabaseVersion = StoreVersion.current
 
@@ -163,9 +213,14 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// A file SQLite reports as corrupt is set aside and replaced. Any other failure, such as a busy or full disk, keeps the file untouched and is thrown, so the next start can try again.
     ///
-    private static func openDatabase(at url: URL, label: String, logger: FileProviderLogger) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
+    private static func openDatabase(
+        at url: URL,
+        label: String,
+        account: Account,
+        logger: FileProviderLogger
+    ) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
         do {
-            return try openPool(at: url, label: label)
+            return try openPool(at: url, label: label, account: account)
         } catch {
             guard isCorruptionError(error) else {
                 logger.fault("Could not open the metadata database.", [.url: url.path, .error: error])
@@ -178,7 +233,7 @@ public final class FilesDatabaseManager: Sendable {
         setAsideUnreadableDatabase(at: url, logger: logger)
 
         do {
-            return try openPool(at: url, label: label)
+            return try openPool(at: url, label: label, account: account)
         } catch {
             logger.fault("Could not open a fresh metadata database.", [.url: url.path, .error: error])
             throw OpenError.openFailed(url, underlying: error)
@@ -193,12 +248,19 @@ public final class FilesDatabaseManager: Sendable {
         return [ResultCode.SQLITE_CORRUPT, .SQLITE_NOTADB].contains(databaseError.resultCode.primaryResultCode)
     }
 
-    private static func openPool(at url: URL, label: String) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
+    private static func openPool(
+        at url: URL,
+        label: String,
+        account: Account
+    ) throws -> (writer: any DatabaseWriter, storeIdentity: String) {
         let pool = try DatabasePool(path: url.path, configuration: configuration(label: label))
         try DatabaseSchema.migrator.migrate(pool)
         let storeIdentity = try pool.write { db in
             try db.execute(sql: "PRAGMA user_version = \(StoreVersion.current)")
-            return try StoreIdentityRecord.ensure(in: db)
+            return try StoreIdentityRecord.updateDatabaseForCurrentDAVAccount(
+                account,
+                in: db
+            )
         }
         return (pool, storeIdentity)
     }
@@ -230,6 +292,14 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
+    var wasInvalidatedByDAVAccountChange: Bool {
+        syncOperations.isInvalidated
+    }
+
+    func invalidateForDAVAccountChange() {
+        syncOperations.invalidate()
+    }
+
     /// Run a write in one transaction with the given durability; a failure is logged with `failure` and yields `nil`.
     func write<T>(_ failure: String, _ details: [FileProviderLogDetailKey: (any Sendable)?] = [:], durability: WriteDurability = .full, _ body: (Database) throws -> T) -> T? {
         do {
@@ -247,17 +317,45 @@ public final class FilesDatabaseManager: Sendable {
     /// The synchronization level is a property of the connection and cannot change inside a transaction, so it is set on the writer right before the transaction opens.
     ///
     func write<T>(durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
-        try writer.writeWithoutTransaction { db in
-            try writeTransaction(in: db, durability: durability, body)
+        let operation = SyncOperations.Operation.current
+        return try writer.writeWithoutTransaction { db in
+            try writeTransaction(in: db, durability: durability, operation: operation, body)
         }
     }
 
-    private func writeTransaction<T>(in db: Database, durability: WriteDurability, _ body: (Database) throws -> T) throws -> T {
+    /// Run a write in one transaction. Cancellation can interrupt the wait for the writer.
+    func write<T: Sendable>(
+        durability: WriteDurability,
+        _ body: @Sendable (Database) throws -> T
+    ) async throws -> T {
+        let operation = SyncOperations.Operation.current
+        return try await writer.writeWithoutTransaction { db in
+            try self.writeTransaction(in: db, durability: durability, operation: operation, body)
+        }
+    }
+
+    private func writeTransaction<T>(
+        in db: Database,
+        durability: WriteDurability,
+        operation: SyncOperations.Operation?,
+        _ body: (Database) throws -> T
+    ) throws -> T {
         try db.execute(sql: durability.pragma)
 
         var result: T?
         try db.inTransaction {
+            // An account change updates the database identifier and the cached items together.
+            // A DAV response queued by the previous manager must not overwrite those rows.
+            guard !wasInvalidatedByDAVAccountChange,
+                  operation?.isStopped != true,
+                  try StoreIdentityRecord.fetchOne(db)?.identity == storeIdentity
+            else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
             result = try body(db)
+            guard !wasInvalidatedByDAVAccountChange, operation?.isStopped != true else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
             return .commit
         }
 
@@ -267,7 +365,7 @@ public final class FilesDatabaseManager: Sendable {
     /// Checkpoint the write-ahead log so the file is complete on disk before the process goes away.
     public func checkpointForShutdown() {
         do {
-            try writer.writeWithoutTransaction { db in
+            _ = try writer.writeWithoutTransaction { db in
                 try db.checkpoint(.passive)
             }
         } catch {
@@ -303,16 +401,20 @@ public final class FilesDatabaseManager: Sendable {
     public func perform<T: Sendable>(
         _ work: @escaping @Sendable (FilesDatabaseManager) -> T
     ) async -> T {
-        await withCheckedContinuation { continuation in
-            blockingCallQueue.async { continuation.resume(returning: work(self)) }
+        let operation = SyncOperations.Operation.current
+        return await withCheckedContinuation { continuation in
+            blockingCallQueue.async {
+                let result = SyncOperations.Operation.$current.withValue(operation) { work(self) }
+                continuation.resume(returning: result)
+            }
         }
     }
 
     // MARK: - Lookups
 
-    public func anyItemMetadatasForAccount(_ account: String) -> Bool {
-        read("Could not look up whether the account has any item metadata.", [.account: account]) { db in
-            try !ItemMetadataRecord.filter(ItemMetadataRecord.Columns.account == account).isEmpty(db)
+    public func hasItemMetadata() -> Bool {
+        read("Could not check whether the domain has item metadata.") { db in
+            try !ItemMetadataRecord.all().isEmpty(db)
         } ?? false
     }
 
@@ -341,7 +443,9 @@ public final class FilesDatabaseManager: Sendable {
 
         return read("Could not look up item metadata by file identifiers.") { db in
             for chunk in Array(fileIds).chunked(into: Self.inClauseChunkSize) {
-                if try !ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.fileId)).isEmpty(db) {
+                let matchesFileID = ItemMetadataRecord
+                    .filter(chunk.contains(ItemMetadataRecord.Columns.fileId))
+                if try !matchesFileID.isEmpty(db) {
                     return true
                 }
             }
@@ -350,74 +454,81 @@ public final class FilesDatabaseManager: Sendable {
         } ?? false
     }
 
-    ///
-    /// Look up the item metadata by its account identifier and remote address.
-    ///
-    /// - Parameters:
-    ///     - account: The account this item is scoped by.
-    ///     - remoteURL: The full remote URL of the item as a `String`.
-    ///
-    /// - Returns: Metadata related to the item found by the parameters.
-    ///
-    public func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
-        read("Could not look up item metadata by remote URL.", [.account: account, .url: rawRemoteURL]) { db in
-            try self.itemMetadata(account: account, locatedAtRemoteUrl: rawRemoteURL, in: db)?.metadata
+    /// Look up item metadata by its full remote URL in this domain's database.
+    public func itemMetadata(locatedAtRemoteUrl rawRemoteURL: String) -> SendableItemMetadata? {
+        read("Could not look up item metadata by remote URL.", [.account: account.ncKitAccount, .url: rawRemoteURL]) { db in
+            try self.itemMetadata(locatedAtRemoteUrl: rawRemoteURL, in: db)?.metadata
         } ?? nil
     }
 
-    ///
-    /// Fetch the metadata object for the root container of the given account.
-    ///
-    /// This is useful for when you have only the `NSFileProviderItemIdentifier.rootContainer` but no `ocId` to look up metadata by.
-    ///
-    public func rootItemMetadata(account: Account) -> SendableItemMetadata? {
+    /// Look up the WebDAV Files root for Finder's `.rootContainer` identifier.
+    public func rootItemMetadata() -> SendableItemMetadata? {
         read("Could not look up the root item metadata.", [.account: account.ncKitAccount]) { db in
-            try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.account == account.ncKitAccount
-                        && ItemMetadataRecord.Columns.directory == true
-                        && ItemMetadataRecord.Columns.path == Account.webDavFilesUrlSuffix
-                )
-                .order(ItemMetadataRecord.Columns.ocId)
-                .fetchRecord(db, logger: logger)?
-                .metadata
+            try fetchFilesRootRecord(in: db)?.metadata
         } ?? nil
     }
 
-    public func itemMetadatas(account: String) -> [SendableItemMetadata] {
-        read("Could not fetch the account's item metadata.", [.account: account]) { db in
+    private func fetchFilesRootRecord(in db: Database) throws -> ItemMetadataRecord? {
+        try ItemMetadataRecord
+            .filter(
+                ItemMetadataRecord.Columns.directory
+                    && ItemMetadataRecord.isFilesRoot
+            )
+            .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
+            .fetchRecord(db, account: account, logger: logger)
+    }
+
+    public func itemMetadatas() -> [SendableItemMetadata] {
+        read("Could not fetch the domain's item metadata.") { db in
             try ItemMetadataRecord
-                .filter(ItemMetadataRecord.Columns.account == account)
-                .fetchRecords(db, logger: logger)
+                .all()
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
 
-    public func itemMetadatas(
-        account: String, underServerUrl serverUrl: String
-    ) -> [SendableItemMetadata] {
-        read("Could not fetch the item metadata under a server URL.", [.account: account, .url: serverUrl]) { db in
+    public func itemMetadatas(underServerUrl serverUrl: String) -> [SendableItemMetadata] {
+        read("Could not fetch the item metadata under a server URL.", [.url: serverUrl]) { db in
             try ItemMetadataRecord
-                .filter(
-                    ItemMetadataRecord.Columns.account == account
-                        && ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
-                )
-                .fetchRecords(db, logger: logger)
+                .filter(matchesParentDirectoryURL(serverUrl, includingDescendants: true))
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         } ?? []
     }
 
     // MARK: - Lookup workers
 
+    func matchesParentURLAndFileName(parentURL: String, fileName: String) -> SQLExpression {
+        guard let parent = account.davPath(forURL: parentURL) else { return false.sqlExpression }
+        return ItemMetadataRecord.matchesStoredParentLocationAndFileName(
+            davRoot: parent.root,
+            parentPath: parent.path,
+            fileName: fileName
+        )
+    }
+
+    func matchesParentDirectoryURL(_ directoryURL: String, includingDescendants: Bool) -> SQLExpression {
+        guard let parent = account.davPath(forURL: directoryURL) else { return false.sqlExpression }
+        return ItemMetadataRecord.matchesStoredParentLocation(
+            davRoot: parent.root,
+            parentPath: parent.path,
+            includingDescendants: includingDescendants
+        )
+    }
+
     func itemMetadata(ocId: String, in db: Database) throws -> ItemMetadataRecord? {
-        try ItemMetadataRecord.filter(key: ocId).fetchRecord(db, logger: logger)
+        try ItemMetadataRecord
+            .filter(key: ocId)
+            .fetchRecord(db, account: account, logger: logger)
     }
 
     func itemMetadatas(ocIds: [String], in db: Database) throws -> [String: ItemMetadataRecord] {
         var recordsByOcId: [String: ItemMetadataRecord] = [:]
 
         for chunk in ocIds.chunked(into: Self.inClauseChunkSize) {
-            for record in try ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.ocId)).fetchRecords(db, logger: logger) {
+            for record in try ItemMetadataRecord.filter(chunk.contains(ItemMetadataRecord.Columns.ocId))
+                .fetchRecords(db, account: account, logger: logger)
+            {
                 recordsByOcId[record.ocId] = record
             }
         }
@@ -426,52 +537,47 @@ public final class FilesDatabaseManager: Sendable {
     }
 
     /// The row at a logical address derived from a full remote URL. A live row wins over a deleted one at the same address.
-    func itemMetadata(account: String, locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
-        guard var urlComponents = URLComponents(string: rawRemoteURL) else {
-            logger.error("Failed to create URL components from raw remote URL.", [.account: account, .url: rawRemoteURL])
+    func itemMetadata(locatedAtRemoteUrl rawRemoteURL: String, in db: Database) throws -> ItemMetadataRecord? {
+        if account.davPath(forURL: rawRemoteURL)?.isFilesRoot == true {
+            return try fetchFilesRootRecord(in: db)
+        }
+
+        // DAV responses contain decoded path components, so "#" and "?" can be part of a name.
+        // Split the original URL to preserve the hostname as written and keep those characters in the path.
+        guard let schemeSeparator = rawRemoteURL.range(of: "://"),
+              let pathStart = rawRemoteURL[schemeSeparator.upperBound...].firstIndex(of: "/"),
+              URLComponents(string: String(rawRemoteURL[..<pathStart]))?.host?.isEmpty == false
+        else {
             return nil
         }
 
-        // Clear everything which is not part of the path to be able to derive a prefix which is then removed from the original raw remote URL.
-        urlComponents.fragment = nil
-        urlComponents.query = nil
-        urlComponents.path = ""
+        let pathComponents = rawRemoteURL[pathStart...].split(separator: "/")
+        guard let fileNameComponent = pathComponents.last else { return nil }
 
-        guard let baseURL = urlComponents.url else {
-            logger.error("Failed to derive base URL from components.", [.account: account, .url: rawRemoteURL])
-            return nil
-        }
-
-        guard let basePrefix = baseURL.absoluteString.removingPercentEncoding else {
-            logger.error("Failed to derive absolute string from base URL.", [.account: account, .url: rawRemoteURL])
-            return nil
-        }
-
-        let index = rawRemoteURL.index(rawRemoteURL.startIndex, offsetBy: basePrefix.count)
-        let rawRemotePath = rawRemoteURL.suffix(from: index)
-        let pathComponents = rawRemotePath.split(separator: "/")
-
-        // Get the file name but also take the possible fragment into consideration which is not part of a URL path but a file name.
-        // Hence a .lastPathComponent does not work and the path must be split by its slashes.
-        guard let fileNameSubstring = pathComponents.last else {
-            return nil
-        }
-
-        let fileName = String(fileNameSubstring)
-
-        // Derive the parent address by removing the last path component and discarding the fragment which may actually be part of the file name and not a URL fragment.
-        let parentPathComponents = pathComponents.dropLast()
-        let parentPath = "/\(parentPathComponents.joined(separator: "/"))"
-        let rawParentURL = baseURL.absoluteString + parentPath
+        let fileName = String(fileNameComponent)
+        let parentEnd = pathComponents.dropLast().last?.endIndex ?? rawRemoteURL.index(after: pathStart)
+        let rawParentURL = String(rawRemoteURL[..<parentEnd])
 
         return try ItemMetadataRecord
-            .filter(ItemMetadataRecord.hasLocation(serverUrl: rawParentURL, fileName: fileName))
+            .filter(matchesParentURLAndFileName(parentURL: rawParentURL, fileName: fileName))
             .order(ItemMetadataRecord.Columns.deleted, ItemMetadataRecord.Columns.ocId)
-            .fetchRecord(db, logger: logger)
+            .fetchRecord(db, account: account, logger: logger)
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: any ItemMetadata, in db: Database) throws -> ItemMetadataRecord? {
-        try self.itemMetadata(account: itemMetadata.account, locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
+        guard !itemMetadata.isFilesRoot else { return nil }
+
+        let parent = try self.itemMetadata(locatedAtRemoteUrl: itemMetadata.serverUrl, in: db)
+        // Finder stores the root's pin on the synthetic root row.
+        if parent?.isFilesRootWithServerID == true,
+           let syntheticRoot = try self.itemMetadata(ocId: NSFileProviderItemIdentifier.rootContainer.rawValue, in: db),
+           syntheticRoot.directory,
+           !syntheticRoot.deleted
+        {
+            return syntheticRoot
+        }
+
+        return parent
     }
 
     ///
@@ -488,17 +594,11 @@ public final class FilesDatabaseManager: Sendable {
     /// then-known descendant of the pinned ancestor, so every intermediate
     /// directory between the pin root and this new item is itself pinned.
     ///
-    /// Falls back to the root container when no parent row exists at the
-    /// item's `serverUrl` — items directly under the user's home are stored
-    /// against a synthesised root keyed by ocId, not by serverUrl/fileName.
+    /// Falls back to the synthetic root's pin when the parent row is missing.
     ///
-    func inheritedKeepDownloaded(for metadata: SendableItemMetadata) -> Bool {
-        read("Could not look up the inherited keep-downloaded flag.", [.item: metadata.ocId]) { db in
-            try inheritedKeepDownloaded(for: metadata, in: db)
-        } ?? false
-    }
-
     func inheritedKeepDownloaded(for metadata: SendableItemMetadata, in db: Database) throws -> Bool {
+        guard !metadata.isFilesRoot else { return false }
+
         if let parent = try parentDirectoryMetadataForItem(metadata, in: db) {
             return parent.keepDownloaded
         }
@@ -518,8 +618,9 @@ public final class FilesDatabaseManager: Sendable {
             logger.error("Refusing to persist item metadata with empty ocId.", [.name: metadata.fileName, .url: metadata.serverUrl])
             return
         }
-        try evictLogicalDuplicates(of: metadata, in: db)
-        try ItemMetadataRecord(metadata).upsertRow(db)
+        let record = try ItemMetadataRecord(metadata, domainAccount: account)
+        try evictLogicalDuplicates(of: record, in: db)
+        try record.upsertRow(db)
         logger.debug("Added item metadata.", [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl])
     }
 
@@ -539,10 +640,22 @@ public final class FilesDatabaseManager: Sendable {
         return deletedMetadatas
     }
 
-    private func processItemMetadatasToUpdate(existingMetadatas: [ItemMetadataRecord], updatedMetadatas: [SendableItemMetadata], keepExistingDownloadState: Bool, in db: Database) throws -> (newMetadatas: [SendableItemMetadata], updatedMetadatas: [SendableItemMetadata], directoriesNeedingRename: [SendableItemMetadata]) {
+    private func processItemMetadatasToUpdate(
+        existingMetadatas: [ItemMetadataRecord],
+        updatedMetadatas: [SendableItemMetadata],
+        keepExistingDownloadState: Bool,
+        requiresCompleteListing: Bool,
+        in db: Database
+    ) throws -> (
+        newMetadatas: [SendableItemMetadata],
+        updatedMetadatas: [SendableItemMetadata],
+        directoriesNeedingRename: [SendableItemMetadata],
+        itemMetadataToReportByID: [String: SendableItemMetadata]
+    ) {
         var returningNewMetadatas: [SendableItemMetadata] = []
         var returningUpdatedMetadatas: [SendableItemMetadata] = []
         var directoriesNeedingRename: [SendableItemMetadata] = []
+        var itemMetadataToReportByID: [String: SendableItemMetadata] = [:]
 
         // Keyed once up front; the first occurrence of an identifier wins.
         var existingByOcId: [String: ItemMetadataRecord] = [:]
@@ -551,22 +664,34 @@ public final class FilesDatabaseManager: Sendable {
             existingByOcId[existingMetadata.ocId] = existingMetadata
         }
 
-        // `inheritedKeepDownloaded` depends on the item only through (account, parent serverUrl); every
+        // `inheritedKeepDownloaded` depends on the parent URL; every
         // child of a folder shares one serverUrl, so cache per serverUrl to collapse N parent lookups
         // (each a DB query) to one per distinct parent.
         var inheritedKeepDownloadedByServerUrl: [String: Bool] = [:]
 
-        // Rows of listed items stored outside the listed folder, fetched in one pass instead of once per item.
-        let storedElsewhereByOcId = try itemMetadatas(ocIds: updatedMetadatas.map(\.ocId).filter { existingByOcId[$0] == nil }, in: db)
+        // Fetch listed items stored outside the current folder together to detect moves.
+        let storedElsewhereByOcId = try itemMetadatas(
+            ocIds: updatedMetadatas.map(\.ocId).filter { existingByOcId[$0] == nil },
+            in: db
+        )
 
         for var updatedMetadata in updatedMetadatas {
             let listedHere = existingByOcId[updatedMetadata.ocId]
+            let existing = listedHere ?? storedElsewhereByOcId[updatedMetadata.ocId]
+            if requiresCompleteListing,
+               let pending = try pendingUploadMetadataMatchingListingItem(existing, listed: updatedMetadata)
+            {
+                itemMetadataToReportByID[pending.ocId] = pending
+                continue
+            }
 
-            // A listed item stored at another path was moved here by the server: it keeps downloaded, visited and the pin, and like a new item it takes the server's transfer status.
-            if let existingMetadata = listedHere ?? storedElsewhereByOcId[updatedMetadata.ocId],
+            if let existingMetadata = existing,
                listedHere != nil || !existingMetadata.hasSameLocation(as: updatedMetadata)
             {
-                if listedHere == nil || (existingMetadata.status == Status.normal.rawValue && !existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)) {
+                let canRefreshFromServer = existingMetadata.status == Status.normal.rawValue
+                    || (existingMetadata.status == Status.uploadError.rawValue && existingMetadata.uploaded)
+                let sameRemoteState = existingMetadata.isInSameDatabaseStoreableRemoteState(updatedMetadata)
+                if listedHere == nil || (canRefreshFromServer && !sameRemoteState) {
                     let pathChanged = !updatedMetadata.hasSameLocation(as: existingMetadata)
 
                     if updatedMetadata.directory, pathChanged {
@@ -581,6 +706,7 @@ public final class FilesDatabaseManager: Sendable {
                     )
 
                     returningUpdatedMetadatas.append(updatedMetadata)
+                    itemMetadataToReportByID[updatedMetadata.ocId] = updatedMetadata
 
                     logger.debug("Updated existing item metadata.", [
                         .item: updatedMetadata.ocId,
@@ -589,6 +715,9 @@ public final class FilesDatabaseManager: Sendable {
                         .syncTime: updatedMetadata.syncTime.description
                     ])
                 } else {
+                    if sameRemoteState, !existingMetadata.deleted, existingMetadata.hasSameLocation(as: updatedMetadata) {
+                        itemMetadataToReportByID[updatedMetadata.ocId] = existingMetadata.metadata
+                    }
                     logger.debug("Skipping item metadata update; same as existing, or still in transit.", [
                         .item: updatedMetadata.ocId,
                         .eTag: updatedMetadata.etag,
@@ -612,7 +741,23 @@ public final class FilesDatabaseManager: Sendable {
             }
         }
 
-        return (returningNewMetadatas, returningUpdatedMetadatas, directoriesNeedingRename)
+        return (
+            returningNewMetadatas,
+            returningUpdatedMetadatas,
+            directoriesNeedingRename,
+            itemMetadataToReportByID
+        )
+    }
+
+    private func pendingUploadMetadataMatchingListingItem(
+        _ existing: ItemMetadataRecord?,
+        listed: SendableItemMetadata
+    ) throws -> SendableItemMetadata? {
+        guard let existing, !existing.deleted, existing.hasUnfinishedUpload else { return nil }
+        guard existing.directory == listed.directory,
+              existing.hasSameLocation(as: listed)
+        else { throw NKError.invalidData }
+        return existing.metadata
     }
 
     /// ONLY HANDLES UPDATES FOR IMMEDIATE CHILDREN
@@ -620,18 +765,31 @@ public final class FilesDatabaseManager: Sendable {
     ///
     /// Everything, including the renames of moved directories, happens in one transaction. The rows are server-derived, so the write is relaxed.
     public func depth1ReadUpdateItemMetadatas(
-        account: String,
         serverUrl: String,
         updatedMetadatas: [SendableItemMetadata],
         keepExistingDownloadState: Bool,
         preserveDeletedTarget: Bool = false
     ) -> ChangeSet? {
-        write("Could not update any item metadatas.", [.account: account, .url: serverUrl], durability: .relaxed) { db in
-            // Find the metadatas that we previously knew to be on the server for this account
-            // (we need to check if they were uploaded to prevent deleting ignored/lock files)
-            //
-            // - the ones that do exist remotely still are either the same or have been updated
-            // - the ones that don't have been deleted
+        saveDepth1ListingMetadata(
+            serverUrl: serverUrl,
+            updatedMetadatas: updatedMetadatas,
+            keepExistingDownloadState: keepExistingDownloadState,
+            preserveDeletedTarget: preserveDeletedTarget
+        )?.changes
+    }
+
+    /// Save the listing and return the requested folder's metadata with its local flags.
+    func saveDepth1ListingMetadata(
+        serverUrl: String,
+        updatedMetadatas: [SendableItemMetadata],
+        keepExistingDownloadState: Bool,
+        preserveDeletedTarget: Bool,
+        requiresCompleteListing: Bool = false
+    ) -> (
+        changes: ChangeSet,
+        itemMetadataToReportByID: [String: SendableItemMetadata]
+    )? {
+        write("Could not update any item metadatas.", [.url: serverUrl], durability: .relaxed) { db in
             var cleanServerUrl = serverUrl
             if cleanServerUrl.last == "/" {
                 cleanServerUrl.removeLast()
@@ -649,9 +807,18 @@ public final class FilesDatabaseManager: Sendable {
                 nil
             }
 
-            let placesReadTarget = try readTargetMetadata.map { target in
-                try target.directory && (!preserveDeletedTarget || itemMetadata(ocId: target.ocId, in: db)?.deleted != true)
-            } ?? false
+            let storedReadTarget = try readTargetMetadata.flatMap { try itemMetadata(ocId: $0.ocId, in: db) }
+            let pendingReadTarget = try readTargetMetadata.flatMap {
+                try pendingUploadMetadataMatchingListingItem(storedReadTarget, listed: $0)
+            }
+            let placesReadTarget = if let readTargetMetadata {
+                readTargetMetadata.directory
+                    && !readTargetMetadata.isFilesRoot
+                    && pendingReadTarget == nil
+                    && (!preserveDeletedTarget || storedReadTarget?.deleted != true)
+            } else {
+                false
+            }
 
             // Another folder stored at the path read is parked before the stored children are collected, so its children are not taken for those of the folder read.
             if placesReadTarget, let readTargetMetadata {
@@ -660,16 +827,15 @@ public final class FilesDatabaseManager: Sendable {
 
             let existingMetadatas = try ItemMetadataRecord
                 .filter(
-                    // Don't worry — root will be updated at the end of this method if is the target
-                    ItemMetadataRecord.Columns.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
-                        && ItemMetadataRecord.hasServerUrl(equalTo: cleanServerUrl, includingDescendants: false)
-                        && ItemMetadataRecord.Columns.account == account
-                        && ItemMetadataRecord.Columns.uploaded == true
+                    // The root can share its stored parent with its own children.
+                    !ItemMetadataRecord.isFilesRoot
+                        && matchesParentDirectoryURL(cleanServerUrl, includingDescendants: false)
+                        && ItemMetadataRecord.Columns.uploaded
                 )
-                .fetchRecords(db, logger: logger)
+                .fetchRecords(db, account: account, logger: logger)
 
             let metadatasToDelete = processItemMetadatasToDelete(
-                existingMetadatas: existingMetadatas,
+                existingMetadatas: existingMetadatas.filter { !requiresCompleteListing || !$0.hasUnfinishedUpload },
                 updatedMetadatas: updatedChildMetadatas
             ).map {
                 var metadata = $0.metadata
@@ -678,21 +844,22 @@ public final class FilesDatabaseManager: Sendable {
             }
 
             let metadatasToChange = try processItemMetadatasToUpdate(
-                existingMetadatas: existingMetadatas,
+                existingMetadatas: existingMetadatas.filter { !requiresCompleteListing || !$0.hasUnfinishedUpload },
                 updatedMetadatas: updatedChildMetadatas,
                 keepExistingDownloadState: keepExistingDownloadState,
+                requiresCompleteListing: requiresCompleteListing,
                 in: db
             )
-
             var metadatasToUpdate = metadatasToChange.updatedMetadatas
             var metadatasToCreate = metadatasToChange.newMetadatas
+            var itemMetadataToReportByID = metadatasToChange.itemMetadataToReportByID
             let directoriesNeedingRename = metadatasToChange.directoriesNeedingRename
 
             var movedDescendants: [SendableItemMetadata] = []
 
             // Its placement moves the stored row of the folder read, so whether that row moves is taken first to report the move.
-            let readTargetMoved = try placesReadTarget && readTargetMetadata.map { target in
-                try target.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue && directoryMetadata(ocId: target.ocId, in: db).map { !$0.hasSameLocation(as: target) } == true
+            let readTargetMoved = placesReadTarget && readTargetMetadata.map { target in
+                storedReadTarget?.directory == true && storedReadTarget?.hasSameLocation(as: target) == false
             } == true
 
             // The folder read is placed first, so its own descendants are below it before its listed subfolders are placed.
@@ -721,7 +888,14 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.visitedDirectory = true
                 }
 
-                if let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db) {
+                let existing = try itemMetadata(ocId: readTargetMetadata.ocId, in: db)
+                if var pendingUpload = pendingReadTarget {
+                    if pendingUpload.directory, !pendingUpload.visitedDirectory {
+                        visitToRecord = pendingUpload.ocId
+                        pendingUpload.visitedDirectory = true
+                    }
+                    readTargetMetadata = pendingUpload
+                } else if let existing {
                     // A folder fetch publishes a deleted directory only after its downloads succeed.
                     let canUpdateTarget = !preserveDeletedTarget || !existing.deleted
 
@@ -733,18 +907,18 @@ public final class FilesDatabaseManager: Sendable {
                     }
 
                     readTargetMetadata.keepPermissionsListedByParent(from: existing)
+                    readTargetMetadata = existing.mergingRemoteMetadata(
+                        readTargetMetadata,
+                        preserveVisitedDirectory: false,
+                        preserveDownloadState: keepExistingDownloadState,
+                        lock: .useIncoming
+                    )
 
                     if canUpdateTarget,
                        existing.status == Status.normal.rawValue,
                        readTargetMoved || !existing.isInSameDatabaseStoreableRemoteState(readTargetMetadata)
                     {
                         logger.info("Depth 1 read target changed: \(readTargetMetadata.ocId)")
-                        readTargetMetadata = existing.mergingRemoteMetadata(
-                            readTargetMetadata,
-                            preserveVisitedDirectory: false,
-                            preserveDownloadState: keepExistingDownloadState,
-                            lock: .useIncoming
-                        )
                         metadatasToUpdate.insert(readTargetMetadata, at: 0)
                     }
                 } else {
@@ -753,28 +927,32 @@ public final class FilesDatabaseManager: Sendable {
                     readTargetMetadata.keepDownloaded = try inheritedKeepDownloaded(for: readTargetMetadata, in: db)
                     metadatasToCreate.insert(readTargetMetadata, at: 0)
                 }
+                itemMetadataToReportByID[readTargetMetadata.ocId] = readTargetMetadata
             }
 
             // Evict any logical-address duplicates before persisting fresh
             // payloads, so an ocId rotation (or rename whose target collides
             // with a third row) does not leave two non-deleted siblings at
-            // the same `(account, serverUrl, fileName)`.
-            for metadata in metadatasToCreate {
-                try evictLogicalDuplicates(of: metadata, in: db)
+            // the same parent path and name.
+            let recordsToCreate = try metadatasToCreate.map {
+                try ItemMetadataRecord($0, domainAccount: account)
             }
-            for metadata in metadatasToUpdate {
-                try evictLogicalDuplicates(of: metadata, in: db)
+            let recordsToUpdate = try metadatasToUpdate.map {
+                try ItemMetadataRecord($0, domainAccount: account)
+            }
+            for record in recordsToCreate + recordsToUpdate {
+                try evictLogicalDuplicates(of: record, in: db)
             }
 
-            // Mark deletions by key, so a row parked above keeps the location it was parked at.
+            // Mark deletions by ID so parked directories retain their new locations.
             for chunk in metadatasToDelete.map(\.ocId).chunked(into: Self.inClauseChunkSize) {
                 try ItemMetadataRecord
                     .filter(keys: chunk)
                     .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
             }
 
-            for metadata in metadatasToUpdate + metadatasToCreate {
-                try ItemMetadataRecord(metadata).upsertRow(db)
+            for record in recordsToUpdate + recordsToCreate {
+                try record.upsertRow(db)
             }
 
             if let visitToRecord {
@@ -783,57 +961,118 @@ public final class FilesDatabaseManager: Sendable {
                     .updateAll(db, ItemMetadataRecord.Columns.visitedDirectory.set(to: true))
             }
 
-            // Deletions are returned as stored, so a caller that writes them back keeps a parked folder at its holding name.
             let storedDeletions = try itemMetadatas(ocIds: metadatasToDelete.map(\.ocId), in: db)
-
-            return ChangeSet(
-                created: metadatasToCreate, updated: metadatasToUpdate, deleted: metadatasToDelete.map { storedDeletions[$0.ocId]?.metadata ?? $0 }
+            let changes = ChangeSet(
+                created: metadatasToCreate,
+                updated: metadatasToUpdate,
+                deleted: metadatasToDelete.map { storedDeletions[$0.ocId]?.metadata ?? $0 }
             )
+            return (changes, itemMetadataToReportByID)
         }
     }
 
     /// If setting a downloading or uploading status, also modified the relevant boolean properties
     /// of the item metadata object
     public func setStatusForItemMetadata(
-        _ metadata: SendableItemMetadata, status: Status
+        _ metadata: SendableItemMetadata,
+        status: Status
     ) -> SendableItemMetadata? {
-        write("Could not update status for item metadata.", [.item: metadata.ocId, .eTag: metadata.etag, .name: metadata.fileName]) { db in
-            guard var record = try itemMetadata(ocId: metadata.ocId, in: db) else {
-                logger.debug("Did not update status for item metadata as it was not found. ocID: \(metadata.ocId)")
-                return nil
-            }
-
-            record.status = status.rawValue
-            if record.isDownload {
-                record.downloaded = false
-            } else if record.isUpload {
-                record.uploaded = false
-            }
-
-            try record.upsertRow(db)
-
-            logger.debug("Updated status for item metadata.", [
+        do {
+            return try setStatusForItemMetadata(ocId: metadata.ocId, status: status)
+        } catch {
+            logger.error("Could not update status for item metadata.", [
                 .item: metadata.ocId,
                 .eTag: metadata.etag,
                 .name: metadata.fileName,
-                .syncTime: metadata.syncTime
+                .error: error
             ])
+            return nil
+        }
+    }
 
+    /// Report database failures separately from a missing item in the current account.
+    func setStatusForItemMetadata(ocId: String, status: Status) throws -> SendableItemMetadata? {
+        try write(durability: .full) { db in
+            guard var record = try itemMetadata(ocId: ocId, in: db), !record.deleted else { return nil }
+            try record.updateChanges(db) {
+                $0.status = status.rawValue
+                if $0.isDownload {
+                    $0.downloaded = false
+                } else if $0.isUpload {
+                    $0.uploaded = false
+                }
+            }
             return record.metadata
-        } ?? nil
+        }
+    }
+
+    /// Save the upload attempt ID in the existing session field before sending the edit.
+    func beginEditedItemUpload(ocId: String, uploadAttemptID: String) throws -> SendableItemMetadata? {
+        try write(durability: .full) { db in
+            guard var record = try itemMetadata(ocId: ocId, in: db), !record.deleted else { return nil }
+            try record.updateChanges(db) {
+                $0.status = Status.uploading.rawValue
+                $0.uploaded = false
+                $0.session = uploadAttemptID
+            }
+            return record.metadata
+        }
+    }
+
+    /// Save the server result for the exact upload attempt that sent the edit.
+    func completeEditedItemUpload(
+        ocId: String,
+        uploadAttemptID: String,
+        etag: String?,
+        date: Date?,
+        size: Int64?
+    ) throws -> SendableItemMetadata {
+        try write(durability: .full) { db in
+            guard var item = try itemMetadata(ocId: ocId, in: db),
+                  !item.deleted,
+                  item.status == Status.uploading.rawValue,
+                  item.session == uploadAttemptID
+            else { throw NSFileProviderError(.cannotSynchronize) }
+
+            try item.updateChanges(db) {
+                $0.status = Status.normal.rawValue
+                $0.date = date ?? $0.date
+                $0.etag = etag ?? $0.etag
+                $0.fileProviderContentVersion = $0.etag
+                $0.size = size ?? 0
+                $0.session = ""
+                $0.sessionError = ""
+                $0.sessionTaskIdentifier = 0
+                $0.downloaded = true
+                $0.uploaded = true
+            }
+            return item.metadata
+        }
     }
 
     /// Update the current upload state without writing back metadata captured before the transfer.
-    func recordUploadFailure(ocId: String, errorDescription: String, staleLockToken: String?) {
+    func recordUploadFailure(
+        ocId: String,
+        uploadAttemptID: String,
+        errorDescription: String,
+        staleLockToken: String?,
+        serverVersionConflict: Bool
+    ) {
         write("Could not record upload failure.", [.item: ocId]) { db in
             guard var record = try itemMetadata(ocId: ocId, in: db),
                   !record.deleted,
+                  record.session == uploadAttemptID,
                   record.status == Status.uploading.rawValue
             else { return }
 
             try record.updateChanges(db) {
                 $0.status = Status.uploadError.rawValue
+                $0.session = ""
                 $0.sessionError = errorDescription
+                if serverVersionConflict {
+                    // File Provider keeps the rejected edit. The row can describe the server copy again.
+                    $0.uploaded = true
+                }
                 if let staleLockToken, $0.lockToken == staleLockToken {
                     $0.lockToken = nil
                 }
@@ -851,21 +1090,59 @@ public final class FilesDatabaseManager: Sendable {
         }
     }
 
-    /// Save the item metadata returned by the server. Roll back the write if cancellation is detected before commit.
+    /// Save a single-item DAV response with the local fields current at the time of the write.
+    /// Return the merged metadata and whether it was newly added. Leave pending uploads intact.
+    /// Roll back if cancellation is detected before commit.
     func addItemMetadataFromRemoteRead(
         _ metadata: SendableItemMetadata,
+        requestedURL: String,
         isCancelled: @Sendable @escaping () -> Bool
-    ) async throws {
-        // GRDB's async writer handles Swift task cancellation while waiting for the writer.
-        try await writer.writeWithoutTransaction { db in
-            try self.writeTransaction(in: db, durability: .full) { db in
-                guard !isCancelled() else { throw CancellationError() }
-                _ = try self.placeDirectory(metadata, in: db)
-                try self.insertItemMetadata(metadata, in: db)
-                // Progress can be cancelled before its handler cancels the Swift task.
-                guard !isCancelled() else { throw CancellationError() }
+    ) async throws -> (metadata: SendableItemMetadata, isNew: Bool) {
+        try await write(durability: .full) { db in
+            guard !isCancelled() else { throw CancellationError() }
+            let currentItem = try self.itemMetadata(ocId: metadata.ocId, in: db)
+            if let pendingUpload = try self.pendingUploadMetadataMatchingListingItem(currentItem, listed: metadata) {
+                guard self.account.hasSameDAVPath(metadata.remotePath(), requestedURL) else { throw NKError.invalidData }
+                return (pendingUpload, false)
             }
+
+            let merged = try self.mergeLocalFieldsIntoRemoteRead(metadata, currentItem: currentItem, in: db)
+            _ = try self.placeDirectory(merged.metadata, in: db)
+            try self.insertItemMetadata(merged.metadata, in: db)
+            // Progress can be cancelled before its handler cancels the Swift task.
+            guard !isCancelled() else { throw CancellationError() }
+            return merged
         }
+    }
+
+    /// Read the local fields when a single-item DAV response can be returned despite a write failure.
+    func itemMetadataFromRemoteReadWithoutSaving(
+        _ metadata: SendableItemMetadata
+    ) -> (metadata: SendableItemMetadata, isNew: Bool) {
+        read("Could not read local fields for a remote item.", [.item: metadata.ocId]) { db in
+            let currentItem = try itemMetadata(ocId: metadata.ocId, in: db)
+            return try mergeLocalFieldsIntoRemoteRead(metadata, currentItem: currentItem, in: db)
+        } ?? (metadata, true)
+    }
+
+    private func mergeLocalFieldsIntoRemoteRead(
+        _ metadata: SendableItemMetadata,
+        currentItem: ItemMetadataRecord?,
+        in db: Database
+    ) throws -> (metadata: SendableItemMetadata, isNew: Bool) {
+        var merged = metadata
+        if let currentItem {
+            merged = currentItem.mergingRemoteMetadata(
+                metadata,
+                preserveVisitedDirectory: true,
+                preserveDownloadState: true,
+                lock: currentItem.hasSameLocation(as: metadata) ? .preserveLocal : .clear
+            )
+            merged.keepPermissionsListedByParent(from: currentItem)
+        } else {
+            merged.keepDownloaded = try inheritedKeepDownloaded(for: metadata, in: db)
+        }
+        return (merged, currentItem == nil)
     }
 
     /// Set the given `downloaded` and `visitedDirectory` values of several rows in one write transaction, leaving every other column and every missing row untouched; a failure discards the whole batch.
@@ -938,17 +1215,38 @@ public final class FilesDatabaseManager: Sendable {
         } ?? false
     }
 
+    /// Save a listed item with its local metadata, returning the item when the write fails.
+    @discardableResult
+    public func addItemMetadataPreservingLocalState(
+        _ metadata: SendableItemMetadata,
+        preserveVisitedDirectory: Bool = true
+    ) -> SendableItemMetadata {
+        write(
+            "Failed to add item metadata.",
+            [.item: metadata.ocId, .name: metadata.fileName, .url: metadata.serverUrl],
+            durability: .relaxed
+        ) { db in
+            try addItemMetadataPreservingLocalState(metadata, preserveVisitedDirectory: preserveVisitedDirectory, in: db)
+        } ?? metadata
+    }
+
     /// Stores a page and its optional target in one transaction, preserving local metadata.
     /// Returns the metadata for the children after commit, or `nil` if the transaction fails.
-    func persistPaginatedMetadata(target: SendableItemMetadata?, children: [SendableItemMetadata]) -> [SendableItemMetadata]? {
+    func persistPaginatedMetadata(
+        target: SendableItemMetadata?,
+        children: [SendableItemMetadata],
+        isCancelled: @Sendable () -> Bool = { false }
+    ) -> [SendableItemMetadata]? {
         var currentItem: SendableItemMetadata?
         do {
             return try write(durability: .relaxed) { db in
+                guard !isCancelled() else { throw CancellationError() }
                 if let target {
                     currentItem = target
                     _ = try addItemMetadataPreservingLocalState(
                         target,
-                        isTargetDirectory: target.directory,
+                        preserveVisitedDirectory: !target.directory,
+                        keepPermissionsListedByParent: target.directory,
                         in: db
                     )
                 }
@@ -958,8 +1256,11 @@ public final class FilesDatabaseManager: Sendable {
                     return try addItemMetadataPreservingLocalState(child, in: db)
                 }
                 currentItem = nil
+                guard !isCancelled() else { throw CancellationError() }
                 return savedChildren
             }
+        } catch is CancellationError {
+            return nil
         } catch {
             logger.error("Failed to persist paginated item metadata.", [
                 .item: currentItem?.ocId,
@@ -974,24 +1275,24 @@ public final class FilesDatabaseManager: Sendable {
     /// Preserves local pin, download and lock state, and visit state for child directories only.
     private func addItemMetadataPreservingLocalState(
         _ metadata: SendableItemMetadata,
-        isTargetDirectory: Bool = false,
+        preserveVisitedDirectory: Bool = true,
+        keepPermissionsListedByParent: Bool = false,
         in db: Database
     ) throws -> SendableItemMetadata {
         var toWrite = metadata
         if let existing = try itemMetadata(ocId: metadata.ocId, in: db) {
-            let hasFailedUpload = !existing.uploaded && existing.status == Status.uploadError.rawValue
             // A listing describes the server copy while the local edit is still pending.
-            if !existing.deleted, existing.isUpload || hasFailedUpload {
+            if !existing.deleted, existing.hasUnfinishedUpload {
                 return existing.metadata
             }
 
             toWrite = existing.mergingRemoteMetadata(
                 metadata,
-                preserveVisitedDirectory: !isTargetDirectory,
+                preserveVisitedDirectory: preserveVisitedDirectory,
                 preserveDownloadState: true,
                 lock: .preserveLocal
             )
-            if isTargetDirectory {
+            if keepPermissionsListedByParent {
                 toWrite.keepPermissionsListedByParent(from: existing)
             }
 
@@ -1022,16 +1323,16 @@ public final class FilesDatabaseManager: Sendable {
             // prior row in the same write that persists the fresh one.
             let logicalCandidates = try ItemMetadataRecord
                 .filter(
-                    ItemMetadataRecord.hasLocation(serverUrl: metadata.serverUrl, fileName: metadata.fileName)
+                    matchesParentURLAndFileName(parentURL: metadata.serverUrl, fileName: metadata.fileName)
                         && ItemMetadataRecord.Columns.deleted == false
                         && ItemMetadataRecord.Columns.isLockFileOfLocalOrigin == false
                 )
-                .fetchRecords(db, logger: logger)
+                .fetchRecords(db, account: account, logger: logger)
 
             if logicalCandidates.count == 1, let existing = logicalCandidates.first {
                 toWrite = existing.mergingRemoteMetadata(
                     metadata,
-                    preserveVisitedDirectory: !isTargetDirectory,
+                    preserveVisitedDirectory: preserveVisitedDirectory,
                     preserveDownloadState: true,
                     lock: .preserveLocal
                 )
@@ -1059,10 +1360,17 @@ public final class FilesDatabaseManager: Sendable {
     ///     - ocId: The unique identifier of the item.
     ///
     @discardableResult public func deleteItemMetadata(ocId: String) -> Bool {
+        deleteItemMetadata(ocId: ocId, syncTime: nil)
+    }
+
+    /// Record the deletion and, for a working-set scan, when it was discovered.
+    func deleteItemMetadata(ocId: String, syncTime: Date?) -> Bool {
         write("Could not mark item as deleted.", [.item: ocId]) { db in
-            try ItemMetadataRecord
-                .filter(key: ocId)
-                .updateAll(db, ItemMetadataRecord.Columns.deleted.set(to: true))
+            var updates = [ItemMetadataRecord.Columns.deleted.set(to: true)]
+            if let syncTime {
+                updates.append(ItemMetadataRecord.Columns.syncTime.set(to: syncTime.timeIntervalSinceReferenceDate))
+            }
+            try ItemMetadataRecord.filter(key: ocId).updateAll(db, updates)
             logger.debug("Marked item as deleted.", [.item: ocId])
             return true
         } ?? false
@@ -1098,7 +1406,7 @@ public final class FilesDatabaseManager: Sendable {
         let oldFileName = itemMetadata.fileName
         let oldServerUrl = itemMetadata.serverUrl
 
-        itemMetadata.updateLocation(serverUrl: newServerUrl, fileName: newFileName)
+        try itemMetadata.updateLocation(parentURL: newServerUrl, fileName: newFileName, domainAccount: account)
         itemMetadata.fileNameView = newFileName
         itemMetadata.lockToken = nil
 
@@ -1114,41 +1422,34 @@ public final class FilesDatabaseManager: Sendable {
         newFileName: String,
         isCancelled: @Sendable @escaping () -> Bool
     ) async throws -> SendableItemMetadata {
-        try await writer.writeWithoutTransaction { db in
-            try self.writeTransaction(in: db, durability: .full) { db in
-                guard !isCancelled() else { throw CancellationError() }
-                guard var metadata = try self.itemMetadata(ocId: ocId, in: db)?.metadata, !metadata.deleted else {
-                    throw NSFileProviderError(.cannotSynchronize)
-                }
-                if metadata.hasSameRemotePath(as: newServerUrl + "/" + newFileName) {
-                    return metadata
-                }
-                guard metadata.hasSameRemotePath(as: sourcePath) else {
-                    throw NSFileProviderError(.cannotSynchronize)
-                }
-
-                metadata.serverUrl = newServerUrl
-                metadata.fileName = newFileName
-                metadata.fileNameView = newFileName
-                metadata.lockToken = nil
-                _ = try self.placeDirectory(metadata, in: db)
-                try self.insertItemMetadata(metadata, in: db)
-                guard !isCancelled() else { throw CancellationError() }
+        try await write(durability: .full) { db in
+            guard !isCancelled() else { throw CancellationError() }
+            guard var metadata = try self.itemMetadata(ocId: ocId, in: db)?.metadata, !metadata.deleted else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+            if metadata.hasSameRemotePath(as: newServerUrl + "/" + newFileName) {
                 return metadata
             }
+            guard metadata.hasSameRemotePath(as: sourcePath) else {
+                throw NSFileProviderError(.cannotSynchronize)
+            }
+
+            metadata.serverUrl = newServerUrl
+            metadata.fileName = newFileName
+            metadata.fileNameView = newFileName
+            metadata.lockToken = nil
+            _ = try self.placeDirectory(metadata, in: db)
+            try self.insertItemMetadata(metadata, in: db)
+            guard !isCancelled() else { throw CancellationError() }
+            return metadata
         }
     }
 
     public func parentItemIdentifierFromMetadata(
         _ metadata: SendableItemMetadata
     ) -> NSFileProviderItemIdentifier? {
-        let homeServerFilesUrl = metadata.urlBase + Account.webDavFilesUrlSuffix + metadata.userId
-        let trashServerFilesUrl = metadata.urlBase + Account.webDavTrashUrlSuffix + metadata.userId + "/trash"
-
-        if metadata.serverUrl == homeServerFilesUrl {
-            return .rootContainer
-        } else if metadata.serverUrl == trashServerFilesUrl {
-            return .trashContainer
+        if let parent = account.davPath(forURL: metadata.serverUrl), parent.isRoot {
+            return parent.root == .files ? .rootContainer : .trashContainer
         }
 
         guard let parentDirectoryMetadata = parentDirectoryMetadataForItem(metadata) else {
@@ -1163,7 +1464,6 @@ public final class FilesDatabaseManager: Sendable {
     public func parentItemIdentifierWithRemoteFallback(
         fromMetadata metadata: SendableItemMetadata,
         remoteInterface: RemoteInterface,
-        account: Account,
         taskHandler: @Sendable @escaping (URLSessionTask) -> Void = { _ in },
         isCancelled: @Sendable @escaping () -> Bool = { Task.isCancelled }
     ) async -> NSFileProviderItemIdentifier? {
@@ -1174,7 +1474,6 @@ public final class FilesDatabaseManager: Sendable {
 
         let readResult = await Enumerator.readServerUrl(
             metadata.serverUrl,
-            account: account,
             sourceMetadata: metadata,
             remoteInterface: remoteInterface,
             dbManager: self,
@@ -1198,19 +1497,14 @@ public final class FilesDatabaseManager: Sendable {
         return NSFileProviderItemIdentifier(parentMetadata.ocId)
     }
 
+    /// Return metadata for this domain's materialized items.
     ///
-    /// Return metadata for materialized file provider items.
-    ///
-    /// - Parameters:
-    ///     - account: The account identifier to filter by.
-    ///
-    /// - Returns: An array of sendable metadata objects, or `nil` when the database could not be read. An empty array means nothing is materialized; `nil` must not be taken for that.
-    ///
-    public func materialisedItemMetadatas(account _: String) -> [SendableItemMetadata]? {
+    /// Returns an empty array when no items are materialized and `nil` when the database read fails.
+    public func materialisedItemMetadatas() -> [SendableItemMetadata]? {
         read("Could not fetch the materialized item metadata.") { db in
             try ItemMetadataRecord
                 .filter(ItemMetadataRecord.isMaterialised)
-                .fetchRecords(db, logger: logger)
+                .fetchRecords(db, account: account, logger: logger)
                 .map(\.metadata)
         }
     }
@@ -1228,8 +1522,11 @@ public final class FilesDatabaseManager: Sendable {
 
         return read("Could not gather pending working set changes.") { db in
             let pendingChanges = try ItemMetadataRecord
-                .filter(ItemMetadataRecord.isMaterialised && ItemMetadataRecord.syncedAfter(date))
-                .fetchRecords(db, logger: logger)
+                .filter(
+                    ItemMetadataRecord.isMaterialised
+                        && ItemMetadataRecord.syncedAfter(date)
+                )
+                .fetchRecords(db, account: account, logger: logger)
             var updatedItems = pendingChanges.filter { !$0.deleted }.map(\.metadata)
             var deletedItems = pendingChanges.filter(\.deleted).map(\.metadata)
 
@@ -1248,10 +1545,10 @@ public final class FilesDatabaseManager: Sendable {
             for serverUrl in updatedItems.filter(\.directory).map({ $0.remotePath() }) {
                 let children = try ItemMetadataRecord
                     .filter(
-                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: false)
+                        matchesParentDirectoryURL(serverUrl, includingDescendants: false)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
-                    .fetchRecords(db, logger: logger)
+                    .fetchRecords(db, account: account, logger: logger)
 
                 for child in children {
                     let sendableMetadata = child.metadata
@@ -1280,10 +1577,10 @@ public final class FilesDatabaseManager: Sendable {
             for serverUrl in deletedItems.filter(\.directory).map({ $0.remotePath() }) {
                 let children = try ItemMetadataRecord
                     .filter(
-                        ItemMetadataRecord.hasServerUrl(equalTo: serverUrl, includingDescendants: true)
+                        matchesParentDirectoryURL(serverUrl, includingDescendants: true)
                             && ItemMetadataRecord.syncedAfter(date)
                     )
-                    .fetchRecords(db, logger: logger)
+                    .fetchRecords(db, account: account, logger: logger)
 
                 for child in children {
                     guard child.isLockFileOfLocalOrigin == false else {
@@ -1309,14 +1606,15 @@ public final class FilesDatabaseManager: Sendable {
         logger.debug("Trying to find files matching pattern \"\(suffix)\".")
 
         let filesMetadata: [SendableItemMetadata] = read("Could not look up files by name suffix.", [.name: suffix]) { db -> [SendableItemMetadata] in
-            var request = ItemMetadataRecord.filter(ItemMetadataRecord.Columns.directory == false)
+            var request = ItemMetadataRecord
+                .filter(ItemMetadataRecord.Columns.directory == false)
 
             // An empty suffix matches every file name.
             if !suffix.isEmpty {
                 request = request.filter(literal: ItemMetadataRecord.fileNameEnds(with: suffix))
             }
 
-            return try request.order(ItemMetadataRecord.Columns.ocId).fetchRecords(db, logger: logger).map(\.metadata)
+            return try request.order(ItemMetadataRecord.Columns.ocId).fetchRecords(db, account: account, logger: logger).map(\.metadata)
         } ?? []
 
         guard !filesMetadata.isEmpty else {

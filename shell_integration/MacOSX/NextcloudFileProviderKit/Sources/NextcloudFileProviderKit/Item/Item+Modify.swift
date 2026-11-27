@@ -81,6 +81,9 @@ public extension Item {
                 )
             }
         }
+        guard SyncOperations.beginServerWrite() else {
+            return (nil, NSFileProviderError(.serverUnreachable))
+        }
         let (_, _, moveError) = await remoteInterface.move(
             remotePathSource: oldRemotePath,
             remotePathDestination: newRemotePath,
@@ -213,7 +216,7 @@ public extension Item {
             }
             guard files.count == 1,
                   let file = files.first,
-                  file.fullUrlMatches(remotePath)
+                  file.matchesResponseItemURL(remotePath)
             else {
                 logger.error("The move path lookup did not return exactly the requested item.", [.item: itemIdentifier, .url: remotePath])
                 throw NSFileProviderError(.cannotSynchronize)
@@ -280,19 +283,21 @@ public extension Item {
             return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
         }
 
-        guard var metadata = dbManager.itemMetadata(ocId: ocId) else {
-            logger.error("Could not acquire metadata of item.", [.item: itemIdentifier])
-            return (
-                nil,
-                NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
-            )
+        let uploadAttemptID = UUID().uuidString
+        let metadata: SendableItemMetadata
+        do {
+            guard let uploadingItem = try dbManager.beginEditedItemUpload(
+                ocId: ocId,
+                uploadAttemptID: uploadAttemptID
+            ) else {
+                logger.error("Could not find the item to upload.", [.item: itemIdentifier])
+                return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
+            }
+            metadata = uploadingItem
+        } catch {
+            logger.error("Could not start the item upload in the database.", [.item: itemIdentifier, .error: error])
+            return (nil, CocoaError(.fileWriteUnknown, userInfo: [NSUnderlyingErrorKey: error]))
         }
-
-        guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: .uploading) else {
-            logger.info("Could not acquire updated metadata of item. Unable to update item status to uploading.", [.item: itemIdentifier])
-            return (nil, NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier))
-        }
-        metadata = updatedMetadata
 
         var headers = [String: String]()
         if let token = metadata.lockToken {
@@ -370,6 +375,13 @@ public extension Item {
         )
 
         guard error == .success else {
+            guard dbManager.isForCurrentDAVAccount() else {
+                if error.isCancelledError {
+                    return (nil, CocoaError(.userCancelled))
+                }
+                return (nil, CocoaError(.fileWriteUnknown, userInfo: [NSUnderlyingErrorKey: error]))
+            }
+
             logger.error(
                 """
                 Could not upload item \(ocId)
@@ -380,18 +392,25 @@ public extension Item {
             )
 
             let shouldClearLockToken = error.isPreconditionFailedError || error.isLockedError || error.isNotFoundError
-            dbManager.recordUploadFailure(
-                ocId: ocId,
-                errorDescription: error.errorDescription,
-                staleLockToken: shouldClearLockToken ? metadata.lockToken : nil
-            )
+            let serverVersionConflict = sentIfMatch && error.isPreconditionFailedError
+            // A stopped quota or capabilities check may have already staged this attempt.
+            // Clear that state even if account replacement fails and the old database stays active.
+            // The write still checks the database and upload attempt IDs.
+            SyncOperations.Operation.$current.withValue(nil) {
+                dbManager.recordUploadFailure(
+                    ocId: ocId,
+                    uploadAttemptID: uploadAttemptID,
+                    errorDescription: error.errorDescription,
+                    staleLockToken: shouldClearLockToken ? metadata.lockToken : nil,
+                    serverVersionConflict: serverVersionConflict
+                )
+            }
+            if SyncOperations.Operation.current?.isStopped == true {
+                return (nil, NSFileProviderError(.serverUnreachable))
+            }
 
-            // We sent `If-Match`, so a 412 here means the server copy diverged
-            // from the version this edit was based on — a genuine content conflict,
-            // not merely a stale lock. Do NOT commit the rejected upload. Clear any
-            // lock token, drop the row into an error state, and re-enumerate so the
-            // server's newer version is fetched.
-            if sentIfMatch, error.isPreconditionFailedError {
+            // Refresh the server version after its ETag no longer matches the edit's base.
+            if serverVersionConflict {
                 logger.error("Upload rejected: server version changed since last sync (If-Match precondition failed).", [.item: itemIdentifier, .name: filename])
                 if let domain, let manager = NSFileProviderManager(for: domain) {
                     Task {
@@ -457,40 +476,28 @@ public extension Item {
             return await (nil, error.fileProviderError(handlingCollisionAgainstItemInRemotePath: remotePath, dbManager: dbManager, remoteInterface: remoteInterface, log: logger.log))
         }
 
-        // Upload bookkeeping may have cleared the chunk identifier.
-        metadata.chunkUploadId = dbManager.itemMetadata(ocId: ocId)?.chunkUploadId
-
         // Re-arm the per-domain dedup so a future quota event can surface a fresh summary.
         await InsufficientQuotaReporter.clearSummaryDedup(domainIdentifier: domain?.identifier)
-
-        logger.info(
-            """
-            Successfully uploaded item with identifier: \(ocId)
-            and filename: \(filename)
-            """
-        )
-
-        var newMetadata =
-            dbManager.setStatusForItemMetadata(updatedMetadata, status: .normal) ?? SendableItemMetadata(value: updatedMetadata)
 
         // Prefer the mtime we just handed to the server (and which is on disk)
         // over the truncated, second-precision value the PUT response carries
         // in `Last-Modified`. Aligning `metadata.date` with what's on disk keeps
         // NSDocument-style editors (Xcode, TextEdit, …) from seeing the file as
         // "changed by another application" right after they save it.
-        newMetadata.date = newContentModificationDate ?? date ?? metadata.date
-        newMetadata.etag = etag ?? metadata.etag
-        newMetadata.fileProviderContentVersion = newMetadata.etag
-        newMetadata.ocId = ocId
-        newMetadata.size = size ?? 0
-        newMetadata.session = ""
-        newMetadata.sessionError = ""
-        newMetadata.sessionTaskIdentifier = 0
-        newMetadata.downloaded = true
-        newMetadata.uploaded = true
-        newMetadata.chunkUploadId = metadata.chunkUploadId
-
-        dbManager.addItemMetadata(newMetadata)
+        let newMetadata: SendableItemMetadata
+        do {
+            newMetadata = try dbManager.completeEditedItemUpload(
+                ocId: ocId,
+                uploadAttemptID: uploadAttemptID,
+                etag: etag,
+                date: newContentModificationDate ?? date,
+                size: size
+            )
+        } catch {
+            logger.error("Could not save the upload result in the database.", [.item: itemIdentifier, .error: error])
+            return (nil, CocoaError(.fileWriteUnknown, userInfo: [NSUnderlyingErrorKey: error]))
+        }
+        logger.info("Successfully uploaded item.", [.item: itemIdentifier, .name: filename])
 
         let displayFileActions = await Item.typeHasApplicableContextMenuItems(account: account, remoteInterface: remoteInterface, candidate: newMetadata.contentType)
 
@@ -623,28 +630,28 @@ public extension Item {
 
         var newParentItemRemoteUrl: String
 
-        // The target parent should already be present in our database. The system will have synced
-        // remote changes and then, upon user interaction, will try to modify the item.
-        // That is, if the parent item has changed at all (it might not have)
         if newParentItemIdentifier == .rootContainer {
             newParentItemRemoteUrl = account.davFilesUrl
         } else if newParentItemIdentifier == .trashContainer {
             newParentItemRemoteUrl = account.trashUrl
         } else {
-            guard let parentItemMetadata = dbManager.directoryMetadata(ocId: newParentItemIdentifier.rawValue) else {
-                logger.error("Not modifying item, could not find metadata for target parentItemIdentifier \"\(newParentItemIdentifier.rawValue)\"!", [.item: modifiedItem])
-                return (
-                    nil,
-                    NSError.fileProviderErrorForNonExistentItem(withIdentifier: itemIdentifier)
+            do {
+                let destination = try Self.destinationFolderMetadata(
+                    for: newParentItemIdentifier,
+                    account: account,
+                    dbManager: dbManager
                 )
+                guard !destination.metadata.isAtHoldingPath
+                    || changedFields.isDisjoint(with: [.contents, .filename, .parentItemIdentifier])
+                else {
+                    logger.info("Not modifying an item whose target folder waits to be placed again by a listing.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
+                    return (nil, NSFileProviderError(.cannotSynchronize))
+                }
+                newParentItemRemoteUrl = destination.metadata.remotePath()
+            } catch {
+                logger.error("Could not look up the destination folder before modifying the item.", [.item: newParentItemIdentifier, .error: error])
+                return (nil, error)
             }
-
-            guard !parentItemMetadata.isAtHoldingPath || !changedFields.contains(.parentItemIdentifier) else {
-                logger.info("Not modifying an item whose target folder waits to be placed again by a listing.", [.item: modifiedItem.itemIdentifier, .name: itemTarget.filename])
-                return (nil, NSFileProviderError(.cannotSynchronize))
-            }
-
-            newParentItemRemoteUrl = parentItemMetadata.serverUrl + "/" + parentItemMetadata.fileName
         }
 
         let newServerUrlFileName = newParentItemRemoteUrl + "/" + itemTarget.filename
@@ -673,6 +680,12 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
+            let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
+            let deleteFromServer = hasRemoteCounterpart && !modifiedItem.metadata.isTrashed
+            if deleteFromServer, !SyncOperations.beginServerWrite() {
+                return (nil, NSFileProviderError(.serverUnreachable))
+            }
+
             // The provider will call deleteItem after receiving .excludedFromSync. Persist this
             // intent before deleting remotely so a successful remote delete cannot be followed by
             // an unrecognised local deletion if the database write fails.
@@ -681,8 +694,7 @@ public extension Item {
                 return (nil, NSFileProviderError(.cannotSynchronize))
             }
 
-            let hasRemoteCounterpart = modifiedItem.isUploaded || !modifiedItem.metadata.etag.isEmpty
-            if hasRemoteCounterpart, !modifiedItem.metadata.isTrashed {
+            if deleteFromServer {
                 switch await modifiedItem.deleteRemoteItem(domain: domain, dbManager: dbManager) {
                     case .success:
                         if let domain, let destinationRelativePath {

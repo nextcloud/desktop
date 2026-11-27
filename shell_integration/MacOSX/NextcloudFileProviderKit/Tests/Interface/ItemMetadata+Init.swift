@@ -24,7 +24,6 @@ public extension SendableItemMetadata {
             name: fileName,
             ownerId: "",
             ownerDisplayName: "",
-            path: "",
             serverUrl: account.davFilesUrl,
             size: 0,
             urlBase: account.serverUrl,

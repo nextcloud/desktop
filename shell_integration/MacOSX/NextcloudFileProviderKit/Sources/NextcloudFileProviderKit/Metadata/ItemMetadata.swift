@@ -68,7 +68,6 @@ public protocol ItemMetadata: Equatable {
     var lockTime: Date? { get set } // Time the file was locked
     var lockTimeOut: Date? { get set } // Time the file's lock will expire
     var lockToken: String? { get set }
-    var path: String { get set }
     var permissions: String { get set }
     var shareType: [Int] { get set }
     var quotaUsedBytes: Int64 { get set }
@@ -137,8 +136,12 @@ public extension ItemMetadata {
         status == Status.inUpload.rawValue || status == Status.uploading.rawValue
     }
 
+    internal var hasUnfinishedUpload: Bool {
+        isUpload || (!uploaded && status == Status.uploadError.rawValue)
+    }
+
     var isTrashed: Bool {
-        serverUrl.hasPrefix(urlBase + Account.webDavTrashUrlSuffix + userId + "/trash")
+        Account.davPath(forURL: serverUrl, accountBaseURL: urlBase, backendUserID: userId)?.root == .trash
     }
 
     mutating func apply(fileName: String) {
@@ -198,15 +201,34 @@ public extension ItemMetadata {
             ])
     }
 
+    /// The WebDAV path of the item's parent folder, sent to the desktop app as `remoteItemPath` over XPC.
+    /// For example, `https://cloud.example.com:8443/nextcloud/remote.php/dav/files/alice/Team`
+    /// becomes `/nextcloud/remote.php/dav/files/alice/Team/`.
+    internal var davParentPathWithoutOrigin: String {
+        // The URL already contains decoded folder names. Keep literal "#" and "?" characters in the path.
+        guard let scheme = serverUrl.range(of: "://"),
+              let pathStart = serverUrl[scheme.upperBound...].firstIndex(of: "/")
+        else { return "" }
+
+        let path = serverUrl[pathStart...]
+        return path.hasSuffix("/") ? String(path) : path + "/"
+    }
+
+    internal var isFilesRoot: Bool {
+        ocId == NSFileProviderItemIdentifier.rootContainer.rawValue || (directory && fileName == SendableItemMetadata.filesRootPlaceholderName)
+    }
+
+    internal var isFilesRootWithServerID: Bool {
+        isFilesRoot && ocId != NSFileProviderItemIdentifier.rootContainer.rawValue
+    }
+
     /// Whether the row is a parked directory or below one, so its path exists only in the database.
     var isAtHoldingPath: Bool {
         remotePath().contains(FilesDatabaseManager.holdingNameSeparator)
     }
 
     func remotePath() -> String {
-        if ocId == NSFileProviderItemIdentifier.rootContainer.rawValue {
-            // For the root container the fileName is defined by NextcloudKit.shared.nkCommonInstance.rootFileName.
-            // --> appending the fileName to that is not correct, as it most likely won't exist.
+        if isFilesRoot {
             return serverUrl
         }
 

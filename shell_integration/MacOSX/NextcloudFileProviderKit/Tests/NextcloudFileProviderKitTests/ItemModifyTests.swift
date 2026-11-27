@@ -304,7 +304,6 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             let page = await Enumerator.readServerUrl(
                 Self.account.davFilesUrl,
                 pageSettings: (nil, 0, 100),
-                account: Self.account,
                 remoteInterface: listingInterface,
                 dbManager: dbManager,
                 log: log
@@ -350,6 +349,55 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
     func testCancellationDuringUploadRemainsUnuploaded() async throws {
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: nil, cancelDuringUpload: true)
         try await assertFailedContentModificationRemainsUnuploaded(errorCode: NSURLErrorCancelled, chunkSize: 2, cancelDuringUpload: true)
+    }
+
+    func testOlderUploadCannotCompleteNewerEdit() async throws {
+        let remote = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        let cached = remoteItem.toItemMetadata(account: Self.account)
+        let dbManager = Self.dbManager
+        dbManager.addItemMetadata(cached)
+        let item = Item(
+            metadata: cached,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remote,
+            dbManager: dbManager
+        )
+        let editedContents = Data("First edit".utf8)
+        let contentsURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: contentsURL) }
+        try editedContents.write(to: contentsURL)
+
+        let ocId = cached.ocId
+        let newerAttemptID = UUID().uuidString
+        remote.uploadHandler = {
+            do {
+                _ = try XCTUnwrap(dbManager.beginEditedItemUpload(
+                    ocId: ocId,
+                    uploadAttemptID: newerAttemptID
+                ))
+            } catch {
+                XCTFail("Could not stage the newer edit: \(error)")
+            }
+        }
+
+        let (modified, error) = await item.modify(
+            itemTarget: item,
+            baseVersion: item.itemVersion,
+            changedFields: [.contents],
+            contents: contentsURL,
+            dbManager: dbManager
+        )
+
+        XCTAssertNil(modified)
+        XCTAssertEqual((error as? CocoaError)?.code, .fileWriteUnknown)
+        XCTAssertEqual(remote.uploadOperationCount, 1)
+        XCTAssertEqual(remoteItem.data, editedContents)
+        let stored = try XCTUnwrap(dbManager.itemMetadata(ocId: ocId))
+        XCTAssertEqual(stored.etag, cached.etag)
+        XCTAssertEqual(stored.session, newerAttemptID)
+        XCTAssertEqual(stored.status, Status.uploading.rawValue)
+        XCTAssertFalse(stored.uploaded)
     }
 
     func testCancellationDuringSuccessfulChunkAssemblyPersistsModifiedItem() async throws {
@@ -452,6 +500,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             dbManager: Self.dbManager
         )
         XCTAssertNil(error)
+        XCTAssertEqual(remoteInterface.readOperationCount, 1, "The upload only reads the destination quota.")
         let modifiedItem = try XCTUnwrap(modifiedItemMaybe)
 
         XCTAssertEqual(modifiedItem.itemIdentifier, targetItem.itemIdentifier)
@@ -739,6 +788,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
         let updatedMetadata = Self.dbManager.itemMetadata(ocId: itemMetadata.ocId)
         XCTAssertNil(updatedMetadata?.lockToken, "Stale lock token must be cleared on 412.")
+        XCTAssertEqual(updatedMetadata?.hasUnfinishedUpload, true)
     }
 
     /// With conflict detection active, the content upload must carry an
@@ -1307,7 +1357,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
             manager.addItemMetadata(cachedMetadata)
 
             let storedDestination = try XCTUnwrap(
-                manager.itemMetadata(account: account.ncKitAccount, locatedAtRemoteUrl: destinationPath)
+                manager.itemMetadata(locatedAtRemoteUrl: destinationPath)
             )
             XCTAssertEqual(storedDestination.ocId, cachedMetadata.ocId)
 
@@ -1700,6 +1750,7 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(error as? NSFileProviderError, NSFileProviderError(.excludedFromSync))
         XCTAssertEqual(modifiedItem?.filename, "item.blend1")
         XCTAssertEqual(remoteInterface.lastDeleteRemotePath, itemMetadata.remotePath())
+        XCTAssertEqual(remoteInterface.readOperationCount, 0)
         XCTAssertTrue(markerRecorder.wasPresent)
         XCTAssertFalse(rootItem.children.contains { $0.identifier == remoteItem.identifier })
         XCTAssertTrue(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))

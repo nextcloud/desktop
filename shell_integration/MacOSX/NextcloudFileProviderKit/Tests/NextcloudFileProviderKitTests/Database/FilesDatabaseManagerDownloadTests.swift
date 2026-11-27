@@ -28,7 +28,7 @@ extension DatabaseTestSuites {
             var metadata = SendableItemMetadata(ocId: operation.ocId, fileName: operation.ocId, account: DatabaseTestSuites.account)
             metadata.directory = true
             manager.addItemMetadata(metadata)
-            _ = try #require(manager.beginDownload(operation))
+            _ = try #require(try manager.beginDownload(operation))
             return operation
         }
 
@@ -48,7 +48,7 @@ extension DatabaseTestSuites {
                 metadata.fileProviderContentVersion = "local-version"
                 metadatas[metadata.ocId] = metadata
                 manager.addItemMetadata(metadata)
-                let started = try #require(manager.beginDownload(operation))
+                let started = try #require(try manager.beginDownload(operation))
                 #expect(started.status == Status.downloading.rawValue)
                 #expect(!started.downloaded)
             }
@@ -76,7 +76,6 @@ extension DatabaseTestSuites {
             manager.addItemMetadata(child)
 
             let deletion = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent],
                 keepExistingDownloadState: true
@@ -91,7 +90,6 @@ extension DatabaseTestSuites {
             received.lockToken = nil
             received.fileProviderContentVersion = ""
             let read = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent, received],
                 keepExistingDownloadState: true
@@ -108,7 +106,6 @@ extension DatabaseTestSuites {
             #expect(stored.fileProviderContentVersion == child.fileProviderContentVersion)
 
             let repeated = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: account.ncKitAccount,
                 serverUrl: parent.remotePath(),
                 updatedMetadatas: [parent, received],
                 keepExistingDownloadState: true
@@ -132,7 +129,6 @@ extension DatabaseTestSuites {
             received.keepDownloaded = false
             received.fileProviderContentVersion = ""
             let changes = try #require(manager.depth1ReadUpdateItemMetadatas(
-                account: DatabaseTestSuites.account.ncKitAccount,
                 serverUrl: directory.remotePath(),
                 updatedMetadatas: [received],
                 keepExistingDownloadState: true
@@ -164,7 +160,6 @@ extension DatabaseTestSuites {
                     received.status = Status.normal.rawValue
                     received.sessionError = ""
                     let changes = try #require(manager.depth1ReadUpdateItemMetadatas(
-                        account: DatabaseTestSuites.account.ncKitAccount,
                         serverUrl: metadata.serverUrl,
                         updatedMetadatas: [received],
                         keepExistingDownloadState: true
@@ -301,7 +296,7 @@ extension DatabaseTestSuites {
 
                     try manager.ensurePackageDownloadMembersExist([received], for: operation)
                     let child = operation.childOperation(for: metadata.ocId)
-                    let staged = try #require(manager.beginDownload(child, listedMetadata: received, allowsDeletedPackageMember: true))
+                    let staged = try #require(try manager.beginDownload(child, listedMetadata: received, allowsDeletedPackageMember: true))
                     defer { _ = try? manager.finishDownload(child, status: .normal, downloaded: false) }
                     #expect(staged.deleted)
                     try manager.finishDownload(child, status: .normal, downloaded: false)
@@ -369,7 +364,7 @@ extension DatabaseTestSuites {
             let operation = try makeDirectoryDownloadOperation()
             let log = FileProviderLogMock()
             let newer = DownloadOperation(ocId: operation.ocId, cancellation: NetworkOperationCancellation(log: log), log: log)
-            _ = try #require(manager.beginDownload(newer))
+            _ = try #require(try manager.beginDownload(newer))
             defer { _ = try? manager.finishDownload(newer, status: .normal, downloaded: false) }
             let metadata = SendableItemMetadata(ocId: UUID().uuidString, fileName: UUID().uuidString, account: DatabaseTestSuites.account)
 
@@ -425,6 +420,31 @@ extension DatabaseTestSuites {
                 expected.sessionError = ""
                 #expect(manager.itemMetadata(ocId: expected.ocId) == expected)
             }
+        }
+
+        @Test func directoryDownloadCannotOverwriteChildUploadThatStartsAfterDownload() throws {
+            let (root, children, metadatas) = try makeDirectoryDownloadOperations()
+            defer {
+                for operation in [root] + children {
+                    _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
+                }
+            }
+            let child = children[0]
+            let uploadAttemptID = UUID().uuidString
+            let uploading = try #require(try manager.beginEditedItemUpload(
+                ocId: child.ocId,
+                uploadAttemptID: uploadAttemptID
+            ))
+
+            expectError(NSFileProviderError(.cannotSynchronize)) {
+                try manager.finishDirectoryDownload(root, children: children, metadatas: metadatas)
+            }
+            expectError(NSFileProviderError(.cannotSynchronize)) {
+                try manager.finishDownload(child, status: .normal, downloaded: false)
+            }
+
+            #expect(manager.itemMetadata(ocId: child.ocId) == uploading)
+            #expect(manager.itemMetadata(ocId: root.ocId)?.downloaded == false)
         }
 
         @Test func directoryDownloadCompletionRejectsMissingListingWithoutPublishing() throws {
@@ -531,13 +551,13 @@ extension DatabaseTestSuites {
             defer { _ = try? manager.finishDownload(operation, status: .normal, downloaded: false) }
             var listed = child
             listed.serverUrl = account.davFilesUrl + "/source"
-            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            #expect(try manager.beginDownload(operation, listedMetadata: listed) == nil)
             listed.serverUrl = child.serverUrl
             listed.etag = "previous-version"
-            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            #expect(try manager.beginDownload(operation, listedMetadata: listed) == nil)
             listed.etag = child.etag
             listed.apply(fileName: "previous-name.txt")
-            #expect(manager.beginDownload(operation, listedMetadata: listed) == nil)
+            #expect(try manager.beginDownload(operation, listedMetadata: listed) == nil)
             #expect(manager.itemMetadata(ocId: child.ocId) == stored)
         }
 
@@ -582,7 +602,7 @@ extension DatabaseTestSuites {
                         _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                     }
                 }
-                _ = try #require(manager.beginDownload(newer))
+                _ = try #require(try manager.beginDownload(newer))
                 if newerCompleted {
                     try manager.finishDownload(newer, status: .normal, downloaded: true)
                 }
@@ -623,7 +643,7 @@ extension DatabaseTestSuites {
                 _ = try? manager.finishDownload(operation, status: .normal, downloaded: false)
                 _ = try? reopened.finishDownload(newer, status: .normal, downloaded: false)
             }
-            _ = try #require(reopened.beginDownload(newer))
+            _ = try #require(try reopened.beginDownload(newer))
             try reopened.finishDownload(newer, status: .normal, downloaded: true)
             let expected = try #require(reopened.itemMetadata(ocId: operation.ocId))
 

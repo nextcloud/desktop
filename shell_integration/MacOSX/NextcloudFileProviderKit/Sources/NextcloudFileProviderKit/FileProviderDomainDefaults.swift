@@ -20,6 +20,7 @@ public struct FileProviderDomainDefaults {
         case user
         case userId
         case serverUrl
+        case accountForSetupRetry
         case lastSeenExtensionVersion
         case debugLoggingEnabled
         case blockSync
@@ -81,6 +82,33 @@ public struct FileProviderDomainDefaults {
                 internalConfig.removeValue(forKey: ConfigKey.latestSeenDatabaseVersion.rawValue)
             }
         }
+    }
+
+    var configuredDAVAccountIdentity: DAVAccountIdentity? {
+        guard let user, let serverUrl, let userId else { return nil }
+        return DAVAccountIdentity(username: user, serverBaseURL: serverUrl, backendUserID: userId)
+    }
+
+    /// The incoming account Finder uses to retry setup, including after an extension restart.
+    var accountForSetupRetry: DAVAccountIdentity? {
+        get {
+            let fields = internalConfig[ConfigKey.accountForSetupRetry.rawValue] as? [String]
+            return fields.flatMap(DAVAccountIdentity.init(serializedFields:))
+        }
+
+        set {
+            internalConfig[ConfigKey.accountForSetupRetry.rawValue] = newValue?.serializedFields
+        }
+    }
+
+    /// Replace the domain's configured account and clear the details saved for Finder retries.
+    mutating func recordAccountAfterDatabaseSetup(_ account: Account) {
+        var settings = internalConfig
+        settings[ConfigKey.serverUrl.rawValue] = account.serverUrl
+        settings[ConfigKey.user.rawValue] = account.username
+        settings[ConfigKey.userId.rawValue] = account.id
+        settings.removeValue(forKey: ConfigKey.accountForSetupRetry.rawValue)
+        internalConfig = settings
     }
 
     ///

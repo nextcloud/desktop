@@ -41,72 +41,84 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
     func authenticate() async -> NSError? {
         logger.info("Authenticating.")
 
-        guard let user = fpExtension.config.user, let userId = fpExtension.config.userId, let serverUrl = fpExtension.config.serverUrl, let password = fpExtension.keychain.getPassword(for: user) else {
+        guard let account = fpExtension.storedAccountForAuthentication() else {
             logger.error("Cannot authenticate because account information is missing.", [.domain: fpExtension.domain.identifier.rawValue])
             return NSError(.missingAccountInformation)
         }
 
         return await withCheckedContinuation { continuation in
-            fpExtension.setupDomainAccount(user: user, userId: userId, serverUrl: serverUrl, password: password) { error in
+            fpExtension.setupDomainAccount(
+                user: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl,
+                password: account.password
+            ) { error in
                 continuation.resume(returning: error)
             }
         }
     }
 
     func userAgent() async -> NSString? {
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
             return nil
         }
+        defer { operation.finish() }
 
-        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: account)
+        let nkSession = fpExtension.ncKit.nkCommonInstance.nksessions.session(forAccount: dbManager.account.ncKitAccount)
+        guard operation.beginDelivery() else { return nil }
         return nkSession?.userAgent as NSString?
     }
 
     func credentials() async -> NSDictionary {
-        (fpExtension.ncAccount?.dictionary() ?? [:]) as NSDictionary
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
+            return [:]
+        }
+        defer { operation.finish() }
+        guard operation.beginDelivery() else { return [:] }
+        return dbManager.account.dictionary() as NSDictionary
     }
 
     func itemServerPath(identifier: NSFileProviderItemIdentifier) async -> NSString? {
-        let rawIdentifier = identifier.rawValue
-        logger.info("Fetching shares for item \(rawIdentifier)")
+        logger.info("Looking up the item path for the File Provider UI.", [.item: identifier])
 
-        guard let baseUrl = fpExtension.ncAccount?.davFilesUrl else {
-            logger.error("Could not fetch shares as ncAccount on parent extension is nil")
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
+            logger.error("Could not fetch the item path because the account is unavailable.", [.item: identifier])
             return nil
         }
-
-        guard let account = fpExtension.ncAccount?.ncKitAccount else {
-            logger.error("Could not fetch ncKitAccount on parent extension")
-            return nil
-        }
-        guard let dbManager = fpExtension.dbManager else {
-            logger.error("Could not get db manager for \(account)")
-            return nil
-        }
+        defer { operation.finish() }
         guard let item = dbManager.itemMetadata(identifier) else {
-            logger.error("No item \(rawIdentifier) in db, no shares.")
+            logger.error("Could not fetch the item path because metadata is missing.", [.item: identifier])
             return nil
         }
 
-        let completePath = item.serverUrl + "/" + item.fileName
-        return completePath.replacingOccurrences(of: baseUrl, with: "") as NSString
+        let remotePath = item.remotePath()
+        let filesPath = item.isFilesRoot && !remotePath.hasSuffix("/") ? remotePath + "/" : remotePath
+        guard let relativePath = dbManager.account.filesRootRelativePath(for: filesPath) else {
+            logger.error("Could not fetch the item path because it is outside the account's Files root.", [.item: identifier])
+            return nil
+        }
+        guard operation.beginDelivery() else { return nil }
+        return ("/" + relativePath) as NSString
     }
 
     func presentUnifiedSharingDialog(identifier: NSFileProviderItemIdentifier, localPath: NSString) async -> Bool {
-        guard let account = fpExtension.ncAccount else {
+        guard let (dbManager, operation) = try? fpExtension.beginSyncOperation() else {
             logger.error("Could not present unified sharing because the account is unavailable.", [.item: identifier])
             return false
         }
+        defer { operation.finish() }
 
-        guard let dbManager = fpExtension.dbManager,
-              let metadata = dbManager.itemMetadata(identifier),
+        guard let metadata = dbManager.itemMetadata(identifier),
               !metadata.fileId.isEmpty
         else {
             logger.error("Could not present unified sharing because the item metadata or numeric file id is unavailable.", [.item: identifier])
             return false
         }
 
-        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(account: account)
+        let (_, capabilities, _, error) = await fpExtension.ncKit.fetchCapabilities(
+            account: dbManager.account,
+            taskHandler: { operation.registerReadTask($0) }
+        )
         guard error == .success else {
             logger.error("Could not determine whether unified sharing is supported.", [.item: identifier, .error: error])
             return false
@@ -121,12 +133,13 @@ class FPUIExtensionServiceSource: NSObject, NSFileProviderServiceSource, NSXPCLi
             logger.error("Could not present unified sharing because the main app connection is unavailable.", [.item: identifier])
             return false
         }
+        guard operation.beginDelivery() else { return false }
 
         let domainIdentifier = fpExtension.domain.identifier.rawValue
         app.presentUnifiedSharing(
             forItem: metadata.fileId,
             localPath: localPath as String,
-            remoteItemPath: metadata.path,
+            remoteItemPath: metadata.davParentPathWithoutOrigin,
             forDomainIdentifier: domainIdentifier
         )
         logger.info("Asked the main app to present unified sharing.", [.item: identifier, .domain: fpExtension.domain.identifier])

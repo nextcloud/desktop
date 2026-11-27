@@ -168,7 +168,7 @@ final class ChangeDeliveryBuffer: @unchecked Sendable {
         var deleted = [SendableItemMetadata]()
 
         for item in batch.items {
-            guard let metadata = try? decoder.decode(SendableItemMetadata.self, from: item.metadataData) else {
+            guard let metadata = try? ChangeDeliveryItemRecord.decodeMetadata(item.metadataData, using: decoder) else {
                 // The batch is not delivered, so do not leave it reported.
                 logger.error("Could not decode change delivery item.")
                 dbManager.removeChangeDeliverySessions(containerKey: containerKey)

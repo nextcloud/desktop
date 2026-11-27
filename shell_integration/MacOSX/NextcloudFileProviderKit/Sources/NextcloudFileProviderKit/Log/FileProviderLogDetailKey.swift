@@ -51,6 +51,11 @@ public enum FileProviderLogDetailKey: String, Sendable {
     case materializedCount
 
     ///
+    /// The number of item metadata rows skipped during import.
+    ///
+    case skippedCount
+
+    ///
     /// An `NKLock` as provided by NextcloudKit when a file system item is locked on the server.
     ///
     case lock

@@ -9,57 +9,6 @@ import NextcloudFileProviderKitMocks
 @testable import NextcloudKit
 import Testing
 
-struct StoredItemLookupTests {
-    enum ChildState: CaseIterable {
-        case live, deleted, absent
-    }
-
-    @Test(arguments: ChildState.allCases)
-    func itemLookupDistinguishesAnUnresolvedParentFromAMissingChild(state: ChildState) async throws {
-        let account = Account(user: UUID().uuidString, id: "current", serverUrl: "https://lookup.invalid", password: "password")
-        let previous = Account(user: account.username, id: "previous", serverUrl: account.serverUrl, password: account.password)
-        let domain = NSFileProviderDomain(identifier: .init(UUID().uuidString), displayName: "Lookup test")
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let manager = try FilesDatabaseManager(
-            account: account,
-            databaseDirectory: directory,
-            fileProviderDomainIdentifier: domain.identifier,
-            log: FileProviderLogMock()
-        )
-        let provider = FileProviderExtension(domain: domain)
-        defer { provider.invalidate() }
-        provider.ncAccount = account
-        provider.dbManager = manager
-
-        let identifier = NSFileProviderItemIdentifier("known-child")
-        if state != .absent {
-            var child = DatabaseTestSuites.makeFile(
-                ocId: identifier.rawValue,
-                fileName: "report.pdf",
-                serverUrl: previous.davFilesUrl + "/uncached-parent",
-                account: previous
-            )
-            child.deleted = state == .deleted
-            try manager.insertForTesting(child)
-            try #require(manager.parentItemIdentifierFromMetadata(child) == nil)
-        }
-
-        let (hasItem, errorCode): (Bool, NSFileProviderError.Code?) = await withCheckedContinuation { continuation in
-            _ = provider.item(for: identifier, request: NSFileProviderRequest()) { item, error in
-                continuation.resume(returning: (item != nil, (error as? NSFileProviderError)?.code))
-            }
-        }
-
-        #expect(!hasItem)
-        #expect(errorCode == (state == .live ? .cannotSynchronize : .noSuchItem))
-        if state == .live {
-            #expect(manager.itemMetadata(identifier)?.deleted == false)
-        }
-    }
-}
-
 /// The mutation callbacks read the same process-wide blockSync setting as the tests in this serialized suite.
 extension BlockSyncTests {
     enum StoredItemMutation {
@@ -90,8 +39,7 @@ extension BlockSyncTests {
         let remote = NextcloudKit()
         let provider = FileProviderExtension(domain: domain, ncKit: remote)
         defer { provider.invalidate() }
-        provider.ncAccount = account
-        provider.dbManager = manager
+        try #require(provider.publishDatabaseManager(manager, generation: provider.setupGeneration))
         provider.ignoredFiles = IgnoredFilesMatcher(ignoreList: [], log: FileProviderLogMock())
 
         let identifier = NSFileProviderItemIdentifier("known-child")
