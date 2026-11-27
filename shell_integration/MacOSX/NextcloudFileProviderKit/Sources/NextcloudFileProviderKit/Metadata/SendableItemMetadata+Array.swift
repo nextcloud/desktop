@@ -1,6 +1,7 @@
 //  SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
 //  SPDX-License-Identifier: LGPL-3.0-or-later
 
+@preconcurrency import FileProvider
 import Foundation
 
 extension [SendableItemMetadata] {
@@ -15,6 +16,16 @@ extension [SendableItemMetadata] {
         return try await concurrentChunkedCompactMap { (itemMetadata: SendableItemMetadata) -> Item? in
             guard !itemMetadata.ocId.isEmpty else {
                 logger.error("Skipping metadata with empty ocId in enumeration.", [.name: itemMetadata.fileName, .url: itemMetadata.serverUrl])
+                return nil
+            }
+
+            // Reporting the server ID would create a second item for the root macOS tracks as .rootContainer.
+            if itemMetadata.directory,
+               itemMetadata.fileName.utf8.elementsEqual(account.id.utf8),
+               itemMetadata.ocId != NSFileProviderItemIdentifier.rootContainer.rawValue,
+               itemMetadata.account.utf8.elementsEqual(account.ncKitAccount.utf8),
+               account.isDAVFilesRootURL(itemMetadata.remotePath(), sourceMetadata: itemMetadata)
+            {
                 return nil
             }
 

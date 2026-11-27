@@ -62,11 +62,33 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     }
 
     func ownsDAVReadURL(_ url: String, sourceMetadata: SendableItemMetadata? = nil) -> Bool {
+        matchesDAVURL(
+            url,
+            roots: [davFilesUrl, trashUrl],
+            includesDescendants: true,
+            sourceMetadata: sourceMetadata
+        )
+    }
+
+    func isDAVFilesRootURL(_ url: String, sourceMetadata: SendableItemMetadata) -> Bool {
+        matchesDAVURL(
+            url,
+            roots: [davFilesUrl],
+            includesDescendants: false,
+            sourceMetadata: sourceMetadata
+        )
+    }
+
+    private func matchesDAVURL(
+        _ url: String,
+        roots: [String],
+        includesDescendants: Bool,
+        sourceMetadata: SendableItemMetadata?
+    ) -> Bool {
         func matches(_ root: String) -> Bool {
-            url.utf8.elementsEqual(root.utf8) || url.utf8.starts(with: (root + "/").utf8)
+            url.utf8.elementsEqual(root.utf8) || (includesDescendants && url.utf8.starts(with: (root + "/").utf8))
         }
 
-        let roots = [davFilesUrl, trashUrl]
         if roots.contains(where: matches) {
             return true
         }
