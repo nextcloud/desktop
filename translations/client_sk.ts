@@ -1854,7 +1854,7 @@ Táto akcia preruší každú aktuálne prebiehajúcu synchronizáciu.</translat
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>Pri použití virtuálnych súborov môžu byť súbory a priečinky z tohto zariadenia natrvalo vymazané, ak ich nemožno presunúť do koša.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4895,7 +4895,7 @@ Upozorňujeme, že použitie ľubovoľných možností príkazového riadka na z
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa načítať lokálny súbor. Pri neskoršej synchronizácii sa znova skontroluje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>

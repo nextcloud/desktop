@@ -1854,7 +1854,7 @@ Denne handling afbryder alle igangværende synkroniseringer.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>Med virtuelle filer kan filer og mapper blive slettet permanent fra denne enhed, hvis de ikke kan flyttes til papirkurven.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4895,7 +4895,7 @@ Bemærk, at logningsindstillinger på kommandolinjen tilsidesætter denne indsti
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>Den lokale fil kunne ikke læses. Den bliver tjekket igen ved en senere synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>
