@@ -602,6 +602,7 @@ void Folder::startVfs()
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
+    vfsParams.excludedFiles = &_engine->excludedFiles();
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
     vfsParams.socketPath = FolderMan::instance()->socketApi()->socketPath();

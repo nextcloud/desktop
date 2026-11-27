@@ -16,6 +16,7 @@
 #include "syncengine.h"
 #include "vfs/cfapi/cfapiwrapper.h"
 
+#include <QProcess>
 #include <QtTest>
 
 using namespace Qt::StringLiterals;
@@ -1784,6 +1785,54 @@ private Q_SLOTS:
         QVERIFY(fakeFolder.syncOnce());
         const auto directoryItem = fakeFolder.remoteModifier().find("directory");
         QCOMPARE(directoryItem, nullptr);
+    }
+
+    void testOnDemandFolderHonorsExclusions_data()
+    {
+        QTest::addColumn<QString>("excludedName");
+        QTest::newRow("lowercase") << u"desktop.ini"_s;
+        QTest::newRow("mixed case") << u"Desktop.INI"_s;
+        QTest::newRow("DS_Store") << u".DS_Store"_s;
+        QTest::newRow("Thumbs.db") << u"Thumbs.db"_s;
+        QTest::newRow("custom exclusion") << u"ignored.tmp"_s;
+    }
+
+    void testOnDemandFolderHonorsExclusions()
+    {
+        QFETCH(QString, excludedName);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        setupVfs(fakeFolder);
+        auto &excludes = fakeFolder.syncEngine().excludedFiles();
+        excludes.addManualExclude(u"].DS_Store"_s);
+        excludes.addManualExclude(u"]Thumbs.db"_s);
+        excludes.addManualExclude(u"ignored.tmp"_s);
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/control.txt");
+        fakeFolder.remoteModifier().insert(u"A/"_s + excludedName);
+        QVERIFY(fakeFolder.syncOnce());
+
+        const auto path = fakeFolder.localPath() + u"A"_s;
+        const auto initialState = placeholderState(path);
+        QVERIFY(initialState != CF_PLACEHOLDER_STATE_INVALID);
+        QVERIFY(initialState & CF_PLACEHOLDER_STATE_PARTIALLY_ON_DISK);
+        // Windows blocks implicit population initiated by the sync client itself.
+        auto environment = QProcessEnvironment::systemEnvironment();
+        environment.insert(u"NC_TEST_DIRECTORY"_s, QDir::toNativeSeparators(path));
+        QProcess enumeration;
+        enumeration.setProcessEnvironment(environment);
+        enumeration.setProgram(u"cmd.exe"_s);
+        enumeration.setNativeArguments(u"/d /c dir /a \"%NC_TEST_DIRECTORY%\""_s);
+        enumeration.start();
+        QVERIFY(enumeration.waitForStarted());
+        QTRY_COMPARE(enumeration.state(), QProcess::NotRunning);
+        QCOMPARE(enumeration.exitStatus(), QProcess::NormalExit);
+        QCOMPARE(enumeration.exitCode(), 0);
+
+        const auto controlState = placeholderState(path + u"/control.txt"_s);
+        QVERIFY(controlState != CF_PLACEHOLDER_STATE_INVALID);
+        QVERIFY(controlState & CF_PLACEHOLDER_STATE_PLACEHOLDER);
+        QCOMPARE(placeholderState(path + u'/' + excludedName), CF_PLACEHOLDER_STATE_INVALID);
     }
 
     void syncFoldersOnDemand()

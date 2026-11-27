@@ -1248,7 +1248,11 @@ void Account::setAskUserForMnemonic(const bool ask)
     Q_EMIT askUserForMnemonicChanged();
 }
 
-void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, const QString &remoteSyncRootPath, const QString &subPath, SyncJournalDb *journalForFolder)
+void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
+                               const QString &remoteSyncRootPath,
+                               const QString &subPath,
+                               SyncJournalDb *journalForFolder,
+                               QPointer<ExcludedFiles> excludedFiles)
 {
     qCInfo(lcAccount()) << "ls col job requested for" << subPath;
 
@@ -1294,7 +1298,7 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         syncRootPath = syncRootPath.mid(baseRemotePath.size());
     }
 
-    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, [promise, remoteSyncRootPath, syncRootPath, journalForFolder, this](const QString &completeDavPath, const QMap<QString, QString> &properties) {
+    auto appendEntry = [promise, syncRootPath, journalForFolder, excludedFiles, this](const QString &completeDavPath, const QMap<QString, QString> &properties) {
         if (!sender()->property("ignoredFirst").toBool()) {
             qCDebug(lcAccount()) << "skip first item";
             sender()->setProperty("ignoredFirst", true);
@@ -1318,8 +1322,13 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         newEntry.size = -1;
 
         LsColJob::propertyMapToRemoteInfo(properties,
-                                          serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
+                                          serverHasMountRootProperty() ? RemotePermissions::MountedPermissionAlgorithm::UseMountRootProperty
+                                                                       : RemotePermissions::MountedPermissionAlgorithm::WildGuessMountedSubProperty,
                                           newEntry);
+        const auto type = newEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+        if (!excludedFiles || excludedFiles->fullPatternMatch(absoluteItemPathName, type) != CSYNC_NOT_EXCLUDED) {
+            return;
+        }
         if (newEntry.isDirectory) {
             newEntry.size = 0;
         }
@@ -1330,7 +1339,8 @@ void Account::listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise, co
         }
 
         promise->emplaceResult(itemFileName, itemFileName.toStdWString(), absoluteItemPathName, newEntry);
-    });
+    };
+    QObject::connect(listFolderJob, &OCC::LsColJob::directoryListingIterated, this, std::move(appendEntry));
 
     promise->start();
     listFolderJob->start();

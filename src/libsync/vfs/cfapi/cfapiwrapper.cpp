@@ -622,7 +622,8 @@ void CALLBACK cfApiFetchPlaceHolders(const CF_CALLBACK_INFO *callbackInfo, const
                               &lsPropPromise,
                               remoteSyncRootPath,
                               serverPath,
-                              vfs->params().journal);
+                              vfs->params().journal,
+                              vfs->params().excludedFiles);
 
     qCInfo(lcCfApiWrapper()) << "ls prop requested" << path << serverPath;
 

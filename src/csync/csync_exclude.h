@@ -157,6 +157,16 @@ public:
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QString &path, ItemType filetype);
 
     /**
+     * @brief Match the exclude pattern against the full path.
+     *
+     * @param Path is folder-relative, should not start with a /.
+     *
+     * Note that this only matches patterns. It does not check whether the file
+     * or directory pointed to is hidden (or whether it even exists).
+     */
+    [[nodiscard]] CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
+
+    /**
      * @brief Provide all active exclude patterns.
      */
     [[nodiscard]] QStringList activeExcludePatterns() const;
@@ -188,16 +198,6 @@ private:
      * Would enable the "myexclude" pattern only for versions before 2.5.0.
      */
     [[nodiscard]] bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
-
-    /**
-     * @brief Match the exclude pattern against the full path.
-     *
-     * @param Path is folder-relative, should not start with a /.
-     *
-     * Note that this only matches patterns. It does not check whether the file
-     * or directory pointed to is hidden (or whether it even exists).
-     */
-    [[nodiscard]] CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
 
     // Our BasePath need to end with '/'
     class BasePathString : public QString

@@ -466,7 +466,8 @@ public Q_SLOTS:
     void listRemoteFolder(QPromise<OCC::PlaceholderCreateInfo> *promise,
                           const QString &remoteSyncRootPath,
                           const QString &subPath,
-                          OCC::SyncJournalDb *journalForFolder);
+                          OCC::SyncJournalDb *journalForFolder,
+                          QPointer<ExcludedFiles> excludedFiles);
 
 Q_SIGNALS:
     /// Emitted whenever there's network activity
