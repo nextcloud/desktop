@@ -1854,7 +1854,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>Com o recurso “Arquivos Virtuais”, os arquivos e pastas podem ser excluídos permanentemente deste dispositivo caso não possam ser movidos para a lixeira.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4894,7 +4894,7 @@ Observe que o uso de qualquer opção de logs na linha de comandos substituirá 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível ler o arquivo local. Ele será verificado novamente em uma sincronização posterior.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>
