@@ -8,15 +8,20 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountsettings.h"
+#include "common/vfs.h"
 #include "configfile.h"
+#include "creds/dummycredentials.h"
+#include "folderman.h"
 #include "systray.h"
 
+#include <QAbstractButton>
 #include <QAction>
 #include <QApplication>
 #include <QColor>
 #include <QEvent>
 #include <QFrame>
 #include <QGroupBox>
+#include <QLabel>
 #include <QPalette>
 #include <QScopeGuard>
 #include <QScrollArea>
@@ -37,6 +42,7 @@ private Q_SLOTS:
     void initTestCase()
     {
         Q_INIT_RESOURCE(resources);
+        Q_INIT_RESOURCE(theme);
         QStandardPaths::setTestModeEnabled(true);
         QVERIFY(_configDir.isValid());
         OCC::ConfigFile::setConfDir(_configDir.path());
@@ -173,6 +179,85 @@ private Q_SLOTS:
         shortcutsPanel->ensurePolished();
         statusPanel->ensurePolished();
         QCOMPARE(shortcutsPanel->palette().color(QPalette::Window), statusPanel->palette().color(QPalette::Window));
+    }
+
+    void moveFilesToTrashVfsWarningVisibility()
+    {
+        using namespace Qt::StringLiterals;
+
+        auto palette = _originalPalette;
+        palette.setColor(QPalette::Base, Qt::white);
+        QApplication::setPalette(palette);
+
+        OCC::SettingsDialog dialog(nullptr);
+        const auto moveToTrashSwitch = dialog.findChild<QAbstractButton *>(u"moveFilesToTrashCheckBox"_s);
+        const auto banner = dialog.findChild<QWidget *>(u"moveFilesToTrashVfsWarningBanner"_s);
+        const auto icon = dialog.findChild<QLabel *>(u"moveFilesToTrashVfsWarningIcon"_s);
+        const auto label = dialog.findChild<QLabel *>(u"moveFilesToTrashVfsWarningLabel"_s);
+
+        QVERIFY(moveToTrashSwitch);
+        QVERIFY(banner);
+        QVERIFY(icon);
+        QVERIFY(label);
+        QVERIFY(!label->text().isEmpty());
+
+        moveToTrashSwitch->setChecked(true);
+        QVERIFY(banner->isHidden());
+
+#ifdef Q_OS_WIN
+        QVERIFY(OCC::isVfsPluginAvailable(OCC::Vfs::WindowsCfApi));
+        auto syncRoot = QTemporaryDir{};
+        QVERIFY(syncRoot.isValid());
+        auto account = OCC::Account::create();
+        account->setUrl(QUrl(u"https://cloud.example.com"_s));
+        account->setDavUser(u"alice"_s);
+        const auto credentials = new OCC::DummyCredentials;
+        credentials->_user = account->davUser();
+        account->setCredentials(credentials);
+        const auto accountManager = OCC::AccountManager::instance();
+        const auto accountState = accountManager->addAccount(account);
+        const auto removeAccount = qScopeGuard([accountManager, accountState] {
+            accountManager->removeAccountState(accountState);
+        });
+        const auto folderMan = OCC::FolderMan::instance();
+        auto definition = OCC::FolderDefinition{};
+        definition.alias = u"Trash warning test"_s;
+        definition.localPath = syncRoot.path() + u'/';
+        definition.targetPath = u"/"_s;
+        definition.paused = true;
+        definition.virtualFilesMode = OCC::Vfs::WindowsCfApi;
+        const auto folder = folderMan->addFolder(accountState, definition);
+        QVERIFY(folder);
+        auto removeFolder = qScopeGuard([folderMan, folder] {
+            folderMan->removeFolder(folder);
+        });
+
+        QVERIFY(!banner->isHidden());
+        const auto lightIcon = icon->pixmap().toImage();
+        QVERIFY(!lightIcon.isNull());
+
+        moveToTrashSwitch->setChecked(false);
+        QVERIFY(banner->isHidden());
+
+        palette.setColor(QPalette::Base, Qt::black);
+        QApplication::setPalette(palette);
+        auto themeChange = QEvent(QEvent::ThemeChange);
+        QCoreApplication::sendEvent(&dialog, &themeChange);
+        QVERIFY(banner->isHidden());
+
+        moveToTrashSwitch->setChecked(true);
+        QVERIFY(!banner->isHidden());
+        const auto darkIcon = icon->pixmap().toImage();
+        QVERIFY(!darkIcon.isNull());
+        QVERIFY(darkIcon != lightIcon);
+
+        folderMan->removeFolder(folder);
+        removeFolder.dismiss();
+        QVERIFY(banner->isHidden());
+#endif
+
+        moveToTrashSwitch->setChecked(false);
+        QVERIFY(banner->isHidden());
     }
 };
 
