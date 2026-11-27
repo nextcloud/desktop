@@ -4,6 +4,10 @@
 set(assistant_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 set(assistant_SRCS
+    ${assistant_SOURCE_DIR}/assistantimageprovider.h
+    ${assistant_SOURCE_DIR}/assistantimageprovider.cpp
+    ${assistant_SOURCE_DIR}/assistantattachment.h
+    ${assistant_SOURCE_DIR}/assistantattachment.cpp
     ${assistant_SOURCE_DIR}/assistantapijob.h
     ${assistant_SOURCE_DIR}/assistantapijob.cpp
     ${assistant_SOURCE_DIR}/assistantclient.h

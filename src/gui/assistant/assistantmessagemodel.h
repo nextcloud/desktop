@@ -8,8 +8,10 @@
 #include <QAbstractListModel>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QVariantList>
 
-namespace OCC {
+namespace OCC
+{
 
 /** @brief Exposes Assistant chat messages as typed QML roles. */
 class AssistantMessageModel final : public QAbstractListModel
@@ -24,6 +26,7 @@ public:
         TextRole,
         TimestampRole,
         DateTextRole,
+        AttachmentsRole,
     };
     Q_ENUM(Role)
 
@@ -54,6 +57,12 @@ private:
         QString text;
         qint64 timestamp = 0;
         QString dateText;
+        QVariantList attachments;
+
+        [[nodiscard]] bool hasContent() const
+        {
+            return !text.trimmed().isEmpty() || !attachments.isEmpty();
+        }
     };
 
     [[nodiscard]] static Item itemFromJson(const QJsonObject &message);

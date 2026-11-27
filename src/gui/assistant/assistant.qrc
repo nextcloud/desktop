@@ -10,11 +10,17 @@
         <file alias="src/gui/assistant/qml/AssistantConversationDelegate.qml">qml/AssistantConversationDelegate.qml</file>
         <file alias="src/gui/assistant/qml/AssistantConversationPicker.qml">qml/AssistantConversationPicker.qml</file>
         <file alias="src/gui/assistant/qml/AssistantDeleteTaskDialog.qml">qml/AssistantDeleteTaskDialog.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantDeleteConversationDialog.qml">qml/AssistantDeleteConversationDialog.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantAttachmentDelegate.qml">qml/AssistantAttachmentDelegate.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantMessageText.qml">qml/AssistantMessageText.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantConversationTitle.qml">qml/AssistantConversationTitle.qml</file>
         <file alias="src/gui/assistant/qml/AssistantMessageDelegate.qml">qml/AssistantMessageDelegate.qml</file>
         <file alias="src/gui/assistant/qml/AssistantMessageList.qml">qml/AssistantMessageList.qml</file>
         <file alias="src/gui/assistant/qml/AssistantTaskDelegate.qml">qml/AssistantTaskDelegate.qml</file>
         <file alias="src/gui/assistant/qml/AssistantTaskList.qml">qml/AssistantTaskList.qml</file>
         <file alias="src/gui/assistant/qml/AssistantTaskTypeDelegate.qml">qml/AssistantTaskTypeDelegate.qml</file>
         <file alias="src/gui/assistant/qml/AssistantTaskTypeSelector.qml">qml/AssistantTaskTypeSelector.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantActionDetails.qml">qml/AssistantActionDetails.qml</file>
+        <file alias="src/gui/assistant/qml/AssistantActionConfirmation.qml">qml/AssistantActionConfirmation.qml</file>
     </qresource>
 </RCC>

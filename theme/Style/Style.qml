@@ -175,6 +175,10 @@ QtObject {
 
     // Assistant
     readonly property int assistantWindowWidth: searchWindowWidth
+    readonly property color assistantConfirmationBackground: darkMode ? "#203d4b" : "#d9f0f7"
+    readonly property color assistantActionCardBackground: darkMode ? "#2b4856" : "#c8e3ed"
+    readonly property int assistantConfirmationAccentWidth: 4
+    readonly property int assistantActionDetailsMaximumHeight: 180
     readonly property int assistantWindowHeight: searchWindowHeight
     readonly property color assistantSelectionGradientStart: "#40519a"
     readonly property color assistantSelectionGradientEnd: "#a84fc4"
@@ -187,9 +191,10 @@ QtObject {
     readonly property int assistantExpandedIndicatorRotation: 180
     readonly property real assistantDisabledOpacity: 0.45
     readonly property real assistantMessageMaximumWidthRatio: 0.78
+    readonly property int assistantConversationTitleMaximumLength: 80
+    readonly property int assistantAttachmentPreviewSize: 320
     readonly property int assistantMessageMinimumWidth: 120
     readonly property int assistantMessageTextWidthPadding: wizardWindowMargin
-    readonly property int assistantMessageHeightPadding: 26
     readonly property int assistantEmptyStateMaximumWidth: 360
 
     property int minActivityHeight: variableSize(32)

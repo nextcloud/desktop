@@ -13,7 +13,8 @@
 
 using namespace Qt::StringLiterals;
 
-namespace OCC {
+namespace OCC
+{
 
 AssistantMessageModel::AssistantMessageModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -45,6 +46,8 @@ QVariant AssistantMessageModel::data(const QModelIndex &index, int role) const
         return item.timestamp;
     case DateTextRole:
         return item.dateText;
+    case AttachmentsRole:
+        return item.attachments;
     }
     return {};
 }
@@ -58,6 +61,7 @@ QHash<int, QByteArray> AssistantMessageModel::roleNames() const
         {TextRole, "messageText"},
         {TimestampRole, "timestamp"},
         {DateTextRole, "dateText"},
+        {AttachmentsRole, "attachments"},
     };
     return roles;
 }
@@ -67,7 +71,10 @@ void AssistantMessageModel::replaceFromResponse(const QJsonDocument &json)
     auto items = QList<Item>{};
     items.reserve(json.array().size());
     for (const auto &entry : json.array()) {
-        items.append(itemFromJson(entry.toObject()));
+        auto item = itemFromJson(entry.toObject());
+        if (item.hasContent()) {
+            items.append(std::move(item));
+        }
     }
 
     beginResetModel();
@@ -77,9 +84,13 @@ void AssistantMessageModel::replaceFromResponse(const QJsonDocument &json)
 
 void AssistantMessageModel::append(const QJsonObject &message)
 {
+    auto item = itemFromJson(message);
+    if (!item.hasContent()) {
+        return;
+    }
     const auto row = _items.size();
     beginInsertRows({}, row, row);
-    _items.append(itemFromJson(message));
+    _items.append(std::move(item));
     endInsertRows();
 }
 
@@ -105,6 +116,22 @@ AssistantMessageModel::Item AssistantMessageModel::itemFromJson(const QJsonObjec
     if (role == "human"_L1) {
         role = QStringLiteral("user");
     }
+    auto attachments = QVariantList{};
+    for (const auto &value : message.value("attachments"_L1).toArray()) {
+        const auto attachment = value.toObject();
+        const auto fileId = AssistantUtils::jsonInteger(attachment.value("file_id"_L1), AssistantUtils::jsonInteger(attachment.value("fileId"_L1)));
+        if (fileId <= 0) {
+            continue;
+        }
+        const auto taskId = role == "user"_L1
+            ? -1
+            : AssistantUtils::jsonInteger(attachment.value("ocp_task_id"_L1), AssistantUtils::jsonInteger(message.value("ocp_task_id"_L1)));
+        attachments.append(QVariantMap{
+            {u"fileId"_s, fileId},
+            {u"taskId"_s, taskId},
+            {u"type"_s, attachment.value("type"_L1).toString()},
+        });
+    }
     return {
         AssistantUtils::jsonInteger(message.value("id"_L1)),
         AssistantUtils::jsonInteger(message.value("session_id"_L1), AssistantUtils::jsonInteger(message.value("sessionId"_L1))),
@@ -112,6 +139,7 @@ AssistantMessageModel::Item AssistantMessageModel::itemFromJson(const QJsonObjec
         message.value("content"_L1).toString(),
         timestamp,
         AssistantUtils::dateText(timestamp),
+        attachments,
     };
 }
 
