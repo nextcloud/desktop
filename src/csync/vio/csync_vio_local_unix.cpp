@@ -105,8 +105,8 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   }
 
   if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get(), checkPermissionsValidity) < 0) {
-      // Will get excluded by _csync_detect_update.
-      file_stat->type = ItemTypeSkip;
+      file_stat->type = ItemTypeSkipError;
+      return file_stat;
   }
 
   // Override type for virtual files if desired

@@ -14,6 +14,10 @@
 #include "config.h"
 #include <syncengine.h>
 
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#endif
+
 using namespace OCC;
 
 namespace {
@@ -108,6 +112,33 @@ private Q_SLOTS:
 
         QStandardPaths::setTestModeEnabled(true);
     }
+
+#ifndef Q_OS_WIN
+    void testUnreadablePlaceholderKeepsServerFile()
+    {
+        if (geteuid() == 0) {
+            QSKIP("Needs a non root user so lstat() fails inside an unsearchable directory");
+        }
+
+        FakeFolder fakeFolder{FileInfo()};
+        setupVfs(fakeFolder);
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1", 64);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+
+        const auto folderPath = fakeFolder.localPath() + QStringLiteral("A");
+        QVERIFY(QFile::setPermissions(folderPath, QFileDevice::ReadOwner));
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.syncOnce();
+
+        QFile::setPermissions(folderPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner);
+
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
+        QCOMPARE(completeSpy.findItem("A/a1")->_instruction, CSYNC_INSTRUCTION_IGNORE);
+    }
+#endif
 
     void testVirtualFileLifecycle_data()
     {

@@ -256,7 +256,7 @@ public:
     /// the encrypted name on the server.
     QString _encryptedFileName;
 
-    ItemType _type BITFIELD(3);
+    ItemType _type BITFIELD(4);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
 
