@@ -48,6 +48,8 @@ public:
 
     bool needsMetadataUpdate(const SyncFileItem &) override;
     bool isDehydratedPlaceholder(const QString &filePath) override;
+    quint64 emptyPlaceholderFileId(const QString &filePath, quint64 inode) override;
+    bool removeEmptyPlaceholder(const QString &filePath, quint64 fileId) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *statData) override;
     [[nodiscard]] HydrationJob *hydrateFile(const QByteArray &fileId, const QString &targetPath) override;
 

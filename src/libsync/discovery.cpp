@@ -255,13 +255,17 @@ void ProcessDirectoryJob::process()
 
         e.serverEntry.etag = Utility::normalizeEtag(e.serverEntry.etag);
 
-        processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
+        processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry, e.obsoletePlaceholderFileId);
     }
     _discoveryData->_listExclusiveFiles.clear();
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, const std::map<QString, Entries> &allEntries, const bool isHidden, const bool isBlacklisted)
+bool ProcessDirectoryJob::handleExcluded(const QString &path,
+                                         Entries &entries,
+                                         const std::map<QString, Entries> &allEntries,
+                                         const bool isHidden,
+                                         const bool isBlacklisted)
 {
     const auto isDirectory = entries.localEntry.isDirectory || entries.serverEntry.isDirectory;
 
@@ -369,6 +373,22 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         excluded = CSYNC_FILE_LOCKED_SILENTLY_EXCLUDED;
 
         Q_EMIT _discoveryData->seenLockedFile(_discoveryData->_localDir + path);
+    }
+
+    const auto isIgnoredFile = excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE || excluded == CSYNC_FILE_EXCLUDE_LIST;
+    const auto &vfs = _discoveryData->_syncOptions._vfs;
+    if (isIgnoredFile && _queryServer == NormalQuery && !isBlacklisted && !entries.serverEntry.isValid() && !entries.localEntry.isSymLink
+        && entries.dbEntry._type == ItemTypeVirtualFile && entries.dbEntry._inode != 0 && vfs && vfs->mode() == Vfs::WindowsCfApi) {
+        if (_queryLocal == NormalQuery && !entries.localEntry.isValid()) {
+            // Reconcile a journal row left behind after the placeholder disappeared.
+            return false;
+        }
+        if (entries.localEntry.type == ItemTypeVirtualFile || (_queryLocal == ParentNotChanged && !entries.localEntry.isValid())) {
+            entries.obsoletePlaceholderFileId = vfs->emptyPlaceholderFileId(_discoveryData->_localDir + path, entries.dbEntry._inode);
+            if (entries.obsoletePlaceholderFileId != 0) {
+                return false;
+            }
+        }
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
@@ -579,8 +599,10 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
 }
 
 void ProcessDirectoryJob::processFile(PathTuple path,
-    const LocalInfo &localEntry, const RemoteInfo &serverEntry,
-    const SyncJournalFileRecord &dbEntry)
+                                      const LocalInfo &localEntry,
+                                      const RemoteInfo &serverEntry,
+                                      const SyncJournalFileRecord &dbEntry,
+                                      quint64 obsoletePlaceholderFileId)
 {
     const auto hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
     const auto hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
@@ -620,6 +642,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_previousSize = dbEntry._fileSize;
     item->_previousModtime = dbEntry._modtime;
     item->_discoveryResult = std::move(processingLog);
+    item->_obsoletePlaceholderFileId = obsoletePlaceholderFileId;
 
     if (dbEntry._modtime == localEntry.modtime && dbEntry._type == ItemTypeVirtualFile && localEntry.type == ItemTypeFile) {
         item->_type = ItemTypeFile;
