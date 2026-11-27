@@ -1854,7 +1854,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>Bei virtuellen Dateien können Dateien und Ordner endgültig von diesem Gerät gelöscht werden, wenn sie nicht in den Papierkorb verschoben werden können.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4894,7 +4894,7 @@ Beachten Sie, dass die Verwendung von Befehlszeilenoptionen für die Protokollie
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Datei konnte nicht gelesen werden. Sie wird bei einer späteren Synchronisierung erneut geprüft.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>

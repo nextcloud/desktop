@@ -1854,7 +1854,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar ile, dosyalar ve klasörler çöpe atılmadığında bu aygıttan kalıcı olarak silinebilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4893,7 +4893,7 @@ Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğin
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>Yerel dosya okunamadı. Daha sonraki bir eşitlemede yeniden denetlenecek.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>
