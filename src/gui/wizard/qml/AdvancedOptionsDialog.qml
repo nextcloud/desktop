@@ -16,7 +16,7 @@ Dialog {
     readonly property color primaryTextColor: Style.wizardPrimaryText
 
     modal: true
-    width: 360
+    width: 600
     padding: 24
     header: null
     footer: null
