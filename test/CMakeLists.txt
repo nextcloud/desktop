@@ -56,6 +56,7 @@ nextcloud_add_test(ChecksumValidator)
 
 nextcloud_add_test(ClientSideEncryption)
 nextcloud_add_test(ClientSideEncryptionV2)
+nextcloud_add_test(UploadLockState)
 
 if (NOT APPLE)
     nextcloud_add_test(ExcludedFiles)
