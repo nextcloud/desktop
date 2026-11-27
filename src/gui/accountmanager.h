@@ -106,6 +106,10 @@ public Q_SLOTS:
 
 #ifdef BUILD_FILE_PROVIDER_MODULE
     void setFileProviderDomainIdentifier(const QString &accountUserIdAtHost, const QString &identifier);
+
+    /** @brief Persist an account's File Provider storage location atomically. An empty UUID selects internal storage. */
+    void setFileProviderDomainStorage(const QString &accountUserIdAtHost, const QString &uuid, const QByteArray &bookmark);
+
     [[nodiscard]] AccountStatePtr accountFromFileProviderDomainIdentifier(const QString &identifier) const;
 #endif
 

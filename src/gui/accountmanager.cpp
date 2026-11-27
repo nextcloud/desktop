@@ -23,11 +23,12 @@
 #endif
 #include "settings/migration.h"
 
-#include <QSettings>
 #include <QDir>
-#include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QNetworkAccessManager>
 #include <QPushButton>
+#include <QSettings>
+#include <QThread>
 #include <type_traits>
 
 #include <qt6keychain/keychain.h>
@@ -61,6 +62,8 @@ constexpr auto networkDownloadLimitC = "networkDownloadLimit";
 constexpr auto encryptionCertificateSha256FingerprintC = "encryptionCertificateSha256Fingerprint";
 #ifdef BUILD_FILE_PROVIDER_MODULE
 constexpr auto fileProviderDomainIdentifierC = "fileProviderDomainIdentifier";
+constexpr auto fileProviderDomainVolumeUuidC = "fileProviderDomainVolumeUuid";
+constexpr auto fileProviderDomainVolumeBookmarkC = "fileProviderDomainVolumeBookmark";
 #endif
 
 constexpr auto dummyAuthTypeC = "dummy";
@@ -420,6 +423,8 @@ void AccountManager::saveAccountHelper(const AccountPtr &account, QSettings &set
     settings.setValue(QLatin1String(encryptionCertificateSha256FingerprintC), account->encryptionCertificateFingerprint());
 #ifdef BUILD_FILE_PROVIDER_MODULE
     settings.setValue(QLatin1String(fileProviderDomainIdentifierC), account->fileProviderDomainIdentifier());
+    settings.setValue(QLatin1String(fileProviderDomainVolumeUuidC), account->fileProviderDomainVolumeUuid());
+    settings.setValue(QLatin1String(fileProviderDomainVolumeBookmarkC), account->fileProviderDomainVolumeBookmark());
 #endif
     if (!account->_skipE2eeMetadataChecksumValidation) {
         settings.remove(QLatin1String(skipE2eeMetadataChecksumValidationC));
@@ -658,6 +663,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_uuid = QUuid{settings.value(QLatin1String(accountUuidC)).toString()};
 #ifdef BUILD_FILE_PROVIDER_MODULE
     acc->setFileProviderDomainIdentifier(settings.value(QLatin1String(fileProviderDomainIdentifierC)).toString());
+    acc->setFileProviderDomainStorage(settings.value(QLatin1String(fileProviderDomainVolumeUuidC)).toString(),
+                                      settings.value(QLatin1String(fileProviderDomainVolumeBookmarkC)).toByteArray());
 #endif
 
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
@@ -907,6 +914,23 @@ void AccountManager::setFileProviderDomainIdentifier(const QString &accountUserI
 
         acc->setFileProviderDomainIdentifier(identifier);
         saveAccount(acc);
+    }
+}
+
+void AccountManager::setFileProviderDomainStorage(const QString &accountUserIdAtHost, const QString &uuid, const QByteArray &bookmark)
+{
+    if (QThread::currentThread() != thread()) {
+        QMetaObject::invokeMethod(
+            this,
+            [this, accountUserIdAtHost, uuid, bookmark] {
+                setFileProviderDomainStorage(accountUserIdAtHost, uuid, bookmark);
+            },
+            Qt::BlockingQueuedConnection);
+        return;
+    }
+
+    if (const auto accState = accountFromUserId(accountUserIdAtHost)) {
+        accState->account()->setFileProviderDomainStorage(uuid, bookmark);
     }
 }
 

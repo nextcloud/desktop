@@ -123,6 +123,47 @@ private Q_SLOTS:
         QVERIFY(!notFound);
     }
 
+#ifdef BUILD_FILE_PROVIDER_MODULE
+    void testFileProviderExternalVolumeSettingsPersistAcrossRestore()
+    {
+        const auto userId = u"alice@cloud.example.com"_s;
+        auto *const accountState = addTestAccount(u"https://cloud.example.com"_s, u"alice"_s);
+        QVERIFY(accountState);
+
+        const auto manager = AccountManager::instance();
+        const auto volumeUuid = u"A1B2C3D4-E5F6-47A8-9012-3456789ABCDE"_s;
+        const QByteArray volumeBookmark("test-security-scoped-bookmark");
+        manager->setFileProviderDomainStorage(userId, volumeUuid, volumeBookmark);
+
+        QCOMPARE(accountState->account()->fileProviderDomainVolumeUuid(), volumeUuid);
+        QCOMPARE(accountState->account()->fileProviderDomainVolumeBookmark(), volumeBookmark);
+
+        _accountState = nullptr;
+        manager->shutdown();
+        QCOMPARE(manager->restore(false), AccountManager::AccountsRestoreSuccess);
+
+        const auto restoredState = manager->accountFromUserId(userId);
+        QVERIFY(restoredState);
+        QCOMPARE(restoredState->account()->fileProviderDomainVolumeUuid(), volumeUuid);
+        QCOMPARE(restoredState->account()->fileProviderDomainVolumeBookmark(), volumeBookmark);
+
+        manager->setFileProviderDomainStorage(userId, {}, {});
+        _accountState = nullptr;
+        manager->shutdown();
+        QCOMPARE(manager->restore(false), AccountManager::AccountsRestoreSuccess);
+
+        const auto clearedState = manager->accountFromUserId(userId);
+        QVERIFY(clearedState);
+        QVERIFY(clearedState->account()->fileProviderDomainVolumeUuid().isEmpty());
+        QVERIFY(clearedState->account()->fileProviderDomainVolumeBookmark().isEmpty());
+
+        manager->setFileProviderDomainStorage(u"unknown@example.com"_s, volumeUuid, volumeBookmark);
+        QVERIFY(!manager->accountFromUserId(u"unknown@example.com"_s));
+
+        _accountState = clearedState.data();
+    }
+#endif
+
     // ---------------------------------------------------------------------------
     // accountFromUserId – IDN / Punycode domain normalisation
     // ---------------------------------------------------------------------------

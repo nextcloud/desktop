@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <QStringList>
+
 #include "accountstate.h"
 
 class QString;
@@ -85,6 +87,9 @@ QDir fileProviderDomainSupportDirectory(const QString domainIdentifier);
 NSFileProviderManager *managerForDomainIdentifier(const QString &domainIdentifier);
 
 QString groupContainerPath();
+
+/** @brief Publish the external-volume account identifiers this Mac is allowed to connect. */
+void setExternalVolumeAccountIdentifiers(const QStringList &accountIdentifiers);
 
 } // namespace FileProviderUtils
 

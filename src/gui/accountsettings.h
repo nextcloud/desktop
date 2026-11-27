@@ -151,6 +151,8 @@ private Q_SLOTS:
     /** @brief Refreshes account shortcut visibility from the current connection state and capabilities. */
     void updateAccountShortcutVisibility();
     void slotResetFileProviderDomain();
+    void slotChooseFileProviderStorageVolume();
+    void slotUseInternalFileProviderStorage();
 
 private:
     bool event(QEvent *) override;
