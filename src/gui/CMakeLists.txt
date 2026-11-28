@@ -466,6 +466,7 @@ IF( WIN32 )
         ${client_SRCS}
         folderwatcher_win.cpp
         notificationsoundplayer_win.cpp
+        navigationpaneentrypolicy.h
         navigationpanehelper.h
         navigationpanehelper.cpp
         shellextensionsserver.cpp
