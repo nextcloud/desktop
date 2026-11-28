@@ -259,9 +259,11 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 @interface TestClientCommunicationService : NSObject <ClientCommunicationProtocol>
 @property (nonatomic, copy) NSString *domainIdentifier;
 @property (nonatomic, copy) NSString *serverUrl;
+@property (nonatomic, copy) NSArray<NSString *> *ignoreList;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL *deallocatedFlag;
 @property (nonatomic, assign) BOOL suppressDomainIdentifierReply;
+@property (nonatomic, assign) BOOL busyAfterAccountConfiguration;
 @property (nonatomic, assign) BOOL passwordDeletionReply;
 @property (nonatomic, assign) BOOL suppressPasswordDeletionReply;
 @property (nonatomic, assign) NSTimeInterval passwordDeletionReplyDelay;
@@ -292,6 +294,7 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
                        userAgent:(NSString *)userAgent
 {
     self.serverUrl = serverUrl;
+    self.suppressDomainIdentifierReply = self.busyAfterAccountConfiguration;
 }
 
 - (void)removeAccountConfig
@@ -321,10 +324,6 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 
     completionHandler(reply);
     self.passwordDeletionReplied = YES;
-}
-
-- (void)setIgnoreList:(NSArray<NSString *> *)ignoreList
-{
 }
 
 - (void)processFileIdsChanged:(NSArray<NSNumber *> *)fileIds completionHandler:(void (^)(BOOL))completionHandler
@@ -397,6 +396,20 @@ bool waitForBackgroundThread(std::atomic_bool &completed)
 }
 
 @end
+
+/** Let the manager hand out a connection to a new extension, as fileproviderd does after it restarted the extension. */
+static TestClientCommunicationService *serveExtension(TestFileProviderManager *manager)
+{
+    const auto remoteService = [TestClientCommunicationService new];
+    remoteService.domainIdentifier = @"registered-domain";
+    const auto connection = [TestXPCConnection new];
+    connection.remoteService = remoteService;
+    const auto service = [TestFileProviderService new];
+    service.name = communicationServiceName;
+    service.connection = (NSXPCConnection *)connection;
+    manager.service = (NSFileProviderService *)service;
+    return remoteService;
+}
 
 class TestFileProviderXPCUtils : public QObject
 {
@@ -1434,6 +1447,121 @@ private Q_SLOTS:
         QVERIFY(accountState->account()->url().toString() != u"https://xn--bcher-kva.com/nextcloud"_s);
         owner.authenticateFileProviderDomain(u"registered-domain"_s);
         QCOMPARE(QString::fromNSString(remoteService.serverUrl), u"https://xn--bcher-kva.com/nextcloud"_s);
+    }
+
+    void aRestartedExtensionGetsTheAccountAndIgnoreList()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto firstExtension = serveExtension(manager);
+        const auto firstConnection = (TestXPCConnection *)((TestFileProviderService *)manager.service).connection;
+
+        OCC::Mac::FileProviderXPC owner;
+        owner.connectToFileProviderDomains();
+        const auto restartedExtension = serveExtension(manager);
+
+        // While the first extension answers, the check leaves its connection alone.
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+        QVERIFY(restartedExtension.serverUrl == nil);
+        QCOMPARE(domainManagerLookupCount, 1);
+
+        firstExtension.suppressDomainIdentifierReply = YES;
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+
+        QCOMPARE(QString::fromNSString(restartedExtension.serverUrl), u"https://cloud.example.test"_s);
+        QVERIFY(restartedExtension.ignoreList != nil);
+        QVERIFY(firstConnection.invalidated);
+    }
+
+    void aDomainWithoutConnectionGetsTheAccount()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+
+        OCC::Mac::FileProviderXPC owner;
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+
+        QCOMPARE(QString::fromNSString(extension.serverUrl), u"https://cloud.example.test"_s);
+    }
+
+    void anUnreachableDomainIsReconnectedOncePerPause()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        manager.serviceError = [NSError errorWithDomain:NSCocoaErrorDomain code:NSFeatureUnsupportedError userInfo:nil];
+
+        OCC::Mac::FileProviderXPC owner;
+        QVERIFY(!owner.fileProviderDomainReachable(u"registered-domain"_s));
+        QCOMPARE(domainManagerLookupCount, 1);
+        QVERIFY(!owner.fileProviderDomainReachable(u"registered-domain"_s));
+        QCOMPARE(domainManagerLookupCount, 1);
+    }
+
+    void aRejectedPasswordIsNotSentToARestartedExtension()
+    {
+        installDomainLookupMocks();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+        accountState->handleInvalidCredentials();
+
+        OCC::Mac::FileProviderXPC owner;
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+
+        QVERIFY(extension.serverUrl == nil);
+        QVERIFY(extension.ignoreList != nil);
+    }
+
+    void aSignedOutAccountIsNotSentWhenReconfiguring()
+    {
+        installDomainLookupMocks();
+        const auto accountState = addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+        accountState->handleInvalidCredentials();
+
+        OCC::Mac::FileProviderXPC owner;
+        owner.connectToFileProviderDomains();
+        owner.authenticateFileProviderDomains();
+
+        QVERIFY(extension.serverUrl == nil);
+    }
+
+    void anUnregisteredDomainStartsNoExtension()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"removed-domain"_s);
+        discoveredDomains = @[];
+
+        OCC::Mac::FileProviderXPC owner;
+        QVERIFY(QMetaObject::invokeMethod(&owner, "checkFileProviderDomains"));
+
+        // With a nil domain, macOS hands out the default domain's manager and launches an extension for it.
+        QCOMPARE(domainManagerLookupCount, 0);
+    }
+
+    void anExtensionBusyWithTheNewAccountIsReachable()
+    {
+        installDomainLookupMocks();
+        addTestAccount(u"registered-domain"_s);
+        const auto manager = installRegisteredDomain();
+        manager.synchronousServiceReply = YES;
+        const auto extension = serveExtension(manager);
+        extension.busyAfterAccountConfiguration = YES;
+
+        OCC::Mac::FileProviderXPC owner;
+
+        QVERIFY(owner.fileProviderDomainReachable(u"registered-domain"_s));
+        QCOMPARE(QString::fromNSString(extension.serverUrl), u"https://cloud.example.test"_s);
     }
 
     void concurrentServiceLookupsCanBeCollected()
