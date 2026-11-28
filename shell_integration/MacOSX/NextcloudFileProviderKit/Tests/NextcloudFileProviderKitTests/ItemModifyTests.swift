@@ -3068,6 +3068,48 @@ final class ItemModifyTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId))
     }
 
+    func testModifyIntoIgnoredDestinationRetriesAfterTemporaryServerError() async {
+        let ignoredMatcher = IgnoredFilesMatcher(ignoreList: ["*.blend1"], log: FileProviderLogMock())
+        let itemMetadata = remoteItem.toItemMetadata(account: Self.account)
+        var targetMetadata = SendableItemMetadata(value: itemMetadata)
+        targetMetadata.apply(fileName: "item.blend1")
+
+        for statusCode in NKErrorExtensionsTests.temporaryStatusCodes {
+            let remoteInterface = MockRemoteInterface(
+                account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem
+            )
+            remoteInterface.deleteError = NKError(statusCode: statusCode, fallbackDescription: "Gateway timeout")
+            Self.dbManager.addItemMetadata(itemMetadata)
+
+            let item = Item(
+                metadata: itemMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+            let targetItem = Item(
+                metadata: targetMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager
+            )
+
+            let (modifiedItem, error) = await item.modify(
+                itemTarget: targetItem,
+                changedFields: [.filename],
+                contents: nil,
+                ignoredFiles: ignoredMatcher,
+                dbManager: Self.dbManager
+            )
+
+            XCTAssertNil(modifiedItem, "HTTP \(statusCode)")
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable, "HTTP \(statusCode)")
+            XCTAssertFalse(Self.dbManager.isItemExcludedFromSync(ocId: itemMetadata.ocId), "HTTP \(statusCode)")
+        }
+    }
+
     func testModifyIntoIgnoredDestinationKeepsExclusionAfterPermanentRemoteDeleteFailure() async throws {
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem, rootTrashItem: rootTrashItem)
         remoteInterface.deleteError = NKError(statusCode: 403, fallbackDescription: "Forbidden")

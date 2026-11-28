@@ -178,6 +178,9 @@ final class LockTokenInvalidationTests: NextcloudFileProviderKitTestCase {
 // MARK: - NKError extensions (Fix 3)
 
 final class NKErrorExtensionsTests: XCTestCase {
+    /// Every 5xx status except 501, 505 and 507, plus 408 and 429.
+    static let temporaryStatusCodes = [408, 429] + (500 ... 599).filter { ![501, 505, 507].contains($0) }
+
     func testCancellationErrorMapping() {
         let cancellationError = NKError(errorCode: NSURLErrorCancelled, errorDescription: "Cancelled")
         XCTAssertTrue(cancellationError.isCancelledError)
@@ -242,5 +245,36 @@ final class NKErrorExtensionsTests: XCTestCase {
             .cannotSynchronize,
             "423 maps to generic cannotSynchronize, not a special branch"
         )
+    }
+
+    func testTemporaryServerErrorIsServerUnreachable() {
+        for statusCode in Self.temporaryStatusCodes {
+            let error = NKError(statusCode: statusCode, fallbackDescription: "Timeout")
+            XCTAssertEqual(error.fileProviderError?.code, .serverUnreachable, "HTTP \(statusCode)")
+        }
+    }
+
+    func testPermanentErrorCannotBeSynchronized() {
+        for statusCode in [400, 444, 460, 463, 499, 501, 505, 600] {
+            let error = NKError(statusCode: statusCode, fallbackDescription: "Server error")
+            XCTAssertEqual(error.fileProviderError?.code, .cannotSynchronize, "HTTP \(statusCode)")
+        }
+    }
+
+    func testLocalStorageFullIsOutOfSpace() async {
+        let account = LockTokenInvalidationTests.account
+        for nkError in [
+            NKError.errorChunkNoEnoughMemory,
+            NKError(errorCode: -3, errorDescription: "Not enough disk space for the chunks", kind: .localStorageFull),
+            NKError(error: NSError(domain: NSPOSIXErrorDomain, code: Int(ENOSPC)))
+        ] {
+            let error = await nkError.fileProviderError(
+                handlingCollisionAgainstItemInRemotePath: account.davFilesUrl + "/file",
+                dbManager: LockTokenInvalidationTests.dbManager,
+                remoteInterface: MockRemoteInterface(account: account),
+                log: FileProviderLogMock()
+            )
+            XCTAssertEqual((error as? CocoaError)?.code, .fileWriteOutOfSpace, "Code \(nkError.errorCode)")
+        }
     }
 }
