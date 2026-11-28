@@ -51,6 +51,7 @@ public protocol RemoteInterface: Sendable {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date?,
         modificationDate: Date?,
+        overwrite: Bool,
         account: Account,
         options: NKRequestOptions,
         currentNumChunksUpdateHandler: @escaping (_ num: Int) -> Void,
@@ -60,12 +61,13 @@ public protocol RemoteInterface: Sendable {
         requestHandler: @escaping (_ request: UploadRequest) -> Void,
         taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void,
         progressHandler: @escaping (Progress) -> Void,
+        assemblyChecksum: @escaping () throws -> String?,
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void
     ) async -> (
         account: String,
         file: NKFile?,
         chunksDirectory: URL?,
-        nkError: NKError
+        failure: UploadFailure?
     )
 
     func removeLocalChunks(remoteChunkStoreFolderName: String) throws
@@ -162,6 +164,43 @@ public protocol RemoteInterface: Sendable {
         options: NKRequestOptions,
         taskHandler: @Sendable @escaping (_ task: URLSessionTask) -> Void
     ) async -> AuthenticationAttemptResultState
+}
+
+extension RemoteInterface {
+    /// Read the destination without recording it in the metadata database.
+    func uploadDestination(
+        at remotePath: String,
+        account: Account,
+        sourceMetadata: SendableItemMetadata? = nil,
+        taskHandler: @Sendable @escaping (URLSessionTask) -> Void
+    ) async -> (metadata: SendableItemMetadata, responseBody: Data?)? {
+        guard !remotePath.contains(FilesDatabaseManager.holdingNameSeparator),
+              let relativePath = account.filesRootRelativePath(for: remotePath, sourceMetadata: sourceMetadata)
+        else {
+            return nil
+        }
+
+        let (_, files, response, error) = await enumerate(
+            remotePath: remotePath,
+            depth: .target,
+            showHiddenFiles: true,
+            includeHiddenFiles: [],
+            requestBody: nil,
+            account: account,
+            options: .init(),
+            taskHandler: taskHandler
+        )
+        guard error == .success,
+              let metadata = files.first?.toItemMetadata(),
+              !metadata.ocId.isEmpty,
+              metadata.account == account.ncKitAccount,
+              let responsePath = account.filesRootRelativePath(for: metadata.remotePath(), sourceMetadata: metadata),
+              responsePath.utf8.elementsEqual(relativePath.utf8)
+        else {
+            return nil
+        }
+        return (metadata, response?.data)
+    }
 }
 
 public extension RemoteInterface {

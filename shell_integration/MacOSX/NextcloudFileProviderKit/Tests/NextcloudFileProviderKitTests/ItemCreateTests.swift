@@ -57,6 +57,10 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     static let account = Account(
         user: "testUser", id: "testUserId", serverUrl: "https://mock.nc.com", password: "abcd"
     )
+    private static let attemptedContents = Data("stored contents".utf8)
+    private static let attemptedChecksum = "SHA256:e78d42f505e9545356b716a57342aaa87c469b579ea440dd5eb8348d66521bbc"
+    private static let differentContents = Data("edited contents".utf8)
+    private static let differentChecksum = "SHA256:9369c08d1eda93053bb7eb7762af624349d64dd00a876230f5c524b7925b9281"
 
     var rootItem: MockRemoteItem!
     static let dbManager = try! FilesDatabaseManager(account: account, databaseDirectory: makeDatabaseDirectory(), fileProviderDomainIdentifier: NSFileProviderDomainIdentifier("test"), log: FileProviderLogMock())
@@ -70,6 +74,121 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
     override func tearDown() {
         rootItem.children = []
         super.tearDown()
+    }
+
+    private func assertCreatingFilePreservesRemoteCollision(
+        chunkSize: Int?,
+        cachedItemIdentifier: String? = "existing-id",
+        remoteLookupError: NKError? = nil
+    ) async throws {
+        let existingContents = Data("Remote version".utf8)
+        let existingItem = MockRemoteItem(
+            identifier: "existing-id",
+            name: "document.txt",
+            remotePath: Self.account.davFilesUrl + "/document.txt",
+            data: existingContents,
+            account: Self.account.ncKitAccount,
+            username: Self.account.username,
+            userId: Self.account.id,
+            serverUrl: Self.account.serverUrl
+        )
+        existingItem.parent = rootItem
+        rootItem.children = [existingItem]
+        let activeChunkUploadId = "active-chunk-upload"
+        let hasActiveUpload = cachedItemIdentifier == existingItem.identifier
+        if let cachedItemIdentifier {
+            var existingMetadata = SendableItemMetadata(
+                ocId: cachedItemIdentifier,
+                fileName: existingItem.name,
+                account: Self.account
+            )
+            existingMetadata.classFile = NKTypeClassFile.document.rawValue
+            if hasActiveUpload {
+                existingMetadata.status = Status.uploading.rawValue
+                existingMetadata.chunkUploadId = activeChunkUploadId
+            }
+            Self.dbManager.addItemMetadata(existingMetadata)
+        }
+        let cachedItem = Self.dbManager.itemMetadata(
+            account: Self.account.ncKitAccount,
+            locatedAtRemoteUrl: existingItem.remotePath
+        )
+        XCTAssertEqual(cachedItem?.ocId, cachedItemIdentifier)
+
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.enumerateErrorBySuffix[existingItem.name] = remoteLookupError
+        var templateMetadata = SendableItemMetadata(
+            ocId: "new-local-id", fileName: existingItem.name, account: Self.account
+        )
+        templateMetadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(
+            metadata: templateMetadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let localContents = Data("Different local version".utf8)
+        let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try localContents.write(to: localURL)
+        defer { try? FileManager.default.removeItem(at: localURL) }
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: localURL,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: chunkSize,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: FileProviderLogMock()
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .filenameCollision)
+        let collidingItem = (error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem
+        let storedItem = Self.dbManager.itemMetadata(ocId: existingItem.identifier)
+        if remoteLookupError == nil {
+            XCTAssertEqual(collidingItem?.itemIdentifier.rawValue, existingItem.identifier)
+            XCTAssertEqual(collidingItem?.parentItemIdentifier, .rootContainer)
+            XCTAssertEqual(collidingItem?.filename, existingItem.name)
+        } else {
+            XCTAssertNil(collidingItem)
+        }
+        if hasActiveUpload {
+            XCTAssertEqual(storedItem?.status, Status.uploading.rawValue)
+            XCTAssertEqual(storedItem?.chunkUploadId, activeChunkUploadId)
+        } else {
+            XCTAssertNil(storedItem)
+        }
+        let cachedItemAfterCollision = Self.dbManager.itemMetadata(
+            account: Self.account.ncKitAccount,
+            locatedAtRemoteUrl: existingItem.remotePath
+        )
+        XCTAssertEqual(cachedItemAfterCollision?.ocId, cachedItemIdentifier)
+        XCTAssertEqual(existingItem.data, existingContents)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: "new-local-id"))
+        if chunkSize == nil {
+            XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
+        } else {
+            XCTAssertEqual(remoteInterface.chunkUploadOperationCount, 0)
+        }
+
+        if cachedItemIdentifier == nil, remoteLookupError == nil {
+            let enumerator = try Enumerator(
+                enumeratedItemIdentifier: .rootContainer,
+                account: Self.account,
+                remoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                log: FileProviderLogMock()
+            )
+            let observer = MockChangeObserver(enumerator: enumerator)
+            try await observer.enumerateChanges()
+
+            XCTAssertTrue(observer.changedItems.contains { $0.itemIdentifier.rawValue == existingItem.identifier })
+            XCTAssertNotNil(Self.dbManager.itemMetadata(ocId: existingItem.identifier))
+        }
     }
 
     func testCreateFolder() async throws {
@@ -312,6 +431,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         )
         XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
+        XCTAssertEqual(remoteInterface.lastUploadIfNoneMatchHeader, "*")
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
@@ -325,6 +445,391 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertTrue(dbItem.uploaded)
         XCTAssertTrue(createdItem.isDownloaded)
         XCTAssertTrue(createdItem.isUploaded)
+    }
+
+    func testCreateFileDoesNotOverwriteExistingRemoteFile() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(chunkSize: nil)
+    }
+
+    func testCreateChunkedFileDoesNotOverwriteExistingRemoteFile() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(chunkSize: 2)
+    }
+
+    func testCreateReportsRemoteOnlyCollisionAndLeavesDiscoveryToEnumeration() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: nil
+        )
+    }
+
+    func testCreateReportsCurrentRemoteItemWhenCachedItemHasSameName() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: "old-id"
+        )
+    }
+
+    func testCreateKeepsFilenameCollisionWhenRemoteLookupFails() async throws {
+        try await assertCreatingFilePreservesRemoteCollision(
+            chunkSize: nil,
+            cachedItemIdentifier: "old-id",
+            remoteLookupError: NKError(statusCode: 404, fallbackDescription: "File not found")
+        )
+    }
+
+    private func assertCreateChecksumRecovery(
+        remoteChecksum: String?,
+        remoteContents: Data = ItemCreateTests.attemptedContents,
+        retryContents: Data = ItemCreateTests.attemptedContents,
+        firstFailure: (remoteError: NKError, fileProviderCode: NSFileProviderError.Code)? = (
+            NKError(error: URLError(.networkConnectionLost)),
+            .serverUnreachable
+        ),
+        forcedChunkSize: Int? = nil,
+        failsBeforeAssembly: Bool = false,
+        retryOnceWhileOffline: Bool = false,
+        failFirstRecoveryLookup: Bool = false,
+        shouldRecover: Bool = false
+    ) async throws {
+        let account = Self.account
+        let name = "lost-response.txt"
+        let remotePath = account.davFilesUrl + "/" + name
+        let committedIdentifier = "committed-id"
+        let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let remoteInterface = MockRemoteInterface(account: account, rootItem: rootItem)
+        remoteInterface.targetChecksumsByPath[remotePath] = remoteChecksum
+        var templateMetadata = SendableItemMetadata(ocId: "stable-template-id", fileName: name, account: account)
+        templateMetadata.classFile = NKTypeClassFile.document.rawValue
+        templateMetadata.date = modificationDate
+        let contents = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try Self.attemptedContents.write(to: contents)
+        defer { try? FileManager.default.removeItem(at: contents) }
+
+        let databaseDirectory = makeDatabaseDirectory()
+        defer { try? FileManager.default.removeItem(at: databaseDirectory) }
+        let suiteName = "ItemCreateTests-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let domainIdentifier = NSFileProviderDomainIdentifier(suiteName)
+        let log = FileProviderLogMock()
+
+        func openDatabase() throws -> FilesDatabaseManager {
+            try FilesDatabaseManager(
+                account: account,
+                databaseDirectory: databaseDirectory,
+                fileProviderDomainIdentifier: domainIdentifier,
+                log: log,
+                defaults: defaults
+            )
+        }
+
+        func create(using dbManager: FilesDatabaseManager) async -> (Item?, Error?) {
+            let template = Item(
+                metadata: templateMetadata,
+                parentItemIdentifier: .rootContainer,
+                account: account,
+                remoteInterface: remoteInterface,
+                dbManager: dbManager
+            )
+            return await Item.create(
+                basedOn: template,
+                contents: contents,
+                account: account,
+                remoteInterface: remoteInterface,
+                forcedChunkSize: forcedChunkSize,
+                progress: Progress(),
+                dbManager: dbManager,
+                log: log
+            )
+        }
+
+        let installRemoteFile: @Sendable () -> Void = { [weak remoteInterface] in
+            guard let rootItem = remoteInterface?.rootItem else { return }
+            let committed = MockRemoteItem(
+                identifier: committedIdentifier,
+                name: name,
+                remotePath: remotePath,
+                modificationDate: modificationDate,
+                data: remoteContents,
+                account: account.ncKitAccount,
+                username: account.username,
+                userId: account.id,
+                serverUrl: account.serverUrl
+            )
+            committed.parent = rootItem
+            rootItem.children = [committed]
+        }
+
+        let committedBeforeReply = firstFailure?.fileProviderCode == .serverUnreachable && !failsBeforeAssembly
+        let collidedOnAssembly = firstFailure?.fileProviderCode == .filenameCollision
+        if let firstFailure {
+            let dbManager = try openDatabase()
+            if committedBeforeReply {
+                remoteInterface.uploadHandler = { installRemoteFile() }
+            }
+            if collidedOnAssembly {
+                // The new file appears after the chunked create's preflight.
+                remoteInterface.chunkPreparationHandler = { installRemoteFile() }
+            } else if failsBeforeAssembly {
+                remoteInterface.chunkTransferError = firstFailure.remoteError
+            } else {
+                remoteInterface.uploadError = firstFailure.remoteError
+            }
+            let (item, error) = await create(using: dbManager)
+
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, firstFailure.fileProviderCode)
+            if forcedChunkSize != nil {
+                XCTAssertEqual(remoteInterface.chunkUploadOperationCount, 1)
+                XCTAssertNil(remoteInterface.lastChunkUploadChecksumHeader)
+                XCTAssertEqual(remoteInterface.lastChunkAssemblyChecksum, failsBeforeAssembly ? nil : Self.attemptedChecksum)
+            } else {
+                XCTAssertEqual(remoteInterface.lastUploadChecksumHeader, Self.attemptedChecksum)
+            }
+            let pendingCreate = dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)
+            XCTAssertEqual(pendingCreate?.checksum, committedBeforeReply ? Self.attemptedChecksum : nil)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+            XCTAssertEqual(rootItem.children.first?.data, committedBeforeReply || collidedOnAssembly ? remoteContents : nil)
+            remoteInterface.uploadHandler = nil
+            remoteInterface.uploadError = nil
+            remoteInterface.chunkPreparationHandler = nil
+            remoteInterface.chunkTransferError = nil
+        }
+        if rootItem.children.isEmpty {
+            installRemoteFile()
+        }
+        if retryOnceWhileOffline {
+            let dbManager = try openDatabase()
+            let offline = NKError(error: URLError(.notConnectedToInternet))
+            remoteInterface.enumerateErrorBySuffix[name] = offline
+            remoteInterface.uploadError = offline
+            let (item, error) = await create(using: dbManager)
+
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .serverUnreachable)
+            XCTAssertEqual(dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)?.checksum, Self.attemptedChecksum)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+            remoteInterface.enumerateErrorBySuffix.removeValue(forKey: name)
+            remoteInterface.uploadError = nil
+        }
+        if shouldRecover, !failFirstRecoveryLookup {
+            rootItem.quotaAvailableBytes = 0
+        }
+
+        var retryTargetReads = 0
+        if failFirstRecoveryLookup {
+            remoteInterface.enumerateCallHandler = { [weak remoteInterface] path, depth, _, _, _, _, _, _ in
+                guard path == remotePath, depth == .target else { return }
+                retryTargetReads += 1
+                remoteInterface?.enumerateErrorBySuffix[name] = retryTargetReads == 1
+                    ? NKError(statusCode: 503, fallbackDescription: "Retry lookup failed")
+                    : nil
+            }
+        }
+        try retryContents.write(to: contents)
+        let dbManager = try openDatabase()
+        let (item, error) = await create(using: dbManager)
+
+        let remoteItem = try XCTUnwrap(rootItem.children.first)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteItem.data, remoteContents)
+        XCTAssertNil(dbManager.itemMetadata(ocId: templateMetadata.ocId))
+        let shouldKeepPriorAttempt = !shouldRecover && committedBeforeReply && retryContents == Self.attemptedContents
+        XCTAssertEqual(
+            dbManager.pendingCreateUpload(itemIdentifier: templateMetadata.ocId)?.checksum,
+            shouldKeepPriorAttempt ? Self.attemptedChecksum : nil
+        )
+        if failFirstRecoveryLookup {
+            XCTAssertEqual(retryTargetReads, 2, "The post-412 lookup must be reused for recovery or collision reporting.")
+        }
+        if forcedChunkSize != nil {
+            let skippedChunkUpload = collidedOnAssembly || (shouldRecover && !failFirstRecoveryLookup)
+            XCTAssertEqual(remoteInterface.chunkUploadOperationCount, skippedChunkUpload ? 1 : 2)
+        }
+        if shouldRecover {
+            let hadAdditionalPut = retryOnceWhileOffline || (failFirstRecoveryLookup && forcedChunkSize == nil)
+            XCTAssertEqual(remoteInterface.uploadOperationCount, hadAdditionalPut ? 2 : 1)
+            XCTAssertNil(error)
+            XCTAssertEqual(item?.itemIdentifier.rawValue, committedIdentifier)
+            XCTAssertEqual(item?.metadata.etag, remoteItem.versionIdentifier)
+            XCTAssertEqual(dbManager.itemMetadata(ocId: committedIdentifier)?.uploaded, true)
+        } else {
+            XCTAssertNil(item)
+            XCTAssertEqual((error as? NSFileProviderError)?.code, .filenameCollision)
+            let occupant = (error as NSError?)?.userInfo[NSFileProviderErrorItemKey] as? NSFileProviderItem
+            XCTAssertEqual(occupant?.itemIdentifier.rawValue, committedIdentifier)
+            XCTAssertNil(dbManager.itemMetadata(ocId: committedIdentifier))
+        }
+    }
+
+    func testCreateRecoversMatchingChecksumAfterLostResponse() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateRecoversMatchingChecksumAfterAnInterveningOfflineRetry() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            retryOnceWhileOffline: true,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateRecoversMatchingChecksumAfterProxyErrors() async throws {
+        for status in [520, 524] {
+            rootItem.children = []
+            rootItem.quotaAvailableBytes = -1
+            try await assertCreateChecksumRecovery(
+                remoteChecksum: Self.attemptedChecksum,
+                firstFailure: (
+                    NKError(statusCode: status, fallbackDescription: "Lost origin reply"),
+                    .serverUnreachable
+                ),
+                shouldRecover: true
+            )
+        }
+    }
+
+    func testCreateRecoversMatchingChecksumAfterInitialRetryLookupFails() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            failFirstRecoveryLookup: true,
+            shouldRecover: true
+        )
+    }
+
+    func testCreateKeepsCollisionWhenPostPreconditionLookupHasDifferentChecksum() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.differentChecksum,
+            remoteContents: Self.differentContents,
+            failFirstRecoveryLookup: true
+        )
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenRemoteChecksumDiffers() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.differentChecksum,
+            remoteContents: Self.differentContents
+        )
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenRemoteChecksumIsMissing() async throws {
+        try await assertCreateChecksumRecovery(remoteChecksum: nil)
+    }
+
+    func testCreateKeepsCollisionAfterLostResponseWhenLocalContentsChanged() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            retryContents: Self.differentContents
+        )
+    }
+
+    func testCreateKeepsCollisionForMatchingChecksumWithNoPriorAttempt() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: nil
+        )
+    }
+
+    func testCreateKeepsCollisionForMatchingChecksumAfterDefiniteRejection() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: (
+                NKError(statusCode: 507, fallbackDescription: "Insufficient Storage"),
+                .insufficientQuota
+            )
+        )
+    }
+
+    func testChunkedCreateRecoversMatchingChecksumAfterLostMoveResponse() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: (
+                NKError(error: URLError(.timedOut)),
+                .serverUnreachable
+            ),
+            forcedChunkSize: 4,
+            shouldRecover: true
+        )
+    }
+
+    func testChunkedCreateRecoversMatchingChecksumAfterInitialRetryLookupFails() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            forcedChunkSize: 4,
+            failFirstRecoveryLookup: true,
+            shouldRecover: true
+        )
+    }
+
+    func testChunkedCreateKeepsCollisionAfterChunkTransferFails() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            forcedChunkSize: 4,
+            failsBeforeAssembly: true
+        )
+    }
+
+    func testChunkedCreateKeepsCollisionAfterMovePreconditionFails() async throws {
+        try await assertCreateChecksumRecovery(
+            remoteChecksum: Self.attemptedChecksum,
+            firstFailure: (
+                NKError(statusCode: 412, fallbackDescription: "Precondition Failed"),
+                .filenameCollision
+            ),
+            forcedChunkSize: 4
+        )
+    }
+
+    func testChunkedCreateDoesNotReportMissingUploadSessionAsFilenameCollision() async throws {
+        let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
+        remoteInterface.uploadError = NKError(statusCode: 412, fallbackDescription: "Missing metadata for chunked upload.")
+
+        let itemIdentifier = UUID().uuidString
+        var metadata = SendableItemMetadata(
+            ocId: itemIdentifier, fileName: "document.txt", account: Self.account
+        )
+        metadata.classFile = NKTypeClassFile.document.rawValue
+        let template = Item(
+            metadata: metadata,
+            parentItemIdentifier: .rootContainer,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            dbManager: Self.dbManager
+        )
+        let contents = Data("Contents requiring multiple chunks".utf8)
+        let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try contents.write(to: localURL)
+        let chunkSize = 8
+        let log = FileProviderLogMock()
+        defer {
+            try? FileManager.default.removeItem(at: localURL)
+            discardChunkUploads(
+                forItemIdentifiers: [itemIdentifier],
+                usingRemoteInterface: remoteInterface,
+                dbManager: Self.dbManager,
+                logger: FileProviderLogger(category: "ItemCreateTests", log: log)
+            )
+        }
+
+        let (createdItem, error) = await Item.create(
+            basedOn: template,
+            contents: localURL,
+            account: Self.account,
+            remoteInterface: remoteInterface,
+            forcedChunkSize: chunkSize,
+            progress: Progress(),
+            dbManager: Self.dbManager,
+            log: log
+        )
+
+        XCTAssertNil(createdItem)
+        XCTAssertEqual((error as? NSFileProviderError)?.code, .cannotSynchronize)
+        XCTAssertTrue(rootItem.children.isEmpty)
+        XCTAssertNil(Self.dbManager.itemMetadata(ocId: itemIdentifier))
+        XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
     }
 
     /// Regression test for the same root cause as
@@ -869,6 +1374,8 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         XCTAssertEqual(remoteItem.name, fileItemMetadata.fileName)
         XCTAssertEqual(remoteItem.directory, fileItemMetadata.directory)
         XCTAssertEqual(remoteItem.data, tempData)
+        XCTAssertEqual(rootItem.children.count, 1)
+        XCTAssertEqual(remoteInterface.lastChunkedUploadOverwrite, false)
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)
@@ -891,15 +1398,17 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
         let tempData = Data(repeating: 1, count: chunkSize * 3)
         try tempData.write(to: tempUrl)
 
-        // New-item creation has no persisted ItemMetadata (the OS supplies the template), so the chunk
-        // id is derived from the template's itemIdentifier plus the content's (size, modificationDate),
-        // with illegal path characters stripped. Seed the prior interrupted attempt under exactly that
-        // derived id so the resume path recognises identical content.
+        // Seed a prior interrupted attempt for the same item, contents and destination.
         let modificationDate = Date(timeIntervalSince1970: 1_700_000_000)
+        let log = FileProviderLogMock()
+        let checksum = try CreateUploadChecksum.header(forFileAt: tempUrl.path, cancellation: NetworkOperationCancellation(log: log))
+        let remotePath = Self.account.davFilesUrl + "/file"
         let chunkUploadId = chunkUploadIdentifier(
             forItemWithIdentifier: illegalChunkUploadId,
             fileSize: Int64(tempData.count),
-            modificationDate: modificationDate
+            modificationDate: modificationDate,
+            createDestination: remotePath,
+            createChecksum: checksum
         )
         XCTAssertTrue(
             chunkUploadId.hasPrefix(
@@ -930,6 +1439,12 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
 
         let remoteInterface = MockRemoteInterface(account: Self.account, rootItem: rootItem)
         remoteInterface.currentChunks = [chunkUploadId: [preexistingChunk]]
+        var destinationReads = 0
+        remoteInterface.enumerateCallHandler = { path, depth, _, _, _, _, _, _ in
+            if path == remotePath, depth == .target {
+                destinationReads += 1
+            }
+        }
 
         var fileItemMetadata = SendableItemMetadata(
             ocId: illegalChunkUploadId, fileName: "file", account: Self.account
@@ -952,7 +1467,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             forcedChunkSize: chunkSize,
             progress: Progress(),
             dbManager: Self.dbManager,
-            log: FileProviderLogMock()
+            log: log
         )
 
         let createdItem = try XCTUnwrap(createdItemMaybe)
@@ -972,6 +1487,7 @@ final class ItemCreateTests: NextcloudFileProviderKitTestCase {
             remoteInterface.completedChunkTransferSize[chunkUploadId],
             Int64(tempData.count) - preexistingChunk.size
         )
+        XCTAssertEqual(destinationReads, 0)
 
         let dbItem = try XCTUnwrap(
             Self.dbManager.itemMetadata(ocId: createdItem.itemIdentifier.rawValue)

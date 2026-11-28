@@ -3,6 +3,7 @@
 
 @preconcurrency import FileProvider
 import Foundation
+import GRDB
 @testable import NextcloudFileProviderKit
 import NextcloudFileProviderKitMocks
 import RealmSwift
@@ -117,6 +118,7 @@ struct RealmStoreImporterTests {
         #expect(manager.isItemExcludedFromSync(ocId: "excluded"))
         #expect(manager.remoteFileChunks(uploadId: "upload-1")?.map(\.fileName) == ["1", "2"])
         #expect(manager.pendingChunkUploadCleanupIdentifiers() == ["cleanup-1"])
+        #expect(try manager.writer.read { db in try PendingCreateUploadRecord.fetchCount(db) } == 0)
         let session = try #require(try manager.changeDeliverySession(sessionId: "session"))
         #expect(session.containerKey == "container")
         #expect(session.incomplete)

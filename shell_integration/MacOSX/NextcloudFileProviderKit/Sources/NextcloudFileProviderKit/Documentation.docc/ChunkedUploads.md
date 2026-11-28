@@ -36,6 +36,12 @@ modification date produces a different identifier, so chunks from an older
 version are not reused for new contents. The File Provider model is expected
 to provide a changed content modification date when contents change.
 
+For file creation, the destination is also part of the identifier. The server
+remembers the destination when it creates the upload folder, so a retry under
+a different name or parent needs a fresh upload folder. A create also includes
+its content checksum when available so resumed chunks match the checksum sent
+on the final `MOVE`.
+
 If no modification date is available, the upload uses a unique identifier.
 That attempt cannot be resumed by deriving the same identifier later, but it
 also cannot accidentally reuse chunks from different contents.
@@ -65,11 +71,11 @@ its own storage layout.
 
 Before a chunked transfer starts, `upload()` performs these steps:
 
-1. Derive the identifier for the current file version.
+1. Derive the identifier for the current file version and, for creates, its destination.
 2. Find uploads associated with the same item, including legacy bookkeeping
    found through the per-item identifier prefix.
-3. Delete every matching upload except the current identifier. These are
-   stale attempts for older contents.
+3. Delete every matching local upload except the current identifier. These are
+   stale attempts for older contents or earlier create destinations.
 4. Store the current identifier on existing item metadata.
 5. Load only `RemoteFileChunk` rows with the current identifier and pass them
    to `RemoteInterface.chunkedUpload()` as the remaining chunks.

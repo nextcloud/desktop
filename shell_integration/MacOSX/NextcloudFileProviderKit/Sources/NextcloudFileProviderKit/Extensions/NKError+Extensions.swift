@@ -50,6 +50,18 @@ extension NKError {
         errorCode == 412
     }
 
+    var isAmbiguousCreateResponse: Bool {
+        switch errorCode {
+            case NKError.errorChunkMoveFile.errorCode:
+                // NextcloudKit could not read back the file after the MOVE succeeded.
+                true
+            case NSURLErrorTimedOut, NSURLErrorNetworkConnectionLost, NSURLErrorCancelled, 408, 500, 502, 503, 504, 520, 524:
+                true
+            default:
+                false
+        }
+    }
+
     var isLockedError: Bool {
         errorCode == 423
     }
@@ -108,20 +120,11 @@ extension NKError {
         if isCancelledError {
             return CocoaError(.userCancelled)
         }
-        guard fileProviderError?.code == .filenameCollision else {
-            return fileProviderError as Error?
-        }
-        guard let collidingItemMetadata = dbManager.itemMetadata(
-            account: dbManager.account.ncKitAccount, locatedAtRemoteUrl: problemRemotePath
-        ), let collidingItem = await Item.storedItem(
-            identifier: .init(collidingItemMetadata.ocId),
-            account: dbManager.account,
-            remoteInterface: remoteInterface,
+        return await fileProviderError?.handlingCollisionAgainstItemInRemotePath(
+            problemRemotePath,
             dbManager: dbManager,
+            remoteInterface: remoteInterface,
             log: log
-        ) else {
-            return NSFileProviderError(.filenameCollision)
-        }
-        return NSError.fileProviderErrorForCollision(with: collidingItem)
+        )
     }
 }

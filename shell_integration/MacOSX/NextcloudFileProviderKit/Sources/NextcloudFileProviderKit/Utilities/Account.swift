@@ -56,19 +56,29 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
     ///
     /// Paths outside the files root, such as trash paths, do not have a sync-relative path.
     public func filesRootRelativePath(for remotePath: String) -> String? {
-        let filesRootPrefix = davFilesUrl + "/"
-        guard remotePath.hasPrefix(filesRootPrefix) else { return nil }
-        return String(remotePath.dropFirst(filesRootPrefix.count))
+        filesRootRelativePath(for: remotePath, sourceMetadata: nil)
+    }
+
+    func filesRootRelativePath(for remotePath: String, sourceMetadata: SendableItemMetadata?) -> String? {
+        guard let root = matchingDAVReadRoot(for: remotePath, roots: [davFilesUrl], sourceMetadata: sourceMetadata) else {
+            return nil
+        }
+        let prefix = (root + "/").utf8
+        guard remotePath.utf8.starts(with: prefix) else { return nil }
+        return String(decoding: remotePath.utf8.dropFirst(prefix.count), as: UTF8.self)
     }
 
     func ownsDAVReadURL(_ url: String, sourceMetadata: SendableItemMetadata? = nil) -> Bool {
+        matchingDAVReadRoot(for: url, roots: [davFilesUrl, trashUrl], sourceMetadata: sourceMetadata) != nil
+    }
+
+    private func matchingDAVReadRoot(for url: String, roots: [String], sourceMetadata: SendableItemMetadata?) -> String? {
         func matches(_ root: String) -> Bool {
             url.utf8.elementsEqual(root.utf8) || url.utf8.starts(with: (root + "/").utf8)
         }
 
-        let roots = [davFilesUrl, trashUrl]
-        if roots.contains(where: matches) {
-            return true
+        if let root = roots.first(where: matches) {
+            return root
         }
 
         // A normalized URL can coincide with a previous base. Use the row's account provenance to distinguish them.
@@ -76,7 +86,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
               sourceMetadata.urlBase.utf8.elementsEqual(serverUrl.utf8),
               sourceMetadata.userId.utf8.elementsEqual(id.utf8)
         else {
-            return false
+            return nil
         }
 
         // NextcloudKit joins the scheme, host and port with the decoded DAV parent path.
@@ -84,7 +94,7 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
               let scheme = configuredURL.scheme,
               let host = configuredURL.host
         else {
-            return false
+            return nil
         }
 
         // Like NSString.deletingLastPathComponent in the DAV parser, collapse separators before decoding.
@@ -93,20 +103,23 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
         let origin = "\(scheme)://\(host)\(port)"
         let configuredPrefix = (serverUrl + "/").utf8
 
-        func matchesResponseRoot(webrootComponents: [Substring]) -> Bool {
+        func matchingResponseRoot(webrootComponents: [Substring]) -> String? {
             guard let path = webrootComponents.joined(separator: "/").removingPercentEncoding else {
-                return false
+                return nil
             }
             let responseBase = path.isEmpty ? origin : origin + "/" + path
-            return roots.contains { root in
-                guard root.utf8.starts(with: configuredPrefix) else { return false }
+            for root in roots where root.utf8.starts(with: configuredPrefix) {
                 let davPath = String(decoding: root.utf8.dropFirst(serverUrl.utf8.count), as: UTF8.self)
-                return matches(responseBase + davPath)
+                let responseRoot = responseBase + davPath
+                if matches(responseRoot) {
+                    return responseRoot
+                }
             }
+            return nil
         }
 
-        if matchesResponseRoot(webrootComponents: pathComponents) {
-            return true
+        if let root = matchingResponseRoot(webrootComponents: pathComponents) {
+            return root
         }
 
         // A reverse proxy can resolve dot segments in the webroot before forwarding the request.
@@ -120,7 +133,8 @@ public struct Account: CustomStringConvertible, Equatable, Sendable {
                     components.append(component)
             }
         }
-        return canonicalComponents != pathComponents && matchesResponseRoot(webrootComponents: canonicalComponents)
+        guard canonicalComponents != pathComponents else { return nil }
+        return matchingResponseRoot(webrootComponents: canonicalComponents)
     }
 
     public init?(dictionary: [String: String]) {

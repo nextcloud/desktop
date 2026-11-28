@@ -57,6 +57,7 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         remainingChunks _: [RemoteFileChunk],
         creationDate _: Date?,
         modificationDate _: Date?,
+        overwrite _: Bool,
         account _: Account,
         options _: NKRequestOptions,
         currentNumChunksUpdateHandler _: @escaping (Int) -> Void,
@@ -66,14 +67,15 @@ public struct TestableRemoteInterface: RemoteInterface, @unchecked Sendable {
         requestHandler _: @escaping (UploadRequest) -> Void,
         taskHandler _: @Sendable @escaping (URLSessionTask) -> Void,
         progressHandler _: @escaping (Progress) -> Void,
+        assemblyChecksum _: @escaping () throws -> String?,
         chunkUploadCompleteHandler _: @escaping (RemoteFileChunk) -> Void
     ) async -> (
         account: String,
         file: NKFile?,
         chunksDirectory: URL?,
-        nkError: NKError
+        failure: UploadFailure?
     ) {
-        ("", nil, nil, .invalidResponseError)
+        ("", nil, nil, .other(.invalidResponseError))
     }
 
     public func removeLocalChunks(remoteChunkStoreFolderName _: String) throws {}

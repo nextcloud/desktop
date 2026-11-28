@@ -123,6 +123,11 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         XCTAssertFalse(account.ownsDAVReadURL(trashedFile.remotePath()))
         XCTAssertFalse(account.ownsDAVReadURL(filesRoot + "-old/Folder", sourceMetadata: file))
         XCTAssertFalse(account.ownsDAVReadURL(trashRoot + "-old/Folder", sourceMetadata: trashedFile))
+        XCTAssertEqual(account.filesRootRelativePath(for: account.davFilesUrl + "/Folder"), "Folder")
+        XCTAssertEqual(account.filesRootRelativePath(for: file.remotePath(), sourceMetadata: file), "File")
+        XCTAssertNil(account.filesRootRelativePath(for: file.remotePath()))
+        XCTAssertNil(account.filesRootRelativePath(for: trashedFile.remotePath(), sourceMetadata: trashedFile))
+        XCTAssertNil(account.filesRootRelativePath(for: filesRoot + "-old/Folder", sourceMetadata: file))
     }
 
     func testDAVResponseRootRequiresByteExactBaseAndUserProvenance() {
@@ -137,6 +142,7 @@ final class AccountTests: NextcloudFileProviderKitTestCase {
         differentBase.urlBase = "https://example.com/cafe\u{0301}/"
         XCTAssertEqual(differentBase.urlBase, account.serverUrl)
         XCTAssertFalse(account.ownsDAVReadURL(url, sourceMetadata: differentBase))
+        XCTAssertNil(account.filesRootRelativePath(for: url, sourceMetadata: differentBase))
 
         var differentUser = file
         differentUser.userId = "use\u{0301}r"

@@ -114,6 +114,7 @@ extension NextcloudKit: RemoteInterface {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date? = nil,
         modificationDate: Date? = nil,
+        overwrite: Bool = true,
         account: Account,
         options: NKRequestOptions = .init(),
         currentNumChunksUpdateHandler _: @escaping (_ num: Int) -> Void = { _ in },
@@ -123,12 +124,18 @@ extension NextcloudKit: RemoteInterface {
         requestHandler _: @escaping (_ request: UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (_ task: URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
+        assemblyChecksum: @escaping () throws -> String? = { nil },
         chunkUploadCompleteHandler: @escaping (_ fileChunk: RemoteFileChunk) -> Void = { _ in }
-    ) async -> (account: String, file: NKFile?, chunksDirectory: URL?, nkError: NKError) {
+    ) async -> (
+        account: String,
+        file: NKFile?,
+        chunksDirectory: URL?,
+        failure: UploadFailure?
+    ) {
         let logger = FileProviderLogger(category: "NextcloudKit+RemoteInterface", log: log)
 
         guard let remotePathComponents = chunkedUploadRemotePathComponents(from: remotePath) else {
-            return ("", nil, nil, .urlError)
+            return ("", nil, nil, .other(.urlError))
         }
         let localUrl = URL(fileURLWithPath: localPath)
 
@@ -143,7 +150,7 @@ extension NextcloudKit: RemoteInterface {
                 Could not create temporary directory for chunked files: \(error)
                 """
             )
-            return ("", nil, nil, .urlError)
+            return ("", nil, nil, .other(.urlError))
         }
 
         var directory = localUrl.deletingLastPathComponent().path
@@ -172,6 +179,8 @@ extension NextcloudKit: RemoteInterface {
             """
         )
 
+        // A chunk PUT can return 412 before the destination is checked by the final MOVE.
+        var assembling = false
         do {
             let (account, file) = try await uploadChunkAsync(
                 directory: directory,
@@ -184,8 +193,10 @@ extension NextcloudKit: RemoteInterface {
                 chunkFolder: remoteChunkStoreFolderName,
                 filesChunk: fileChunks,
                 chunkSize: chunkSize,
+                assemblyChecksum: assemblyChecksum,
                 account: account.ncKitAccount,
                 options: options,
+                overwrite: overwrite,
                 uploadStart: { processedChunks in
                     let chunks = RemoteFileChunk.fromNcKitChunks(processedChunks, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
                     chunkUploadStartHandler(chunks)
@@ -199,16 +210,20 @@ extension NextcloudKit: RemoteInterface {
                 uploaded: { uploadedChunk in
                     let chunk = RemoteFileChunk(ncKitChunk: uploadedChunk, remoteChunkStoreFolderName: remoteChunkStoreFolderName)
                     chunkUploadCompleteHandler(chunk)
-                }
+                },
+                assembling: { assembling = true }
             )
 
-            return (account, file, chunksOutputDirectoryUrl, .success)
+            return (account, file, chunksOutputDirectoryUrl, nil)
         } catch is CancellationError {
-            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError(error: URLError(.cancelled)))
-        } catch let nkError as NKError {
-            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, nkError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, .other(NKError(error: URLError(.cancelled))))
+        } catch let error as NKError {
+            let failure: UploadFailure = !overwrite && assembling && error.isPreconditionFailedError
+                ? .destinationCollision(error)
+                : .other(error)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, failure)
         } catch {
-            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, NKError.urlError)
+            return (account.ncKitAccount, nil, chunksOutputDirectoryUrl, .other(.urlError))
         }
     }
 

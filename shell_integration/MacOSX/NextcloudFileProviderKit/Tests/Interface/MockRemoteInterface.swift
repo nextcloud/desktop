@@ -574,6 +574,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
     public var chunkPreparationHandler: (@Sendable () async -> Void)?
     public var chunkPreparationError: NKError?
+    public var chunkTransferError: NKError?
     public var chunkAssemblyHandler: (@Sendable () async -> Void)?
     public var uploadHandler: (@Sendable () async -> Void)?
     public var uploadRequest: UploadRequest?
@@ -657,8 +658,19 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// which etag. Captured before any injected `uploadError` short-circuit.
     public var lastUploadIfMatchHeader: String?
 
+    /// Records the create-only precondition on the most recent upload.
+    public var lastUploadIfNoneMatchHeader: String?
+
+    public private(set) var lastUploadChecksumHeader: String?
+
     /// Records the WebDAV `If` header the most recent upload call carried (nil if none).
     public var lastUploadIfHeader: String?
+
+    /// The destination policy supplied to the most recent chunked upload.
+    public private(set) var lastChunkedUploadOverwrite: Bool?
+    public private(set) var chunkUploadOperationCount = 0
+    public private(set) var lastChunkUploadChecksumHeader: String?
+    public private(set) var lastChunkAssemblyChecksum: String?
 
     /// Lock information returned by lock and unlock requests.
     public var lockUnlockResult: NKLock?
@@ -675,6 +687,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     /// associated error instead of reading the mock tree. Lets tests reproduce a working-set scan in
     /// which one folder's PROPFIND fails (e.g. a large container timing out) while the rest succeed.
     public var enumerateErrorBySuffix: [String: NKError] = [:]
+    public var targetChecksumsByPath: [String: String] = [:]
     public var enumerateResponseStatusCode = 200
 
     public init(
@@ -853,6 +866,8 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
     ) {
         uploadOperationCount += 1
         lastUploadIfMatchHeader = options.customHeader?["If-Match"]
+        lastUploadIfNoneMatchHeader = options.customHeader?["If-None-Match"]
+        lastUploadChecksumHeader = options.customHeader?["OC-Checksum"]
         lastUploadIfHeader = options.customHeader?["If"]
 
         if let uploadRequest {
@@ -893,6 +908,12 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             return (account.ncKitAccount, nil, nil, nil, 0, nil, .urlError)
         }
         debugPrint("Parent is:", parent.remotePath)
+
+        if options.customHeader?["If-None-Match"] == "*",
+           parent.children.contains(where: { $0.remotePath == remotePath })
+        {
+            return (account.ncKitAccount, nil, nil, nil, 0, nil, NKError(statusCode: 412, fallbackDescription: "Precondition Failed"))
+        }
 
         var item: MockRemoteItem
         if let existingItem = parent.children.first(where: { $0.remotePath == remotePath }) {
@@ -950,6 +971,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         remainingChunks: [RemoteFileChunk],
         creationDate: Date?,
         modificationDate: Date?,
+        overwrite: Bool = true,
         account: Account,
         options: NKRequestOptions,
         currentNumChunksUpdateHandler _: @escaping (Int) -> Void = { _ in },
@@ -959,27 +981,32 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
         requestHandler _: @escaping (UploadRequest) -> Void = { _ in },
         taskHandler: @escaping (URLSessionTask) -> Void = { _ in },
         progressHandler: @escaping (Progress) -> Void = { _ in },
+        assemblyChecksum: @escaping () throws -> String? = { nil },
         chunkUploadCompleteHandler: @escaping (RemoteFileChunk) -> Void = { _ in }
     ) async -> (
         account: String,
         file: NKFile?,
         chunksDirectory: URL?,
-        nkError: NKError
+        failure: UploadFailure?
     ) {
+        chunkUploadOperationCount += 1
+        lastChunkedUploadOverwrite = overwrite
+        lastChunkUploadChecksumHeader = options.customHeader?["OC-Checksum"]
+        lastChunkAssemblyChecksum = nil
         guard let remoteUrl = URL(string: remotePath) else {
             print("Invalid remote path!")
-            return ("", nil, nil, .urlError)
+            return ("", nil, nil, .other(.urlError))
         }
 
         if let chunkPreparationHandler {
             await chunkPreparationHandler()
             if Task.isCancelled, chunkPreparationError == nil {
                 // Match NKCommon.chunkedFile's cancellation error.
-                return (account.ncKitAccount, nil, nil, NKError(errorCode: -5, errorDescription: "Chunking was cancelled."))
+                return (account.ncKitAccount, nil, nil, .other(NKError(errorCode: -5, errorDescription: "Chunking was cancelled.")))
             }
         }
         if let chunkPreparationError {
-            return (account.ncKitAccount, nil, nil, chunkPreparationError)
+            return (account.ncKitAccount, nil, nil, .other(chunkPreparationError))
         }
 
         // Create the local chunk directory used by the production adapter and populate it below.
@@ -1022,6 +1049,42 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         chunkUploadStartHandler(newChunks)
 
+        if let chunkTransferError {
+            return (
+                account.ncKitAccount,
+                nil,
+                returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                .other(chunkTransferError)
+            )
+        }
+
+        let completedChunks = chunkUploadCompletedChunkCount.map {
+            newChunks.prefix($0)
+        } ?? newChunks[...]
+        if completedChunks.count == newChunks.count {
+            do {
+                lastChunkAssemblyChecksum = try assemblyChecksum()
+            } catch {
+                completedChunks.forEach { chunkUploadCompleteHandler($0) }
+                return (
+                    account.ncKitAccount,
+                    nil,
+                    returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                    .other(error as? NKError ?? NKError(error: error))
+                )
+            }
+        }
+
+        if !overwrite, item(remotePath: remotePath, account: account.ncKitAccount) != nil {
+            newChunks.forEach { chunkUploadCompleteHandler($0) }
+            return (
+                account.ncKitAccount,
+                nil,
+                returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
+                .destinationCollision(NKError(statusCode: 412, fallbackDescription: "Precondition Failed"))
+            )
+        }
+
         let (_, ocId, etag, date, size, _, remoteError) = await upload(
             remotePath: remotePath,
             localPath: localPath,
@@ -1032,9 +1095,6 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             taskHandler: taskHandler,
             progressHandler: progressHandler
         )
-        let completedChunks = chunkUploadCompletedChunkCount.map {
-            newChunks.prefix($0)
-        } ?? newChunks[...]
         completedChunks.forEach { chunkUploadCompleteHandler($0) }
         if let chunkAssemblyHandler {
             await chunkAssemblyHandler()
@@ -1061,7 +1121,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             account.ncKitAccount,
             file,
             returnsChunkUploadDirectory ? tempDirectoryUrl : nil,
-            remoteError
+            remoteError == .success ? nil : .other(remoteError)
         )
     }
 
@@ -1302,7 +1362,7 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
             )
         }
 
-        func generateResponse(itemCount: Int, finalPage: Bool) -> AFDataResponse<Data>? {
+        func generateResponse(itemCount: Int, finalPage: Bool, body: Data = Data()) -> AFDataResponse<Data>? {
             var responseHeaders: [String: String] = [:]
             if pagination, options.paginate {
                 responseHeaders["X-NC-PAGINATE"] = "true"
@@ -1326,10 +1386,10 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
                     httpVersion: "HTTP/1.1",
                     headerFields: responseHeaders
                 ),
-                data: Data(),
+                data: body,
                 metrics: nil,
                 serializationDuration: 0,
-                result: .success(Data())
+                result: .success(body)
             )
         }
 
@@ -1359,7 +1419,17 @@ public class MockRemoteInterface: RemoteInterface, @unchecked Sendable {
 
         switch depth {
             case .target:
-                let responseData = generateResponse(itemCount: 1, finalPage: true)
+                let body = targetChecksumsByPath[remotePath].map { checksum in
+                    Data("""
+                    <d:multistatus xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+                        <d:response><d:propstat><d:prop>
+                            <oc:id>\(item.identifier)</oc:id>
+                            <oc:checksums><oc:checksum>\(checksum)</oc:checksum></oc:checksums>
+                        </d:prop><d:status>HTTP/1.1 200 OK</d:status></d:propstat></d:response>
+                    </d:multistatus>
+                    """.utf8)
+                } ?? Data()
+                let responseData = generateResponse(itemCount: 1, finalPage: true, body: body)
                 return (account.ncKitAccount, [item.toNKFile()], responseData, .success)
             case .targetAndDirectChildren:
                 let files = [item.toNKFile()] + item.children.map { $0.toNKFile() }

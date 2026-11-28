@@ -21,7 +21,8 @@ enum DatabaseSchema {
         PendingChunkUploadCleanupRecord.databaseTableName,
         ChangeDeliverySessionRecord.databaseTableName,
         ChangeDeliveryItemRecord.databaseTableName,
-        StoreIdentityRecord.databaseTableName
+        StoreIdentityRecord.databaseTableName,
+        PendingCreateUploadRecord.databaseTableName
     ]
 
     static var migrator: DatabaseMigrator {
@@ -193,6 +194,16 @@ enum DatabaseSchema {
             try db.create(table: StoreIdentityRecord.databaseTableName) { table in
                 table.primaryKey("id", .integer).check(sql: "id = 1")
                 table.column("identity", .text).notNull()
+            }
+
+            try db.create(table: PendingCreateUploadRecord.databaseTableName) { table in
+                table.column("account", .text).notNull()
+                table.column("itemIdentifier", .text).notNull()
+                table.column("remotePath", .text).notNull()
+                table.column("checksum", .text).notNull()
+                table.column("attemptIdentifier", .text).notNull().unique()
+                table.column("startedAt", .double).notNull().indexed()
+                table.primaryKey(["account", "itemIdentifier"])
             }
         }
 
