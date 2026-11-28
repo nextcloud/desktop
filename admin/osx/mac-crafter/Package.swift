@@ -22,13 +22,15 @@ let package = Package(
         .executableTarget(
             name: "mac-crafter",
             dependencies: [.product(name: "ArgumentParser", package: "swift-argument-parser")],
+            resources: [.copy("Resources/read_craftmaster_config.py")],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency")
             ]
         ),
         .testTarget(
             name: "mac-crafter-tests",
-            dependencies: ["mac-crafter"]
+            dependencies: ["mac-crafter"],
+            resources: [.copy("Fixtures/Config.py")]
         ),
     ]
 )

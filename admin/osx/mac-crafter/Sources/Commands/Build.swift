@@ -8,6 +8,8 @@ import Foundation
 
 struct Build: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "Client building script")
+    private static let defaultKDEBlueprintsURL = "https://github.com/nextcloud/craft-blueprints-kde.git"
+    private static let defaultClientBlueprintsURL = "https://github.com/nextcloud/desktop-client-blueprints.git"
 
     @Argument(help: "Path to the root directory of the Nextcloud Desktop Client git repository.")
     var repoRootDir = "\(FileManager.default.currentDirectoryPath)/../../.."
@@ -31,22 +33,22 @@ struct Build: AsyncParsableCommand {
     var craftMasterGitUrl = "https://github.com/KDE/craftmaster.git"
     
     @Option(name: [.long], help: "KDE Craft blueprints Git URL.")
-    var kdeBlueprintsGitUrl = "https://github.com/nextcloud/craft-blueprints-kde.git"
+    var kdeBlueprintsGitUrl = Build.defaultKDEBlueprintsURL
     
-    @Option(name: [.long], help: "KDE Craft blueprints git ref/branch")
-    var kdeBlueprintsGitRef = "master"
+    @Option(name: [.long], help: "Override the KDE Craft blueprint branch from craftmaster.ini.")
+    var kdeBlueprintsGitRef: String?
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git URL.")
-    var clientBlueprintsGitUrl = "https://github.com/nextcloud/desktop-client-blueprints.git"
+    var clientBlueprintsGitUrl = Build.defaultClientBlueprintsURL
     
-    @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprints Git ref/branch.")
-    var clientBlueprintsGitRef = "master"
+    @Option(name: [.long], help: "Override the Nextcloud Desktop Client blueprint branch from craftmaster.ini.")
+    var clientBlueprintsGitRef: String?
     
     @Option(name: [.long], help: "Nextcloud Desktop Client craft blueprint name.")
     var craftBlueprintName = "nextcloud-client"
     
-    @Option(name: [.long], help: "Build type (e.g. Release, RelWithDebInfo, MinSizeRel, Debug).")
-    var buildType = "RelWithDebInfo"
+    @Option(name: [.long], help: "Override the build type from craftmaster.ini (Release, RelWithDebInfo, MinSizeRel, Debug).")
+    var buildType: String?
     
     @Option(name: [.long], help: "The application's branded name.")
     var appName = "Nextcloud"
@@ -81,8 +83,8 @@ struct Build: AsyncParsableCommand {
     @Flag(help: "Run build offline (i.e. do not update craft)")
     var offline = false
     
-    @Flag(help: "Build test suite.")
-    var buildTests = false
+    @Flag(inversion: .prefixedNo, help: "Override whether to build the test suite from craftmaster.ini.")
+    var buildTests: Bool?
     
     @Flag(name: [.long], help: "Do not build App Bundle.")
     var disableAppBundle = false
@@ -114,6 +116,88 @@ struct Build: AsyncParsableCommand {
         let (file, _) = try await URLSession.shared.download(for: request)
         
         return file
+    }
+
+    func craftSettings(
+        at config: URL,
+        target: String,
+        craftMasterDirectory: URL,
+        overrideFile: URL? = nil
+    ) throws -> (
+        kdeBlueprintsRevision: String?,
+        clientBlueprintsRevision: String?,
+        compileBuildType: String,
+        buildType: String,
+        buildTests: Bool,
+        workOffline: Bool
+    ) {
+        let configuration = try CraftMasterConfiguration(
+            at: config,
+            target: target,
+            blueprint: craftBlueprintName,
+            craftMasterDirectory: craftMasterDirectory,
+            overrideFile: overrideFile,
+            buildTestsOverride: buildTests
+        )
+
+        let compileBuildType = buildType ?? configuration.compileBuildType ?? "RelWithDebInfo"
+        let useKDERevision = craftGitURL(kdeBlueprintsGitUrl) == Self.defaultKDEBlueprintsURL
+        let useClientRevision = craftGitURL(clientBlueprintsGitUrl) == Self.defaultClientBlueprintsURL
+        return (
+            kdeBlueprintsRevision: useKDERevision ? configuration.kdeBlueprintsRevision : nil,
+            clientBlueprintsRevision: useClientRevision ? configuration.clientBlueprintsRevision : nil,
+            compileBuildType: compileBuildType,
+            buildType: buildType ?? configuration.blueprintBuildType ?? compileBuildType,
+            buildTests: configuration.buildTests ?? false,
+            workOffline: configuration.workOffline ?? false
+        )
+    }
+
+    func craftBlueprintRoot(at config: URL, target: String, craftMasterDirectory: URL, craftTargetURL: URL) throws -> URL {
+        let defaultRoot = craftTargetURL.appendingPathComponent("etc/blueprints/locations")
+        guard kdeBlueprintsGitRef != nil else { return defaultRoot }
+
+        let configuration = try CraftMasterConfiguration(
+            at: config,
+            target: target,
+            blueprint: craftBlueprintName,
+            craftMasterDirectory: craftMasterDirectory,
+            blueprintRootOnly: true
+        )
+        guard let root = configuration.blueprintRoot else { return defaultRoot }
+        return URL(fileURLWithPath: root, isDirectory: true)
+    }
+
+    func blueprintOverrides(target: String, blueprintRoot: URL, registeringBlueprints: Bool = false) throws -> String? {
+        func checkoutName(_ repositoryURL: String) -> Substring? {
+            repositoryURL.firstMatch(of: #/.*[\/:]([^.:|\n\/]+)/#)?.1
+        }
+
+        let kdeCheckout = checkoutName(kdeBlueprintsGitUrl)
+        let legacyKDE = blueprintRoot.appendingPathComponent("craft-kde")
+        let usesLegacyKDE = FileManager.default.fileExists(atPath: legacyKDE.path)
+            || (registeringBlueprints && kdeCheckout == "craft-kde")
+        let kdeRecipeCheckout: Substring = usesLegacyKDE ? "craft-kde" : "craft-blueprints-kde"
+        let repositories = [
+            (CraftMasterConfiguration.kdeBlueprintsRevisionKey, kdeBlueprintsGitRef, kdeCheckout == kdeRecipeCheckout),
+            (CraftMasterConfiguration.clientBlueprintsRevisionKey, clientBlueprintsGitRef, checkoutName(clientBlueprintsGitUrl) == "craft-blueprints-nextcloud"),
+        ]
+        let overrides = try repositories.compactMap { revisionKey, branch, matchesCheckout -> String? in
+            guard let branch else { return nil }
+            guard !branch.contains(where: \.isNewline) else {
+                throw ValidationError("Invalid blueprint branch for \(revisionKey).")
+            }
+            guard matchesCheckout else { return nil }
+
+            let branchKey = revisionKey.replacingOccurrences(of: ".revision", with: ".branch")
+            let escaped = branch.replacingOccurrences(of: "$", with: "$$")
+            return "\(branchKey) = \(escaped)\n\(revisionKey) ="
+        }
+        guard !overrides.isEmpty else { return nil }
+
+        // Apply the branch override wherever CraftMaster may read the original revision.
+        let values = overrides.joined(separator: "\n")
+        return "[BlueprintSettings]\n\(values)\n[\(target)-BlueprintSettings]\n\(values)\n"
     }
     
     mutating func run() async throws {
@@ -151,12 +235,14 @@ struct Build: AsyncParsableCommand {
         let craftMasterIni = repoRootURL.appendingPathComponent("craftmaster.ini")
         let craftMasterPy = craftMasterDir.appendingPathComponent("CraftMaster.py")
         let craftTarget = archToCraftTarget(arch)
-        let craftCommand = "python3 \(craftMasterPy.path) --config \(craftMasterIni.path) --target \(craftTarget) -c"
+        let craftTargetURL = buildURL.appendingPathComponent(craftTarget)
+        let hasCraftMaster = fm.fileExists(atPath: craftMasterDir.path)
+        let configureCraft = reconfigureCraft || !hasCraftMaster || !fm.fileExists(atPath: craftTargetURL.path)
 
-        if !fm.fileExists(atPath: craftMasterDir.path) || reconfigureCraft {
+        if configureCraft {
             stopwatch.record("KDE Craft Setup")
 
-            if fm.fileExists(atPath: craftMasterDir.path) {
+            if hasCraftMaster {
                 Log.info("KDE Craft is already cloned.")
             } else {
                 Log.info("Cloning KDE Craft...")
@@ -164,29 +250,90 @@ struct Build: AsyncParsableCommand {
                     throw MacCrafterError.gitError("The referenced CraftMaster repository could not be cloned from \(craftMasterGitUrl) to \(craftMasterDir.path)")
                 }
             }
-            
+        }
+
+        let blueprintRoot = try craftBlueprintRoot(
+            at: craftMasterIni,
+            target: craftTarget,
+            craftMasterDirectory: craftMasterDir,
+            craftTargetURL: craftTargetURL
+        )
+        let overrideContent = try blueprintOverrides(
+            target: craftTarget,
+            blueprintRoot: blueprintRoot,
+            registeringBlueprints: configureCraft
+        )
+        let overrideFile = overrideContent.map { _ in fm.temporaryDirectory.appendingPathComponent("mac-crafter-\(UUID()).ini") }
+        defer {
+            if let overrideFile {
+                try? fm.removeItem(at: overrideFile)
+            }
+        }
+        if let overrideContent, let overrideFile {
+            try overrideContent.write(to: overrideFile, atomically: true, encoding: .utf8)
+        }
+
+        let settings = try craftSettings(
+            at: craftMasterIni,
+            target: craftTarget,
+            craftMasterDirectory: craftMasterDir,
+            overrideFile: overrideFile
+        )
+        let buildType = settings.buildType
+        let buildTestsOption = "\(craftBlueprintName).buildTests=\(settings.buildTests ? "True" : "False")"
+        var craftArguments = [
+            "python3",
+            craftMasterPy.path,
+            "--config",
+            craftMasterIni.path,
+            "--target",
+            craftTarget,
+        ]
+
+        if let overrideFile {
+            craftArguments += ["--config-override", overrideFile.path]
+        }
+        craftArguments.append("-c")
+
+        func craft(_ arguments: [String]) async -> Int32 {
+            await mac_crafter.run("/usr/bin/env", craftArguments + arguments)
+        }
+
+        if configureCraft {
             Log.info("Configuring required KDE Craft blueprint repositories...")
             stopwatch.record("Craft Blueprints Configuration")
 
-            guard await shell("\(craftCommand) --add-blueprint-repository '\(kdeBlueprintsGitUrl)|\(kdeBlueprintsGitRef)|'") == 0 else {
+            let kdeRepository = try await craftBlueprintRepository(
+                kdeBlueprintsGitUrl,
+                branch: kdeBlueprintsGitRef,
+                revision: settings.kdeBlueprintsRevision,
+                offline: settings.workOffline
+            )
+            let clientRepository = try await craftBlueprintRepository(
+                clientBlueprintsGitUrl,
+                branch: clientBlueprintsGitRef,
+                revision: settings.clientBlueprintsRevision,
+                offline: settings.workOffline
+            )
+            guard await craft(["--add-blueprint-repository", kdeRepository]) == 0 else {
                 throw MacCrafterError.craftError("Error adding KDE blueprint repository.")
             }
 
-            guard await shell("\(craftCommand) --add-blueprint-repository '\(clientBlueprintsGitUrl)|\(clientBlueprintsGitRef)|'") == 0 else {
+            guard await craft(["--add-blueprint-repository", clientRepository]) == 0 else {
                 throw MacCrafterError.craftError("Error adding Nextcloud Client blueprint repository.")
             }
             
             Log.info("Crafting KDE Craft...")
             stopwatch.record("Craft Crafting")
 
-            guard await shell("\(craftCommand) craft") == 0 else {
+            guard await craft(["craft"]) == 0 else {
                 throw MacCrafterError.craftError("Error crafting KDE Craft.")
             }
             
             Log.info("Crafting Nextcloud Desktop Client dependencies...")
             stopwatch.record("Nextcloud Client Dependencies Crafting")
 
-            guard await shell("\(craftCommand) --install-deps \(craftBlueprintName)") == 0 else {
+            guard await craft(["--install-deps", "--options", buildTestsOption, craftBlueprintName]) == 0 else {
                 throw MacCrafterError.craftError("Error installing dependencies.")
             }
         } else {
@@ -196,10 +343,14 @@ struct Build: AsyncParsableCommand {
         var craftOptions = [
             "\(craftBlueprintName).srcDir=\(repoRootURL.path)",
             "\(craftBlueprintName).osxArchs=\(arch)",
-            "\(craftBlueprintName).buildTests=\(buildTests ? "True" : "False")",
+            buildTestsOption,
             "\(craftBlueprintName).buildMacOSBundle=\(disableAppBundle ? "False" : "True")",
             "\(craftBlueprintName).buildFileProviderModule=\(buildFileProviderModule ? "True" : "False")"
         ]
+
+        if self.buildType != nil || buildType != settings.compileBuildType {
+            craftOptions.append("\(craftBlueprintName).buildType=\(buildType)")
+        }
         
         if let overrideServerUrl {
             craftOptions.append("\(craftBlueprintName).overrideServerUrl=\(overrideServerUrl)")
@@ -232,8 +383,7 @@ struct Build: AsyncParsableCommand {
             craftOptions.append("\(craftBlueprintName).sparkleLibPath=\(buildPath)/Sparkle.framework")
         }
         
-        let clientBuildURL = buildURL
-            .appendingPathComponent(craftTarget)
+        let clientBuildURL = craftTargetURL
             .appendingPathComponent("build")
             .appendingPathComponent(craftBlueprintName)
 
@@ -274,11 +424,12 @@ struct Build: AsyncParsableCommand {
             }
         }
         
-        let buildMode = fullRebuild ? "-i" : disableAppBundle ? "--compile" : "--compile --install"
-        let offlineMode = offline ? "--offline" : ""
-        let allOptionsString = craftOptions.map({ "--options \"\($0)\"" }).joined(separator: " ")
+        let buildMode = fullRebuild ? ["-i"] : disableAppBundle ? ["--compile"] : ["--compile", "--install"]
+        let offlineMode = offline ? ["--offline"] : []
+        let options = craftOptions.flatMap { ["--options", $0] }
+        let buildArguments = ["--buildtype", settings.compileBuildType] + buildMode + offlineMode + options + [craftBlueprintName]
 
-        guard await shell("\(craftCommand) --buildtype \(buildType) \(buildMode) \(offlineMode) \(allOptionsString) \(craftBlueprintName)") == 0 else {
+        guard await craft(buildArguments) == 0 else {
             // Troubleshooting: This can happen because a CraftMaster repository was cloned which does not contain the commit defined in craftmaster.ini of this project due to use of customized forks.
             throw MacCrafterError.craftError("Error crafting Nextcloud Desktop Client.")
         }
