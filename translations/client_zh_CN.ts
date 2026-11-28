@@ -1851,7 +1851,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="353"/>
         <source>With Virtual Files, files and folders may be permanently deleted from this device if they cannot be moved to the trash.</source>
-        <translation type="unfinished"/>
+        <translation>使用虚拟文件功能时，如果文件或文件夹无法移至回收站时，这些文件或文件夹可能会被永久删除。</translation>
     </message>
     <message>
         <location filename="../src/gui/advancedsettings.ui" line="391"/>
@@ -4890,7 +4890,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Could not read local file. It will be checked again on a later sync.</source>
-        <translation type="unfinished"/>
+        <translation>无法读取本地文件。系统将会在下一次同步时再次检查，</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1421"/>
