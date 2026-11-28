@@ -26,8 +26,8 @@
         <rect
             id="fill"
             mask="url(#squircle-edge-mask)"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="white"
         />
     </g>
@@ -40,8 +40,8 @@
         <rect
             id="fill"
             mask="url(#squircle-edge-mask)"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="black"
         />
     </g>
@@ -53,8 +53,8 @@
         <rect
             id="fill"
             mask="url(#logo-mask)"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="black"
         />
     </g>
@@ -64,8 +64,8 @@
     >
         <rect
             id="fill"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="white"
         />
     </g>
@@ -78,8 +78,8 @@
         <rect
             id="fill"
             mask="url(#logo-edge-mask)"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="black"
         />
     </g>
@@ -92,8 +92,8 @@
         <rect
             id="fill"
             mask="url(#logo-edge-mask)"
-            width="100%"
-            height="100%"
+            width="1024"
+            height="1024"
             fill="black"
         />
     </g>
@@ -148,8 +148,8 @@
         >
             <rect
                 id="fill"
-                width="100%"
-                height="100%"
+                width="1024"
+                height="1024"
                 fill="white"
             />
             <use
@@ -232,8 +232,8 @@
         >
             <rect
                 id="fill"
-                width="100%"
-                height="100%"
+                width="1024"
+                height="1024"
                 fill="white"
             />
             <circle cx="292" cy="512" r="100" fill="black" />

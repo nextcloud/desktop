@@ -10,7 +10,10 @@
 #include <QList>
 #include <QStringView>
 #include <QTest>
+#include <QXmlStreamAttributes>
 #include <QXmlStreamReader>
+
+using namespace Qt::StringLiterals;
 
 namespace {
 
@@ -59,6 +62,7 @@ private Q_SLOTS:
 
         auto xml = QXmlStreamReader(&file);
         auto shapeCount = 0;
+        auto uses = QList<QXmlStreamAttributes>{};
 
         while (!xml.atEnd()) {
             xml.readNext();
@@ -68,6 +72,12 @@ private Q_SLOTS:
             }
 
             const auto elementName = xml.name();
+
+            if (elementName == "use"_L1) {
+                uses.append(xml.attributes());
+                continue;
+            }
+
             const auto isShape = elementName == QStringLiteral("circle")
                 || elementName == QStringLiteral("ellipse")
                 || elementName == QStringLiteral("line")
@@ -84,15 +94,20 @@ private Q_SLOTS:
             QVERIFY2(elementName == QStringLiteral("path"),
                 qPrintable(fileName + QStringLiteral(" must use one uniform path")));
 
+            // Paint set on the path would override the paint of both uses.
             const auto attributes = xml.attributes();
-            QVERIFY2(isColor(attributes.value(QStringLiteral("fill")), Qt::white),
-                qPrintable(fileName + QStringLiteral(" paths must use a light fill")));
-            QVERIFY2(isColor(attributes.value(QStringLiteral("stroke")), Qt::black),
-                qPrintable(fileName + QStringLiteral(" paths must use a dark outline")));
+            QVERIFY2(!attributes.hasAttribute("fill"_L1) && !attributes.hasAttribute("stroke"_L1),
+                     qPrintable(fileName + " must leave the paint to the uses of its path"_L1));
         }
 
         QVERIFY2(!xml.hasError(), qPrintable(xml.errorString()));
         QCOMPARE(shapeCount, 1);
+
+        // Qt Svg ignores paint-order, so the path is drawn twice: first its outline, then its fill on top.
+        QCOMPARE(uses.size(), 2);
+        QVERIFY2(isColor(uses.first().value("stroke"_L1), Qt::black), qPrintable(fileName + " must draw a dark outline first"_L1));
+        QVERIFY2(isColor(uses.last().value("fill"_L1), Qt::white), qPrintable(fileName + " must draw a light fill last"_L1));
+        QVERIFY2(!uses.last().hasAttribute("stroke"_L1), qPrintable(fileName + " must not outline the fill"_L1));
     }
 
     void testRasterContrast_data()

@@ -28,7 +28,7 @@ set( APPLICATION_HELP_URL   "" CACHE STRING "URL for the help menu" )
 # provides the matching SDK), so we gate the modern pipeline on the build
 # environment. Older environments — and branded customer builds, which use a
 # different APPLICATION_NAME and ship their own colourful icon SVG — fall back
-# to the historical Inkscape + ECM (ecm_add_app_icon) .icns pipeline instead.
+# to the historical ECM (ecm_add_app_icon) .icns pipeline instead.
 #
 # The Xcode/actool version is the real capability gate; the macOS check is a
 # coarse secondary guard. Detection runs every configure and is intentionally

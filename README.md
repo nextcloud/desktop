@@ -46,7 +46,6 @@ If you find any bugs or have any suggestion for improvement, please
 
 ### System requirements
 - Windows 10, Windows 11, macOS 13 Ventura (or newer) or Linux
-- [🔽 Inkscape (to generate icons)](https://inkscape.org/release/)
 - Developer tools: cmake, clang/gcc/g++:
 - Qt6 since 3.14, Qt5 for earlier versions
 - OpenSSL

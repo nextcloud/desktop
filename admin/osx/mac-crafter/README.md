@@ -13,7 +13,7 @@ The tool is built with Apple’s ArgumentParser and it drives the KDE Craft buil
 - macOS 13 Ventura or newer
 - Xcode
 - Python3
-- Homebrew (for installing additional tools like `inkscape`, `pyenv`, and `create-dmg`)
+- Homebrew (for installing additional tools like `pyenv` and `create-dmg`)
 
 ## Installation
 

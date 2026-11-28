@@ -55,13 +55,6 @@ modules:
           stable-only: true
           project-id: 4138
 
-  - name: rsvg-convert-shim
-    buildsystem: simple
-    build-commands:
-      - mkdir -p /app/bin && ln -s /usr/bin/rsvg-convert /app/bin/inkscape
-    cleanup:
-      - '*'
-
   - name: libcloudproviders
     buildsystem: meson
     config-opts:
