@@ -35,20 +35,21 @@
 #include <chrono>
 
 #include <QCoreApplication>
-#include <QSslSocket>
 #include <QDir>
-#include <QLoggingCategory>
-#include <QMutexLocker>
-#include <QThread>
-#include <QStringList>
-#include <QTextStream>
-#include <QTime>
-#include <QUrl>
-#include <QSslCertificate>
-#include <QProcess>
 #include <QElapsedTimer>
 #include <QFileInfo>
+#include <QLoggingCategory>
+#include <QMutexLocker>
+#include <QPointer>
+#include <QProcess>
+#include <QSslCertificate>
+#include <QSslSocket>
 #include <QStorageInfo>
+#include <QStringList>
+#include <QTextStream>
+#include <QThread>
+#include <QTime>
+#include <QUrl>
 #include <qtextcodec.h>
 
 namespace OCC {
@@ -325,7 +326,25 @@ void SyncEngine::caseClashConflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
+    const QPointer<DiscoveryPhase> discovery = _discoveryPhase.get();
+    if (!discovery) {
+        return;
+    }
     Q_EMIT itemDiscovered(item);
+    // A direct receiver may abort the run before we update the journal or totals.
+    if (!discovery || discovery.data() != _discoveryPhase.get()) {
+        return;
+    }
+
+    if (item->isDirectory()) {
+        slotFolderDiscovered(item->_etag.isEmpty(), item->_file);
+    }
+    if (_progressInfo->recordDiscoveredItem(*item)) {
+        Q_EMIT transmissionProgress(*_progressInfo);
+        if (!discovery || discovery.data() != _discoveryPhase.get()) {
+            return;
+        }
+    }
 
     if (Utility::isConflictFile(item->_file)) {
         _seenConflictFiles.insert(item->_file);
@@ -485,9 +504,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
     slotNewItem(item);
 
-    if (item->isDirectory()) {
-        slotFolderDiscovered(item->_etag.isEmpty(), item->_file);
-    }
 }
 
 void SyncEngine::startSync()
@@ -777,13 +793,6 @@ void SyncEngine::startSync()
 
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
-    // Don't wanna overload the UI
-    if (!_lastUpdateProgressCallbackCall.isValid() || _lastUpdateProgressCallbackCall.elapsed() >= 200) {
-        _lastUpdateProgressCallbackCall.start(); // first call or enough elapsed time
-    } else {
-        return;
-    }
-
     if (local) {
         _progressInfo->_currentDiscoveredLocalFolder = folder;
         _progressInfo->_currentDiscoveredRemoteFolder.clear();
@@ -791,7 +800,6 @@ void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
         _progressInfo->_currentDiscoveredRemoteFolder = folder;
         _progressInfo->_currentDiscoveredLocalFolder.clear();
     }
-    Q_EMIT transmissionProgress(*_progressInfo);
 }
 
 void SyncEngine::slotRootEtagReceived(const QByteArray &e, const QDateTime &time)

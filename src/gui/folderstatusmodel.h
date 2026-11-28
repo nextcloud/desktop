@@ -140,6 +140,7 @@ private Q_SLOTS:
     void slotShowFetchProgress();
 
 private:
+    void updateFolderProgress(SubFolderInfo &info);
     [[nodiscard]] QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
     const AccountState *_accountState = nullptr;
