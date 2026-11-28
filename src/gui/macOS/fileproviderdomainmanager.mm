@@ -420,6 +420,18 @@ void FileProviderDomainManager::start()
         disconnectFileProviderDomainForAccount(accountState, trReason);
     });
 
+    // Disconnect the domain when something changes regarding authentication. Watch every account, not only the
+    // ones whose domain is added in this session, so domains that already exist at startup are covered too.
+    const auto watchAccountState = [this](const AccountState *const accountState) {
+        connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
+            slotAccountStateChanged(accountState);
+        });
+    };
+    for (const auto &accountState : AccountManager::instance()->accounts()) {
+        watchAccountState(accountState.data());
+    }
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, watchAccountState);
+
     qCDebug(lcMacFileProviderDomainManager) << "Completed start.";
 }
 
@@ -474,21 +486,9 @@ QString FileProviderDomainManager::addDomainForAccount(const AccountState * cons
     }
 
     Q_ASSERT(accountState);
-    const auto account = accountState->account();
-    Q_ASSERT(account);
+    Q_ASSERT(accountState->account());
 
-    const auto identifier = d->addFileProviderDomain(accountState);
-
-    if (identifier.isEmpty()) {
-        return {};
-    }
-
-    // Disconnect the domain when something changes regarding authentication
-    connect(accountState, &AccountState::stateChanged, this, [this, accountState] {
-        slotAccountStateChanged(accountState);
-    });
-
-    return identifier;
+    return d->addFileProviderDomain(accountState);
 }
 
 void FileProviderDomainManager::signalEnumeratorChanged(const Account * const account)
