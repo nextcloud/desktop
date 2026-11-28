@@ -4,12 +4,11 @@
  */
 
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Layouts
 
 import Style
 
-Pane {
+ColumnLayout {
     id: root
 
     default property alias contents: body.data
@@ -20,47 +19,29 @@ Pane {
     readonly property int windowMargin: Style.wizardWindowMargin
     readonly property int footerButtonHeight: Style.wizardFooterButtonHeight
 
-    padding: 0
+    spacing: 0
 
-    background: Rectangle {
-        color: "transparent"
+    Item {
+        id: body
+
+        Layout.fillWidth: true
+        Layout.fillHeight: true
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        spacing: 0
+    RowLayout {
+        id: footerLayout
 
-        Item {
-            id: body
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }
+        Layout.fillWidth: true
+        Layout.preferredHeight: root.footerVisible
+            ? root.footerButtonHeight + root.windowMargin + root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+            : 0
+        Layout.leftMargin: root.windowMargin
+        Layout.rightMargin: root.windowMargin
+        Layout.topMargin: root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
+        Layout.bottomMargin: root.windowMargin
 
-        Item {
-            Layout.fillWidth: true
-            Layout.preferredHeight: root.footerVisible
-                ? root.footerButtonHeight + root.windowMargin + root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
-                : 0
-            visible: root.footerVisible
+        visible: root.footerVisible
 
-            Rectangle {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: Style.normalBorderWidth
-                color: Style.wizardRowBorder
-                visible: root.footerSeparatorVisible
-            }
-
-            RowLayout {
-                id: footerLayout
-                anchors.fill: parent
-                anchors.leftMargin: root.windowMargin
-                anchors.rightMargin: root.windowMargin
-                anchors.topMargin: root.footerTopPadding + (root.footerSeparatorVisible ? Style.normalBorderWidth : 0)
-                anchors.bottomMargin: root.windowMargin
-                spacing: Style.wizardFooterSpacing
-            }
-        }
+        spacing: Style.wizardFooterSpacing
     }
 }

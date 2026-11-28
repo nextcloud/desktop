@@ -10,7 +10,7 @@ import Style
 import com.nextcloud.desktopclient
 import "../../tray"
 
-Item {
+ColumnLayout {
     id: root
 
     required property var controller
@@ -20,169 +20,162 @@ Item {
     readonly property color primaryTextColor: Style.wizardPrimaryText
     readonly property color hintTextColor: Style.wizardSecondaryText
 
+    spacing: Style.extraSmallSpacing
+
+    Item {
+        Layout.preferredWidth: 80
+        Layout.preferredHeight: 80
+        Layout.alignment: Qt.AlignHCenter
+
+        Rectangle {
+            anchors.fill: parent
+            radius: width / 2
+            color: Style.wizardAvatarPlaceholder
+            visible: accountAvatar.status !== Image.Ready
+
+            EnforcedPlainTextLabel {
+                anchors.centerIn: parent
+                text: root.controller.userDisplayName !== "" ? root.controller.userDisplayName.charAt(0).toUpperCase() : ""
+                color: root.primaryTextColor
+                font.pixelSize: Style.pixelSize + 22
+                font.bold: true
+            }
+        }
+
+        Image {
+            id: accountAvatar
+            anchors.fill: parent
+            source: root.controller.avatarUrl
+            sourceSize.width: 80
+            sourceSize.height: 80
+            fillMode: Image.PreserveAspectCrop
+            cache: false
+            visible: status === Image.Ready
+        }
+    }
+
+    EnforcedPlainTextLabel {
+        text: root.controller.userDisplayName
+        color: root.primaryTextColor
+        font.pixelSize: Style.pixelSize + 6
+        font.bold: true
+        horizontalAlignment: Text.AlignHCenter
+        Layout.fillWidth: true
+        wrapMode: Text.WordWrap
+    }
+
+    EnforcedPlainTextLabel {
+        text: root.serverLabel
+        color: root.hintTextColor
+        font.pixelSize: Style.pixelSize + 2
+        horizontalAlignment: Text.AlignHCenter
+        Layout.fillWidth: true
+        elide: Text.ElideMiddle
+    }
+
     ColumnLayout {
-        anchors.fill: parent
-        anchors.leftMargin: 28
-        anchors.rightMargin: 28
-        anchors.topMargin: 40
-        anchors.bottomMargin: 16
-        spacing: Style.extraSmallSpacing
+        Layout.fillWidth: true
+        Layout.topMargin: 24
+        spacing: 8
 
-        Item {
-            Layout.preferredWidth: 80
-            Layout.preferredHeight: 80
-            Layout.alignment: Qt.AlignHCenter
-
-            Rectangle {
-                anchors.fill: parent
-                radius: width / 2
-                color: Style.wizardAvatarPlaceholder
-                visible: accountAvatar.status !== Image.Ready
-
-                EnforcedPlainTextLabel {
-                    anchors.centerIn: parent
-                    text: root.controller.userDisplayName !== "" ? root.controller.userDisplayName.charAt(0).toUpperCase() : ""
-                    color: root.primaryTextColor
-                    font.pixelSize: Style.pixelSize + 22
-                    font.bold: true
-                }
-            }
-
-            Image {
-                id: accountAvatar
-                anchors.fill: parent
-                source: root.controller.avatarUrl
-                sourceSize.width: 80
-                sourceSize.height: 80
-                fillMode: Image.PreserveAspectCrop
-                cache: false
-                visible: status === Image.Ready
-            }
+        OptionRow {
+            Layout.fillWidth: true
+            visible: root.controller.canUseVirtualFiles
+            title: root.controller.isUsingFileProvider ? qsTr("File Provider") : (Qt.platform.os === "linux" ? qsTr("Virtual files (beta)") : qsTr("Virtual files"))
+            description: Qt.platform.os === "linux"
+                ? qsTr("Download files on-demand. This feature is in an early preview. Recommended only for testing.")
+                : qsTr("Download files on-demand")
+            selected: root.controller.syncMode === AccountWizardController.VirtualFiles
+            onClicked: root.controller.setSyncMode(AccountWizardController.VirtualFiles)
         }
 
+        OptionRow {
+            Layout.fillWidth: true
+            enabled: root.controller.canUseClassicSync
+            title: qsTr("Synchronize everything")
+            description: root.controller.syncEverythingDescription
+            selected: root.controller.syncMode === AccountWizardController.SyncEverything
+            onClicked: root.controller.setSyncMode(AccountWizardController.SyncEverything)
+        }
+
+        OptionRow {
+            Layout.fillWidth: true
+            enabled: root.controller.canUseClassicSync
+            title: qsTr("Choose what to sync")
+            description: ""
+            selected: root.controller.syncMode === AccountWizardController.SelectiveSync
+            onClicked: root.controller.openSelectiveSync()
+        }
+    }
+
+    ColumnLayout {
+        Layout.fillWidth: true
+        Layout.topMargin: 18
+        spacing: 6
+        visible: root.controller.localSyncFolderRequired
+
         EnforcedPlainTextLabel {
-            text: root.controller.userDisplayName
+            text: qsTr("Local sync folder")
             color: root.primaryTextColor
-            font.pixelSize: Style.pixelSize + 6
+            font.pixelSize: Style.pixelSize + 1
             font.bold: true
-            horizontalAlignment: Text.AlignHCenter
             Layout.fillWidth: true
-            wrapMode: Text.WordWrap
         }
 
-        EnforcedPlainTextLabel {
-            text: root.serverLabel
-            color: root.hintTextColor
-            font.pixelSize: Style.pixelSize + 2
-            horizontalAlignment: Text.AlignHCenter
+        RowLayout {
             Layout.fillWidth: true
-            elide: Text.ElideMiddle
-        }
-
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.topMargin: 24
             spacing: 8
 
-            OptionRow {
+            Rectangle {
                 Layout.fillWidth: true
-                visible: root.controller.canUseVirtualFiles
-                title: root.controller.isUsingFileProvider ? qsTr("File Provider") : (Qt.platform.os === "linux" ? qsTr("Virtual files (beta)") : qsTr("Virtual files"))
-                description: Qt.platform.os === "linux"
-                    ? qsTr("Download files on-demand. This feature is in an early preview. Recommended only for testing.")
-                    : qsTr("Download files on-demand")
-                selected: root.controller.syncMode === AccountWizardController.VirtualFiles
-                onClicked: root.controller.setSyncMode(AccountWizardController.VirtualFiles)
+                Layout.preferredHeight: Style.wizardFooterButtonHeight
+                radius: 6
+                border.width: 1
+                border.color: root.controller.localSyncFolderError === "" ? Style.wizardRowBorder : Style.wizardErrorBorder
+                color: Style.wizardRowBackground
+
+                EnforcedPlainTextLabel {
+                    anchors.fill: parent
+                    anchors.leftMargin: Style.standardSpacing
+                    anchors.rightMargin: Style.standardSpacing
+                    verticalAlignment: Text.AlignVCenter
+                    text: root.controller.localSyncFolderDisplay
+                    color: root.primaryTextColor
+                    font.pixelSize: Style.pixelSize
+                    elide: Text.ElideMiddle
+                }
             }
 
-            OptionRow {
-                Layout.fillWidth: true
+            WizardButton {
+                text: qsTr("Choose")
+                Layout.minimumWidth: Style.wizardInlineButtonMinimumWidth
+                Layout.preferredHeight: Style.wizardFooterButtonHeight
                 enabled: root.controller.canUseClassicSync
-                title: qsTr("Synchronize everything")
-                description: root.controller.syncEverythingDescription
-                selected: root.controller.syncMode === AccountWizardController.SyncEverything
-                onClicked: root.controller.setSyncMode(AccountWizardController.SyncEverything)
-            }
-
-            OptionRow {
-                Layout.fillWidth: true
-                enabled: root.controller.canUseClassicSync
-                title: qsTr("Choose what to sync")
-                description: ""
-                selected: root.controller.syncMode === AccountWizardController.SelectiveSync
-                onClicked: root.controller.openSelectiveSync()
+                onClicked: root.controller.chooseLocalSyncFolder()
             }
         }
 
-        ColumnLayout {
+        EnforcedPlainTextLabel {
+            visible: root.controller.localSyncFolderFreeSpace !== ""
+            text: root.controller.localSyncFolderFreeSpace
+            color: root.hintTextColor
+            font.pixelSize: Style.pixelSize
             Layout.fillWidth: true
-            Layout.topMargin: 18
-            spacing: 6
-            visible: root.controller.localSyncFolderRequired
-
-            EnforcedPlainTextLabel {
-                text: qsTr("Local sync folder")
-                color: root.primaryTextColor
-                font.pixelSize: Style.pixelSize + 1
-                font.bold: true
-                Layout.fillWidth: true
-            }
-
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: 8
-
-                Rectangle {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: Style.wizardFooterButtonHeight
-                    radius: 6
-                    border.width: 1
-                    border.color: root.controller.localSyncFolderError === "" ? Style.wizardRowBorder : Style.wizardErrorBorder
-                    color: Style.wizardRowBackground
-
-                    EnforcedPlainTextLabel {
-                        anchors.fill: parent
-                        anchors.leftMargin: Style.standardSpacing
-                        anchors.rightMargin: Style.standardSpacing
-                        verticalAlignment: Text.AlignVCenter
-                        text: root.controller.localSyncFolderDisplay
-                        color: root.primaryTextColor
-                        font.pixelSize: Style.pixelSize
-                        elide: Text.ElideMiddle
-                    }
-                }
-
-                WizardButton {
-                    text: qsTr("Choose")
-                    Layout.minimumWidth: Style.wizardInlineButtonMinimumWidth
-                    Layout.preferredHeight: Style.wizardFooterButtonHeight
-                    enabled: root.controller.canUseClassicSync
-                    onClicked: root.controller.chooseLocalSyncFolder()
-                }
-            }
-
-            EnforcedPlainTextLabel {
-                visible: root.controller.localSyncFolderFreeSpace !== ""
-                text: root.controller.localSyncFolderFreeSpace
-                color: root.hintTextColor
-                font.pixelSize: Style.pixelSize
-                Layout.fillWidth: true
-                elide: Text.ElideRight
-            }
-
-            EnforcedPlainTextLabel {
-                visible: root.controller.localSyncFolderError !== ""
-                text: root.controller.localSyncFolderError
-                color: Style.wizardErrorText
-                font.pixelSize: Style.pixelSize
-                Layout.fillWidth: true
-                wrapMode: Text.WordWrap
-                maximumLineCount: 2
-            }
+            elide: Text.ElideRight
         }
 
-        Item {
-            Layout.fillHeight: true
+        EnforcedPlainTextLabel {
+            visible: root.controller.localSyncFolderError !== ""
+            text: root.controller.localSyncFolderError
+            color: Style.wizardErrorText
+            font.pixelSize: Style.pixelSize
+            Layout.fillWidth: true
+            wrapMode: Text.WordWrap
+            maximumLineCount: 2
         }
+    }
+
+    Item {
+        Layout.fillHeight: true
     }
 }
